@@ -10,7 +10,7 @@ None of this knowledge lives anywhere. It sits in papers nobody re-reads, in blo
 
 The people most in need of the list are not people. An agent that is trying to improve the system it runs in has a specific, answerable question at every failure: is this a known weakness, is there a known fix, and does the fix apply here? Today it has nowhere to look. It either has the answer in its weights, which is unreliable, or it is handed a guide file, which the evidence says does not raise task success and costs about twenty percent more inference.
 
-This is a proposal, and a working prototype, for the missing thing: a catalog of model capabilities and weaknesses, the claims made about each, the evidence behind every claim, and the techniques that address them, with the conditions under which they do. It is at [rsiratchet.com](https://rsiratchet.com), the catalog is a folder of YAML files in a public repository, and any agent on a machine with the checkout can query it.
+This is a proposal, and a working prototype, for the missing thing: a catalog of model capabilities and weaknesses, the claims made about each, the evidence behind every claim, and the techniques that address them, with the conditions under which they do. It is at [rsiratchet.com](https://rsiratchet.com) for people, and for agents it is an MCP server with a handful of tools, the most useful of which takes a description of a situation and returns the techniques that fit it, with their evidence and their failure conditions. The catalog itself is a folder of YAML files in a public repository, which is what makes every entry citable, diffable and contestable.
 
 ## What is in it
 
