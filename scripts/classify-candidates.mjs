@@ -107,7 +107,9 @@ for (const c of catalog.claims) {
   claimsByCapability.set(c.data.capability, list);
 }
 
-const files = fs.existsSync(QUEUE_DIR) ? fs.readdirSync(QUEUE_DIR).filter((f) => /\.ya?ml$/.test(f)) : [];
+// Newest window first, so a backfilled week never spends the classify
+// budget before tonight's papers have had their turn.
+const files = fs.existsSync(QUEUE_DIR) ? fs.readdirSync(QUEUE_DIR).filter((f) => /\.ya?ml$/.test(f)).sort().reverse() : [];
 if (!files.length) { console.log("No queue files."); process.exit(0); }
 
 // One work item per (candidate, matched capability) pair.

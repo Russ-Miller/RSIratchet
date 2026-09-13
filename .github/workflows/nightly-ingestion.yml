@@ -20,11 +20,17 @@ on:
         description: "Trailing window in days"
         default: "7"
       classify_limit:
-        description: "Max candidate x capability pairs to classify (cost control)"
-        default: "60"
+        description: "Max candidate x capability pairs to classify (cost control). Tonight's window is about 25; a backfilled week adds about 45 after pruning."
+        default: "100"
       propose_limit:
         description: "Max unmatched papers to mine for new capabilities"
         default: "80"
+      backfill_weeks:
+        description: "Historical 7-day windows to fetch tonight, walking back from the cursor in pipeline/backfill.json (0 to skip)"
+        default: "1"
+      backfill_top:
+        description: "Capability-matched candidates kept per backfilled window, by heuristic score (cost control); 30 unmatched are kept for the proposal stage"
+        default: "40"
 
 concurrency:
   group: nightly-ingestion
@@ -63,7 +69,7 @@ jobs:
             echo "# Ingestion run $(date -u +'%Y-%m-%d %H:%M UTC')"
             echo
             echo "- workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-            echo "- window: ${{ inputs.days || '7' }} days · classify limit ${{ inputs.classify_limit || '60' }} · propose limit ${{ inputs.propose_limit || '80' }}"
+            echo "- window: ${{ inputs.days || '7' }} days · classify limit ${{ inputs.classify_limit || '100' }} · propose limit ${{ inputs.propose_limit || '80' }}"
             echo "- paid stages: ${{ env.HAS_ANTHROPIC_KEY == 'true' && 'enabled' || 'SKIPPED (no ANTHROPIC_API_KEY)' }}"
             echo
           } >> "$RUN_LOG"
@@ -92,6 +98,17 @@ jobs:
           node scripts/fetch-openalex.mjs --days "${{ inputs.days || '7' }}" 2>&1 | tee -a "$RUN_LOG"
           echo '```' >> "$RUN_LOG"
 
+      # Stage 1b -- the back catalogue, one week per night, walking backwards
+      # from where the trailing window began toward 2023. Free to fetch; the
+      # paid stages cap themselves and take the freshest window first.
+      - name: Backfill historical windows
+        if: ${{ (inputs.backfill_weeks || '1') != '0' }}
+        run: |
+          echo '## Stage 1b — backfill' >> "$RUN_LOG"
+          echo '```' >> "$RUN_LOG"
+          node scripts/backfill.mjs --weeks "${{ inputs.backfill_weeks || '1' }}" --top "${{ inputs.backfill_top || '40' }}" 2>&1 | tee -a "$RUN_LOG"
+          echo '```' >> "$RUN_LOG"
+
       # Stage 2 — judges direction and contradiction for newly matched papers.
       - name: Classify direction
         if: env.HAS_ANTHROPIC_KEY == 'true'
@@ -100,7 +117,7 @@ jobs:
         run: |
           echo '## Stage 2 — classify direction' >> "$RUN_LOG"
           echo '```' >> "$RUN_LOG"
-          node scripts/classify-candidates.mjs --limit "${{ inputs.classify_limit || '60' }}" --delay 2500 2>&1 | tee -a "$RUN_LOG"
+          node scripts/classify-candidates.mjs --limit "${{ inputs.classify_limit || '100' }}" --delay 2500 2>&1 | tee -a "$RUN_LOG"
           echo '```' >> "$RUN_LOG"
 
       # Stage 2b — mines the unmatched pile for capabilities not yet tracked.
@@ -187,7 +204,8 @@ jobs:
             echo "- job status: ${{ job.status }}"
             echo "- queue files: $(ls pipeline/queue 2>/dev/null | wc -l | tr -d ' ')"
             echo "- candidates: $(cat pipeline/queue/*.yaml 2>/dev/null | grep -c '^  - openalex_id:' || echo 0)"
-            echo "- classified: $(cat pipeline/queue/*.yaml 2>/dev/null | grep -c '^      capability:' || echo 0) verdicts"
+            echo "- classified: $(cat pipeline/queue/*.yaml 2>/dev/null | grep -c '^        direction:' || echo 0) verdicts"
+            echo "- backfill cursor: $(node -e 'try{const s=require("./pipeline/backfill.json");console.log(s.next_to+" (earliest "+s.earliest+", "+s.done.length+" windows done)")}catch{console.log("not started")}')"
             echo "- shortlist: $(grep -c '^  - id:' pipeline/capability-shortlist.yaml 2>/dev/null || echo 0) candidate capabilities"
             echo "- finished: $(date -u +'%Y-%m-%d %H:%M UTC')"
           } >> "$RUN_LOG"
