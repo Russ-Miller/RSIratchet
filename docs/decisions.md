@@ -1535,3 +1535,30 @@ Also fixed: the run log's "classified: N verdicts" counter grepped a line
 shape the queue does not use and always said 1; and a zero-yield fetch now
 prints the previous run's yield so a stalled upstream feed is
 distinguishable from a quiet week.
+
+## 2026-09-13 — Batches for the paid stages; backfill floor moved to 2026
+
+The three per-item stages (classify, briefs, drafts) now go through the
+Message Batches API at half price. `scripts/batch-lib.mjs` submits a stage's
+requests as one batch, waits up to 25 minutes, and applies what came back;
+a batch that outlives the deadline is recorded in `pipeline/batches.json`
+on the state branch and collected first thing on the next run, with its
+items excluded from resubmission in between. So a slow batch costs a night
+of latency and never a lost or doubled request. Structured outputs work in
+batches; the parse helper does not, so results are parsed and validated
+against the same schemas by hand. Measured: two classify verdicts came back
+in 152 s at $0.009 each against $0.014 before; the deferred path was
+forced with a zero-minute deadline and collected on the following run.
+
+The capability-proposal stage stays synchronous: it is a tenth of a dollar
+a night and its consolidation step depends on the previous call.
+
+Backfill now stops at 2026-01-01 rather than 2023: about 36 weeks, a month
+and a bit of nights at one window each, roughly $1 a night at batch rates.
+Job timeout raised to 150 minutes to cover three stages each waiting on a
+batch.
+
+Not done yet, deliberately: a cheaper model for the classifier. Haiku 4.5
+would cut that stage by 80%, but the decision rests on the held-out
+comparison against the 80 hand verdicts, which is the experiment already
+designed for the classifier.

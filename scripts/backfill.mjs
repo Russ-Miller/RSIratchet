@@ -63,7 +63,7 @@ function prune(file, keepMatched, keepUnmatched) {
   console.log(`  pruned ${file}: ${list.length} -> ${kept.length} (${Math.min(matched.length, keepMatched)} of ${matched.length} matched, ${items} classify items; ${Math.min(unmatched.length, keepUnmatched)} of ${unmatched.length} unmatched kept for proposals)`);
 }
 
-const state = fs.existsSync(STATE) ? JSON.parse(fs.readFileSync(STATE, "utf8")) : { next_to: initialNextTo(), earliest: "2023-01-01", done: [] };
+const state = fs.existsSync(STATE) ? JSON.parse(fs.readFileSync(STATE, "utf8")) : { next_to: initialNextTo(), earliest: "2026-01-01", done: [] };
 if (arg("earliest")) state.earliest = arg("earliest");
 
 for (let i = 0; i < weeks; i++) {

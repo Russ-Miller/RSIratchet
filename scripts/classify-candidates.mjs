@@ -16,6 +16,7 @@ import YAML from "yaml";
 import Anthropic from "@anthropic-ai/sdk";
 import { z } from "zod";
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
+import { runBatch, collectPending, pendingKeys, parseStructured, batchCost } from "./batch-lib.mjs";
 import { loadCatalog } from "./catalog-lib.mjs";
 
 const MODEL = "claude-opus-5";
@@ -30,7 +31,8 @@ const onlyCapability = arg("capability");
 const limit = args.includes("--all") ? Infinity : Number(arg("limit") ?? 10);
 // Between API calls. Nothing waits on a nightly job, and a steady trickle is
 // far cheaper than discovering a rate limit 40 calls into a paid batch.
-const delayMs = Number(arg("delay") ?? 1000);
+// --delay is accepted for compatibility with older invocations; batching makes pacing unnecessary.
+void arg("delay");
 
 const Verdict = z.object({
   about_capability: z.boolean()
@@ -113,6 +115,7 @@ const files = fs.existsSync(QUEUE_DIR) ? fs.readdirSync(QUEUE_DIR).filter((f) =>
 if (!files.length) { console.log("No queue files."); process.exit(0); }
 
 // One work item per (candidate, matched capability) pair.
+const inFlight = new Set(pendingKeys("classify").map((k) => `${k.openalex_id}|${k.capId}`));
 const work = [];
 const queues = new Map();
 for (const f of files) {
@@ -124,6 +127,7 @@ for (const f of files) {
       if (onlyCapability && capId !== onlyCapability) continue;
       if ((c.verdicts ?? []).some((v) => v.capability === capId)) continue;   // already judged
       if (!capabilities.has(capId)) continue;
+      if (inFlight.has(`${c.openalex_id}|${capId}`)) continue;                 // submitted in an earlier run, not yet back
       work.push({ file: full, candidate: c, capId });
     }
   }
@@ -145,53 +149,48 @@ if (dryRun) {
 }
 
 const client = new Anthropic();
-let inTokens = 0, outTokens = 0, cacheRead = 0, errors = 0;
+let errors = 0;
+const usage = { input: 0, output: 0, cacheRead: 0 };
 
-for (const [i, item] of batch.entries()) {
-  const cap = capabilities.get(item.capId);
-  const claims = claimsByCapability.get(item.capId) ?? [];
-  process.stdout.write(`[${i + 1}/${batch.length}] ${item.capId} :: ${String(item.candidate.title).slice(0, 58)}\n`);
-  try {
-    const res = await client.messages.parse({
-      model: MODEL,
-      max_tokens: 2000,
-      // Classification, not deep reasoning -- low effort is the right cost/quality point.
-      output_config: { effort: "low", format: zodOutputFormat(Verdict) },
-      system: [{ type: "text", text: SYSTEM, cache_control: { type: "ephemeral" } }],
-      messages: [{ role: "user", content: buildPrompt(item.candidate, cap, claims) }],
-    });
-    inTokens += res.usage?.input_tokens ?? 0;
-    outTokens += res.usage?.output_tokens ?? 0;
-    cacheRead += res.usage?.cache_read_input_tokens ?? 0;
-
-    const v = res.parsed_output;
-    if (!v) { console.log("      parse failed, skipped"); errors++; continue; }
-
-    const verdict = {
-      capability: item.capId,
-      about_capability: v.about_capability,
-      direction: v.direction,
-      confidence: v.confidence,
-      rationale: v.rationale,
-    };
-    if (v.contradicts_claim_id) verdict.contradicts_claim_id = v.contradicts_claim_id;
-    if (v.supports_claim_id) verdict.supports_claim_id = v.supports_claim_id;
-    if (v.scope_condition) verdict.scope_condition = v.scope_condition;
-    verdict.classified_at = new Date().toISOString().slice(0, 10);
-    verdict.model = MODEL;
-
-    item.candidate.verdicts = [...(item.candidate.verdicts ?? []), verdict];
-
-    const flag = !v.about_capability ? "off-topic"
-      : v.contradicts_claim_id ? `CONTRADICTS ${v.contradicts_claim_id}`
-      : v.direction;
-    console.log(`      -> ${flag} (${v.confidence})`);
-  } catch (err) {
-    errors++;
-    console.error(`      error: ${err?.message ?? err}`);
-  }
-  if (i < batch.length - 1) await new Promise((r) => setTimeout(r, delayMs));
+// A result is applied by key: the candidate is found again by id, so results
+// from a batch submitted on an earlier run land in the same place.
+const byId = new Map();
+for (const parsed of queues.values()) for (const c of parsed?.candidates ?? []) byId.set(c.openalex_id, c);
+function apply({ key, message }) {
+  const candidate = byId.get(key.openalex_id);
+  if (!candidate) { console.log(`      ${key.openalex_id}: candidate no longer queued, result dropped`); return; }
+  if ((candidate.verdicts ?? []).some((x) => x.capability === key.capId)) return;
+  const v = parseStructured(message, Verdict);
+  if (!v) { console.log(`      ${key.capId} :: ${String(candidate.title).slice(0, 58)}: parse failed`); errors++; return; }
+  const verdict = { capability: key.capId, about_capability: v.about_capability, direction: v.direction, confidence: v.confidence, rationale: v.rationale };
+  if (v.contradicts_claim_id) verdict.contradicts_claim_id = v.contradicts_claim_id;
+  if (v.supports_claim_id) verdict.supports_claim_id = v.supports_claim_id;
+  if (v.scope_condition) verdict.scope_condition = v.scope_condition;
+  verdict.classified_at = new Date().toISOString().slice(0, 10);
+  verdict.model = MODEL;
+  candidate.verdicts = [...(candidate.verdicts ?? []), verdict];
+  const flag = !v.about_capability ? "off-topic" : v.contradicts_claim_id ? `CONTRADICTS ${v.contradicts_claim_id}` : v.direction;
+  console.log(`  ${key.capId} :: ${String(candidate.title).slice(0, 58)}\n      -> ${flag} (${v.confidence})`);
 }
+const addUsage = (u) => { usage.input += u.input; usage.output += u.output; usage.cacheRead += u.cacheRead; errors += u.errored; };
+
+// Results of batches left in flight by an earlier run come first.
+const earlier = await collectPending(client, "classify");
+earlier.results.forEach(apply); addUsage(earlier.usage);
+
+const requests = batch.map((item) => ({
+  key: { openalex_id: item.candidate.openalex_id, capId: item.capId },
+  params: {
+    model: MODEL,
+    max_tokens: 2000,
+    // Classification, not deep reasoning -- low effort is the right cost/quality point.
+    output_config: { effort: "low", format: zodOutputFormat(Verdict) },
+    system: [{ type: "text", text: SYSTEM, cache_control: { type: "ephemeral" } }],
+    messages: [{ role: "user", content: buildPrompt(item.candidate, capabilities.get(item.capId), claimsByCapability.get(item.capId) ?? []) }],
+  },
+}));
+const fresh = await runBatch(client, "classify", requests, { deadlineMs: Number(arg("deadline-min") ?? 25) * 60_000 });
+fresh.results.forEach(apply); addUsage(fresh.usage);
 
 // Rewrite queue files with verdicts attached. Re-serializing via YAML.stringify
 // rather than the hand-rolled writer in fetch-openalex.mjs, because verdicts are
@@ -200,9 +199,11 @@ for (const [file, parsed] of queues) {
   fs.writeFileSync(file, YAML.stringify(parsed, { lineWidth: 100 }));
 }
 
-const cost = (inTokens / 1e6) * PRICE_IN + (outTokens / 1e6) * PRICE_OUT;
-console.log(`\ntokens: ${inTokens} in (${cacheRead} cached) / ${outTokens} out`);
-console.log(`cost:   $${cost.toFixed(4)} for ${batch.length} items  ≈ $${(cost / Math.max(batch.length, 1)).toFixed(4)} each`);
+const applied = earlier.results.length + fresh.results.length;
+const cost = batchCost(usage, PRICE_IN, PRICE_OUT);
+console.log(`\ntokens: ${usage.input} in (${usage.cacheRead} cached) / ${usage.output} out  (batch, 50% rate)`);
+console.log(`cost:   $${cost.toFixed(4)} for ${applied} result(s)  ≈ $${(cost / Math.max(applied, 1)).toFixed(4)} each`);
+if (fresh.pendingId) console.log(`pending: ${batch.length} request(s) in batch ${fresh.pendingId}, collected next run`);
 if (errors) console.log(`errors: ${errors}`);
 const remaining = work.length - batch.length;
 if (remaining > 0) console.log(`${remaining} still unclassified — rerun, or pass --all`);
