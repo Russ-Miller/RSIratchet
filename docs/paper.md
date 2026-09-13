@@ -16,7 +16,7 @@ This is a proposal, and a working prototype, for the missing thing: a catalog of
 
 Four kinds of entry, and one more added recently.
 
-A **capability** is a topic: "digit-level arithmetic", "stating false facts confidently", "fixing its own mistakes". It is not scored. It exists to hold claims.
+A **capability** is a topic: "digit-level arithmetic", "stating false facts confidently", "fixing its own mistakes". It is not scored. It exists to hold claims. The list of capabilities is open-ended by design: the goal is to curate what is, in the limit, an unbounded list of things a model has to be able to do, arranged on a map of ten groups (reasoning, knowledge, coding, agentic, context, verification, behavior, security, evaluation, perception). A capability with no claims yet is filed anyway and marked proposed, because the pipeline can only match papers to capabilities that exist, and because an empty entry advertises the gap.
 
 A **claim** is the unit of content: a directional, scoped statement, never a number. "Writing out reasoning steps improves how a problem is decomposed but does not fix the arithmetic inside a step." Every claim links to its **sources**, each with a stance, supporting or contesting, and a note saying what the source actually showed. A claim is marked as a durable mechanism or a perishable observation tied to a model and an era, because the two must not contaminate each other. Its backing is a category, not a score: a single paper, replicated, argued from mechanism, or the maintainer's own observation.
 
@@ -40,11 +40,32 @@ The recent addition is **adages**: laws and maxims from human systems, filed to 
 
 ## The ratchet
 
-The name is the ambition. A ratchet moves in one direction and does not slip back. The harness-engineering vocabulary that emerged this year, guides and sensors, trip wires and capability budgets, Hashimoto's rule that every failure becomes a permanent fix, describes what a ratchet for an agent system looks like: failures converted into structure, not re-applied as prompts.
+The name is the ambition, and the vocabulary is borrowed on purpose. Harness engineering, as it settled this year in Fowler and Böckeler's guides-and-sensors taxonomy, OpenAI's account of running Codex, and the six-layer playbook that synthesised them, describes an agent as a model plus a harness: the guides it reads before acting, the sensors that check its output after, the loop that plans, executes, verifies and fixes with bounded retries, the memory that survives the session, the permissions and budgets that bound it, and the observability that lets a person see why it did what it did. Hashimoto's rule sits on top: every failure becomes a permanent fix, encoded at the strongest layer that will hold it, never re-applied as a prompt.
 
-The catalog is meant to be both the record of that ratchet and a part of its mechanism. An agent that fails should be able to classify the failure, look up whether it is a known weakness, find the techniques that address it, read the conditions and the counter-evidence, try one, measure, and file the result as a claim scoped to that model and that task. Over time the agent's own results should become more valuable than the literature that seeded them. Published research supplies the priors; the system learns operationally from its own failures.
+That is a ratchet. It moves in one direction and does not slip back. The catalog is meant to be both the record of that ratchet and a part of its mechanism.
 
-Two of the catalog's own entries say where this goes wrong. The Self-Harness paper shows a fixed model raising its own pass rate by rewriting its scaffolding, with a regression gate keeping only edits that help; its promotion gate reads the held-out split, so the reported gain is not clean generalisation. Goodhart's law, filed with three supporting claims and no breaks, says what happens to any measure the loop optimises. So the discipline is: prediction before test, a held-out set the promotion decision never reads, and provenance on every result that enters the catalog. The ratchet can only move on evidence that would have counted before the result was known.
+## How it works
+
+The playbook's formula is *agent = model + harness*. This catalog adds a term: *improvement = failure + ratchet + evidence*. The failure is the input, the ratchet is the loop that turns it into structure, and the evidence is what tells the loop which structure, under which conditions. Here is what the catalog is, in the harness's own layers.
+
+| Harness layer | What it is | What RSI Ratchet is at that layer |
+|---|---|---|
+| **Guides** (feedforward) | instructions read before acting, each line a past failure | the catalog itself: an index of known weaknesses and the conditions under which known fixes hold, read at the point of need rather than pasted into every context |
+| **Sensors** (feedback) | checks after execution; computational ones are free and deterministic, inferential ones cost tokens and vary | the backtest against known reversals; figure grounding on every brief; title verification against arXiv; drift detection on archived posts; the paper classifier, an inferential sensor whose error rate is recorded |
+| **Agentic loop** | plan, execute, verify, fix, bounded retries, escalate | the nightly pipeline, paced and resumable, whose drafts that fail a sensor escalate to a flag rather than being filed |
+| **Memory** | state that survives the session | the catalog in git; the review queue and seen-ledger on their own branch; the decision log |
+| **Permissions and budgets** | what the agent may do, enforced outside it | "reviewed by AI" is visible everywhere and authoritative nowhere; a spend cap on every paid stage; a branch rule that will not let a bot write to main |
+| **Observability** | traces, cost, trip wires | a per-run log for every night; cost per paper on every script; a source whose archived text drifts is a trip wire |
+
+The playbook's six-step loop is: the agent makes a mistake; identify the failure class, not the symptom; determine the strongest fix layer; encode the fix; verify it prevents recurrence; monitor for regression. The catalog enters at steps two and three, and the loop runs twice, once for each kind of user.
+
+*Figure: two ratchet loops through one catalog (`docs/figures/ratchet-loops.svg.html`). A person and an agent both turn a failure into a classified gap, take techniques with their conditions out, and file the outcome back. The blue edge, from the catalog to the pipeline that builds it, is the one that would show self-improvement, and it is the edge not yet measured.*
+
+**A person driving the ratchet.** A maintainer of an agent system sees a failure and asks the catalog what it is. Search by meaning finds the capability; the capability page lists what is known, what is contested, and which techniques address it with their standing and conditions. The person picks a fix, encodes it in their harness at the strongest layer that holds it, and runs their own sensors. What the catalog gets back is the outcome: a claim that the technique held or broke under those conditions, filed as an observation with the setup written down, or a challenge to a claim that turned out wrong. The person's review is also what gives weight: only claims a human has read decide a technique's standing.
+
+**An agent driving the ratchet.** An agent's sensor fires. The agent classifies the failure and calls `advise` with the situation and what its environment has. Back come the techniques that address it, ranked categorically, each with the conditions it needs, what it costs, when it fails, and the counter-evidence. The agent encodes the fix, verifies it against a held-out set the promotion decision never reads, and files the result as a claim scoped to its model and task, reviewed by AI, where a person can promote it. The catalog's own pipeline is the first such agent: the nightly job is a harness around a model, and the open experiment is whether a technique taken from the catalog, applied to a stage of that pipeline, moves a held-out outcome.
+
+Two disciplines keep the loop honest, and both are filed in the catalog as claims. The Self-Harness paper's loop reads its held-out split when deciding what to keep, so its reported gains are not clean; ours may not. Goodhart's law, with three supporting claims and no breaks, says any measure the loop optimises stops measuring; so the outcome is a held-out backtest, the prediction is written before the test, and every result that enters the catalog carries provenance. The ratchet can only move on evidence that would have counted before the result was known.
 
 ## How it is made
 
@@ -60,9 +81,9 @@ A backtest checks the catalog against known reversals, findings that later work 
 
 | | |
 |---|---|
-| capabilities | 34 |
-| claims | 167, of which 82 reviewed by AI only |
-| sources | 155: 144 papers, 8 posts, 3 vendor documents |
+| capabilities | 47, of which 22 proposed |
+| claims | 168, of which 83 reviewed by AI only |
+| sources | 156: 145 papers, 8 posts, 3 vendor documents |
 | techniques | 27, of which 18 have nothing measured |
 | adages | 25, of which 13 untested |
 | contested claims | 5 |
@@ -74,7 +95,7 @@ The numbers on the right are the point. Eighteen techniques with nothing measure
 
 **One person's judgment.** Every human-reviewed entry was reviewed by the same person. Every contested claim had both sides assembled by him. The challenge button is the intended fix and has not yet been used by anyone else.
 
-**Most of it is AI-reviewed.** Eighty-two of 167 claims have been read by a model and not by a person, and that is a normal permanent state, not a queue: there is more worth indexing than one person can read. The label is honest; the weight is withheld; but a reader should know which kind of entry they are looking at, and the site tells them.
+**Most of it is AI-reviewed.** Eighty-three of 168 claims have been read by a model and not by a person, and that is a normal permanent state, not a queue: there is more worth indexing than one person can read. The label is honest; the weight is withheld; but a reader should know which kind of entry they are looking at, and the site tells them.
 
 **The pipeline makes errors of its own.** The summariser has produced figures that were not in the text it was given, because the text extractor drops appendices and the model filled the gap from memory. The sensor that catches this has had four false positives of its own. The fix for each is filed, which is the ratchet working, but a catalog that is partly machine-written inherits the machine's failure modes.
 
