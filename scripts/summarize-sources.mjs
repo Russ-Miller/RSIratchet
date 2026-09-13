@@ -21,6 +21,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { z } from "zod";
 import { fetchFullText, fetchAbstracts, unverified } from "./paper-text-lib.mjs";
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
+import { runBatch, collectPending, pendingKeys, parseStructured, batchCost } from "./batch-lib.mjs";
 
 const MODEL = "claude-opus-5";
 const PRICE_IN = 5.0, PRICE_OUT = 25.0;
@@ -104,6 +105,7 @@ Source text (this is all you have; do not use anything you may recall about this
 ${abstract}`;
 
 const files = fs.readdirSync(SOURCES_DIR).filter((f) => /\.ya?ml$/.test(f));
+const inFlight = new Set(pendingKeys("summarize").map((k) => k.id));
 const work = [];
 for (const f of files) {
   const full = path.join(SOURCES_DIR, f);
@@ -111,11 +113,12 @@ for (const f of files) {
   if (data.kind !== "paper" || !data.arxiv_id) continue;      // observations are already the user's words
   if (onlyId && data.id !== onlyId) continue;
   if (data.brief && !force) continue;
+  if (inFlight.has(data.id)) continue;                       // submitted in an earlier run, not yet back
   work.push({ full, data });
 }
 
-console.log(`${work.length} paper source${work.length === 1 ? "" : "s"} without a brief`);
-if (!work.length) process.exit(0);
+console.log(`${work.length} paper source${work.length === 1 ? "" : "s"} without a brief${inFlight.size ? ` (${inFlight.size} in a pending batch)` : ""}`);
+if (!work.length && !inFlight.size) process.exit(0);
 
 const batch = work.slice(0, limit === Infinity ? work.length : limit);
 console.log(`Processing ${batch.length}${batch.length < work.length ? ` of ${work.length}` : ""} with ${MODEL}\n`);
@@ -161,54 +164,70 @@ if (dryRun) {
 }
 
 const client = new Anthropic();
-let inTokens = 0, outTokens = 0, cacheRead = 0, errors = 0, flagged = 0;
+let errors = 0, flagged = 0;
+const usage = { input: 0, output: 0, cacheRead: 0 };
+const addUsage = (u) => { usage.input += u.input; usage.output += u.output; usage.cacheRead += u.cacheRead; errors += u.errored; };
 
+// Applying a result needs the text the brief was written from, for the
+// figure check. Full text is fetched again (free); the abstract fallback is
+// the stored summary. Sources are found by id, so results from an earlier
+// run's batch land correctly.
+async function apply({ key, message }) {
+  const full = path.join(SOURCES_DIR, `${key.id}.yaml`);
+  if (!fs.existsSync(full)) { console.log(`  ${key.id}: source no longer exists, result dropped`); return; }
+  const s = YAML.parse(fs.readFileSync(full, "utf8"));
+  const out = parseStructured(message, Brief);
+  if (!out?.brief) { console.log(`  ${key.id}: parse failed`); errors++; return; }
+  let text = null, kind = key.kind;
+  if (kind === "full-text") text = await fetchFullText(bare(s.arxiv_id)).catch(() => null);
+  if (!text) { text = abstracts.get(bare(s.arxiv_id)) ?? s.summary ?? ""; kind = text === s.summary ? "abstract" : kind; }
+  const bad = unverified(out.brief, text);
+  s.brief = out.brief.trim();
+  s.brief_generated_at = new Date().toISOString().slice(0, 10);
+  s.brief_model = MODEL;
+  s.brief_source = key.kind;
+  if (bad.length) { s.brief_unverified_figures = bad; flagged++; } else delete s.brief_unverified_figures;
+  fs.writeFileSync(full, YAML.stringify(s, { lineWidth: 78 }));
+  console.log(`  ${s.id} :: ${String(s.title).slice(0, 52)}\n      ` + (bad.length
+    ? `written from ${key.kind}, ${bad.length} UNGROUNDED FIGURE(S): ${bad.join(", ")}`
+    : `written from ${key.kind}, ${out.figures_used.length} figure(s), all grounded`));
+}
+
+const earlier = await collectPending(client, "summarize");
+for (const r of earlier.results) await apply(r);
+addUsage(earlier.usage);
+
+// Build the requests: the text each brief is written from is fetched now.
+const requests = [];
 for (const [i, item] of batch.entries()) {
   const s = item.data;
-  process.stdout.write(`[${i + 1}/${batch.length}] ${s.id} :: ${String(s.title).slice(0, 52)}\n`);
-  try {
-    const abstract = abstracts.get(bare(s.arxiv_id));
-    if (!abstract) { console.log("      no abstract returned by arXiv, skipped"); errors++; continue; }
-    let text = abstract, kind = "abstract";
-    if (!abstractOnly) {
-      const full = await fetchFullText(bare(s.arxiv_id)).catch(() => null);
-      if (full) { text = full; kind = "full-text"; }
-    }
-    const res = await client.messages.parse({
+  const abstract = abstracts.get(bare(s.arxiv_id));
+  if (!abstract) { console.log(`[${i + 1}/${batch.length}] ${s.id}: no abstract, skipped`); errors++; continue; }
+  let text = abstract, kind = "abstract";
+  if (!abstractOnly) {
+    const full = await fetchFullText(bare(s.arxiv_id)).catch(() => null);
+    if (full) { text = full; kind = "full-text"; }
+  }
+  requests.push({
+    key: { id: s.id, kind },
+    params: {
       model: MODEL,
       max_tokens: 2000,
       output_config: { effort: "low", format: zodOutputFormat(Brief) },
       system: [{ type: "text", text: SYSTEM, cache_control: { type: "ephemeral" } }],
       messages: [{ role: "user", content: buildPrompt(s, text) }],
-    });
-    inTokens += res.usage?.input_tokens ?? 0;
-    outTokens += res.usage?.output_tokens ?? 0;
-    cacheRead += res.usage?.cache_read_input_tokens ?? 0;
-
-    const out = res.parsed_output;
-    if (!out?.brief) { console.log("      parse failed, skipped"); errors++; continue; }
-
-    const bad = unverified(out.brief, text);
-    s.brief = out.brief.trim();
-    s.brief_generated_at = new Date().toISOString().slice(0, 10);
-    s.brief_model = MODEL;
-    s.brief_source = kind;
-    if (bad.length) { s.brief_unverified_figures = bad; flagged++; }
-    else delete s.brief_unverified_figures;
-
-    fs.writeFileSync(item.full, YAML.stringify(s, { lineWidth: 78 }));
-    console.log(bad.length
-      ? `      written from ${kind}, ${bad.length} UNGROUNDED FIGURE(S): ${bad.join(", ")}`
-      : `      written from ${kind}, ${out.figures_used.length} figure(s), all grounded`);
-  } catch (err) {
-    errors++;
-    console.error(`      error: ${err?.message ?? err}`);
-  }
-  if (i < batch.length - 1) await new Promise((r) => setTimeout(r, delayMs));
+    },
+  });
+  if (i < batch.length - 1) await new Promise((r) => setTimeout(r, delayMs));   // pacing arXiv, not the API
 }
+const fresh = await runBatch(client, "summarize", requests, { deadlineMs: Number(arg("deadline-min") ?? 25) * 60_000 });
+for (const r of fresh.results) await apply(r);
+addUsage(fresh.usage);
 
-const cost = (inTokens / 1e6) * PRICE_IN + (outTokens / 1e6) * PRICE_OUT;
-console.log(`\ntokens: ${inTokens} in (${cacheRead} cached) / ${outTokens} out`);
-console.log(`cost:   $${cost.toFixed(4)} for ${batch.length} ≈ $${(cost / Math.max(batch.length, 1)).toFixed(4)} each`);
+const applied = earlier.results.length + fresh.results.length;
+const cost = batchCost(usage, PRICE_IN, PRICE_OUT);
+console.log(`\ntokens: ${usage.input} in (${usage.cacheRead} cached) / ${usage.output} out  (batch, 50% rate)`);
+console.log(`cost:   $${cost.toFixed(4)} for ${applied} ≈ $${(cost / Math.max(applied, 1)).toFixed(4)} each`);
+if (fresh.pendingId) console.log(`pending: ${requests.length} request(s) in batch ${fresh.pendingId}, collected next run`);
 if (flagged) console.log(`flagged: ${flagged} brief(s) contain a figure absent from the abstract -- read those before trusting them`);
 if (errors) console.log(`errors:  ${errors}`);
