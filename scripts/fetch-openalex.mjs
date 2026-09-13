@@ -343,6 +343,14 @@ console.log(`  -${skippedSeen} already surfaced in a previous run`);
 console.log(`  -${skippedHave} already in the catalog`);
 console.log(`  -${skippedDupe} duplicate records within this run`);
 console.log(`= ${candidates.length} new candidates -> ${outPath} (${merged.length} total in file)`);
+// A zero-yield run is either a quiet window or OpenAlex's arXiv feed
+// stalling; the previous run's yield is what tells them apart at a glance.
+{
+  const statsPath = "pipeline/fetch-stats.json";
+  const prev = fs.existsSync(statsPath) ? JSON.parse(fs.readFileSync(statsPath, "utf8")) : null;
+  if (candidates.length === 0 && prev) console.log(`  (0 new: every fetched work was already in the seen-ledger. Previous run on ${prev.date} found ${prev.new} new of ${prev.unique} unique; if this repeats, the upstream feed may have stalled.)`);
+  fs.writeFileSync(statsPath, JSON.stringify({ date: new Date().toISOString().slice(0, 10), window: { from, to }, unique: found.size, new: candidates.length }, null, 2) + "\n");
+}
 const top = merged.slice(0, 10);
 if (top.length) {
   console.log(`\nTop ${top.length} by heuristic score:`);

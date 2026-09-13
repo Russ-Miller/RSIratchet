@@ -1508,3 +1508,30 @@ the model has (error detection, critique, calibration) sits beside
 verification as what the harness does to the model (sensors, verifiers).
 The discriminators keep LLM-as-judge papers under critique and
 harness-design papers under the technique they describe.
+
+## 2026-09-13 — Backfill the back catalogue a week at a time
+
+Two things asked for and one refused by the data. Refused: a 24-hour
+nightly window. OpenAlex indexes arXiv days late, so a one-day window on
+publication date returns nothing (today it returned zero), and the
+"added since" filter that would fix it is a paid feature. The seven-day
+trailing window stays; overlap costs nothing because the seen-ledger drops
+already-surfaced works before any paid stage.
+
+Built: `scripts/backfill.mjs`, one historical seven-day window per night by
+default, walking backwards from where the trailing window began toward
+2023-01-01, cursor in `pipeline/backfill.json` on the state branch. A
+historical week yields about 430 candidates, 108 matching a capability,
+which at full throttle is about $5 a night and roughly $1,000 to reach
+2023. So each window is pruned before queueing: the top 40 matched
+candidates by heuristic score (about 45 classify items, $0.60) and the top
+30 unmatched, which feed the capability-proposal stage. About $2 a night;
+`backfill_weeks` and `backfill_top` are workflow inputs. The classifier now
+takes the newest window first so backfill never spends tonight's budget,
+and its cap rises from 60 to 100. Papers before December 2023 have no
+arXiv HTML, so their briefs come from the abstract, marked as such.
+
+Also fixed: the run log's "classified: N verdicts" counter grepped a line
+shape the queue does not use and always said 1; and a zero-yield fetch now
+prints the previous run's yield so a stalled upstream feed is
+distinguishable from a quiet week.
