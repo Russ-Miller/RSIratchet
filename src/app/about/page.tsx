@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getCapabilities, getClaims, getSources, getTechniques, isPending } from "@/lib/catalog";
 
-export const metadata = { title: "How this is collected" };
+export const metadata = { title: "About" };
 
 function Stat({ n, label }: { n: number; label: string }) {
   return (
@@ -21,7 +21,7 @@ export default function HowThisWorksPage() {
   return (
     <div className="max-w-3xl space-y-8">
       <div className="space-y-3">
-        <h1 className="text-2xl font-semibold">How this is collected</h1>
+        <h1 className="text-2xl font-semibold">About</h1>
         <p className="text-sm text-neutral-600 dark:text-neutral-400">
           This is an index of what language models are good and bad at, organised by capability
           rather than by what is new. Every claim links to the sources it came from, and where

@@ -21,11 +21,11 @@ const SECTIONS = [
   { href: "/sources", label: "Sources" },
   { href: "/techniques", label: "Techniques" },
   { href: "/adages", label: "Adages" },
+  { href: "/about", label: "About" },
   // Everything from here on is gated by src/proxy.ts and hidden unless signed in.
   { href: "/open-questions", label: "Open questions", admin: true },
   { href: "/queue", label: "Queue", admin: true },
   { href: "/drafts", label: "Drafts", admin: true },
-  { href: "/how-this-works", label: "How this works", admin: true },
 ];
 
 export function NavLinks() {

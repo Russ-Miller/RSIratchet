@@ -1589,9 +1589,10 @@ setting), the branch is pushed and the log carries the compare link.
 
 ## 2026-09-14 — An admin sign-in for the working pages
 
-Everything right of Adages in the nav (open questions, queue, drafts, how
-this works) is now hidden unless the admin is signed in, and the pages
-themselves are gated by `src/proxy.ts`, which redirects to `/login`. One
+Open questions, queue and drafts are hidden unless the admin is signed
+in, and the pages themselves are gated by `src/proxy.ts`, which redirects
+to `/login`. "How this works" stays public, renamed About and moved left of
+the gated items, since it is what a visitor needs to judge an entry. One
 account, seeded from the environment: `ADMIN_EMAIL`, `ADMIN_PASSWORD_HASH`
 (scrypt, colon-separated because dotenv loaders expand `$name` in values),
 `AUTH_SECRET` (signs a stateless session cookie, 30 days). No database, no
