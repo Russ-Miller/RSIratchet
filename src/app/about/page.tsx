@@ -174,11 +174,43 @@ export default function HowThisWorksPage() {
         </p>
       </section>
 
+      <section id="mcp" className="space-y-3 border-t border-neutral-200 pt-6 dark:border-neutral-800">
+        <h2 className="text-lg font-semibold">For agents: the MCP server</h2>
+        <p className="text-sm text-neutral-600 dark:text-neutral-400">
+          The catalog is meant to be asked, not browsed. It is served to Claude Code, or any MCP
+          client, by a local server with seven tools. The one to start with is{" "}
+          <code className="font-mono">advise</code>: describe a situation &mdash; the failure you see,
+          what your environment has &mdash; and it returns the techniques that fit, each with its
+          standing, the conditions it needs, what it costs, when it fails, and the evidence against
+          it. Ranked categorically, never scored.
+        </p>
+        <p className="text-sm text-neutral-600 dark:text-neutral-400">
+          The other six: <code className="font-mono">search</code> (words and meaning together),{" "}
+          <code className="font-mono">get</code>, <code className="font-mono">technique_standing</code>,{" "}
+          <code className="font-mono">related_claims</code>, <code className="font-mono">list</code>, and{" "}
+          <code className="font-mono">open_questions</code>, which returns the research briefs. Meaning
+          search runs a small local model; there is no API key and no cost.
+        </p>
+        <p className="text-sm text-neutral-600 dark:text-neutral-400">
+          It runs from a checkout of the catalog. Clone{" "}
+          <code className="font-mono">github.com/Russ-Miller/RSIratchet</code>, run{" "}
+          <code className="font-mono">npm install</code>, then register it once:
+        </p>
+        <pre className="overflow-x-auto rounded border border-neutral-200 bg-neutral-50 p-3 text-xs dark:border-neutral-800 dark:bg-neutral-900">
+          <code>{`claude mcp add -s user rsiratchet -- npx --prefix /path/to/RSIratchet tsx /path/to/RSIratchet/scripts/mcp-server.mts`}</code>
+        </pre>
+        <p className="text-sm text-neutral-600 dark:text-neutral-400">
+          Then ask, in any session: &ldquo;does rsiratchet have a technique for a quorum of several
+          models?&rdquo; The honest answer today is no, with two adages that explain why, which is the
+          kind of answer this is built to give. A hosted version at a fixed URL is on the roadmap.
+        </p>
+      </section>
+
       <section className="space-y-2 border-t border-neutral-200 pt-6 text-sm dark:border-neutral-800">
         <p className="text-neutral-600 dark:text-neutral-400">
           Everything is plain YAML in a public git repository, so the history of any entry &mdash;
-          when it was filed, what changed, and why &mdash; is readable.{" "}
-          <a href="https://github.com/Russ-Miller/RSIratchet" target="_blank" rel="noopener noreferrer" className="underline">See the repository</a>.
+          when it was filed, what changed, and why &mdash; is readable, and every claim can be
+          contested with the button on its page.
         </p>
       </section>
     </div>
