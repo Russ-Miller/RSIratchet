@@ -28,6 +28,9 @@ on:
       backfill_weeks:
         description: "Historical 7-day windows to fetch tonight, walking back from the cursor in pipeline/backfill.json (0 to skip)"
         default: "1"
+      draft_limit:
+        description: "Max claims to draft tonight (cost control)"
+        default: "20"
       backfill_top:
         description: "Capability-matched candidates kept per backfilled window, by heuristic score (cost control); 30 unmatched are kept for the proposal stage"
         default: "40"
@@ -43,7 +46,8 @@ jobs:
     # hung fetch cannot sit on a runner for the 6-hour default.
     timeout-minutes: 150   # three batched stages may each wait up to 25 min for results
     permissions:
-      contents: write         # to commit the refreshed queue
+      contents: write         # to commit the refreshed queue and push the catalog branch
+      pull-requests: write    # to open the nightly catalog pull request
     env:
       STATE_BRANCH: pipeline-state
       # secrets are not reliably available in a step-level `if`, so resolve
@@ -133,9 +137,31 @@ jobs:
           node scripts/propose-capabilities.mjs --consolidate 2>&1 | tee -a "$RUN_LOG"
           echo '```' >> "$RUN_LOG"
 
-      # Stage 3 — write a readable digest for any paper source that lacks one.
-      # Usually zero work: sources are created by hand when a claim is filed,
-      # not by this job. Runs from full text where arXiv renders it, and paces
+      # Stage 3 — draft a claim from every triaged candidate that has none,
+      # then file the drafts as claims reviewed by AI. Batched, so the model
+      # cost is half rate; the filing step is free. Catalog changes from here
+      # on go out as a pull request at the end of the run, never to main.
+      - name: Draft claims
+        if: env.HAS_ANTHROPIC_KEY == 'true'
+        continue-on-error: true
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          echo '## Stage 3 — draft claims' >> "$RUN_LOG"
+          echo '```' >> "$RUN_LOG"
+          node scripts/draft-claims.mjs --limit "${{ inputs.draft_limit || '20' }}" --delay 3000 2>&1 | tee -a "$RUN_LOG"
+          echo '```' >> "$RUN_LOG"
+
+      - name: File drafts as claims reviewed by AI
+        continue-on-error: true
+        run: |
+          echo '## Stage 3b — file drafts' >> "$RUN_LOG"
+          echo '```' >> "$RUN_LOG"
+          node scripts/file-drafts.mjs 2>&1 | tee -a "$RUN_LOG"
+          echo '```' >> "$RUN_LOG"
+
+      # Stage 4 — write a readable digest for any paper source that lacks one,
+      # including the ones filed a moment ago. Runs from full text where arXiv renders it, and paces
       # itself deliberately — nothing is waiting on this at 09:00 UTC, and the
       # slow path avoids the retry storms that made an impatient pass give up.
       - name: Write source briefs
@@ -144,7 +170,7 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
-          echo '## Stage 3 — source briefs' >> "$RUN_LOG"
+          echo '## Stage 4 — source briefs' >> "$RUN_LOG"
           echo '```' >> "$RUN_LOG"
           node scripts/summarize-sources.mjs --limit 25 --delay 20000 --chunk 8 --start-delay 60000 2>&1 | tee -a "$RUN_LOG"
           echo '```' >> "$RUN_LOG"
@@ -176,6 +202,34 @@ jobs:
           npm run embed 2>&1 | tee -a "$RUN_LOG"
           npm run check-embeddings 2>&1 | tee -a "$RUN_LOG"
           echo '```' >> "$RUN_LOG"
+
+      # Anything the run wrote into catalog/ -- filed claims, new sources,
+      # briefs, refreshed embeddings -- goes to main only through a pull
+      # request, same as a person's work. If the token cannot open the PR
+      # (repository setting), the branch is still pushed and the log carries
+      # the compare link.
+      - name: Open the nightly catalog pull request
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if git diff --quiet -- catalog/ && [ -z "$(git ls-files --others --exclude-standard catalog/)" ]; then
+            echo "No catalog changes tonight." | tee -a "$RUN_LOG"; exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          BR="nightly-catalog-$(date -u +%Y-%m-%d)"
+          git checkout -B "$BR"
+          git add catalog/
+          printf '%s\n\n%s\n' "Nightly: claims, sources and briefs from $(date -u +%Y-%m-%d)" "Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>" > /tmp/catmsg
+          git commit -F /tmp/catmsg
+          git push -f origin "$BR"
+          SUMMARY="$(git diff --stat HEAD~1 -- catalog/ | tail -1)"
+          if gh pr create --base main --head "$BR" --title "Nightly catalog: $(date -u +%Y-%m-%d)" --body "$(printf 'Filed by the nightly job. Every claim is reviewed by AI; merging makes it visible on the site, a person reading it is what adds weight.\n\n%s\n\nRun log: %s/%s/actions/runs/%s' "$SUMMARY" "${{ github.server_url }}" "${{ github.repository }}" "${{ github.run_id }}")" 2>&1 | tee -a "$RUN_LOG"; then :; else
+            echo "PR not opened (see above); branch pushed: ${{ github.server_url }}/${{ github.repository }}/compare/$BR?expand=1" | tee -a "$RUN_LOG"
+          fi
+          # Back to main so the deploy and the state commit see the same tree.
+          git checkout -q main 2>/dev/null || git checkout -q -
 
       # Vercel's GitHub integration never linked for this repo, so a push does
       # not trigger a build. Deploy explicitly with the CLI instead, which
