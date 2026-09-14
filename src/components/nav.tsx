@@ -65,3 +65,12 @@ export function SessionLink() {
     </form>
   );
 }
+
+/** Right end of the nav: the repository for the admin, the MCP section for everyone else. */
+export function RepoLink() {
+  const admin = useIsAdmin();
+  if (admin) {
+    return <a href="https://github.com/Russ-Miller/RSIratchet" target="_blank" rel="noopener noreferrer" className="hover:underline sm:ml-auto">GitHub</a>;
+  }
+  return <Link href="/about#mcp" className="hover:underline sm:ml-auto">MCP</Link>;
+}
