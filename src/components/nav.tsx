@@ -2,6 +2,18 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useSyncExternalStore } from "react";
+
+// The marker cookie is set alongside the session on sign-in and cleared on
+// sign-out. It only decides what the nav shows; the proxy decides what the
+// server serves. Read through useSyncExternalStore so the server snapshot
+// (signed out) matches the static HTML and hydration agrees.
+const MARKER = "rsi_admin_ui=1";
+const noop = () => () => {};
+const readMarker = () => document.cookie.split(";").some((c) => c.trim() === MARKER);
+export function useIsAdmin(): boolean {
+  return useSyncExternalStore(noop, readMarker, () => false);
+}
 
 const SECTIONS = [
   { href: "/capabilities", label: "Capabilities" },
@@ -9,17 +21,19 @@ const SECTIONS = [
   { href: "/sources", label: "Sources" },
   { href: "/techniques", label: "Techniques" },
   { href: "/adages", label: "Adages" },
-  { href: "/open-questions", label: "Open questions" },
-  { href: "/queue", label: "Queue" },
-  { href: "/drafts", label: "Drafts" },
-  { href: "/how-this-works", label: "How this works" },
+  // Everything from here on is gated by src/proxy.ts and hidden unless signed in.
+  { href: "/open-questions", label: "Open questions", admin: true },
+  { href: "/queue", label: "Queue", admin: true },
+  { href: "/drafts", label: "Drafts", admin: true },
+  { href: "/how-this-works", label: "How this works", admin: true },
 ];
 
 export function NavLinks() {
   const pathname = usePathname() ?? "/";
+  const admin = useIsAdmin();
   return (
     <>
-      {SECTIONS.map(({ href, label }) => {
+      {SECTIONS.filter((s) => !s.admin || admin).map(({ href, label }) => {
         // Detail routes (/claims/some-id) keep their section marked active.
         const active = pathname === href || pathname.startsWith(`${href}/`);
         return (
@@ -38,5 +52,16 @@ export function NavLinks() {
         );
       })}
     </>
+  );
+}
+
+/** Footer: "Sign in" for visitors, "Sign out" for the admin. Deliberately quiet. */
+export function SessionLink() {
+  const admin = useIsAdmin();
+  if (!admin) return <Link href="/login" className="hover:underline">Sign in</Link>;
+  return (
+    <form method="post" action="/api/logout" className="inline">
+      <button type="submit" className="hover:underline">Sign out</button>
+    </form>
   );
 }
