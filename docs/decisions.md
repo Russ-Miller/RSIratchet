@@ -1586,3 +1586,21 @@ a pull request on a `nightly-catalog-<date>` branch, never to main. The
 deploy step deploys main as it stands; merging the PR and deploying is the
 morning's job. If the token is not allowed to open PRs (a repository
 setting), the branch is pushed and the log carries the compare link.
+
+## 2026-09-14 — An admin sign-in for the working pages
+
+Everything right of Adages in the nav (open questions, queue, drafts, how
+this works) is now hidden unless the admin is signed in, and the pages
+themselves are gated by `src/proxy.ts`, which redirects to `/login`. One
+account, seeded from the environment: `ADMIN_EMAIL`, `ADMIN_PASSWORD_HASH`
+(scrypt, colon-separated because dotenv loaders expand `$name` in values),
+`AUTH_SECRET` (signs a stateless session cookie, 30 days). No database, no
+accounts table. The gate keeps the working views out of visitors' way; the
+catalog stays public by design, and the login route answers wrong email and
+wrong password identically.
+
+Reset by email is not built: it would need an email provider account. The
+reset channel is the machine with the checkout: `npm run admin:password`
+(add `--vercel` to push the new hash to production, then deploy). The site
+went from fully static to static plus a proxy on four paths and two route
+handlers; every catalog page is still a static file.

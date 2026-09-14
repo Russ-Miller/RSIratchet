@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
-import { NavLinks } from "@/components/nav";
+import { NavLinks, SessionLink } from "@/components/nav";
 import "./globals.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -29,7 +29,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </header>
         <main className="mx-auto w-full max-w-5xl px-4 py-8 flex-1">{children}</main>
         <footer className="border-t border-neutral-200 dark:border-neutral-800 text-xs text-neutral-500">
-          <div className="mx-auto max-w-5xl px-4 py-4">Pre-alpha. Catalog content is reviewed by pull request.</div>
+          <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-4 px-4 py-4">
+            <span>Pre-alpha. Catalog content is reviewed by pull request.</span>
+            <SessionLink />
+          </div>
         </footer>
       </body>
     </html>
