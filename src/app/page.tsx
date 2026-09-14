@@ -27,7 +27,7 @@ export default function Home() {
           Every claim says who has read it: {pending} of {cat.claims.length} were reviewed by AI,
           the rest by AI and a person. A person&rsquo;s review is what lets a claim count toward a
           technique&rsquo;s standing.{" "}
-          <Link href="/how-this-works" className="underline">How this is collected</Link>.
+          <Link href="/about" className="underline">How this is collected</Link>.
         </p>
         <div className="max-w-2xl pt-2">
           <Search index={index} />

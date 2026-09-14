@@ -14,7 +14,7 @@ export const SESSION_COOKIE = "rsi_session";
 /** Not HttpOnly: lets the nav show admin links without a round trip. Carries no authority. */
 export const MARKER_COOKIE = "rsi_admin_ui";
 export const SESSION_DAYS = 30;
-export const GATED_PREFIXES = ["/open-questions", "/queue", "/drafts", "/how-this-works"];
+export const GATED_PREFIXES = ["/open-questions", "/queue", "/drafts"];
 
 const secret = () => {
   const s = process.env.AUTH_SECRET;
