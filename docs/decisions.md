@@ -1562,3 +1562,27 @@ Not done yet, deliberately: a cheaper model for the classifier. Haiku 4.5
 would cut that stage by 80%, but the decision rests on the held-out
 comparison against the 80 hand verdicts, which is the experiment already
 designed for the classifier.
+
+## 2026-09-14 — Forwarded papers go through the pipeline; the nightly files what it writes
+
+Two papers forwarded today. Duan et al.'s RSI survey is filed by hand with
+two claims (bounded domains near their benchmark ceilings while stateful
+agent work lags; a single aggregate score conceals trajectory shape) and a
+note in ambitions.md placing this pipeline at L1 on their five-level
+autonomy scale. The DAIR harness-engineering collection (21 papers; six
+already filed, the "how you know it worked" one being METR's, filed
+yesterday) goes through the pipeline: `scripts/enqueue-arxiv.mjs` creates
+the source from the abstract page and a queue entry, and the nightly does
+the rest at batch rates. The term matcher could route none of the
+"let the harness learn" papers, so `harness-self-improvement` is filed as
+a proposed capability and those entries were routed by hand, which a
+forwarded paper earns.
+
+Found on the way: the nightly wrote briefs into catalog/ and then persisted
+only pipeline/, so every brief it wrote in CI was discarded, and drafting
+and filing were never in the job. Now: classify → propose → draft → file →
+briefs → embed → validate, and anything written under catalog/ goes out as
+a pull request on a `nightly-catalog-<date>` branch, never to main. The
+deploy step deploys main as it stands; merging the PR and deploying is the
+morning's job. If the token is not allowed to open PRs (a repository
+setting), the branch is pushed and the log carries the compare link.

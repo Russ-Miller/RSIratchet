@@ -217,6 +217,26 @@ for the fourth time. The held-out set is the only thing here that is not
 downstream of our own objective, which is why it must stay small, external
 and unoptimised.
 
+### Where this pipeline sits on a published RSI scale
+
+Duan et al.'s survey (`catalog/sources/arxiv-2609-11873.yaml`, September
+2026) lays out five autonomy levels for recursive self-improvement: L1,
+executing prescribed improvements; L2, selecting improvement strategies; L3,
+acquiring the experience to learn from; L4, adapting through deployment and
+environment feedback; L5, improving the mechanisms that govern later
+improvement. Placed honestly, this pipeline is at L1 with a foot in L3: it
+executes improvements a person prescribes, and it does acquire its own
+experience (the queue, the drafts, the flagged figures) without being told
+which papers to read. It does not choose its own improvement strategies (L2)
+— every fix so far was decided in conversation and encoded by hand. The
+classifier experiment is the first step toward L2, and the survey's
+Headroom-Closed Index is one candidate for the outcome measure the blue
+arrow above says we lack: normalise each capability's progress to its own
+benchmarks' entry-year frontier, rather than score the catalogue on one
+number. Their Observation 2 is also filed as a claim under long-horizon
+execution: bounded domains are near their ceilings while stateful agent
+work lags, which is where this pipeline's own failures live.
+
 ### Prior art, found while checking references
 
 Verifying the playbook's citations surfaced two arXiv papers it did not
