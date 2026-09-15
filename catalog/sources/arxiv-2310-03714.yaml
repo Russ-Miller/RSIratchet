@@ -34,3 +34,42 @@ notes: "Forwarded by Russ 2026-09-14: from the DAIR harness-engineering
   collection (academy.dair.ai), forwarded via Elvis Saravia's post on whether
   to build a harness"
 ingested_at: 2026-09-14
+brief: >-
+  Bootstrapping few-shot demonstrations automatically, from a program plus a
+  metric, matches or beats hand-written prompt chains including human-authored
+  reasoning chains. DSPy expresses pipelines as declarative modules with typed
+  natural-language signatures, then compiles them by simulating the program on
+  a small trainset, keeping traces that pass the metric, and searching over
+  demonstration selections.
+
+
+  Two case studies: GSM8K math word problems (200 train, 300 dev, 1.3k test)
+  and open-domain HotPotQA with a ColBERTv2 retriever (200 train, 300 dev,
+  1000 test), with GPT-3.5 and llama2-13b-chat.
+
+
+  On GSM8K, compiling moves programs from 4-20% accuracy to 49-88%. CoT goes
+  from 50.0 dev zero-shot to 80.3 with bootstrap on GPT-3.5, above the 78.6
+  obtained with human reasoning chains; ensembling reaches 88.3 dev, 81.6
+  test. For llama2-13b-chat, vanilla rises from 7.0 dev to 37.3 after
+  bootstrap x2. On HotPotQA, multihop with bootstrap reaches 48.7 dev / 39.6
+  test answer EM on GPT-3.5 versus 36.9 / 31.2 for fewshot; an ensemble hits
+  54.7 dev. A compiled T5-Large (770M) scores 39.3% EM and 46.0% passage
+  accuracy from 200 labeled and 800 unlabeled questions.
+
+
+  Effects are measured with matched programs across compilers, so the compiler
+  contribution is isolated per program, but comparisons to prior prompt-chain
+  work are explicitly informal across differing test samples, 1 test set is
+  50% sampled for cost, and only 2 LMs and 2 tasks appear.
+
+
+  It does not test instruction optimization, larger LMs, or the many other
+  tasks the authors mention but defer.
+
+
+  If you are hand-writing prompt chains, treat demonstration bootstrapping as
+  the default baseline instead.
+brief_generated_at: 2026-09-15
+brief_model: claude-opus-5
+brief_source: full-text

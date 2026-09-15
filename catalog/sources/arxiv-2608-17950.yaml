@@ -1,0 +1,62 @@
+id: arxiv-2608-17950
+kind: paper
+title: Do Large Language Models Play Six Degrees of Separation? Measuring
+  Topological Compression in Long-Context Manifolds
+year: 2026
+date: 2026-08-18
+arxiv_id: "2608.17950"
+url: https://arxiv.org/abs/2608.17950
+tags:
+  - ingested
+summary: Large Language Models (LLMs) demonstrate remarkable multi-hop
+  reasoning capabilities over long contexts, yet the internal mechanisms
+  enabling these distant cognitive leaps remain poorly understood. Traditional
+  attention-based interpretability often fails to capture true semantic
+  proximity due to routing artifacts like attention sinks. In this paper, we
+  bypass attention weights to directly analyze the dynamic geometry of the
+  hidden state manifold, proving that deep LLM latent spaces natively organize
+  into Small-World networks. By sparsifying the continuous similarity matrices
+  of long-context re
+ingested_at: 2026-09-15
+brief: >-
+  Deep layers of a transformer, not its early layers, are where a long context
+  becomes a navigable graph: sparsify the hidden-state cosine similarity
+  matrix and the most semantically unrelated tokens in a passage sit within 6
+  hops of each other. Early syntax layers connect them 0% of the time.
+
+
+  The setup: 1000 wikitext-2 paragraphs of 150-300 tokens, with source and
+  target anchors chosen by an external judge (all-MiniLM-L6-v2) to minimize
+  cosine similarity subject to at least 20 tokens of separation, then BFS over
+  the thresholded token-token graph. Models are Qwen2.5-1.5B (layers 2, 24)
+  and Phi-3-Mini-4k-Instruct (layers 2, 30), with a threshold sweep over
+  0.75-0.91.
+
+
+  Connectivity snaps on abruptly: Qwen goes from 0.0% at 0.85 to 7.5% at 0.81
+  to 48.5% at 0.75; Phi-3 reaches 12.3% at 0.85 and 42.0% at 0.81. Where paths
+  exist, average hops stay under 6 (4.93 for Qwen, 3.60 for Phi-3 at 0.81). A
+  layer sweep shows near-zero connectivity through layer 12, then 12.3% at 16
+  and 92.4% at 24. Varying separation from 10 to 250 tokens moves average hops
+  only from 3.84 to 5.31.
+
+
+  Evidence is measured, with 2 architectures, a layer-wise ablation, and a
+  separation ablation. The RAG hallucination application is weaker:
+  connectivity drops to 14.8% and 18.2% under unanswerable distractor prompts
+  with L over 7, and a topological classifier reaches AUROC 0.89 on Qwen, but
+  baseline numbers for perplexity and lexical grounding are not reported, and
+  "unanswerable distractor" is a proxy for hallucination rather than the real
+  thing.
+
+
+  Boundaries: 1.5B-8B models only, contexts up to 300 tokens, and the 0.81
+  threshold is empirical and may shift with embedding dimension or
+  normalization.
+
+
+  If you work on interpretability or hallucination detection, this offers a
+  cheap geometric probe worth trying, but not yet a validated detector.
+brief_generated_at: 2026-09-15
+brief_model: claude-opus-5
+brief_source: full-text

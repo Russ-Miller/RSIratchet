@@ -1,0 +1,45 @@
+id: search-based-automated-program-repair-simulink-stateflow-models-replacing-hand-crafted
+capability: code-generation
+statement: >-
+  In search-based automated program repair of Simulink/Stateflow models,
+  replacing hand-crafted domain-specific mutation operators with an LLM that
+  proposes label rewrites from static component context lowers repair
+  coverage under a fixed wall-clock budget, because unconstrained generative
+  edits widen the candidate space while each candidate costs an expensive
+  simulation and the generator gets no behavioural feedback about why a
+  patch failed.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "19 real faulty Stateflow models from four CPS case studies, 1-hour budget per run, 5 runs, GPT-5.5 / GPT-5.4-mini / GPT-4.1-mini as drop-in mutators inside FlowRepair; structural o"
+sources:
+  - source: arxiv-2608-19347
+    stance: supports
+    note: >-
+      Measured end-to-end: FlowRepair produced plausible patches for 18 of
+      19 models and valid for 16; the three LLM variants produced plausible
+      for 4-6 and valid for 4. Same dataset, infrastructure and wall-clock
+      budget as the original, so the comparison is controlled at the budget
+      level but does not separate mutation quality from LLM inference
+      latency (different numbers of candidates evaluated). Benchmark was
+      public, so contamination is not excluded; one success (fridge_2a)
+      matched a few-shot example in the prompt.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-15
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafter linked technique "external-feedback-repair", which does not list
+  this capability in addresses -- recorded, not asserted. Drafted
+  confidence: medium. Falsifier as drafted: A run of the same benchmark and
+  budget where LLM-generated mutations match or exceed FlowRepair's 18
+  plausible / 16 valid model coverage, or where adding simulation feedback
+  to the prompt does not close the gap. Drafted stance toward
+  external-feedback-repair-works-only-with-real-grounding: supports -- The
+  LLM mutator generated candidates from static labels with no simulation
+  feedback about failure duration or severity, and repaired far fewer models
+  than the feedback-guided search it replaced. Proposed technique, not
+  catalogued: LLM as mutation operator in search-based repair.
+submitted_by: agent:claude-opus-5@Russ-Miller

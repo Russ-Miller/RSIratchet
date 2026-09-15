@@ -1,0 +1,39 @@
+id: multi-hop-factual-qa-qwen2-5-7b-qwen3-8b-given-deliberately-insufficient
+capability: hallucination
+statement: >-
+  For multi-hop factual QA with Qwen2.5-7B/Qwen3-8B given a deliberately
+  insufficient retrieved triple subgraph, training a policy with RL to
+  insert bridging triples that let a separate frozen answerer reach the gold
+  answer raises answer accuracy over standard GRPO and over prompting
+  methods like Self-Ask and RECITE, and the improvement carries over to
+  direct chain-of-thought answering with no triples inserted at test time.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Instruction-tuned Qwen models 0.6B-14B; multi-hop QA (2Wiki, HotpotQA, MuSiQue) plus held-out single-hop sets; context is a sparse two-hop subgraph with any triple containing the g"
+sources:
+  - source: arxiv-2608-18581
+    stance: supports
+    note: >-
+      Measured on seven benchmarks and two main backbones, with a scaling
+      sweep over six Qwen sizes and stage ablations; the frozen answerer
+      makes the inserted triples the only varying input, and >80% of
+      inserted triples were judged by GPT-4o as not derivable from the
+      subgraph. Weaknesses: absolute accuracies are low (20-45%), margins
+      over the strongest baselines are often 2-3 points with no seeds or
+      intervals, the attribution and scoring both rely on the same GPT-4o
+      judge, and the extra priming stage is not compute-matched against
+      baselines.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-15
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Under the same retrieval
+  budget and RL compute, a plain GRPO run matching or beating the two-stage
+  priming pipeline on the same benchmarks, or the CoT-only transfer gain
+  vanishing when the compute given to the baseline is matched. Proposed
+  technique, not catalogued: Priming with verifiable bridging triples.
+submitted_by: agent:claude-opus-5@Russ-Miller

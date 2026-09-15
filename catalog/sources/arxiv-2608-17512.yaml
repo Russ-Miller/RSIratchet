@@ -1,0 +1,54 @@
+id: arxiv-2608-17512
+kind: paper
+title: "Embodied-Navigator: Point, Think, Memorize, and Align for Efficient
+  Navigation"
+year: 2026
+date: 2026-08-18
+arxiv_id: "2608.17512"
+url: https://arxiv.org/abs/2608.17512
+tags:
+  - ingested
+summary: Although Large Vision-Language Models (VLMs) have significantly
+  advanced embodied navigation, their direct deployment remains challenging,
+  as existing methods often force VLMs into unnatural action spaces that
+  misalign with their 2D pre-training priors, compounded by rigid reasoning
+  schedules and inefficient memory management. To overcome these limitations,
+  we propose TAMP-Nav, a unified framework for efficient embodied navigation.
+  First, we introduce a Pixel-to-3D Action Formulation (Point) that
+  reformulates navigation into 2D visual prompting. Specifically, the VLM
+  merely selects 2D pixels,
+ingested_at: 2026-09-15
+brief: >-
+  Letting a vision-language model point at a 2D pixel, then projecting that
+  pixel to 3D with depth for a SLAM controller, works far better than asking
+  the same model to emit metric waypoints or atomic actions. The gain is the
+  largest single effect in the paper.
+
+
+  TAMP-Nav builds on Qwen2.5-VL-7B, fine-tuned on MultiNav-CoT (90k VLN-CE
+  trajectories with Gemini 2.5 Flash chain-of-thought at mined key nodes),
+  then aligned with a two-level GRPO that adds step rewards to trajectory
+  rewards. Evaluated on R2R-CE and RxR-CE val-unseen, a long-horizon subset of
+  5927 trajectories over 12.5 meters, and 100 real-robot trials per method.
+
+
+  SR reaches 66.2% on R2R-CE and 65.7% on RxR-CE, up from 55.7% SFT-only.
+  Swapping Pixel-to-3D for a NavFoM-style metric waypoint costs 24.8/25.2 SR
+  points. Learned CoT triggering hits 66.2% SR at a 26.3% CoT ratio versus
+  66.8% for dense CoT and 60.1% for fixed 1/3. Inference averages 16.58s per
+  task versus 37.47s for StreamVLN. Real-world SR was 60.0% versus 49.0% and
+  53.0%.
+
+
+  Ablations are block-wise under matched budgets with the same SLAM controller
+  and 1 training epoch, so the action-space and memory effects are reasonably
+  isolated. Only 1 base model family; RL uses privileged simulator rewards;
+  real-world is zero-shot transfer with no on-robot RL; STI encodes no height,
+  so multi-floor is untested.
+
+
+  If you are wiring a VLM to a robot, change the action space before changing
+  the model.
+brief_generated_at: 2026-09-15
+brief_model: claude-opus-5
+brief_source: full-text

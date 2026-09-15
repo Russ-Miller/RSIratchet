@@ -1,0 +1,39 @@
+id: reranking-sampled-verilog-candidates-both-generated-testbench-execution-signal-llm
+capability: code-generation
+statement: >-
+  When reranking sampled Verilog candidates with both a generated-testbench
+  execution signal and an LLM judge, letting the judge see the execution
+  outcomes in its prompt lowers final Pass@1 relative to acquiring the two
+  signals separately and combining them only as a weighted score at
+  selection time, because the judge anchors on the test verdicts (approving
+  all-pass candidates with uncovered logic errors, over-penalizing failures
+  caused by bad testbenches) and stops contributing information the tests
+  miss.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Verilog code reranking over 10 sampled candidates per problem, two benchmarks (VerilogEval-v2, ResBench), nine generator models, with a 4B fine-tuned judge; the interactive arm dif"
+sources:
+  - source: arxiv-2608-22938
+    stance: supports
+    note: >-
+      Independent fusion beat interactive fusion on every one of 9 models on
+      both benchmarks (+4.49 and +4.56 average Pass@1); interactive fusion
+      scored only slightly above the execution-only ablation, consistent
+      with the reasoning signal being absorbed. Anchoring bias is supported
+      by qualitative inspection of reasoning chains, not a quantitative
+      measure. Only one judge checkpoint and one prompt-level interaction
+      design tested, so it does not rule out better interactive designs.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-15
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A judge given execution
+  results as context — whether by prompt or trained to weigh feedback
+  reliability — matching or beating decision-stage-only fusion on the same
+  candidates and benchmarks. Proposed technique, not catalogued:
+  Independent-channel execution/reasoning fusion at the decision stage.
+submitted_by: agent:claude-opus-5@Russ-Miller
