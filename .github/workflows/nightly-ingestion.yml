@@ -205,11 +205,13 @@ jobs:
 
       # Anything the run wrote into catalog/ -- filed claims, new sources,
       # briefs, refreshed embeddings -- goes to main only through a pull
-      # request, same as a person's work. If the token cannot open the PR
-      # (repository setting), the branch is still pushed and the log carries
-      # the compare link.
-      - name: Open the nightly catalog pull request
+      # request, same as a person's work. Opening the PR needs the repository
+      # setting "Allow GitHub Actions to create and approve pull requests"
+      # (Settings > Actions > General); until it is on, the branch is pushed
+      # and a person opens the PR from the compare link in the log.
+      - name: Push the nightly catalog branch and open its pull request
         if: always()
+        continue-on-error: true   # a refused PR must never stop the state from persisting
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -228,8 +230,8 @@ jobs:
           if gh pr create --base main --head "$BR" --title "Nightly catalog: $(date -u +%Y-%m-%d)" --body "$(printf 'Filed by the nightly job. Every claim is reviewed by AI; merging makes it visible on the site, a person reading it is what adds weight.\n\n%s\n\nRun log: %s/%s/actions/runs/%s' "$SUMMARY" "${{ github.server_url }}" "${{ github.repository }}" "${{ github.run_id }}")" 2>&1 | tee -a "$RUN_LOG"; then :; else
             echo "PR not opened (see above); branch pushed: ${{ github.server_url }}/${{ github.repository }}/compare/$BR?expand=1" | tee -a "$RUN_LOG"
           fi
-          # Back to main so the deploy and the state commit see the same tree.
-          git checkout -q main 2>/dev/null || git checkout -q -
+          # Stay on the catalog branch: the deploy ships this working tree, and
+          # the persist step checks out the state branch from wherever it is.
 
       # Vercel's GitHub integration never linked for this repo, so a push does
       # not trigger a build. Deploy explicitly with the CLI instead, which
