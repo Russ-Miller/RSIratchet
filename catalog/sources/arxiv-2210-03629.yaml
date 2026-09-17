@@ -32,3 +32,38 @@ notes: "Forwarded by Russ 2026-09-14: from the DAIR harness-engineering
   collection (academy.dair.ai), forwarded via Elvis Saravia's post on whether
   to build a harness"
 ingested_at: 2026-09-14
+brief: >-
+  Interleaving free-form reasoning traces with environment actions in a prompt
+  gains more on interactive decision making than on knowledge-intensive QA,
+  where grounding trades against reasoning flexibility. ReAct augments the
+  action space with "thoughts" that change only the context, prompted few-shot
+  on a frozen PaLM-540B.
+
+
+  Tests cover HotpotQA and FEVER via a 3-action Wikipedia API (search, lookup,
+  finish), ALFWorld (134 unseen games), and WebShop (500 test instructions),
+  against Standard, chain-of-thought, CoT with self-consistency, and an
+  actions-only Act ablation.
+
+
+  On HotpotQA ReAct scores 27.4 EM against CoT 29.4, Act 25.7, CoT-SC 33.4; on
+  FEVER 60.9 vs CoT 56.3. Switching between ReAct and CoT-SC reaches 35.1 EM
+  and 64.6 accuracy, and matches 21-sample CoT-SC with 3-5 samples. ALFWorld
+  best-of-6 ReAct hits 71% success vs Act 45%, BUTLER 37%, and IM-style
+  prompting 53%; WebShop success rate 40.0 vs Act 30.1, IL+RL 28.7, human
+  59.6.
+
+
+  Baselines are ablations of the same trajectories with matched exemplars, so
+  the contribution of thoughts is isolated. A 200-example human error analysis
+  attributes 56% of CoT failures to hallucination vs 0% for ReAct, but 47% of
+  ReAct failures to reasoning errors and 23% to bad search.
+
+
+  Prompted ReAct is worst of 4 methods at PaLM-8/62B and only wins after
+  finetuning on 3,000 trajectories; all prompting results stay far below
+  supervised SoTA (67.5 / 89.5). Treat ReAct as a grounding fix, not a
+  reasoning upgrade.
+brief_generated_at: 2026-09-15
+brief_model: claude-opus-5
+brief_source: full-text

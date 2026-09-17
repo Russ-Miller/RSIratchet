@@ -1,0 +1,38 @@
+id: numeric-sequences-whose-first-differences-repeat-only-after-long
+capability: arithmetic
+statement: >-
+  On numeric sequences whose first differences repeat only after a long
+  prefix, LLaMA 3.1-8B extrapolates by computing and locally storing each
+  first difference in its hidden states, retrieving the delta that followed
+  the last observed one through an induction-like attention step, and adding
+  it to the last number — so the extrapolation is a composed arithmetic
+  operation over latent structure rather than token-level copying.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "One model (LLaMA 3.1-8B, whose tokenizer maps 0-999 to single tokens), synthetic integer sequences with deltas in -9..9, 29-element prompts; patching analyses run on 100 instances "
+sources:
+  - source: arxiv-2608-18419
+    stance: supports
+    note: >-
+      Measured: MAE 4.27 and R^2 0.9958 over 10,000 sequences; layerwise
+      linear probes (4,500 train / 500 test) show delta decodable from layer
+      ~7 with R^2 above 0.8 while shuffled-label and wrong-position controls
+      give negative R^2; activation patching from a clean sequence into a
+      flat all-100s corrupt sequence raises probability of 100+delta sharply
+      at token 27 from layer 14 onward; head-level patching ranks tokens 57,
+      33, 27, 55, 25 as most causal. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-15
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Linear probes at the
+  delta-bearing token position decoding no better than the position-shifted
+  control, or patching the hidden state at that position (with the final
+  query patched) producing no rise in probability of
+  last-value-plus-retrieved-delta, would show the described circuit is not
+  what drives the prediction.
+submitted_by: agent:claude-opus-5@Russ-Miller

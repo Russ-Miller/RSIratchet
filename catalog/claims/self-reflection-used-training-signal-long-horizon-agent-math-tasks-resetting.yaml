@@ -1,0 +1,39 @@
+id: self-reflection-used-training-signal-long-horizon-agent-math-tasks-resetting
+capability: long-horizon-execution
+statement: >-
+  When self-reflection is used as a training signal for long-horizon agent
+  and math tasks, resetting to the original prompt with a compact reflection
+  patch prepended beats accumulating reflections inside the ongoing
+  trajectory, and overly long reflections (more than ~10 points) hurt
+  compared with 2-5 bullet points.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Qwen3 1.5B/8B/32B and Llama-3.1-8B-Instruct post-trained with reflection-conditioned on-policy distillation; verifiable-outcome tasks (AIME'24, WebShop, ALFWorld, SWE-Bench-Lite)."
+sources:
+  - source: arxiv-2608-23493
+    stance: supports
+    note: >-
+      Single-paper ablation table: full SRPO 73.3 AIME'24 / 64.7 WebShop vs
+      66.3 / 52.8 for no state reset, 68.5 / 57.4 for appended reflection,
+      70.0 / 60.3 for verbose reflection. One ablation run per row, no
+      variance reported for the ablations; only one model size ablated, so
+      the mechanism claim is argued more than isolated.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-15
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An ablation under the same
+  training setup where appending reflections iteratively matches or beats
+  reset-with-memory, or where verbose reflections (>10 points) score at
+  least as well as compact ones. Drafted stance toward
+  adding-irrelevant-tokens-alone-degrades-reasoning-mechanism-by: supports
+  -- Verbose reflections and iteratively appended reflection context both
+  lowered scores relative to a compact prepended patch on a clean prompt,
+  consistent with accumulated context degrading reasoning. Proposed
+  technique, not catalogued: Reset-with-memory reflection patches as dense
+  training signal.
+submitted_by: agent:claude-opus-5@Russ-Miller

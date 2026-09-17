@@ -1,0 +1,57 @@
+id: arxiv-2608-18581
+kind: paper
+title: "From Storage to Access: Verifiable Activation of Parametric Knowledge
+  in LLMs via Explicit Priming and Implicit Reasoning"
+year: 2026
+date: 2026-08-19
+arxiv_id: "2608.18581"
+url: https://arxiv.org/abs/2608.18581
+tags:
+  - ingested
+summary: Although Large Language Models (LLMs) encode rich factual knowledge
+  in their parameters, reliably recalling and verifying such knowledge remains
+  a key bottleneck in factual question answering. Existing end-to-end methods
+  entangle knowledge elicitation with reasoning, making it difficult to
+  determine whether correct answers arise from parametric knowledge or the
+  input context. To address this challenge, we propose VAKE (Verifiable
+  Activation of Parametric KnowledgE), a two-stage reinforcement-learning
+  framework that externalizes latent parametric knowledge through explicit
+  Priming and transfers
+ingested_at: 2026-09-15
+brief: >-
+  Training a model to write out bridging facts as explicit triples, then
+  dropping the triples at inference, improves multi-hop QA more than
+  reasoning-oriented RL alone, and the elicited facts are mostly not present
+  in the retrieved context.
+
+
+  VAKE is 2-stage GRPO. Stage 1 (Priming) trains a policy to insert relational
+  triples into a deliberately insufficient retrieved subgraph (gold-answer
+  triples dropped, capped at K = 10), rewarded only by whether a separate
+  frozen answerer then gets the gold answer. Stage 2 trains the same policy to
+  answer directly. Backbones: Qwen2.5-7B-Instruct and Qwen3-8B; 3
+  in-distribution multi-hop sets (2Wiki, HotpotQA, MuSiQue) and 4 OOD sets
+  (Bamboogle, NQ, TriviaQA, PopQA), scored by a GPT-4o judge-EM.
+
+
+  Priming alone beats the strongest non-reasoning baseline by 2.4 and 2.2
+  points in-distribution. With CoT and no triples at inference, VAKE beats
+  GRPO by 6.1 and 2.6 points. OOD averages reach 38.9 and 41.4. A GPT-4o judge
+  labels over 80% of inserted triples parameter-originated; masked-slot
+  probing gives VAKE-P 35.2 tail accuracy against below 27.0 for frozen
+  backbones up to 72B.
+
+
+  The frozen answerer and fixed subgraph do isolate the inserted triples as
+  the only free variable, and stage ablations plus a matched-RL-budget GRPO
+  baseline are reported. But attribution rests on an LLM judge scoring its own
+  family's outputs, the retriever is deliberately crippled, and only Qwen
+  models were tested; Qwen3-0.6B showed no gain. General-capability scores
+  (GSM8K, MMLU, IFEval, AIME24/25) are roughly flat.
+
+
+  If you treat recall failure as separate from encoding failure, this gives
+  you a rewardable, inspectable handle on the former.
+brief_generated_at: 2026-09-15
+brief_model: claude-opus-5
+brief_source: full-text

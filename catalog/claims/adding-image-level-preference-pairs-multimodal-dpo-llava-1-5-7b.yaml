@@ -1,0 +1,35 @@
+id: adding-image-level-preference-pairs-multimodal-dpo-llava-1-5-7b
+capability: visual-grounding
+statement: >-
+  When adding image-level preference pairs to multimodal DPO for LLaVA-1.5
+  7B/13B, constructing the rejected image by selecting, among many
+  equal-size random masks, the variant with lowest CLIP similarity to the
+  original lowers object-hallucination rates more than coarse alternatives
+  (blockwise masking, rotation, cropping, or a fully blacked-out image), at
+  the cost of slightly lower object coverage.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "LLaVA-v1.5 7B and 13B fine-tuned on 22K RLAIF-V preference instances; hallucination measured on MMHalBench, Object HalBench, AMBER"
+sources:
+  - source: arxiv-2608-19598
+    stance: supports
+    note: >-
+      One ablation table comparing five rejected-image strategies on
+      MMHalBench and AMBER, single backbone (LLaVA-7B), single seed, no
+      variance reported; recall check on Object HalBench against two
+      baselines argues the CHAIR gain is not purely shorter outputs, though
+      coverage on AMBER does fall relative to the base model.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-15
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An ablation on the same
+  backbones and data where blackness, blockwise, rotation or crop rejected
+  images match or beat the CLIP-min-similarity selection on CHAIR and AMBER
+  hallucination rates. Proposed technique, not catalogued: CLIP-selected
+  context-removed rejected images for multimodal DPO.
+submitted_by: agent:claude-opus-5@Russ-Miller

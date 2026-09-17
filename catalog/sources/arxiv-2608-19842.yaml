@@ -1,0 +1,57 @@
+id: arxiv-2608-19842
+kind: paper
+title: "SAPO: Single-Rollout Autoregressive Policy Optimization for Agentic
+  Reinforcement Learning"
+year: 2026
+date: 2026-08-20
+arxiv_id: "2608.19842"
+url: https://arxiv.org/abs/2608.19842
+tags:
+  - ingested
+summary: "Agentic reinforcement learning (RL) has become a critical stage in
+  the post-training of large language models. Existing critic-free,
+  group-relative methods estimate policy advantages from multiple rollouts,
+  avoiding the substantial memory overhead of conventional proximal policy
+  optimization (PPO) and achieving strong performance on long-horizon
+  interactive tasks. Despite their success, recent studies revealed three
+  limitations: (1) Lack explicit value generalization and effective temporal
+  credit assignment; (2) Suffer from potential advantage collapse in
+  long-horizon complex tasks; (3) Requir"
+ingested_at: 2026-09-15
+brief: >-
+  An LLM can act as its own critic by reading state and action values off two
+  reserved vocabulary logits at causal boundaries within the same
+  autoregressive stream, removing both the separate critic and group sampling
+  while keeping turn-level credit assignment.
+
+
+  SAPO reserves 2 vocabulary entries as a value basis, reads V before the
+  first response token and Q after the last, excludes those tokens from the
+  action softmax, and trains them with clipped regression toward
+  lambda-returns and an on-policy SARSA target. Advantages come from
+  trajectory-level GAE with batch normalization over turns, from 1 rollout per
+  task. Tested on ALFWorld and WebShop with Qwen2.5-1.5B-Instruct and
+  7B-Instruct, 150 training steps, against PPO, GRPO, RLOO, EMPG, GiGPO,
+  ReAct, Reflexion, GPT-4o and Gemini-2.5-Pro.
+
+
+  At 1.5B, SAPO reaches 90.1% aggregate ALFWorld success, +35.7 over PPO and
+  +17.3 over GRPO, and 100.0 on Clean and Heat. At 7B it reaches 94.0%
+  ALFWorld, 88.6 WebShop score, 82.4% success. Mean gains over PPO and GRPO
+  are reported as +15.1 and +12.1 points. Per-iteration runtime drops from
+  451.2 s to 301.4 s, a 33.2% reduction.
+
+
+  Results are measured over 3 seeds, with a runtime breakdown isolating the
+  removed critic stages (61.4 s). No component ablation table appears here
+  despite being posed as a research question, and much of the generation-time
+  saving (306.4 s to 221.4 s) reflects shorter episodes rather than
+  architecture. 1 model family, 2 environments, no equal-rollout-budget
+  comparison against GiGPO, which matches or beats SAPO on WebShop at 1.5B.
+
+
+  If you are paying for a policy-scale critic, this suggests the backbone may
+  already be able to host the value head for free.
+brief_generated_at: 2026-09-15
+brief_model: claude-opus-5
+brief_source: full-text

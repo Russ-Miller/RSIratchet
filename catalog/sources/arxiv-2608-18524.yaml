@@ -1,0 +1,54 @@
+id: arxiv-2608-18524
+kind: paper
+title: "DART-SD: Diamond-topology Aware Retrieval and Tuning for
+  Self-Distillation of Multi-Turn Tool-Calling Agents"
+year: 2026
+date: 2026-08-19
+arxiv_id: "2608.18524"
+url: https://arxiv.org/abs/2608.18524
+tags:
+  - ingested
+summary: Equipping Large Language Models (LLMs) with multi-turn tool-calling
+  capabilities is essential for building autonomous agents. However, progress
+  is fundamentally limited by the reliance on full-length trajectory
+  imitation. For tasks involving multiple order-independent sub-goals, the
+  optimal solution space forms a vast combinatorial diamond lattice. Forcing
+  this rich topology into monolithic trajectories causes a severe topological
+  collapse, indiscriminately penalizing valid alternative explorations and
+  severely degrading policy diversity. To address this, we propose DART-SD
+  (Diamond-topology A
+ingested_at: 2026-09-15
+brief: >-
+  Supervising only the tokens after a student agent's first unrecoverable
+  mistake beats imitating whole teacher trajectories for multi-turn tool
+  calling. The claim is that order-independent sub-goals make the solution
+  space a graph, not a line, so global SFT loss punishes valid alternative
+  exploration.
+
+
+  DART-SD builds an Interaction-State Transition Graph from teacher rollouts
+  (Qwen3.6-27B and GLM-5.2), projects failed student rollouts onto the
+  success-reachable region to find a Critical Topological Breakpoint, then
+  fine-tunes with loss masked to the generated recovery steps only. Students
+  are Qwen3-4B and Qwen3-8B, trained on 2,215 FTRL tasks over 5 iterations,
+  evaluated on FTRL, BFCL, ToolHop, tau-bench, RoTBench.
+
+
+  On Qwen3-8B the average across 5 benchmarks goes 29.60 base, 41.64 SFT,
+  40.33 FTRL-GRPO, 45.58 DART-SD; on 4B, 25.19 to 39.17. Average tool calls in
+  successful trajectories fall from 4.23 at Iter1 to 3.55 at Iter5, below the
+  4.02 golden references, while Solve-F1 rises 40.37 to 45.66. Mean CTB
+  position advances 0.348 to 1.452.
+
+
+  Evidence includes a 4-step component ablation (SD 38.10, +CTB 39.51,
+  +Progressive 43.93, +ISTG 45.66) and RL baselines, but no matched compute or
+  token-budget accounting, 1 model family, 2 scales, self-run evaluation.
+  Thinking mode is tested on only 3 benchmarks.
+
+
+  If you distil agents, consider masking loss to the post-error suffix rather
+  than the full trace.
+brief_generated_at: 2026-09-15
+brief_model: claude-opus-5
+brief_source: full-text

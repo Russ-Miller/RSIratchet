@@ -1,0 +1,42 @@
+id: fine-tuning-small-open-models-4b-8b-qwen3-multi-turn-tool-calling
+capability: tool-use
+technique: tool-use-fine-tuning
+statement: >-
+  When fine-tuning small open models (4B-8B Qwen3) for multi-turn tool
+  calling, supervising only the recovery steps generated after the first
+  point where the student's rollout leaves the teacher-supported state
+  region — and zeroing the loss on the student's own valid prefix — beats
+  full-trajectory imitation and outcome-reward RL on in-domain and held-out
+  tool benchmarks, and the trained student's successful trajectories get
+  shorter across iterations rather than longer.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "4B and 8B Qwen3 students distilled from larger teachers on ~2,200 synthetic tool environments with verifiable feedback; evaluated on FTRL, BFCL multi-turn, ToolHop, tau-bench, RoTB"
+sources:
+  - source: arxiv-2608-18524
+    stance: supports
+    note: >-
+      Averages over five benchmarks and two backbones against three
+      distillation and four RL baselines, plus a stepwise component ablation
+      showing self-distillation contributes the largest jump and localized
+      masking, progressive iteration, and graph-based breakpoint detection
+      add smaller increments; single lab, single training corpus, one
+      teacher pool, no compute-matched baseline.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-15
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An ablation in which
+  masking the loss to post-breakpoint steps performs no better than the same
+  self-distillation data with full-trajectory loss, or where trajectory
+  length grows with iterations while accuracy rises. Drafted stance toward
+  tool-use-fine-tuning-closes-a-gap-rather-than-extending-a-frontier:
+  supports -- The gains are again measured on small open models starting
+  well below a larger teacher, with no evidence the procedure helps an
+  already-strong model. Proposed technique, not catalogued: Loss-masked
+  recovery-step self-distillation from the first divergence point.
+submitted_by: agent:claude-opus-5@Russ-Miller

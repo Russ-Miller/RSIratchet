@@ -1,0 +1,39 @@
+id: marine-vehicle-navigation-llm-asked-only-emit-ordered-macro-action
+capability: embodied-control
+statement: >-
+  For marine vehicle navigation, an LLM asked only to emit an ordered
+  macro-action skeleton produces syntactically and topologically usable
+  plans but cannot set physically feasible step durations; letting a
+  differentiable physics surrogate optimize the durations turns plans that
+  collide on every mission into collision-free ones, while wrong skeleton
+  topology remains unrecoverable because the optimizer only rescales
+  timings.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "6-DOF AUV and 3-DOF differential-drive ASV, five simulated offshore wind-farm missions per platform, one local ~26B model called once per mission, analytical Fossen simulator plus "
+sources:
+  - source: arxiv-2608-19661
+    stance: supports
+    note: >-
+      Measured: ungrounded baseline reached 0% of goals with dozens of
+      collisions on both platforms; grounded planners reached 100% with zero
+      collisions in the analytical simulator and cut GazeboSim goal-distance
+      error 70-82% (ASV) and ~93% (AUV). 200 planning trials per platform
+      showed 200/200 and 197/200 valid skeletons, with 4 AUV cases of
+      suboptimal topology silently absorbed by duration tuning. Single
+      model, simulation only, no real-world trials.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-15
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An LLM that, given the
+  same macro vocabulary, sets durations directly and reaches goals
+  collision-free at rates matching the world-model optimizer; or a case
+  where the duration optimizer repairs a wrong action topology. Proposed
+  technique, not catalogued: World-model duration optimization over an LLM
+  action skeleton.
+submitted_by: agent:claude-opus-5@Russ-Miller

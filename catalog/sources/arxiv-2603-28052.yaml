@@ -31,3 +31,39 @@ notes: "Forwarded by Russ 2026-09-14: from the DAIR harness-engineering
   collection (academy.dair.ai), forwarded via Elvis Saravia's post on whether
   to build a harness"
 ingested_at: 2026-09-14
+brief: >-
+  Giving an automated harness optimizer unrestricted filesystem access to raw
+  execution traces of all prior candidates, rather than scalar scores or LLM
+  summaries, is what makes harness search work. Meta-Harness runs a
+  coding-agent proposer (Claude Code with Opus-4.6) that reads prior harness
+  source code, scores, and traces via grep and cat, proposes a new single-file
+  Python harness, evaluates it, and logs everything back; a typical run
+  evaluates roughly 60 harnesses over 20 iterations.
+
+
+  On online text classification with GPT-OSS-120B across LawBench,
+  Symptom2Disease and USPTO-50k, the discovered harness reached 48.6% average
+  accuracy versus 40.9 for ACE and 40.0 for MCE, using 11.4K context tokens
+  against 50.8K and 28.5K. It also held up on 9 unseen datasets (73.1% vs
+  70.2% for ACE). A single discovered retrieval harness improved 200 IMO-level
+  problems by 4.7 points on average across 5 held-out models, and 1.3 points
+  over BM25. On TerminalBench-2 it hit 76.4% with Opus 4.6 (vs 74.7 for
+  Terminus-KIRA, 81.8 for ForgeCode) and 37.6% with Haiku 4.5 (vs 35.5 for
+  Goose).
+
+
+  The interface ablation isolates the cause: scores-only gave 34.6 median
+  accuracy, scores-plus-summary 34.9, full traces 50.0. Baselines were matched
+  on evaluation budget (Best-of-N, OpenEvolve, TTT-Discover, GEPA), and
+  Meta-Harness matched the best of them in 0.1x the evaluations.
+
+
+  Boundaries: 1 proposer agent, and on TerminalBench-2 search and final
+  evaluation used the same 89 tasks, with overfitting checked only by
+  inspection and regex audits.
+
+
+  If you hand-tune scaffolds, the trace-access result is the part to act on.
+brief_generated_at: 2026-09-15
+brief_model: claude-opus-5
+brief_source: full-text

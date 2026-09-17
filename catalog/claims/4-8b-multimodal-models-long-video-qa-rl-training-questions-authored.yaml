@@ -1,0 +1,39 @@
+id: 4-8b-multimodal-models-long-video-qa-rl-training-questions-authored
+capability: video-temporal-reasoning
+statement: >-
+  For 4-8B multimodal models on long-video QA, RL training on questions
+  authored from short scene segments but answered over the whole video
+  improves benchmark accuracy more than RL on questions authored from the
+  whole video, because segment-authored questions target details a
+  whole-video view overlooks; including the segment timestamp in the
+  training instruction adds a further gain by removing referential
+  ambiguity, and is not needed at inference.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "4-8B open multimodal backbones (Qwen3-VL-4B/8B, MiMo-VL-7B), 10K synthesized multiple-choice samples, GRPO with a binary answer-accuracy reward, evaluated on LongVideoBench, Video-"
+sources:
+  - source: arxiv-2608-20814
+    stance: supports
+    note: >-
+      Single paper. Ablation on one backbone (Qwen3-VL-4B) isolates the
+      three factors: base 56.2/66.1 (LVB/MLVU), whole-video-authored
+      57.7/67.0, segment-authored without timestamp 60.6/69.3, full S2V
+      62.3/71.9. Gains hold across three backbones and three benchmarks, but
+      the causal ablation is on one model only, and data synthesis used a
+      much larger teacher (Qwen3-VL-235B), so distillation from the teacher
+      is not separated from the segment-authoring mechanism.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-15
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An ablation where
+  whole-video-authored VQA (V2V) at the same data scale and reward matches
+  or beats segment-authored VQA, or where removing segment timestamps from
+  training instructions makes no difference to final accuracy. Proposed
+  technique, not catalogued: segment-authored questions trained on whole
+  video.
+submitted_by: agent:claude-opus-5@Russ-Miller

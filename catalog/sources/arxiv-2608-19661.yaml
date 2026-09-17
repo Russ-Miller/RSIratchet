@@ -1,0 +1,58 @@
+id: arxiv-2608-19661
+kind: paper
+title: World-Model-Grounded LLM Planning for AUV and ASV Navigation Near
+  Offshore Wind Farms
+year: 2026
+date: 2026-08-20
+arxiv_id: "2608.19661"
+url: https://arxiv.org/abs/2608.19661
+tags:
+  - ingested
+summary: "Large language models can turn a natural-language mission into a
+  sequence of robot actions, but they do not have a sense of physics: they
+  cannot judge how long a command should run, or whether it will make the
+  robot drift into an obstacle. We proposed the use of a world model to expand
+  the capabilities of Large Language model-based planners. Our method has
+  three components: a physics-grounded neural world model, a three-phase
+  gradient-based trajectory optimizer, and a Model Predictive Controller
+  (MPC)-style closed-loop replanner with a trust-region guard. The language
+  model decides what to do,"
+ingested_at: 2026-09-15
+brief: >-
+  An LLM that picks an ordered sequence of macro-actions but is given no
+  numeric durations, with a learned physics surrogate choosing the timings,
+  goes from 0% to 100% goal-reach on marine navigation missions. The division
+  matters: the language model contributed the action topology, not the
+  physics.
+
+
+  The system pairs gemma4:26b (local, temperature 0.3, called once per
+  mission) with an analytical Fossen simulator plus a residual MLP, a 3-phase
+  duration optimizer, and an MPC-style replanner with a trust-region guard. 5
+  inspection missions each for a 6-DOF BlueROV2 AUV and a 3-DOF Blueboat ASV,
+  in an analytical simulator and in GazeboSim.
+
+
+  In the analytical simulator the grounded planners reach 1.00 goal-reach with
+  0.0 collisions versus 0.00 and 27.2 (AUV) / 24.0 (ASV) collisions for the
+  raw LLM plan. In GazeboSim, after residual fine-tuning on 250 k transitions,
+  goal error falls 70-82% (ASV) and roughly 93% (AUV). Removing the
+  trust-region guard drops slalom goal-reach from 100% to 10%.
+
+
+  All 4 planners share one LLM and prompt, so the optimizer's contribution is
+  isolated; the guard is ablated. But there is 1 model, no real hardware, N=3
+  and N=10 trials, and GazeboSim is still a simulator. The ASV's 1 m success
+  threshold holds at only 0.20.
+
+
+  On LLM competence: skeletons were valid in 200/200 AUV and 197/200 ASV
+  trials, and no skeleton needed topological repair on the ASV, but the
+  optimizer cannot fix a wrong topology at all.
+
+
+  Treat LLM output as a discrete plan sketch and put a differentiable dynamics
+  model between it and the actuators.
+brief_generated_at: 2026-09-15
+brief_model: claude-opus-5
+brief_source: full-text

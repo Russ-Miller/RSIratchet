@@ -33,3 +33,43 @@ notes: "Forwarded by Russ 2026-09-14: from the DAIR harness-engineering
   collection (academy.dair.ai), forwarded via Elvis Saravia's post on whether
   to build a harness"
 ingested_at: 2026-09-14
+brief: >-
+  Dropping a local open-weight model into an agent stack built around a cloud
+  model breaks the stack, not just the reasoning: most of the loss comes from
+  prompts, tool descriptions, memory and runtime settings that were
+  co-designed for the cloud model, and can be recovered by re-optimizing those
+  fields at fixed model.
+
+
+  OpenJarvis represents a personal AI system as a typed spec over 5 primitives
+  (Intelligence, Engine, Agents, Tools & Memory, Learning) and searches it
+  with a frontier model as proposer: the teacher diagnoses failure clusters,
+  proposes edits across 4 editable primitives, and a held-out gate accepts
+  only non-regressing edits. Evaluation covers 8 benchmarks (508 tasks)
+  including PinchBench, GAIA, LiveCodeBench and LiveResearchBench, 11 local
+  models from 4 families, 3 cloud baselines, 7 hardware platforms, 5 runs
+  each, GPT-5-mini as judge.
+
+
+  Swapping Claude Opus 4.6 for Qwen3.5-9B in OpenClaw and Hermes Agent costs
+  24.8–38.8 pp; retargeting the spec at fixed Intelligence recovers 77% of the
+  PinchBench drop and 56–57% on GAIA. The best local spec (Qwen3.5-122B) hits
+  80.3% average vs 83.5% for Claude Opus 4.6, at ~800x lower marginal API cost
+  and ~4x lower latency. Spec search adds 13.1–31.5 pp per student, 1.1–8.8 pp
+  over LoRA at 7.1–10.9x lower optimization cost.
+
+
+  The design isolates causes reasonably: the fixed-Intelligence condition
+  separates configuration from capability, and ablations separate proposer
+  from move space (LLM proposer adds 10.0 pp on average over evolutionary
+  search at the same 4-primitive space; widening from 1 to 4 primitives adds
+  5.5–16.5 pp). Weight edits are only 16–44% of accepted edits.
+
+
+  Limits: 5 runs, a single judge model, single-machine evaluation, and search
+  still requires frontier cloud calls plus trace transmission; GAIA-style deep
+  reasoning stays out of reach for a 9B model. If you are benchmarking local
+  models as drop-in replacements, your numbers likely understate them.
+brief_generated_at: 2026-09-15
+brief_model: claude-opus-5
+brief_source: full-text

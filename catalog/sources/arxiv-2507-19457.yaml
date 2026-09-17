@@ -33,3 +33,41 @@ notes: "Forwarded by Russ 2026-09-14: from the DAIR harness-engineering
   collection (academy.dair.ai), forwarded via Elvis Saravia's post on whether
   to build a harness"
 ingested_at: 2026-09-14
+brief: >-
+  Evolving prompts by having an LLM read its own execution traces in natural
+  language can beat weight-space RL on the same task, using orders of
+  magnitude fewer rollouts. That cuts against the assumption that
+  verifiable-reward RL is the default route to task adaptation.
+
+
+  GEPA (Genetic-Pareto) mutates module prompts in a compound AI system from
+  reflection on rollout and evaluation traces (including compiler errors and
+  per-hop feedback), and keeps a per-instance Pareto front of candidates
+  rather than greedily refining the best one. It was tested on HotpotQA,
+  IFBench, HoVer, PUPA, AIME-2025 and LiveBench-Math with Qwen3 8B and GPT-4.1
+  Mini against GRPO (LoRA, 24,000 rollouts), MIPROv2, TextGrad and Trace.
+
+
+  On Qwen3 8B, GEPA aggregates 54.85 vs GRPO's 48.91 and a 45.23 baseline,
+  beating GRPO on 5 of 6 tasks and up to 35x fewer rollouts; on IFBench it hit
+  38.61 after 678 rollouts vs GRPO's 35.88. On GPT-4.1 Mini, +12.19 vs
+  MIPROv2's +5.64. Prompts optimized on Qwen3 8B transferred to GPT-4.1 Mini
+  for +9.00.
+
+
+  The Pareto selector is isolated by an ablation holding the evolution harness
+  fixed: +12.44 vs +6.05 greedy and +5.11 beam search. GRPO used LoRA rather
+  than full finetuning in the main table.
+
+
+  GEPA loses on AIME with Qwen3 8B, and the Merge variant degrades Qwen3 8B
+  (IFBench 28.23). Code-optimization results (NPUEval 30.52% mean utilization
+  vs 4.25% for Sequential10, KernelBench over 20% fast_1 on 35 tasks) are
+  self-described as preliminary.
+
+
+  If you have a small rollout budget and cannot finetune, try reflective
+  prompt evolution before RL.
+brief_generated_at: 2026-09-15
+brief_model: claude-opus-5
+brief_source: full-text
