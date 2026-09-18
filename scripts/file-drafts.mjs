@@ -12,6 +12,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import YAML from "yaml";
+import { fetchTitles, sameTitle } from "./paper-text-lib.mjs";
 import { loadCatalog } from "./catalog-lib.mjs";
 
 const dryRun = process.argv.includes("--dry-run");
@@ -59,7 +60,23 @@ function clip(text, max) {
 let filed = 0, skipped = 0;
 const notes = [];
 
-for (const f of fs.readdirSync(DRAFTS).filter((f) => /\.ya?ml$/.test(f))) {
+// OpenAlex sometimes attaches the wrong arXiv id to a record (a Zenodo essay
+// was filed as 2606.21666 this way). The brief and claim are written from the
+// real arXiv text, so a mismatch means the title and abstract are the wrong
+// paper's. Ask arXiv for its titles once, in small batches, and refuse to
+// file a draft whose queue title does not match.
+const draftFiles = fs.readdirSync(DRAFTS).filter((f) => /\.ya?ml$/.test(f));
+const toCheck = [...new Set(draftFiles.map((f) => YAML.parse(fs.readFileSync(path.join(DRAFTS, f), "utf8"))?.arxiv_id).filter(Boolean))]
+  .filter((id) => !haveSource.has(`arxiv-${id.replace(/\./g, "-")}`));
+const arxivTitle = new Map();
+for (let i = 0; i < toCheck.length; i += 5) {
+  const chunk = toCheck.slice(i, i + 5);
+  try { for (const [k, v] of await fetchTitles(chunk)) arxivTitle.set(k, v); }
+  catch (e) { console.log(`  title check unavailable for ${chunk.join(", ")}: ${e.message}`); }
+  if (i + 5 < toCheck.length) await new Promise((r) => setTimeout(r, 3500));
+}
+
+for (const f of draftFiles) {
   const d = YAML.parse(fs.readFileSync(path.join(DRAFTS, f), "utf8"));
   const sid = `arxiv-${d.arxiv_id.replace(/\./g, "-")}`;
   const cid = slug(d.statement);
@@ -67,6 +84,11 @@ for (const f of fs.readdirSync(DRAFTS).filter((f) => /\.ya?ml$/.test(f))) {
   if (!capIds.has(d.capability)) { notes.push(`${d.arxiv_id}: unknown capability ${d.capability}`); skipped++; continue; }
   const cand = queue.get(d.arxiv_id);
   if (!cand) { notes.push(`${d.arxiv_id}: no queue metadata`); skipped++; continue; }
+  const real = arxivTitle.get(d.arxiv_id);
+  if (real && !sameTitle(real, cand.title)) {
+    notes.push(`${d.arxiv_id}: queue title "${cand.title.slice(0, 60)}…" is not arXiv's "${real.slice(0, 60)}…" — wrong id attached upstream, not filed`);
+    skipped++; continue;
+  }
 
   // A technique link is only valid if that technique addresses this capability.
   // The drafter gets this wrong sometimes; an unreviewed link is recorded as a
