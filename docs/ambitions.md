@@ -382,3 +382,25 @@ The bet is testable long before either ambition is built. `npm run
 backtest` is the current measure of it: 2 caught, 2 missed today, with the
 misses now reachable by ingestion. Move that number honestly and the rest
 of this becomes engineering.
+
+### The ratchet, applied to this repository (2026-09-18)
+
+Alex Veremeyenko's post naming Hashimoto's rule
+(`catalog/sources/veremeyenko-2026-hashimotos-rule.yaml`) gives the
+playbook's tell for a healthy harness: the rule file grows fast at first,
+then settles to about one rule a week. Checked against this repository, the
+tell reads differently than expected. `CLAUDE.md` has changed three times
+in two weeks; by the guide-file measure the ratchet is barely turning. But
+the failure-driven fixes are all there, in the sensor layer instead:
+`verify-papers` after fabricated titles, the figure-grounding check after
+invented numbers, drift-by-sentence after a rotating carousel broke a byte
+hash, `check-embeddings` after stale vectors, the arXiv title check after
+a mis-attached id (2606.21666, 2026-09-18). Each is a mistake that became a
+permanent fix, and each is enforced rather than advised.
+
+That matches the catalog's own finding that context files do not lift task
+success while enforced checks do
+(`repository-context-files-do-not-raise-task-success-on-benchmark-coding`).
+So the health tell to watch here is not rules per week in `CLAUDE.md` but
+*new sensors per week in `scripts/`*, and, later, whether that rate falls
+because failures stop recurring rather than because nobody is looking.
