@@ -1,0 +1,42 @@
+arxiv_id: "2609.04442"
+title: "GRACE: Graph-Grounded Reflective Agent Copilot Engine for
+  Expert-in-the-Loop Knowledge Expansion"
+url: https://arxiv.org/abs/2609.04442
+drafted_at: 2026-09-18
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: For claim-level hallucination detection on long-document QA,
+  estimating a claim's reliability from how central it is in a graph of
+  sampled model responses cannot separate true claims from confidently
+  repeated false ones, because both get high agreement; adding trusted source
+  documents as anchor nodes with higher-weight edges shifts the basis from
+  internal consensus to external grounding and yields a Grounded pool with few
+  hallucinations (97.6% precision on QASPER), at the cost of conservatively
+  leaving correct-but-novel claims on the boundary.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Long-document QA (QASPER, QuALITY) with GPT-4o-mini and LLaMA
+  3.1 8B responders, where trusted priors are sections of the same document
+  and verification is done by an LLM verifier with full-paper context (plus
+  one small human-verifier round).
+technique: atomic-fact-checking
+proposed_technique: Prior-anchored claim graph with centrality-based grounding
+stance_on_existing: supports
+related_claim_id: retrieval-moves-the-trust-boundary-rather-than-removing-it
+stance_reason: The paper argues and measures that self-consistency signals
+  cannot detect shared hallucinations and that reliability must come from an
+  externally trusted evidence channel.
+falsifier: Show that unweighted response-agreement centrality classifies
+  claims as accurately as the prior-anchored weighted graph on the same
+  documents, or that grounding precision falls near chance once priors are
+  included.
+evidence_note: Measured on 100 QASPER papers (334 questions) and 50 QuALITY
+  articles, two responder models. Reports 97.6% grounding precision, 85.5% of
+  hallucinated claims placed at Boundary/Refuted, and 22.3% of correct OOD
+  claims prematurely promoted. Retrieval comparison against RAG and GraphRAG
+  is accuracy-only with no ablation isolating the edge-weighting scheme from
+  the retrieval score mixing, and the 'oracle' labels come from an LLM
+  verifier rather than a gold key.
+confidence: low

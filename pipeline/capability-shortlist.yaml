@@ -1,59 +1,51 @@
 # Consolidated capability candidates. Suggestions, not capabilities.
-generated_at: 2026-09-17
-from_raw_proposals: 22
+generated_at: 2026-09-18
+from_raw_proposals: 20
 recommended:
-  - id: physical-and-spatial-reasoning
-    label: "Reasoning about physical and spatial situations"
-    scope_note: "Covers building and using a consistent model of a scene or physical system — relative position, orientation, layout, forces, dynamics, units and conservation constraints; excludes object recognition, hallucinated objects, and generic math word problems."
+  - id: contextual-privacy
+    label: "Deciding what private information to disclose to whom"
+    scope_note: "Covers whether a model withholds, redacts, or appropriately shares sensitive personal data given recipient and context, including leaking memorized personal data; excludes generic refusal of harmful requests and prompt-injected instructions."
     paper_count: 3
-    merged_from: [spatial-reasoning, physical-reasoning, physical-consistency]
-    note: "Three proposals point at the same underlying world-model failure and nothing in the index covers it (visual-grounding is about grounding answers in pixels, not spatial or physical structure)."
-  - id: targeted-unlearning
-    label: "Removing targeted knowledge and keeping it removed"
-    scope_note: "Covers erasing specified facts, concepts, or unsafe capabilities while preserving related benign knowledge and general ability, including whether the removed content resurfaces under paraphrase, attack, or later fine-tuning; excludes adding or editing in new knowledge."
+    merged_from: [contextual-privacy, privacy-preserving-disclosure, privacy-leakage]
+    note: "Three independent papers converge on the same agentic privacy judgment, and nothing in the index covers disclosure decisions or personal-data leakage."
+  - id: compression-behavior-retention
+    label: "Keeping behavior after compression or inference shortcuts"
+    scope_note: "Covers whether quantization, pruning, distillation, early exit, or speculative decoding preserves the original model's quality and safety/fairness/robustness behavior; excludes fine-tuning-induced skill loss and pure speed benchmarks."
+    paper_count: 3
+    merged_from: [compression-behavior-retention, inference-optimization-fidelity, reasoning-mode-consistency]
+    note: "Distinct deployment-time analogue of fine-tuning-retention, with several papers testing behavior preservation under serving-side modifications."
+  - id: social-bias
+    label: "Treating social groups even-handedly"
+    scope_note: "Covers systematically different outputs, evaluations, or recommendations conditioned on a subject's demographic group in text or images; excludes culture-specific norm knowledge and judge position/length bias."
     paper_count: 2
-    merged_from: [selective-unlearning, unlearning-robustness]
-    note: "Two independent proposals converge on the same construct, and neither knowledge-updating nor fine-tuning-retention covers removal and its durability."
-  - id: visual-generation-control
-    label: "Generating and editing images to specification"
-    scope_note: "Covers whether generated or edited visual output satisfies the requested content, layout, and constraints, including applying an edit to the right region while preserving the rest; excludes describing or answering questions about existing images."
+    merged_from: [social-bias, demographic-bias]
+    note: "Recurring, well-defined failure mode that neither cultural-competence nor judge-position-bias captures."
+  - id: structured-extraction
+    label: "Turning documents and free text into structured records"
+    scope_note: "Covers OCR/layout parsing and schema-filling extraction that yields machine-readable tables or records; excludes summarization, QA, and general image description."
     paper_count: 2
-    merged_from: [visual-generation-control, instructed-image-editing]
-    note: "The index is entirely about understanding modalities, not producing them, so controllable generation is a real gap with repeat evidence."
-  - id: cross-modal-evidence-integration
-    label: "Combining visual and textual evidence"
-    scope_note: "Covers cases where the answer requires jointly using image content and text or retrieved facts, and the failure is ignoring or under-weighting one modality; excludes pure perception errors and object hallucination."
-    paper_count: 2
-    merged_from: [cross-modal-evidence-integration]
-    note: "Two papers on a distinct failure mode that visual-grounding and retrieval-utilization each only half cover."
-  - id: over-refusal
-    label: "Refusing harmless requests"
-    scope_note: "Covers false-positive refusals and excessive hedging on benign prompts that merely resemble unsafe ones; excludes failure to refuse genuinely harmful requests."
-    paper_count: 2
-    merged_from: [over-refusal, retrieval-induced-safety-degradation]
-    note: "The natural complement to jailbreak-robustness, which the index currently measures in only one direction."
+    merged_from: [structured-information-extraction, document-structure-parsing]
+    note: "Two papers on the same underlying skill of producing faithful structured output from unstructured sources, which no existing entry covers."
   - id: confidence-calibration
-    label: "Knowing how likely its own answer is right"
-    scope_note: "Covers whether internal or verbalized confidence signals track correctness and stay stable under perturbation; excludes refusing to answer and excludes raw accuracy."
+    label: "Matching expressed confidence to actual accuracy"
+    scope_note: "Covers whether verbalized or token-level confidence tracks correctness (calibration error, selective risk); excludes outright abstention and plain accuracy."
     paper_count: 1
     merged_from: [confidence-calibration]
-    note: "Calibration is a long-standing, well-defined capability that abstention-and-self-knowledge treats only as a binary refuse/answer decision."
-  - id: reasoning-length-calibration
-    label: "Spending the right amount of reasoning"
-    scope_note: "Covers overthinking on easy problems, underthinking on hard ones, and whether chains of thought can be shortened without losing accuracy; excludes plain accuracy on hard problems."
-    paper_count: 1
-    merged_from: [reasoning-length-calibration]
-    note: "A cleanly defined efficiency capability that multi-step-reasoning does not touch and that is now widely measured for reasoning models."
+    note: "Calibration is a graded, separately measured property that abstention-and-self-knowledge only partially covers, so it earns its own slot despite thin evidence here."
 set_aside:
-  - id: document-understanding
-    note: "These read as task domains — document QA, information extraction, text-to-SQL — better handled by domain-knowledge, visual-grounding, and code-generation than as a new capability."
-  - id: failure-attribution
-    note: "Single-paper framings that error-detection, critique, and self-repair already cover from the angles that matter."
-  - id: noisy-input-robustness
-    note: "One-off perturbation study rather than a capability the index would track over time."
-  - id: mechanistic-controllability
-    note: "These are interpretability and training-dynamics techniques about how a model works, not capabilities a model is good or bad at."
-  - id: contextual-privacy
-    note: "Plausible and uncovered, but one paper and heavily overlapping with prompt-injection and goal-conflict-safety in practice — revisit if more evidence accumulates."
-  - id: generative-visual-reasoning
-    note: "A single speculative framing that folds into visual-generation-control plus existing reasoning entries."
+  - id: chart-and-diagram-reasoning
+    note: "Largely a task domain sitting between visual-grounding and multi-step-reasoning, with only one paper behind it."
+  - id: structured-graphics-generation
+    note: "Narrow generation task domains rather than a general capability, and mostly reducible to code-generation plus visual grounding."
+  - id: vulnerability-detection
+    note: "Already sits inside the overlap of error-detection and secure-coding."
+  - id: training-data-membership-inference
+    note: "A measurement technique about models rather than a capability the model is asked to exercise."
+  - id: generation-understanding-consistency
+    note: "One-off framing tied to a specific unified-model architecture."
+  - id: representation-readout-gap
+    note: "Interpretability finding adjacent to explanation-faithfulness, not a trackable capability on its own."
+  - id: convergent-clue-integration
+    note: "A single puzzle-style framing that multi-step-reasoning and decomposition already cover."
+  - id: human-ai-complementarity
+    note: "Genuinely interesting but a single study, and it is closer to an evaluation design question than a model capability."

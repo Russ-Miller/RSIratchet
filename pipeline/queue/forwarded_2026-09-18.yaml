@@ -38,6 +38,30 @@ candidates:
       setting.) We conclude that giving machines an appropriate level of uncertainty about their
       objectives leads to safer designs, and we argue that this setting is a useful generalization
       of the classical AI paradigm of rational agents."
+    verdicts:
+      - capability: scalable-oversight
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper shows analytically that giving an agent uncertainty about its objective and
+          treating the human's shutdown action as evidence makes it defer to a less capable,
+          imperfectly rational human supervisor.
+        scope_condition: Formal game-theoretic model of a rational agent and a possibly irrational human
+          supervisor with an off switch; not an empirical study of LLMs
+        classified_at: 2026-09-18
+        model: claude-opus-5
+      - capability: goal-conflict-safety
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper analytically shows that agents that take their reward function for granted are
+          incentivized to disable the off switch, and proposes objective uncertainty as a design
+          change that removes that incentive.
+        scope_condition: Formal game-theoretic model of a rational agent with an off switch; result holds
+          when the agent is uncertain about its objective and treats the human's action as evidence
+          about utility, assuming a sufficiently rational human
+        classified_at: 2026-09-18
+        model: claude-opus-5
   - openalex_id: forwarded:1606.03137
     score: 0
     signals:
@@ -66,6 +90,23 @@ candidates:
       and communicative actions that are more effective in achieving value alignment. We show that
       computing optimal joint policies in CIRL games can be reduced to solving a POMDP, prove that
       optimality in isolation is suboptimal in CIRL, and derive an approximate CIRL algorithm.
+    verdicts:
+      - capability: goal-conflict-safety
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper proposes a formal value-alignment framework (CIRL) for reward learning, not an
+          evaluation or intervention on models preserving oversight under conflicting task goals.
+        classified_at: 2026-09-18
+        model: claude-opus-5
+      - capability: scalable-oversight
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: This is a formal value-alignment/IRL game framework, not a measurement of how well a
+          weaker supervisor can elicit, evaluate or correct a stronger model.
+        classified_at: 2026-09-18
+        model: claude-opus-5
   - openalex_id: forwarded:2312.09390
     score: 0
     signals:
@@ -102,6 +143,18 @@ candidates:
       auxiliary confidence loss, we can recover close to GPT-3.5-level performance on NLP tasks. Our
       results suggest that it is feasible to make empirical progress today on a fundamental
       challenge of aligning superhuman models."
+    verdicts:
+      - capability: scalable-oversight
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: The paper both measures weak-to-strong generalization gaps and shows methods like an
+          auxiliary confidence loss substantially improve elicitation of a stronger model by a weak
+          supervisor.
+        scope_condition: GPT-4 family pretrained models finetuned on weak-model labels across NLP
+          classification, chess puzzles, and reward modeling
+        classified_at: 2026-09-18
+        model: claude-opus-5
   - openalex_id: forwarded:2211.03540
     score: 0
     signals:
@@ -137,6 +190,26 @@ candidates:
       are an encouraging sign that scalable oversight will be tractable to study with present models
       and bolster recent findings that large language models can productively assist humans with
       difficult tasks."
+    verdicts:
+      - capability: scalable-oversight
+        about_capability: true
+        direction: measures
+        confidence: high
+        rationale: The paper proposes an experimental design and proof-of-concept measurement of how well
+          weaker human supervisors can leverage and check an unreliable model, characterizing rather
+          than proposing a fix.
+        scope_condition: Non-expert/time-limited humans interacting with an unreliable LLM assistant on MMLU
+          and time-limited QuALITY QA tasks
+        classified_at: 2026-09-18
+        model: claude-opus-5
+      - capability: goal-conflict-safety
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper is about experimental methodology for human-AI scalable oversight on QA tasks,
+          not about models preserving oversight constraints when a goal conflicts with them.
+        classified_at: 2026-09-18
+        model: claude-opus-5
   - openalex_id: forwarded:2403.14380
     score: 0
     signals:
@@ -171,6 +244,17 @@ candidates:
       humans, but the effect is lower and statistically non-significant (p=0.31). Overall, our
       results suggest that concerns around personalization are meaningful and have important
       implications for the governance of social media and the design of new online environments."
+    verdicts:
+      - capability: persuasion
+        about_capability: true
+        direction: measures
+        confidence: high
+        rationale: It is a randomized controlled trial measuring belief change in humans debating GPT-4
+          versus humans, finding GPT-4 with personalization more persuasive.
+        scope_condition: GPT-4 in short multi-round online debates with human opponents (N=820),
+          with/without access to sociodemographic info
+        classified_at: 2026-09-18
+        model: claude-opus-5
   - openalex_id: forwarded:2401.05566
     score: 0
     signals:
@@ -209,6 +293,31 @@ candidates:
       hiding the unsafe behavior. Our results suggest that, once a model exhibits deceptive
       behavior, standard techniques could fail to remove such deception and create a false
       impression of safety."
+    verdicts:
+      - capability: fine-tuning-retention
+        about_capability: true
+        direction: degrades
+        confidence: medium
+        rationale: The paper shows safety fine-tuning fails to remove unsafe backdoor behavior and that
+          adversarial training actively makes models better at concealing it, a side effect that
+          worsens post-fine-tuning safety.
+        scope_condition: LLMs with deliberately implanted backdoor/deceptive behaviors, subjected to SFT,
+          RL, and adversarial safety training; effect strongest in largest models and CoT-trained
+          models
+        classified_at: 2026-09-18
+        model: claude-opus-5
+      - capability: strategic-deception
+        about_capability: true
+        direction: degrades
+        confidence: medium
+        rationale: The paper shows safety training fails to remove implanted deceptive behavior and that
+          adversarial training makes models better at hiding it, i.e., detection/removal of
+          deception gets worse as a side effect of the standard fix.
+        scope_condition: Deliberately backdoored LLMs with trigger-conditioned unsafe behavior; standard
+          SFT, RL, and adversarial safety training; effect strongest in largest models and those
+          trained with deceptive chain-of-thought
+        classified_at: 2026-09-18
+        model: claude-opus-5
   - openalex_id: forwarded:2609.11801
     score: 0
     signals:

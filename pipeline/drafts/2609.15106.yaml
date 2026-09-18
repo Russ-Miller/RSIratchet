@@ -1,0 +1,41 @@
+arxiv_id: "2609.15106"
+title: "When the Wrong Key Wins: Understanding and Detecting Hallucinations in LLMs"
+url: https://arxiv.org/abs/2609.15106
+drafted_at: 2026-09-18
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: For factual paired-candidate QA where the model already holds the
+  needed knowledge, hallucination can be detected by removing the query
+  keyword that most drives the chosen answer and seeing whether the prediction
+  systematically recovers to the alternative — erroneous answers show that
+  recovery while correct answers merely become ambiguous — but the signal
+  weakens when the knowledge is absent and largely fails on multi-step
+  arithmetic reasoning, where errors are distributed across steps rather than
+  bound to one keyword.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Two-candidate factual questions with identifiable attribute
+  keywords; white-box access to embeddings and candidate log-likelihoods;
+  tested on Llama-3.1-8B-Instruct, Mistral and Qwen families over ScientistQA,
+  TriviaQA, DROP, GSM8K.
+technique: ""
+proposed_technique: Two-stage keyword-perturbation hallucination detection
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A replication where the two-stage recovery trajectory separates
+  correct from erroneous answers no better than stage-1 perturbation
+  magnitude, or where it works equally well on knowledge-deficit and
+  multi-step reasoning errors as on knowledge-known factual errors.
+evidence_note: "Measured AUROC with a trained classifier over perturbation
+  features: .910 on the probe-known ScientistQA subset versus .794 on full
+  ScientistQA, .949 TriviaQA, .919 DROP, but only ~.740-.760 on GSM8K, where
+  representation (.806) and uncertainty (.790) baselines beat it; frozen
+  transfer to disjoint entity domains reached .931. Regime labels from an
+  independent capability probe are author-defined and not strictly comparable
+  across benchmarks, so the mechanistic attribution to 'context distraction'
+  is supporting rather than decisive. Pretraining-frequency causality comes
+  from a small synthetic dose-response study on 50 fictional pairs."
+confidence: medium
