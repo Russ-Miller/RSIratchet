@@ -93,6 +93,31 @@ export async function fetchFullText(arxivId) {
  * while a handful of batched calls sail through. id_list takes a comma-separated
  * list; max_results has to be raised to match or it silently returns 10.
  */
+/** arXiv's own title for each id. The check that would have caught a
+ *  mis-attached id from OpenAlex before it was filed. */
+export async function fetchTitles(ids, attempt = 0) {
+  const url = `https://export.arxiv.org/api/query?id_list=${ids.join(",")}&max_results=${ids.length}`;
+  const res = await fetch(url);
+  if (res.status === 429 || res.status >= 500) {
+    if (attempt >= 6) throw new Error(`arXiv ${res.status} after ${attempt} retries`);
+    const wait = Math.min(300000, 15000 * 2 ** attempt);
+    console.log(`  arXiv ${res.status}, retrying in ${wait / 1000}s`);
+    await new Promise((r) => setTimeout(r, wait));
+    return fetchTitles(ids, attempt + 1);
+  }
+  if (!res.ok) throw new Error(`arXiv ${res.status}`);
+  const xml = await res.text();
+  const out = new Map();
+  for (const entry of xml.split("<entry>").slice(1)) {
+    const id = entry.match(/<id>https?:\/\/arxiv\.org\/abs\/([^<]+)<\/id>/)?.[1]?.replace(/v\d+$/, "");
+    const title = entry.match(/<title>([\s\S]*?)<\/title>/)?.[1];
+    if (id && title) out.set(id, title.replace(/\s+/g, " ").trim());
+  }
+  return out;
+}
+
+export const sameTitle = (a, b) => a.toLowerCase().replace(/[^a-z0-9]/g, "") === b.toLowerCase().replace(/[^a-z0-9]/g, "");
+
 export async function fetchAbstracts(ids, attempt = 0) {
   const url = `https://export.arxiv.org/api/query?id_list=${ids.join(",")}&max_results=${ids.length}`;
   const res = await fetch(url);
