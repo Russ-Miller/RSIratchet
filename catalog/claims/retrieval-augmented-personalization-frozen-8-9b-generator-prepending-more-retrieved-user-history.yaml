@@ -1,0 +1,37 @@
+id: retrieval-augmented-personalization-frozen-8-9b-generator-prepending-more-retrieved-user-history
+capability: long-term-memory
+statement: >-
+  In retrieval-augmented personalization with a frozen 8-9B generator,
+  prepending more retrieved user-history records does not monotonically
+  improve quality — on the six LaMP tasks a fixed top-k profile peaked at
+  k=5 and lost 0.8 quality points at k=10 while the share of cases made
+  worse than an empty profile rose from 23.2% to 31.7% — so a learned
+  per-request stopping decision beats any single fixed k.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "LaMP's six personalization tasks (classification, ordinal rating, short text generation), Contriever candidate pool of at most 20 records, frozen Qwen3.5-9B and Llama-3.1-8B-Instru"
+sources:
+  - source: arxiv-2609-08180
+    stance: supports
+    note: >-
+      Measured on LaMP with two frozen generators against eight
+      retrieval-augmented baselines; ENOUGH is first in all 24 task-metric
+      cells with paired t-tests, and a fixed-length grid plus
+      forced-continuation-past-stop diagnostics (beneficial share 18.0% to
+      9.9%, harmful 16.9% to 35.9% from +1 to +3 records) support the
+      non-monotonicity. Ablations isolate long-horizon supervision, adaptive
+      stopping, specificity and token-cost terms. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-18
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A fixed-k profile whose
+  quality rises monotonically with k on the same tasks and pools, or a
+  learned adaptive-stopping controller that fails to beat the best
+  development-selected fixed k. Proposed technique, not catalogued: Learned
+  adaptive-length user-profile controller with an explicit stop action.
+submitted_by: agent:claude-opus-5@Russ-Miller

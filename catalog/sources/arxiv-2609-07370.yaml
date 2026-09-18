@@ -1,0 +1,56 @@
+id: arxiv-2609-07370
+kind: paper
+title: "Beyond Fluent Generation: A CPU Reliability Benchmark for MCP-Style
+  Tool Calling in Sub-2B Small Language Models for Edge Deployment"
+year: 2026
+date: 2026-09-07
+arxiv_id: "2609.07370"
+url: https://arxiv.org/abs/2609.07370
+tags:
+  - ingested
+summary: "Resource constrained single-board computers including Raspberry Pi,
+  NVIDIA Jetson Nano, Arduino UNO Q, Orange Pi, and LattePanda motivate
+  on-device small language model (SLM) agents that reduce cloud dependence,
+  improve data locality, and tolerate intermittent connectivity. Model Context
+  Protocol (MCP)-style tool invocation demands more than fluent generation: an
+  agent must emit machine-readable JSON, select the correct tool, supply all
+  required arguments, and avoid unintended actions. We establish a
+  platform-agnostic CPU baseline by evaluating five open-weight models below
+  two billion paramet"
+ingested_at: 2026-09-18
+brief: >-
+  Sub-2B models that score well on JSON tool calling do so only because a
+  recovery parser strips away surrounding prose and Markdown fences: across
+  1,000 generations, just 5 complete raw responses parsed as JSON directly.
+
+
+  The SLM-ToolCall-100 benchmark gives 100 prompts across 5 mock tools
+  (get_weather, search_web, calculate, send_email, create_todo) to Phi-1.5,
+  Pythia-1.4B-deduped, TinyLlama-1.1B-Chat, Qwen2.5-0.5B and Qwen2.5-1.5B,
+  under greedy decoding and nucleus sampling (temperature 0.7, p = 0.9), FP32
+  on CPU. Each prompt states the intended tool and every argument value, so
+  the task is copying and serialization, not planning.
+
+
+  Qwen2.5-1.5B sampling led at 79% recovered calls (95% CI 70.0%-85.8%),
+  greedy 75%; Qwen2.5-0.5B fell from 72% greedy to 32% sampling. Phi-1.5
+  scored 0% in both conditions, Pythia and TinyLlama at or below 7%. Of 658
+  failures, 588 (89.4%) terminated at JSON recovery. Qwen2.5-1.5B greedy
+  scored 100% on calculate, to-do and email but 0% on weather, from formatting
+  alone.
+
+
+  Rates are measured with Wilson intervals and paired exact McNemar tests, but
+  sampling was run once per prompt, so 75% versus 79% is not separable from
+  run noise. Checkpoints mix base and chat-tuned models with no chat
+  templates, so parameter count is confounded. The CPU probe used 3 prompts in
+  a shared notebook process on unspecified hardware; RSS orderings are not
+  monotonic in parameters. No quantisation, no execution, no distractor tools,
+  no edge board tested.
+
+
+  Treat reported tool-call accuracy for small models as a property of the
+  parser plus model, and measure strict validity separately.
+brief_generated_at: 2026-09-18
+brief_model: claude-opus-5
+brief_source: full-text

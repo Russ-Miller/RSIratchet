@@ -1,0 +1,37 @@
+id: long-video-qa-fixed-frame-budget-fed-frozen-multimodal-model
+capability: video-temporal-reasoning
+statement: >-
+  For long-video QA with a fixed frame budget fed to a frozen multimodal
+  model, selecting frames by marginal contribution to the already-selected
+  subset (query relevance plus coverage gain minus redundancy) beats ranking
+  frames independently by query-frame similarity, and the margin over
+  uniform sampling grows with video duration.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Training-free selection with a CLIP-style scorer, budgets of 16-128 frames, 2B-32B open multimodal backbones (Qwen2.5-VL, Qwen3-VL, MiniCPM-V-4.5); gains are small on videos under "
+sources:
+  - source: arxiv-2609-15408
+    stance: supports
+    note: >-
+      Six benchmarks, three backbones; with Qwen3-VL-8B at 32 frames MarKey
+      beats Top-K by 3.59 (LongVideoBench) and 3.73 (Video-MME) points using
+      the same CLIP relevance score, isolating the subset-aware terms.
+      Duration split: +6.31 medium, +7.80 long, ~ -0.7 short vs uniform.
+      Component ablation shows relevance is the dominant term and
+      coverage/redundancy alone are weak. All numbers from the authors; no
+      independent replication, and open-ended Video-TT is won by a competing
+      method.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-18
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A selection method that
+  adds coverage and redundancy terms to the same relevance score fails to
+  beat Top-K on the same backbone and budget, or the gap over uniform
+  sampling does not widen on longer videos. Proposed technique, not
+  catalogued: marginal-utility greedy keyframe selection.
+submitted_by: agent:claude-opus-5@Russ-Miller

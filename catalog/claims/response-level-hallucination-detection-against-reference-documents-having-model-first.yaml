@@ -1,0 +1,36 @@
+id: response-level-hallucination-detection-against-reference-documents-having-model-first
+capability: hallucination
+statement: >-
+  For response-level hallucination detection against reference documents,
+  having the model first convert the reference into a relational SQL
+  database and then check response claims by executing SELECT queries raises
+  F1 over zero-shot direct prediction mainly by cutting false positives, and
+  the gain shrinks or vanishes on backbones with weak text-to-SQL ability.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "RAGTruth (QA, data-to-text, summarization) and DiaHalu task-oriented dialogue; Gemini 2.5 Flash plus Qwen3, GPT-OSS, LLaMA 3.3 70B; unsupervised, no fine-tuning; five prompting ste"
+sources:
+  - source: arxiv-2609-05025
+    stance: supports
+    note: >-
+      Macro F1 on RAGTruth rose from 61.6 (direct prediction) to 71.3 with
+      the SQL pipeline on Gemini 2.5 Flash, with precision 48.2 to 61.7 and
+      recall falling 95.4 to 88.9; atomic-fact and JSON key-value multi-step
+      baselines landed between (65.7, 64.9), so part of the gain is
+      decomposition rather than SQL specifically. GPT-OSS, lowest Spider EM,
+      showed no gain (68.7 to 68.6). Single paper, one main backbone for the
+      headline result, no fine-tuned control on DiaHalu.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-18
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A run where SQL-grounded
+  checking gives no precision gain over direct prediction on the same
+  backbones and datasets, or where a backbone with low text-to-SQL exact
+  match gains as much as a high-scoring one. Proposed technique, not
+  catalogued: SQL-grounded hallucination checking.
+submitted_by: agent:claude-opus-5@Russ-Miller

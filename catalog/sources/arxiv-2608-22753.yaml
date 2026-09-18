@@ -1,19 +1,59 @@
 id: arxiv-2608-22753
 kind: paper
-title: "Beyond Factual Knowledge: Benchmarking and Learning Step-Level Procedural Rule Reasoning in Large Language Models"
+title: "Beyond Factual Knowledge: Benchmarking and Learning Step-Level
+  Procedural Rule Reasoning in Large Language Models"
 year: 2026
 date: 2026-08-24
 arxiv_id: "2608.22753"
 url: https://arxiv.org/abs/2608.22753
-tags: [ingested]
-summary: >-
-  Large language models (LLMs) excel at text understanding and generation,
-  yet still struggle to reliably understand and apply externally provided
-  procedural rules at scale. To evaluate this capability, we introduce
-  RuleWorld, a large-scale benchmark that reformulates rules as globally
-  reusable abstract units rather than instance-specific facts. In RuleWorld,
-  several scenarios, including single-rule, parallel multi-rule, and
-  multi-hop reasoning, are settled for comprehensive evaluation. We further
-  propose DynaRule, an end-to-end framework that injects the given rules
-  into the KV cache and turns
+tags:
+  - ingested
+summary: Large language models (LLMs) excel at text understanding and
+  generation, yet still struggle to reliably understand and apply externally
+  provided procedural rules at scale. To evaluate this capability, we
+  introduce RuleWorld, a large-scale benchmark that reformulates rules as
+  globally reusable abstract units rather than instance-specific facts. In
+  RuleWorld, several scenarios, including single-rule, parallel multi-rule,
+  and multi-hop reasoning, are settled for comprehensive evaluation. We
+  further propose DynaRule, an end-to-end framework that injects the given
+  rules into the KV cache and turns
 ingested_at: 2026-09-15
+brief: >-
+  Frontier models can apply a procedural rule when handed it, but they cannot
+  find the right rule inside a large shared rule pool. RuleWorld injects 4.94
+  million abstract, non-commonsense, entity-independent rules (first-order
+  logic and natural language) and asks 3.37M QA instances across 11 sub-tasks:
+  single-rule, parallel multi-rule (up to 8 gold rules), and multi-hop (up to
+  4 hops).
+
+
+  Under 1000 rules in the prompt, claude-sonnet-4-6 averages 0.7763 and
+  gpt-5.5-2026-04-23 0.7283, with multi-hop the weak point (0.5133 and
+  0.3533). DynaRule, which injects rules into the KV cache at an identified
+  low-entropy "confidence layer" (layer 23 of Qwen2.5-7B-Instruct) and
+  re-retrieves on a learned <search> token, reaches 0.8937 average and beats
+  the strongest baseline by up to 19.88 points, with Recall@1 of 0.8613 (FOL)
+  at 10000 rules versus 0.2415 for SR-KI.
+
+
+  Evidence is measured with matched rule pools against prompting,
+  dense/BM25/hybrid RAG, KBLaM, SR-KI, plus IRCoT and a ReAct agent using the
+  same retriever (19.96%/17.96% exact match at 10K rules). Ablations isolate
+  the cause: a per-layer retention test confirms the confidence layer,
+  removing correct rules collapses accuracy to near zero, and gold-rule-only
+  prompting lifts strong models to 74.15\u201389.79%.
+
+
+  Boundaries: DynaRule is trained on 1 base model, tested to 10000 of 4.94M
+  rules, and multi-hop accuracy still falls to 0.1400\u20130.2400 at that
+  scale.
+
+
+  If you rely on long-context or RAG rule injection, expect localization, not
+  application, to be the failure mode.
+brief_generated_at: 2026-09-18
+brief_model: claude-opus-5
+brief_source: full-text
+brief_unverified_figures:
+  - 01389.79%
+  - "0130.2400"

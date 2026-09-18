@@ -2,126 +2,163 @@
 # NOT capabilities -- suggestions awaiting your judgment. A name recurring
 # across several papers is a real candidate; a singleton is usually one
 # author's framing.
-generated_at: 2026-09-13
+generated_at: 2026-09-17
 considered: 80
-proposals: 17
+proposals: 23
 clusters:
+  - proposed_id: cross-modal-evidence-integration
+    proposed_label: "Combining visual and textual evidence instead of favoring one modality"
+    scope_note: "Covers cases where the correct answer requires jointly using image content and text/retrieved facts, and the failure is ignoring or under-attending to one modality; excludes pure perception errors and describing objects not present."
+    paper_count: 2
+    papers:
+      - title: "Func-R1: Incentivizing Mathematical Function Reasoning in Multimodal Large Language Models"
+        arxiv_id: "2609.14779"
+      - title: "Layers, Sinks, and Scaling: Adaptive Evidence Selection for Multimodal Large Language Models"
+        arxiv_id: "2609.16795"
+  - proposed_id: failure-attribution
+    proposed_label: "Attributing failure to a step in a trace"
+    scope_note: "Covers identifying which agent/step in a multi-agent or long execution trace caused the failure and why; excludes finding bugs in a static artifact or fixing one's own answer."
+    paper_count: 1
+    papers:
+      - title: "Beyond LLM-Based Reasoning: Lightweight GNNs for Agent Failure Attribution"
+        arxiv_id: "2608.18575"
+  - proposed_id: in-context-vs-in-weights-learning
+    proposed_label: "Learning from context instead of memorizing"
+    scope_note: "Covers whether an architecture or training run converges to using in-context examples versus memorizing answers in weights, including precise in-context retrieval; excludes retrieval of provided passages at inference in an already-capable model."
+    paper_count: 1
+    papers:
+      - title: "On the Importance of Gating: Memorization vs. In-Context Learning in State Space Models"
+        arxiv_id: "2609.16540"
+  - proposed_id: visual-generation-control
+    proposed_label: "Generating and editing images to specification"
+    scope_note: "Covers whether a model produces or edits visual content that satisfies the requested content, layout, and constraints across generation task families; excludes describing or answering questions about existing images."
+    paper_count: 1
+    papers:
+      - title: "OmniHarness: Harnessing Generalizable Visual Generation via Symbolic Policy Learning"
+        arxiv_id: "2609.16057"
+  - proposed_id: spatial-reasoning
+    proposed_label: "Reasoning about spatial relations"
+    scope_note: "Covers judging relative position, orientation, distance and layout of objects in images or scenes, including verifying stated spatial relations; excludes general object recognition or hallucinated objects."
+    paper_count: 1
+    papers:
+      - title: "A Modular Agent for Reliable and Auditable Spatial Relation Verification in CT Scans"
+        arxiv_id: "2608.21140"
+  - proposed_id: document-understanding
+    proposed_label: "Reading text-dense documents and charts"
+    scope_note: "Covers extracting and reasoning over content in scanned or rendered documents — tables, figures, forms, layout — rather than plain text or natural photos."
+    paper_count: 1
+    papers:
+      - title: "BEAR-Bench: A Bilingual Enterprise and Academic Reasoning Benchmark for Multimodal Models"
+        arxiv_id: "2608.17895"
+  - proposed_id: noisy-input-robustness
+    proposed_label: "Handling typos and corrupted text"
+    scope_note: "Covers accuracy under character-level noise, misspellings, and filler insertion in prompts; excludes meaning-preserving paraphrase or formatting changes."
+    paper_count: 1
+    papers:
+      - title: "Lexical Perturbations Disrupt LLM Reasoning: An Empirical Study of Attention Diversion"
+        arxiv_id: "2608.22140"
+  - proposed_id: selective-unlearning
+    proposed_label: "Removing targeted knowledge without collateral loss"
+    scope_note: "Covers whether specified facts, concepts, or unsafe uses can be erased from a model while closely related benign knowledge and general ability survive; excludes adding or updating knowledge."
+    paper_count: 1
+    papers:
+      - title: "ConceptGuard: Benchmarking Context-Sensitive Unlearning in Large Language Models"
+        arxiv_id: "2608.20338"
+  - proposed_id: reasoning-length-calibration
+    proposed_label: "Spending the right amount of reasoning"
+    scope_note: "Covers overthinking, unnecessarily long chains of thought on easy problems, and whether reasoning can be compressed without losing accuracy; excludes plain accuracy on hard problems."
+    paper_count: 1
+    papers:
+      - title: "SKIP: a Self-knowledge-guided Step-wise Preference Learning Framework for Concise Reasoning"
+        arxiv_id: "2609.17019"
+  - proposed_id: over-refusal
+    proposed_label: "Refusing harmless requests"
+    scope_note: "Covers false-positive refusals and excessive hedging on benign prompts that merely resemble unsafe ones; excludes failures to refuse genuinely harmful requests."
+    paper_count: 1
+    papers:
+      - title: "aiXamine: Unified Black-Box Evaluation of Cross-Dimensional Trade-offs in LLM Safety, Security, and Privacy"
+        arxiv_id: "2608.20554"
+  - proposed_id: physical-reasoning
+    proposed_label: "Reasoning about physical systems"
+    scope_note: "Covers building and using a consistent model of a physical situation (forces, dynamics, intuitive physics) beyond plugging into formulas; excludes generic math word problems."
+    paper_count: 1
+    papers:
+      - title: "Decoupled Physical Modeling and Execution for Physics Reasoning"
+        arxiv_id: "2608.22126"
+  - proposed_id: memory-interference
+    proposed_label: "Not being misled by its own retrieved memories"
+    scope_note: "Covers cases where correctly stored, relevant past memories distort current reasoning or beliefs and hurt performance versus no memory; excludes failures of memory storage or retrieval accuracy."
+    paper_count: 1
+    papers:
+      - title: "MemTrapBench: Benchmarking Cognitive Traps in LLM Memory Use"
+        arxiv_id: "2608.20202"
   - proposed_id: confidence-calibration
-    proposed_label: "Calibrated confidence estimates"
-    scope_note: "Covers whether a model's stated or implied probabilities match observed correctness rates, and how calibration is measured; excludes simply refusing to answer or accuracy itself."
+    proposed_label: "Knowing how likely its own answer is right"
+    scope_note: "Covers whether model-internal confidence signals (entropy, logprobs, verbalized probability) track correctness, including stability of confidence under perturbation; excludes refusing to answer and excludes raw accuracy."
     paper_count: 1
     papers:
-      - title: "Single-Query Black-Box Calibration Auditing via Logit Bias"
-        arxiv_id: "2609.05125"
+      - title: "Beyond Confidence: Stability-Aware Test-Time Adaptation for LLM Reasoning"
+        arxiv_id: "2609.11393"
+  - proposed_id: physical-consistency
+    proposed_label: "Keeping reasoning consistent with physical law"
+    scope_note: "Covers whether model reasoning and outputs obey checkable physical/scientific constraints (conservation, geometry, units, scale), not just final-answer accuracy; excludes purely factual recall in science domains."
+    paper_count: 1
+    papers:
+      - title: "Physics as the label for measuring and correcting materials reasoning in multimodal models"
+        arxiv_id: "2609.12181"
+  - proposed_id: contextual-privacy
+    proposed_label: "Deciding what private information may be shared with whom"
+    scope_note: "Covers whether an agent with access to a user's personal data respects contextual norms about disclosure to third parties under adversarial framing; excludes prompt-injection-style instruction hijacking and general harmful-content refusal."
+    paper_count: 1
+    papers:
+      - title: "Confuse the Model, Control the Flow: Understanding and Mitigating Privacy Leakage from LLM Agents with Information Flow Control"
+        arxiv_id: "2609.14003"
   - proposed_id: generative-visual-reasoning
-    proposed_label: "Solving a problem in the image it produces"
-    scope_note: "Covers image-generation models that must compute a solution and render it faithfully in pixels (puzzles, spatial construction, diagram edits preserving input state); excludes aesthetic quality, prompt alignment, and text-only answers about images."
+    proposed_label: "Reasoning by creating or editing images"
+    scope_note: "Covers whether a model can make intermediate visual artifacts (sketches, edits, re-renderings) that actually help it solve a spatial or visual problem; excludes purely textual reasoning over images and fixed-function visual tools."
     paper_count: 1
     papers:
-      - title: "GenPuzzle: Benchmarking Visual Reasoning in Image Generation Models"
-        arxiv_id: "2609.05902"
-  - proposed_id: social-bias
-    proposed_label: "Stereotyping and social bias in outputs"
-    scope_note: "Covers stereotyped associations about social groups in model outputs or internal representations, including how they vary across languages; excludes harmful-request refusal and general multilingual accuracy gaps."
+      - title: "Reasoning with Image Generation"
+        arxiv_id: "2609.16409"
+  - proposed_id: retrieval-induced-safety-degradation
+    proposed_label: "Keeping refusals intact when documents are in context"
+    scope_note: "Covers whether adding retrieved or supplied benign/relevant documents weakens a model's refusal of harmful requests; excludes explicit instructions injected into data and obfuscated prompt attacks."
     paper_count: 1
     papers:
-      - title: "Tracing Stereotypes from Representation to Output in Multilingual LLMs"
-        arxiv_id: "2609.08322"
-  - proposed_id: in-context-learning
-    proposed_label: "Learning a task from examples in the prompt"
-    scope_note: "Covers inferring and executing a function or generative process from in-context demonstrations without weight updates; excludes retrieval of provided facts and instruction following."
+      - title: "RAG-Safety-Bench: Reliable Evaluation of Retrieval-Augmented LLM Safety"
+        arxiv_id: "2609.11758"
+  - proposed_id: instructed-image-editing
+    proposed_label: "Editing an image as instructed"
+    scope_note: "Covers whether a generative model applies a textual edit instruction to the right region while preserving the rest of the image; excludes text-to-image generation from scratch and image understanding."
     paper_count: 1
     papers:
-      - title: "Transformers as In-Context Samplers: From Closed-Form Diffusion to Estimation-Free Sampling"
-        arxiv_id: "2609.08981"
-  - proposed_id: temporal-knowledge-representation
-    proposed_label: "Representing how things change over time"
-    scope_note: "Covers whether a model tracks trajectories and time-indexed states of facts, values, or opinions rather than only the current snapshot; excludes future forecasting and static cultural alignment."
+      - title: "Semantically Aligned Gradient-Driven Context-Preserving Image Editing"
+        arxiv_id: "2609.12691"
+  - proposed_id: unlearning-robustness
+    proposed_label: "Forgetting targeted knowledge and keeping it forgotten"
+    scope_note: "Covers whether specified knowledge can be removed without collateral utility loss and whether it resurfaces under paraphrase, prompt attacks, or later fine-tuning; excludes adding or updating knowledge."
     paper_count: 1
     papers:
-      - title: "Accurate in space, unreliable in time: how LLMs represent national cultural change"
-        arxiv_id: "2609.01902"
-  - proposed_id: training-data-privacy-leakage
-    proposed_label: "Leaking private training data through outputs"
-    scope_note: "Covers membership, link, attribute, and label inference or memorized-data extraction from model outputs; excludes prompt-level harmful-content refusal."
+      - title: "Test-Time Unlearning via Sparse Autoencoder"
+        arxiv_id: "2609.16229"
+  - proposed_id: activation-steerability
+    proposed_label: "Being controllable by internal-representation steering"
+    scope_note: "Covers whether a target concept is recoverable as a representation that reliably steers behavior, including non-binary multi-category concepts; excludes prompt-based control and purely descriptive interpretability findings."
     paper_count: 1
     papers:
-      - title: "Are LLM-Enhanced GNNs Privacy-Safe?"
-        arxiv_id: "2608.25727"
-  - proposed_id: uncertainty-calibration
-    proposed_label: "Calibrated confidence in its answers"
-    scope_note: "Covers whether confidence or uncertainty estimates track actual correctness, including semantic-consistency-based black-box estimators; excludes explicit refusal/abstention behavior."
+      - title: "MAxBench: A Multinomial Concept Recovery Benchmark"
+        arxiv_id: "2609.13072"
+  - proposed_id: text-to-query-semantic-parsing
+    proposed_label: "Turning questions into correct database queries"
+    scope_note: "Covers generating executable queries (SQL, graph traversals, API filters) that are grounded in a given schema or ontology, including hallucinated tables, fields, and joins; excludes general-purpose program synthesis and retrieval from text passages."
     paper_count: 1
     papers:
-      - title: "BiG-SURE - Bipartite Graph for Semantic Uncertainty and Reliability Estimation of LLMs"
-        arxiv_id: "2608.30646"
-  - proposed_id: figurative-language-understanding
-    proposed_label: "Interpreting figurative language"
-    scope_note: "Covers detecting and interpreting metaphor, idiom, irony and other non-literal meaning; excludes general semantic parsing or factual comprehension."
+      - title: "Symbolic Separation: Grounding Deep Agents in Knowledge Graphs for Trustworthy Operational Data Analytics"
+        arxiv_id: "2609.17107"
+  - proposed_id: structured-information-extraction
+    proposed_label: "Extracting structured records from messy text"
+    scope_note: "Covers pulling entities, attributes, and tables out of unstructured or naturally occurring text, including inferring the schema when none is given; excludes summarization and question answering over the same text."
     paper_count: 1
     papers:
-      - title: "Cross-Dataset Stability of Expert-Informed Skill Prompting and Fine-Tuning for Chinese Metaphor Identification"
-        arxiv_id: "2608.25579"
-  - proposed_id: structured-output-fidelity
-    proposed_label: "Emitting large structured outputs correctly"
-    scope_note: "Covers generating schema-constrained artifacts (JSON, DAGs, config) where accuracy degrades as the number of interdependent fields or nodes emitted in one pass grows; excludes free-form text and code correctness."
-    paper_count: 1
-    papers:
-      - title: "Generating Workflow DAGs from Natural Language with Non-Reasoning LLMs"
-        arxiv_id: "2608.30250"
-  - proposed_id: graph-structure-reasoning
-    proposed_label: "Reasoning over graph structure given in context"
-    scope_note: "Covers reading and computing over explicitly provided relational/topological structure (paths, hops, connectivity, tables-as-graphs); excludes passage-based retrieval grounding and general multi-step inference."
-    paper_count: 1
-    papers:
-      - title: "Graph Evidence Is Not Enough: Diagnosing Native Decoder Use in Graph-Augmented LLMs"
-        arxiv_id: "2608.30437"
-  - proposed_id: internal-state-control
-    proposed_label: "Controlling its own internal representations"
-    scope_note: "Covers whether a model can deliberately steer its own hidden activations given feedback, i.e. privileged introspective access; excludes verbal self-reports and explanation faithfulness."
-    paper_count: 1
-    papers:
-      - title: "In-Context Neurofeedback: Can LLMs Control Their Internal Representations through Privileged Access?"
-        arxiv_id: "2609.00904"
-  - proposed_id: translation-quality
-    proposed_label: "Translating between languages"
-    scope_note: "Covers faithfulness, terminology and domain adaptation in machine translation, including use of in-context exemplars; excludes general cross-language accuracy gaps already under multilingual-disparity."
-    paper_count: 1
-    papers:
-      - title: "Reasoning about In-Context Samples for Machine-Translation"
-        arxiv_id: "2608.27036"
-  - proposed_id: prompt-sensitivity
-    proposed_label: "Stability across prompt phrasings"
-    scope_note: "Covers whether answers change under semantically equivalent rewordings, formatting, or instruction variations; excludes robustness to adversarial jailbreaks or logical rephrasings already tracked."
-    paper_count: 1
-    papers:
-      - title: "Analysis of Prompt Engineering for Drug Toxicity Prediction"
-        arxiv_id: "2609.03635"
-  - proposed_id: black-box-optimization
-    proposed_label: "Proposing good candidates in an optimization loop"
-    scope_note: "Covers using a model as an optimizer proposing batches of candidate solutions from past evaluations in continuous or discrete spaces; excludes single-shot problem solving and planning of action sequences."
-    paper_count: 1
-    papers:
-      - title: "Frontier LLMs are effective batch optimizers: Assessing reasoning models in continuous and discrete settings"
-        arxiv_id: "2609.03177"
-  - proposed_id: run-to-run-consistency
-    proposed_label: "Giving the same result across repeated runs"
-    scope_note: "Covers variance in success across identical repeated attempts at the same task (pass^k vs pass@k reliability); excludes single-run accuracy and deliberate diversity of outputs."
-    paper_count: 1
-    papers:
-      - title: "Closing the Consistency Gap: Self-Evolving Agents That Learn to Stay on Course"
-        arxiv_id: "2609.08832"
-  - proposed_id: generation-social-bias
-    proposed_label: "Stereotype skew in open-ended generation"
-    scope_note: "Covers demographic skew that appears in long-form generated content but not in direct questioning; excludes cultural norm knowledge and multilingual accuracy gaps."
-    paper_count: 1
-    papers:
-      - title: "LLMs Mirror Country-Specific Gender Patterns If Asked, but Skew Male When Generating Media in Local Languages"
-        arxiv_id: "2609.06545"
-  - proposed_id: implicit-intent-inference
-    proposed_label: "Inferring unstated user needs"
-    scope_note: "Covers satisfying implicit requirements and context-dependent expectations in underspecified open-ended requests; excludes explicit instruction following and abstention on unanswerable items."
-    paper_count: 1
-    papers:
-      - title: "xDailyBench: Benchmarking LLMs on Professional Consultation for Real-Life Problems"
-        arxiv_id: "2609.07784"
+      - title: "TEAR: Table Extraction with Attribute Recommendation from Texts via Large Language Models"
+        arxiv_id: "2609.15205"

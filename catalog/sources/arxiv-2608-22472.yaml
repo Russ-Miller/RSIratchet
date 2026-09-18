@@ -1,19 +1,54 @@
 id: arxiv-2608-22472
 kind: paper
-title: "Small Reasoning Models are Instruction Followers in Function Calling"
+title: Small Reasoning Models are Instruction Followers in Function Calling
 year: 2026
 date: 2026-08-23
 arxiv_id: "2608.22472"
 url: https://arxiv.org/abs/2608.22472
-tags: [ingested]
-summary: >-
-  Function calling represents the core capability of agentic large language
-  models (LLMs). Existing research has focused on enhancing LLMs
-  function-calling accuracy through fine-tuning, reinforcement learning
-  (RL), and multi-agent frameworks, particularly for native function-calling
-  LLMs. This work demonstrates that LLMs achieve superior accuracy in
-  function calling in instruction-following contexts (i.e., standard
-  user-assistant interactions) rather than a tool calling context. We
-  introduce Instruction-Followed Function Calling (IFFC), a novel framework
-  that decouples function-calling logic fro
+tags:
+  - ingested
+summary: Function calling represents the core capability of agentic large
+  language models (LLMs). Existing research has focused on enhancing LLMs
+  function-calling accuracy through fine-tuning, reinforcement learning (RL),
+  and multi-agent frameworks, particularly for native function-calling LLMs.
+  This work demonstrates that LLMs achieve superior accuracy in function
+  calling in instruction-following contexts (i.e., standard user-assistant
+  interactions) rather than a tool calling context. We introduce
+  Instruction-Followed Function Calling (IFFC), a novel framework that
+  decouples function-calling logic fro
 ingested_at: 2026-09-15
+brief: >-
+  Framing tool use as ordinary instruction-following, rather than using a
+  model's native function-calling tokens and JSON schemas, raises
+  function-calling accuracy in small models. The effect is largest for models
+  with explicit reasoning traces enabled.
+
+
+  The IFFC framework moves tool routing out of the main QA model into a
+  separate small reasoning model that receives tool definitions as a system
+  instruction and answers as a normal assistant turn, with ReAct. Tested on
+  BFCL V3 Live and Non-Live across Gemma-3 (1B, 4B, 12B), Phi-4 Mini, Qwen-3
+  (0.6B-8B), against native function calling (NFC) and prompt-based function
+  calling (PFC).
+
+
+  Phi-4 Mini goes from 30.0 to 44.3 on Live; Qwen-3 4B Think reaches 86.7 Live
+  and 94.1 Non-Live versus 82.8 PFC and 81.5 NFC. On Non-Live Simple/Multiple,
+  Qwen-3 4B IFFC hits 96.0/97.5 against Claude 4.5 Sonnet NFC at 72.6/95.5 and
+  GPT 5.2 at 72.9/88.0. Reasoning matters: Qwen-3 0.6B goes 22.9 to 57.7 Live
+  with thinking on. Under Q4KM quantization, Qwen-3 4B Think holds 93.5 vs
+  94.1 at FP16, while Gemma-3 1B falls 23.9 to 8.7 and Qwen-3 0.6B NoThink
+  62.3 to 16.8.
+
+
+  The think/no-think toggle within 1 model family is a clean ablation of
+  reasoning. Proprietary baselines are run only in NFC mode, so the comparison
+  mixes paradigm and model. Latency of the extra sequential inference step is
+  acknowledged but not measured, and results come from 1 benchmark family.
+
+
+  If you are deploying small models as tool routers, drop native tool tokens
+  and keep the reasoning trace on.
+brief_generated_at: 2026-09-18
+brief_model: claude-opus-5
+brief_source: full-text

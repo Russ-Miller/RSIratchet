@@ -1,0 +1,53 @@
+id: arxiv-2609-07286
+kind: paper
+title: "TAD: Token-Adaptive Contrastive Decoding with Confidence-Guided Gating
+  for Hallucination Mitigation in Large Audio-Language Models"
+year: 2026
+date: 2026-09-07
+arxiv_id: "2609.07286"
+url: https://arxiv.org/abs/2609.07286
+tags:
+  - ingested
+summary: Large audio-language models (LALMs) can hallucinate audio objects,
+  answering "yes" to absent sound events, thus undermining reliability in
+  audio question answering. We propose Token-Adaptive Decoding (TAD), a
+  training-free strategy for hallucination mitigation that grounds the initial
+  yes/no decision by contrasting logits under real audio with a matched silent
+  reference. TAD introduces a token-adaptive, confidence-guided gate that is
+  decision-critical at the first decoding step and class-conditional on
+  affirmative tokens, using the audio-silent margin to avoid overcorrection
+  when evidence is w
+ingested_at: 2026-09-18
+brief: >-
+  Audio-language models' yes/no hallucinations are largely settled at the
+  first decoding token, and a penalty applied only there, only to affirmative
+  tokens, and only when audio fails to move the yes-no margin, beats applying
+  a fixed contrast strength across all steps.
+
+
+  Token-Adaptive Decoding (TAD) is training-free: it pools logits over yes/no
+  subword variants with log-sum-exp under real audio and an all-zero silent
+  waveform, computes the margin gain, and subtracts a penalty from yes tokens
+  when the gain falls below a threshold. Tested on Qwen2-Audio-7B-Instruct and
+  Gemma-3n-E4B-it over AudioCaps-Hallucination (Random/Adversarial/Popular)
+  and the 1,991 yes/no subset of Clotho-AQA, against default decoding, AAD,
+  and AVS.
+
+
+  Against AAD, F1 rises by 0.059 to 0.117 for Qwen2 and 0.025 to 0.064 for
+  Gemma on AudioCaps-Hallucination; Qwen2 Random F1 goes 0.395 default to
+  0.853. On Clotho-AQA, Qwen2 F1 moves 0.810 to 0.816; Gemma is slightly
+  behind AAD at 0.650 vs 0.658.
+
+
+  Gains are measured with matched baselines but come mostly from recall:
+  Gemma's accuracy on Clotho-AQA drops to 0.524 at alpha=1.0, and AVS still
+  wins on Qwen2 Adversarial (0.524) and Gemma Random (0.727). The authors do
+  not ablate alpha, tau, or gamma.
+
+
+  Only binary presence questions, 2 models, no open-ended generation. Useful
+  if you need calibrated rejection rather than balanced accuracy.
+brief_generated_at: 2026-09-18
+brief_model: claude-opus-5
+brief_source: full-text

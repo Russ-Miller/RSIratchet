@@ -1,49 +1,59 @@
 # Consolidated capability candidates. Suggestions, not capabilities.
-generated_at: 2026-09-13
-from_raw_proposals: 17
+generated_at: 2026-09-17
+from_raw_proposals: 22
 recommended:
+  - id: physical-and-spatial-reasoning
+    label: "Reasoning about physical and spatial situations"
+    scope_note: "Covers building and using a consistent model of a scene or physical system — relative position, orientation, layout, forces, dynamics, units and conservation constraints; excludes object recognition, hallucinated objects, and generic math word problems."
+    paper_count: 3
+    merged_from: [spatial-reasoning, physical-reasoning, physical-consistency]
+    note: "Three proposals point at the same underlying world-model failure and nothing in the index covers it (visual-grounding is about grounding answers in pixels, not spatial or physical structure)."
+  - id: targeted-unlearning
+    label: "Removing targeted knowledge and keeping it removed"
+    scope_note: "Covers erasing specified facts, concepts, or unsafe capabilities while preserving related benign knowledge and general ability, including whether the removed content resurfaces under paraphrase, attack, or later fine-tuning; excludes adding or editing in new knowledge."
+    paper_count: 2
+    merged_from: [selective-unlearning, unlearning-robustness]
+    note: "Two independent proposals converge on the same construct, and neither knowledge-updating nor fine-tuning-retention covers removal and its durability."
+  - id: visual-generation-control
+    label: "Generating and editing images to specification"
+    scope_note: "Covers whether generated or edited visual output satisfies the requested content, layout, and constraints, including applying an edit to the right region while preserving the rest; excludes describing or answering questions about existing images."
+    paper_count: 2
+    merged_from: [visual-generation-control, instructed-image-editing]
+    note: "The index is entirely about understanding modalities, not producing them, so controllable generation is a real gap with repeat evidence."
+  - id: cross-modal-evidence-integration
+    label: "Combining visual and textual evidence"
+    scope_note: "Covers cases where the answer requires jointly using image content and text or retrieved facts, and the failure is ignoring or under-weighting one modality; excludes pure perception errors and object hallucination."
+    paper_count: 2
+    merged_from: [cross-modal-evidence-integration]
+    note: "Two papers on a distinct failure mode that visual-grounding and retrieval-utilization each only half cover."
+  - id: over-refusal
+    label: "Refusing harmless requests"
+    scope_note: "Covers false-positive refusals and excessive hedging on benign prompts that merely resemble unsafe ones; excludes failure to refuse genuinely harmful requests."
+    paper_count: 2
+    merged_from: [over-refusal, retrieval-induced-safety-degradation]
+    note: "The natural complement to jailbreak-robustness, which the index currently measures in only one direction."
   - id: confidence-calibration
-    label: "Calibrated confidence"
-    scope_note: "Covers whether stated or implied confidence tracks actual correctness rates, including black-box uncertainty estimators; excludes outright refusal to answer, which abstention-and-self-knowledge covers."
-    paper_count: 2
-    merged_from: [confidence-calibration, uncertainty-calibration]
-    note: "Two independent proposals converge on a well-defined, widely measured property that the existing abstention entry only partially covers."
-  - id: social-bias
-    label: "Stereotyping and social bias"
-    scope_note: "Covers demographic skew and stereotyped associations in model outputs, including bias that surfaces only in long-form generation or in some languages; excludes refusal of harmful requests and general multilingual accuracy gaps."
-    paper_count: 2
-    merged_from: [social-bias, generation-social-bias]
-    note: "Recurring, coherent, and not covered by cultural-competence or multilingual-disparity."
-  - id: response-stability
-    label: "Giving the same answer twice"
-    scope_note: "Covers variance in output or success across semantically equivalent rephrasings and across identical repeated runs (pass^k-style reliability); excludes adversarial jailbreak robustness and deliberate output diversity."
-    paper_count: 2
-    merged_from: [prompt-sensitivity, run-to-run-consistency]
-    note: "Two framings of the same underlying reliability property, and a practical failure mode no existing entry names."
-  - id: in-context-learning
-    label: "Learning a task from examples in the prompt"
-    scope_note: "Covers inferring and applying an unseen function or generative process from in-context demonstrations without weight updates; excludes using retrieved facts or following explicit instructions."
+    label: "Knowing how likely its own answer is right"
+    scope_note: "Covers whether internal or verbalized confidence signals track correctness and stay stable under perturbation; excludes refusing to answer and excludes raw accuracy."
     paper_count: 1
-    merged_from: [in-context-learning]
-    note: "Single proposal, but a foundational capability distinct from procedure-following and retrieval-utilization that the index conspicuously lacks."
+    merged_from: [confidence-calibration]
+    note: "Calibration is a long-standing, well-defined capability that abstention-and-self-knowledge treats only as a binary refuse/answer decision."
+  - id: reasoning-length-calibration
+    label: "Spending the right amount of reasoning"
+    scope_note: "Covers overthinking on easy problems, underthinking on hard ones, and whether chains of thought can be shortened without losing accuracy; excludes plain accuracy on hard problems."
+    paper_count: 1
+    merged_from: [reasoning-length-calibration]
+    note: "A cleanly defined efficiency capability that multi-step-reasoning does not touch and that is now widely measured for reasoning models."
 set_aside:
-  - id: training-data-privacy-leakage
-    note: "Real concern but it is a security property of a training pipeline more than a model capability, and one paper is thin evidence."
-  - id: structured-output-fidelity
-    note: "One-off framing largely absorbed by procedure-following and code-generation."
-  - id: graph-structure-reasoning
-    note: "A task domain that multi-step-reasoning and state-tracking already cover."
+  - id: document-understanding
+    note: "These read as task domains — document QA, information extraction, text-to-SQL — better handled by domain-knowledge, visual-grounding, and code-generation than as a new capability."
+  - id: failure-attribution
+    note: "Single-paper framings that error-detection, critique, and self-repair already cover from the angles that matter."
+  - id: noisy-input-robustness
+    note: "One-off perturbation study rather than a capability the index would track over time."
+  - id: mechanistic-controllability
+    note: "These are interpretability and training-dynamics techniques about how a model works, not capabilities a model is good or bad at."
+  - id: contextual-privacy
+    note: "Plausible and uncovered, but one paper and heavily overlapping with prompt-injection and goal-conflict-safety in practice — revisit if more evidence accumulates."
   - id: generative-visual-reasoning
-    note: "Narrow one-off framing tied to a specific benchmark style."
-  - id: temporal-knowledge-representation
-    note: "Single paper, and mostly spanned by knowledge-updating and factual-recall."
-  - id: internal-state-control
-    note: "Speculative one-off research framing, not a capability worth tracking yet."
-  - id: implicit-intent-inference
-    note: "Interesting but single-source and hard to separate from general instruction quality."
-  - id: translation-quality
-    note: "A task domain, and multilingual-disparity already occupies this space."
-  - id: figurative-language-understanding
-    note: "Narrow linguistic task rather than a capability the index tracks."
-  - id: black-box-optimization
-    note: "A usage pattern/technique, not a distinct capability, and evidenced by one paper."
+    note: "A single speculative framing that folds into visual-generation-control plus existing reasoning entries."
