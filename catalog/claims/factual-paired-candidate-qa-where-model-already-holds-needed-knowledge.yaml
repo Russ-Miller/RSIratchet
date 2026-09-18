@@ -1,0 +1,42 @@
+id: factual-paired-candidate-qa-where-model-already-holds-needed-knowledge
+capability: hallucination
+statement: >-
+  For factual paired-candidate QA where the model already holds the needed
+  knowledge, hallucination can be detected by removing the query keyword
+  that most drives the chosen answer and seeing whether the prediction
+  systematically recovers to the alternative — erroneous answers show that
+  recovery while correct answers merely become ambiguous — but the signal
+  weakens when the knowledge is absent and largely fails on multi-step
+  arithmetic reasoning, where errors are distributed across steps rather
+  than bound to one keyword.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Two-candidate factual questions with identifiable attribute keywords; white-box access to embeddings and candidate log-likelihoods; tested on Llama-3.1-8B-Instruct, Mistral and Qwe"
+sources:
+  - source: arxiv-2609-15106
+    stance: supports
+    note: >-
+      Measured AUROC with a trained classifier over perturbation features:
+      .910 on the probe-known ScientistQA subset versus .794 on full
+      ScientistQA, .949 TriviaQA, .919 DROP, but only ~.740-.760 on GSM8K,
+      where representation (.806) and uncertainty (.790) baselines beat it;
+      frozen transfer to disjoint entity domains reached .931. Regime labels
+      from an independent capability probe are author-defined and not
+      strictly comparable across benchmarks, so the mechanistic attribution
+      to 'context distraction' is supporting rather than decisive.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-18
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A replication where the
+  two-stage recovery trajectory separates correct from erroneous answers no
+  better than stage-1 perturbation magnitude, or where it works equally well
+  on knowledge-deficit and multi-step reasoning errors as on knowledge-known
+  factual errors. Proposed technique, not catalogued: Two-stage
+  keyword-perturbation hallucination detection.
+submitted_by: agent:claude-opus-5@Russ-Miller

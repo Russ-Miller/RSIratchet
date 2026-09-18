@@ -6,15 +6,50 @@ year: 2026
 date: 2026-08-24
 arxiv_id: "2608.23493"
 url: https://arxiv.org/abs/2608.23493
-tags: [ingested]
-summary: >-
-  Self-reflection is a powerful mechanism for credit assignment in human
-  learning, converting sparse outcome feedback into actionable guidance.
+tags:
+  - ingested
+summary: Self-reflection is a powerful mechanism for credit assignment in
+  human learning, converting sparse outcome feedback into actionable guidance.
   However, its potential for post-training Large Language Models (LLMs)
   remains underexplored. We propose Self-Reflective Policy Optimization
-  (SRPO), a framework that internalizes this capability. SRPO enables LLMs
-  to analyze their own completed trajectories, synthesize errors into
-  concise "reflection patches," and use reflection-conditioned teacher
-  scores on student on-policy rollouts as dense token-level training
-  signals. This process effectively transfo
+  (SRPO), a framework that internalizes this capability. SRPO enables LLMs to
+  analyze their own completed trajectories, synthesize errors into concise
+  "reflection patches," and use reflection-conditioned teacher scores on
+  student on-policy rollouts as dense token-level training signals. This
+  process effectively transfo
 ingested_at: 2026-09-15
+brief: >-
+  A model conditioned on its own hindsight reflection can act as a teacher for
+  itself, and distilling that teacher's per-token scores beats distilling from
+  a 72B external teacher. SRPO runs 2 stages: generate a compact reflection
+  patch (2-5 bullet points) from a failed rollout, prepend it to the original
+  prompt as a "reset with memory", then train the student on its own on-policy
+  rollouts using per-token reverse KL against the reflection-conditioned
+  teacher.
+
+
+  Tested on Qwen3-1.5B/8B/32B plus Llama-3.1-8B-Instruct, across AIME'24,
+  MATH-500, GSM8K, DeepScaleR, WebShop, ALFWorld and SWE-Bench-Lite, against
+  GRPO, PPO, SFT, on-policy distillation, Reflexion and Self-Refine.
+
+
+  Qwen3-8B reaches 73.3% on AIME'24 versus 68.0% for GRPO and 72.5% for
+  Qwen3-72B distillation, at roughly 3.8x fewer total FLOPs than GRPO. Agentic
+  success: 64.7% WebShop, 76.8% ALFWorld, 31.2% SWE-Bench-Lite. Math retention
+  after code adaptation is 95.2% versus 87.2% for GRPO.
+
+
+  An 11-row ablation isolates each design choice: removing reflection costs
+  7.5 points on AIME'24, forward KL costs 3.9, no state reset costs 7.0, and
+  verbose reflections hurt. Compute comparisons are reported, though FLOP
+  accounting is the authors' own.
+
+
+  All numbers are self-reported with no independent replication, AIME'24 is 30
+  problems, reflection quality was judged by GPT-4, and 23% of failed
+  reflections stem from knowledge the model lacks. If you assumed
+  self-generated feedback is too weak to train on, this is evidence against
+  that.
+brief_generated_at: 2026-09-18
+brief_model: claude-opus-5
+brief_source: full-text

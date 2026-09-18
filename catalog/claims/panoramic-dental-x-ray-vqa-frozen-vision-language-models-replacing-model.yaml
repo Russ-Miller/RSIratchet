@@ -1,0 +1,42 @@
+id: panoramic-dental-x-ray-vqa-frozen-vision-language-models-replacing-model
+capability: visual-grounding
+statement: >-
+  For panoramic dental X-ray VQA with frozen vision-language models,
+  replacing the model's own spatial judgement with external detector
+  findings that are deterministically bound to tooth identities before
+  synthesis raises answer accuracy over the same two-pass pipeline without
+  detectors, and the resulting accuracy is bounded by detector quality —
+  degrading the identity/attribution detector costs more downstream accuracy
+  than a much larger degradation of a task-specific pathology detector.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Panoramic dental radiographs (MMOral-OPG-Bench, 100 images, 491 closed / 578 open questions); four instruction-following VLM backbones plus Qwen2.5-VL-7B; synthesis prompted to pri"
+sources:
+  - source: arxiv-2609-17800
+    stance: supports
+    note: >-
+      Matched-pipeline ablation: same VLM, prompts, two-pass structure,
+      detectors removed. Closed-ended overall +11.8 to +23.7 points,
+      open-ended +14.0 to +22.4 points across four backbones, consistent
+      under two LLM judges; 43 of 44 category comparisons favor tools.
+      Tool-quality ablation on one backbone (mistral-large-3): FDI
+      92.4->88.1 mAP@50 cost 3.3 mean points, dental-history 87.6->59.0 cost
+      2.7. Weakest category is closed-ended Jaw, where a low-precision
+      bone-loss detector propagates false positives. Single run per config;
+      no repeated-run variance; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-18
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A matched comparison
+  where adding deterministically ID-bound detector evidence fails to beat
+  the detector-free pipeline, or where weakening the identity/grounding
+  detector by a few mAP points costs less downstream accuracy than a far
+  larger degradation of a task-specific detector. Proposed technique, not
+  catalogued: Deterministic grounding of expert-detector findings to entity
+  IDs before VLM synthesis.
+submitted_by: agent:claude-opus-5@Russ-Miller

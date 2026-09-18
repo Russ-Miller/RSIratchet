@@ -1,0 +1,39 @@
+id: 8b-model-verifies-natural-language-claims-against-knowledge-graph-triples-scoring
+capability: fact-verification
+statement: >-
+  When an 8B model verifies natural-language claims against knowledge-graph
+  triples, scoring the evidence twice under opposing prompts (argue it
+  supports, argue it refutes) and adjudicating between the two arguments
+  avoids the bias toward a "Supported" verdict that a single-perspective
+  assessment shows, and is the largest single contributor to accuracy in
+  that pipeline.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Binary supported/refuted claims grounded in DBpedia triples (FactKG), Qwen3-8B running all agent roles zero-shot, evidence retrieved by adjacency lookup plus LLM filtering."
+sources:
+  - source: arxiv-2609-13808
+    stance: supports
+    note: >-
+      One dataset (FactKG test, 9,041 claims). Full system 88.12% vs 63.20%
+      with dialectical reasoning removed, the biggest of three ablations;
+      also beats GPT-4o program-generation baseline PGR (86.82%) with the
+      largest margin on negation claims (88.89 vs 81.16). The bias direction
+      is asserted from the ablation rather than shown with reported
+      label-distribution numbers, and there is no compute-matched
+      single-perspective control, so the credit split between two prompts
+      and two extra LLM calls is not isolated.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-18
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An ablation where replacing
+  bidirectional scoring with single-perspective scoring leaves accuracy and
+  the supported/refuted label distribution roughly unchanged, or where the
+  reported gain is matched by simply sampling the single-perspective judge
+  twice at equal compute. Proposed technique, not catalogued: Dialectical
+  bidirectional verification with confidence-gap stopping.
+submitted_by: agent:claude-opus-5@Russ-Miller

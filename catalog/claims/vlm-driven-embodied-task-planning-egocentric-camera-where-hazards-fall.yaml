@@ -1,0 +1,41 @@
+id: vlm-driven-embodied-task-planning-egocentric-camera-where-hazards-fall
+capability: embodied-control
+statement: >-
+  For VLM-driven embodied task planning with an egocentric camera, where
+  hazards can fall out of view, the form of the memory handed to a risk
+  predictor decides whether safety improves: an object-relation graph that
+  retains out-of-view objects and updates edges after actions raises safe
+  success rate well above no memory, while feeding the full image history or
+  a flat list of seen objects scores below having no memory at all, because
+  relationships and structure, not object recall, are what risk prediction
+  needs.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "GPT-4o planner and risk predictor, IS-Bench household tasks modified to a single egocentric RGB-D view plus a 4-task real Franka setup; hazards must have been observed at some earl"
+sources:
+  - source: arxiv-2609-08444
+    stance: supports
+    note: >-
+      Measured on IS-Bench across four hazard categories (roughly 6 tasks
+      per category, so small samples) and 10 real-robot runs per task.
+      Average SSR 0.59 for graph vs 0.21 without graph memory, 0.13 full
+      history, 0.38 RAG, 0.17 object list; removing invisible-object
+      retention drops SSR to 0.21 and removing action-aware edge update to
+      0.38. Task success rate barely moves, so the effect is specific to
+      safety. Single model, small per-cell counts, no seeds or variance
+      reported.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-18
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An ablation on the same
+  benchmark in which full-history image context or a seen-object list
+  matches the relation graph's safe success rate, or in which removing
+  edges/out-of-view retention leaves safe success unchanged. Proposed
+  technique, not catalogued: Object-relation graph memory with
+  risk-predictor replanning.
+submitted_by: agent:claude-opus-5@Russ-Miller

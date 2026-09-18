@@ -33,3 +33,38 @@ notes: "Forwarded by Russ 2026-09-17: the paper proposes passing KV-cache
   state between models through a learned projection instead of exchanging
   text; a mechanism for combining models that bears on the two-heads adage"
 ingested_at: 2026-09-17
+brief: >-
+  Two language models can pass semantic content to each other by projecting
+  and fusing KV-caches directly, beating the usual text hand-off on both
+  accuracy and latency. Cache-to-Cache (C2C) trains a small fuser network that
+  concatenates a Sharer model's KV-cache with a Receiver's, reweights it, and
+  injects it through a per-layer learnable gate, with both LLMs frozen and
+  token/layer alignment handled explicitly across tokenizers and depths.
+
+
+  Tested with Qwen3-0.6B as Receiver against Qwen2.5-0.5B, Llama3.2-1B and
+  Qwen3-4B-Base Sharers on OpenBookQA, MMLU-Redux, ARC-C and C-Eval, C2C
+  raised accuracy over the Receiver alone by 11.00%, 9.64% and 11.88%, and
+  over text-to-text by 5.36%, 4.15% and 3.06%, with T2T speedups of 3.46x,
+  1.51x and 14.41x. On MMLU-Redux the Sharer's 80 text output tokens cost
+  1312ms of decoding versus 90ms of cache fusion.
+
+
+  The design isolates causes reasonably. An ablation separates added trainable
+  capacity (fine-tuning the Receiver alone, 596M params) from self-fusion
+  (Identical, same model both roles) from heterogeneous C2C, which wins on all
+  4 benchmarks; component ablation attributes +24.18% to residual fusion and
+  +3.07% to gating. Baselines include query-level routing and matched
+  Receivers.
+
+
+  Limits: mostly 0.5B-1.5B pairs, multiple-choice benchmarks with 64-token
+  generations, pairwise only, and a weak Sharer can still mislead a stronger
+  Receiver.
+
+
+  If you build multi-model pipelines, the text interface is not the only
+  option.
+brief_generated_at: 2026-09-18
+brief_model: claude-opus-5
+brief_source: full-text
