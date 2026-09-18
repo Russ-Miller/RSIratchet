@@ -94,6 +94,7 @@ export type AdageVerdict = "holds" | "breaks" | "narrows";
 export interface AdageEvidence { claim: string; verdict: AdageVerdict; note: string }
 export interface Adage {
   id: string; label: string; aliases?: string[]; statement: string; origin: string; transfer: string;
+  sources?: string[];
   evidence?: AdageEvidence[];
   evidence_search?: { searched_on: string; note: string; nearest_miss?: string[] };
   status: "active" | "retired"; submitted_by: string; notes?: string;
