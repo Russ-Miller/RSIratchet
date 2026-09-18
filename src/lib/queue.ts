@@ -127,3 +127,26 @@ export function capabilityShortlist(): CapabilityCandidate[] {
   const parsed = YAML.parse(fs.readFileSync(p, "utf8"));
   return (parsed?.recommended ?? []) as CapabilityCandidate[];
 }
+
+/**
+ * Queue papers pointing at a capability that have not yet become a source in
+ * the catalog. This is what a proposed capability rests on, and what an
+ * active one has waiting. Judged ones (a stage-2 verdict) first, then by
+ * date, newest first.
+ */
+export function queueForCapability(capabilityId: string, catalogArxivIds: Set<string>): { candidate: QueueCandidate; verdict?: Verdict }[] {
+  const out: { candidate: QueueCandidate; verdict?: Verdict }[] = [];
+  const seen = new Set<string>();
+  for (const c of loadQueue().candidates) {
+    const key = c.arxiv_id ?? c.openalex_id;
+    if (seen.has(key)) continue;
+    if (c.arxiv_id && catalogArxivIds.has(c.arxiv_id)) continue;
+    const v = verdictFor(c, capabilityId);
+    const tagged = (c.capabilities ?? []).includes(capabilityId);
+    if (!tagged && !v) continue;
+    if (v && !v.about_capability) continue;
+    seen.add(key);
+    out.push({ candidate: c, verdict: v });
+  }
+  return out.sort((a, b) => (b.verdict ? 1 : 0) - (a.verdict ? 1 : 0) || (b.candidate.date ?? "").localeCompare(a.candidate.date ?? ""));
+}

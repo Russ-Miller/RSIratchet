@@ -114,7 +114,10 @@ Draft one claim from this paper.`;
 // ---------------------------------------------------------------------------
 
 const catalog = loadCatalog();
-const capabilities = catalog.capabilities.map((c) => c.data).filter((c) => c.status === "active");
+// Proposed capabilities are included on purpose: a claim filed under one is
+// pending-review like any other, and the page is how a reader judges whether
+// the capability is real. Only parked ones are excluded.
+const capabilities = catalog.capabilities.map((c) => c.data).filter((c) => c.status === "active" || c.status === "proposed");
 const techniques = catalog.techniques.map((t) => t.data);
 const claims = catalog.claims.map((c) => c.data);
 const capIds = new Set(capabilities.map((c) => c.id));
