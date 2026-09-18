@@ -1605,3 +1605,19 @@ reset channel is the machine with the checkout: `npm run admin:password`
 (add `--vercel` to push the new hash to production, then deploy). The site
 went from fully static to static plus a proxy on four paths and two route
 handlers; every catalog page is still a static file.
+
+## 2026-09-18 — Proposed capabilities fill themselves in
+
+A proposed capability used to be a dead end: the papers that motivated it
+stayed in the queue untagged, and the drafting stage offered only active
+capabilities, so the page showed nothing until a person promoted it. That
+contradicted the rule that nothing waits on review to be shown.
+
+Three changes. `scripts/rematch-queue.mjs` (nightly, before stage 2) re-runs
+capability matching over the whole queue against the current catalog, adding
+tags only, so a paper fetched before a capability existed gets judged against
+it. `draft-claims` now drafts against proposed capabilities as well as active
+ones; the resulting claims are unreviewed like every other draft. Capability
+pages show "In the review queue": matched papers not yet filed as sources,
+with the stage-2 verdict where there is one. The dispute link, not a review
+gate, is how a reader knows nothing here is settled.

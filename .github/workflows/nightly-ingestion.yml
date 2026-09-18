@@ -113,6 +113,16 @@ jobs:
           node scripts/backfill.mjs --weeks "${{ inputs.backfill_weeks || '1' }}" --top "${{ inputs.backfill_top || '40' }}" 2>&1 | tee -a "$RUN_LOG"
           echo '```' >> "$RUN_LOG"
 
+      # Between 1 and 2 — tag older queue papers with capabilities added since
+      # they were fetched, so a paper that motivated a proposed capability is
+      # judged against it rather than forgotten. Free, no key.
+      - name: Rematch queue against current capabilities
+        run: |
+          echo '## Rematch' >> "$RUN_LOG"
+          echo '```' >> "$RUN_LOG"
+          node scripts/rematch-queue.mjs 2>&1 | tee -a "$RUN_LOG"
+          echo '```' >> "$RUN_LOG"
+
       # Stage 2 — judges direction and contradiction for newly matched papers.
       - name: Classify direction
         if: env.HAS_ANTHROPIC_KEY == 'true'
