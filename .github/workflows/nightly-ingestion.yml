@@ -17,8 +17,8 @@ on:
   workflow_dispatch:         # and on demand from the Actions tab
     inputs:
       days:
-        description: "Trailing window in days"
-        default: "7"
+        description: "Trailing window in days. Wider than OpenAlex's indexing lag on purpose: a paper indexed after a 7-day window had passed it was never fetched (2609.11801, 2026-09-18). Overlap is free; the seen-ledger drops repeats before any paid stage."
+        default: "14"
       classify_limit:
         description: "Max candidate x capability pairs to classify (cost control). Tonight's window is about 25; a backfilled week adds about 45 after pruning."
         default: "100"
@@ -73,7 +73,7 @@ jobs:
             echo "# Ingestion run $(date -u +'%Y-%m-%d %H:%M UTC')"
             echo
             echo "- workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-            echo "- window: ${{ inputs.days || '7' }} days · classify limit ${{ inputs.classify_limit || '100' }} · propose limit ${{ inputs.propose_limit || '80' }}"
+            echo "- window: ${{ inputs.days || '14' }} days · classify limit ${{ inputs.classify_limit || '100' }} · propose limit ${{ inputs.propose_limit || '80' }}"
             echo "- paid stages: ${{ env.HAS_ANTHROPIC_KEY == 'true' && 'enabled' || 'SKIPPED (no ANTHROPIC_API_KEY)' }}"
             echo
           } >> "$RUN_LOG"
@@ -99,7 +99,7 @@ jobs:
         run: |
           echo '## Stage 1 — fetch candidates (OpenAlex)' >> "$RUN_LOG"
           echo '```' >> "$RUN_LOG"
-          node scripts/fetch-openalex.mjs --days "${{ inputs.days || '7' }}" 2>&1 | tee -a "$RUN_LOG"
+          node scripts/fetch-openalex.mjs --days "${{ inputs.days || '14' }}" 2>&1 | tee -a "$RUN_LOG"
           echo '```' >> "$RUN_LOG"
 
       # Stage 1b -- the back catalogue, one week per night, walking backwards

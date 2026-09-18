@@ -131,8 +131,10 @@ if (!from) {
   // Trailing window, not just yesterday: OpenAlex ingests arXiv with a lag of
   // several days, so a 1-day window structurally misses it. A trailing window
   // plus the seen-ledger is self-healing -- papers get picked up whenever they
-  // are finally indexed, and are never surfaced twice.
-  const days = Number(arg("days") ?? 7);
+  // are finally indexed, and are never surfaced twice -- but only if the
+  // window is wider than the lag: a paper indexed after a 7-day window had
+  // moved past it was lost (2609.11801, seen 2026-09-18), hence 14.
+  const days = Number(arg("days") ?? 14);
   const end = new Date();
   const start = new Date(end);
   start.setDate(start.getDate() - days);
