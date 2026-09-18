@@ -1382,7 +1382,7 @@ that holds says what was already believed, one that breaks says how models
 differ from people. Detail pages list breaks before holds for the same
 reason.
 
-Seeded with six: Goodhart's law, Hashimoto's ratchet, no one should be judge
+Seeded with six: Goodhart's law, Hashimoto's rule (named in an X post by Alex Veremeyenko; "ratchet" is the playbook's word), no one should be judge
 in their own cause, two heads are better than one, first impressions last,
 practice makes perfect. The user has a longer list to follow. Claims that
 serve as evidence show "Evidence for: …" on their page.

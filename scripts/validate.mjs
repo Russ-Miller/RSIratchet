@@ -86,7 +86,10 @@ const groupIds = new Set((cat.taxonomy.groups ?? []).map((g) => g.id));
 for (const c of cat.capabilities) if (c.data.group && !groupIds.has(c.data.group)) problem(c.file, `unknown group "${c.data.group}"`);
 
 // adage evidence must point at claims that exist
-for (const a of cat.adages) for (const e of a.data.evidence ?? []) checkRef(a.file, ids.claims, e.claim, "claim");
+for (const a of cat.adages) {
+  for (const e of a.data.evidence ?? []) checkRef(a.file, ids.claims, e.claim, "claim");
+  for (const s of a.data.sources ?? []) checkRef(a.file, ids.sources, s, "source");
+}
 
 const counts = KINDS.map((k) => `${cat[k].length} ${k}`).join(", ");
 if (problems.length) {

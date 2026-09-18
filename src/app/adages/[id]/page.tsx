@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { notFound } from "next/navigation";
-import { ADAGE_STANDING_LABEL, adageStanding, getAdage, getAdages, getCapability, getClaim, type AdageVerdict } from "@/lib/catalog";
+import { ADAGE_STANDING_LABEL, adageStanding, getAdage, getAdages, getCapability, getClaim, getSource, type AdageVerdict } from "@/lib/catalog";
 import { ContestedBadge, ReviewBadge } from "@/components/badges";
 import { AdageChallengeLink } from "@/components/challenge";
 
@@ -46,6 +46,13 @@ export default async function AdagePage({ params }: PageProps<"/adages/[id]">) {
       <section className="text-sm">
         <h2 className="mb-1 font-semibold">Origin</h2>
         <p className="text-neutral-700 dark:text-neutral-300">{a.origin}</p>
+        {a.sources?.length ? (
+          <p className="mt-1 text-xs text-neutral-500">
+            Stated in: {a.sources.map((id, i) => (
+              <span key={id}>{i > 0 && " · "}<Link href={`/sources/${id}`} className="hover:underline">{getSource(id)?.title ?? id}</Link></span>
+            ))}
+          </p>
+        ) : null}
       </section>
 
       <section className="text-sm">
