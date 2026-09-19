@@ -14,6 +14,7 @@
 //   node scripts/ingest-evidence.mjs [--dry-run] [--limit N]
 import fs from "node:fs";
 import path from "node:path";
+import YAML from "yaml";
 import { execFileSync } from "node:child_process";
 
 const args = process.argv.slice(2);
@@ -41,15 +42,41 @@ for (const it of issues) {
   if ((it.comments ?? []).some((c) => (c.body ?? "").includes(MARK))) { skipped++; continue; }
   const body = it.body ?? "";
   const field = (k) => body.match(new RegExp(`^${k}:\\s*(.+)$`, "m"))?.[1]?.trim();
-  const claimId = field("claim"); const stance = field("stance"); const link = field("link"); const by = field("submitted_by");
+  const who = (() => { const b = body.match(/^submitted_by:\s*(.+)$/m)?.[1]?.trim(); return b ? `human:${b.replace(/[^A-Za-z0-9._@-]/g, "-").slice(0, 40)}` : `human:${it.author?.login ?? "anonymous"}`; })();
+  let claimId = field("claim"); const techniqueId = field("technique"); const capField = field("capability");
+  const stance = field("stance"); const link = field("link");
   const text = (body.split(/^## Evidence\s*$/m)[1] ?? "").split(/^---$/m)[0].trim().replace(/^\(link only\)$/m, "").trim();
-  const claimFile = path.join("catalog/claims", `${claimId}.yaml`);
   const fail = (why) => { console.log(`#${it.number}: ${why}`); skipped++; };
-  if (!claimId || !fs.existsSync(claimFile)) { fail(`unknown claim "${claimId}"`); continue; }
+
+  // Technique evidence: whether a technique works is a claim, so file one
+  // under the capability the technique addresses, then attach the source to
+  // it exactly as for claim evidence.
+  let newClaimFile = null;
+  if (techniqueId) {
+    const tpath = path.join("catalog/techniques", `${techniqueId}.yaml`);
+    if (!fs.existsSync(tpath)) { fail(`unknown technique "${techniqueId}"`); continue; }
+    const tech = YAML.parse(fs.readFileSync(tpath, "utf8"));
+    const capId = capField && tech.addresses.includes(capField) ? capField : tech.addresses[0];
+    const cpath = path.join("catalog/capabilities", `${capId}.yaml`);
+    const capLabel = fs.existsSync(cpath) ? YAML.parse(fs.readFileSync(cpath, "utf8")).label : capId;
+    const gist = text.split(/(?<=[.!?])\s/)[0]?.replace(/\s+/g, " ").slice(0, 200) || (link ? "see the linked source" : "");
+    const statement = `${tech.label} ${stance === "supports" ? "helped" : "did not help"} with ${capLabel.toLowerCase()} in a reader-reported case: ${gist}`;
+    claimId = `${slug(tech.label).split("-").slice(0, 5).join("-")}-${stance === "supports" ? "held" : "failed"}-reader-${it.number}`;
+    newClaimFile = path.join("catalog/claims", `${claimId}.yaml`);
+    if (!dry) fs.writeFileSync(newClaimFile, [
+      `id: ${claimId}`, `capability: ${capId}`, `technique: ${techniqueId}`,
+      "statement: >-", wrap(statement),
+      "kind: observation", "backing_strength: own-observation",
+      "sources: []", "contested: false", "status: pending-review", `last_checked_at: ${TODAY}`,
+      "notes: >-", wrap(`Filed from a reader's report on the technique page (issue #${it.number}). One case, as reported; the source below holds the details. Not read against the technique's other evidence by anyone yet.`),
+      `submitted_by: ${who}`, "",
+    ].join("\n"));
+  }
+  const claimFile = path.join("catalog/claims", `${claimId}.yaml`);
+  if (!claimId || (!newClaimFile && !fs.existsSync(claimFile))) { fail(`unknown claim "${claimId}"`); continue; }
   if (!["supports", "contests"].includes(stance)) { fail(`bad stance "${stance}"`); continue; }
   if (!link && text.length < 20) { fail("no link and no text"); continue; }
 
-  const who = by ? `human:${by.replace(/[^A-Za-z0-9._@-]/g, "-").slice(0, 40)}` : `human:${it.author?.login ?? "anonymous"}`;
   let sourceId;
   if (dry) { console.log(`#${it.number}: would add ${stance} to ${claimId} from ${link ? link : "text"} (${who})`); done++; continue; }
 
@@ -83,15 +110,18 @@ for (const it of issues) {
   const entry = [
     `  - source: ${sourceId}`, `    stance: ${stance}`, "    note: >-", wrap(note, "      "), `    submitted_by: ${who}`, `    added_at: ${TODAY}`,
   ].join("\n") + "\n";
-  const m = y.match(/^sources:\s*\n((?:  - [\s\S]*?)(?=^\S))/m);
-  if (!m) { fail("could not find sources list in claim"); continue; }
-  y = y.replace(m[0], m[0] + entry);
+  if (/^sources:\s*\[\]\s*$/m.test(y)) y = y.replace(/^sources:\s*\[\]\s*$/m, `sources:\n${entry.trimEnd()}`);
+  else {
+    const m = y.match(/^sources:\s*\n((?:  - [\s\S]*?)(?=^\S))/m);
+    if (!m) { fail("could not find sources list in claim"); continue; }
+    y = y.replace(m[0], m[0] + entry);
+  }
   if (stance === "contests" && !/^contested:\s*true/m.test(y)) {
     y = y.replace(/^contested:\s*false\s*$/m, `contested: true\ndisagreement_axis:\n  description: >-\n${wrap(`Reader-filed contest (issue #${it.number}): ${note.slice(0, 300)}`, "    ")}\n  is_guess: true`);
   }
   fs.writeFileSync(claimFile, y);
 
-  gh("issue", "comment", String(it.number), "-R", REPO, "--body", `${MARK}\nFiled as source \`${sourceId}\` on https://rsiratchet.com/claims/${claimId} (${stance}). It goes live with the next catalog merge. Thank you.`);
+  gh("issue", "comment", String(it.number), "-R", REPO, "--body", `${MARK}\nFiled as source \`${sourceId}\` on https://rsiratchet.com/claims/${claimId} (${stance})${techniqueId ? `, a new claim about https://rsiratchet.com/techniques/${techniqueId}` : ""}. It goes live with the next catalog merge. Thank you.`);
   gh("issue", "close", String(it.number), "-R", REPO);
   console.log(`#${it.number}: ${stance} -> ${claimId} via ${sourceId}`);
   done++;

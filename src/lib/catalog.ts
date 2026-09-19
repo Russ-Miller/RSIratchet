@@ -16,7 +16,7 @@ export type CapabilityStatus = "proposed" | "active" | "parked";
 export type ClaimStatus = "pending-review" | "active" | "superseded" | "retired";
 /** Record lifecycle, deliberately NOT a verdict on whether the technique works.
  *  Efficacy lives in claims that reference the technique. */
-export type TechniqueStatus = "active" | "superseded";
+export type TechniqueStatus = "proposed" | "active" | "superseded";
 
 export interface SourceLink {
   source: string; stance: Stance; note: string;
