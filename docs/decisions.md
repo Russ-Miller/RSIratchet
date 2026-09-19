@@ -1659,3 +1659,16 @@ terms and its idea move into `procedure-following`, the capability the
 checklist-decomposition technique addresses. It had no claims; eight queue
 papers tagged with it were re-tagged. CAP-0009 stays in the ledger and is
 never reissued; `/capabilities/decomposition` redirects.
+
+## 2026-09-19 — Capabilities list their sources directly
+
+A paper used to become a source only when a claim was drafted from it, so
+a proposed capability showed nothing even when six papers had been matched
+to it. Now `scripts/file-matched-sources.mjs` (nightly, after stage 2)
+files every paper the classifier judged to be about a capability as a
+source on that capability, title-checked against arXiv, via a new optional
+`sources` list on the capability. Every capability page has a Sources
+section: sources cited by its claims show the claim and stance; sources
+filed directly say "no claim drafted yet". When a claim later cites the
+source it shows through the claim instead. First run filed 55 pairs, 37
+new sources.

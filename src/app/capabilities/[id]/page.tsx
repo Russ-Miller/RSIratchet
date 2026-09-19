@@ -2,7 +2,8 @@ import Link from "next/link";
 import { RefTag } from "@/components/ref-tag";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { notFound } from "next/navigation";
-import { claimsFor, getCapabilities, getCapability, techniquesFor } from "@/lib/catalog";
+import { claimsFor, getCapabilities, getCapability, getSource, techniquesFor } from "@/lib/catalog";
+import { CitationSignal } from "@/components/badges";
 import { CapabilityChallengeLink } from "@/components/challenge";
 import { ContestedBadge, EvidenceCount, KindBadge, StrengthBadge } from "@/components/badges";
 
@@ -21,6 +22,17 @@ export default async function CapabilityPage({ params }: PageProps<"/capabilitie
   if (!c) notFound();
   const claims = claimsFor(c.id);
   const techniques = techniquesFor(c.id);
+  // Every source behind this capability: through its claims (with stance),
+  // and filed directly because the classifier judged the paper is about it.
+  type Row = { id: string; via: { claim: string; stance: string }[]; direct: boolean };
+  const rows = new Map<string, Row>();
+  for (const cl of claims) for (const l of cl.sources) {
+    const r = rows.get(l.source) ?? { id: l.source, via: [], direct: false };
+    r.via.push({ claim: cl.id, stance: l.stance }); rows.set(l.source, r);
+  }
+  for (const id of c.sources ?? []) { const r = rows.get(id) ?? { id, via: [], direct: false }; r.direct = true; rows.set(id, r); }
+  const sources = [...rows.values()].map((r) => ({ ...r, s: getSource(r.id) })).filter((r) => r.s)
+    .sort((a, b) => (b.s!.date ?? "").localeCompare(a.s!.date ?? ""));
   return (
     <article className="space-y-8">
       <Breadcrumbs trail={[
@@ -82,6 +94,36 @@ export default async function CapabilityPage({ params }: PageProps<"/capabilitie
                 <Link href={`/techniques/${t.id}`} className="font-medium hover:underline">{t.label}</Link>
                 <span className="ml-2 text-xs text-neutral-500">{t.kind}{t.status === "superseded" ? " · superseded" : ""}</span>
                 <div className="text-neutral-600 dark:text-neutral-400">{t.summary}</div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+      <section>
+        <h2 className="mb-1 font-semibold">Sources</h2>
+        <p className="mb-2 text-xs text-neutral-500">
+          Every paper, post or observation behind this capability. Ones cited by a claim show the
+          claim and its stance; ones filed directly are about the capability but have no claim
+          drafted from them yet. Open one to add support or contest it.
+        </p>
+        {sources.length === 0 ? <p className="text-sm text-neutral-500">None yet.</p> : (
+          <ul className="space-y-2 text-sm">
+            {sources.map(({ id, s, via, direct }) => (
+              <li key={id}>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Link href={`/sources/${id}`} className="hover:underline">{s!.title}</Link>
+                  <CitationSignal source={s!} />
+                  <span className="text-xs text-neutral-500">{s!.date ?? s!.year ?? ""}{s!.kind !== "paper" ? ` · ${s!.kind}` : ""}</span>
+                </div>
+                <div className="text-xs text-neutral-500">
+                  {via.length > 0 && via.map((v, i) => (
+                    <span key={v.claim}>{i > 0 && " · "}
+                      <span className={v.stance === "supports" ? "text-emerald-700 dark:text-emerald-400" : "text-red-700 dark:text-red-400"}>{v.stance === "supports" ? "↑ supports" : "↓ contests"}</span>{" "}
+                      <Link href={`/claims/${v.claim}`} className="hover:underline">a claim here</Link>
+                    </span>
+                  ))}
+                  {via.length === 0 && direct && <span>about this capability · no claim drafted yet</span>}
+                </div>
               </li>
             ))}
           </ul>
