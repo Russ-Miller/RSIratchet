@@ -1633,3 +1633,21 @@ returns it. Borrowed from ATT&CK's T-numbers: the slug is a label and may be
 rewritten when a statement is tightened; the ref is what outside documents
 cite. Initial numbering is alphabetical by slug; from here on it is arrival
 order, assigned nightly before validation.
+
+## 2026-09-19 — Claims are the review surface; the queue is internal
+
+Nothing that says "review queue" appears to a reader any more. The queue
+and drafts pages stay admin-only, and the "In the review queue" section
+added to capability pages on 2026-09-18 is gone. What a reader sees on a
+claim is two counts, sources for and sources against, and two buttons:
+**Add support** and **Contest this claim**. Either opens an inline form for
+a link or a few sentences of what they saw (small rich-text box), plus an
+optional name. `/api/evidence` files it as a GitHub issue labelled
+`evidence` using a server-side token; without the token the form opens the
+same content as a prefilled issue. `scripts/ingest-evidence.mjs` runs
+nightly: a link becomes a source through add-link (archived), text becomes
+an observation source under the submitter's handle, the source is appended
+to the claim with its stance, a contest marks the claim contested with the
+text as a guessed disagreement axis, and the issue is closed with a comment
+naming the source. Nothing waits for a reviewer; the counts move when
+evidence lands, and every source carries who brought it.

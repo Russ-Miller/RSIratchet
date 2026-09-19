@@ -204,3 +204,19 @@ export function EvidenceSignal({ activity }: { activity: ClaimActivity }) {
     </span>
   );
 }
+
+/**
+ * How much is for and against a claim, as two small counts. This is the
+ * whole review signal a reader gets at a glance: not "reviewed", but how many
+ * sources say yes and how many say no. Both are links to add another.
+ */
+export function EvidenceCount({ claim }: { claim: Claim }) {
+  const up = claim.sources.filter((s) => s.stance === "supports").length;
+  const down = claim.sources.filter((s) => s.stance === "contests").length;
+  return (
+    <span className="inline-flex items-center gap-2 font-mono text-xs text-neutral-500" title={`${up} supporting, ${down} contesting`}>
+      <span className={up ? "text-emerald-700 dark:text-emerald-400" : ""}>&uarr;{up}</span>
+      <span className={down ? "text-red-700 dark:text-red-400" : ""}>&darr;{down}</span>
+    </span>
+  );
+}
