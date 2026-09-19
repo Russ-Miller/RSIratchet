@@ -1,0 +1,35 @@
+arxiv_id: '2503.22424'
+title: Issue Localization via LLM-Driven Iterative Code Graph Searching
+url: https://arxiv.org/abs/2503.22424
+drafted_at: '2026-09-19'
+drafted_from: full-text
+model: claude-opus-5 (drafted in session, not via API)
+status: draft — not filed.
+capability: repository-navigation
+statement: Without training or a prebuilt index, searching a module call graph built on the
+  fly for breadth at file level and then expanding it into a function call graph for depth reached
+  about 43-44% function-level Top-1 localization on SWE-bench Lite and Verified with open 32B
+  and 72B models, beating prior LLM localizers, and the better locations raised an issue-solving
+  pipeline's resolve rate by roughly 3 to 30 points depending on model.
+kind: observation
+backing_strength: single-paper
+scope_condition: SWE-bench Lite and Verified, 2025, Qwen2.5-Coder-32B and Qwen2.5-72B; Top-1
+  file and function accuracy; downstream via Agentless repair and validation.
+technique: ''
+proposed_technique: Two-phase call-graph search, files broad then functions deep
+technique_summary: Start from files the issue mentions, build a module-level call graph dynamically
+  and explore it broadly to pick files, then expand only the chosen files into a function call
+  graph and search it iteratively, with the graph structure steering the model so it neither
+  wanders the whole repository nor stays in one file.
+technique_kind: process
+technique_validated_by: Top-1 file and function localization accuracy on SWE-bench Lite and
+  Verified against Agentless, LocAgent-style and other open localizers using the same open models;
+  resolve rate of Agentless with and without its locations; ablations of each phase.
+stance_on_existing: neither
+related_claim_id: ''
+stance_reason: ''
+falsifier: Repositories with dynamic dispatch or cross-language calls where a static call graph
+  misses the relevant edges and free search does better.
+evidence_note: Open models only, which makes the comparison fair but leaves the ceiling unknown;
+  Top-1 is a strict metric and the reported resolve-rate range is wide because it spans models.
+confidence: medium

@@ -1,0 +1,38 @@
+arxiv_id: '2606.22676'
+title: 'Skin-Deep: A Geometric Diagnostic for Alignment Fragility in Large Language Models'
+url: https://arxiv.org/abs/2606.22676
+drafted_at: '2026-09-19'
+drafted_from: full-text
+model: claude-opus-5 (drafted in session, not via API)
+status: draft — not filed.
+capability: fine-tuning-retention
+statement: Refusal learned by alignment tuning lives in a low-rank subspace of hidden-state
+  activations that recurs across model families; ablating directions in that subspace lowers
+  harmful-request refusal, and a scalar computed from the subspace's geometry before any fine-tuning
+  (the Geometric Fragility Score) picks out which initially safe model will keep the most refusal
+  after small benign LoRA fine-tuning.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Twenty-one instruction-tuned open models, 3B-32B, six alignment recipes, 2026;
+  fragility test is rank-8 LoRA on harmless Alpaca subsets; refusal measured on harmful-request
+  sets with Wilson CIs.
+technique: ''
+proposed_technique: Geometric fragility score from the safety subspace
+technique_summary: Collect hidden states on harmful and harmless prompts, recover the low-rank
+  safety subspace per layer, and compress its geometry into one score that ranks aligned checkpoints
+  by how easily benign fine-tuning will erase refusal, so the fragile ones are caught before
+  release.
+technique_kind: tooling
+technique_validated_by: Direction-ablation causal test on four models (non-overlapping 95% CIs),
+  linear-probe accuracy at least 0.90 for the subspace, and a LoRA-fragility experiment where
+  the score's top pick retained the most refusal; twenty-one models across six recipes.
+stance_on_existing: neither
+related_claim_id: ''
+stance_reason: ''
+falsifier: A model family where refusal is not low-rank or where the score's ranking does not
+  predict post-LoRA refusal retention, or a fine-tuning attack that erases refusal equally across
+  scores.
+evidence_note: Broad model coverage and a causal ablation, but the predictive claim rests on
+  one LoRA protocol and one fine-tuning budget; closed models cannot be scored since it needs
+  activations.
+confidence: medium

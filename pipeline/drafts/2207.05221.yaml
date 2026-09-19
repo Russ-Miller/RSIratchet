@@ -1,0 +1,40 @@
+arxiv_id: '2207.05221'
+title: Language Models (Mostly) Know What They Know
+url: https://arxiv.org/abs/2207.05221
+drafted_at: '2026-09-19'
+drafted_from: full-text
+model: claude-opus-5 (drafted in session, not via API)
+status: draft — not filed.
+capability: abstention-and-self-knowledge
+statement: Large pretrained models are well calibrated on multiple-choice and true/false questions
+  when answer options are shown as lettered choices, and can predict the probability that their
+  own sampled answer is correct (P(True)) or that they know the answer at all (P(IK)); calibration
+  improves with model size and few-shot prompting, self-evaluation improves when the model sees
+  several of its own samples first, and P(IK) generalizes only partly to new tasks, where its
+  calibration degrades.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Anthropic pretrained models up to 52B, evaluated 2022 on MMLU-style multiple
+  choice, TriviaQA, arithmetic, code and story tasks; calibration measured in-distribution,
+  P(IK) trained by finetuning.
+technique: ''
+proposed_technique: Ask for P(True) after showing the model several of its own samples
+technique_summary: Sample several answers, show them to the model, then ask for the probability
+  that one specific answer is true; the extra samples act like considering alternatives and
+  raise self-evaluation accuracy and calibration over judging a single answer alone.
+technique_kind: prompting
+technique_validated_by: Calibration curves and AUROC/Brier-style plots on TriviaQA, arithmetic,
+  Lambada, code and GSM8K-type sampling tasks across model sizes; 20-shot self-evaluation with
+  visible samples compared against single-sample P(True). Shown for pretrained models only;
+  RLHF models not tested.
+stance_on_existing: neither
+related_claim_id: ''
+stance_reason: ''
+falsifier: A study showing RLHF or instruction-tuned models, asked in the same lettered-choice
+  format, are poorly calibrated, or that P(True) does not improve when the model sees its own
+  samples.
+evidence_note: Measured across model sizes with clean calibration plots; the headline holds
+  for pretrained base models and the paper itself notes P(IK) calibration breaks out of distribution.
+  Later work (Tian et al. 2023) reports RLHF models' raw probabilities are worse calibrated,
+  which is a scope limit rather than a contradiction.
+confidence: high

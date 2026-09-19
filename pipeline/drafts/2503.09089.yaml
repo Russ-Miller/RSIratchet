@@ -1,0 +1,37 @@
+arxiv_id: '2503.09089'
+title: 'LocAgent: Graph-Guided LLM Agents for Code Localization'
+url: https://arxiv.org/abs/2503.09089
+drafted_at: '2026-09-19'
+drafted_from: full-text
+model: claude-opus-5 (drafted in session, not via API)
+status: draft — not filed.
+capability: repository-navigation
+statement: Giving an agent a parsed code graph (files, classes, functions with import, call
+  and inheritance edges) and tools to search and traverse it lets a fine-tuned 32B open model
+  localize issues about as well as proprietary agents at roughly an eighth of the cost, reaching
+  about 93% file-level accuracy, and better localization carried through to about 12 points
+  more resolved issues at Pass@10 when plugged into a fixed repair pipeline.
+kind: observation
+backing_strength: single-paper
+scope_condition: SWE-bench Lite and the paper's Loc-Bench, 2025; Qwen2.5-Coder-32B fine-tuned
+  on localization trajectories versus Claude 3.5 Sonnet agents; downstream test via Agentless
+  repair.
+technique: ''
+proposed_technique: Code-graph tools for localization agents
+technique_summary: Parse the repository once into a heterogeneous graph of code entities and
+  their dependency edges, expose search, traverse and retrieve-entity tools over it, and let
+  the agent hop across the graph from the issue's mentioned names to the functions that need
+  to change.
+technique_kind: tooling
+technique_validated_by: File, module and function Acc@k on SWE-bench Lite and Loc-Bench against
+  IR retrievers, procedural (Agentless) and agentic (MoatlessTools, OpenHands) baselines, with
+  per-example cost; downstream Pass@1/Pass@10 with Agentless repair given each method's localization.
+stance_on_existing: neither
+related_claim_id: ''
+stance_reason: ''
+falsifier: A benchmark where graph-guided search does not beat plain grep plus file reading
+  for the same model, or where localization gains do not translate to resolved issues.
+evidence_note: Two benchmarks including one the authors built; the 32B result depends on fine-tuning
+  on the authors' own trajectories, so the tool-alone effect for an untuned model is smaller
+  and shown separately. Python repositories only.
+confidence: medium
