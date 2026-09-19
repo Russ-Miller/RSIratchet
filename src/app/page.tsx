@@ -2,6 +2,7 @@ import Link from "next/link";
 import { loadCatalog, capabilitiesByGroup, claimsByRecency, getCapability, isPending, isProposed } from "@/lib/catalog";
 import { KindBadge, StrengthBadge, ContestedBadge, ReviewBadge, ProposedBadge } from "@/components/badges";
 import { getTil } from "@/lib/til";
+import { ModelStrip } from "@/components/model-strip";
 import { buildSearchIndex } from "@/lib/search-index";
 import { Search } from "@/components/search";
 
@@ -18,8 +19,9 @@ export default function Home() {
         <h1 className="text-3xl font-semibold tracking-tight">A study of what LLMs are actually good and bad at</h1>
         <p className="max-w-2xl text-neutral-600 dark:text-neutral-400">
           Not a scoreboard &mdash; a set of directional, scoped claims, each tied to the sources that
-          support or contest it. Capabilities are topics; claims are the actual findings.
+          support or contest it.
         </p>
+        <ModelStrip />
         {/* A visitor should meet the caveat on arrival, not discover it later. The
             whole proposition is that you can judge an entry yourself, which only
             works if you know what you are looking at. */}

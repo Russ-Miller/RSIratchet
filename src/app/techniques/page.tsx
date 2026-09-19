@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ListSearch } from "@/components/list-search";
+import { ModelStrip } from "@/components/model-strip";
 import { vecAttr } from "@/lib/embeddings";
 import { getTechniques, getCapability, openQuestions, techniqueTags } from "@/lib/catalog";
 import { FilterBar } from "@/components/filter-bar";
@@ -18,11 +19,15 @@ export default function TechniquesPage() {
     <div className="space-y-4">
       <h1 className="text-2xl font-semibold">Techniques</h1>
       <p className="max-w-3xl text-sm text-neutral-500">
-        What a technique <em>is</em>, never whether it works &mdash; that lives in claims that
-        reference it. The filters are the cuts from{" "}
-        <Link href="/open-questions" className="hover:underline">open questions</Link>: which of
-        these nothing has measured, and whether anyone has looked.
+        A technique is a fix: something you do to a model, a prompt, or the system around it to
+        move a capability. The entry says what the technique is and which capabilities it
+        addresses. It never says whether it works; that is a claim, filed under the capability,
+        with the source that measured it. So a technique listed here with no claim measuring it
+        is an untested fix, and the filters below find those: nothing has measured it, nobody has
+        looked, or it has been argued for but not measured. Those are the cuts from{" "}
+        <Link href="/open-questions" className="hover:underline">open questions</Link>.
       </p>
+      <ModelStrip compact />
       <ListSearch noun="techniques" />
       <FilterBar options={options}>
       <ul className="space-y-3">

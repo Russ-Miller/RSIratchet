@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ListSearch } from "@/components/list-search";
+import { ModelStrip } from "@/components/model-strip";
 import { vecAttr } from "@/lib/embeddings";
 import { claimTags, getCapability, getClaims, getSource, isPending, isQuietSource } from "@/lib/catalog";
 import type { SourceLink } from "@/lib/catalog";
@@ -39,6 +40,7 @@ export default function ClaimsPage() {
         under and which sources support or contest it. Sources with no citations in the last 12 months
         and 2+ years old are tucked behind &ldquo;older sources&rdquo;.
       </p>
+      <ModelStrip compact />
       <p className="text-sm text-neutral-500">
         {contestedCount} of {claims.length} are contested, sorted first &mdash;{" "}
         <Link href="/claims?filter=contested" className="hover:underline">see them with incoming challenges</Link>.
