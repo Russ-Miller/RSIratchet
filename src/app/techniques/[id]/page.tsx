@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { EvidenceForm } from "@/components/evidence-form";
 import { RefTag } from "@/components/ref-tag";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { notFound } from "next/navigation";
@@ -26,9 +27,17 @@ export default async function TechniquePage({ params }: PageProps<"/techniques/[
         { label: "This technique" },
       ]} />
       <header className="space-y-2">
-        <div className="text-sm text-neutral-500">{t.kind} · <code className="font-mono">{t.id}</code> <RefTag refId={t.ref} />{t.status === "superseded" ? " · superseded" : ""}</div>
+        <div className="text-sm text-neutral-500">{t.kind} · <code className="font-mono">{t.id}</code> <RefTag refId={t.ref} />{t.status === "superseded" ? " · superseded" : t.status === "proposed" ? " · proposed" : ""}</div>
         <h1 className="text-3xl font-semibold tracking-tight">{t.label}</h1>
         <p className="text-lg text-neutral-700 dark:text-neutral-300">{t.summary}</p>
+        {t.status === "proposed" && (
+          <p className="rounded border border-sky-300 bg-sky-50 p-3 text-sm text-sky-900 dark:border-sky-800 dark:bg-sky-950/30 dark:text-sky-200">
+            <strong className="font-medium">Proposed.</strong> Filed by the drafting stage because a
+            paper introduces or tests it. Nobody has vouched for it. The claim drafted from that paper
+            is its first evidence, and what the paper used to validate it is in that claim&rsquo;s
+            source note. Say whether it held up for you, below.
+          </p>
+        )}
       </header>
       <p className="text-sm text-neutral-700 dark:text-neutral-300">{t.description}</p>
       {t.requires && <p className="text-sm"><span className="font-semibold">Requires: </span>{t.requires}</p>}
@@ -163,6 +172,14 @@ export default async function TechniquePage({ params }: PageProps<"/techniques/[
           </ul>
         </section>
       ) : null}
+      <section className="space-y-2 border-t border-neutral-200 pt-6 dark:border-neutral-800">
+        <EvidenceForm subject={{ kind: "technique", id: t.id, capability: t.addresses[0] }} refId={t.ref} statement={`${t.label}: ${t.summary}`} />
+        <p className="text-xs text-neutral-500">
+          Whether a technique works is a claim. What you file here becomes a claim about this
+          technique under {t.addresses.length === 1 ? "the capability it addresses" : "the first capability it addresses"},
+          with your evidence as its source, and moves the standing above the same way a paper would.
+        </p>
+      </section>
     </article>
   );
 }

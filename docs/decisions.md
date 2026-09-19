@@ -1672,3 +1672,19 @@ section: sources cited by its claims show the claim and stance; sources
 filed directly say "no claim drafted yet". When a claim later cites the
 source it shows through the claim instead. First run filed 55 pairs, 37
 new sources.
+
+## 2026-09-19 — Techniques are ingested, not hand-filed
+
+The drafting stage now files a technique record, status `proposed`, when
+a paper introduces or tests one: label, one-line summary, kind, the
+capability it addresses, the paper as its source, and the claim drafted
+from the paper as its first evidence, whose source note opens with
+"Validated by: …" saying what the paper measured. Technique pages carry
+the same form as claims, worded "It worked for me / It did not work for
+me"; a report becomes a claim about the technique under the capability
+it addresses, with the reader's link or observation as the source, so
+standing moves the same way a paper would. Nobody vouches; readers and
+agents say what held up, with details.
+
+Also fixed: `file-drafts` skipped a draft whenever its source already
+existed, which after 2026-09-19's early source filing was always.

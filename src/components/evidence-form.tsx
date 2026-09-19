@@ -14,7 +14,10 @@ const REPO = "https://github.com/Russ-Miller/RSIratchet";
  * Nothing here waits on a reviewer. The point of the form is that anyone can
  * push evidence either way, and the counts on the claim move when it lands.
  */
-export function EvidenceForm({ claimId, refId, statement }: { claimId: string; refId?: string; statement: string }) {
+export type EvidenceSubject = { kind: "claim"; id: string } | { kind: "technique"; id: string; capability?: string };
+
+export function EvidenceForm({ subject, refId, statement }: { subject: EvidenceSubject; refId?: string; statement: string }) {
+  const claimId = subject.id; // used for element ids and the fallback body
   const [stance, setStance] = useState<"supports" | "contests" | null>(null);
   const [link, setLink] = useState("");
   const [name, setName] = useState("");
@@ -49,8 +52,11 @@ export function EvidenceForm({ claimId, refId, statement }: { claimId: string; r
 
   const fallbackUrl = (text: string) => {
     const verb = stance === "supports" ? "Support" : "Contest";
-    const body = `claim: ${claimId}\n${refId ? `ref: ${refId}\n` : ""}stance: ${stance}\n${link ? `link: ${link}\n` : ""}${name ? `submitted_by: ${name}\n` : ""}\n## Evidence\n\n${text || "(link only)"}\n`;
-    return `${REPO}/issues/new?title=${encodeURIComponent(`${verb}: ${claimId}`)}&body=${encodeURIComponent(body)}&labels=evidence`;
+    const head = subject.kind === "technique"
+      ? `technique: ${subject.id}\n${subject.capability ? `capability: ${subject.capability}\n` : ""}`
+      : `claim: ${subject.id}\n`;
+    const body = `${head}${refId ? `ref: ${refId}\n` : ""}stance: ${stance}\n${link ? `link: ${link}\n` : ""}${name ? `submitted_by: ${name}\n` : ""}\n## Evidence\n\n${text || "(link only)"}\n`;
+    return `${REPO}/issues/new?title=${encodeURIComponent(`${verb}: ${subject.id}`)}&body=${encodeURIComponent(body)}&labels=evidence`;
   };
 
   const submit = async () => {
@@ -60,7 +66,7 @@ export function EvidenceForm({ claimId, refId, statement }: { claimId: string; r
     try {
       const res = await fetch("/api/evidence", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ claim: claimId, ref: refId, stance, link, text, name, website: honeypot.current?.value ?? "" }),
+        body: JSON.stringify({ ...(subject.kind === "technique" ? { technique: subject.id, capability: subject.capability } : { claim: subject.id }), ref: refId, stance, link, text, name, website: honeypot.current?.value ?? "" }),
       });
       if (res.status === 503) { window.open(fallbackUrl(text), "_blank", "noopener"); setState({ kind: "done", msg: "Opened as a GitHub issue for you to submit." }); return; }
       const data = await res.json();
@@ -77,11 +83,11 @@ export function EvidenceForm({ claimId, refId, statement }: { claimId: string; r
       <div className="flex flex-wrap items-center gap-2">
         <button type="button" onClick={() => { setStance("supports"); setState({ kind: "idle" }); }} aria-pressed={stance === "supports"}
           className={`${btn} ${stance === "supports" ? "border-emerald-600 bg-emerald-600 text-white" : "border-neutral-300 text-neutral-700 hover:border-emerald-600 dark:border-neutral-700 dark:text-neutral-300"}`}>
-          &uarr; Add support
+          &uarr; {subject.kind === "technique" ? "It worked for me" : "Add support"}
         </button>
         <button type="button" onClick={() => { setStance("contests"); setState({ kind: "idle" }); }} aria-pressed={stance === "contests"}
           className={`${btn} ${stance === "contests" ? "border-red-600 bg-red-600 text-white" : "border-neutral-300 text-neutral-700 hover:border-red-600 dark:border-neutral-700 dark:text-neutral-300"}`}>
-          &darr; Contest this claim
+          &darr; {subject.kind === "technique" ? "It did not work for me" : "Contest this claim"}
         </button>
         <span className="text-xs text-neutral-500">Either way, bring evidence: a link, or what you saw.</span>
       </div>
@@ -89,7 +95,7 @@ export function EvidenceForm({ claimId, refId, statement }: { claimId: string; r
       {stance && state.kind !== "done" && (
         <form onSubmit={(e) => { e.preventDefault(); submit(); }} className="space-y-3 rounded border border-neutral-200 p-3 dark:border-neutral-800">
           <p className="text-sm">
-            <span className="font-medium">{stance === "supports" ? "Supporting" : "Contesting"}:</span>{" "}
+            <span className="font-medium">{stance === "supports" ? (subject.kind === "technique" ? "Worked" : "Supporting") : (subject.kind === "technique" ? "Did not work" : "Contesting")}:</span>{" "}
             <span className="text-neutral-600 dark:text-neutral-400">{statement}</span>
           </p>
           <label className="block text-xs">

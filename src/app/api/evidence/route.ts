@@ -25,13 +25,17 @@ export async function POST(request: NextRequest) {
   let body: Record<string, unknown>;
   try { body = await request.json(); } catch { return NextResponse.json({ error: "bad json" }, { status: 400 }); }
   const claim = String(body.claim ?? "").trim();
+  const technique = String(body.technique ?? "").trim();
+  const capability = String(body.capability ?? "").trim();
   const ref = String(body.ref ?? "").trim();
   const stance = body.stance === "contests" ? "contests" : body.stance === "supports" ? "supports" : null;
   const link = String(body.link ?? "").trim();
   const text = String(body.text ?? "").trim().slice(0, MAX_TEXT);
   const name = String(body.name ?? "").trim().slice(0, 80);
   if (String(body.website ?? "")) return NextResponse.json({ ok: true }); // honeypot filled: pretend
-  if (!/^[a-z0-9-]+$/.test(claim) || !stance) return NextResponse.json({ error: "claim and stance required" }, { status: 400 });
+  const subject = technique || claim;
+  if (!/^[a-z0-9-]+$/.test(subject) || !stance) return NextResponse.json({ error: "claim or technique, and stance, required" }, { status: 400 });
+  if (technique && capability && !/^[a-z0-9-]+$/.test(capability)) return NextResponse.json({ error: "bad capability" }, { status: 400 });
   if (!link && text.length < 20) return NextResponse.json({ error: "give a link or at least a sentence of evidence" }, { status: 400 });
   if (link && !/^https?:\/\/\S+$/.test(link)) return NextResponse.json({ error: "link must be a URL" }, { status: 400 });
   const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
@@ -39,11 +43,12 @@ export async function POST(request: NextRequest) {
 
   const verb = stance === "supports" ? "Support" : "Contest";
   const issue = {
-    title: `${verb}: ${claim}`,
+    title: `${verb}: ${subject}`,
     labels: ["evidence"],
     body: [
       `<!-- evidence v1 -->`,
-      `claim: ${claim}`,
+      technique ? `technique: ${technique}` : `claim: ${claim}`,
+      technique && capability ? `capability: ${capability}` : "",
       ref ? `ref: ${ref}` : "",
       `stance: ${stance}`,
       link ? `link: ${link}` : "",
@@ -54,7 +59,9 @@ export async function POST(request: NextRequest) {
       text || "(link only)",
       ``,
       `---`,
-      `Filed from https://rsiratchet.com/claims/${claim}. The nightly run turns this into a source on the claim; if it does not, a person will.`,
+      technique
+        ? `Filed from https://rsiratchet.com/techniques/${technique}. The nightly run turns this into a claim about the technique with this as its source; if it does not, a person will.`
+        : `Filed from https://rsiratchet.com/claims/${claim}. The nightly run turns this into a source on the claim; if it does not, a person will.`,
     ].filter((l) => l !== "").join("\n"),
   };
   const res = await fetch(`https://api.github.com/repos/${REPO}/issues`, {

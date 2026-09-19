@@ -50,7 +50,10 @@ const Draft = z.object({
     .describe("What warrants it. single-paper unless this paper itself replicates an independent result. Never own-observation — that requires an observation the catalog's owner personally made."),
   scope_condition: z.string().describe("Conditions under which the finding holds, stated plainly. Empty string if the paper states none, which is itself worth knowing."),
   technique: z.string().describe("Slug of an existing technique this claim is about, or empty string. Only when the claim is about whether that technique works."),
-  proposed_technique: z.string().describe("If the paper introduces a technique not in the catalog, a short plain-English name for it. Empty string otherwise."),
+  proposed_technique: z.string().describe("If the paper introduces or tests a technique not in the catalog, a short plain-English name for it (under 60 characters, imperative if possible, e.g. 'Train on semantic equivalence, not string match'). Empty string otherwise."),
+  technique_summary: z.string().describe("One sentence: what the proposed technique does to the model, the prompt, or the system around it. Empty when proposed_technique is empty."),
+  technique_kind: z.enum(["prompting", "retrieval", "tooling", "training", "decoding", "architecture", "process", ""]).describe("Which kind of intervention the proposed technique is. Empty when none."),
+  technique_validated_by: z.string().describe("How the paper checked that the technique works: the metric, the baseline, the test set, the equivalence check. 'Not measured' if the paper only argues for it. Empty when no technique."),
   stance_on_existing: z.enum(["supports", "contests", "neither"])
     .describe("Whether this paper's finding bears on a claim already held. Default to neither. 'contests' only when the finding genuinely cuts against what the claim asserts — discussing the same topic is not contesting, and neither is finding a limit the claim already scopes for."),
   related_claim_id: z.string().describe("Id of that existing claim, or empty string when stance is neither."),

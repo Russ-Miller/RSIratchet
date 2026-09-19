@@ -57,7 +57,7 @@ function clip(text, max) {
   return (stop > max * 0.5 ? cut.slice(0, stop + 1) : cut.trimEnd()) + " [truncated]";
 }
 
-let filed = 0, skipped = 0;
+let filed = 0, skipped = 0, techniquesFiled = 0;
 const notes = [];
 
 // OpenAlex sometimes attaches the wrong arXiv id to a record (a Zenodo essay
@@ -80,7 +80,9 @@ for (const f of draftFiles) {
   const d = YAML.parse(fs.readFileSync(path.join(DRAFTS, f), "utf8"));
   const sid = `arxiv-${d.arxiv_id.replace(/\./g, "-")}`;
   const cid = slug(d.statement);
-  if (haveSource.has(sid) || haveClaim.has(cid)) { skipped++; continue; }
+  // A source may already exist (file-matched-sources files papers before any
+  // claim is drafted); only an existing claim means this draft is done.
+  if (haveClaim.has(cid)) { skipped++; continue; }
   if (!capIds.has(d.capability)) { notes.push(`${d.arxiv_id}: unknown capability ${d.capability}`); skipped++; continue; }
   const cand = queue.get(d.arxiv_id);
   if (!cand) { notes.push(`${d.arxiv_id}: no queue metadata`); skipped++; continue; }
@@ -98,6 +100,24 @@ for (const f of draftFiles) {
   if (t && t.addresses.includes(d.capability)) techLine = `technique: ${d.technique}\n`;
   else if (d.technique) techNote = `Drafter linked technique "${d.technique}", which does not list this capability in addresses -- recorded, not asserted. `;
 
+  // A technique the paper introduces is filed as a record, status proposed,
+  // and this claim becomes its first efficacy evidence. Nobody has vouched
+  // for it; readers say whether it held up, through the form on its page.
+  let newTechnique = null;
+  if (!techLine && d.proposed_technique && d.proposed_technique.length >= 3) {
+    const tid = slug(d.proposed_technique).split("-").slice(0, 8).join("-");
+    const existing = techniques.get(tid);
+    if (existing) { if (existing.addresses.includes(d.capability)) techLine = `technique: ${tid}\n`; }
+    else if (tid.length >= 3) {
+      newTechnique = {
+        id: tid, label: d.proposed_technique.slice(0, 60), summary: (d.technique_summary || `${d.proposed_technique}, as introduced by the paper it was drafted from.`).slice(0, 240),
+        kind: d.technique_kind || "process", validated_by: d.technique_validated_by || "Not stated",
+      };
+      techniques.set(tid, { id: tid, addresses: [d.capability] });
+      techLine = `technique: ${tid}\n`;
+    }
+  }
+
   const src = [
     `id: ${sid}`, "kind: paper", `title: ${JSON.stringify(cand.title)}`,
     `year: 20${d.arxiv_id.slice(0, 2)}`, `date: ${cand.date ?? TODAY}`,
@@ -113,8 +133,9 @@ for (const f of draftFiles) {
     ...(d.scope_condition ? ["observed_on:", `  era: ${JSON.stringify(String(d.scope_condition).replace(/\s+/g, " ").slice(0, 180))}`] : []),
     "sources:", `  - source: ${sid}`, "    stance: supports", "    note: >-",
     // The note field caps at 600 characters; a drafted evidence_note can run
-    // past it. Truncate on a sentence boundary rather than mid-word.
-    wrap(clip(d.evidence_note || "Drafted from the paper.", 580), "      "),
+    // past it. Truncate on a sentence boundary rather than mid-word. When the
+    // claim is a technique's evidence, say what the paper validated it with.
+    wrap(clip((newTechnique ? `Validated by: ${newTechnique.validated_by}. ` : "") + (d.evidence_note || "Drafted from the paper."), 580), "      "),
     "contested: false", "status: pending-review", `last_checked_at: ${TODAY}`, "notes: >-",
     wrap(
       "Drafted from the paper by a model and filed unreviewed. Visible here so it can be read, " +
@@ -124,20 +145,31 @@ for (const f of draftFiles) {
       `Falsifier as drafted: ${String(d.falsifier ?? "none stated").replace(/\s+/g, " ")} ` +
       (d.stance_on_existing !== "neither" && d.related_claim_id
         ? `Drafted stance toward ${d.related_claim_id}: ${d.stance_on_existing} -- ${String(d.stance_reason ?? "").replace(/\s+/g, " ")} ` : "") +
-      (d.proposed_technique ? `Proposed technique, not catalogued: ${d.proposed_technique}. ` : "") +
+      (d.proposed_technique && !techLine ? `Proposed technique, not catalogued: ${d.proposed_technique}. ` : "") +
       (d.problems?.length ? `Automatic check flagged: ${d.problems.join("; ")}. ` : "")
     ),
     "submitted_by: agent:claude-opus-5@Russ-Miller", "",
   ].filter((l) => l !== "").join("\n");
 
   if (!dryRun) {
-    fs.writeFileSync(path.join("catalog/sources", `${sid}.yaml`), src);
+    if (!haveSource.has(sid)) fs.writeFileSync(path.join("catalog/sources", `${sid}.yaml`), src);
     fs.writeFileSync(path.join("catalog/claims", `${cid}.yaml`), claim);
+    if (newTechnique) {
+      const tpath = path.join("catalog/techniques", `${newTechnique.id}.yaml`);
+      if (!fs.existsSync(tpath)) fs.writeFileSync(tpath, [
+        `id: ${newTechnique.id}`, `label: ${JSON.stringify(newTechnique.label)}`,
+        "summary: >-", wrap(newTechnique.summary),
+        "description: >-", wrap(`${newTechnique.summary} Filed by the drafting stage from ${cand.title} (${d.arxiv_id}) with status proposed: the paper introduces or tests it, and the claim drafted from the paper is its first evidence. The paper validated it by: ${newTechnique.validated_by}. Nobody has vouched for it; add support or contest it on this page.`),
+        `addresses: [${d.capability}]`, `kind: ${newTechnique.kind}`, `sources: [${sid}]`,
+        "status: proposed", "submitted_by: agent:claude-opus-5@Russ-Miller", "",
+      ].join("\n"));
+      techniquesFiled++;
+    }
   }
   haveSource.add(sid); haveClaim.add(cid); filed++;
 }
 
-console.log(`${dryRun ? "[dry run] would file" : "filed"} ${filed}, skipped ${skipped}`);
+console.log(`${dryRun ? "[dry run] would file" : "filed"} ${filed} claim(s), ${techniquesFiled} technique(s), skipped ${skipped}`);
 for (const n of notes) console.log(`  ${n}`);
 if (filed && !dryRun) {
   // These sources land with the raw abstract as `summary` and no `brief`, so

@@ -163,7 +163,7 @@ export default async function ClaimPage({ params }: PageProps<"/claims/[id]">) {
           everyone publishes what worked. Making it one click is the cheapest
           thing that could change that. */}
       <section className="space-y-2 border-t border-neutral-200 pt-6 dark:border-neutral-800">
-        <EvidenceForm claimId={c.id} refId={c.ref} statement={c.statement} />
+        <EvidenceForm subject={{ kind: "claim", id: c.id }} refId={c.ref} statement={c.statement} />
         <p className="text-xs text-neutral-500">
           Disagreeing is the most useful thing you can do here. Nothing on this page waits for a
           reviewer: the counts above move when evidence lands, and every source stays attached with
