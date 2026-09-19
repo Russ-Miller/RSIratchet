@@ -8,7 +8,9 @@ import path from "node:path";
 import YAML from "yaml";
 
 export interface Draft {
-  arxiv_id: string;
+  /** arXiv id, or for a forwarded non-arXiv paper the source id. */
+  arxiv_id?: string;
+  source_id?: string;
   title: string;
   url?: string;
   drafted_at?: string;
@@ -40,5 +42,5 @@ export function getDrafts(): Draft[] {
     .map((f) => YAML.parse(fs.readFileSync(path.join(DRAFTS_DIR, f), "utf8")) as Draft)
     // Flagged drafts first: they are the ones that must not be skimmed.
     .sort((a, b) => Number(!!b.problems?.length) - Number(!!a.problems?.length)
-      || a.arxiv_id.localeCompare(b.arxiv_id));
+      || (a.arxiv_id ?? a.source_id ?? "").localeCompare(b.arxiv_id ?? b.source_id ?? ""));
 }
