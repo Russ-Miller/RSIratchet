@@ -1651,3 +1651,11 @@ to the claim with its stance, a contest marks the claim contested with the
 text as a guessed disagreement axis, and the issue is closed with a comment
 naming the source. Nothing waits for a reviewer; the counts move when
 evidence lands, and every source carries who brought it.
+
+## 2026-09-19 — Folded "Breaking a task into checkable parts" into procedure-following
+
+The proposed `decomposition` capability (CAP-0009) is removed. Its match
+terms and its idea move into `procedure-following`, the capability the
+checklist-decomposition technique addresses. It had no claims; eight queue
+papers tagged with it were re-tagged. CAP-0009 stays in the ledger and is
+never reissued; `/capabilities/decomposition` redirects.
