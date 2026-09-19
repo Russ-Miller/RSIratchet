@@ -30,6 +30,7 @@ const arg = (n) => { const i = args.indexOf(`--${n}`); return i >= 0 ? args[i + 
 const dryRun = args.includes("--dry-run");
 const consolidate = args.includes("--consolidate");
 const limit = args.includes("--all") ? Infinity : Number(arg("limit") ?? 40);
+const onlyWindow = arg("window"); // restrict to one queue file, e.g. forwarded_2026-09-19, so hand-forwarded papers are not starved by score ordering
 
 const Proposal = z.object({
   results: z.array(z.object({
@@ -168,6 +169,7 @@ for (const f of files) {
   const full = path.join(QUEUE_DIR, f);
   const parsed = YAML.parse(fs.readFileSync(full, "utf8"));
   queues.set(full, parsed);
+  if (onlyWindow && !f.startsWith(onlyWindow)) continue;
   for (const c of parsed?.candidates ?? []) {
     if ((c.capabilities ?? []).length) continue;
     if (c.proposal) continue;                       // already considered
