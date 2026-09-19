@@ -1729,3 +1729,19 @@ fine-tuning-retention's failure seen in the distribution rather than in
 accuracy; it is merged there as a facet, with its sources, match terms and
 merged_ids carried over and the old slug redirected. Ashby's-law adage note
 updated to point at the new home.
+
+## 2026-09-19 — first claims for the fourteen empty capabilities
+
+Every capability that had no claims after the proposed-capability decisions
+(cultural-competence, debugging, domain-knowledge, error-detection,
+factual-recall, formal-math, jailbreak-robustness, knowledge-updating,
+logical-deduction-robustness, multi-model-coordination, multi-step-reasoning,
+persuasion, planning, software-architecture) received three to five, drafted
+in session from arXiv papers of the last twelve months found by arXiv
+relevance search (pipeline/queue/session_2026-09-19.yaml records the
+candidates). Contesting findings were filed where found: cultural
+fine-tuning flattens diversity, repair benchmarks partly measure
+memorization, competition-benchmark provers fail on research-level Lean,
+multi-agent decomposition hurts on coupled workflows, step-wise PDDL
+simulation gains three points at 5.7x cost, prompted knowledge cutoffs fail
+on causally related facts. All filed pending-review like any other draft.
