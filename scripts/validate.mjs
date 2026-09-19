@@ -43,6 +43,7 @@ for (const cap of cat.capabilities) {
   const d = cap.data;
   for (const t of d.tags ?? []) checkRef(cap.file, tags, t, "tag");
   for (const t of d.techniques ?? []) checkRef(cap.file, ids.techniques, t, "technique");
+  for (const sid of d.sources ?? []) checkRef(cap.file, ids.sources, sid, "source");
   for (const r of d.related ?? []) checkRef(cap.file, ids.capabilities, r, "capability");
   if (d.parent) checkRef(cap.file, ids.capabilities, d.parent, "parent capability");
 }

@@ -135,6 +135,15 @@ jobs:
           node scripts/classify-candidates.mjs --limit "${{ inputs.classify_limit || '100' }}" --delay 2500 2>&1 | tee -a "$RUN_LOG"
           echo '```' >> "$RUN_LOG"
 
+      # Papers judged to be about a capability become sources on it now,
+      # without waiting for a claim. Free apart from an arXiv title check.
+      - name: File matched papers as sources
+        run: |
+          echo '## Matched sources' >> "$RUN_LOG"
+          echo '```' >> "$RUN_LOG"
+          node scripts/file-matched-sources.mjs --limit 40 2>&1 | tee -a "$RUN_LOG"
+          echo '```' >> "$RUN_LOG"
+
       # Stage 2b — mines the unmatched pile for capabilities not yet tracked.
       - name: Propose new capabilities
         if: env.HAS_ANTHROPIC_KEY == 'true'

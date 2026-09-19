@@ -42,6 +42,8 @@ export interface Capability {
   status: CapabilityStatus; submitted_by: string;
   /** Primary home among taxonomy groups; tags may name others. */
   group?: string;
+  /** Sources about this capability not yet distilled into a claim. */
+  sources?: string[];
 }
 export interface Source {
   /** Stable id, e.g. CLM-0191. Never changes; cite this. */
