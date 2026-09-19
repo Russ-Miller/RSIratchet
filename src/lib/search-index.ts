@@ -32,24 +32,24 @@ export function buildSearchIndex(): SearchRecord[] {
 
   for (const c of getCapabilities()) {
     out.push({ k: "c", id: c.id, title: c.label, sub: c.summary, ...vec("c", c.id),
-      text: [c.id, c.label, c.summary, c.description, ...(c.aliases ?? []), ...(c.match_terms ?? []), ...(c.tags ?? [])].join(" ").toLowerCase() });
+      text: [c.id, c.ref, c.label, c.summary, c.description, ...(c.aliases ?? []), ...(c.match_terms ?? []), ...(c.tags ?? [])].join(" ").toLowerCase() });
   }
   for (const t of getTechniques()) {
     out.push({ k: "t", id: t.id, title: t.label, sub: t.summary, ...vec("t", t.id),
-      text: [t.id, t.label, t.summary, t.description, ...(t.addresses ?? [])].join(" ").toLowerCase() });
+      text: [t.id, t.ref, t.label, t.summary, t.description, ...(t.addresses ?? [])].join(" ").toLowerCase() });
   }
   for (const m of getClaims()) {
     out.push({ k: "m", id: m.id, title: m.statement, sub: m.capability, ...vec("m", m.id),
-      text: [m.statement, m.capability, m.technique ?? "", m.notes ?? "", m.observed_on?.era ?? "", ...m.sources.map((s) => s.note)].join(" ").toLowerCase(),
+      text: [m.ref, m.statement, m.capability, m.technique ?? "", m.notes ?? "", m.observed_on?.era ?? "", ...m.sources.map((s) => s.note)].join(" ").toLowerCase(),
       ...(isPending(m) ? { pending: 1 as const } : {}) });
   }
   for (const s of getSources()) {
     out.push({ k: "s", id: s.id, title: s.title, ...vec("s", s.id), sub: s.authors?.[0] ? `${s.authors[0]}${s.authors.length > 1 ? " et al." : ""}${s.year ? `, ${s.year}` : ""}` : s.kind,
-      text: [s.title, s.summary ?? "", ...(s.authors ?? []), s.arxiv_id ?? "", ...(s.tags ?? [])].join(" ").toLowerCase() });
+      text: [s.ref, s.title, s.summary ?? "", ...(s.authors ?? []), s.arxiv_id ?? "", ...(s.tags ?? [])].join(" ").toLowerCase() });
   }
   for (const a of getAdages()) {
     out.push({ k: "a", id: a.id, title: a.label, sub: a.statement, ...vec("a", a.id),
-      text: [a.id, a.label, a.statement, a.origin, a.transfer, ...(a.aliases ?? [])].join(" ").toLowerCase() });
+      text: [a.id, a.ref, a.label, a.statement, a.origin, a.transfer, ...(a.aliases ?? [])].join(" ").toLowerCase() });
   }
   return out;
 }

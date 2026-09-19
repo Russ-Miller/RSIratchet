@@ -55,7 +55,7 @@ export default function ClaimsPage() {
           return (
             <li key={c.id} data-tags={claimTags(c)}
               className="rounded border border-neutral-200 p-4 dark:border-neutral-800"
-              data-vec={vecAttr("m", c.id)} data-search={`${c.id} ${c.statement} ${c.capability} ${c.technique ?? ""} ${c.backing_strength} ${c.kind}`.toLowerCase()}>
+              data-vec={vecAttr("m", c.id)} data-search={`${c.ref} ${c.id} ${c.statement} ${c.capability} ${c.technique ?? ""} ${c.backing_strength} ${c.kind}`.toLowerCase()}>
               <div className="flex flex-wrap items-center gap-2 mb-2">
                 <KindBadge kind={c.kind} />
                 <StrengthBadge strength={c.backing_strength} />

@@ -29,6 +29,8 @@ export interface DisagreementAxis { description: string; is_guess: boolean }
 export interface ObservedOn { model?: string; era?: string; task_type?: string }
 
 export interface Capability {
+  /** Stable id, e.g. CLM-0191. Never changes; cite this. */
+  ref: string;
   id: string; label: string; summary: string; description: string;
   tags?: string[]; parent?: string; aliases?: string[]; techniques?: string[]; related?: string[];
   /** Vocabulary used to topically match ingestion candidates to this capability. */
@@ -42,6 +44,8 @@ export interface Capability {
   group?: string;
 }
 export interface Source {
+  /** Stable id, e.g. CLM-0191. Never changes; cite this. */
+  ref: string;
   id: string; kind: SourceKind; title: string; authors?: string[]; year?: number; date?: string;
   arxiv_id?: string; url?: string; venue?: string; summary?: string; tags?: string[]; code_url?: string;
   ingested_at: string;
@@ -74,6 +78,8 @@ export const NEED_LABEL: Record<Need, string> = {
 export const EFFECT_LABEL: Record<Effect, string> = { helps: "helps", narrows: "helps, narrowly", "no-effect": "no effect", hurts: "hurts" };
 
 export interface Claim {
+  /** Stable id, e.g. CLM-0191. Never changes; cite this. */
+  ref: string;
   id: string; capability: string; statement: string; tags?: string[];
   /** Set when this claim asserts a technique moves the capability, and under what conditions. */
   technique?: string;
@@ -93,6 +99,8 @@ export interface EvidenceSearch { searched_on: string; note: string; nearest_mis
 export type AdageVerdict = "holds" | "breaks" | "narrows";
 export interface AdageEvidence { claim: string; verdict: AdageVerdict; note: string }
 export interface Adage {
+  /** Stable id, e.g. CLM-0191. Never changes; cite this. */
+  ref: string;
   id: string; label: string; aliases?: string[]; statement: string; origin: string; transfer: string;
   sources?: string[];
   evidence?: AdageEvidence[];
@@ -101,6 +109,8 @@ export interface Adage {
 }
 
 export interface Technique {
+  /** Stable id, e.g. CLM-0191. Never changes; cite this. */
+  ref: string;
   id: string; label: string; summary: string; description: string; addresses: string[];
   kind: "prompting" | "retrieval" | "tooling" | "training" | "decoding" | "architecture" | "process";
   sources?: string[]; repos?: Repo[]; contexts?: string[];
@@ -219,6 +229,17 @@ export const getSource = (id: string) => loadCatalog().sources.find((s) => s.id 
 export const getTechniques = () =>
   [...loadCatalog().techniques].sort((a, b) => a.label.localeCompare(b.label));
 export const getTechnique = (id: string) => loadCatalog().techniques.find((t) => t.id === id);
+/** Resolve a stable ref (CAP-0034, CLM-0191, …) to its record and section path. */
+export function byRef(ref: string): { kind: "capabilities" | "claims" | "techniques" | "sources" | "adages" | "models"; id: string } | undefined {
+  const cat = loadCatalog();
+  const kinds = ["capabilities", "claims", "techniques", "sources", "adages", "models"] as const;
+  for (const kind of kinds) {
+    const hit = (cat[kind] as { ref?: string; id: string }[]).find((r) => r.ref === ref);
+    if (hit) return { kind, id: hit.id };
+  }
+  return undefined;
+}
+
 export const getAdages = () => [...loadCatalog().adages].sort((a, b) => a.label.localeCompare(b.label));
 export const getAdage = (id: string) => loadCatalog().adages.find((a) => a.id === id);
 export const getModel = (id: string) => loadCatalog().models.find((m) => m.id === id);

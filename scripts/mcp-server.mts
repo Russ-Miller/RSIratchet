@@ -92,7 +92,7 @@ async function search(query: string, kinds: K[] | undefined, limit: number, lead
 // ---- full records, with the derived fields the site shows
 function claimView(c: Claim) {
   return {
-    id: c.id, statement: c.statement, kind: c.kind, backing_strength: c.backing_strength,
+    id: c.id, ref: c.ref, statement: c.statement, kind: c.kind, backing_strength: c.backing_strength,
     capability: c.capability, technique: c.technique, contested: c.contested,
     disagreement_axis: c.disagreement_axis, reviewed_by: cat.reviewLabel(c),
     sources: c.sources.map((l: Claim["sources"][number]) => { const s = cat.getSource(l.source); return { id: l.source, title: s?.title, url: s?.url, stance: l.stance, note: l.note }; }),

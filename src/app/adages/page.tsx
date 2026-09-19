@@ -34,7 +34,7 @@ export default function AdagesPage() {
           return (
             <li key={a.id} data-tags={adageTags(a)}
               data-vec={vecAttr("a", a.id)}
-              data-search={`${a.label} ${a.statement} ${a.id} ${(a.aliases ?? []).join(" ")} ${a.origin}`.toLowerCase()}
+              data-search={`${a.ref} ${a.label} ${a.statement} ${a.id} ${(a.aliases ?? []).join(" ")} ${a.origin}`.toLowerCase()}
               className="rounded border border-neutral-200 dark:border-neutral-800 p-3 text-sm">
               <Link href={`/adages/${a.id}`} className="font-medium hover:underline">{a.label}</Link>
               <span className="ml-2 text-xs text-neutral-500">

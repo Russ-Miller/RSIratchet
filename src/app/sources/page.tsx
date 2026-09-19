@@ -37,7 +37,7 @@ export default function SourcesPage() {
             const quiet = isQuietSource(s);
             return (
               <tr key={s.id}
-                data-vec={vecAttr("s", s.id)} data-search={`${s.title} ${(s.authors ?? []).join(" ")} ${s.kind} ${s.arxiv_id ?? ""} ${s.year ?? ""} ${(s.tags ?? []).join(" ")}`.toLowerCase()} className={`border-t border-neutral-200 dark:border-neutral-800 align-top ${quiet ? "opacity-60" : ""}`}>
+                data-vec={vecAttr("s", s.id)} data-search={`${s.ref} ${s.title} ${(s.authors ?? []).join(" ")} ${s.kind} ${s.arxiv_id ?? ""} ${s.year ?? ""} ${(s.tags ?? []).join(" ")}`.toLowerCase()} className={`border-t border-neutral-200 dark:border-neutral-800 align-top ${quiet ? "opacity-60" : ""}`}>
                 <td className="py-2 pr-4">
                   <Link href={`/sources/${s.id}`} className="font-medium hover:underline">{s.title}</Link>
                   <div className="text-xs text-neutral-500">{s.kind}{s.authors?.length ? ` · ${s.authors[0]}${s.authors.length > 1 ? " et al." : ""}` : ""}</div>

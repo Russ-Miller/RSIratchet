@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { RefTag } from "@/components/ref-tag";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { notFound } from "next/navigation";
 import { EFFECT_LABEL, NEED_LABEL, techniqueConditions, claimsAboutTechnique, getSource, getTagLabel, getTechnique, getTechniques, getCapability, techniqueStanding, STANDING_LABEL } from "@/lib/catalog";
@@ -25,7 +26,7 @@ export default async function TechniquePage({ params }: PageProps<"/techniques/[
         { label: "This technique" },
       ]} />
       <header className="space-y-2">
-        <div className="text-sm text-neutral-500">{t.kind} · <code className="font-mono">{t.id}</code>{t.status === "superseded" ? " · superseded" : ""}</div>
+        <div className="text-sm text-neutral-500">{t.kind} · <code className="font-mono">{t.id}</code> <RefTag refId={t.ref} />{t.status === "superseded" ? " · superseded" : ""}</div>
         <h1 className="text-3xl font-semibold tracking-tight">{t.label}</h1>
         <p className="text-lg text-neutral-700 dark:text-neutral-300">{t.summary}</p>
       </header>

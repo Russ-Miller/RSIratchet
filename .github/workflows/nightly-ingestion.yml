@@ -199,6 +199,10 @@ jobs:
 
       # The catalog itself is never written by this job — only the queue and
       # the ledger. Validation guards against a malformed write reaching main.
+      # New records need a stable ref before validation will pass.
+      - name: Assign stable ids
+        run: npm run ids 2>&1 | tee -a "$RUN_LOG"
+
       - name: Validate
         run: npm run validate
 

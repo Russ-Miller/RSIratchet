@@ -4,13 +4,48 @@
   "type": "object",
   "additionalProperties": false,
   "description": "A law, maxim or rule of thumb from human systems, filed so the catalog can test whether it transfers to models. The evidence list is what makes it an entry rather than a quotation: each item is a claim in this catalog and a verdict on what that claim says about the transfer.",
-  "required": ["id", "label", "statement", "origin", "transfer", "status", "submitted_by"],
+  "required": [
+    "id",
+    "ref",
+    "label",
+    "statement",
+    "origin",
+    "transfer",
+    "status",
+    "submitted_by"
+  ],
   "properties": {
-    "id": { "$ref": "common.schema.json#/$defs/slug" },
-    "label": { "type": "string", "minLength": 3, "maxLength": 60 },
-    "aliases": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
-    "statement": { "type": "string", "minLength": 10, "maxLength": 300, "description": "The adage as usually stated." },
-    "origin": { "type": "string", "minLength": 10, "description": "Who said it, where, roughly when, and the human domain it came from." },
+    "id": {
+      "$ref": "common.schema.json#/$defs/slug"
+    },
+    "ref": {
+      "type": "string",
+      "pattern": "^ADG-\\d{4}$",
+      "description": "Stable opaque identifier, assigned by scripts/assign-ids.mjs, never changed or reused. Cite this, not the slug."
+    },
+    "label": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 60
+    },
+    "aliases": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "statement": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 300,
+      "description": "The adage as usually stated."
+    },
+    "origin": {
+      "type": "string",
+      "minLength": 10,
+      "description": "Who said it, where, roughly when, and the human domain it came from."
+    },
     "transfer": {
       "type": "string",
       "minLength": 60,
@@ -26,15 +61,28 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["claim", "verdict", "note"],
+        "required": [
+          "claim",
+          "verdict",
+          "note"
+        ],
         "properties": {
-          "claim": { "$ref": "common.schema.json#/$defs/slug" },
+          "claim": {
+            "$ref": "common.schema.json#/$defs/slug"
+          },
           "verdict": {
             "type": "string",
-            "enum": ["holds", "breaks", "narrows"],
+            "enum": [
+              "holds",
+              "breaks",
+              "narrows"
+            ],
             "description": "holds: the claim shows the adage applying to models. breaks: it shows the adage failing. narrows: it holds only under a condition the note states."
           },
-          "note": { "type": "string", "minLength": 20 }
+          "note": {
+            "type": "string",
+            "minLength": 20
+          }
         }
       }
     },
@@ -42,15 +90,38 @@
       "type": "object",
       "additionalProperties": false,
       "description": "A record of having looked for evidence either way and not found it. Same role as on techniques.",
-      "required": ["searched_on", "note"],
+      "required": [
+        "searched_on",
+        "note"
+      ],
       "properties": {
-        "searched_on": { "$ref": "common.schema.json#/$defs/date" },
-        "note": { "type": "string", "minLength": 40 },
-        "nearest_miss": { "type": "array", "items": { "type": "string" } }
+        "searched_on": {
+          "$ref": "common.schema.json#/$defs/date"
+        },
+        "note": {
+          "type": "string",
+          "minLength": 40
+        },
+        "nearest_miss": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
       }
     },
-    "status": { "type": "string", "enum": ["active", "retired"] },
-    "submitted_by": { "$ref": "common.schema.json#/$defs/provenance" },
-    "notes": { "type": "string" }
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "retired"
+      ]
+    },
+    "submitted_by": {
+      "$ref": "common.schema.json#/$defs/provenance"
+    },
+    "notes": {
+      "type": "string"
+    }
   }
 }
