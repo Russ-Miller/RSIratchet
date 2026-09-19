@@ -4,7 +4,6 @@ import { ModelStrip } from "@/components/model-strip";
 import { vecAttr } from "@/lib/embeddings";
 import { capabilityTags, getCapabilities, claimsFor, isProposed, unsolvedCapabilities } from "@/lib/catalog";
 import { FilterBar } from "@/components/filter-bar";
-import { ProposedBadge } from "@/components/badges";
 
 export const metadata = { title: "Capabilities" };
 
@@ -40,8 +39,7 @@ export default function CapabilitiesPage() {
             <th className="py-1 pr-6">Capability</th>
             <th className="py-1 pr-6">Group</th>
             <th className="py-1 pr-6 whitespace-nowrap">Claims</th>
-            <th className="py-1 pr-6 whitespace-nowrap">Contested</th>
-            <th className="py-1 whitespace-nowrap">Status</th>
+            <th className="py-1 whitespace-nowrap">Contested</th>
           </tr>
         </thead>
         <tbody>
@@ -73,7 +71,6 @@ export default function CapabilitiesPage() {
                   ) : <span className="text-neutral-400">—</span>;
                 })()}
               </td>
-              <td className="py-2 whitespace-nowrap">{isProposed(c) ? <ProposedBadge /> : c.status}</td>
             </tr>
           ))}
         </tbody>
