@@ -1,0 +1,40 @@
+id: text-pretrained-llm-prompted-forecast-numeric-price-series-rounding-input
+ref: CLM-0248
+capability: forecasting
+technique: feed-integer-rounded-values-normalized-ones-llm-forecasters
+statement: >-
+  When a text-pretrained LLM is prompted to forecast a numeric price series,
+  rounding the input values to integers while keeping the original price
+  scale gives lower forecast error than full-precision raw values,
+  training-set standardization, or per-window instance normalization,
+  because normalized values fall outside the numeric distributions the model
+  saw in pretraining and per-window rescaling makes the same price appear
+  differently across samples.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Zero-shot prompting of a 4-bit quantized LLaMA-3 8B on hourly Bitcoin closing prices, 96-step input, 8-step horizon; one asset, one period (2023-2024)."
+sources:
+  - source: arxiv-2609-05235
+    stance: supports
+    note: >-
+      Validated by: Validation-set MAPE/SMAPE/NRMSE on BTC/USDT hourly
+      forecasting under a fixed zero-shot prompt with only the
+      representation varied: rounded 3.01/3.05/0.05 vs raw 4.23/5.42/0.12,
+      standard normalization 9.43/9.39/0.16, instance normalization
+      548.36/132.19/1.41; valid-output count unchanged at 1441.. Measured as
+      a one-factor-at-a-time ablation with a fixed prompt, so representation
+      is isolated, but on a single asset, single window length, single
+      backbone, and a single 10% chronological validation split; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-19
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: On other numeric series
+  and other LLM backbones, instance- or standard-normalized inputs match or
+  beat integer-rounded inputs under an otherwise identical prompt and
+  decoding setup.
+submitted_by: agent:claude-opus-5@Russ-Miller

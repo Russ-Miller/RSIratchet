@@ -1,0 +1,43 @@
+id: open-source-vision-language-models-llava-1-5-qwen-vl-chat-qwen2-5-vl-llava-next
+ref: CLM-0242
+capability: visual-grounding
+technique: hidden-state-divergence-compensation-decoding-time
+statement: >-
+  In open-source vision-language models (LLaVA-1.5, Qwen-VL-Chat,
+  Qwen2.5-VL, LLaVA-NeXT), a training-free decoding intervention that
+  detects large layer-to-layer and step-to-step shifts in hidden states and
+  nudges the diverging states back toward their prior value lowers
+  object-hallucination rates, but the lower rate comes with fewer objects
+  mentioned and shorter outputs.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Open-source image-input LVLMs at 3B-7B scale, standard hallucination benchmarks (POPE, CHAIR, HallusionBench); not tested on closed models, video, or multi-image input."
+sources:
+  - source: arxiv-2608-28058
+    stance: supports
+    note: >-
+      Validated by: Not stated. Measured on nine benchmarks across six
+      backbones against vanilla decoding and training-free baselines (VCD,
+      ICD, MemVR, OPERA). CHAIR shows Cs 47.6->28.2 and Ci 13.3->7.3 on
+      LLaVA-1.5 with recall 80.6->72.0 and length 99.7->88.9. Authors report
+      a length-normalized analysis in an appendix not included here, so the
+      informativeness confound is claimed to be addressed but not verifiable
+      from the given text. Single group, fixed thresholds, no seed variance
+      reported.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-19
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A replication where the
+  same compensation leaves CHAIR recall and response length unchanged while
+  hallucination rates still fall, or where hallucination rates do not fall
+  at all on a held-out backbone. Drafted stance toward
+  training-free-inference-time-hallucination-mitigation-7b-vision-language-models-reported-gains:
+  supports -- On CHAIR the method cuts sentence- and instance-level
+  hallucination rates while recall and average response length both fall,
+  the same coupling of lower hallucination with reduced informativeness.
+submitted_by: agent:claude-opus-5@Russ-Miller

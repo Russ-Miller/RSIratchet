@@ -1,0 +1,43 @@
+id: claim-level-uncertainty-estimated-response-claim-graph-anchoring-graph-trusted-external
+ref: CLM-0235
+capability: hallucination
+technique: anchor-claim-consistency-graphs-trusted-priors
+statement: >-
+  When claim-level uncertainty is estimated from a response-claim graph,
+  anchoring the graph with trusted external priors (edges weighted by
+  entailment from verified source sections) and scoring claims by weighted
+  closeness centrality separates ungrounded claims from
+  repeatedly-generated-but-false ones better than internal-consistency
+  centrality alone, and yields retrieval whose answerability tracks its
+  accuracy instead of the near-100% answer rate GraphRAG shows on the same
+  long documents.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Long-document QA (QASPER, QuALITY) with GPT-4o-mini and LLaMA 3.1 8B, where trusted priors can be carved out of the document itself (abstract, intro, chunks); no gold key for claim"
+sources:
+  - source: arxiv-2609-04442
+    stance: supports
+    note: >-
+      Validated by: QA accuracy and answerability against zero-shot
+      partial/full context, RAG, and GraphRAG on 100 QASPER papers and 50
+      QuALITY articles; plus a confusion matrix against an LLM oracle
+      showing 97.6% grounding precision and 85.5% of hallucinated claims
+      placed in Boundary/Refuted.. Measured on two benchmarks and two
+      backbones, but accuracy gains over GraphRAG are mixed (GraphRAG leads
+      on QuALITY with GPT-4o-mini); [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-19
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An ablation removing the
+  prior anchors and prior-weighted edges (leaving plain response-consistency
+  centrality) that matches GRACE's grounding precision and calibrated
+  answerability on the same documents. Drafted stance toward
+  decomposing-long-answers-into-atomic-facts-checking-each: supports -- It
+  again finds that atomic-claim decomposition plus external checking catches
+  unsupported content that whole-response consistency does not.
+submitted_by: agent:claude-opus-5@Russ-Miller

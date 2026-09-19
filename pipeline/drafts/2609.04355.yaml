@@ -1,0 +1,49 @@
+arxiv_id: "2609.04355"
+title: "VLA-Precision: Asymmetric Co-Bootstrapping for Efficient Real-World
+  Online RL of Vision-Language-Action Models"
+url: https://arxiv.org/abs/2609.04355
+drafted_at: 2026-09-19
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: For real-world online RL post-training of large pretrained
+  vision-language-action policies on high-precision manipulation, driving
+  policy updates from paired advantage differences against a frozen reference
+  action (plus human-correction behavior cloning) reaches far higher
+  autonomous success than methods that maximize absolute Q estimates on
+  compact policies, whose value errors show up as policy drift and sustained
+  human intervention.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Nine high-precision chemistry lab manipulation tasks, four
+  robot embodiments, pi-0.5 backbone with LoRA-trained action expert, human
+  interventions available during training; baselines HIL-SERL, ConRFT,
+  Robo-Dopamine built on compact or Octo-scale policies, so backbone scale is
+  not held fixed.
+technique: ""
+proposed_technique: Reward relative advantage over a frozen reference action
+technique_summary: Online RL for a VLA action expert optimizes the advantage
+  gap between the current action and an action decoded by the frozen pre-RL
+  policy (and over the overwritten human-corrected proposal) under a
+  pessimistic critic ensemble, instead of maximizing absolute Q values.
+technique_kind: training
+technique_validated_by: "Real-robot success rate and episode time over 180
+  held-out trials across nine tasks: 98.3% mean success in 45.8 min/task
+  versus 67.8% for fine-tuned pi-0.5, 59.4% for pi-0, and 10.0%/7.8%/2.8% for
+  Robo-Dopamine/ConRFT/HIL-SERL; online curves also report autonomous success
+  and intervention rate."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation holding the backbone, demonstrations, and intervention
+  budget fixed in which absolute-Q maximization matches or beats
+  relative-advantage-against-frozen-reference updates on autonomous success
+  and intervention rate.
+evidence_note: Measured on real hardware, nine tasks, 20 trials per task, with
+  training-dynamics curves and a stated ablation section. The headline
+  comparison confounds algorithm with backbone scale (pi-0.5 vs Octo vs
+  compact policies) and with differing demonstration counts; the within-paper
+  pi-0.5 baseline is the cleaner contrast and shows a 30.5-point gain. No seed
+  variation reported.
+confidence: medium

@@ -127,18 +127,23 @@ const capIds = new Set(capabilities.map((c) => c.id));
 const claimIds = new Set(claims.map((c) => c.id));
 
 const files = fs.existsSync(QUEUE_DIR) ? fs.readdirSync(QUEUE_DIR).filter((f) => /\.ya?ml$/.test(f)) : [];
+// Forwarded papers that are not on arXiv carry openalex_id "forwarded:<source id>";
+// they are keyed by that and drafted from their abstract.
+const keyOf = (c) => c.arxiv_id ?? (String(c.openalex_id ?? "").startsWith("forwarded:") ? c.openalex_id.slice("forwarded:".length) : undefined);
 const inFlight = new Set(pendingKeys("draft").map((k) => k.arxiv_id));
 const byArxiv = new Map();
 const work = [];
 for (const f of files) {
   const parsed = YAML.parse(fs.readFileSync(path.join(QUEUE_DIR, f), "utf8"));
   for (const c of parsed?.candidates ?? []) {
-    byArxiv.set(c.arxiv_id, c);
-    if (onlyId) { if (c.arxiv_id === onlyId) work.push(c); continue; }
+    const ck = keyOf(c);
+    if (!ck) continue;
+    byArxiv.set(ck, c);
+    if (onlyId) { if (ck === onlyId) work.push(c); continue; }
     // Already drafted is already done; a bulk re-run should cost nothing for
     // work that exists.
-    if (!redo && fs.existsSync(path.join(OUT_DIR, `${c.arxiv_id}.yaml`))) continue;
-    if (inFlight.has(c.arxiv_id)) continue;                   // submitted in an earlier run, not yet back
+    if (!redo && fs.existsSync(path.join(OUT_DIR, `${ck}.yaml`))) continue;
+    if (inFlight.has(ck)) continue;                   // submitted in an earlier run, not yet back
     if ((c.verdicts ?? []).some((v) => v.about_capability)) work.push(c);
   }
 }
@@ -161,8 +166,9 @@ async function apply({ key, message }) {
   if (!cand) { console.log(`${id}: candidate no longer queued, result dropped`); return; }
   const d = parseStructured(message, Draft);
   if (!d) { console.log(`${id}: parse failed`); errors++; return; }
-  let text = key.kind === "full-text" ? await fetchFullText(id).catch(() => null) : null;
-  if (!text) text = (await fetchAbstracts([id]).catch(() => new Map())).get(id) ?? cand.abstract ?? "";
+  const isArxiv = !!cand.arxiv_id;
+  let text = key.kind === "full-text" && isArxiv ? await fetchFullText(id).catch(() => null) : null;
+  if (!text) text = (isArxiv ? (await fetchAbstracts([id]).catch(() => new Map())).get(id) : undefined) ?? cand.abstract ?? "";
 
   // Checks the model cannot mark its own homework on.
   const problems = [];
@@ -174,7 +180,7 @@ async function apply({ key, message }) {
   if (ungrounded.length) problems.push(`figures not in the source: ${ungrounded.join(", ")}`);
 
   const out = {
-    arxiv_id: id, title: cand.title, url: cand.url ?? `https://arxiv.org/abs/${id}`,
+    ...(cand.arxiv_id ? { arxiv_id: id } : { source_id: id }), title: cand.title, url: cand.url ?? cand.doi ?? (cand.arxiv_id ? `https://arxiv.org/abs/${id}` : undefined),
     drafted_at: new Date().toISOString().slice(0, 10), drafted_from: key.kind, model: MODEL,
     status: "draft — not filed. Review, edit, then move into catalog/ by hand.",
     ...d,
@@ -190,10 +196,10 @@ addUsage(earlier.usage);
 
 const requests = [];
 for (const cand of batch) {
-  const id = cand.arxiv_id;
-  let text = await fetchFullText(id).catch(() => null);
+  const id = keyOf(cand);
+  let text = cand.arxiv_id ? await fetchFullText(id).catch(() => null) : null;
   let kind = "full-text";
-  if (!text) { text = (await fetchAbstracts([id]).catch(() => new Map())).get(id) ?? cand.abstract; kind = "abstract"; }
+  if (!text) { text = (cand.arxiv_id ? (await fetchAbstracts([id]).catch(() => new Map())).get(id) : undefined) ?? cand.abstract; kind = "abstract"; }
   if (!text) { console.log(`${id}: no text available, skipped`); errors++; continue; }
   if (dryRun) {
     console.log(SYSTEM + "\n--- user ---\n" + buildPrompt(cand, capabilities, techniques, claims, text).slice(0, 4000));

@@ -1,0 +1,45 @@
+arxiv_id: "2502.15688"
+title: "XPath Agent: An Efficient XPath Programming Agent Based on LLM for Web
+  Crawler"
+url: https://arxiv.org/abs/2502.15688
+drafted_at: 2026-09-19
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: formal-query-synthesis
+statement: For synthesizing reusable XPath extractors from a few sampled web
+  pages, a two-stage pipeline — first having a cheaper model extract both the
+  target value and the neighbouring cue text from an attribute-stripped HTML
+  tree, then having a stronger model write the XPath over HTML condensed
+  around those located nodes with an execution-feedback loop — reaches usable
+  extraction F1 on multi-domain product/listing pages while keeping prompt
+  size far below feeding raw pages.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Semi-structured HTML detail pages of the SWDE kind (90 sites,
+  9 domains), 3 seed pages per site, up to 3 evaluator feedback rounds;
+  DeepSeek/GPT-4o/Claude backbones.
+technique: ""
+proposed_technique: Extract cue text first, then write XPath over condensed HTML
+technique_summary: Stage one prompts an LLM on a sanitized HTML tree to return
+  target values plus the anchor text preceding them; stage two condenses the
+  page around those nodes and prompts a stronger LLM to emit an XPath, refined
+  by executing it on seed pages and feeding back missing/redundant matches.
+technique_kind: prompting
+technique_validated_by: "Set-matching precision/recall/F1/accuracy on SWDE
+  across four backbones (best: GPT-4o, F1 0.8514, accuracy 0.7413);
+  sanitization measured to cut page size to roughly 10-20%. Comparison to
+  AutoCrawler is discussed narratively, not tabulated, and no ablation
+  isolates the cue-text component."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation on the same dataset showing that dropping cue-text
+  extraction, or feeding the sanitized page directly to the XPath-writing
+  model, yields equal or better F1 at similar token cost.
+evidence_note: "Measured on one dataset with four backbones, but the paper
+  reports only end-to-end numbers: no ablation separates sanitization, cue
+  text, condensing, and the evaluator loop, no token counts are tabulated, and
+  the claimed baseline comparison against AutoCrawler is prose only. Error
+  analysis section is empty."
+confidence: low
