@@ -50,9 +50,9 @@ export default function DraftsPage() {
               const related = d.related_claim_id ? getClaim(d.related_claim_id) : undefined;
               const tech = d.technique ? getTechnique(d.technique) : undefined;
               return (
-                <li key={d.arxiv_id} className="rounded border border-neutral-200 p-4 dark:border-neutral-800">
+                <li key={d.arxiv_id ?? d.source_id} className="rounded border border-neutral-200 p-4 dark:border-neutral-800">
                   <div className="mb-2 flex flex-wrap items-baseline gap-2 text-xs text-neutral-500">
-                    <code className="font-mono">{d.arxiv_id}</code>
+                    <code className="font-mono">{d.arxiv_id ?? d.source_id}</code>
                     <a href={d.url ?? `https://arxiv.org/abs/${d.arxiv_id}`} target="_blank" rel="noopener noreferrer" className="hover:underline">
                       read the paper &rarr;
                     </a>
@@ -108,7 +108,7 @@ export default function DraftsPage() {
                     </ul>
                   </details>
 
-                  <DraftVerdict id={d.arxiv_id} />
+                  <DraftVerdict id={d.arxiv_id ?? d.source_id ?? ""} />
                 </li>
               );
             })}
@@ -121,7 +121,7 @@ export default function DraftsPage() {
               browser only. Collect them and paste the result into the conversation; filing is
               still a deliberate act, which is the point.
             </p>
-            <VerdictExport ids={drafts.map((d) => d.arxiv_id)} />
+            <VerdictExport ids={drafts.map((d) => d.arxiv_id ?? d.source_id ?? "")} />
           </section>
         </>
       )}

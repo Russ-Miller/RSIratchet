@@ -1,0 +1,50 @@
+arxiv_id: "2609.04442"
+title: "GRACE: Graph-Grounded Reflective Agent Copilot Engine for
+  Expert-in-the-Loop Knowledge Expansion"
+url: https://arxiv.org/abs/2609.04442
+drafted_at: 2026-09-19
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: When claim-level uncertainty is estimated from a response-claim
+  graph, anchoring the graph with trusted external priors (edges weighted by
+  entailment from verified source sections) and scoring claims by weighted
+  closeness centrality separates ungrounded claims from
+  repeatedly-generated-but-false ones better than internal-consistency
+  centrality alone, and yields retrieval whose answerability tracks its
+  accuracy instead of the near-100% answer rate GraphRAG shows on the same
+  long documents.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Long-document QA (QASPER, QuALITY) with GPT-4o-mini and LLaMA
+  3.1 8B, where trusted priors can be carved out of the document itself
+  (abstract, intro, chunks); no gold key for claim correctness outside the
+  LLM/human verifier.
+technique: ""
+proposed_technique: Anchor claim-consistency graphs to trusted priors
+technique_summary: Decompose sampled responses and trusted source documents
+  into atomic claims, build a weighted bipartite graph where prior-entailed
+  edges cost least, and label each claim Grounded, Refuted, or Boundary by
+  weighted closeness centrality.
+technique_kind: retrieval
+technique_validated_by: QA accuracy and answerability against zero-shot
+  partial/full context, RAG, and GraphRAG on 100 QASPER papers and 50 QuALITY
+  articles; plus a confusion matrix against an LLM oracle showing 97.6%
+  grounding precision and 85.5% of hallucinated claims placed in
+  Boundary/Refuted.
+stance_on_existing: supports
+related_claim_id: decomposing-long-answers-into-atomic-facts-checking-each
+stance_reason: It again finds that atomic-claim decomposition plus external
+  checking catches unsupported content that whole-response consistency does
+  not.
+falsifier: An ablation removing the prior anchors and prior-weighted edges
+  (leaving plain response-consistency centrality) that matches GRACE's
+  grounding precision and calibrated answerability on the same documents.
+evidence_note: Measured on two benchmarks and two backbones, but accuracy
+  gains over GraphRAG are mixed (GraphRAG leads on QuALITY with GPT-4o-mini);
+  the calibration claim rests on answerability percentages, not a proper
+  calibration metric, and the main hallucination-precision number comes from
+  an LLM oracle with no independent gold key. No ablation isolates the prior
+  anchoring from the rest of the pipeline.
+confidence: low

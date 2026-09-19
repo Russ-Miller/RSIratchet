@@ -1,0 +1,37 @@
+id: synthesizing-reusable-xpath-extractors-few-sampled-web-pages-two-stage
+ref: CLM-0257
+capability: formal-query-synthesis
+technique: extract-cue-text-first-then-write-xpath-over
+statement: >-
+  For synthesizing reusable XPath extractors from a few sampled web pages, a
+  two-stage pipeline — first having a cheaper model extract both the target
+  value and the neighbouring cue text from an attribute-stripped HTML tree,
+  then having a stronger model write the XPath over HTML condensed around
+  those located nodes with an execution-feedback loop — reaches usable
+  extraction F1 on multi-domain product/listing pages while keeping prompt
+  size far below feeding raw pages.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Semi-structured HTML detail pages of the SWDE kind (90 sites, 9 domains), 3 seed pages per site, up to 3 evaluator feedback rounds; DeepSeek/GPT-4o/Claude backbones."
+sources:
+  - source: arxiv-2502-15688
+    stance: supports
+    note: >-
+      Validated by: Set-matching precision/recall/F1/accuracy on SWDE across
+      four backbones (best: GPT-4o, F1 0.8514, accuracy 0.7413);
+      sanitization measured to cut page size to roughly 10-20%. Comparison
+      to AutoCrawler is discussed narratively, not tabulated, and no
+      ablation isolates the cue-text component.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-19
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An ablation on the same
+  dataset showing that dropping cue-text extraction, or feeding the
+  sanitized page directly to the XPath-writing model, yields equal or better
+  F1 at similar token cost.
+submitted_by: agent:claude-opus-5@Russ-Miller

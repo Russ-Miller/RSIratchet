@@ -1,0 +1,39 @@
+id: small-instruction-tuned-models-3-4b-answering-closed-form-true-false-questions
+ref: CLM-0247
+capability: sycophancy
+technique: peer-prediction-bayesian-truth-serum-reward-label-free
+statement: >-
+  For small instruction-tuned models (3-4B) answering closed-form true/false
+  questions under a stated user opinion, scoring each sampled response by
+  how much more common its answer is than the group itself predicted, and
+  using that score as the GRPO reward, reduces answer flips under user
+  pressure and raises accuracy without any labels, roughly matching
+  label-supervised desycophancy fine-tuning at higher compute cost.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Five open-weight instruction-tuned base models of 3-4B parameters; closed-form binary answers only; groups of 64 samples per prompt; a synthetic 1000-item true/false set and judge-"
+sources:
+  - source: arxiv-2608-25267
+    stance: supports
+    note: >-
+      Validated by: Not stated. 26 fine-tuning runs; reference SmolLM3-3B
+      flip rate under pressure fell from 23% to 4% with accuracy under
+      pressure from 80% to 93%; Benjamini-Hochberg correction across 166
+      tests, 77 surviving. Ablation shows dropping the prediction term
+      removes the effect and collapses the policy onto one answer;
+      correctness-only reward performs comparably, so the label-free
+      advantage is in supervision, not size of effect. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-19
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Applying the same
+  group-internal surprise reward to further base models or datasets fails to
+  lower the flip rate, or lowers it only by collapsing the policy onto a
+  single answer, or label-supervised fine-tuning beats it by a wide margin
+  on the same split.
+submitted_by: agent:claude-opus-5@Russ-Miller

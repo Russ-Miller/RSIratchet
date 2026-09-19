@@ -28,7 +28,10 @@ const techniques = new Map(catalog.techniques.map((t) => [t.data.id, t.data]));
 const queue = new Map();
 for (const f of fs.readdirSync(QUEUE).filter((f) => /\.ya?ml$/.test(f))) {
   const d = YAML.parse(fs.readFileSync(path.join(QUEUE, f), "utf8")) ?? {};
-  for (const c of d.candidates ?? []) if (c.arxiv_id) queue.set(c.arxiv_id, c);
+  for (const c of d.candidates ?? []) {
+    if (c.arxiv_id) queue.set(c.arxiv_id, c);
+    else if (String(c.openalex_id ?? "").startsWith("forwarded:")) queue.set(c.openalex_id.slice("forwarded:".length), c);
+  }
 }
 
 const STOP = new Set("a an the of in on for to and is are that it its when with by as not but so at from can".split(" "));
@@ -78,17 +81,20 @@ for (let i = 0; i < toCheck.length; i += 5) {
 
 for (const f of draftFiles) {
   const d = YAML.parse(fs.readFileSync(path.join(DRAFTS, f), "utf8"));
-  const sid = `arxiv-${d.arxiv_id.replace(/\./g, "-")}`;
+  // Non-arXiv forwarded papers carry source_id: the source already exists.
+  const pid = d.arxiv_id ?? d.source_id;
+  const sid = d.arxiv_id ? `arxiv-${d.arxiv_id.replace(/\./g, "-")}` : d.source_id;
+  if (!pid) { skipped++; continue; }
   const cid = slug(d.statement);
   // A source may already exist (file-matched-sources files papers before any
   // claim is drafted); only an existing claim means this draft is done.
   if (haveClaim.has(cid)) { skipped++; continue; }
-  if (!capIds.has(d.capability)) { notes.push(`${d.arxiv_id}: unknown capability ${d.capability}`); skipped++; continue; }
-  const cand = queue.get(d.arxiv_id);
-  if (!cand) { notes.push(`${d.arxiv_id}: no queue metadata`); skipped++; continue; }
-  const real = arxivTitle.get(d.arxiv_id);
+  if (!capIds.has(d.capability)) { notes.push(`${pid}: unknown capability ${d.capability}`); skipped++; continue; }
+  const cand = queue.get(pid);
+  if (!cand) { notes.push(`${pid}: no queue metadata`); skipped++; continue; }
+  const real = d.arxiv_id ? arxivTitle.get(d.arxiv_id) : undefined;
   if (real && !sameTitle(real, cand.title)) {
-    notes.push(`${d.arxiv_id}: queue title "${cand.title.slice(0, 60)}…" is not arXiv's "${real.slice(0, 60)}…" — wrong id attached upstream, not filed`);
+    notes.push(`${pid}: queue title "${cand.title.slice(0, 60)}…" is not arXiv's "${real.slice(0, 60)}…" — wrong id attached upstream, not filed`);
     skipped++; continue;
   }
 
@@ -120,8 +126,8 @@ for (const f of draftFiles) {
 
   const src = [
     `id: ${sid}`, "kind: paper", `title: ${JSON.stringify(cand.title)}`,
-    `year: 20${d.arxiv_id.slice(0, 2)}`, `date: ${cand.date ?? TODAY}`,
-    `arxiv_id: "${d.arxiv_id}"`, `url: https://arxiv.org/abs/${d.arxiv_id}`,
+    `year: ${d.arxiv_id ? "20" + d.arxiv_id.slice(0, 2) : String(cand.date ?? TODAY).slice(0, 4)}`, `date: ${cand.date ?? TODAY}`,
+    ...(d.arxiv_id ? [`arxiv_id: "${d.arxiv_id}"`, `url: https://arxiv.org/abs/${d.arxiv_id}`] : [`url: ${cand.doi ?? cand.url ?? ""}`]),
     "tags: [ingested]", "summary: >-", wrap((cand.abstract ?? cand.title).slice(0, 600)),
     `ingested_at: ${TODAY}`, "",
   ].join("\n");
@@ -159,7 +165,7 @@ for (const f of draftFiles) {
       if (!fs.existsSync(tpath)) fs.writeFileSync(tpath, [
         `id: ${newTechnique.id}`, `label: ${JSON.stringify(newTechnique.label)}`,
         "summary: >-", wrap(newTechnique.summary),
-        "description: >-", wrap(`${newTechnique.summary} Filed by the drafting stage from ${cand.title} (${d.arxiv_id}) with status proposed: the paper introduces or tests it, and the claim drafted from the paper is its first evidence. The paper validated it by: ${newTechnique.validated_by}. Nobody has vouched for it; add support or contest it on this page.`),
+        "description: >-", wrap(`${newTechnique.summary} Filed by the drafting stage from ${cand.title} (${pid}) with status proposed: the paper introduces or tests it, and the claim drafted from the paper is its first evidence. The paper validated it by: ${newTechnique.validated_by}. Nobody has vouched for it; add support or contest it on this page.`),
         `addresses: [${d.capability}]`, `kind: ${newTechnique.kind}`, `sources: [${sid}]`,
         "status: proposed", "submitted_by: agent:claude-opus-5@Russ-Miller", "",
       ].join("\n"));
