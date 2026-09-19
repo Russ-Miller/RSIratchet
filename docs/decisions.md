@@ -1718,3 +1718,14 @@ match terms did not use the field's vocabulary (issue/fault localization;
 abstention, unanswerable, selective prediction). Both got aliases and match
 terms, and review-proposed.mjs gained --seed so verified arXiv ids can be
 judged directly instead of relying on relevance search.
+
+## 2026-09-19 — critique accepted, output-diversity folded into fine-tuning-retention
+
+critique (CAP-0006) was relabelled "Judging another's work as well as a
+careful reviewer would" so it is plain the model is the critic, not the
+judged, and set active. output-diversity (CAP-0034) had two sources, both
+about collapse of the output distribution after RL or fine-tuning, which is
+fine-tuning-retention's failure seen in the distribution rather than in
+accuracy; it is merged there as a facet, with its sources, match terms and
+merged_ids carried over and the old slug redirected. Ashby's-law adage note
+updated to point at the new home.
