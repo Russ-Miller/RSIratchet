@@ -178,6 +178,8 @@ jobs:
           echo '## Stage 3b — file drafts' >> "$RUN_LOG"
           echo '```' >> "$RUN_LOG"
           node scripts/file-drafts.mjs 2>&1 | tee -a "$RUN_LOG"
+          # Every record needs a stable ref (CLM-/SRC-nnnn) or validation fails.
+          node scripts/assign-ids.mjs 2>&1 | tee -a "$RUN_LOG"
           echo '```' >> "$RUN_LOG"
 
       # Stage 4 — write a readable digest for any paper source that lacks one,
