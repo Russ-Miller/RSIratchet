@@ -41,13 +41,22 @@ for (const f of fs.readdirSync(QUEUE).filter((f) => /\.ya?ml$/.test(f)).sort()) 
   for (const c of d.candidates ?? []) {
     if (!c.arxiv_id) continue;
     const sid = `arxiv-${c.arxiv_id.replace(/\./g, "-")}`;
-    for (const v of c.verdicts ?? []) {
-      if (!v.about_capability) continue;
-      const cap = capFiles.get(v.capability);
+    // Two kinds of positive judgement: a stage-2 verdict, or the proposer
+    // having created (or folded into) this capability from this very paper.
+    const judgements = (c.verdicts ?? []).filter((v) => v.about_capability).map((v) => ({ capId: v.capability, v }));
+    const pid = c.proposal?.proposed_id;
+    if (pid) {
+      const home = [...capFiles.values()].find((x) => x.data.id === pid || (x.data.merged_ids ?? []).includes(pid));
+      if (home) judgements.push({ capId: home.data.id, v: { direction: "proposed", confidence: "high", rationale: c.proposal.rationale ?? "" } });
+    }
+    const seen = new Set();
+    for (const { capId, v } of judgements) {
+      if (seen.has(capId)) continue; seen.add(capId);
+      const cap = capFiles.get(capId);
       if (!cap) continue;
       if ((cap.data.sources ?? []).includes(sid)) continue;
-      if (citedBy.get(sid)?.has(v.capability)) continue;   // already shows through a claim
-      work.push({ c, sid, cap, v });
+      if (citedBy.get(sid)?.has(capId)) continue;   // already shows through a claim
+      work.push({ c, sid, cap, v: { ...v, capability: capId } });
     }
   }
 }
@@ -78,7 +87,9 @@ for (const { c, sid, cap, v } of batch) {
         `year: 20${c.arxiv_id.slice(0, 2)}`, `date: ${c.date ?? TODAY}`,
         `arxiv_id: "${c.arxiv_id}"`, `url: https://arxiv.org/abs/${c.arxiv_id}`,
         "tags: [ingested]", "summary: >-", wrap((c.abstract ?? c.title).slice(0, 600)),
-        "notes: >-", wrap(`Filed as a source on ${v.capability} from the classifier's judgement that the paper is about it (${v.direction}, ${v.confidence}): ${String(v.rationale ?? "").replace(/\s+/g, " ").slice(0, 300)} No claim has been drafted from it yet.`),
+        "notes: >-", wrap(v.direction === "proposed"
+          ? `Filed as a source on ${v.capability}: this paper is one of those the pipeline proposed the capability from. ${String(v.rationale ?? "").replace(/\s+/g, " ").slice(0, 300)} No claim has been drafted from it yet.`
+          : `Filed as a source on ${v.capability} from the classifier's judgement that the paper is about it (${v.direction}, ${v.confidence}): ${String(v.rationale ?? "").replace(/\s+/g, " ").slice(0, 300)} No claim has been drafted from it yet.`),
         `ingested_at: ${TODAY}`, "",
       ].join("\n"));
       haveSource.add(sid);
