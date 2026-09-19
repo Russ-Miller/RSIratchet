@@ -44,6 +44,8 @@ export interface Capability {
   group?: string;
   /** Sources about this capability not yet distilled into a claim. */
   sources?: string[];
+  /** Proposal ids folded into this capability. */
+  merged_ids?: string[];
 }
 export interface Source {
   /** Stable id, e.g. CLM-0191. Never changes; cite this. */
