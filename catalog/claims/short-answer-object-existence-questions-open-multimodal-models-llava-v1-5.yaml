@@ -1,0 +1,39 @@
+id: short-answer-object-existence-questions-open-multimodal-models-llava-v1-5
+ref: CLM-0261
+capability: visual-grounding
+technique: adversarial-contrastive-fine-tuning-hallucination-flipped-image-pairs
+statement: >-
+  For short-answer object-existence questions in open multimodal models
+  (LLaVA v1.5, MiniGPT-4, Qwen2.5-VL), object hallucination is driven partly
+  by the visual encoder itself rather than only by language priors:
+  hallucinated cases show lower image-text embedding similarity and inverted
+  attention, and swapping in a weaker or noisier visual encoder lowers POPE
+  accuracy while a stronger one raises it.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Binary yes/no existence questions with very short outputs (POPE, MME-Existence); the paper says long-form description settings are more affected by language priors."
+sources:
+  - source: arxiv-2609-00231
+    stance: supports
+    note: >-
+      Validated by: Not stated. Cosine-similarity comparison and Grad-CAM
+      entropy over 500 hallucinated vs 500 correct samples on LLaVA v1.5,
+      plus encoder-swap interventions on POPE (average accuracy 0.842
+      baseline, 0.739-0.822 degraded, 0.864 with SigLIP-SO400M). Entropy
+      differences are small (5.1%, 6.2%) and the diagnostic analysis is on
+      one model; the encoder interventions do isolate visual feature
+      quality.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-19
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Show that varying visual
+  encoder quality leaves object-existence hallucination rates unchanged, or
+  that the image-text similarity and attention-entropy differences between
+  hallucinated and correct cases disappear under matched question
+  difficulty.
+submitted_by: agent:claude-opus-5@Russ-Miller

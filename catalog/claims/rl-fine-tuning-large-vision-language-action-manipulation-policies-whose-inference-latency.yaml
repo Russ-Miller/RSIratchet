@@ -1,0 +1,41 @@
+id: rl-fine-tuning-large-vision-language-action-manipulation-policies-whose-inference-latency
+ref: CLM-0257
+capability: embodied-control
+technique: split-slow-chunk-proposal-fast-latest-observation-edits
+statement: >-
+  For RL fine-tuning of large vision-language-action manipulation policies
+  whose inference latency makes the observation stale by execution time,
+  having the big model propose action chunks asynchronously from the older
+  observation while a small edit policy conditioned on the latest
+  observation modifies and a critic selects among candidates recovers more
+  performance than applying RL on top of real-time chunking alone.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Dynamic, high-frequency (30 Hz) manipulation with delay no larger than the chunk execution horizon, sparse binary rewards, small demo set plus short online RL; tested on 10 Kinetix"
+sources:
+  - source: arxiv-2609-18207
+    stance: supports
+    note: >-
+      Validated by: Kinetix: 96.2% average success under 4-step delay, above
+      DSRL+RTC, EXPO-FT, EXPO-FT+RTC (by 20.1, 21.3, 14.5 points) and above
+      the zero-delay RLPD baseline at 81.4%; real robot: average 29/30
+      trials vs 25/30 for EXPO-FT w/ RTC and 12.5/30 for the SFT starting
+      policy, with online data capped at 10 minutes per task.. Measured in
+      simulation (10 Kinetix tasks, 4 seeds) and on 4 real tasks with 30
+      trials each, against several RL baselines including latency-aware
+      ones. Baselines RLPD and DSRL got more gradient updates, which the
+      authors say favours them. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-19
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: On the same tasks and
+  delays, an RL-fine-tuned real-time-chunking policy with no separate edit
+  policy matching or beating the decoupled design, or the decoupled design
+  losing its advantage once the edit policy is given no access to the latest
+  observation but the same extra parameters and gradient steps.
+submitted_by: agent:claude-opus-5@Russ-Miller

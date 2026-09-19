@@ -1,0 +1,42 @@
+id: medically-fine-tuned-llama-3-1-8b-checkpoint-ultramedical-scores-lower-than
+ref: CLM-0246
+capability: domain-knowledge
+technique: reweight-jargon-favoring-components-instead-retraining
+statement: >-
+  A medically fine-tuned Llama-3.1-8B checkpoint (UltraMedical) scores lower
+  than its general-purpose Instruct base on both medical jargon
+  definition-selection and in-context jargon identification, and its errors
+  are almost entirely false positives — it labels ordinary words in clinical
+  context as specialized — driven by over-weighting the same jargon-favoring
+  components the base model already has rather than by any relocation of
+  jargon knowledge.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "One model pair (Llama-3.1-8B-Instruct vs Llama-3.1-8B-UltraMedical), English medical jargon benchmarks built from README/UMLS; the fine-tuning data and recipe are not controlled, s"
+sources:
+  - source: arxiv-2609-13556
+    stance: supports
+    note: >-
+      Validated by: Reweighting raised UltraMedical's jargon-identification
+      accuracy from 53.1 to 56.1 (McNemar p=0.01, by removing 270 false
+      positives at the cost of 146 new false negatives), while the same
+      procedure lowered Instruct by 1.0 point and changed both models'
+      jargon-understanding accuracy by at most 0.2 points.. Measured on
+      held-out splits (1,495 JU items, 2,990 JI items) with Wilson
+      intervals; JU gap is small and the confidence intervals overlap, JI
+      gap is larger (58.8 vs 53.1) and the paired disagreement asymmetry is
+      significant. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-19
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A controlled comparison
+  where medically fine-tuned checkpoints beat their general-purpose bases on
+  the same jargon understanding and identification benchmarks, or an error
+  breakdown showing the fine-tuned model's errors are balanced rather than
+  false-positive dominated.
+submitted_by: agent:claude-opus-5@Russ-Miller

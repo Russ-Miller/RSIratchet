@@ -1,22 +1,51 @@
-generated_at: 2026-09-19
-from_raw_proposals: 3
+# Consolidated capability candidates. Suggestions, not capabilities.
+generated_at: 2026-09-18
+from_raw_proposals: 20
 recommended:
-  - id: formal-query-synthesis
-    label: Turning intent or examples into a formal query or pattern
-    scope_note: Covers producing executable queries, regexes, selectors, or other
-      pattern-language artifacts whose semantics must match a user's stated
-      intent or a few given examples; excludes writing ordinary application
-      code from an explicit spec, which code-generation already covers.
+  - id: contextual-privacy
+    label: "Deciding what private information to disclose to whom"
+    scope_note: "Covers whether a model withholds, redacts, or appropriately shares sensitive personal data given recipient and context, including leaking memorized personal data; excludes generic refusal of harmful requests and prompt-injected instructions."
+    paper_count: 3
+    merged_from: [contextual-privacy, privacy-preserving-disclosure, privacy-leakage]
+    note: "Three independent papers converge on the same agentic privacy judgment, and nothing in the index covers disclosure decisions or personal-data leakage."
+  - id: compression-behavior-retention
+    label: "Keeping behavior after compression or inference shortcuts"
+    scope_note: "Covers whether quantization, pruning, distillation, early exit, or speculative decoding preserves the original model's quality and safety/fairness/robustness behavior; excludes fine-tuning-induced skill loss and pure speed benchmarks."
+    paper_count: 3
+    merged_from: [compression-behavior-retention, inference-optimization-fidelity, reasoning-mode-consistency]
+    note: "Distinct deployment-time analogue of fine-tuning-retention, with several papers testing behavior preservation under serving-side modifications."
+  - id: social-bias
+    label: "Treating social groups even-handedly"
+    scope_note: "Covers systematically different outputs, evaluations, or recommendations conditioned on a subject's demographic group in text or images; excludes culture-specific norm knowledge and judge position/length bias."
     paper_count: 2
-    merged_from:
-      - nl-to-formal-query
-      - program-synthesis-from-examples
-    note: Semantic fidelity to intent in constrained formal languages is a
-      distinct failure mode from general code-generation, and both proposals
-      point at the same skill, so it is worth one entry despite thin evidence.
+    merged_from: [social-bias, demographic-bias]
+    note: "Recurring, well-defined failure mode that neither cultural-competence nor judge-position-bias captures."
+  - id: structured-extraction
+    label: "Turning documents and free text into structured records"
+    scope_note: "Covers OCR/layout parsing and schema-filling extraction that yields machine-readable tables or records; excludes summarization, QA, and general image description."
+    paper_count: 2
+    merged_from: [structured-information-extraction, document-structure-parsing]
+    note: "Two papers on the same underlying skill of producing faithful structured output from unstructured sources, which no existing entry covers."
+  - id: confidence-calibration
+    label: "Matching expressed confidence to actual accuracy"
+    scope_note: "Covers whether verbalized or token-level confidence tracks correctness (calibration error, selective risk); excludes outright abstention and plain accuracy."
+    paper_count: 1
+    merged_from: [confidence-calibration]
+    note: "Calibration is a graded, separately measured property that abstention-and-self-knowledge only partially covers, so it earns its own slot despite thin evidence here."
 set_aside:
-  - id: structured-document-extraction
-    note: A single-paper task domain rather than a capability, and its
-      generalizable part (inducing selectors) already falls under
-      formal-query-synthesis while the rest is covered by
-      retrieval-utilization and visual-grounding.
+  - id: chart-and-diagram-reasoning
+    note: "Largely a task domain sitting between visual-grounding and multi-step-reasoning, with only one paper behind it."
+  - id: structured-graphics-generation
+    note: "Narrow generation task domains rather than a general capability, and mostly reducible to code-generation plus visual grounding."
+  - id: vulnerability-detection
+    note: "Already sits inside the overlap of error-detection and secure-coding."
+  - id: training-data-membership-inference
+    note: "A measurement technique about models rather than a capability the model is asked to exercise."
+  - id: generation-understanding-consistency
+    note: "One-off framing tied to a specific unified-model architecture."
+  - id: representation-readout-gap
+    note: "Interpretability finding adjacent to explanation-faithfulness, not a trackable capability on its own."
+  - id: convergent-clue-integration
+    note: "A single puzzle-style framing that multi-step-reasoning and decomposition already cover."
+  - id: human-ai-complementarity
+    note: "Genuinely interesting but a single study, and it is closer to an evaluation design question than a model capability."

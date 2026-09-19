@@ -1,0 +1,40 @@
+id: ros-tool-calling-robot-agents-driven-open-weight-llms-multi-step-tasks
+ref: CLM-0259
+capability: long-horizon-execution
+technique: constrain-tool-calls-persisted-pseudo-code-plan
+statement: >-
+  For ROS tool-calling robot agents driven by open-weight LLMs on multi-step
+  tasks, storing a pseudo-code plan in persistent scratchpad memory is not
+  enough — restricting each tool invocation to the plan's next step is what
+  adds the remaining gain on the longest tasks (GPT-OSS-20B 35%→55%,
+  GPT-OSS-120B 50%→70% on the hardest task category), while on short
+  single-query tasks the constraint adds little.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Open-weight models (GPT-OSS-20B/120B, Kimi-K2) in a ROS-Agent framework with ~8 custom tools; 20 trials per task per configuration in Gazebo, plus 40 hardware trials; small samples"
+sources:
+  - source: arxiv-2609-13335
+    stance: supports
+    note: >-
+      Validated by: Four-configuration ablation (prompting, transient plan,
+      persistent plan, persistent plan + execution constraint) over 20
+      trials per task per model in Gazebo, and 40 hardware trials measuring
+      repeated tool calls (19.0%→6.1%), invalid calls (21.7%→8.1%) and
+      success rate (23/40→30/40) against vanilla ROSA, ReAct and
+      Code-as-Policies re-implementations.. Measured, but small: 20 trials
+      per cell, single robot platform, three task prompts, authors
+      themselves call the differences indicative rather than significant.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-19
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An ablation on comparable
+  agents where persistent plan storage alone matches the plan-constrained
+  policy on long-horizon tasks, or where the constraint lowers success by
+  blocking needed off-plan recovery actions.
+submitted_by: agent:claude-opus-5@Russ-Miller

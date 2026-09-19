@@ -1,0 +1,44 @@
+id: prompt-contains-several-legitimate-conflicting-evidence-passages-models-internally
+ref: CLM-0253
+capability: fact-verification
+technique: neutral-center-activation-steering-evidence-integration
+statement: >-
+  When a prompt contains several legitimate but conflicting evidence
+  passages, models internally register the conflict — linear probes on
+  mid-to-late-layer hidden states separate conflicting from consistent
+  inputs at high AUC — while still resolving the conflict badly at the
+  output, so the failure is in evidence integration rather than in conflict
+  detection.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Measured on open-weight models where activations are accessible (Llama-3.1-8B-Instruct, GPT-OSS-20B); output-level failure measured across seven models from 8B to 120B on a multi-d"
+sources:
+  - source: arxiv-2609-03148
+    stance: supports
+    note: >-
+      Validated by: Not stated. Layer-wise logistic-regression probes on
+      paired conflict/consistent inputs give AUC above 0.85 in mid-to-late
+      layers for most of six conflict types, replicated on a second
+      architecture; same models score below 50% on inferential conflicts and
+      show Gini imbalance in summarization. The dissociation is argued from
+      two separate measurements, not from a single controlled manipulation,
+      and probe separability may reflect surface cues rather than functional
+      awareness.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-19
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Show that probes cannot
+  separate conflicting from consistent inputs above chance in models that
+  nonetheless resolve conflicts well, or that probe separability tracks
+  conflict-resolution accuracy across models and conflict types. Drafted
+  stance toward first-evidence-dominance-is-representational-not-decoding:
+  supports -- The paper finds combined-evidence activations shift toward the
+  first evidence at every layer, that random reordering does not remove the
+  dominance, and that steering activations toward the neutral center
+  improves accuracy.
+submitted_by: agent:claude-opus-5@Russ-Miller

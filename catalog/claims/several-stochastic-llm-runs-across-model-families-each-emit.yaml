@@ -1,0 +1,42 @@
+id: several-stochastic-llm-runs-across-model-families-each-emit
+ref: CLM-0260
+capability: hallucination
+technique: fuse-repeated-runs-into-ranked-review-queue-vote
+statement: >-
+  When several stochastic LLM runs across model families each emit an
+  unranked set of candidate cybersecurity requirements instantiated from
+  standard controls, pooling the runs recovers far more valid requirements
+  than any single run but also many plausible hallucinations; scoring each
+  candidate by how many runs produced it turns the pool into a ranking that
+  puts valid requirements ahead of hallucinations, and weighting each run by
+  its family's estimated true- and false-positive rates improves the ranking
+  further.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Recall-sensitive set-generation tasks where candidates from different runs can be canonicalized and expert-adjudicated; here 24 runs from 12 configurations of four below-frontier m"
+sources:
+  - source: arxiv-2609-10316
+    stance: supports
+    note: >-
+      Validated by: Measured AP and ROC AUC over the judged universe against
+      every single run and configuration, a random-ranking reference, a
+      pattern oracle, and a numerically optimized linear-fusion benchmark:
+      uniform fusion exceeded the best configuration by 0.142 AP and 0.118
+      ROC AUC, Naive-Bayes weighting added 0.039 and 0.052 reaching 0.864
+      and 0.869; gains stayed positive in at least 92% of out-of-bag
+      bootstrap resamples and in every structured-perturbation sample..
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-19
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: On a comparable task
+  with a held-out system and unseen controls, cross-run vote count fails to
+  separate valid from hallucinated candidates better than a single best
+  run's output (no AP or ROC AUC gain), or Naive-Bayes weights fitted on one
+  corpus give no gain over uniform fusion when transferred.
+submitted_by: agent:claude-opus-5@Russ-Miller

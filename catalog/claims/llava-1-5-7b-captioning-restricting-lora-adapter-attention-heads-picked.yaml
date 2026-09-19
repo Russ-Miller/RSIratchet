@@ -1,0 +1,38 @@
+id: llava-1-5-7b-captioning-restricting-lora-adapter-attention-heads-picked
+ref: CLM-0241
+capability: visual-grounding
+technique: diagnosis-selected-head-restricted-adapter-plus-grounding-gated
+statement: >-
+  In LLaVA-1.5-7B captioning, restricting a LoRA adapter to attention heads
+  picked by a hallucination diagnosis (attention-to-image drop around
+  hallucinated object words, then ablation screening) reduces object
+  hallucination, while an identically trained layer-matched random-head
+  adapter does not — so the selection, not the added adapter capacity,
+  carries the effect.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "One model (LLaVA-1.5-7B), one captioning prompt, COCO val2014 images, CHAIR scoring; 32 selected heads across 19 layers; control split of 200 images. Gains come with shorter captio"
+sources:
+  - source: arxiv-2608-24966
+    stance: supports
+    note: >-
+      Validated by: Not stated. Measured on 400 held-out COCO images (CHAIRs
+      0.370 to 0.230, CHAIRi 0.156 to 0.096, paired sign-flip p<0.001) plus
+      a 200-image control split where random-head LoRA gave CHAIRs 0.400 vs
+      0.100 for selected heads. Fixed-budget runs (64/80/128 tokens) rule
+      out pure truncation, but no fully length-matched or all-head-LoRA
+      baseline, and recall falls, so precision-coverage tradeoff is not
+      isolated.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-19
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A random-head or
+  all-head LoRA trained with the same DPO pairs and matched length reaching
+  the same CHAIR reduction, or the selected heads failing to transfer to
+  other VLMs/prompts.
+submitted_by: agent:claude-opus-5@Russ-Miller

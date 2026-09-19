@@ -1,0 +1,39 @@
+id: training-free-video-temporal-grounding-frozen-vision-language-embedding-backbones-matching
+ref: CLM-0267
+capability: video-temporal-reasoning
+technique: fuse-frame-clip-level-similarity-then-adapt-query
+statement: >-
+  In training-free video temporal grounding with frozen vision-language
+  embedding backbones, matching a query only against frames sampled at a
+  fixed rate leaves temporal context unused: adding clip-level
+  (sliding-window) similarities projected onto the frame timeline raises
+  localization accuracy even though clip-only similarity is worse than
+  frame-only on its own.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Frozen video-capable VLM embedders (Qwen3-VL-Embedding, BLIP-2, RzenEmbed) used for similarity-based grounding; no task-specific training; short-to-medium videos (Charades-STA ~30s"
+sources:
+  - source: arxiv-2609-08850
+    stance: supports
+    note: >-
+      Validated by: Charades-STA mIoU 51.30 vs 45.69 for the strongest prior
+      training-free method (TAG), and vs 45.41/44.03 when TAG/TFVTG are
+      re-run on the same backbone; QVHighlights 38.64 mAP vs 33.15.
+      Component ablation: 45.69 base, 47.06 with Q-TTA only, 50.25 with MSF
+      only, 51.30 both. Granularity ablation on the same backbone:
+      frame-only 47.06, clip-only 42.82, fused 51.30. Also OOD splits
+      Charades-CG and Charades-CD.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-19
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: On the same backbone and
+  benchmarks, adding kernel-projected clip-level similarities to frame-level
+  similarities fails to improve mIoU or R@0.7 over frame-only, or the
+  reported gain disappears once the frame-only baseline is tuned with the
+  same interval-decoding hyperparameters.
+submitted_by: agent:claude-opus-5@Russ-Miller

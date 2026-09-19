@@ -1,0 +1,37 @@
+id: small-open-weight-models-qwen2-5-1-5b-3b-multi-step
+ref: CLM-0263
+capability: hallucination
+technique: score-layer-to-layer-attention-entropy-spread-hallucination
+statement: >-
+  For small open-weight models (Qwen2.5 1.5B/3B) on multi-step math
+  reasoning, features derived from the spread of attention entropy across
+  layers during generation predict whether the final answer is wrong better
+  than output-logit confidence features, with the margin larger on the
+  harder benchmark (+0.076 AUC on MATH-500 with 3B vs +0.009 on GSM8K).
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "White-box open-weight models only; mathematical reasoning tasks; small samples (n=254 for the 3B/MATH-500 setting); no comparison against sampling-based uncertainty methods such as"
+sources:
+  - source: arxiv-2609-18320
+    stance: supports
+    note: >-
+      Validated by: ROC-AUC of a logistic-regression failure classifier
+      under repeated stratified 5-fold CV, against an
+      output-entropy/probability baseline, on GSM8K and MATH-500 with
+      Qwen2.5-1.5B/3B; gains 0.009-0.076 AUC with Wilcoxon p<0.01.. Measured
+      on two benchmarks and two small Qwen2.5 models, one classifier, small
+      samples; absolute AUCs remain low (0.58-0.70), scale and difficulty
+      are confounded, and no sampling-based baseline is tested.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-19
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: On other model families or
+  non-math tasks, attention-dispersion features fail to beat output-logit
+  baselines, or lose their advantage once compared against sampling-based
+  uncertainty methods.
+submitted_by: agent:claude-opus-5@Russ-Miller

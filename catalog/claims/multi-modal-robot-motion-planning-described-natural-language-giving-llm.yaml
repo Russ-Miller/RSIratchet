@@ -1,0 +1,39 @@
+id: multi-modal-robot-motion-planning-described-natural-language-giving-llm
+ref: CLM-0250
+capability: planning
+technique: train-llm-emit-solver-checked-mip-programs-rewarded
+statement: >-
+  For multi-modal robot motion planning described in natural language,
+  giving an LLM fixed expert single-modal optimization modules and asking it
+  only to predict the cross-modal interface variables (meeting points,
+  contact locations, shared states) solves single-modality tasks perfectly
+  but fails on compositions, so the hard part is synthesizing the coupling
+  constraints, not having correct per-modality formulations.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Discretization-based approximate MIP formulations for non-convex robotic planning (UAV, IK, footstep, grasp) with a 23-function modality-level API; tested with Qwen3-8B and GPT-5.2"
+sources:
+  - source: arxiv-2609-18669
+    stance: supports
+    note: >-
+      Validated by: Task-level success rate on 276 held-out LLMM3PBench
+      problems plus OOD splits: 91.7% single-modal / 80.9% multi-modal vs
+      65.3/40.3 for the strongest prompt-only baseline (GPT-5.2), with stage
+      and reward-term ablations at matched 200- and 800-step budgets, and
+      35/40 real hardware runs.. One control experiment (Table 4):
+      Expert-MIP reaches 100% single-modal SR with both Qwen3-8B and GPT-5.2
+      but 55.6% and 63.2% multi-modal, against 80.9% for the trained model.
+      Single paper, one benchmark the authors built; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-19
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A setup where an LLM
+  composing fixed expert single-modal MIP modules, given only
+  interface-variable prediction, matches or beats a model trained end-to-end
+  to write the whole coupled formulation on multi-modal tasks.
+submitted_by: agent:claude-opus-5@Russ-Miller

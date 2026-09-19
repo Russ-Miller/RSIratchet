@@ -1,0 +1,40 @@
+id: training-free-mllm-planner-navigation-agents-gating-planner-s-proposed-stop
+ref: CLM-0266
+capability: embodied-control
+technique: validate-navigation-proposals-against-spatial-evidence-before-dispatch
+statement: >-
+  For training-free MLLM-planner navigation agents, gating the planner's
+  proposed stop and move commands on external evidence checks (geometric
+  reachability, pose-aligned observation, subgoal consistency) and giving
+  the agent a persistent spatial graph of past observations and failures
+  raises success rate over the same planner without those checks, because
+  recognizing a target or issuing an action does not establish arrival.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Zero-shot MLLM planners on simulated instruction-following (R2R, RxR) and object-goal (HM3D-v2, HM3D-OVON) navigation with RGB-D input and an external path planner; cumulative abla"
+sources:
+  - source: arxiv-2609-15195
+    stance: supports
+    note: >-
+      Validated by: Cumulative ablation on fixed 100-episode subsets: event
+      memory +8.0/+7.0 SR points, graph retrieval +6.0/+1.0, stop validation
+      +4.0/+2.0 on R2R and HM3D-OVON; full system beats prior training-free
+      SOTA by 5.8, 12.1, 1.6 and 9.1 SR points on four benchmarks.. Measured
+      on four simulated benchmarks plus a humanoid demo. Main-table gains
+      confound the harness with the base model (GPT-5.5/5.6) and the
+      perception stack; the ablation isolates components but only on
+      100-episode subsets, and stop validation lowered SPL and widened the
+      OSR-SR gap on HM3D-OVON. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-19
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An ablation where
+  removing proposal validation and the spatial graph leaves success rate
+  unchanged, or where the reported gains over prior training-free methods
+  are attributable to the stronger base MLLM rather than the harness.
+submitted_by: agent:claude-opus-5@Russ-Miller

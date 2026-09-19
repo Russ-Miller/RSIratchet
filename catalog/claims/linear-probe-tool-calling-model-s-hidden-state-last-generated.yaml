@@ -1,0 +1,38 @@
+id: linear-probe-tool-calling-model-s-hidden-state-last-generated
+ref: CLM-0240
+capability: tool-use
+technique: hidden-state-probe-tool-call-errors
+statement: >-
+  A linear probe on a tool-calling model's hidden state at the last
+  generated token detects incorrect tool-calls — including
+  wrong-but-well-typed argument values that parsers and logs do not catch —
+  and works better on larger models and at middle-to-late layers than at the
+  final layer.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "18 open tool-calling LLMs from 1B to 70B parameters, on BFCL simple_python/java/javascript and multiple splits (750 examples per model), models with above 80% tool-calling accuracy"
+sources:
+  - source: arxiv-2608-27750
+    stance: supports
+    note: >-
+      Validated by: Not stated. Measured AUROC and AUPR per layer per model;
+      most models above 0.80 AUROC, ~0.06 AUROC gain for 70B over ~8B.
+      Transfer across disjoint error-type splits above 0.75 AUROC suggests a
+      general correctness feature rather than error-specific cues. Confound
+      with capability partly addressed: R^2 within the ~8B group is 0.005
+      and two large but lower-accuracy models still probe well. Single
+      benchmark, short simple-call splits, in-distribution test split — no
+      deployment or distribution-shift test.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-19
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Probes trained this way
+  scoring near chance AUROC on held-out tool-calls, or final-layer probes
+  matching or beating middle-layer probes, or no size advantage once
+  tool-calling accuracy is controlled.
+submitted_by: agent:claude-opus-5@Russ-Miller

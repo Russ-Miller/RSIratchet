@@ -1,0 +1,39 @@
+id: log-ingestion-pipeline-where-poisoned-siem-alerts-feed-llm-triage
+ref: CLM-0245
+capability: prompt-injection
+technique: deterministic-log-sanitizer-before-semantic-guardrail
+statement: >-
+  In a log-ingestion pipeline where poisoned SIEM alerts feed an LLM triage
+  agent, a deterministic regex/signature pre-filter catches only the
+  structurally obvious injections (3 of 20 payloads) while an LLM self-check
+  input/output rail on the sanitized alert catches most of the rest (18 of
+  20), so the two layers block largely different attack classes rather than
+  one substituting for the other.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "One prototype (Wazuh decoders plus NeMo Guardrails) with a locally hosted Gemma 3 12B analyst model, on 20 hand-synthesized injected alerts across four MITRE ATLAS vectors; no atta"
+sources:
+  - source: arxiv-2609-10707
+    stance: supports
+    note: >-
+      Validated by: Counts of blocked payloads per layer on 20 synthesized
+      poisoned Wazuh alerts, plus one volumetric padding case; no baseline
+      of either layer alone measured end-to-end, no utility/false-positive
+      measurement on benign alerts.. Measured, but on N=20 self-authored
+      payloads with one model and no benign control set, so the per-layer
+      split is indicative only; the false-positive cost of either layer is
+      not reported.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-19
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: On a larger,
+  attacker-adaptive injection set, the deterministic pre-filter catching a
+  comparable share of semantic payloads to the guardrail, or the guardrail
+  catching the volumetric/signature cases the pre-filter is credited with,
+  would show the layers are not complementary.
+submitted_by: agent:claude-opus-5@Russ-Miller

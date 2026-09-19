@@ -1,0 +1,39 @@
+arxiv_id: "2609.08067"
+title: Popular Knowledge Propagates More Errors in LLM Knowledge Updating
+url: https://arxiv.org/abs/2609.08067
+drafted_at: 2026-09-18
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: When a language model is updated by fine-tuning on a substituted
+  fact, the facts it already answered correctly that are most likely to flip
+  to wrong are those whose answer entity is referenced by many other facts,
+  and updates to such structurally popular facts corrupt connected facts out
+  to five hops in the fact graph — so popularity, not long-tail rarity,
+  predicts collateral corruption among already-correct knowledge.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: LoRA fine-tuning with counterfactual object substitutions on
+  four open-weight instruction-tuned models (2B-31B, Qwen and Gemma families),
+  evaluated on single-answer Wikipedia-derived factual QA; not tested with
+  full-parameter fine-tuning or longer continual-training streams.
+technique: ""
+proposed_technique: Popularity-based anchoring (KL-regularize on a small set
+  of high-in-degree facts during updates)
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Under the same protocol, grouping already-correct neighbor facts by
+  object in-degree shows equal or higher flip rates for low-popularity facts,
+  or flip rates fall to baseline beyond one hop.
+evidence_note: "Measured on a constructed 100k-node / 432k-edge Wikipedia fact
+  graph; flip rates pooled over hops 1-5 for four models, with a
+  within-neighborhood control showing string similarity correlates near zero
+  with flipping (aggregate r=0.05), and an attention-perturbation probe
+  showing larger |ΔAttLift| for popular-source updates in three models.
+  Popularity is proxied by object in-degree, not proposition frequency, so
+  entity connectivity and relation rarity are not disentangled. The
+  wider-propagation half of the claim is noisier: clear on Qwen3.5-9B, less
+  consistent on other models."
+confidence: medium
