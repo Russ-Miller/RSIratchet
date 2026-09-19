@@ -48,6 +48,7 @@ jobs:
     permissions:
       contents: write         # to commit the refreshed queue and push the catalog branch
       pull-requests: write    # to open the nightly catalog pull request
+      issues: write           # to close reader-evidence issues after ingesting them
     env:
       STATE_BRANCH: pipeline-state
       # secrets are not reliably available in a step-level `if`, so resolve
@@ -199,6 +200,17 @@ jobs:
 
       # The catalog itself is never written by this job — only the queue and
       # the ledger. Validation guards against a malformed write reaching main.
+      # Reader-filed evidence (issues labelled `evidence`, from the form on
+      # every claim page) becomes sources on claims. Free, no key beyond gh.
+      - name: Ingest reader evidence
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo '## Reader evidence' >> "$RUN_LOG"
+          echo '```' >> "$RUN_LOG"
+          node scripts/ingest-evidence.mjs 2>&1 | tee -a "$RUN_LOG"
+          echo '```' >> "$RUN_LOG"
+
       # New records need a stable ref before validation will pass.
       - name: Assign stable ids
         run: npm run ids 2>&1 | tee -a "$RUN_LOG"

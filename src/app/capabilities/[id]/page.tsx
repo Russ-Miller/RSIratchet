@@ -2,10 +2,9 @@ import Link from "next/link";
 import { RefTag } from "@/components/ref-tag";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { notFound } from "next/navigation";
-import { claimsFor, getCapabilities, getCapability, getSources, techniquesFor } from "@/lib/catalog";
-import { candidateUrl, queueForCapability } from "@/lib/queue";
+import { claimsFor, getCapabilities, getCapability, techniquesFor } from "@/lib/catalog";
 import { CapabilityChallengeLink } from "@/components/challenge";
-import { ContestedBadge, KindBadge, StrengthBadge } from "@/components/badges";
+import { ContestedBadge, EvidenceCount, KindBadge, StrengthBadge } from "@/components/badges";
 
 export function generateStaticParams() {
   return getCapabilities().map((c) => ({ id: c.id }));
@@ -22,8 +21,6 @@ export default async function CapabilityPage({ params }: PageProps<"/capabilitie
   if (!c) notFound();
   const claims = claimsFor(c.id);
   const techniques = techniquesFor(c.id);
-  const inCatalog = new Set(getSources().map((s) => s.arxiv_id).filter((x): x is string => !!x));
-  const waiting = queueForCapability(c.id, inCatalog);
   return (
     <article className="space-y-8">
       <Breadcrumbs trail={[
@@ -36,11 +33,11 @@ export default async function CapabilityPage({ params }: PageProps<"/capabilitie
         <h1 className="text-3xl font-semibold tracking-tight">{c.label}</h1>
         {c.status === "proposed" && (
           <p className="rounded border border-sky-300 bg-sky-50 p-3 text-sm text-sky-900 dark:border-sky-800 dark:bg-sky-950/30 dark:text-sky-200">
-            <strong className="font-medium">Proposed.</strong> Several papers in the review queue
-            converged on this framing, so the pipeline added it. Nobody has decided it is the right
-            way to carve up the subject &mdash; it may be two topics, or a duplicate of another, or
-            not a topic at all. Claims fill in from those papers on the nightly run, marked as
-            unreviewed like every other drafted claim. Saying so is useful, in either direction.
+            <strong className="font-medium">Proposed.</strong> Several papers converged on this
+            framing, so the pipeline added it. Nobody has decided it is the right way to carve up
+            the subject &mdash; it may be two topics, or a duplicate of another, or not a topic at
+            all. Claims from those papers arrive nightly. Say so if the carving is wrong, in either
+            direction.
           </p>
         )}
         <p className="text-lg text-neutral-700 dark:text-neutral-300">{c.summary}</p>
@@ -68,6 +65,7 @@ export default async function CapabilityPage({ params }: PageProps<"/capabilitie
                   <KindBadge kind={claim.kind} />
                   <StrengthBadge strength={claim.backing_strength} />
                   {claim.contested && <ContestedBadge />}
+                  <EvidenceCount claim={claim} />
                 </div>
                 <Link href={`/claims/${claim.id}`} className="text-sm hover:underline">{claim.statement}</Link>
               </li>
@@ -89,36 +87,6 @@ export default async function CapabilityPage({ params }: PageProps<"/capabilitie
           </ul>
         )}
       </section>
-      {waiting.length > 0 && (
-        <section>
-          <h2 className="mb-1 font-semibold">In the review queue</h2>
-          <p className="mb-2 text-xs text-neutral-500">
-            Papers the pipeline matched to this capability that are not yet sources here. A verdict
-            means the classifier judged the paper is about it and which way it points; no verdict
-            means matched on vocabulary only. Both are what the next drafting pass works from.
-          </p>
-          <ul className="space-y-2 text-sm">
-            {waiting.map(({ candidate: q, verdict: v }) => {
-              const url = candidateUrl(q);
-              return (
-                <li key={q.arxiv_id ?? q.openalex_id}>
-                  {url ? (
-                    <a href={url} target="_blank" rel="noopener noreferrer" className="hover:underline">{q.title}</a>
-                  ) : q.title}
-                  <span className="ml-2 text-xs text-neutral-500">
-                    {q.date ?? ""}
-                    {v && <> &middot; {v.direction.replace("_", " ")}{v.confidence !== "high" ? ` (${v.confidence})` : ""}</>}
-                  </span>
-                  {v?.rationale && <p className="text-xs text-neutral-600 dark:text-neutral-400">{v.rationale}</p>}
-                </li>
-              );
-            })}
-          </ul>
-          <p className="mt-2 text-xs text-neutral-500">
-            <Link href="/queue" className="hover:underline">Whole queue</Link>
-          </p>
-        </section>
-      )}
       {c.related?.length ? (
         <section className="text-sm"><span className="font-semibold">Related: </span>
           {c.related.map((r, i) => <span key={r}>{i > 0 && ", "}<Link href={`/capabilities/${r}`} className="hover:underline">{getCapability(r)?.label ?? r}</Link></span>)}

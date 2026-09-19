@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { EFFECT_LABEL, NEED_LABEL, adagesForClaim, cardsNamedIn, claimActivity, getCapability, getClaim, getClaims, getModel, getSource, getTagLabel, isPending, isQuietSource, displayName, reviewLabel, reviewers } from "@/lib/catalog";
 import type { SourceLink } from "@/lib/catalog";
 import { ContestedBadge, EvidenceSignal, KindBadge, ReviewBadge, StanceBadge, StrengthBadge } from "@/components/badges";
-import { ChallengeLink } from "@/components/challenge";
+import { EvidenceForm } from "@/components/evidence-form";
 import { relatedClaims } from "@/lib/embeddings";
 
 function SourceItem({ link }: { link: SourceLink }) {
@@ -163,10 +163,11 @@ export default async function ClaimPage({ params }: PageProps<"/claims/[id]">) {
           everyone publishes what worked. Making it one click is the cheapest
           thing that could change that. */}
       <section className="space-y-2 border-t border-neutral-200 pt-6 dark:border-neutral-800">
-        <ChallengeLink claim={c} />
+        <EvidenceForm claimId={c.id} refId={c.ref} statement={c.statement} />
         <p className="text-xs text-neutral-500">
-          Disagreeing is the most useful thing you can do here. Both sides of every contested
-          claim in this catalog were assembled by the same person, which is its weakest point.
+          Disagreeing is the most useful thing you can do here. Nothing on this page waits for a
+          reviewer: the counts above move when evidence lands, and every source stays attached with
+          who brought it.
         </p>
       </section>
 

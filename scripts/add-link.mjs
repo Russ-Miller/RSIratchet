@@ -21,6 +21,7 @@ const arg = (n) => { const i = args.indexOf(`--${n}`); return i >= 0 ? args[i + 
 const url = args.find((a) => a.startsWith("http"));
 const tilOnly = arg("til");
 const note = arg("note");
+const noFeature = args.includes("--no-feature"); // evidence ingestion adds sources without putting them on the front page
 const TODAY = new Date().toISOString().slice(0, 10);
 
 function featureIt(sourceId, why) {
@@ -94,8 +95,9 @@ if (arxiv) {
 }
 
 const file = `catalog/sources/${id}.yaml`;
-if (fs.existsSync(file)) { console.log(`${id} already exists; featuring it instead.`); featureIt(id, note); process.exit(0); }
+if (fs.existsSync(file)) { console.log(`${id} already exists${noFeature ? "" : "; featuring it instead"}.`); console.log(`source-id: ${id}`); if (!noFeature) featureIt(id, note); process.exit(0); }
 fs.writeFileSync(file, body);
 console.log(`wrote ${file}`);
-featureIt(id, note);
+console.log(`source-id: ${id}`);
+if (!noFeature) featureIt(id, note);
 console.log(`\nNext: npm run validate, then draft a claim from it.`);

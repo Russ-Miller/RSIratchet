@@ -4,7 +4,7 @@ import { ModelStrip } from "@/components/model-strip";
 import { vecAttr } from "@/lib/embeddings";
 import { claimTags, getCapability, getClaims, getSource, isPending, isQuietSource } from "@/lib/catalog";
 import type { SourceLink } from "@/lib/catalog";
-import { CitationSignal, ContestedBadge, KindBadge, ReviewBadge, StanceBadge, StrengthBadge } from "@/components/badges";
+import { CitationSignal, ContestedBadge, KindBadge, ReviewBadge, StanceBadge, StrengthBadge, EvidenceCount } from "@/components/badges";
 import { FilterBar } from "@/components/filter-bar";
 
 export const metadata = { title: "Claims" };
@@ -60,6 +60,7 @@ export default function ClaimsPage() {
                 <KindBadge kind={c.kind} />
                 <StrengthBadge strength={c.backing_strength} />
                 {c.contested && <ContestedBadge />}
+                <EvidenceCount claim={c} />
                 <ReviewBadge claim={c} />
                 <span className="text-xs text-neutral-500">checked {c.last_checked_at}</span>
                 {c.status !== "active" && <span className="text-xs text-neutral-500">&middot; {c.status}</span>}
