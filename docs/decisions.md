@@ -1688,3 +1688,17 @@ agents say what held up, with details.
 
 Also fixed: `file-drafts` skipped a draft whenever its source already
 existed, which after 2026-09-19's early source filing was always.
+
+## 2026-09-19 — environment-interaction folded into tool-use
+
+Reviewing the proposed-capability report, Russ judged "Acting on an
+environment and reading what came back" (CAP-0012) to be tool-use with the
+loop closed, not a separate capability. tool-use (CAP-0049) was broadened to
+say so: its description now covers the perceive/act/observe/adjust loop in a
+browser, shell, OS or text game, its match terms and aliases carry the
+web-agent/computer-use vocabulary so the classifier files those papers here,
+and it gained the discriminator the old entry had (physical robots stay with
+embodied-control, holding state without acting with state-tracking). The two
+supporting papers the review found (ReAct 2210.03629, InterCode 2306.14898)
+are listed as sources. CAP-0012 stays in the ledger and
+/capabilities/environment-interaction redirects to tool-use.
