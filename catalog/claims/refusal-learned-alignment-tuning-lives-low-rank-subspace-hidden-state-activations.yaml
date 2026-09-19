@@ -1,0 +1,38 @@
+id: refusal-learned-alignment-tuning-lives-low-rank-subspace-hidden-state-activations
+ref: CLM-0277
+capability: fine-tuning-retention
+technique: geometric-fragility-score-safety-subspace
+statement: >-
+  Refusal learned by alignment tuning lives in a low-rank subspace of
+  hidden-state activations that recurs across model families; ablating
+  directions in that subspace lowers harmful-request refusal, and a scalar
+  computed from the subspace's geometry before any fine-tuning (the
+  Geometric Fragility Score) picks out which initially safe model will keep
+  the most refusal after small benign LoRA fine-tuning.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Twenty-one instruction-tuned open models, 3B-32B, six alignment recipes, 2026; fragility test is rank-8 LoRA on harmless Alpaca subsets; refusal measured on harmful-request sets wi"
+sources:
+  - source: arxiv-2606-22676
+    stance: supports
+    note: >-
+      Validated by: Direction-ablation causal test on four models
+      (non-overlapping 95% CIs), linear-probe accuracy at least 0.90 for the
+      subspace, and a LoRA-fragility experiment where the score's top pick
+      retained the most refusal; twenty-one models across six recipes..
+      Broad model coverage and a causal ablation, but the predictive claim
+      rests on one LoRA protocol and one fine-tuning budget; closed models
+      cannot be scored since it needs activations.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-19
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A model family where
+  refusal is not low-rank or where the score's ranking does not predict
+  post-LoRA refusal retention, or a fine-tuning attack that erases refusal
+  equally across scores.
+submitted_by: agent:claude-opus-5@Russ-Miller

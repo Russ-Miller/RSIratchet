@@ -1,0 +1,38 @@
+id: instruction-tuning-forces-answer-every-question-teaches-models-fabricate
+ref: CLM-0265
+capability: abstention-and-self-knowledge
+technique: refusal-aware-instruction-tuning
+statement: >-
+  Instruction tuning that forces an answer to every question teaches models
+  to fabricate when the question lies outside their parametric knowledge;
+  splitting the tuning data by whether the base model already answers
+  correctly and appending "I am unsure" to the rest (refusal-aware tuning)
+  raises average precision on known-versus-unknown separation over vanilla
+  tuning, transfers to out-of-domain datasets, and yields better calibrated
+  confidence than post-hoc uncertainty scoring.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "LLaMA and OpenLLaMA 3B-13B models, 2023, tuned on ParaRel, MMLU, WiCE, HotpotQA, FEVER; out-of-domain test on HaluEval-QA; measured by AP over confidence-ranked answers."
+sources:
+  - source: arxiv-2311-09677
+    stance: supports
+    note: >-
+      Validated by: AP scores in single-task and multi-task settings against
+      vanilla instruction tuning on the same data, plus out-of-domain AP on
+      HaluEval-QA and a comparison against uncertainty-based filtering at
+      test time; 3B-13B open models only.. Consistent gains across five
+      in-domain sets and one OOD set, but all on small open models; the
+      known/unknown split is decided by one greedy answer per question, so
+      borderline knowledge is labelled noisily.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-19
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Replication on larger or
+  RLHF-tuned models where refusal-aware data does not beat vanilla tuning on
+  AP, or where the learned refusal fails to transfer out of domain.
+submitted_by: agent:claude-opus-5@Russ-Miller

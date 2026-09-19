@@ -1,0 +1,39 @@
+arxiv_id: '2407.01489'
+title: 'Agentless: Demystifying LLM-based Software Engineering Agents'
+url: https://arxiv.org/abs/2407.01489
+drafted_at: '2026-09-19'
+drafted_from: full-text
+model: claude-opus-5 (drafted in session, not via API)
+status: draft — not filed.
+capability: repository-navigation
+statement: On SWE-bench Lite, asking the model to name suspicious files from the issue plus
+  a repository tree finds the ground-truth file in about 79% of cases and embedding retrieval
+  over the issue text in about 68%, and taking the union of the two raises file-level localization
+  to about 82% because the two methods miss different files; a fixed three-step narrowing (files,
+  then classes and functions, then edit lines) with no agent loop then supported the best open-source
+  resolve rate at the time (32%).
+kind: observation
+backing_strength: single-paper
+scope_condition: SWE-bench Lite (300 Python issues), GPT-4o, 2024; localization measured by
+  whether the ground-truth edit locations remain in the candidate set after each step.
+technique: ''
+proposed_technique: Hierarchical localization from tree, then union with embedding retrieval
+technique_summary: Show the model the repository's file tree and the issue and have it rank
+  suspicious files, retrieve files by embedding similarity to the issue, merge the two lists,
+  then narrow within the chosen files to classes and functions and finally to edit lines, each
+  step a single prompt with no tool loop.
+technique_kind: process
+technique_validated_by: Contains-ground-truth rate after each localization step on SWE-bench
+  Lite with GPT-4o (file-level 78.7% prompting, 67.7% embedding, 81.7% combined), and end-to-end
+  resolve rate and cost against contemporaneous open-source agents; no comparison against a
+  tool-using agent given the same localization.
+stance_on_existing: neither
+related_claim_id: ''
+stance_reason: ''
+falsifier: A repository or language where the file tree is too large or uninformative to rank
+  from, so that tree-based prompting falls well below embedding retrieval, or an agent loop
+  that localizes better at similar cost.
+evidence_note: Numbers are for one model on one benchmark and the paper's motivation is to argue
+  against agents, but the localization ablation is direct and per step. Python only; SWE-bench
+  Lite has known leakage and underspecification the paper itself documents.
+confidence: medium

@@ -1,0 +1,40 @@
+id: safety-realignment-after-poisoned-fine-tune-brittle-three-ways-existing
+ref: CLM-0278
+capability: fine-tuning-retention
+technique: routed-on-policy-distillation-safety-task-teachers
+statement: >-
+  Safety realignment after a poisoned fine-tune is brittle in three ways:
+  existing defenses (SSRD, RESTA, soft-SFT, rollback) often destroy the
+  downstream skill they were meant to keep, lose more than 30% of their
+  effect when the defender's prompt template differs from the attacker's,
+  and a realigned model can be re-jailbroken by switching the system prompt;
+  distilling on-policy from two frozen teachers, the original model for
+  refusal and the fine-tuned model for the task, routed per token, cut
+  attack success to about 2% under the defender's template while holding
+  task score near pre-attack level.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Llama-2, Qwen2.5 and Gemma-2 bases, 2026; tasks SQL, SAMSum, NL2Bash; 700 BeaverTails harmful prompts judged by Qwen2.5-32B; residual risk remains when deployment and attacker temp"
+sources:
+  - source: arxiv-2607-27081
+    stance: supports
+    note: >-
+      Validated by: Attack success rate and task score across three bases
+      and three tasks under matched and mismatched attacker/defender
+      templates against four realignment baselines; system-prompt
+      re-jailbreak test.. Comprehensive template-mismatch design and honest
+      reporting of residual cross-template risk; open models up to mid-size
+      only; the harm judge is itself a model.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-19
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Attacks that poison the
+  task teacher's own outputs so the routed distillation reintroduces the
+  harm, or template gaps large enough that the residual ASR the paper
+  reports becomes the common case.
+submitted_by: agent:claude-opus-5@Russ-Miller

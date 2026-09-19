@@ -1,0 +1,42 @@
+id: natural-language-to-sql-synthesis-over-multi-table-databases-model-s-accuracy-overstates
+ref: CLM-0268
+capability: formal-query-synthesis
+technique: split-text-to-sql-evaluation-database-question
+statement: >-
+  On natural-language-to-SQL synthesis over multi-table databases, a model's
+  accuracy overstates its ability whenever the same database or the same
+  query appears in both training and test: splitting by database rather than
+  by example cut the best system's exact-match accuracy from 33.0% to 12.4%,
+  and accuracy falls further as the target database has more foreign keys.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Complex cross-domain text-to-SQL (Spider, 200 databases, 138 domains); 2018-era neural semantic parsers (Seq2Seq variants, SQLNet, TypeSQL), value prediction excluded."
+sources:
+  - source: arxiv-1809-08887
+    stance: supports
+    note: >-
+      Validated by: Exact-match and per-component F1 for five models under
+      an example split versus a database split of the same corpus; every
+      model scored far lower under the database split, with TypeSQL dropping
+      most (33.0 to 8.2 on test).. Measured on a 10,181-question,
+      5,693-query human-labeled corpus with five contemporary models under
+      two splits; the split comparison isolates generalization to unseen
+      schemas, but all models are pre-LLM so the absolute numbers are stale
+      and the foreign-key trend is a plot without controls for query
+      difficulty.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-19
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: high. Falsifier as drafted: A model whose
+  database-split exact-match accuracy is close to its example-split accuracy
+  on this corpus, or no decline in accuracy as foreign-key count grows.
+  Drafted stance toward
+  static-code-benchmarks-saturate-need-continuous-refresh: supports -- Both
+  show that reusing the same programs or problems across train and test
+  inflates measured synthesis ability.
+submitted_by: agent:claude-opus-5@Russ-Miller

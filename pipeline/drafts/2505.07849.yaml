@@ -1,0 +1,35 @@
+arxiv_id: '2505.07849'
+title: 'SweRank: Software Issue Localization with Code Ranking'
+url: https://arxiv.org/abs/2505.07849
+drafted_at: '2026-09-19'
+drafted_from: full-text
+model: claude-opus-5 (drafted in session, not via API)
+status: draft — not filed.
+capability: repository-navigation
+statement: 'Issue localization can be done as retrieval-and-rerank with no agent at all: an
+  embedding model and reranker trained on issue-to-patched-function pairs mined from public
+  GitHub (SweLoc) localize functions on SWE-bench Lite and LocBench at least as accurately at
+  Acc@10 as agents built on Claude 3.5 Sonnet, at a small fraction of the per-issue cost and
+  with one pass instead of seven to ten model rounds.'
+kind: observation
+backing_strength: single-paper
+scope_condition: SWE-bench Lite and LocBench, 2025, function-level Acc@k; trained open-source
+  retriever and reranker versus agent frameworks with closed models.
+technique: ''
+proposed_technique: Retrieve-and-rerank localization trained on mined issue-patch pairs
+technique_summary: Mine issues paired with the functions their fixing commits changed, train
+  a code embedding model and a listwise reranker on those pairs so they read failure-style queries,
+  then localize new issues by embedding search over the repository's functions followed by reranking.
+technique_kind: retrieval
+technique_validated_by: File, module and function Acc@k on SWE-bench Lite and LocBench against
+  prior code rankers and against MoatlessTools, Agentless, LocAgent and similar agents, with
+  per-example cost; notes its own embedder beats LocAgent with Claude 3.5 on function Acc@10.
+stance_on_existing: neither
+related_claim_id: ''
+stance_reason: ''
+falsifier: Issues whose fix location is not lexically or semantically close to the report (refactors,
+  config-driven bugs), where an agent that reads and runs code should beat static ranking.
+evidence_note: Strong on the two benchmarks used, but both are Python and the training data
+  is mined from similar public repositories, so some proximity between train and test is likely;
+  the cost comparison depends on 2025 API prices.
+confidence: medium

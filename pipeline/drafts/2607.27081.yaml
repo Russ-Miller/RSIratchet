@@ -1,0 +1,39 @@
+arxiv_id: '2607.27081'
+title: 'On-Policy Distillation for LLM Safety: A Routing Approach to Template-Independent Realignment'
+url: https://arxiv.org/abs/2607.27081
+drafted_at: '2026-09-19'
+drafted_from: full-text
+model: claude-opus-5 (drafted in session, not via API)
+status: draft — not filed.
+capability: fine-tuning-retention
+statement: 'Safety realignment after a poisoned fine-tune is brittle in three ways: existing
+  defenses (SSRD, RESTA, soft-SFT, rollback) often destroy the downstream skill they were meant
+  to keep, lose more than 30% of their effect when the defender''s prompt template differs from
+  the attacker''s, and a realigned model can be re-jailbroken by switching the system prompt;
+  distilling on-policy from two frozen teachers, the original model for refusal and the fine-tuned
+  model for the task, routed per token, cut attack success to about 2% under the defender''s
+  template while holding task score near pre-attack level.'
+kind: observation
+backing_strength: single-paper
+scope_condition: Llama-2, Qwen2.5 and Gemma-2 bases, 2026; tasks SQL, SAMSum, NL2Bash; 700 BeaverTails
+  harmful prompts judged by Qwen2.5-32B; residual risk remains when deployment and attacker
+  templates diverge widely.
+technique: ''
+proposed_technique: Routed on-policy distillation from safety and task teachers
+technique_summary: Sample from the compromised student, route each token to either the original
+  aligned model (refusal prior) or the fine-tuned task model, and train the student with a top-K
+  KL loss toward the routed teacher, so realignment targets the distribution difference rather
+  than one prompt template.
+technique_kind: training
+technique_validated_by: Attack success rate and task score across three bases and three tasks
+  under matched and mismatched attacker/defender templates against four realignment baselines;
+  system-prompt re-jailbreak test.
+stance_on_existing: neither
+related_claim_id: ''
+stance_reason: ''
+falsifier: Attacks that poison the task teacher's own outputs so the routed distillation reintroduces
+  the harm, or template gaps large enough that the residual ASR the paper reports becomes the
+  common case.
+evidence_note: Comprehensive template-mismatch design and honest reporting of residual cross-template
+  risk; open models up to mid-size only; the harm judge is itself a model.
+confidence: medium

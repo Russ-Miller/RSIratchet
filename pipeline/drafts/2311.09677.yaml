@@ -1,0 +1,37 @@
+arxiv_id: '2311.09677'
+title: 'R-Tuning: Instructing Large Language Models to Say `I Don''t Know'''
+url: https://arxiv.org/abs/2311.09677
+drafted_at: '2026-09-19'
+drafted_from: full-text
+model: claude-opus-5 (drafted in session, not via API)
+status: draft — not filed.
+capability: abstention-and-self-knowledge
+statement: Instruction tuning that forces an answer to every question teaches models to fabricate
+  when the question lies outside their parametric knowledge; splitting the tuning data by whether
+  the base model already answers correctly and appending "I am unsure" to the rest (refusal-aware
+  tuning) raises average precision on known-versus-unknown separation over vanilla tuning, transfers
+  to out-of-domain datasets, and yields better calibrated confidence than post-hoc uncertainty
+  scoring.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: LLaMA and OpenLLaMA 3B-13B models, 2023, tuned on ParaRel, MMLU, WiCE, HotpotQA,
+  FEVER; out-of-domain test on HaluEval-QA; measured by AP over confidence-ranked answers.
+technique: ''
+proposed_technique: Refusal-aware instruction tuning
+technique_summary: Run the base model on the tuning set, label each example as known or unknown
+  by whether it answered correctly, keep answers for the known set and append an uncertainty
+  expression to the unknown set, then fine-tune on the union so the model learns to refuse where
+  its own knowledge stops.
+technique_kind: training
+technique_validated_by: AP scores in single-task and multi-task settings against vanilla instruction
+  tuning on the same data, plus out-of-domain AP on HaluEval-QA and a comparison against uncertainty-based
+  filtering at test time; 3B-13B open models only.
+stance_on_existing: neither
+related_claim_id: ''
+stance_reason: ''
+falsifier: Replication on larger or RLHF-tuned models where refusal-aware data does not beat
+  vanilla tuning on AP, or where the learned refusal fails to transfer out of domain.
+evidence_note: Consistent gains across five in-domain sets and one OOD set, but all on small
+  open models; the known/unknown split is decided by one greedy answer per question, so borderline
+  knowledge is labelled noisily.
+confidence: medium

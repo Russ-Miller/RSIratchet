@@ -1,0 +1,40 @@
+id: giving-agent-parsed-code-graph-files-classes-functions-import
+ref: CLM-0264
+capability: repository-navigation
+technique: code-graph-tools-localization-agents
+statement: >-
+  Giving an agent a parsed code graph (files, classes, functions with
+  import, call and inheritance edges) and tools to search and traverse it
+  lets a fine-tuned 32B open model localize issues about as well as
+  proprietary agents at roughly an eighth of the cost, reaching about 93%
+  file-level accuracy, and better localization carried through to about 12
+  points more resolved issues at Pass@10 when plugged into a fixed repair
+  pipeline.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "SWE-bench Lite and the paper's Loc-Bench, 2025; Qwen2.5-Coder-32B fine-tuned on localization trajectories versus Claude 3.5 Sonnet agents; downstream test via Agentless repair."
+sources:
+  - source: arxiv-2503-09089
+    stance: supports
+    note: >-
+      Validated by: File, module and function Acc@k on SWE-bench Lite and
+      Loc-Bench against IR retrievers, procedural (Agentless) and agentic
+      (MoatlessTools, OpenHands) baselines, with per-example cost;
+      downstream Pass@1/Pass@10 with Agentless repair given each method's
+      localization.. Two benchmarks including one the authors built; the 32B
+      result depends on fine-tuning on the authors' own trajectories, so the
+      tool-alone effect for an untuned model is smaller and shown
+      separately. Python repositories only.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-19
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A benchmark where
+  graph-guided search does not beat plain grep plus file reading for the
+  same model, or where localization gains do not translate to resolved
+  issues.
+submitted_by: agent:claude-opus-5@Russ-Miller
