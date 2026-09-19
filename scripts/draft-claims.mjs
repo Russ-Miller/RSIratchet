@@ -91,20 +91,18 @@ Rules that matter more than fluency:
 Write plainly. Short declarative sentences. No "significantly", "notably",
 "novel", "robust", "we show".`;
 
-function buildPrompt(cand, capabilities, techniques, claims, text) {
+// Two blocks. The first is identical for every paper in a run (the whole
+// catalogue as context) and is cached; the second is the paper. Prompt
+// caching bills a reused prefix at about a tenth of the price, so the split
+// is where most of the drafting cost goes.
+function sharedContext(capabilities, techniques, claims) {
   const capList = capabilities.map((c) => `- ${c.id}: ${c.label} — ${c.summary}${c.discriminator ? `\n    scope: ${c.discriminator.replace(/\s+/g, " ").trim()}` : ""}`).join("\n");
   const techList = techniques.map((t) => `- ${t.id}: ${t.label}`).join("\n");
   const claimList = claims.map((c) => `- ${c.id} [${c.capability}] ${c.statement.replace(/\s+/g, " ").trim()}`).join("\n");
-  return `## Capabilities in the catalogue
-${capList}
-
-## Techniques in the catalogue
-${techList}
-
-## Claims already held
-${claimList}
-
-## Paper
+  return `## Capabilities in the catalogue\n${capList}\n\n## Techniques in the catalogue\n${techList}\n\n## Claims already held\n${claimList}`;
+}
+function paperBlock(cand, text) {
+  return `## Paper
 Title: ${cand.title}
 ${cand.arxiv_id ? `arXiv: ${cand.arxiv_id}\n` : ""}${(cand.verdicts ?? []).map((v) => `Stage-2 triage: ${v.capability} / ${v.direction} — ${v.rationale}`).join("\n")}
 
@@ -112,6 +110,9 @@ Source text (all you have; do not use anything you may recall about this paper):
 ${text}
 
 Draft one claim from this paper.`;
+}
+function buildPrompt(cand, capabilities, techniques, claims, text) {
+  return `${sharedContext(capabilities, techniques, claims)}\n\n${paperBlock(cand, text)}`;
 }
 
 // ---------------------------------------------------------------------------
@@ -211,8 +212,11 @@ for (const cand of batch) {
       model: MODEL,
       max_tokens: 3000,
       output_config: { effort: "low", format: zodOutputFormat(Draft) },
-      system: [{ type: "text", text: SYSTEM, cache_control: { type: "ephemeral" } }],
-      messages: [{ role: "user", content: buildPrompt(cand, capabilities, techniques, claims, text) }],
+      system: [{ type: "text", text: SYSTEM }],
+      messages: [{ role: "user", content: [
+        { type: "text", text: sharedContext(capabilities, techniques, claims), cache_control: { type: "ephemeral" } },
+        { type: "text", text: paperBlock(cand, text) },
+      ] }],
     },
   });
   await new Promise((r) => setTimeout(r, delayMs));   // pacing arXiv, not the API

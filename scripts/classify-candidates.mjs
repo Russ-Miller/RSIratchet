@@ -72,30 +72,21 @@ proposing a change or reporting a regression. Reserve "degrades" for real
 evidence something makes models worse, including the side-effect case.
 Be conservative: an empty claim id is a better answer than a wrong one.`;
 
-function buildPrompt(candidate, capability, claims) {
+// Shared per capability (cached across every paper judged against it), then the paper.
+function capabilityBlock(capability, claims) {
   const claimBlock = claims.length
     ? claims.map((c) => {
         const contested = c.contested ? " [already marked contested]" : "";
         return `- id: ${c.id}${contested}\n  ${c.statement.replace(/\s+/g, " ").trim()}`;
       }).join("\n")
     : "(no claims recorded for this capability yet)";
-
-  return `## Capability: ${capability.label} (${capability.id})
-
-${capability.summary}
-
-### Scope boundary
-${capability.discriminator ?? "(none recorded -- judge from the summary above)"}
-
-### Claims already in the index for this capability
-${claimBlock}
-
-## Paper under review
-
-Title: ${candidate.title}
-${candidate.date ? `Date: ${candidate.date}\n` : ""}Abstract: ${candidate.abstract ?? "(no abstract available)"}
-
-Judge this paper against the capability above.`;
+  return `## Capability: ${capability.label} (${capability.id})\n\n${capability.summary}\n\n### Scope boundary\n${capability.discriminator ?? "(none recorded -- judge from the summary above)"}\n\n### Claims already in the index for this capability\n${claimBlock}`;
+}
+function paperBlock(candidate) {
+  return `## Paper under review\n\nTitle: ${candidate.title}\n${candidate.date ? `Date: ${candidate.date}\n` : ""}Abstract: ${candidate.abstract ?? "(no abstract available)"}\n\nJudge this paper against the capability above.`;
+}
+function buildPrompt(candidate, capability, claims) {
+  return `${capabilityBlock(capability, claims)}\n\n${paperBlock(candidate)}`;
 }
 
 // ---------------------------------------------------------------------------
@@ -185,8 +176,11 @@ const requests = batch.map((item) => ({
     max_tokens: 2000,
     // Classification, not deep reasoning -- low effort is the right cost/quality point.
     output_config: { effort: "low", format: zodOutputFormat(Verdict) },
-    system: [{ type: "text", text: SYSTEM, cache_control: { type: "ephemeral" } }],
-    messages: [{ role: "user", content: buildPrompt(item.candidate, capabilities.get(item.capId), claimsByCapability.get(item.capId) ?? []) }],
+    system: [{ type: "text", text: SYSTEM }],
+    messages: [{ role: "user", content: [
+      { type: "text", text: capabilityBlock(capabilities.get(item.capId), claimsByCapability.get(item.capId) ?? []), cache_control: { type: "ephemeral" } },
+      { type: "text", text: paperBlock(item.candidate) },
+    ] }],
   },
 }));
 const fresh = await runBatch(client, "classify", requests, { deadlineMs: Number(arg("deadline-min") ?? 25) * 60_000 });

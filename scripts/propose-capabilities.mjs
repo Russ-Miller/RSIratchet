@@ -71,13 +71,17 @@ the existing ids: short, kebab-case, a noun phrase.
 A wrong proposal costs more than a missed one -- the index is small and
 deliberately curated.`;
 
-function buildPrompt(existing, batch) {
+function existingBlock(existing) {
   const list = existing.map((c) => `- ${c.id}: ${c.label} — ${c.summary}`).join("\n");
+  return `## Capabilities the index already tracks\n\n${list}`;
+}
+function papersBlock(batch) {
   const papers = batch.map((c, i) =>
     `### Paper ${i + 1}\nTitle: ${c.title}\nAbstract: ${(c.abstract ?? "(none)").slice(0, 900)}`
   ).join("\n\n");
-  return `## Capabilities the index already tracks\n\n${list}\n\n## Papers that matched none of them\n\n${papers}\n\nJudge each paper. Return one result per paper, using the index numbers above.`;
+  return `## Papers that matched none of them\n\n${papers}\n\nJudge each paper. Return one result per paper, using the index numbers above.`;
 }
+function buildPrompt(existing, batch) { return `${existingBlock(existing)}\n\n${papersBlock(batch)}`; }
 
 // Clustering proposals by exact id barely works: the model names each paper
 // afresh, so near-synonyms ("belief-revision" vs "knowledge-injection-
@@ -211,8 +215,11 @@ for (const [bi, batch] of batches.entries()) {
       model: MODEL,
       max_tokens: 4000,
       output_config: { effort: "low", format: zodOutputFormat(Proposal) },
-      system: [{ type: "text", text: SYSTEM, cache_control: { type: "ephemeral" } }],
-      messages: [{ role: "user", content: buildPrompt(existing, batch) }],
+      system: [{ type: "text", text: SYSTEM }],
+      messages: [{ role: "user", content: [
+        { type: "text", text: existingBlock(existing), cache_control: { type: "ephemeral" } },
+        { type: "text", text: papersBlock(batch) },
+      ] }],
     });
     inTokens += res.usage?.input_tokens ?? 0;
     outTokens += res.usage?.output_tokens ?? 0;
