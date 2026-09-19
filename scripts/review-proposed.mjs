@@ -17,6 +17,9 @@ const args = process.argv.slice(2);
 const arg = (n) => { const i = args.indexOf(`--${n}`); return i >= 0 ? args[i + 1] : undefined; };
 const PER = Number(arg("per") ?? 6);
 const ONLY = arg("only") ? new Set(arg("only").split(",")) : null;
+// --seed 2407.01489,2503.09089: arXiv ids to judge as known papers (needs --only one capability).
+const SEED = arg("seed") ? arg("seed").split(",").map((s) => s.trim()).filter(Boolean) : [];
+if (SEED.length && (!ONLY || ONLY.size !== 1)) { console.error("--seed needs --only <one capability>"); process.exit(1); }
 const TODAY = new Date().toISOString().slice(0, 10);
 const MODEL = "claude-opus-5";
 const UA = `rsiratchet/0.1 (mailto:${process.env.OPENALEX_MAILTO || "miller.russ@gmail.com"})`;
@@ -25,7 +28,8 @@ const QUEUE_FILE = `pipeline/queue/review_${TODAY}.yaml`;
 
 const cat = loadCatalog();
 const caps = cat.capabilities.map((c) => c.data);
-const proposed = caps.filter((c) => c.status === "proposed" && (!ONLY || ONLY.has(c.id)));
+// --only also reaches active capabilities, so an accepted one can still be re-checked.
+const proposed = caps.filter((c) => (c.status === "proposed" || (ONLY && ONLY.has(c.id))) && (!ONLY || ONLY.has(c.id)));
 const active = caps.filter((c) => c.status === "active");
 const sources = new Map(cat.sources.map((s) => [s.data.id, s.data]));
 const claims = cat.claims.map((c) => c.data);
@@ -81,6 +85,27 @@ async function s2(query, n) {
     })).filter((w) => w.title && w.abstract);
   }
   return [];
+}
+
+async function s2ByArxiv(id) {
+  const url = `https://api.semanticscholar.org/graph/v1/paper/arXiv:${id}?fields=title,abstract,year,publicationDate,externalIds,citationCount,authors`;
+  for (let attempt = 0; attempt < 4; attempt++) {
+    const res = await fetch(url, { headers: { "User-Agent": UA } });
+    if (res.status === 429) { await new Promise((r) => setTimeout(r, 15000 * (attempt + 1))); continue; }
+    if (!res.ok) { console.log(`  s2 ${res.status} for arXiv:${id}`); break; }
+    const w = await res.json();
+    if (!w.title || !w.abstract) { console.log(`  s2 has no abstract for arXiv:${id}`); break; }
+    return { openalex_id: `s2:${w.paperId}`, title: w.title, date: w.publicationDate ?? (w.year ? `${w.year}-01-01` : undefined),
+      doi: w.externalIds?.DOI ? `https://doi.org/${w.externalIds.DOI}` : undefined, arxiv_id: id,
+      authors: (w.authors ?? []).slice(0, 6).map((a) => a.name), cited_by_count: w.citationCount, abstract: w.abstract };
+  }
+  // arXiv's own API as fallback when S2 is throttled.
+  const xml = await (await fetch(`https://export.arxiv.org/api/query?id_list=${id}`, { headers: { "User-Agent": UA } })).text();
+  const entry = xml.split("<entry>")[1] ?? "";
+  const tag = (t) => entry.match(new RegExp(`<${t}[^>]*>([\\s\\S]*?)</${t}>`))?.[1]?.replace(/\s+/g, " ").trim();
+  if (!tag("title") || !tag("summary")) { console.log(`  arXiv has no record for ${id}`); return null; }
+  return { openalex_id: `arxiv:${id}`, title: tag("title"), date: tag("published")?.slice(0, 10), arxiv_id: id,
+    authors: [...entry.matchAll(/<name>([^<]*)<\/name>/g)].slice(0, 6).map((m) => m[1]), abstract: tag("summary") };
 }
 
 const Verdict = z.object({
@@ -139,6 +164,11 @@ for (const cap of proposed) {
   for (const c of queue) {
     const v = (c.verdicts ?? []).find((v) => v.capability === cap.id && v.about_capability);
     if (v || (c.proposal?.proposed_id && [cap.id, ...(cap.merged_ids ?? [])].includes(c.proposal.proposed_id))) add({ ...c, from: "queue", url: c.arxiv_id ? `https://arxiv.org/abs/${c.arxiv_id}` : c.doi });
+  }
+  for (const id of SEED) {
+    if (sources.has(`arxiv-${id.replace(".", "-")}`)) { console.log(`  seed ${id} already a source`); continue; }
+    const w = await s2ByArxiv(id);
+    if (w) known.set(id, { ...w, from: "search", url: `https://arxiv.org/abs/${id}`, _raw: w });
   }
   let papers = [...known.values()];
   // Top up from OpenAlex.
