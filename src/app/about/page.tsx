@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ModelStrip } from "@/components/model-strip";
 import { getCapabilities, getClaims, getSources, getTechniques, isPending } from "@/lib/catalog";
 
 export const metadata = { title: "About" };
@@ -27,6 +28,7 @@ export default function HowThisWorksPage() {
           rather than by what is new. Every claim links to the sources it came from, and where
           the evidence disagrees, both sides are kept.
         </p>
+        <ModelStrip />
         <p className="text-sm text-neutral-600 dark:text-neutral-400">
           Every entry records who has read it &mdash; a model, or a model and a person &mdash; so
           you can judge any entry for yourself, because how it got here is written on it.

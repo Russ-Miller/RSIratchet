@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ListSearch } from "@/components/list-search";
+import { ModelStrip } from "@/components/model-strip";
 import { vecAttr } from "@/lib/embeddings";
 import { capabilityTags, getCapabilities, claimsFor, isProposed, unsolvedCapabilities } from "@/lib/catalog";
 import { FilterBar } from "@/components/filter-bar";
@@ -21,13 +22,15 @@ export default function CapabilitiesPage() {
     <div className="space-y-4">
       <h1 className="text-2xl font-semibold">Capabilities</h1>
       <p className="max-w-3xl text-sm text-neutral-500">
-        Topics, not scores &mdash; each lists the claims filed under it. The list is open-ended
-        by design: ten groups map what a model has to be able to do, and a capability with no
-        claims yet is a research brief, not an error. Some are marked{" "}
-        <strong className="font-medium text-neutral-600 dark:text-neutral-400">proposed</strong>:
-        added from the map or by the ingestion pipeline, without anyone yet deciding it belongs.
-        Those are here to be argued with.
+        A capability is a topic: one thing a model has to be able to do, such as arithmetic,
+        following a procedure, or fixing its own mistakes. It is a heading, not a finding, and it
+        carries no score. What is known about it lives in the claims filed under it, each with its
+        sources; the techniques listed on it are fixes that address it, and whether a fix works is
+        itself a claim. A capability with no claims yet is a gap to fill, not an error. Some are
+        marked proposed: added from the map or by the ingestion pipeline without anyone deciding
+        it belongs. Those are here to be argued with.
       </p>
+      <ModelStrip compact />
       <ListSearch noun="capabilities" />
       <FilterBar options={options}>
       <div className="overflow-x-auto">
