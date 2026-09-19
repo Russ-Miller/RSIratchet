@@ -2,34 +2,43 @@ arxiv_id: "2609.05235"
 title: "PRICE: A Systematic Study of LLM Adaptation Choices for Bitcoin Price
   Forecasting"
 url: https://arxiv.org/abs/2609.05235
-drafted_at: 2026-09-18
+drafted_at: 2026-09-19
 drafted_from: full-text
 model: claude-opus-5
 status: draft — not filed. Review, edit, then move into catalog/ by hand.
 capability: forecasting
-statement: When a text LLM is prompted to forecast numeric price series,
-  feeding the history as integer-rounded values on the original price scale
-  gives lower forecast error than full-decimal raw values, standard-normalized
-  values, or per-window instance-normalized values, because rounding cuts
-  token fragmentation while keeping magnitudes in the distribution the model
-  saw in pretraining.
+statement: When a text-pretrained LLM is prompted to forecast a numeric price
+  series, rounding the input values to integers while keeping the original
+  price scale gives lower forecast error than full-precision raw values,
+  training-set standardization, or per-window instance normalization, because
+  normalized values fall outside the numeric distributions the model saw in
+  pretraining and per-window rescaling makes the same price appear differently
+  across samples.
 kind: mechanism
 backing_strength: single-paper
-scope_condition: Univariate hourly Bitcoin closing prices, 96-step input and
-  8-step horizon, 4-bit LLaMA-3 8B, zero-shot prompting for the representation
-  ablation; single asset and single model tested.
+scope_condition: Zero-shot prompting of a 4-bit quantized LLaMA-3 8B on hourly
+  Bitcoin closing prices, 96-step input, 8-step horizon; one asset, one period
+  (2023-2024).
 technique: ""
-proposed_technique: Integer-rounded numeric representation for LLM time-series prompts
+proposed_technique: Feed integer-rounded values, not normalized ones, to LLM forecasters
+technique_summary: Round each numeric time-series value to the nearest integer
+  before serializing it into the prompt, preserving the original scale instead
+  of standardizing or instance-normalizing.
+technique_kind: prompting
+technique_validated_by: "Validation-set MAPE/SMAPE/NRMSE on BTC/USDT hourly
+  forecasting under a fixed zero-shot prompt with only the representation
+  varied: rounded 3.01/3.05/0.05 vs raw 4.23/5.42/0.12, standard normalization
+  9.43/9.39/0.16, instance normalization 548.36/132.19/1.41; valid-output
+  count unchanged at 1441."
 stance_on_existing: neither
 related_claim_id: ""
 stance_reason: ""
-falsifier: An ablation on other assets or models where normalized or
-  raw-decimal inputs match or beat integer-rounded inputs on scale-independent
-  error metrics.
-evidence_note: "One-factor-at-a-time ablation on a validation set of 1441
-  windows with the prompt held fixed: MAPE 3.01 rounded vs 4.23 raw, 9.43
-  standard-normalized, 548 instance-normalized; SMAPE and NRMSE agree.
-  Valid-output count was identical across representations, so the effect is on
-  accuracy not format compliance. Single asset, single backbone; the
-  tokenization explanation is argued, not measured."
+falsifier: On other numeric series and other LLM backbones, instance- or
+  standard-normalized inputs match or beat integer-rounded inputs under an
+  otherwise identical prompt and decoding setup.
+evidence_note: Measured as a one-factor-at-a-time ablation with a fixed
+  prompt, so representation is isolated, but on a single asset, single window
+  length, single backbone, and a single 10% chronological validation split;
+  the mechanistic explanation (pretraining distribution mismatch, cross-window
+  inconsistency) is argued, not tested.
 confidence: medium

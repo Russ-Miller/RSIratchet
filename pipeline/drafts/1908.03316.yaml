@@ -1,0 +1,47 @@
+arxiv_id: "1908.03316"
+title: Multi-modal Synthesis of Regular Expressions
+url: https://arxiv.org/abs/1908.03316
+drafted_at: 2026-09-19
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: formal-query-synthesis
+statement: For synthesizing regexes from user intent, neither a
+  natural-language description nor positive/negative examples alone is
+  sufficient — descriptions are ambiguous and small example sets
+  underdetermine the pattern — so a system that parses the description into a
+  structural sketch and uses it to guide example-based search solves far more
+  tasks than either modality alone (80% vs 43% NL-only and 26% examples-only
+  on 300+ regexes).
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Regexes over a fixed DSL, tasks drawn from a stylized NL
+  dataset and from StackOverflow questions that already supply both a
+  description and examples; the NL parser is a grammar-based semantic parser,
+  not an LLM.
+technique: ""
+proposed_technique: Parse the description into a sketch, then search with examples
+technique_summary: Convert the English description into a hierarchical sketch
+  with constrained holes, then run a programming-by-example search that uses
+  the sketch's hints both to prioritize expansion and to
+  over/under-approximate partial programs for pruning.
+technique_kind: tooling
+technique_validated_by: Exact-match against ground-truth regexes on 200
+  adapted DeepRegex benchmarks and 122 StackOverflow benchmarks, against an
+  NL-only seq2seq baseline (DeepRegex) and an examples-only ablation of the
+  same engine, plus a 20-participant user study where users were twice as
+  likely to produce the intended regex.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A system given only the natural-language description, or only the
+  examples, reaching comparable accuracy on the same benchmarks; or the
+  sketch-guided engine failing to beat its own examples-only ablation once
+  both get equal search budget.
+evidence_note: Measured on two datasets totalling 300+ tasks with both
+  baselines run under the same time and top-k budget, including an interactive
+  protocol adding examples over four iterations. The examples-only baseline is
+  the same engine with an unconstrained sketch, which isolates the sketch's
+  contribution. Pre-LLM methods; whether an instruction-tuned model closes the
+  NL-only gap is untested here.
+confidence: medium

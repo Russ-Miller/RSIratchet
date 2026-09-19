@@ -2,35 +2,48 @@ arxiv_id: "2609.05025"
 title: Leveraging Low-Level Symbolic Competences for Unsupervised Grounding in
   Hallucination Detection
 url: https://arxiv.org/abs/2609.05025
-drafted_at: 2026-09-18
+drafted_at: 2026-09-19
 drafted_from: full-text
 model: claude-opus-5
 status: draft — not filed. Review, edit, then move into catalog/ by hand.
 capability: hallucination
-statement: For response-level hallucination detection against reference
-  documents, having the model first convert the reference into a relational
-  SQL database and then check response claims by executing SELECT queries
-  raises F1 over zero-shot direct prediction mainly by cutting false
-  positives, and the gain shrinks or vanishes on backbones with weak
-  text-to-SQL ability.
-kind: mechanism
+statement: For response-level hallucination detection in retrieval-augmented
+  settings, having the model first convert the reference documents into a
+  relational SQL database and then check the response against SELECT query
+  results raises precision and macro F1 over zero-shot direct prediction, over
+  atomic-claim decomposition, and over flat JSON key-value extraction, without
+  any task-specific fine-tuning.
+kind: observation
 backing_strength: single-paper
-scope_condition: RAGTruth (QA, data-to-text, summarization) and DiaHalu
-  task-oriented dialogue; Gemini 2.5 Flash plus Qwen3, GPT-OSS, LLaMA 3.3 70B;
-  unsupervised, no fine-tuning; five prompting steps per instance.
+scope_condition: RAGTruth (QA, data-to-text, summarisation) and the
+  task-oriented portion of DiaHalu; gains largest on backbones with decent
+  text-to-SQL ability, and absent on a small low-text-to-SQL model (GPT-OSS
+  20B); costs 5 sequential prompts and roughly 4.5k-9.7k input tokens per
+  sample.
 technique: ""
-proposed_technique: SQL-grounded hallucination checking
+proposed_technique: Verify responses against an LLM-built SQL database of the sources
+technique_summary: Prompt the model to incrementally build a relational SQL
+  database from the reference passages, generate SELECT queries for the claims
+  in the response, and reconcile its initial neural hallucination judgement
+  with the executed query results.
+technique_kind: tooling
+technique_validated_by: "Macro precision/recall/F1 on RAGTruth response-level
+  detection (Gemini-2.5-Flash: 61.7/88.9/71.3 vs direct prediction
+  48.2/95.4/61.6, atomic fact checking 65.7 F1, JSON key-value 64.9 F1; below
+  fine-tuned RAG-HAT at 78.0), plus DiaHalu TOD F1 across Gemini-1.5 Pro,
+  GPT-4 and Gemini-2.5-Flash, an ablation on strict ID-intersection
+  prediction, and a manual audit of SQL parsing fidelity (85.33% complete)."
 stance_on_existing: neither
 related_claim_id: ""
 stance_reason: ""
-falsifier: A run where SQL-grounded checking gives no precision gain over
-  direct prediction on the same backbones and datasets, or where a backbone
-  with low text-to-SQL exact match gains as much as a high-scoring one.
-evidence_note: Macro F1 on RAGTruth rose from 61.6 (direct prediction) to 71.3
-  with the SQL pipeline on Gemini 2.5 Flash, with precision 48.2 to 61.7 and
-  recall falling 95.4 to 88.9; atomic-fact and JSON key-value multi-step
-  baselines landed between (65.7, 64.9), so part of the gain is decomposition
-  rather than SQL specifically. GPT-OSS, lowest Spider EM, showed no gain
-  (68.7 to 68.6). Single paper, one main backbone for the headline result, no
-  fine-tuned control on DiaHalu.
+falsifier: A replication where SQL-grounded verification fails to beat
+  atomic-claim decomposition or direct prediction on RAGTruth macro F1 under
+  matched backbones, or where the gain disappears once the multi-step
+  baselines are given comparable token budgets.
+evidence_note: Measured on two benchmarks with 900 pairs per RAGTruth task and
+  210 DiaHalu dialogues, against both unsupervised and fine-tuned baselines.
+  Multi-step non-SQL baselines control for decomposition but not for
+  token/call budget, and the main results rest on a single closed backbone;
+  open-model table shows the effect is backbone-dependent (no gain for
+  GPT-OSS, F1 slightly down for Qwen3).
 confidence: medium

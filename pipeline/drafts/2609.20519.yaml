@@ -1,0 +1,46 @@
+arxiv_id: "2609.20519"
+title: "SoL-Pi: Recursively Scaling Auto-Research Loops for Efficient Agent Harness"
+url: https://arxiv.org/abs/2609.20519
+drafted_at: 2026-09-19
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: harness-self-improvement
+statement: When an automated search over agent-harness mechanisms is gated on
+  token efficiency with only a tolerance band on capability, the resulting
+  full stack buys large token savings at a small but consistent score loss,
+  and scores below the best single discovered mechanism — on EdgeBench the
+  four-mechanism stack cut token traffic 44.7-49.0% and cost about a third
+  while scoring 42.0 vs 44.8 for the base harness on GPT-5.6 Sol, whereas
+  adding ObservationPack alone scored 47.2.
+kind: observation
+backing_strength: single-paper
+scope_condition: Coding/terminal agent harnesses (Pi-based) on EdgeBench,
+  Terminal-Bench 4 and IMO 2026, with GPT-5.6 Sol as search backend and Opus 5
+  as held-out backend; search optimized efficiency subject to a capability
+  tolerance rather than optimizing score.
+technique: self-harness-loop
+proposed_technique: Search the harness for token efficiency under a capability tolerance
+technique_summary: A research agent reads execution traces of a base harness,
+  proposes harness code changes, and keeps only those that improve a declared
+  efficiency metric while staying inside pre-frozen capability tolerances,
+  with the held-out benchmark never feeding back into search.
+technique_kind: process
+technique_validated_by: Held-out EdgeBench (40 of 51 public tasks reserved),
+  plus Terminal-Bench 4 (63 CPU tasks) and IMO 2026, compared against native
+  Codex/Claude Code harnesses and the Pi base harness on score, token traffic
+  and API cost; per-mechanism add-one ablation reported.
+stance_on_existing: supports
+related_claim_id: a-fixed-model-can-improve-its-own-harness-with-a-regression-gated-loop
+stance_reason: It is another regression-gated self-improving harness loop that
+  improves a measured objective with the model frozen, here efficiency rather
+  than pass rate.
+falsifier: A replication where the efficiency-gated full stack matches or
+  exceeds the base harness score, or where the best single mechanism does not
+  outscore the combined stack, on held-out tasks.
+evidence_note: Measured on one held-out benchmark suite with single runs per
+  configuration and no variance reported; Terminal-Bench 4 shows the stack
+  solving fewer tasks (15 vs 18) at lower cost, consistent with the
+  score-for-efficiency trade. Add-one ablations are on the same benchmark used
+  for the headline result.
+confidence: medium
