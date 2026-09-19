@@ -1702,3 +1702,19 @@ embodied-control, holding state without acting with state-tracking). The two
 supporting papers the review found (ReAct 2210.03629, InterCode 2306.14898)
 are listed as sources. CAP-0012 stays in the ledger and
 /capabilities/environment-interaction redirects to tool-use.
+
+## 2026-09-19 — proposed capabilities decided
+
+Russ reviewed the 25 proposed capabilities against the evidence report
+(pipeline/proposed-review-2026-09-19.json). 21 accepted and set active;
+environment-interaction merged into tool-use (above); scalable-oversight
+dropped (no claims filed against it, none of nine papers judged relevant;
+its one mention is prose in a goal-conflict-safety claim, unchanged);
+critique and output-diversity held as proposed pending a clearer label for
+the first and a check whether the second belongs under a wider capability.
+Two review findings led to repairs rather than decisions: repository-navigation
+and abstention-and-self-knowledge had scored 0 and 1 supports because their
+match terms did not use the field's vocabulary (issue/fault localization;
+abstention, unanswerable, selective prediction). Both got aliases and match
+terms, and review-proposed.mjs gained --seed so verified arXiv ids can be
+judged directly instead of relying on relevance search.
