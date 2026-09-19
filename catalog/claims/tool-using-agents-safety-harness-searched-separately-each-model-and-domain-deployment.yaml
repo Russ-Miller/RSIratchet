@@ -1,0 +1,48 @@
+id: tool-using-agents-safety-harness-searched-separately-each-model-and-domain-deployment
+ref: CLM-0227
+capability: prompt-injection
+statement: >-
+  For tool-using agents, a safety harness searched separately for each
+  model-and-domain deployment (jointly evolving a natural-language policy
+  and executable pre/post-tool-call code, screened by a fresh-context
+  adversarial reviewer) reaches a better safety-utility trade-off than fixed
+  expert-designed defenses ported unchanged across deployments, because
+  domain semantics determine which safety relations and trajectory state
+  must be checked while the victim model's failure behavior determines
+  whether a check should be semantic or deterministic and where in execution
+  it must run.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "ReAct-style tool-using agents with a harness that can intercept tool calls; measured on DecodingTrust-Agent (5 victims x 3 domains), Agent-SafetyBench, AgentDojo/AgentDyn; harness "
+sources:
+  - source: arxiv-2609-05903
+    stance: supports
+    note: >-
+      Measured: DTAP 15 cells (30 benign, 35 direct, 35 indirect each)
+      average ASR 45.6% -> 10.0% at 3.3-point utility cost, best score in
+      14/15 cells versus CaMeL, DRIFT, Progent; AgentDojo 82.8% utility at
+      0.0% ASR vs CaMeL 41.0%; zero-shot transfer to AgentDyn 75.0%/0.0%
+      where CaMeL completes nothing. Baselines were ported once by the
+      authors and frozen, which may understate them; the mechanism half
+      (domain sets relations, model sets enforcement style) rests on
+      qualitative inspection of returned bundles plus two controlled
+      comparisons, not a factorial design. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-18
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A single fixed
+  expert-designed harness matching or beating per-cell searched harnesses on
+  the same score (utility minus ASR) across the same model x domain grid, or
+  the searched harnesses transferring no better than fixed ones to unseen
+  suites. Drafted stance toward
+  tool-using-agents-restricting-capabilities-harness-level-after-untrusted-content:
+  supports -- Both find that harness-level enforcement keyed to action
+  effects and provenance, rather than content wording, is what cuts
+  indirect-injection success. Proposed technique, not catalogued:
+  Per-deployment evolved safety harness.
+submitted_by: agent:claude-opus-5@Russ-Miller

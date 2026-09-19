@@ -1,26 +1,71 @@
 id: arxiv-2609-05025
 ref: SRC-0207
 kind: paper
-title: "Leveraging Low-Level Symbolic Competences for Unsupervised Grounding in Hallucination Detection"
-authors: ["Renato Vukovic","Hsien-chin Lin","Carel van Niekerk","Benjamin Ruppik","M. Heck","Shutong Feng"]
+title: Leveraging Low-Level Symbolic Competences for Unsupervised Grounding in
+  Hallucination Detection
+authors:
+  - Renato Vukovic
+  - Hsien-chin Lin
+  - Carel van Niekerk
+  - Benjamin Ruppik
+  - M. Heck
+  - Shutong Feng
 year: 2026
 date: 2026-09-04
 arxiv_id: "2609.05025"
 url: https://arxiv.org/abs/2609.05025
-tags: [ingested]
-summary: >-
-  Hallucination-where a language model generates outputs that are factually
-  incorrect or unsupported by the source-is a major challenge for both
-  prompted and fine-tuned language models. Detecting hallucinations is
-  difficult due to the opaque reasoning processes of LLMs, which often
-  provide little insight into why a model's output may be inaccurate. In
-  this work, we investigate whether an LLM can use an alternative, low
-  level, symbolic competence such as SQL for unsupervised hallucination
-  detection in some high level task. For this, we make an LLM build an SQL
-  database from reference documents. T
-notes: >-
-  Filed as a source on hallucination from the classifier's judgement that
-  the paper is about it (improves, high): The paper proposes a neurosymbolic
-  SQL-grounded pipeline that improves hallucination detection over direct
-  prediction without fine-tuning. No claim has been drafted from it yet.
+tags:
+  - ingested
+summary: Hallucination-where a language model generates outputs that are
+  factually incorrect or unsupported by the source-is a major challenge for
+  both prompted and fine-tuned language models. Detecting hallucinations is
+  difficult due to the opaque reasoning processes of LLMs, which often provide
+  little insight into why a model's output may be inaccurate. In this work, we
+  investigate whether an LLM can use an alternative, low level, symbolic
+  competence such as SQL for unsupervised hallucination detection in some high
+  level task. For this, we make an LLM build an SQL database from reference
+  documents. T
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, high): The paper proposes a
+  neurosymbolic SQL-grounded pipeline that improves hallucination detection
+  over direct prediction without fine-tuning. No claim has been drafted from
+  it yet."
 ingested_at: 2026-09-19
+brief: >-
+  Making an LLM dump reference documents into a SQL database, then querying
+  it, raises unsupervised hallucination detection to roughly the level of
+  supervised fine-tuned detectors, mainly by cutting false positives.
+
+
+  TeQHallu is a 5-step pipeline: inspect schema, find missing facts, insert
+  tuples, generate SELECT queries against the sampled response's claims, then
+  reconcile the SQL evidence with an initial neural-only judgement. Evaluation
+  covers RAGTruth (question answering, data-to-text, summarisation, 900
+  document-response pairs per test set) and the task-oriented portion of
+  DiaHalu (210 dialogues), with Gemini-2.5-Flash as the main backbone.
+
+
+  On RAGTruth, macro F1 rises from 61.6 for direct prediction to 71.3, above
+  fine-tuned Llama-2-13B (71.8 precision-recall profile aside, 71.8 F1 is
+  comparable) and lettuceedetect-large-v1 (72.8), below RAG-HAT (78.0).
+  Precision moves 48.2 to 61.7. On DiaHalu, F1 goes 53.48 to 58.11.
+
+
+  The design isolates the cause reasonably well: matched-prompt direct
+  prediction, an atomic-fact-checking baseline (65.7), a JSON key-value
+  baseline (64.9), and an ablation showing strict symbolic ID intersection is
+  worse (39.7) than feeding IDs to the LLM. A manual audit of 150 documents
+  puts SQL parsing accuracy at 85.33%, with cascading errors in 5.33% of
+  cases. Gains shrink on weaker text-to-SQL backbones: GPT-OSS sees 68.7 to
+  68.6.
+
+
+  Costs are 5 API calls and ~4.5k-9.7k input tokens per sample versus 1 call.
+  No human evaluation of the claimed interpretability benefit.
+
+
+  Worth considering if you want auditable detection without fine-tuning and
+  can pay 5x inference.
+brief_generated_at: 2026-09-18
+brief_model: claude-opus-5
+brief_source: full-text

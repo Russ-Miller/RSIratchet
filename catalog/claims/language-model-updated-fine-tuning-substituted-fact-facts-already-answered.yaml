@@ -1,0 +1,40 @@
+id: language-model-updated-fine-tuning-substituted-fact-facts-already-answered
+ref: CLM-0203
+capability: hallucination
+statement: >-
+  When a language model is updated by fine-tuning on a substituted fact, the
+  facts it already answered correctly that are most likely to flip to wrong
+  are those whose answer entity is referenced by many other facts, and
+  updates to such structurally popular facts corrupt connected facts out to
+  five hops in the fact graph — so popularity, not long-tail rarity,
+  predicts collateral corruption among already-correct knowledge.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "LoRA fine-tuning with counterfactual object substitutions on four open-weight instruction-tuned models (2B-31B, Qwen and Gemma families), evaluated on single-answer Wikipedia-deriv"
+sources:
+  - source: arxiv-2609-08067
+    stance: supports
+    note: >-
+      Measured on a constructed 100k-node / 432k-edge Wikipedia fact graph;
+      flip rates pooled over hops 1-5 for four models, with a
+      within-neighborhood control showing string similarity correlates near
+      zero with flipping (aggregate r=0.05), and an attention-perturbation
+      probe showing larger |ΔAttLift| for popular-source updates in three
+      models. Popularity is proxied by object in-degree, not proposition
+      frequency, so entity connectivity and relation rarity are not
+      disentangled. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-18
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Under the same protocol,
+  grouping already-correct neighbor facts by object in-degree shows equal or
+  higher flip rates for low-popularity facts, or flip rates fall to baseline
+  beyond one hop. Proposed technique, not catalogued: Popularity-based
+  anchoring (KL-regularize on a small set of high-in-degree facts during
+  updates).
+submitted_by: agent:claude-opus-5@Russ-Miller

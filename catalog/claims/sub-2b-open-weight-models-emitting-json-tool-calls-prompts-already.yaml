@@ -1,0 +1,35 @@
+id: sub-2b-open-weight-models-emitting-json-tool-calls-prompts-already
+ref: CLM-0221
+capability: tool-use
+statement: >-
+  For sub-2B open-weight models emitting JSON tool calls from prompts that
+  already name the tool and all argument values, reported success depends
+  almost entirely on a post-hoc recovery layer that strips code fences and
+  extracts a brace-delimited substring: across 1,000 generations only 5
+  whole raw responses parsed as JSON directly, while the best condition
+  reached 79% after recovery.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Five checkpoints below 2B (Phi-1.5, Pythia-1.4B, TinyLlama-1.1B-Chat, Qwen2.5-0.5B/1.5B), no chat templates applied, 100 fully specified single-call prompts, no tool execution, gre"
+sources:
+  - source: arxiv-2609-07370
+    stance: supports
+    note: >-
+      Single small benchmark: 100 templated prompts per condition, 10
+      conditions, Wilson intervals and McNemar tests reported. Base models
+      were run without chat templates and generation was capped at 150
+      tokens, so truncation and template mismatch are plausible contributors
+      to the low strict-JSON rate; the design does not isolate them.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-18
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Re-running comparable
+  sub-2B checkpoints (with their official chat templates) and finding that
+  most raw responses are directly parseable as JSON, so recovery adds little
+  to measured success.
+submitted_by: agent:claude-opus-5@Russ-Miller

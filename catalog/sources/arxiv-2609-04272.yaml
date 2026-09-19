@@ -1,27 +1,64 @@
 id: arxiv-2609-04272
 ref: SRC-0202
 kind: paper
-title: "Evaluating Large Language Models for Forced Outage Risk Prediction: Benefits and Comparison to Machine Learning"
-authors: ["Christos Petridis","Zoran Obradovic","Mladen Kezunović"]
+title: "Evaluating Large Language Models for Forced Outage Risk Prediction:
+  Benefits and Comparison to Machine Learning"
+authors:
+  - Christos Petridis
+  - Zoran Obradovic
+  - Mladen Kezunović
 year: 2026
 date: 2026-09-02
 arxiv_id: "2609.04272"
 url: https://arxiv.org/abs/2609.04272
-tags: [ingested]
-summary: >-
-  This study examines the ability of large language models (LLMs) to predict
-  the risk of weather-related forced outages in the distribution grid in a
-  zero-shot framework, without labeled training data. The problem is
+tags:
+  - ingested
+summary: "This study examines the ability of large language models (LLMs) to
+  predict the risk of weather-related forced outages in the distribution grid
+  in a zero-shot framework, without labeled training data. The problem is
   formulated as a binary severity classification task across three forecast
   horizons (3h, 6h, 12h), using six years of outage records and
   high-resolution weather data for a utility service area in central Texas.
   Four zero-shot LLMs are benchmarked against two supervised classifiers
-  across two input configurations: one using current weather observations
-  and the other using weather fore
-notes: >-
-  Filed as a source on forecasting from the classifier's judgement that the
-  paper is about it (measures, medium): The paper benchmarks zero-shot LLM
+  across two input configurations: one using current weather observations and
+  the other using weather fore"
+notes: "Filed as a source on forecasting from the classifier's judgement that
+  the paper is about it (measures, medium): The paper benchmarks zero-shot LLM
   forecasting accuracy against supervised baselines without proposing a new
   method, finding LLMs trail on macro-F1 and precision. No claim has been
-  drafted from it yet.
+  drafted from it yet."
 ingested_at: 2026-09-19
+brief: >-
+  Zero-shot GPT models reading raw weather features lose to small supervised
+  classifiers on a rare-event grid outage task, and the gap is mostly
+  precision.
+
+
+  The task is binary high/low severity classification of weather-driven forced
+  outages in a central Texas utility service area over 6 years (2018-2023), at
+  3h, 6h and 12h horizons, with thresholds set to a ~5% positive rate. GPT-4o,
+  GPT-4o-mini, GPT-4.1 and GPT-4.1-mini get an identical prompt with either
+  full-window forecast weather or current observations only; LightGBM and
+  Logistic Regression are trained with Leave-One-Year-Out cross-validation on
+  the same held-out years.
+
+
+  With forecast, LightGBM reaches macro-F1 0.74 at 3h and 0.67 at 12h; the
+  best LLM is 0.61-0.63, a gap of 0.04 to 0.13. GPT-4o-mini collapses into
+  near-constant positive prediction (recall 0.78-0.97, precision 0.05-0.07).
+  Adding forecast weather helps ML consistently (+0.06, +9.8% for LightGBM at
+  12h) but barely moves GPT-4.1-mini (+0.00 at 3h).
+
+
+  Evidence: measured, same folds for both paradigms, with a
+  weather-versus-outage causality check (Granger F = 2,853 at lag 1h). But 1
+  utility, 1 model family, no prompt tuning, no threshold calibration, no
+  in-context examples, and the interpretability claim is argued from sample
+  rationales, not tested with operators.
+
+
+  Treat zero-shot LLMs here as a cheap fallback where labels are absent, not a
+  replacement.
+brief_generated_at: 2026-09-18
+brief_model: claude-opus-5
+brief_source: full-text

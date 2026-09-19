@@ -2,26 +2,65 @@ id: arxiv-2609-07434
 ref: SRC-0219
 kind: paper
 title: "CIT-CAD: Constraint Intent Tree-based CAD Code Generation and Verification"
-authors: ["Yali Du","Hui Sun","San-Zhuo Xi","Ming Li"]
+authors:
+  - Yali Du
+  - Hui Sun
+  - San-Zhuo Xi
+  - Ming Li
 year: 2026
 date: 2026-09-07
 arxiv_id: "2609.07434"
 url: https://arxiv.org/abs/2609.07434
-tags: [ingested]
-summary: >-
-  Natural-language Computer-Aided Design (CAD) code generation aims to turn
-  design intent into executable and editable parametric programs. Large
+tags:
+  - ingested
+summary: Natural-language Computer-Aided Design (CAD) code generation aims to
+  turn design intent into executable and editable parametric programs. Large
   language models (LLMs) make this goal increasingly practical, but useful
-  systems must preserve the construction process behind the rendered
-  geometry. Existing benchmarks and methods mostly focus on how closely the
-  generated CAD model matches the reference geometry, often using metrics
-  such as Intersection over Union (IoU). Such metrics can miss errors in
-  part decomposition, construction hierarchy, Boolean operations, sketch
-  structure, and geometric rel
-notes: >-
-  Filed as a source on code-generation from the classifier's judgement that
-  the paper is about it (improves, high): The paper proposes an intent-tree
-  representation guiding generation plus constraint-mismatch verification
-  and repair, reporting improved CAD code generation performance. No claim
-  has been drafted from it yet.
+  systems must preserve the construction process behind the rendered geometry.
+  Existing benchmarks and methods mostly focus on how closely the generated
+  CAD model matches the reference geometry, often using metrics such as
+  Intersection over Union (IoU). Such metrics can miss errors in part
+  decomposition, construction hierarchy, Boolean operations, sketch structure,
+  and geometric rel
+notes: "Filed as a source on code-generation from the classifier's judgement
+  that the paper is about it (improves, high): The paper proposes an
+  intent-tree representation guiding generation plus constraint-mismatch
+  verification and repair, reporting improved CAD code generation performance.
+  No claim has been drafted from it yet."
 ingested_at: 2026-09-19
+brief: >-
+  Geometry-matching metrics like IoU tell you almost nothing about whether
+  generated CAD code preserves the intended construction process. On Qwen3
+  samples, per-sample IoU and constraint satisfaction correlate at Pearson r =
+  0.022 and Spearman ρ = 0.023, and cases exist with IoU 90.41% but CSR
+  10.00%.
+
+
+  CIT-CAD infers a Constraint Intent Tree from a natural-language description,
+  encoding expected entities, hierarchy, Boolean roles, sketch attributes and
+  inter-entity relations, generates CadQuery code conditioned on it, then
+  extracts actual constraints by AST analysis plus runtime geometry and
+  repairs localized violations under an acceptance rule that only commits
+  repairs preserving locked constraints. Evaluated on 26,783 multi-entity
+  Text2CAD samples with DeepSeek-Coder-V2-Lite-Instruct, Qwen3-A3B-Instruct
+  and GPT-5.4-mini.
+
+
+  Valid syntax rate rises 74.1% to 83.3% (DeepSeek), 78.0% to 85.1% (Qwen3),
+  87.2% to 90.4% (GPT-5.4-mini). Constraint satisfaction roughly doubles
+  (14.8% to 28.3%; 16.7% to 31.8%; 16.7% to 37.7%). IoU barely moves on open
+  models (29.0% to 29.2%; 32.6% to 32.8%). Repair iterations lift Qwen3 CSR
+  18.2% to 28.9%, saturating after 3 rounds.
+
+
+  The comparison is vanilla prompting versus the full pipeline with the same
+  backbone, so the tree, the validator and the repair loop are not separated;
+  the repair-iteration curve is the only partial ablation, and there is no
+  matched-token-budget baseline. CSR is computed from LLM-inferred trees, so
+  the metric and the method share a source. Absolute success rates stay low
+  (IoU@0.95 3.3%-5.9%), and sketch-level constraints remain the dominant
+  failure. Treat construction-level checks as a separate axis from geometry
+  when scoring text-to-CAD.
+brief_generated_at: 2026-09-18
+brief_model: claude-opus-5
+brief_source: full-text

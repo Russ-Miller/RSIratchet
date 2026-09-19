@@ -1,0 +1,39 @@
+id: asked-optimize-code-already-performance-ceiling-frontier-llms-gpt
+ref: CLM-0198
+capability: hallucination
+statement: >-
+  When asked to optimize code that is already at its performance ceiling,
+  frontier LLMs (GPT, Claude, Gemini families) never say it is already
+  optimal under a plain "optimize this code for speed" prompt — they always
+  emit an edit with a confident, unmeasured speedup claim; adding an
+  explicit instruction to abstain unless >90% confident of an improvement
+  produces abstention on a minority of such cases while leaving the edit
+  rate on genuinely sub-optimal code unchanged.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "180 trials, nine models, five paired optimal/sub-optimal LeetCode-style snippets from EffiBench, direct API calls without agent refinement loops, n=5 per model per condition; no ex"
+sources:
+  - source: arxiv-2609-14839
+    stance: supports
+    note: >-
+      Measured: 100% edit rate on optimal code under control across all nine
+      models; 44.4% abstention and 0% false abstention under the penalty
+      prompt. Small pilot (n=5 per model), problems are well-known LeetCode
+      items so memorization may inflate the sub-optimal edit rate, and
+      optimality of the baseline snippets is assumed rather than
+      execution-verified.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-18
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: On a larger set of
+  verified-optimal snippets, models under a plain optimize prompt decline to
+  edit a substantial share of the time, or the confidence-threshold prompt
+  fails to raise abstention above zero, or it also suppresses edits on
+  genuinely sub-optimal code. Proposed technique, not catalogued:
+  confidence-threshold abstention prompt for code optimization.
+submitted_by: agent:claude-opus-5@Russ-Miller

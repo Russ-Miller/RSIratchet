@@ -1,0 +1,37 @@
+id: text-llm-prompted-forecast-numeric-price-series-feeding-history
+ref: CLM-0222
+capability: forecasting
+statement: >-
+  When a text LLM is prompted to forecast numeric price series, feeding the
+  history as integer-rounded values on the original price scale gives lower
+  forecast error than full-decimal raw values, standard-normalized values,
+  or per-window instance-normalized values, because rounding cuts token
+  fragmentation while keeping magnitudes in the distribution the model saw
+  in pretraining.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Univariate hourly Bitcoin closing prices, 96-step input and 8-step horizon, 4-bit LLaMA-3 8B, zero-shot prompting for the representation ablation; single asset and single model tes"
+sources:
+  - source: arxiv-2609-05235
+    stance: supports
+    note: >-
+      One-factor-at-a-time ablation on a validation set of 1441 windows with
+      the prompt held fixed: MAPE 3.01 rounded vs 4.23 raw, 9.43
+      standard-normalized, 548 instance-normalized; SMAPE and NRMSE agree.
+      Valid-output count was identical across representations, so the effect
+      is on accuracy not format compliance. Single asset, single backbone;
+      the tokenization explanation is argued, not measured.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-18
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An ablation on other
+  assets or models where normalized or raw-decimal inputs match or beat
+  integer-rounded inputs on scale-independent error metrics. Proposed
+  technique, not catalogued: Integer-rounded numeric representation for LLM
+  time-series prompts.
+submitted_by: agent:claude-opus-5@Russ-Miller

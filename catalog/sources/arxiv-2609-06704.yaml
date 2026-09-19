@@ -1,28 +1,75 @@
 id: arxiv-2609-06704
 ref: SRC-0214
 kind: paper
-title: "Counterfactual Tests for Measuring Chain-of-Thought Faithfulness in Visual Language Models"
-authors: ["Bayar Menzat","Maximilian Süss","Ruizhi Wang","Benno Steinegger","Thomas Lukasiewicz","Oana-Maria Camburu"]
+title: Counterfactual Tests for Measuring Chain-of-Thought Faithfulness in
+  Visual Language Models
+authors:
+  - Bayar Menzat
+  - Maximilian Süss
+  - Ruizhi Wang
+  - Benno Steinegger
+  - Thomas Lukasiewicz
+  - Oana-Maria Camburu
 year: 2026
 date: 2026-09-06
 arxiv_id: "2609.06704"
 url: https://arxiv.org/abs/2609.06704
-tags: [ingested]
-summary: >-
-  Chain-of-thought (CoT) may often look plausible, yet it may not faithfully
-  reflect the model's decision-making process. While methods for measuring
-  the faithfulness of CoTs for textual inputs have been increasingly
-  introduced, using these methods for visual inputs is not straightforward.
-  In this work, we adapt the family of counterfactual methods for measuring
-  CoT faithfulness, namely the Counterfactual Test (CT) and Correlational
+tags:
+  - ingested
+summary: Chain-of-thought (CoT) may often look plausible, yet it may not
+  faithfully reflect the model's decision-making process. While methods for
+  measuring the faithfulness of CoTs for textual inputs have been increasingly
+  introduced, using these methods for visual inputs is not straightforward. In
+  this work, we adapt the family of counterfactual methods for measuring CoT
+  faithfulness, namely the Counterfactual Test (CT) and Correlational
   Counterfactual Test (CCT), to visual inputs, and call them vCT and vCCT,
   respectively. Using vCT and vCCT, we benchmark eight recent open-source
   Vision Language Mode
-notes: >-
-  Filed as a source on explanation-faithfulness from the classifier's
+notes: "Filed as a source on explanation-faithfulness from the classifier's
   judgement that the paper is about it (measures, high): The paper adapts
   counterfactual faithfulness tests to visual inputs and benchmarks VLMs,
   finding CoTs do not reliably track the visual evidence that drives
   predictions, without proposing a fix. No claim has been drafted from it
-  yet.
+  yet."
 ingested_at: 2026-09-19
+brief: >-
+  Post-hoc explanations track the visual evidence that moves a model's
+  predictions better than pre-answer chain-of-thought does, reversing the
+  usual assumption that reasoning-before-answering is the more faithful
+  format.
+
+
+  The authors port the Counterfactual Test and Correlational Counterfactual
+  Test to images as vCT and vCCT: a pipeline (Qwen2.5-VL-7B for object
+  selection, Qwen-Image-Edit for inpainting, Grounding DINO plus SAM for
+  filtering) builds minimally edited image pairs differing by 1 removed
+  object, released as Counter-SNLI-VE and Counter-A-OKVQA. 8 open-source VLMs
+  (Qwen3.5-9B, Qwen2.5-VL-32B, Qwen3-VL-30B-A3B, InternVL3-38B,
+  InternVL3.5-38B, Ovis2.5-9B, Kimi-VL-A3B, R-4B) are queried in
+  Predict-then-Explain and CoT modes; vCCT correlates total variation distance
+  in answer probabilities with whether the removed object is mentioned.
+
+
+  Mean vCCT is 0.303 (PE) vs 0.200 (CoT) on A-OKVQA and 0.264 vs 0.129 on
+  SNLI-VE, with PE ahead in all 16 model-dataset pairs. Binary vCT saturates:
+  0.951/0.930 on A-OKVQA, 0.949/0.895 on SNLI-VE.
+
+
+  Evidence is measured with paired permutation tests, image-clustered
+  bootstrap intervals, an accuracy-matched control (gap 0.110 vs 0.119), a
+  directional-mention control, and a no-op reconstruction control on 500
+  SNLI-VE rows where object removal shifts TVD 0.0960 vs 0.0348 under PE. A
+  141-example audit found 87.9% correct edits and 92.2% correct mention
+  detection; change-mention judging is itself a model (Qwen3-4B-Thinking).
+
+
+  Scope is object removal on 2 datasets; color edits were only a 122-pair
+  feasibility test (11/16 comparisons favor PE), and relations, counting and
+  actions are untested, as are hidden reasoning traces.
+
+
+  If you use vCT-style binary faithfulness scores, expect them to be
+  uninformative and switch to a correlational metric.
+brief_generated_at: 2026-09-18
+brief_model: claude-opus-5
+brief_source: full-text

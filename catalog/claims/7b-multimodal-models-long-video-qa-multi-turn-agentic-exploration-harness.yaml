@@ -1,0 +1,42 @@
+id: 7b-multimodal-models-long-video-qa-multi-turn-agentic-exploration-harness
+ref: CLM-0196
+capability: video-temporal-reasoning
+statement: >-
+  For 7B multimodal models on long-video QA, a multi-turn agentic
+  exploration harness (adaptive viewing speed, cross-turn textual notes,
+  rewatch) lowers accuracy below plain uniform-frame single-pass answering
+  unless the model is trained to use it, because the untrained model commits
+  to an answer before gathering evidence; with cold-start SFT on verified
+  exploration turns plus trajectory-level RL, the same harness beats the
+  single-pass baseline.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen2.5-VL-7B-Instruct backbone; nine long-video and cross-domain multiple-choice benchmarks; harness with fixed per-turn visual token budget."
+sources:
+  - source: arxiv-2609-15606
+    stance: supports
+    note: >-
+      Measured: untrained agentic variant averaged 33.1 vs 41.8 for the
+      single-pass base model on four long-video benchmarks, and 34.3 vs 37.8
+      cross-domain; the trained model reached 48.0 and 45.0. Ablation also
+      shows RL without SFT collapses. Single backbone, single harness
+      design, so it does not separate harness-specific quirks from a general
+      prompt-only limit.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-18
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An untrained 7B backbone
+  placed in the same multi-turn exploration harness scoring at or above its
+  single-pass uniform-sampling baseline on these benchmarks. Drafted stance
+  toward
+  handing-agent-context-editing-tools-delete-summarize-note-fold-prompt:
+  supports -- Same pattern: context-management tools given by prompt alone
+  hurt mid-size models and only help after fine-tuning on trajectories that
+  use them. Proposed technique, not catalogued: trained adaptive-pacing
+  video exploration agent.
+submitted_by: agent:claude-opus-5@Russ-Miller

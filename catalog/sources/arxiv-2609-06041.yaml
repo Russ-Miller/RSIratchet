@@ -1,27 +1,70 @@
 id: arxiv-2609-06041
 ref: SRC-0212
 kind: paper
-title: "SpecCoder: Specification-Aware Code Generation with Curriculum Dual-Task Reinforcement Learning"
-authors: ["Yixuan Li","Mingxuan Huang","Jiajing Wang","Weidong Yang","Xinyi Liu","Ben Fei"]
+title: "SpecCoder: Specification-Aware Code Generation with Curriculum
+  Dual-Task Reinforcement Learning"
+authors:
+  - Yixuan Li
+  - Mingxuan Huang
+  - Jiajing Wang
+  - Weidong Yang
+  - Xinyi Liu
+  - Ben Fei
 year: 2026
 date: 2026-09-05
 arxiv_id: "2609.06041"
 url: https://arxiv.org/abs/2609.06041
-tags: [ingested]
-summary: >-
-  Large language models (LLMs) have made substantial progress in code
+tags:
+  - ingested
+summary: Large language models (LLMs) have made substantial progress in code
   generation but still struggle with challenging programming tasks that
-  require understanding rich natural language requirements. These
-  requirements often specify problem goals, input/output formats,
-  constraints, examples, and edge cases. Overlooking even one may produce
-  executable but functionally incorrect code. Existing training-free methods
-  mainly rely on prompting or agent-based workflows, while training-based
-  methods typically optimize final code outputs. However, existing
-  approaches provide limited supervision for learnin
-notes: >-
-  Filed as a source on code-generation from the classifier's judgement that
-  the paper is about it (improves, high): The paper proposes a two-stage
+  require understanding rich natural language requirements. These requirements
+  often specify problem goals, input/output formats, constraints, examples,
+  and edge cases. Overlooking even one may produce executable but functionally
+  incorrect code. Existing training-free methods mainly rely on prompting or
+  agent-based workflows, while training-based methods typically optimize final
+  code outputs. However, existing approaches provide limited supervision for
+  learnin
+notes: "Filed as a source on code-generation from the classifier's judgement
+  that the paper is about it (improves, high): The paper proposes a two-stage
   specification-aware training framework that consistently improves code
   generation accuracy on multiple benchmarks. No claim has been drafted from
-  it yet.
+  it yet."
 ingested_at: 2026-09-19
+brief: >-
+  Training a code model to first emit a structured requirement specification,
+  then generate code conditioned on it, and jointly training it to
+  discriminate which of 2 candidate implementations better satisfies that
+  specification, improves pass rates on competition-style tasks more than
+  free-form reasoning or planning prefixes do.
+
+
+  SpecCoder fine-tunes Qwen2.5-7B-Coder-Instruct with LoRA on GPT-4o-generated
+  7-dimension specifications verified by execution and by DeepSeek-V3-0324,
+  then runs 3-phase curriculum GRPO over Easy/Medium/Hard splits. Evaluation
+  covers APPS and CodeContests (in-distribution) and xCodeEval
+  (out-of-distribution), with Pass@1 and AvgPassRatio.
+
+
+  Standalone Pass@1/AvgPassRatio: 0.186/0.346 on APPS, 0.091/0.207 on
+  CodeContests, 0.147/0.324 on xCodeEval, versus 0.166/0.271, 0.030/0.145,
+  0.100/0.204 zero-shot. Pass@1 ties CodePRM on APPS and FixAudit on
+  CodeContests. As an agent backbone, gains reach 11.3 points Pass@1 on
+  xCodeEval with Specine.
+
+
+  Evidence is measured with 95% bootstrap intervals and matched backbone, data
+  split, and compute budget. Ablations remove SFT (CodeContests Pass@1 0.091
+  to 0.043), GRPO, discrimination, and the curriculum (0.091 to 0.079).
+  Intermediate representations are matched at equal training budget with token
+  counts reported (694.7 vs 568.2 for Free-Form), so gains are not just longer
+  outputs. Human evaluation used 150 samples and 2 raters.
+
+
+  Only 1 model family and 1 size were tested, and many differences sit inside
+  the confidence intervals. Hard tasks still see Pass@1 near zero. Treat
+  structured specifications as a cheap intermediate format worth trying rather
+  than a settled gain.
+brief_generated_at: 2026-09-18
+brief_model: claude-opus-5
+brief_source: full-text

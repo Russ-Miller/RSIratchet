@@ -1,0 +1,40 @@
+id: masked-diffusion-language-models-llada-dream-asked-generate-around
+ref: CLM-0210
+capability: procedure-following
+statement: >-
+  In masked diffusion language models (LLaDA, Dream) asked to generate
+  around a frozen constraint span placed mid-output, failures to honor the
+  constraint come partly from too little attention being allocated to that
+  span during denoising: adding a fixed additive bias to attention logits on
+  the span raises constraint adherence and overall quality up to a moderate
+  bias, then degrades fluency and contextual fit as the bias grows.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Text-only in-place infilling tasks with a single anchor span; probed on two 7-8B masked diffusion models with a zero-parameter inference-time hook; behaviour under multiple or conf"
+sources:
+  - source: arxiv-2609-07160
+    stance: supports
+    note: >-
+      Argued from a grid-searched scalar bias applied via forward pre-hooks,
+      with 'anchor mass' (attention probability on constraint tokens) shown
+      to rise with the bias and rubric-based GPT-5/JudgeLM scores tracing a
+      non-monotonic curve. Only two models probed, no numbers for the peak
+      reported in the text, and the judge protocol is itself LLM-based, so
+      the quality drop at high bias is measured by a judge rather than by an
+      independent fluency metric. The probe shows attention can be shifted
+      and that it matters, but does not rule out other causes of failure.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-18
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Sweeping the
+  attention-bias strength on the constraint span produces no region where
+  constraint-following scores rise above the unbiased baseline, or the
+  scores rise monotonically with bias rather than peaking and then falling.
+  Proposed technique, not catalogued: attention-bias probe on the constraint
+  span.
+submitted_by: agent:claude-opus-5@Russ-Miller

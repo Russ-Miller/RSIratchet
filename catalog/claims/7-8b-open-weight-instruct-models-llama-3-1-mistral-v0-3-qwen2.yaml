@@ -1,0 +1,42 @@
+id: 7-8b-open-weight-instruct-models-llama-3-1-mistral-v0-3-qwen2
+ref: CLM-0194
+capability: hallucination
+statement: >-
+  In 7-8B open-weight instruct models (Llama-3.1, Mistral-v0.3, Qwen2.5),
+  the drop in a token's probability when a contiguous mid-layer MLP span is
+  zero-ablated is near zero for function words, elevated for
+  knowledge-bearing tokens, and abnormally spiked for hallucinated tokens,
+  so this internal attribution signal — approximable by a small probe from
+  one forward pass — can be used in beam scoring to raise factuality on
+  open-ended and long-form generation, while leaving strict short-answer
+  EM/F1 unchanged or worse.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Three 7-8B instruct models; layer span found per model by offline sliding-window ablation, so it must be re-identified for new architectures; fact-seeking prompts only, not creativ"
+sources:
+  - source: arxiv-2609-15745
+    stance: supports
+    note: >-
+      Signal separation shown by per-token distributions and empirical CDFs
+      on three models; decoding evaluated on five benchmarks against seven
+      baselines, with best T*I on all three models and a large FActScore
+      gain on Llama only; NQ/TriviaQA EM sometimes below baselines,
+      attributed by the authors to longer outputs (a prompt-control
+      experiment supports this but does not fully isolate it).
+      Probe-vs-real-signal agreement only 70-76% at zone level; no
+      token-level precision claim.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-18
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: On the same models,
+  hallucinated and non-hallucinated token distributions of the
+  ablation-derived signal overlap (no spike separation), or a probe-scored
+  beam search fails to beat greedy/DoLa/ActLCD on TruthfulQA T*I and
+  FActScore. Proposed technique, not catalogued: attribution-signal beam
+  scoring from a factual-salient MLP span.
+submitted_by: agent:claude-opus-5@Russ-Miller

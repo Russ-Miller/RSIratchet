@@ -1,0 +1,43 @@
+id: llm-based-program-repair-defects4j-bugs-frontier-models-gpt-5-deepseek-r1
+ref: CLM-0206
+capability: hallucination
+statement: >-
+  In LLM-based program repair on Defects4J bugs with frontier models (GPT-5,
+  DeepSeek-R1, Claude Sonnet 4.5) prompted zero-shot, passing the
+  developer-written test suite does not mean the patch is grounded in the
+  bug: manual inspection of 812 sampled repairs found ungrounded repairs in
+  72.7% of cases including test-passing patches, most often from incorrect
+  causal localization (45.9%) rather than a wrong edit style, and the same
+  models frequently misidentify the bug-triggering tests and generate
+  additional tests that miss the triggering condition.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Java single-function-level bugs from Defects4J (832 bugs), zero-shot prompting with extracted buggy functions and developer test context, no tools or agent loop; three models circa"
+sources:
+  - source: arxiv-2609-04909
+    stance: supports
+    note: >-
+      Automatic execution evaluation on 832 bugs (plausible-patch rate
+      21.0%-55.9% across four prompt settings) plus stratified sampling for
+      human annotation at 95% confidence/10% margin per task-model group;
+      two annotators, open coding, kappa 0.82 for repair hallucination but
+      only 0.49 initially for understanding hallucination, resolved by
+      discussion. The 72.7% figure is a pooled sample estimate, not a
+      per-model rate, and 'hallucination' here is defined as deviation from
+      developer-intended semantics, which conflates overfitting with
+      ungroundedness. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-18
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Manual audit of
+  test-passing patches from these models on a comparable benchmark finding
+  that the large majority do implement the developer-intended repair
+  semantics and localize the cause correctly, so pass rate tracks grounded
+  repair. Proposed technique, not catalogued: Multi-layered APR evaluation
+  of intermediate understanding artifacts.
+submitted_by: agent:claude-opus-5@Russ-Miller

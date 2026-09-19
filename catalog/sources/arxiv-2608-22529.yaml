@@ -1,20 +1,56 @@
 id: arxiv-2608-22529
 ref: SRC-0107
 kind: paper
-title: "Benchmarking the Titans: A Multi-Dimensional Empirical Evaluation of LLM Code Generation Quality in the .NET Ecosystem"
+title: "Benchmarking the Titans: A Multi-Dimensional Empirical Evaluation of
+  LLM Code Generation Quality in the .NET Ecosystem"
 year: 2026
 date: 2026-08-23
 arxiv_id: "2608.22529"
 url: https://arxiv.org/abs/2608.22529
-tags: [ingested]
-summary: >-
-  Evaluating Large Language Model (LLM) code generation quality requires
-  examining not just whether the generated code is correct, but whether it
-  is maintainable, efficient, and stylistically sound, all of which are
-  qualities of direct importance to software engineering practitioners.
+tags:
+  - ingested
+summary: Evaluating Large Language Model (LLM) code generation quality
+  requires examining not just whether the generated code is correct, but
+  whether it is maintainable, efficient, and stylistically sound, all of which
+  are qualities of direct importance to software engineering practitioners.
   Existing benchmarks reduce evaluation to a single Pass@k metric, which
   obscures critical trade-offs between functional correctness and structural
-  quality. A further limitation is the near-exclusive focus on Python,
-  leaving enterprise-relevant ecosystems such as C# and .NET without
-  dedicated evaluation. This paper p
+  quality. A further limitation is the near-exclusive focus on Python, leaving
+  enterprise-relevant ecosystems such as C# and .NET without dedicated
+  evaluation. This paper p
 ingested_at: 2026-09-15
+brief: >-
+  Functional correctness of LLM-generated C# tells you almost nothing about
+  its structural quality: across 340 solutions the Pearson correlation between
+  correctness and a composite quality score was r = 0.075.
+
+
+  The pipeline translated 85 HumanEval tasks into C#, queried GPT-4, Gemini
+  1.5 Pro, Claude 3.5 Sonnet and Grok 3 at temperature = 0, then scored each
+  output 3 ways: unit tests via .NET Reflection, Roslyn AST metrics
+  (cyclomatic complexity, nesting, naming violations, documentation), and
+  BenchmarkDotNet profiling at N = 100, 1,000 and 10,000 with worst-case
+  inputs written by a separate DeepSeek-V3 instance.
+
+
+  Mean correctness clustered tightly: Gemini 98.53%, Claude 98.32%, Grok
+  97.98%, GPT 96.37% with the highest variance (SD = 15.37) and a quality
+  collapse on failed tasks (22.44 vs 39.51 on passes). Claude produced the
+  simplest code (complexity 2.47, nesting 1.13) but the worst memory footprint
+  (156.6 MB median, roughly 26x Grok's 6.0 MB). Cross-model complexity
+  agreement on identical tasks was r = 0.63 to 0.69, so task difficulty, not
+  model style, drives most complexity.
+
+
+  The orthogonality is measured, but correctness is itself 1 of the 5
+  composite components, which the authors flag as partly self-referential; the
+  robustness check excluding it is future work. 1 run per task, 85
+  single-function tasks, no multi-file or enterprise .NET code, no multi-run
+  variance analysis.
+
+
+  If you pick models by Pass@k, you are not ranking maintainability or runtime
+  cost.
+brief_generated_at: 2026-09-18
+brief_model: claude-opus-5
+brief_source: full-text

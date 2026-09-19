@@ -1,0 +1,43 @@
+id: long-cooking-videos-where-question-depends-ingredient-changes-no
+ref: CLM-0208
+capability: state-tracking
+statement: >-
+  For long cooking videos where a question depends on ingredient changes no
+  longer visible, vision-language models fail to carry observed events
+  forward into later answers, and adding generic retrieved-context RAG makes
+  it worse, while splitting memory into a temporally anchored event log plus
+  an explicitly updated inventory ledger recovers much of the gap.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Multiple-choice and numeric QA over 160 long cooking videos; Qwen3-VL 4B/8B backbones for the agent; proprietary and open VLMs as zero-shot baselines; observational only, no actuat"
+sources:
+  - source: arxiv-2609-07135
+    stance: supports
+    note: >-
+      Single benchmark of 1,500 human-verified QA pairs; humans ~92% average
+      vs GPT-4o 47.7% and Gemini 2.5 Pro 61.1%. Nutri-Vgent raises
+      Qwen3-VL-8B from 53.4% to 62.3% while generic Vgent lowers it to
+      31.7%. Ablation shows either memory alone lowers overall score below
+      the visual-only baseline; the combination is highest. Easy splits dip
+      slightly, attributed to retrieval overhead. No isolation of
+      prompt/function-call differences from the memory structure itself.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-18
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafter linked technique "hierarchical-memory", which does not list this
+  capability in addresses -- recorded, not asserted. Drafted confidence:
+  medium. Falsifier as drafted: A generic flat-retrieval long-video RAG
+  pipeline matching the structured episodic+food-state memory on the same
+  hard state-tracking splits, or the structured memory failing to beat its
+  own visual-only backbone. Drafted stance toward
+  only-models-substantial-code-pretraining-track-entity-state: supports --
+  Baseline VLMs degrade sharply on the harder long-range regime of
+  ingredient-state questions (e.g. Qwen2.5-VL-7B from 30.7% to 3.3% on
+  Ingredient Entry). Proposed technique, not catalogued: Separate event-log
+  and inventory-ledger memories.
+submitted_by: agent:claude-opus-5@Russ-Miller
