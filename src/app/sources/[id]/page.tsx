@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { RefTag } from "@/components/ref-tag";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { notFound } from "next/navigation";
 import { claimsCiting, getSource, getSources } from "@/lib/catalog";
@@ -26,7 +27,7 @@ export default async function SourcePage({ params }: PageProps<"/sources/[id]">)
         { label: "This source" },
       ]} />
       <header className="space-y-2">
-        <div className="text-sm text-neutral-500"><code className="font-mono">{s.id}</code> &middot; {s.kind}</div>
+        <div className="text-sm text-neutral-500"><code className="font-mono">{s.id}</code> <RefTag refId={s.ref} /> &middot; {s.kind}</div>
         <h1 className="text-2xl font-semibold tracking-tight">{s.title}</h1>
         {s.authors?.length ? <p className="text-sm text-neutral-600 dark:text-neutral-400">{s.authors.join(", ")}{s.venue ? ` — ${s.venue}` : ""}</p> : null}
         <p className="text-sm text-neutral-500">

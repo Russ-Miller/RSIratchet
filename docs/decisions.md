@@ -1621,3 +1621,15 @@ ones; the resulting claims are unreviewed like every other draft. Capability
 pages show "In the review queue": matched papers not yet filed as sources,
 with the stage-2 verdict where there is one. The dispute link, not a review
 gate, is how a reader knows nothing here is settled.
+
+## 2026-09-18 — Stable ids
+
+Every record now carries a `ref` — CAP-0034, CLM-0191, TEC-0027, SRC-0201,
+ADG-0025, MOD-0003 — assigned by `scripts/assign-ids.mjs`, recorded in
+`catalog/ids.yaml`, never changed and never reused (a deleted record keeps
+its ledger line). `/id/<ref>` redirects to the record. Detail pages show the
+ref with a copy-permalink button; search matches on it; the MCP server
+returns it. Borrowed from ATT&CK's T-numbers: the slug is a label and may be
+rewritten when a statement is tightened; the ref is what outside documents
+cite. Initial numbering is alphabetical by slug; from here on it is arrival
+order, assigned nightly before validation.

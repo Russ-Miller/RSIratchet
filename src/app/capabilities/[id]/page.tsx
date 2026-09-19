@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { RefTag } from "@/components/ref-tag";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { notFound } from "next/navigation";
 import { claimsFor, getCapabilities, getCapability, getSources, techniquesFor } from "@/lib/catalog";
@@ -31,7 +32,7 @@ export default async function CapabilityPage({ params }: PageProps<"/capabilitie
         { label: "This capability" },
       ]} />
       <header className="space-y-2">
-        <div className="text-sm text-neutral-500"><code className="font-mono">{c.id}</code> &middot; {c.status}</div>
+        <div className="text-sm text-neutral-500"><code className="font-mono">{c.id}</code> <RefTag refId={c.ref} /> &middot; {c.status}</div>
         <h1 className="text-3xl font-semibold tracking-tight">{c.label}</h1>
         {c.status === "proposed" && (
           <p className="rounded border border-sky-300 bg-sky-50 p-3 text-sm text-sky-900 dark:border-sky-800 dark:bg-sky-950/30 dark:text-sky-200">

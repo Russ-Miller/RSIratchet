@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { RefTag } from "@/components/ref-tag";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { notFound } from "next/navigation";
 import { EFFECT_LABEL, NEED_LABEL, adagesForClaim, cardsNamedIn, claimActivity, getCapability, getClaim, getClaims, getModel, getSource, getTagLabel, isPending, isQuietSource, displayName, reviewLabel, reviewers } from "@/lib/catalog";
@@ -48,7 +49,7 @@ export default async function ClaimPage({ params }: PageProps<"/claims/[id]">) {
         { label: "This claim" },
       ]} />
       <header className="space-y-2">
-        <div className="text-sm text-neutral-500"><code className="font-mono">{c.id}</code></div>
+        <div className="text-sm text-neutral-500"><code className="font-mono">{c.id}</code> <RefTag refId={c.ref} /></div>
         <div className="flex flex-wrap items-center gap-2">
           <KindBadge kind={c.kind} />
           <StrengthBadge strength={c.backing_strength} />

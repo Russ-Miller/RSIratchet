@@ -47,7 +47,7 @@ export default function CapabilitiesPage() {
         <tbody>
           {getCapabilities().map((c) => (
             <tr key={c.id} data-tags={capabilityTags(c)}
-              data-vec={vecAttr("c", c.id)} data-search={`${c.label} ${c.summary} ${c.id} ${(c.tags ?? []).join(" ")} ${(c.aliases ?? []).join(" ")}`.toLowerCase()} className="border-t border-neutral-200 dark:border-neutral-800 align-top">
+              data-vec={vecAttr("c", c.id)} data-search={`${c.ref} ${c.label} ${c.summary} ${c.id} ${(c.tags ?? []).join(" ")} ${(c.aliases ?? []).join(" ")}`.toLowerCase()} className="border-t border-neutral-200 dark:border-neutral-800 align-top">
               <td className="py-2 pr-6"><Link href={`/capabilities/${c.id}`} className="font-medium hover:underline">{c.label}</Link>
                 <div className="text-neutral-600 dark:text-neutral-400">{c.summary}</div></td>
               <td className="py-2 pr-6">{c.group ?? ""}<div className="text-xs text-neutral-500">{(c.tags ?? []).filter((t) => t !== c.group).join(", ")}</div></td>

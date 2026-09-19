@@ -2,6 +2,7 @@
 // integrity. Exit code 1 on any problem. Run: npm run validate
 import Ajv2020 from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
+import { execFileSync } from "node:child_process";
 import { loadCatalog, loadSchema, KINDS } from "./catalog-lib.mjs";
 
 const SCHEMA_FOR = { capabilities: "capability", sources: "source", techniques: "technique", models: "model", claims: "claim", adages: "adage" };
@@ -90,6 +91,10 @@ for (const a of cat.adages) {
   for (const e of a.data.evidence ?? []) checkRef(a.file, ids.claims, e.claim, "claim");
   for (const s of a.data.sources ?? []) checkRef(a.file, ids.sources, s, "source");
 }
+
+// stable refs: present, well-formed, unique, and in the ledger
+try { execFileSync(process.execPath, ["scripts/assign-ids.mjs", "--check"], { stdio: ["ignore", "ignore", "pipe"] }); }
+catch (e) { for (const line of String(e.stderr ?? "").trim().split("\n").filter(Boolean)) problems.push(line); }
 
 const counts = KINDS.map((k) => `${cat[k].length} ${k}`).join(", ");
 if (problems.length) {
