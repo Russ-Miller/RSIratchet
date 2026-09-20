@@ -18,7 +18,6 @@ export function useIsAdmin(): boolean {
 const SECTIONS = [
   { href: "/capabilities", label: "Capabilities" },
   { href: "/claims", label: "Claims" },
-  { href: "/sources", label: "Sources" },
   { href: "/techniques", label: "Techniques" },
   { href: "/adages", label: "Adages" },
   { href: "/about", label: "About" },
