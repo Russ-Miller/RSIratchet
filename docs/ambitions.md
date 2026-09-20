@@ -260,6 +260,16 @@ incomplete feedback* as open problems, which are the two halves of the
 attack list above. No measurements; useful as a reading list for attacks 1
 through 3.
 
+ScientistTwo (arXiv 2609.19644, September 2026) is the largest claim of
+this kind so far: an autonomous loop that starts from a published method,
+extracts its limitations, generates and filters ideas, runs experiments
+and ablations, and passes a simulated rebuttal, reporting improvement on
+86 of 107 top-venue papers. Every number in that result is model-judged,
+including the gains parsed from its own tables and the review scores, so
+it is the self-report obstacle at full scale. Filed as a claim under
+harness-self-improvement with the falsifier being independent human
+re-runs of a sample.
+
 ### The smallest experiment that tests this
 
 One capability the pipeline depends on, one technique with a supported
