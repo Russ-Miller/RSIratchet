@@ -363,6 +363,26 @@ aspiration: a failing's page leads with the fixes that did not hold, and
 the matrix becomes failings by capabilities with claims in the cells.
 Parked until asked for.
 
+**Backfill from the arXiv archive (noted 2026-09-20).** Ingestion today
+finds papers by search phrasing, which is why repository-navigation scored
+zero supports until the query used the field's vocabulary ("issue
+localization"). `huggingface.co/datasets/secemp9/arxiv-complete` is a
+one-off September 2026 snapshot of all of arXiv (3.15M papers; OAI
+metadata; assembled plain-text TeX for 2.86M papers in a 70 GB
+`paper_text` config; compilation CC0, papers keep their own licenses). The
+plan when wanted: take metadata and `paper_text` for cs.CL, cs.AI, cs.LG
+and cs.SE from 2023 on (order of 200k papers), embed every abstract with
+the MiniLM model already used for site search, score each against every
+capability's description, discriminator and match terms, and produce a
+ranked candidate list per capability with no API calls; then judge only the
+top candidates. Contesting papers surface the same way as supporting ones,
+which search misses most. Text is read locally and never enters the repo;
+only ids, verdicts and our own claims do. The nightly still covers papers
+after the snapshot. Not scheduled; do it once, when coverage should stop
+depending on how a query is phrased. Jev (TypeSafe, typed decisions with
+calibrated confidence) is the other deferred cost lever, for the judging
+step if a backfill ever makes that step the expensive one.
+
 ## How these two connect
 
 They are not two goals. They are one loop at two scales, and each solves
