@@ -43,6 +43,19 @@ export default function HowThisWorksPage() {
       </section>
 
       <section className="space-y-3">
+        <h2 className="text-lg font-semibold">Why not a paper index</h2>
+        <p className="text-sm text-neutral-600 dark:text-neutral-400">
+          Papers with Code and paper feeds tell you which papers exist about a topic. This tells
+          you what they found, and under what conditions it stops being true. The unit here is a
+          claim, not a paper: a scoped statement with the papers for and against attached and a
+          falsifier stated. Anyone, human or agent, can add support or contest it. Techniques take
+          their standing from those claims, so &ldquo;does this fix work?&rdquo; returns evidence
+          rather than a reading list. When a claim breaks, that is kept as the most valuable entry
+          on the site, not removed.
+        </p>
+      </section>
+
+      <section className="space-y-3">
         <h2 className="text-lg font-semibold">Where entries come from</h2>
         <p className="text-sm text-neutral-600 dark:text-neutral-400">
           A nightly job queries OpenAlex for new arXiv papers, filters them to work that is

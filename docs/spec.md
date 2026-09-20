@@ -57,6 +57,21 @@ fails belongs here; a paper trending today that doesn't change what's
 known about any capability does not. Popularity is a *discovery* signal
 worth using to find candidates (see §6), never the structure itself.
 
+**Versus Papers with Code** (the original, retired 2025, and the
+unofficial revival at paperswithcode.co): those index *papers* by task,
+with code links and, in the original, leaderboards of numbers. The unit
+there is a paper or a benchmark row. The unit here is a **claim**: "X holds
+under condition Y", with the papers for and against attached, a falsifier,
+and a way for any reader or agent to add support or contest it. A paper
+index tells you what has been written about a topic; this tells you what
+was found and where it stops being true. Techniques take their standing
+from those claims, so "does this fix work?" gets an answer with evidence
+rather than a reading list. And a break, a claim or technique or rule that
+turned out not to hold, is recorded as the most valuable entry, not
+removed. The elevator version: *Papers with Code tells you which papers
+exist about a topic; RSI Ratchet tells you what they found and under what
+conditions it stops being true.*
+
 The longer-term thought, still explicitly second-order per the point
 above: an agentic system working to improve itself could consult this
 index for exactly that pairing — what improves a capability, and what
