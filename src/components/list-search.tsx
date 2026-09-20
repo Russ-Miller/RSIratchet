@@ -78,6 +78,10 @@ export function ListSearch({ noun = "rows", placeholder }: { noun?: string; plac
     let timer: ReturnType<typeof setTimeout> | undefined;
 
     for (const r of rows) r.removeAttribute("data-via");
+    // Group headers (rows without data-search) hide while a query is active,
+    // since a filtered list no longer follows the grouping.
+    const list = rows[0]?.closest<HTMLElement>("[data-list]");
+    if (list) { if (terms.length) list.setAttribute("data-searching", "1"); else list.removeAttribute("data-searching"); }
     if (!terms.length) {
       for (const r of rows) r.removeAttribute("data-hit");
       restoreOrder();

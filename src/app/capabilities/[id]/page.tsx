@@ -68,7 +68,7 @@ export default async function CapabilityPage({ params }: PageProps<"/capabilitie
         </section>
       )}
       <section>
-        <h2 className="mb-2 font-semibold">Claims</h2>
+        <h2 id="claims" className="mb-2 font-semibold">Claims</h2>
         {claims.length === 0 ? <p className="text-sm text-neutral-500">No claims filed yet.</p> : (
           <ul className="space-y-3">
             {claims.map((claim) => (
@@ -86,7 +86,7 @@ export default async function CapabilityPage({ params }: PageProps<"/capabilitie
         )}
       </section>
       <section>
-        <h2 className="mb-2 font-semibold">Techniques</h2>
+        <h2 id="techniques" className="mb-2 font-semibold">Techniques</h2>
         {techniques.length === 0 ? <p className="text-sm text-neutral-500">None yet.</p> : (
           <ul className="space-y-2">
             {techniques.map((t) => (
@@ -100,7 +100,7 @@ export default async function CapabilityPage({ params }: PageProps<"/capabilitie
         )}
       </section>
       <section>
-        <h2 className="mb-1 font-semibold">Sources</h2>
+        <h2 id="sources" className="mb-1 font-semibold">Sources</h2>
         <p className="mb-2 text-xs text-neutral-500">
           Every paper, post or observation behind this capability. Ones cited by a claim show the
           claim and its stance; ones filed directly are about the capability but have no claim

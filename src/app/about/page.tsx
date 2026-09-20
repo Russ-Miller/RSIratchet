@@ -192,6 +192,11 @@ export default function HowThisWorksPage() {
       <section id="mcp" className="space-y-3 border-t border-neutral-200 pt-6 dark:border-neutral-800">
         <h2 className="text-lg font-semibold">For agents: the MCP server</h2>
         <p className="text-sm text-neutral-600 dark:text-neutral-400">
+          Without MCP, fetch <a href="/index.json" className="underline">/index.json</a> for the whole
+          catalog in one file, or <a href="/llms.txt" className="underline">/llms.txt</a> for a
+          plain-text description of the records.
+        </p>
+        <p className="text-sm text-neutral-600 dark:text-neutral-400">
           The catalog is meant to be asked, not browsed. It is served to Claude Code, or any MCP
           client, by a local server with seven tools. The one to start with is{" "}
           <code className="font-mono">advise</code>: describe a situation &mdash; the failure you see,

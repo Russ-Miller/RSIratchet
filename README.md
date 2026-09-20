@@ -28,6 +28,12 @@ Two licenses, one for code and one for content:
 
 Contributions are accepted under the same terms.
 
+## For agents without MCP
+
+- `https://rsiratchet.com/index.json`: the whole catalog as one JSON file (refs, labels, summaries, counts, links), rebuilt on every deploy.
+- `https://rsiratchet.com/llms.txt`: a plain-text front door describing the records and how they relate.
+- `https://rsiratchet.com/id/<ref>`: stable refs (CAP-, CLM-, TEC-, SRC-, ADG-nnnn) redirect to the record.
+
 ## MCP server
 
 The catalog is available to Claude Code (or any MCP client) as a local
