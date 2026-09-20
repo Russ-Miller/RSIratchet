@@ -1,0 +1,39 @@
+arxiv_id: "2609.08180"
+title: "Less Is Personal: Learning Minimal Sufficient User Profiles for
+  Personalized Language Models"
+url: https://arxiv.org/abs/2609.08180
+drafted_at: 2026-09-18
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: long-term-memory
+statement: In retrieval-augmented personalization with a frozen 8-9B
+  generator, prepending more retrieved user-history records does not
+  monotonically improve quality — on the six LaMP tasks a fixed top-k profile
+  peaked at k=5 and lost 0.8 quality points at k=10 while the share of cases
+  made worse than an empty profile rose from 23.2% to 31.7% — so a learned
+  per-request stopping decision beats any single fixed k.
+kind: observation
+backing_strength: single-paper
+scope_condition: LaMP's six personalization tasks (classification, ordinal
+  rating, short text generation), Contriever candidate pool of at most 20
+  records, frozen Qwen3.5-9B and Llama-3.1-8B-Instruct generators; not tested
+  on long multi-session assistant histories.
+technique: ""
+proposed_technique: Learned adaptive-length user-profile controller with an explicit stop action
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A fixed-k profile whose quality rises monotonically with k on the
+  same tasks and pools, or a learned adaptive-stopping controller that fails
+  to beat the best development-selected fixed k.
+evidence_note: Measured on LaMP with two frozen generators against eight
+  retrieval-augmented baselines; ENOUGH is first in all 24 task-metric cells
+  with paired t-tests, and a fixed-length grid plus
+  forced-continuation-past-stop diagnostics (beneficial share 18.0% to 9.9%,
+  harmful 16.9% to 35.9% from +1 to +3 records) support the non-monotonicity.
+  Ablations isolate long-horizon supervision, adaptive stopping, specificity
+  and token-cost terms. Does not isolate how much of the gain is the stopping
+  rule versus the counterfactual specificity signal, and candidate pools are
+  capped at 20 records.
+confidence: medium

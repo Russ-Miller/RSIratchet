@@ -1,0 +1,38 @@
+arxiv_id: "2609.07160"
+title: In-Place Instruction Following in Diffusion Language Models
+url: https://arxiv.org/abs/2609.07160
+drafted_at: 2026-09-18
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: procedure-following
+statement: "In masked diffusion language models (LLaDA, Dream) asked to
+  generate around a frozen constraint span placed mid-output, failures to
+  honor the constraint come partly from too little attention being allocated
+  to that span during denoising: adding a fixed additive bias to attention
+  logits on the span raises constraint adherence and overall quality up to a
+  moderate bias, then degrades fluency and contextual fit as the bias grows."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Text-only in-place infilling tasks with a single anchor span;
+  probed on two 7-8B masked diffusion models with a zero-parameter
+  inference-time hook; behaviour under multiple or conflicting anchors
+  untested.
+technique: ""
+proposed_technique: attention-bias probe on the constraint span
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Sweeping the attention-bias strength on the constraint span
+  produces no region where constraint-following scores rise above the unbiased
+  baseline, or the scores rise monotonically with bias rather than peaking and
+  then falling.
+evidence_note: Argued from a grid-searched scalar bias applied via forward
+  pre-hooks, with 'anchor mass' (attention probability on constraint tokens)
+  shown to rise with the bias and rubric-based GPT-5/JudgeLM scores tracing a
+  non-monotonic curve. Only two models probed, no numbers for the peak
+  reported in the text, and the judge protocol is itself LLM-based, so the
+  quality drop at high bias is measured by a judge rather than by an
+  independent fluency metric. The probe shows attention can be shifted and
+  that it matters, but does not rule out other causes of failure.
+confidence: medium
