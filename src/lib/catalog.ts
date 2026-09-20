@@ -258,6 +258,14 @@ export const claimsAboutTechnique = (techniqueId: string) => reviewedClaims().fi
 export const techniquesFor = (capabilityId: string) =>
   getTechniques().filter((t) => t.addresses.includes(capabilityId));
 
+/** Sources a capability rests on: cited by its claims, or listed on it directly. */
+export function sourcesFor(capabilityId: string): string[] {
+  const ids = new Set<string>();
+  for (const cl of claimsFor(capabilityId)) for (const l of cl.sources) ids.add(l.source);
+  for (const id of getCapability(capabilityId)?.sources ?? []) ids.add(id);
+  return [...ids].filter((id) => getSource(id));
+}
+
 /** Every claim that cites a given source, alongside the stance that claim's citation carries. */
 export function claimsCiting(sourceId: string): { claim: Claim; stance: Stance }[] {
   const out: { claim: Claim; stance: Stance }[] = [];
