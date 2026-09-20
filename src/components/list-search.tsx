@@ -32,20 +32,25 @@ export function ListSearch({ noun = "rows", placeholder }: { noun?: string; plac
   const statusRef = useRef<HTMLSpanElement>(null);
   // DOM order as the server sent it, captured once, so the meaning pass can undo its reordering.
   const originalRef = useRef<HTMLElement[] | null>(null);
+  const originalNextRef = useRef<(Node | null)[]>([]);
 
   useEffect(() => {
     // Rows live outside this component, so reach for them from the document.
     const rows = Array.from(document.querySelectorAll<HTMLElement>("[data-search]"));
-    if (!originalRef.current) originalRef.current = rows.slice();
+    if (!originalRef.current) { originalRef.current = rows.slice(); originalNextRef.current = rows.map((r) => r.nextSibling); }
     const original = originalRef.current;
+    const originalNext = originalNextRef.current;
     const terms = q.toLowerCase().split(/\s+/).filter(Boolean);
     const setStatus = (m: string) => { if (statusRef.current) statusRef.current.textContent = m; };
 
+    // Restore each row to its original slot, so rows that are not part of
+    // the search (group headers) keep their place too. Re-appending every
+    // row would push them all below the last header.
     const restoreOrder = () => {
       const parent = original[0]?.parentElement;
       if (!parent) return;
-      if (original.every((r, i) => parent.children[i] === r)) return;
-      for (const r of original) parent.appendChild(r);
+      if (original.every((r, i) => r.nextSibling === originalNext[i])) return;
+      for (let i = original.length - 1; i >= 0; i--) parent.insertBefore(original[i], originalNext[i]);
     };
 
     // The filter pills carry static totals. While a query is active, rewrite
