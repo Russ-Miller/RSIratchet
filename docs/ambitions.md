@@ -355,6 +355,14 @@ between self-reported uplift and the quantity that matters, narrow versus
 broad capability as a candidate record, and our own honest data wishlist —
 in which every row is red.
 
+`docs/examples/failings-draft.md` (2026-09-20) parks a list of seventeen
+typical LLM failings supplied by Russ, with a sketch of a `failing` kind
+that would sit beside capabilities the way CWE sits beside ATT&CK. Nine
+current capabilities are really failings and would move over. The
+aspiration: a failing's page leads with the fixes that did not hold, and
+the matrix becomes failings by capabilities with claims in the cells.
+Parked until asked for.
+
 ## How these two connect
 
 They are not two goals. They are one loop at two scales, and each solves
