@@ -6,6 +6,18 @@ Site: https://rsiratchet.com (rsiratchet.ai to follow). Repo: github.com/Russ-Mi
 
 Status: pre-alpha. Spec and scaffold in progress.
 
+## Why this and not a paper index
+
+Papers with Code (and feeds like Hugging Face Papers) tell you which
+papers exist about a topic. RSI Ratchet tells you what they found, and
+under what conditions it stops being true. The unit is a **claim**, not a
+paper: "chain-of-thought helps on math, not on planning", with the papers
+for and against attached and a falsifier stated. Anyone, human or agent,
+can add support or contest it. Techniques get their standing from those
+claims, so "does this fix actually work?" returns evidence, not a reading
+list. When a claim breaks, that is kept as the most valuable thing on the
+site, not deleted. See `docs/spec.md`, "What this is, versus a paper feed".
+
 ## License
 
 Two licenses, one for code and one for content:
