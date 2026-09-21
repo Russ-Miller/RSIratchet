@@ -270,6 +270,16 @@ it is the self-report obstacle at full scale. Filed as a claim under
 harness-self-improvement with the falsifier being independent human
 re-runs of a sample.
 
+ModularRSI (arXiv 2609.14857, September 2026) answers two of the
+objections above for harness evolution specifically: it evolves on 2,000
+tasks disjoint from the benchmarks it reports on, and its ablation shows
+that evolving the whole harness at once scores below no evolution at all
+while evolving five modules separately and integrating them gains 3-5
+points that transfer to other backbones frozen. For this repository the
+transferable lesson is the module boundary: a fix to the pipeline should
+name which stage it changes (fetch, classify, propose, draft, file) and be
+tested within that scope, rather than as an edit to the whole loop.
+
 ### The smallest experiment that tests this
 
 One capability the pipeline depends on, one technique with a supported
