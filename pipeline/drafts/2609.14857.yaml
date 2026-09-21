@@ -1,0 +1,45 @@
+arxiv_id: '2609.14857'
+title: 'ModularRSI: Modular and Generalizable Recursive Harness Self-Improvement'
+url: https://arxiv.org/abs/2609.14857
+drafted_at: '2026-09-21'
+drafted_from: full-text
+model: claude-opus-5 (drafted in session, not via API)
+status: draft — not filed.
+capability: harness-self-improvement
+statement: Evolving an agent harness on 2,000 executable tasks disjoint from the evaluation
+  benchmarks, by contrasting successful and failed trajectories on the same task to find recurring
+  deficiencies and evolving five harness modules (agent loop, tool use, observation management,
+  context management, completion detection) separately before integrating them, raised DeepSeek-V4-Flash
+  from 47.6 to 52.4 on TerminalBench 2.0 and 73.4 to 76.5 on SWE-Bench Verified, transferred
+  across domains and to other backbones frozen (GLM-5.2 59.6 to 61.8, MiniMax-2.5 41.6 to 44.9),
+  while evolving the whole harness at once or without modules fell below the unevolved baseline
+  (46.4 and 44.2).
+kind: observation
+backing_strength: single-paper
+scope_condition: DeepSeek-V4-Flash Preview as the evolving backbone, TerminalBench 2.0 and SWE-Bench
+  Verified, 2026; evolution set curated from external sources disjoint from both benchmarks;
+  transfer tested with the evolved harness frozen.
+technique: ''
+proposed_technique: Contrastive, module-scoped harness evolution on benchmark-disjoint tasks
+technique_summary: Collect success and failure trajectories for the same task, aggregate the
+  contrast across tasks into recurring behavioural deficiencies, attribute each to one of five
+  harness modules, evolve each module inside its own modification scope, then integrate and
+  resolve conflicts; run the whole loop on tasks that are not drawn from the benchmark you will
+  report on.
+technique_kind: process
+technique_validated_by: Accuracy, Pass@3 and Pass-3 on TerminalBench 2.0 and SWE-Bench Verified
+  for in-domain, cross-domain and cross-model transfer, plus an ablation comparing modular against
+  non-modular and joint all-module evolution, where both non-modular variants scored below baseline.
+  Developer-reported; one evolving backbone.
+stance_on_existing: neither
+related_claim_id: ''
+stance_reason: ''
+falsifier: Replication where whole-harness evolution matches modular evolution given equal evolution
+  budget, or where the evolved harness fails to transfer to a backbone from a different family
+  than those tested.
+evidence_note: 'The ablation is the strong part: it shows the modular decomposition is load-bearing
+  rather than incidental, and the benchmark-disjoint evolution set answers the contamination
+  objection that hangs over SoL-Pi-style results. Gains are 3-5 points; the cross-model transfer
+  is the most useful finding for anyone building a harness once and running many models. Also
+  bears on tool-use and context-hygiene.'
+confidence: medium
