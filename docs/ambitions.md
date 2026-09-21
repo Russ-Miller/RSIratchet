@@ -334,6 +334,15 @@ contested by the Community Notes result that bridging agreement works
 without any reputation layer. The design has no schema cost: every record
 already carries `submitted_by`, so the ledger is a computation over the
 catalog, shown as a profile page and a mark beside the name on each entry.
+If standing is to be one number, borrow the h-index's shape and not its
+input: the largest h such that h of a contributor's claims have each
+survived at least h independent checks, which rewards claims many people
+tested and that held rather than claims many people cited. The inverse
+h-index of Wei et al. (2025), the largest square in the gap under the
+curve, maps onto the tail of claims nobody has been able to test (weak
+falsifiers, unmeasurable scope) and should be shown beside the standing so
+untestable claims earn nothing. A retraction-style penalty applies only
+when a break exposes a weak falsifier, never to a clean claim that broke.
 Money stakes (a "validation market", Siegel 2026) are recorded as a source
 and not adopted: they need a resolution oracle the catalog would have to
 fund, and they make a break a loss for someone, which cuts against the
