@@ -55,6 +55,11 @@ for (const f of fs.readdirSync(QUEUE).filter((f) => /\.ya?ml$/.test(f)).sort()) 
       const cap = capFiles.get(capId);
       if (!cap) continue;
       if ((cap.data.sources ?? []).includes(sid)) continue;
+      // The same paper can sit in several queue files (weekly, review, session
+      // sweeps) under different candidate records. The work list is built
+      // before anything is written, so the includes() check above cannot see
+      // an earlier pair from this run; check the list itself.
+      if (work.some((w) => w.sid === sid && w.cap === cap)) continue;
       if (citedBy.get(sid)?.has(capId)) continue;   // already shows through a claim
       work.push({ c, sid, cap, v: { ...v, capability: capId } });
     }
