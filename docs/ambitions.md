@@ -275,8 +275,18 @@ objections above for harness evolution specifically: it evolves on 2,000
 tasks disjoint from the benchmarks it reports on, and its ablation shows
 that evolving the whole harness at once scores below no evolution at all
 while evolving five modules separately and integrating them gains 3-5
-points that transfer to other backbones frozen. For this repository the
-transferable lesson is the module boundary: a fix to the pipeline should
+points that transfer to other backbones frozen. Russ's reading of the reply thread on
+DAIR.AI's summary (2026-09-21) gives four tests for whether a loop is a
+ratchet rather than a fit: freeze the harness before evaluation; forbid
+the improver from editing its own tests or notes; require observability of
+failed paths; promote only changes that survive a new session or a
+disjoint task set. ModularRSI meets the first, third and fourth and does
+not address the second, which is now in the claim's falsifier. Applied to
+this repository: the nightly's evaluator (validate, verify-papers, the
+embeddings check) must stay outside anything the pipeline can rewrite,
+which today it does because those run from `main` and the pipeline only
+opens pull requests. For this repository the
+transferable lesson is also the module boundary: a fix to the pipeline should
 name which stage it changes (fetch, classify, propose, draft, file) and be
 tested within that scope, rather than as an edit to the whole loop.
 
