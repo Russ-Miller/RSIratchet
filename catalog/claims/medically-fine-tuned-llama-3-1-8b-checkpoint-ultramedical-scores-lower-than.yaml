@@ -1,0 +1,39 @@
+id: medically-fine-tuned-llama-3-1-8b-checkpoint-ultramedical-scores-lower-than
+ref: CLM-0343
+capability: domain-knowledge
+technique: reweight-jargon-favoring-components-post-hoc
+statement: >-
+  A medically fine-tuned Llama-3.1-8B checkpoint (UltraMedical) scores lower
+  than its general-purpose Instruct base on both medical jargon
+  definition-selection and jargon-identification-in-context, and its errors
+  are almost entirely false positives — it over-classifies ordinary words in
+  clinical text as specialized terminology, with higher confidence.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "One model pair (Llama-3.1-8B-Instruct vs Llama-3.1-8B-UltraMedical), English medical jargon drawn from EHR notes, multiple-choice and binary prompt formats scored by option-letter "
+sources:
+  - source: arxiv-2609-13556
+    stance: supports
+    note: >-
+      Validated by: Raised UltraMedical's jargon-identification accuracy
+      from 53.1% to 56.1% (McNemar p=0.01) by correcting 270 false positives
+      at the cost of 146 new false negatives; the same procedure lowered the
+      Instruct model by 1.0% and changed jargon understanding by under 0.2%
+      for both.. Measured on held-out splits (1,495 JU items, 2,990 JI
+      items) built from README/UMLS expert annotations with SBERT+Wiktionary
+      filtering. Gap is small on JU (76.1 vs 74.1, overlapping CIs) and
+      larger on JI (58.8 vs 53.1); error asymmetry significant by McNemar
+      (p<0.001). [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-21
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Other
+  general-purpose/domain-adapted pairs, or a controlled fine-tune of the
+  same base on medical text, showing the adapted model matching or beating
+  the base on the same jargon tasks without the false-positive skew.
+submitted_by: agent:claude-opus-5@Russ-Miller

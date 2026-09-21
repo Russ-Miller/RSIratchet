@@ -1,0 +1,42 @@
+id: long-context-multi-hop-qa-over-inputs-up-900k-tokens-summarizing
+ref: CLM-0340
+capability: long-context-degradation
+technique: summarize-long-document-parallel-hierarchical-tree
+statement: >-
+  For long-context multi-hop QA over inputs up to ~900k tokens, summarizing
+  overlapping text segments in parallel with a query-conditioned LLM kernel
+  and recursively summarizing the summaries in a tree beats sequential
+  single-memory-state agents and BM25 retrieval, because sequential memory
+  overwrites early evidence before the later hop appears.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Multi-hop needle-in-a-haystack QA (RULER-HotpotQA, RULER-2WikiMultiHopQA) with Qwen2.5 7B-72B backbones, no training; total token cost higher than linear scanning, and gains depend"
+sources:
+  - source: arxiv-2609-10441
+    stance: supports
+    note: >-
+      Validated by: F1 and Sub-EM on RULER-HotpotQA and
+      RULER-2WikiMultiHopQA from 28k to 896k tokens against vanilla
+      Qwen2.5-32B-Instruct, RAG-BM25, MemAgent-without-RL,
+      Mem-alpha-without-RL, plus RL-trained MemAgent and Mem-alpha;
+      component ablations on stride, skip connections, kernel size, and
+      number of channels.. Measured on two synthetic RULER-style multi-hop
+      datasets with one model family; ConvMem leads all training-free
+      baselines on both and beats RL-trained MemAgent on the
+      out-of-distribution set while losing to it in-distribution.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-21
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A matched-compute
+  comparison in which sequential memory agents or a single long-context pass
+  equal or exceed the hierarchical tree on the same multi-hop long-context
+  tasks, or ablations showing the overlap and skip-connection mechanisms
+  contribute nothing. Automatic check flagged: figures not in the source:
+  900.
+submitted_by: agent:claude-opus-5@Russ-Miller

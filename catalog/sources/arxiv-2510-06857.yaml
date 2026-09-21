@@ -1,20 +1,59 @@
 id: arxiv-2510-06857
 ref: SRC-0326
 kind: paper
-title: "Autoformalizer with Tool Feedback"
+title: Autoformalizer with Tool Feedback
 year: 2025
 date: 2025-10-08
 arxiv_id: "2510.06857"
 url: https://arxiv.org/abs/2510.06857
-tags: [ingested]
-summary: >-
-  Autoformalization addresses the scarcity of data for Automated Theorem
-  Proving (ATP) by translating mathematical problems from natural language
-  into formal statements. Efforts in recent work shift from directly
+tags:
+  - ingested
+summary: Autoformalization addresses the scarcity of data for Automated
+  Theorem Proving (ATP) by translating mathematical problems from natural
+  language into formal statements. Efforts in recent work shift from directly
   prompting large language models to training an end-to-end formalizer model
   from scratch, achieving remarkable advancements. However, existing
   formalizer still struggles to consistently generate valid statements that
-  meet syntactic validity and semantic consistency. To address this issue,
-  we propose the Autoformalizer with Tool Feedback (ATF), a novel approach
-  that incorporates syntactic
+  meet syntactic validity and semantic consistency. To address this issue, we
+  propose the Autoformalizer with Tool Feedback (ATF), a novel approach that
+  incorporates syntactic
 ingested_at: 2026-09-19
+brief: >-
+  Letting a formalizer call a Lean 4 compiler and an LLM consistency judge
+  mid-generation, then revise, closes most of the gap that pure end-to-end
+  training leaves on autoformalization. The gain comes mainly from the
+  semantic-consistency tool, not the compiler.
+
+
+  ATF trains Qwen3-32B (and an 8B distillation) in 3 stages: cold start on 24K
+  Claude-4-Sonnet tool-call trajectories, expert iteration on a 178k
+  NuminaMath-1.5 subset, then DPO on 10K pairs to cut repeated ineffective
+  revisions. Evaluation covers FormalMath-Lite, ProverBench, and
+  out-of-distribution CombiBench, 16 samples at temperature 0.6, against
+  Kimina, StepFun, and Goedel-V2 formalizers.
+
+
+  ATF-32B Pass@1 consistency reaches 94.51% on FormalMath-Lite, 89.78% on
+  ProverBench, and 65.38% on CombiBench, beating Goedel-V2-Formalizer-32B by
+  9.1%, 10.08%, and 29.13%. Ablating tools drops CombiBench consistency to
+  23.69%; syntax-check-only reaches 41.68%.
+
+
+  The ablations separate tools from training stages, and revision budget was
+  capped so output length roughly matched Goedel-V2-32B. Human evaluation on
+  100 instances per benchmark by 3 experts corroborates the ranking; the
+  automatic judge correlates with humans at 0.746, and the judge is also the
+  training signal, so some circularity remains.
+
+
+  The consistency judge is strict, with recall 0.5967 for the ensemble, and
+  gains fade past several revisions: consistency success falls from 69.5% on
+  attempt 1 to 8.8% on attempt 8. Only 1 base family, Lean 4 v4.15, statements
+  not proofs.
+
+
+  If you build formalization pipelines, put the checkers inside generation
+  rather than after it.
+brief_generated_at: 2026-09-21
+brief_model: claude-opus-5
+brief_source: full-text

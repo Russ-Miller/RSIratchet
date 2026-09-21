@@ -6,15 +6,49 @@ year: 2025
 date: 2025-02-01
 arxiv_id: "2502.00350"
 url: https://arxiv.org/abs/2502.00350
-tags: [ingested]
-summary: >-
-  Recent developments in Large Language Model (LLM) agents are
+tags:
+  - ingested
+summary: Recent developments in Large Language Model (LLM) agents are
   revolutionizing Autonomous Software Engineering (ASE), enabling automated
   coding, problem fixes, and feature improvements. However, localization --
   precisely identifying software problems by navigating to relevant code
-  sections -- remains a significant challenge. Current approaches often
-  yield suboptimal results due to a lack of effective integration between
-  LLM agents and precise code search mechanisms. This paper introduces
-  OrcaLoca, an LLM agent framework that improves accuracy for software issue
-  localization by integrating priori
+  sections -- remains a significant challenge. Current approaches often yield
+  suboptimal results due to a lack of effective integration between LLM agents
+  and precise code search mechanisms. This paper introduces OrcaLoca, an LLM
+  agent framework that improves accuracy for software issue localization by
+  integrating priori
 ingested_at: 2026-09-19
+brief: >-
+  Managing which search action an agent takes next, and pruning what it has
+  already seen, raises issue-localization accuracy more than giving the LLM
+  free rein over the search loop. OrcaLoca adds 3 mechanisms on top of a graph
+  representation of a repository: a priority queue over LLM-proposed search
+  actions with redundancy elimination, decomposition of class/file skeleton
+  results into ranked sub-actions by a scoring sub-agent, and context pruning
+  that keeps the 12 search results closest to current bug candidates by
+  shortest path on the code graph.
+
+
+  Running on Claude-3.5-Sonnet-20241022 at temperature 0.1 over SWE-bench
+  Lite, it reaches 65.33% (196) function match and 83.33% (250) file match,
+  the best among open-source entries on the leaderboard, and 41.00% (123)
+  resolved after bolting on Agentless-1.5's repair and patch-selection stages.
+  Against their own reproduction of Agentless-1.5 that is +6.67 percentage
+  points function match, +4.62 percentage points function match precision, and
+  +6.33 percentage points resolved rate.
+
+
+  The localization gain is measured against a reproduced baseline using the
+  same model and the same patch generator, so the comparison isolates the
+  localization stage reasonably well. Ablations on a 93-instance subset show
+  3-5 percentage point drops from removing each component, from 76.34% (71)
+  down to 70.97% (66) at worst. Search costs about $0.87 per instance and
+  editing about $0.90, with no matched-token-budget comparison.
+
+
+  Only 1 model was tested, only Python repositories, and the comparison to
+  leaderboard entries mixes models and undisclosed systems. Read it if you
+  build retrieval for repo-level agents.
+brief_generated_at: 2026-09-21
+brief_model: claude-opus-5
+brief_source: full-text

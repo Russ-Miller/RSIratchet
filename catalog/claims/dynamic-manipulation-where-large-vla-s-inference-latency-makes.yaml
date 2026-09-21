@@ -1,0 +1,40 @@
+id: dynamic-manipulation-where-large-vla-s-inference-latency-makes
+ref: CLM-0336
+capability: embodied-control
+technique: edit-stale-action-chunks-fast-observation-conditioned-policy
+statement: >-
+  For dynamic manipulation where a large VLA's inference latency makes the
+  observation stale by execution time, letting the VLA propose several
+  action chunks asynchronously from the older observation and having a small
+  RL-trained edit policy adjust and select among them using the latest
+  observation recovers more performance than imitation-style asynchronous
+  chunking (real-time chunking), and can exceed a lightweight no-delay RL
+  policy.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "High-frequency (30 Hz) force/velocity-controlled dynamic tasks with sparse binary rewards, delay no larger than the chunk execution horizon, a supervised-fine-tuned VLA starting ar"
+sources:
+  - source: arxiv-2609-18207
+    stance: supports
+    note: >-
+      Validated by: On 10 Kinetix tasks with a 4-step base-policy delay it
+      averaged 96.2% success versus 81.4% for zero-delay RLPD and 14.5-34.5
+      points above delayed DSRL/EXPO-FT variants; on four real robot tasks
+      it averaged 29/30 versus 25/30 for EXPO-FT w/ RTC and 12.5/30 for SFT,
+      with 30 trials per task and training capped at 10 minutes of online
+      data.. Measured in one simulated benchmark (10 tasks, 4 seeds) and
+      four real-robot tasks with 30 trials each, against several RL and
+      asynchronous-execution baselines; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-21
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: On the same delayed
+  dynamic tasks, an RL-fine-tuned real-time-chunking policy matching or
+  beating the edit-policy setup, or the edit policy failing to exceed a
+  no-delay lightweight RL baseline, under equal compute and data.
+submitted_by: agent:claude-opus-5@Russ-Miller

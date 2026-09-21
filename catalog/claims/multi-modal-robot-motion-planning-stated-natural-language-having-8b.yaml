@@ -1,0 +1,40 @@
+id: multi-modal-robot-motion-planning-stated-natural-language-having-8b
+ref: CLM-0345
+capability: planning
+technique: rl-fine-tune-solver-verified-mip-code-motion
+statement: >-
+  For multi-modal robot motion planning stated in natural language, having
+  an 8B LLM emit executable mixed-integer-program code and fine-tuning it
+  with GRPO on solver-verifiable rewards (format, API coverage, execution,
+  trajectory correctness) raises task success over prompt-only frontier
+  LLMs, and the gain is concentrated in synthesizing cross-modal coupling
+  constraints rather than in access to per-modality optimization primitives.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Static environments; five single-modal and eight multi-modal task families with 23 hand-written CVXPY discretization primitives supplied as APIs; Qwen3-8B base; benchmark built by "
+sources:
+  - source: arxiv-2609-18669
+    stance: supports
+    note: >-
+      Validated by: Success rate on LLMM3PBench (276 eval problems): 91.7%
+      single-modal / 80.9% multi-modal versus GPT-5.2 prompt-only at
+      65.3/40.3, plus symbolic and sampling baselines (PDDLStream 95.0/57.6,
+      LLM+P 85.9/39.4); an Expert-MIP control where an LLM only picks fixed
+      expert modules and predicts interface variables reached 100%
+      single-modal but 55.6-63.2% multi-modal; reward ablations at matched
+      800 steps show removing trajectory-correctness reward drops SR 84.8 to
+      50.3; 87.5% (35/40) on Franka + Tello hardware.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-21
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An untrained LLM given
+  the same primitives and a solver-feedback retry loop matching multi-modal
+  success, or the Expert-MIP control reaching comparable multi-modal success
+  once its interface prediction is prompted better, would show the gain is
+  not from learned cross-modal formulation.
+submitted_by: agent:claude-opus-5@Russ-Miller

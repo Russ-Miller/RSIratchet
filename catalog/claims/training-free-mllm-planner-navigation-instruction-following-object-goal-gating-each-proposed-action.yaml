@@ -1,0 +1,40 @@
+id: training-free-mllm-planner-navigation-instruction-following-object-goal-gating-each-proposed-action
+ref: CLM-0351
+capability: embodied-control
+technique: validate-planner-proposals-against-evidence-geometry-before-dispatch
+statement: >-
+  For training-free MLLM-planner navigation (instruction-following and
+  object-goal), gating each proposed action on evidence provenance,
+  geometric reachability and subgoal consistency — and refusing
+  planner-proposed stops unless semantic, geometric and progress checks all
+  pass — raises success rate over letting the planner dispatch directly, but
+  the stop-validation stage buys completion at the cost of path efficiency.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Zero-shot, no task-specific navigation training; GPT-5.5/GPT-5.6-class planner with external detector, depth and FMM path planner; simulated R2R, RxR, HM3D-v2, HM3D-OVON plus one h"
+sources:
+  - source: arxiv-2609-15195
+    stance: supports
+    note: >-
+      Validated by: Success rates of 60.8 (R2R), 53.9 (RxR), 76.0 (HM3D-v2),
+      59.3 (HM3D-OVON) versus prior training-free best, and cumulative
+      ablations on 100-episode subsets: base 46.0/45.0 SR rising to
+      64.0/55.0 with memory, graph and stop validation; stop validation
+      added 4.0 and 2.0 SR but lowered HM3D-OVON SPL from 34.2 to 33.0 and
+      widened its OSR-SR gap.. Measured on four benchmarks against published
+      training-free baselines, plus cumulative (not leave-one-out) ablations
+      on only 100 episodes per task, so per-component attribution is
+      order-dependent and noisy; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-21
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An ablation on larger
+  episode sets where removing proposal/stop validation leaves success rate
+  unchanged, or where the same planner dispatching directly matches the
+  harness on both success and path efficiency.
+submitted_by: agent:claude-opus-5@Russ-Miller

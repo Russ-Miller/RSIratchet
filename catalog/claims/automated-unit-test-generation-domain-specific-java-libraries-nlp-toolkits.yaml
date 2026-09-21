@@ -1,0 +1,41 @@
+id: automated-unit-test-generation-domain-specific-java-libraries-nlp-toolkits
+ref: CLM-0335
+capability: code-generation
+technique: inject-llm-test-snippets-search-based-testing-stagnates
+statement: >-
+  For automated unit test generation on domain-specific Java libraries (NLP
+  toolkits) where inputs must satisfy linguistic and structural constraints,
+  injecting LLM-written test snippets into a search-based generator's
+  population when the search stagnates produces higher branch and line
+  coverage than either the search tool alone or the LLM alone, but the gain
+  in mutation score is much smaller because assertions still come from the
+  search tool.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "100 classes from five Java NLP libraries; GPT-4o-class model; EvoSuite/DynaMOSA as the search backbone; 900s budget, 5 runs per class"
+sources:
+  - source: arxiv-2609-14784
+    stance: supports
+    note: >-
+      Validated by: Median branch coverage 68.60% vs 58.03% for a Java
+      re-implementation of CodaMOSA, 53.33% for EvoSuite, 32.64% for
+      LLM-only; line coverage 73.49% vs 65.62/57.50/43.00; mutation score
+      63.0% vs 52.0/58.0/38.26. Wilcoxon signed-rank p<0.05, A12 0.72-0.85
+      for coverage but only 0.57-0.64 for mutation. Ablations: zero-shot
+      prompting, method-level context, single LLM call, MOSA instead of
+      DynaMOSA, and LLM-generated string pool only (which fell 1.4% below
+      EvoSuite) all scored below the default.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-21
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A replication on
+  comparable domain-specific libraries where LLM-snippet injection into the
+  search population gives no coverage advantage over the search tool alone,
+  or where mutation score rises as much as coverage does without changing
+  assertion generation.
+submitted_by: agent:claude-opus-5@Russ-Miller

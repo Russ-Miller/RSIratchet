@@ -1,0 +1,41 @@
+id: rl-post-training-speech-llms-asr-adding-reward-term-separately
+ref: CLM-0348
+capability: hallucination
+technique: reward-acoustic-consistency-frozen-ctc-judge-during-asr
+statement: >-
+  For RL post-training of speech LLMs on ASR, adding a reward term from a
+  separately pretrained frozen CTC acoustic judge that scores each sampled
+  transcription against the audio cuts ungrounded insertion errors on
+  held-out far-field and close-talking meeting speech relative to a
+  schedule-matched text-only (-WER) reward, with no WER penalty and no judge
+  needed at inference.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "One 7B speech LLM policy (Qwen2-Audio, LoRA) with a 0.3B character-level wav2vec2-CTC judge, trained on LibriSpeech with additive-noise augmentation only; evaluated on 16 AMI meeti"
+sources:
+  - source: arxiv-2609-14455
+    stance: supports
+    note: >-
+      Validated by: Against a schedule-matched WER-only GRPO baseline on
+      33,282 utterance-condition instances: insertions fell 28.3% on AMI-IHM
+      and 22.3% on AMI-SDM (meeting-level clustered bootstrap CIs excluding
+      zero), WER 35.89 to 34.71 on AMI-SDM (significant) and unchanged on
+      the other five tiers; replicated over three seeds and
+      leave-one-meeting-out; 32-best CTC rescoring of the baseline instead
+      raised insertions.. Measured on one policy, one judge, one OOD corpus
+      of 16 meetings; insertion rate is a proxy with no human annotation of
+      per-utterance error relabelling; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-21
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A judge-swap or second
+  policy where adding the frozen acoustic reward leaves insertion rates
+  unchanged or trades them for equal-or-greater deletions/WER, or where a
+  KL-regularized text-only reward achieves the same insertion reduction
+  (showing the gain was generic regularization).
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,40 @@
+id: long-horizon-llm-agents-acting-stateful-environments-recovering-error-restoring
+ref: CLM-0341
+capability: long-horizon-execution
+technique: roll-back-environment-carry-forward-reflection
+statement: >-
+  For long-horizon LLM agents acting in stateful environments, recovering
+  from an error by restoring the environment to an earlier checkpoint while
+  carrying forward only non-state knowledge distilled from the abandoned
+  suffix (environment facts, past milestones, failure diagnosis) beats both
+  reflection without state restoration and rollback that discards the
+  suffix, because reflection alone cannot undo environment changes and plain
+  rollback re-explores the same failure.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Training-free test-time recovery on checkpointable interactive benchmarks (ALFWorld, ScienceWorld, GAIA) with Qwen3-14B and DeepSeek-V3, fixed interaction budgets, same model used "
+sources:
+  - source: arxiv-2609-18304
+    stance: supports
+    note: >-
+      Validated by: Success rate on ALFWorld, ScienceWorld (plus dense
+      reward) and GAIA against ReAct, Reflexion, LATS, Self-Refine and
+      GA-Rollback under matched backbones and budgets: best average SR on
+      both backbones (+3.09 points on Qwen3-14B, +6.57 on DeepSeek-V3), and
+      ablations on ScienceWorld/DeepSeek-V3 where reflection-only scores
+      70.48 SR and rollback-only 69.37 versus 76.75 for the full method,
+      with fewer than one executed rollback per task versus about 2.9 for
+      GA-Rollback.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-21
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: On the same benchmarks
+  and budgets, a reflection-only or plain-rollback recovery scheme matching
+  or beating the combined scheme, or the combined scheme's gain vanishing
+  once auxiliary LLM calls are equalized.
+submitted_by: agent:claude-opus-5@Russ-Miller

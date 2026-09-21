@@ -1,0 +1,40 @@
+id: small-open-weight-models-qwen2-5-1-5b-3b-multi-step
+ref: CLM-0350
+capability: hallucination
+technique: score-hallucination-risk-across-layer-attention-entropy-dispersion
+statement: >-
+  For small open-weight models (Qwen2.5 1.5B/3B) on multi-step math
+  reasoning, the across-layer standard deviation of attention entropy at
+  each generation step carries error signal that output-logit confidence
+  does not, and adding it to a logistic-regression failure classifier raises
+  ROC-AUC over output-based features alone (+0.009 on GSM8K, +0.049 and
+  +0.076 on MATH-500).
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "White-box open-weight access to per-layer attention; math reasoning only; two Qwen2.5 sizes; small samples (n=254 for 3B); no comparison against sampling-based uncertainty methods "
+sources:
+  - source: arxiv-2609-18320
+    stance: supports
+    note: >-
+      Validated by: ROC-AUC of a logistic-regression failure classifier
+      under repeated stratified 5-fold CV, against a baseline using only
+      output predictive entropy and sequence probability; gains
+      0.0093-0.0759 with Wilcoxon signed-rank p-values.. Measured on two
+      datasets and two model sizes from one family, with cross-validated AUC
+      and significance tests, but absolute AUCs are low (0.58-0.70), samples
+      are small, and the strongest baselines (semantic entropy, hidden-state
+      probes) were never run.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-21
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: On other model families or
+  non-math tasks, adding attention-dispersion features gives no AUC gain
+  over output-confidence features, or is dominated by semantic-entropy
+  baselines once those are included. Automatic check flagged: figures not in
+  the source: 0.049.
+submitted_by: agent:claude-opus-5@Russ-Miller

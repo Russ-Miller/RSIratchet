@@ -30,3 +30,41 @@ summary: In this paper, we propose a multi-modal synthesis technique for
 notes: "Forwarded by Russ 2026-09-19: locator papers: generate a reusable
   regex/SQL/XPath once, run it without the model"
 ingested_at: 2026-09-19
+brief: >-
+  Combining a natural-language semantic parse with programming-by-example
+  beats either modality alone for synthesizing regular expressions, because
+  English descriptions are ambiguous and examples underdetermine intent.
+
+
+  Regel parses an English description into a "hierarchical sketch" (a nested
+  hole construct annotated with hints) via a SEMPRE-based semantic parser,
+  then runs a sketch-guided PBE engine over a regex DSL, using over- and
+  under-approximations for pruning plus Z3 to solve symbolic integer constants
+  in Repeat operators. Evaluation covers over 300 regexes across 2 sets: 200
+  adapted DeepRegex benchmarks (average 4 positive and 5 negative examples
+  each) and 122 harder StackOverflow tasks with ground truth converted to the
+  DSL.
+
+
+  Regel finds the intended regex in 80% of cases against 43% for DeepRegex
+  (seq2seq from language only) and 26% for a PBE-only variant. Its PBE engine
+  completes sketches an order of magnitude faster than an adaptation of
+  AlphaRegex, even when AlphaRegex is given the sketch. A user study with 20
+  participants found users twice as likely to produce the intended regex with
+  Regel.
+
+
+  The ablation against Regel-Pbe isolates the value of the sketch, and giving
+  AlphaRegex the same sketch isolates the engine. Both baselines are held at
+  the same time budget t and result count k, with up to 4 interactive rounds
+  of extra examples.
+
+
+  StackOverflow sketches were hand-written by the authors for training, so
+  parser quality there is not tested end-to-end from unlabeled data, and the
+  DSL restricts And/Not to automaton-level support. If you care about
+  spec-from-language tasks, this argues for treating language as search
+  guidance rather than as the program.
+brief_generated_at: 2026-09-21
+brief_model: claude-opus-5
+brief_source: full-text

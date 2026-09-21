@@ -6,15 +6,53 @@ year: 2024
 date: 2024-07-01
 arxiv_id: "2407.01489"
 url: https://arxiv.org/abs/2407.01489
-tags: [ingested]
-summary: >-
-  Recent advancements in large language models (LLMs) have significantly
-  advanced the automation of software development tasks, including code
-  synthesis, program repair, and test generation. More recently, researchers
-  and industry practitioners have developed various autonomous LLM agents to
-  perform end-to-end software development tasks. These agents are equipped
-  with the ability to use tools, run commands, observe feedback from the
-  environment, and plan for future actions. However, the complexity of these
-  agent-based approaches, together with the limited abilities of current
-  LLMs, raises the fo
+tags:
+  - ingested
+summary: Recent advancements in large language models (LLMs) have
+  significantly advanced the automation of software development tasks,
+  including code synthesis, program repair, and test generation. More
+  recently, researchers and industry practitioners have developed various
+  autonomous LLM agents to perform end-to-end software development tasks.
+  These agents are equipped with the ability to use tools, run commands,
+  observe feedback from the environment, and plan for future actions. However,
+  the complexity of these agent-based approaches, together with the limited
+  abilities of current LLMs, raises the fo
 ingested_at: 2026-09-19
+brief: >-
+  A fixed 3-stage pipeline with no autonomous planning matches or beats every
+  open-source LLM agent on SWE-bench Lite at lower cost, which cuts against
+  the assumption that repository-level issue resolution needs tool-using
+  agents.
+
+
+  Agentless does hierarchical localization (repo tree prompting plus embedding
+  retrieval, then file skeletons, then edit lines), samples patches in a
+  search/replace diff format, and selects a patch using regression tests plus
+  LLM-generated reproduction tests. It runs on GPT-4o (gpt-4o-2024-05-13)
+  against 26 agent baselines on the 300-problem SWE-bench Lite.
+
+
+  It resolves 96 (32.00%) at $0.70 and 78,166 average tokens, above all
+  open-source agents and below commercial leaders such as CodeStory Aide at
+  129 (43.00%). Ablations: majority voting alone gives 77 (25.67%), adding
+  regression tests 81 (27.00%), adding reproduction tests 96 (32.00%).
+  Skeleton input beats full file content for element localization (58.33% vs
+  53.67% containing ground truth); combining prompting and embedding retrieval
+  reaches 81.67% file-level. Any-patch upper bound across 40 samples is 126
+  (42.0%).
+
+
+  The component ablations are measured with cost held visible, but baseline
+  numbers are self-reported from leaderboards and papers, not re-run, and most
+  commercial baselines release no trajectories. Only 1 model family and 1
+  Python benchmark; 94 of 213 selected reproduction tests actually verified
+  the ground truth fix. Manual inspection found 10.0% of Lite problems lack
+  needed information, 5.0% carry misleading solutions, 4.3% leak the ground
+  truth patch, motivating the filtered SWE-bench Lite-S.
+
+
+  Treat agent scaffolding as something to justify against a simple pipeline
+  baseline.
+brief_generated_at: 2026-09-21
+brief_model: claude-opus-5
+brief_source: full-text

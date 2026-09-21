@@ -1,0 +1,40 @@
+id: open-source-llm-agents-driving-ros-robot-through-multi-step-tasks
+ref: CLM-0347
+capability: long-horizon-execution
+technique: persist-pseudo-code-plan-gate-tool-calls
+statement: >-
+  For open-source LLM agents driving a ROS robot through multi-step tasks,
+  storing a pseudo-code plan in persistent scratchpad memory only helps
+  modestly unless tool invocation is also restricted to the plan's next
+  step; the restriction is what lifts the hardest long-horizon task, where
+  GPT-OSS-20B went from 35% to 55% and GPT-OSS-120B from 50% to 70% over
+  persistent planning alone.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Open-source models (GPT-OSS-20B/120B, Kimi-K2) in a ROS-Agent/ROSA pipeline with about 8 task tools; 20 trials per cell in Gazebo plus 40 hardware trials; gains are smaller for GPT"
+sources:
+  - source: arxiv-2609-13335
+    stance: supports
+    note: >-
+      Validated by: Four-way ablation (prompting, transient plan, persistent
+      plan, persistent plan plus constraint) across three task levels and
+      four models, 20 trials each; plus 40 physical-robot trials showing
+      repeated tool calls 19.0% to 6.1% and invalid calls 21.7% to 8.1%
+      versus vanilla ROSA, and 30/40 success versus 23/40 for ROSA, 20/40
+      CaP, 17/40 ReAct.. Measured, but small: 20 trials per
+      configuration-task-model cell, success judged on three hand-written
+      task prompts on one custom robot; the authors themselves call the
+      differences indicative rather than significant. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-21
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An ablation on the same or
+  similar agent stack where persistent planning alone matches
+  plan-constrained execution on the longest tasks, or where constraining
+  tool calls to the plan lowers success because replanning is blocked.
+submitted_by: agent:claude-opus-5@Russ-Miller

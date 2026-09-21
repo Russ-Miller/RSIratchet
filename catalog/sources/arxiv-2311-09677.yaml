@@ -6,15 +6,49 @@ year: 2023
 date: 2023-11-16
 arxiv_id: "2311.09677"
 url: https://arxiv.org/abs/2311.09677
-tags: [ingested]
-summary: >-
-  Large language models (LLMs) have revolutionized numerous domains with
-  their impressive performance but still face their challenges. A
+tags:
+  - ingested
+summary: Large language models (LLMs) have revolutionized numerous domains
+  with their impressive performance but still face their challenges. A
   predominant issue is the propensity for these models to generate
   non-existent facts, a concern termed hallucination. Our research is
-  motivated by the observation that previous instruction tuning methods
-  force the model to complete a sentence no matter whether the model knows
-  the knowledge or not. When the question is out of the parametric
-  knowledge, it will try to make up something and fail to indicate when it
-  lacks knowledge. In this paper, we present a new ap
+  motivated by the observation that previous instruction tuning methods force
+  the model to complete a sentence no matter whether the model knows the
+  knowledge or not. When the question is out of the parametric knowledge, it
+  will try to make up something and fail to indicate when it lacks knowledge.
+  In this paper, we present a new ap
 ingested_at: 2026-09-19
+brief: >-
+  Fine-tuning a model on training questions it already gets wrong, with "I am
+  unsure" appended, teaches refusal that transfers to unseen tasks and also
+  improves answer accuracy. R-Tuning splits instruction data into certain and
+  uncertain sets by checking whether the pre-trained model's prediction
+  matches the label, then appends "I am sure"/"I am unsure" to the answers.
+
+
+  Tested on OpenLLaMA-3B, LLaMA-7B, and LLaMA-13B across 9 datasets,
+  single-task on ParaRel and MMLU and multi-task on 5 datasets with HaluEval
+  held out. Scoring uses Average Precision over confidence-ranked answers.
+
+
+  AP gains over vanilla fine-tuning grow with scale: on MMLU in-domain,
+  LLaMA-13B goes 51.93 to 68.87; out-of-domain 67.38 to 77.41. Vanilla AP
+  drops with scale on ParaRel OOD (78.08 at 7B to 64.12 at 13B) while R-Tuning
+  rises. On unanswerable questions, refusal rate reaches 96.62 on FalseQA and
+  99.18 on NEC for LLaMA-7B, versus 18.35 and 20.55 for vanilla.
+
+
+  Evidence is measured with matched baselines, including Vanilla-C, which
+  applies uncertainty filtering (k=10) at test time rather than training on
+  it; R-Tuning-U, the unsupervised variant, generally beats it.
+
+
+  Confidence is binary, only 3 open LLaMA-family base models were tried, and
+  no chat or RLHF-tuned models were tested.
+
+
+  If you are building abstention, training on uncertainty appears to beat
+  estimating it at inference.
+brief_generated_at: 2026-09-21
+brief_model: claude-opus-5
+brief_source: full-text

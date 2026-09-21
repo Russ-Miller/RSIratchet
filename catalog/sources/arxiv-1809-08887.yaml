@@ -34,3 +34,36 @@ summary: We present Spider, a large-scale, complex and cross-domain semantic
 notes: "Forwarded by Russ 2026-09-19: locator papers: generate a reusable
   regex/SQL/XPath once, run it without the model"
 ingested_at: 2026-09-19
+brief: >-
+  Text-to-SQL accuracy on prior benchmarks was largely template memorization:
+  when train and test share no databases, the best systems of 2018 fall to
+  12.4% exact match. Spider is the dataset built to expose that gap.
+
+
+  11 computer science students spent about 1,000 hours writing 10,181
+  questions and 5,693 unique SQL queries over 200 multi-table databases in 138
+  domains, covering JOIN, GROUP BY, HAVING, ORDER BY, nesting,
+  INTERSECT/EXCEPT. Evaluation uses component matching (F1 per clause) and
+  exact matching, with 4 hardness levels; values are not predicted.
+
+
+  Under example split (8659 train / 1034 dev / 2147 test), TypeSQL leads at
+  33.0 exact match, SQLNet 18.3, plain Seq2Seq 9.4. Under database split (146
+  / 20 / 40 databases), SQLNet gets 12.4 and TypeSQL drops to 8.2, below
+  SQLNet. Extra-hard queries fall to 0.8-1.3. WHERE is the worst component
+  (16.0-19.8 F1 for the 2 strongest models under database split). Accuracy
+  declines as the number of foreign keys per database grows.
+
+
+  The example-vs-database split comparison isolates cross-domain
+  generalization cleanly, since the same models and metrics are used on both.
+  Only 5 models are tested, all pre-transformer, and the sketch-based ones
+  structurally cannot emit nested queries, so their scores partly reflect
+  coverage limits, not parsing failure. Ambiguous questions, value prediction,
+  and common-sense arithmetic are excluded.
+
+
+  Treat pre-Spider text-to-SQL numbers as inflated by template reuse.
+brief_generated_at: 2026-09-21
+brief_model: claude-opus-5
+brief_source: full-text

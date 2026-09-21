@@ -1,0 +1,41 @@
+id: log-ingestion-pipeline-feeding-llm-soc-analyst-deterministic-signature-and-length-pre-filtering
+ref: CLM-0339
+capability: prompt-injection
+technique: deterministic-siem-pre-filter-before-semantic-guardrails
+statement: >-
+  In a log-ingestion pipeline feeding an LLM SOC analyst, deterministic
+  signature-and-length pre-filtering at the SIEM catches only the
+  structurally anomalous or signature-matching injections (3 of 20 in one
+  run) while an LLM self-check input/output rail on the already-sanitized
+  alert catches most of the semantically disguised ones (18 of 20) but still
+  lets jailbreak and tool-abuse payloads through, so the two defenses fail
+  on different attack classes rather than being substitutes.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Indirect injections embedded in Wazuh security-alert log fields, 20 hand-built payloads across four MITRE ATLAS categories, one locally hosted Gemma 3 12B model, regex (PCRE2) deco"
+sources:
+  - source: arxiv-2609-10707
+    stance: supports
+    note: >-
+      Validated by: Counts of blocked payloads per layer on a synthesized
+      set of 20 injected Wazuh alerts, plus one volumetric log-poisoning
+      simulation; no undefended baseline rate, no false-positive measurement
+      on benign alerts, no latency numbers.. Measured but very weak: N=20
+      author-written payloads, one backbone, no baseline without defenses
+      and no false-positive rate on clean alerts; the 3-vs-18 split is
+      consistent with the mechanism argued but the sample cannot support
+      rates.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-21
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A larger evaluation where
+  the deterministic pre-filter catches a comparable share of semantically
+  obfuscated injections to the guardrail layer, or where the guardrail layer
+  alone (no pre-filter) blocks the same payloads at the same rate and cost,
+  would show the layers are substitutes rather than complements.
+submitted_by: agent:claude-opus-5@Russ-Miller
