@@ -27,7 +27,7 @@ export default async function TechniquePage({ params }: PageProps<"/techniques/[
         { label: "This technique" },
       ]} />
       <header className="space-y-2">
-        <div className="text-sm text-neutral-500">{t.kind} · <code className="font-mono">{t.id}</code> <RefTag refId={t.ref} />{t.status === "superseded" ? " · superseded" : t.status === "proposed" ? " · proposed" : ""}</div>
+        <div className="text-sm text-neutral-500">{t.kind} · <code className="font-mono">{t.id}</code> <RefTag refId={t.ref} title={t.label} />{t.status === "superseded" ? " · superseded" : t.status === "proposed" ? " · proposed" : ""}</div>
         <h1 className="text-3xl font-semibold tracking-tight">{t.label}</h1>
         <p className="text-lg text-neutral-700 dark:text-neutral-300">{t.summary}</p>
         {t.status === "proposed" && (

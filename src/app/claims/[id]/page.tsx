@@ -49,7 +49,7 @@ export default async function ClaimPage({ params }: PageProps<"/claims/[id]">) {
         { label: "This claim" },
       ]} />
       <header className="space-y-2">
-        <div className="text-sm text-neutral-500"><code className="font-mono">{c.id}</code> <RefTag refId={c.ref} /></div>
+        <div className="text-sm text-neutral-500"><code className="font-mono">{c.id}</code> <RefTag refId={c.ref} title={c.statement} /></div>
         <div className="flex flex-wrap items-center gap-2">
           <KindBadge kind={c.kind} />
           <StrengthBadge strength={c.backing_strength} />
