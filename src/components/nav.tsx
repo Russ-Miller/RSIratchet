@@ -20,6 +20,7 @@ const SECTIONS = [
   { href: "/claims", label: "Claims" },
   { href: "/techniques", label: "Techniques" },
   { href: "/adages", label: "Adages" },
+  { href: "/ratchet", label: "The ratchet" },
   { href: "/about", label: "About" },
   // Everything from here on is gated by src/proxy.ts and hidden unless signed in.
   { href: "/open-questions", label: "Open questions", admin: true },

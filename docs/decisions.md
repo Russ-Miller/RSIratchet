@@ -1745,3 +1745,19 @@ memorization, competition-benchmark provers fail on research-level Lean,
 multi-agent decomposition hurts on coupled workflows, step-wise PDDL
 simulation gains three points at 5.7x cost, prompted knowledge cutoffs fail
 on causally related facts. All filed pending-review like any other draft.
+
+## 2026-09-22 — a page for the ratchet literature
+
+Russ: "it feels like we should have an explicit cataloging of papers that
+focus on ratcheted self improvement". /ratchet collects the sources about
+systems that read their own failures and rewrite the harness they run
+inside, each with the claims drawn from it. Membership is the `ratchet`
+tag on a source, so adding a paper is a catalog edit rather than a code
+change. The page opens with the four tests that separate a ratchet from a
+fitted harness (freeze before evaluation; the improver cannot edit its own
+tests; failed paths stay observable; promote only what survives a new
+session or disjoint tasks) and states the finding that recurs across
+SoL-Pi, ModularRSI, EvoOntology and FinSkillOps: the acceptance gate, not
+the improvement engine, is what makes a loop ratchet rather than drift.
+FinSkillOps (2609.19680) was ingested the same day and is the clearest
+gated-versus-ungated comparison of the set.
