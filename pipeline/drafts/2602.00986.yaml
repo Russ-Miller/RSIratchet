@@ -1,0 +1,41 @@
+arxiv_id: '2602.00986'
+title: Sparse Reward Subsystem in Large Language Models
+url: https://arxiv.org/abs/2602.00986
+drafted_at: '2026-09-21'
+drafted_from: full-text
+model: claude-opus-5 (drafted in session, not via API)
+status: draft — not filed.
+capability: error-detection
+statement: 'Reward-related information in a reasoning model''s hidden states is concentrated
+  in a sparse set of neurons: a linear probe trained with a temporal-difference objective finds
+  ''value neurons'' (under 1% per layer) whose activations predict expected correctness, and
+  zeroing them in one layer drops MATH500 accuracy from 75% to an average 20% (as low as 1%),
+  while zeroing the same number of random or magnitude-selected neurons costs 1-9 points; the
+  step-to-step change in the probed value (''dopamine neurons'', a stated analogy) used as a
+  process reward for inference-time search lifted MATH500 from 72.2 to 77.8, above an implicit-PRM
+  baseline at 75.0.'
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Qwen2.5-7B-SimpleRL-Zoo and similar RL-tuned open math models, MATH500, 2026;
+  probes are linear on hidden states; PRM comparison is against greedy, random and implicit-PRM
+  baselines, not a trained external PRM.
+technique: ''
+proposed_technique: Probe-derived value signal as a free process reward
+technique_summary: Fit a linear TD probe on hidden states to get a per-step value estimate,
+  take its step-to-step change as a reward prediction error, and use that as the scoring signal
+  for best-of-n or search at inference, so no separate reward model is run.
+technique_kind: tooling
+technique_validated_by: MATH500 accuracy under search guided by the probe signal against greedy,
+  random and implicit-PRM guidance; causal ablation of value neurons against random, magnitude
+  and Wanda baselines across layers; transfer of value probes across datasets and models reported.
+  Single 7B model family for the ablation.
+stance_on_existing: neither
+related_claim_id: ''
+stance_reason: ''
+falsifier: A trained external PRM beating the probe signal by a wide margin on the same model
+  and budget, or the value-neuron ablation effect vanishing on non-RL-tuned or larger models.
+evidence_note: The ablation is the strong result; the PRM gain is real but modest and lacks
+  a trained-PRM baseline. The neuroscience vocabulary is explicitly analogy in the paper; a
+  widely shared social post read it as a discovery of biological reward circuitry, which the
+  paper does not claim.
+confidence: medium
