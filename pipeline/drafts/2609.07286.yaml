@@ -1,0 +1,42 @@
+arxiv_id: "2609.07286"
+title: "TAD: Token-Adaptive Contrastive Decoding with Confidence-Guided Gating
+  for Hallucination Mitigation in Large Audio-Language Models"
+url: https://arxiv.org/abs/2609.07286
+drafted_at: 2026-09-18
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: In large audio-language models answering binary "is sound X
+  present" questions, the yes/no outcome is fixed at the first decoding step
+  and the model's yes-minus-no margin is positive for most clips even with a
+  silent input, so penalizing affirmative tokens at that single step whenever
+  real audio fails to raise the margin above a small threshold increases
+  correct rejection of absent events beyond fixed-strength contrastive
+  decoding, at the cost of lower recall on genuinely present events and lower
+  precision.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Two instruction-tuned audio-language models
+  (Qwen2-Audio-7B-Instruct, Gemma-3n-E4B-it) on binary yes/no audio QA
+  (AudioCaps-Hallucination, Clotho-AQA); requires access to logits and a
+  silent-reference forward pass; hyperparameters not ablated.
+technique: ""
+proposed_technique: first-step confidence-gated affirmative-token penalty
+  against a silent-audio reference
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Show that the silent-reference yes/no margin is not
+  label-agnostically positive, or that gating at the first step gives no F1
+  gain over fixed-strength contrastive decoding, or that the gain does not
+  come with a drop in true-Yes recall.
+evidence_note: Measured on two models across three AudioCaps-Hallucination
+  splits plus Clotho-AQA, against default decoding, AAD, and AVS baselines. F1
+  gains over AAD of 0.059-0.117 (Qwen2) and 0.025-0.064 (Gemma); on Clotho-AQA
+  only 0.810 to 0.816 on Qwen2 and slightly below AAD on Gemma. Confusion
+  matrices show true-No recall rising 0.266 to 0.858 while true-Yes recall
+  falls 0.920 to 0.844, and precision drops on Gemma, so the gain is partly a
+  shift toward answering no. Hyperparameters tau and gamma were not ablated;
+  AVS still wins on some splits.
+confidence: medium
