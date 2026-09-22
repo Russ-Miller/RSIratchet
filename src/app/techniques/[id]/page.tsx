@@ -138,7 +138,7 @@ export default async function TechniquePage({ params }: PageProps<"/techniques/[
               )}
             </div>
           ) : (
-            <ul className="space-y-2">
+            <ul className="space-y-4">
               {efficacy.map((claim) => (
                 <li key={claim.id} className="text-sm">
                   <div className="mb-0.5 flex flex-wrap items-center gap-2">
@@ -147,6 +147,24 @@ export default async function TechniquePage({ params }: PageProps<"/techniques/[
                     {claim.contested && <ContestedBadge />}
                   </div>
                   <Link href={`/claims/${claim.id}`} className="hover:underline">{claim.statement}</Link>
+                  {/* The counts above are sources, so the sources have to be here:
+                      a reader told "2 contesting" should see which two. */}
+                  <ul className="mt-1 space-y-0.5 border-l-2 border-neutral-200 pl-3 text-xs dark:border-neutral-800">
+                    {claim.sources.map((link) => {
+                      const s = getSource(link.source);
+                      return (
+                        <li key={link.source} className="text-neutral-600 dark:text-neutral-400">
+                          <span className={link.stance === "contests"
+                            ? "font-medium text-amber-700 dark:text-amber-300"
+                            : "font-medium text-emerald-700 dark:text-emerald-300"}>
+                            {link.stance === "contests" ? "contests" : "supports"}
+                          </span>{" "}
+                          <Link href={`/sources/${link.source}`} className="hover:underline">{s?.title ?? link.source}</Link>
+                          {s?.year ? <span className="text-neutral-500"> ({s.year})</span> : null}
+                        </li>
+                      );
+                    })}
+                  </ul>
                 </li>
               ))}
             </ul>
