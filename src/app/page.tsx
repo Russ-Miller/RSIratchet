@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { loadCatalog, capabilitiesByGroup, claimsByRecency, getCapability, isPending, isProposed } from "@/lib/catalog";
+import { loadCatalog, capabilitiesByGroup, claimsByRecency, getCapability, getSources, isPending, isProposed, ratchetTechniques } from "@/lib/catalog";
 import { KindBadge, StrengthBadge, ContestedBadge, ReviewBadge, ProposedBadge } from "@/components/badges";
 import { getTil } from "@/lib/til";
 import { ModelStrip } from "@/components/model-strip";
@@ -13,6 +13,8 @@ export default function Home() {
   const pending = cat.claims.filter(isPending).length;
   const til = getTil();
   const index = buildSearchIndex();
+  const ratchetSources = getSources().filter((x) => (x.tags ?? []).includes("ratchet")).length;
+  const gates = ratchetTechniques().filter((t) => t.ratchet_role === "gate").length;
   return (
     <div className="space-y-10">
       <section className="space-y-3">
@@ -20,6 +22,14 @@ export default function Home() {
         <p className="max-w-2xl text-neutral-600 dark:text-neutral-400">
           Not a scoreboard &mdash; a set of directional, scoped claims, each tied to the sources that
           support or contest it.
+        </p>
+        {/* The site is named for a claim; a first visit should say which one. */}
+        <p className="max-w-2xl text-neutral-600 dark:text-neutral-400">
+          A <em>ratchet</em> is a fix that cannot slip back: placed in structure, it applies on every
+          later run, while a fix given in conversation dies with the session. That is what this catalog
+          is for and what it is named after.{" "}
+          <Link href="/ratchet" className="underline">The ratchet</Link> collects the {ratchetSources} sources
+          on systems that try to build one, and the {gates} techniques that decide what a loop keeps.
         </p>
         <ModelStrip />
         {/* A visitor should meet the caveat on arrival, not discover it later. The
