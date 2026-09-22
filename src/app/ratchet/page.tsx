@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ListSearch } from "@/components/list-search";
 import { vecAttr } from "@/lib/embeddings";
-import { claimsCiting, getSources } from "@/lib/catalog";
+import { RATCHET_ROLE_HINT, claimsCiting, getSources, ratchetTechniques } from "@/lib/catalog";
 
 export const metadata = {
   title: "The ratchet",
@@ -41,11 +41,49 @@ export default function RatchetPage() {
         </p>
       </div>
 
+      <Techniques />
+
       <ListSearch noun="sources" />
 
       <Section title="Papers" rows={papers} />
       <Section title="Practice and commentary" rows={rest} />
     </div>
+  );
+}
+
+// Techniques flagged for the role they play in a loop. Everything unflagged is
+// object-level: it improves the work rather than the loop that improves the work.
+function Techniques() {
+  const roles = (["gate", "loop", "persistence"] as const).map((role) => ({
+    role, items: ratchetTechniques().filter((t) => t.ratchet_role === role).sort((a, b) => a.label.localeCompare(b.label)),
+  })).filter((r) => r.items.length);
+  if (!roles.length) return null;
+  return (
+    <section className="space-y-3">
+      <h2 className="text-lg font-semibold">Techniques that serve the loop</h2>
+      <p className="max-w-3xl text-sm text-neutral-600 dark:text-neutral-400">
+        Of {ratchetTechniques().length} flagged techniques, these are grouped by the job they do for a
+        loop. The rest of the catalog is object-level: it improves the work, not the loop that improves
+        the work. A fix at the object level pays once; a better gate reduces error that would otherwise
+        accumulate over every later round, which is why the gate keeps coming out load-bearing above.
+      </p>
+      {roles.map(({ role, items }) => (
+        <div key={role} className="space-y-1">
+          <h3 className="text-sm font-semibold capitalize">{role} <span className="font-normal text-neutral-500">{items.length}</span></h3>
+          <p className="max-w-3xl text-xs text-neutral-500">{RATCHET_ROLE_HINT[role]}</p>
+          <ul className="flex flex-wrap gap-2 pt-1">
+            {items.map((t) => (
+              <li key={t.id}>
+                <Link href={`/techniques/${t.id}`} title={t.summary}
+                  className="inline-block rounded border border-neutral-300 px-2 py-1 text-xs hover:border-neutral-500 hover:bg-neutral-100 dark:border-neutral-700 dark:hover:border-neutral-500 dark:hover:bg-neutral-800">
+                  {t.label}{t.status === "proposed" ? " ·" : ""}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </section>
   );
 }
 

@@ -117,6 +117,8 @@ export interface Technique {
   ref: string;
   id: string; label: string; summary: string; description: string; addresses: string[];
   kind: "prompting" | "retrieval" | "tooling" | "training" | "decoding" | "architecture" | "process";
+  /** How it serves a self-improvement loop, if it does; absent means object-level. */
+  ratchet_role?: RatchetRole;
   sources?: string[]; repos?: Repo[]; contexts?: string[];
   /** Prerequisites and applicability -- what you need to use it. Never efficacy. */
   requires?: string;
@@ -441,6 +443,15 @@ export function capabilityTags(c: Capability): string {
  * the catalog says something no essay on the adage says.
  */
 export type AdageStanding = "untested" | "holds" | "narrowed" | "breaks" | "mixed";
+export type RatchetRole = "gate" | "loop" | "persistence";
+export const RATCHET_ROLE_LABEL: Record<RatchetRole, string> = { gate: "gate", loop: "loop", persistence: "persistence" };
+export const RATCHET_ROLE_HINT: Record<RatchetRole, string> = {
+  gate: "Decides what is kept, so the loop cannot slip back: acceptance criteria, held-out evaluation, independent verification, and the action gates that prevent unrecoverable loss.",
+  loop: "Extracts the signal a loop runs on: detecting, localizing or attributing a failure, or proposing the fix.",
+  persistence: "Puts the fix where later runs inherit it without anyone remembering.",
+};
+export const ratchetTechniques = () => getTechniques().filter((t) => t.ratchet_role);
+
 export const ADAGE_STANDING_LABEL: Record<AdageStanding, string> = {
   untested: "Untested", holds: "Holds", narrowed: "Holds, narrowed", breaks: "Breaks", mixed: "Mixed",
 };

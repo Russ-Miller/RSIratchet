@@ -1761,3 +1761,26 @@ SoL-Pi, ModularRSI, EvoOntology and FinSkillOps: the acceptance gate, not
 the improvement engine, is what makes a loop ratchet rather than drift.
 FinSkillOps (2609.19680) was ingested the same day and is the clearest
 gated-versus-ungated comparison of the set.
+
+## 2026-09-22 — techniques carry a ratchet role
+
+Russ: "we definitely need a way to flag which techniques could help with
+the ratchet". All 84 techniques were reviewed and 29 flagged with a new
+optional `ratchet_role`: **gate** (19) decides what is kept so the loop
+cannot slip back — acceptance criteria, held-out evaluation, independent
+verification, and the action gates that prevent unrecoverable loss;
+**loop** (6) extracts the signal a loop runs on, detecting, localizing or
+attributing a failure or proposing the fix; **persistence** (3) puts the
+fix where later runs inherit it. Absent means object-level: it improves
+the work rather than the loop that improves the work.
+
+The split is not cosmetic. An object-level fix pays once; a better gate
+reduces error that would otherwise accumulate over every later round, and
+bad acceptance decisions compound in a way later rounds often cannot undo.
+That is why the gate came out load-bearing in three independent settings
+(SoL-Pi, EvoOntology's -11.2 ablation, FinSkillOps' gated-versus-ungated
+arm). Left for later: a fourth value for ratchet-negative techniques,
+those that improve the work while starving the loop of signal — silent
+recovery, retries that hide an error class, capability outrunning the
+evaluator. None of the current 84 was flagged that way; the value is not
+in the schema until there is a case.
