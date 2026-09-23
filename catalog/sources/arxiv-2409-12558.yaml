@@ -1,20 +1,57 @@
 id: arxiv-2409-12558
 ref: SRC-0316
 kind: paper
-title: "RAD-Bench: Evaluating Large Language Models Capabilities in Retrieval Augmented Dialogues"
+title: "RAD-Bench: Evaluating Large Language Models Capabilities in Retrieval
+  Augmented Dialogues"
 year: 2024
 date: 2024-09-19
 arxiv_id: "2409.12558"
 url: https://arxiv.org/abs/2409.12558
-tags: [ingested]
-summary: >-
-  In real-world applications with Large Language Models (LLMs), external
-  retrieval mechanisms - such as Search-Augmented Generation (SAG), tool
-  utilization, and Retrieval-Augmented Generation (RAG) - are often employed
-  to enhance the quality of augmented generations in dialogues. These
+tags:
+  - ingested
+summary: In real-world applications with Large Language Models (LLMs),
+  external retrieval mechanisms - such as Search-Augmented Generation (SAG),
+  tool utilization, and Retrieval-Augmented Generation (RAG) - are often
+  employed to enhance the quality of augmented generations in dialogues. These
   approaches often come with multi-turn dialogue, where each interaction is
   enriched by relevant information retrieved from external sources. Existing
   benchmarks either assess LLMs' chat abilities in multi-turn dialogues or
   their use of retrieval for augmented responses in single-turn settings.
   However, there is a g
 ingested_at: 2026-09-19
+brief: >-
+  Giving a model correct retrieved context at every turn does not stop its
+  answers from degrading as conditions accumulate across turns. Chat-arena
+  standing also fails to predict how a model handles retrieval-grounded
+  dialogue.
+
+
+  RAD-Bench holds 89 samples of 3 turns each, 267 turns total, split across 6
+  scenarios grouped into Retrieval Synthesis (academic writing, news TLDR,
+  education) and Retrieval Reasoning (finance, customer support, travel
+  planning). Questions and contexts were synthesized by LLMs then filtered by
+  LLM scorers and manual inspection; responses are scored 1-10 by GPT-4o
+  (2024-05-13) as a reference-guided judge, temperature 0. 4 closed and 8 open
+  models were run.
+
+
+  GPT-4o leads at 8.72 average, GPT-4o-mini 8.47, Mistral-Large 7.91,
+  Llama3.1-405B 7.88, Deepseek-v2 7.86, GPT-3.5-Turbo 6.59. Travel Planning is
+  hardest, and there Deepseek-v2 (7.95) beats GPT-4o (7.83). Retrieval
+  Reasoning scores fall monotonically turn by turn; Retrieval Synthesis rises
+  at turn 2 then drops at turn 3.
+
+
+  The turn effect is measured but not isolated: turns differ in task type, not
+  only in depth, and the authors themselves read judge rationales to explain
+  the synthesis dip. Scoring rests on 1 judge model, no human agreement study,
+  and BreeXe-8x7B was both a question scorer and an evaluated model, which the
+  authors flag as possible bias. The Chatbot Arena comparison is a correlation
+  over the subset of shared models, not a controlled test.
+
+
+  Use it as a model-selection screen for multi-turn RAG deployments rather
+  than as evidence about why later turns fail.
+brief_generated_at: 2026-09-23
+brief_model: claude-opus-5
+brief_source: full-text

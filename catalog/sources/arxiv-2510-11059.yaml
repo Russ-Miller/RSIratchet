@@ -1,20 +1,58 @@
 id: arxiv-2510-11059
 ref: SRC-0327
 kind: paper
-title: "Defects4C: Benchmarking Large Language Model Repair Capability with C/C++ Bugs"
+title: "Defects4C: Benchmarking Large Language Model Repair Capability with
+  C/C++ Bugs"
 year: 2025
 date: 2025-10-13
 arxiv_id: "2510.11059"
 url: https://arxiv.org/abs/2510.11059
-tags: [ingested]
-summary: >-
-  Automated Program Repair (APR) plays a critical role in enhancing the
-  quality and reliability of software systems. While substantial progress
-  has been made in Java-based APR, largely facilitated by benchmarks like
+tags:
+  - ingested
+summary: Automated Program Repair (APR) plays a critical role in enhancing the
+  quality and reliability of software systems. While substantial progress has
+  been made in Java-based APR, largely facilitated by benchmarks like
   Defects4J, there remains a significant gap in research on C/C++ program
-  repair, despite the widespread use of C/C++ and the prevalence of
-  associated vulnerabilities. This gap is primarily due to the lack of
-  high-quality, open-source benchmarks tailored for C/C++. To address this
-  issue, we introduce Defects4C, a comprehensive and executable benchmark
-  specifically designed for C/C++ pr
+  repair, despite the widespread use of C/C++ and the prevalence of associated
+  vulnerabilities. This gap is primarily due to the lack of high-quality,
+  open-source benchmarks tailored for C/C++. To address this issue, we
+  introduce Defects4C, a comprehensive and executable benchmark specifically
+  designed for C/C++ pr
 ingested_at: 2026-09-19
+brief: >-
+  LLM program repair scores on C/C++ contest-style benchmarks do not transfer
+  to real-world C/C++ code: the same models drop from near-ceiling to single
+  digits.
+
+
+  Defects4C is an executable benchmark built from GitHub C/C++ repositories:
+  9M bug-relevant commits for fine-tuning, plus 248 human-confirmed buggy
+  functions and 102 CVE-derived vulnerable functions, each paired with a
+  bug-revealing test case (a test that passes post-commit and fails
+  pre-commit). 24 pre-trained LLMs were evaluated in single-round and
+  conversation-based repair.
+
+
+  GPT-3.5-Turbo scores 94.0 pass@1 on CodeFlaws and 59.0 on DebugBench but 8.5
+  on Defects4C; GPT-4 gets 9.0. Conversation-based repair fixes at best 27/248
+  bugs (10.88%) and 7/102 vulnerabilities (6.86%), against 29.80-71.30
+  reported on Defects4J. Scale does not help monotonically: CodeLlama-Python
+  pass@100 goes 22.5 (7B), 32.2 (13B), 29.8 (34B), partly because ~19% of
+  CodeLlama-Instruct-34B outputs overrun the 2048-token limit. LoRA
+  fine-tuning on Defects4C_bgcommit improves 21 of 28 pass@k cells, average
+  relative gain 84.89%, but best pass@1 is still 4.92.
+
+
+  Evidence is measured, with matched prompts across models and a
+  decontamination step (UniXcoder cosine >0.95 filtered). Confounds remain:
+  GPT-4 was capped at 2 repair attempts versus 10 for others, and the
+  Defects4J comparison is taken from prior work rather than rerun. Only
+  single-function bugs are included; multi-function and cross-file defects are
+  untested. Failure analysis attributes 52.0% of vulnerability failures to
+  long/multi-hunk patches, unchanged by fine-tuning.
+
+
+  Treat existing C/C++ repair numbers as inflated by benchmark simplicity.
+brief_generated_at: 2026-09-23
+brief_model: claude-opus-5
+brief_source: full-text

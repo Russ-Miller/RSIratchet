@@ -6,15 +6,54 @@ year: 2025
 date: 2025-03-12
 arxiv_id: "2503.09089"
 url: https://arxiv.org/abs/2503.09089
-tags: [ingested]
-summary: >-
-  Code localization--identifying precisely where in a codebase changes need
-  to be made--is a fundamental yet challenging task in software maintenance.
-  Existing approaches struggle to efficiently navigate complex codebases
-  when identifying relevant code sections. The challenge lies in bridging
-  natural language problem descriptions with the appropriate code elements,
-  often requiring reasoning across hierarchical structures and multiple
-  dependencies. We introduce LocAgent, a framework that addresses code
-  localization through graph-based representation. By parsing codebases into
-  directed heterogeneo
+tags:
+  - ingested
+summary: Code localization--identifying precisely where in a codebase changes
+  need to be made--is a fundamental yet challenging task in software
+  maintenance. Existing approaches struggle to efficiently navigate complex
+  codebases when identifying relevant code sections. The challenge lies in
+  bridging natural language problem descriptions with the appropriate code
+  elements, often requiring reasoning across hierarchical structures and
+  multiple dependencies. We introduce LocAgent, a framework that addresses
+  code localization through graph-based representation. By parsing codebases
+  into directed heterogeneo
 ingested_at: 2026-09-19
+brief: >-
+  Giving an LLM agent a graph index of a codebase, with import, invoke and
+  inherit edges rather than just directory containment, is what drives code
+  localization accuracy, and a fine-tuned 32B open model then matches
+  Claude-3.5 on the task.
+
+
+  LocAgent parses Python repos into a directed heterogeneous graph over
+  directories, files, classes and functions, builds sparse hierarchical
+  indexes over it, and exposes 3 tools (SearchEntity, TraverseGraph,
+  RetrieveEntity) to the agent. Evaluation covers SWE-Bench-Lite (274 of 300
+  examples) and Loc-Bench, a new 560-example set spanning bug reports, feature
+  requests, security and performance issues.
+
+
+  With Claude-3.5, file-level Acc@5 reaches 94.16 and function-level Acc@10
+  77.37, against 90.15 and 70.07 for OpenHands. Fine-tuned Qwen2.5-32B reaches
+  92.70 file Acc@5 and 77.01 function Acc@10 at $0.09 per example versus $0.66
+  for Claude-3.5. Downstream repair with Agentless editing rises from 33.58 to
+  37.59 Pass@10.
+
+
+  The ablation isolates components on the 7B model: dropping TraverseGraph
+  costs function Acc@10 71.53 to 66.06, restricting to contain edges gives
+  66.42, fixing hops to 1 gives 66.79, and removing SearchEntity drops it to
+  53.28. Costs come from third-party inference pricing, not matched hardware.
+
+
+  Python only, 1 fine-tuned model family, and accuracy drops outside the
+  bug-report category, which dominated the 768 training trajectories.
+
+
+  If you build retrieval for coding agents, dependency edges and multi-hop
+  traversal are the part worth paying for.
+brief_generated_at: 2026-09-23
+brief_model: claude-opus-5
+brief_source: full-text
+brief_unverified_figures:
+  - "768"

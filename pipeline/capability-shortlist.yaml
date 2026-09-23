@@ -1,51 +1,67 @@
 # Consolidated capability candidates. Suggestions, not capabilities.
-generated_at: 2026-09-18
-from_raw_proposals: 20
+generated_at: 2026-09-22
+from_raw_proposals: 22
 recommended:
-  - id: contextual-privacy
-    label: "Deciding what private information to disclose to whom"
-    scope_note: "Covers whether a model withholds, redacts, or appropriately shares sensitive personal data given recipient and context, including leaking memorized personal data; excludes generic refusal of harmful requests and prompt-injected instructions."
+  - id: privacy-inference
+    label: "Inferring private attributes from data it sees"
+    scope_note: "Covers deducing location, identity, or other personal attributes from text or images and whether the model restrains itself from doing so while working; excludes training-data memorization extraction and generic jailbreak refusal."
     paper_count: 3
-    merged_from: [contextual-privacy, privacy-preserving-disclosure, privacy-leakage]
-    note: "Three independent papers converge on the same agentic privacy judgment, and nothing in the index covers disclosure decisions or personal-data leakage."
-  - id: compression-behavior-retention
-    label: "Keeping behavior after compression or inference shortcuts"
-    scope_note: "Covers whether quantization, pruning, distillation, early exit, or speculative decoding preserves the original model's quality and safety/fairness/robustness behavior; excludes fine-tuning-induced skill loss and pure speed benchmarks."
-    paper_count: 3
-    merged_from: [compression-behavior-retention, inference-optimization-fidelity, reasoning-mode-consistency]
-    note: "Distinct deployment-time analogue of fine-tuning-retention, with several papers testing behavior preservation under serving-side modifications."
-  - id: social-bias
-    label: "Treating social groups even-handedly"
-    scope_note: "Covers systematically different outputs, evaluations, or recommendations conditioned on a subject's demographic group in text or images; excludes culture-specific norm knowledge and judge position/length bias."
+    merged_from: [privacy-preserving-behavior, privacy-inference-from-text, image-geolocation-inference]
+    note: "Three proposals point at one dual-use capability with real evidence, and no existing safety entry covers inference-based privacy leakage."
+  - id: spatial-reasoning
+    label: "Reasoning about space and geometry"
+    scope_note: "Covers inferring positions, paths, layout, occlusion, viewpoint change and metric/geometric relations in 2D or 3D from images or descriptions; excludes 2D object grounding in an image and video time-order reasoning."
     paper_count: 2
-    merged_from: [social-bias, demographic-bias]
-    note: "Recurring, well-defined failure mode that neither cultural-competence nor judge-position-bias captures."
-  - id: structured-extraction
-    label: "Turning documents and free text into structured records"
-    scope_note: "Covers OCR/layout parsing and schema-filling extraction that yields machine-readable tables or records; excludes summarization, QA, and general image description."
+    merged_from: [spatial-reasoning, spatial-reasoning-3d]
+    note: "Recurring, well-defined weakness that no existing entry (visual-grounding, logical-deduction-robustness) covers."
+  - id: ai-content-detection
+    label: "Telling generated content from real"
+    scope_note: "Covers identifying LLM-written or LLM-rewritten text and synthesized/manipulated speech, image or video, including under paraphrase or spoofing attacks; excludes judging whether the content's claims are true."
     paper_count: 2
-    merged_from: [structured-information-extraction, document-structure-parsing]
-    note: "Two papers on the same underlying skill of producing faithful structured output from unstructured sources, which no existing entry covers."
+    merged_from: [synthetic-media-detection, machine-generated-text-detection]
+    note: "Two independent proposals converge on the same discrimination ability, and it is not covered by fact-verification or error-detection."
+  - id: social-interaction-competence
+    label: "Navigating emotion-laden social interaction"
+    scope_note: "Covers multi-turn goal-directed social dialogue requiring theory of mind and adaptation, plus recognizing affect and responding appropriately; excludes single-turn persuasion outcomes and sentiment-classification benchmarks."
+    paper_count: 2
+    merged_from: [social-interaction-competence, emotion-understanding]
+    note: "Two proposals converge on interactive social skill, which persuasion and cultural-competence only touch at the edges."
+  - id: temporal-reasoning
+    label: "Reasoning about dates, durations, and time-validity"
+    scope_note: "Covers ordering events, computing durations and deadlines, and knowing which version of a fact or rule held at a given time; excludes video frame-order reasoning and plain factual recall."
+    paper_count: 1
+    merged_from: [temporal-reasoning]
+    note: "Distinct from video-temporal-reasoning and factual-recall, and a well-established persistent failure mode worth its own slot."
+  - id: gui-agent-control
+    label: "Operating graphical user interfaces"
+    scope_note: "Covers perceiving screen state and emitting grounded click/type/scroll actions across web, desktop and mobile UIs; excludes physical embodiment and static screenshot description."
+    paper_count: 1
+    merged_from: [gui-agent-control]
+    note: "A major agent capability sitting between tool-use, visual-grounding and embodied-control that none of them actually measures."
   - id: confidence-calibration
-    label: "Matching expressed confidence to actual accuracy"
-    scope_note: "Covers whether verbalized or token-level confidence tracks correctness (calibration error, selective risk); excludes outright abstention and plain accuracy."
+    label: "Knowing how likely it is to be right"
+    scope_note: "Covers whether verbalized confidence or internal signals like token entropy track actual correctness; excludes explicit refusal behavior and post-hoc self-critique."
     paper_count: 1
     merged_from: [confidence-calibration]
-    note: "Calibration is a graded, separately measured property that abstention-and-self-knowledge only partially covers, so it earns its own slot despite thin evidence here."
+    note: "Adjacent to abstention-and-self-knowledge but measures graded calibration rather than the decision to abstain, which is worth separating."
 set_aside:
-  - id: chart-and-diagram-reasoning
-    note: "Largely a task domain sitting between visual-grounding and multi-step-reasoning, with only one paper behind it."
-  - id: structured-graphics-generation
-    note: "Narrow generation task domains rather than a general capability, and mostly reducible to code-generation plus visual grounding."
-  - id: vulnerability-detection
-    note: "Already sits inside the overlap of error-detection and secure-coding."
-  - id: training-data-membership-inference
-    note: "A measurement technique about models rather than a capability the model is asked to exercise."
-  - id: generation-understanding-consistency
-    note: "One-off framing tied to a specific unified-model architecture."
-  - id: representation-readout-gap
-    note: "Interpretability finding adjacent to explanation-faithfulness, not a trackable capability on its own."
-  - id: convergent-clue-integration
-    note: "A single puzzle-style framing that multi-step-reasoning and decomposition already cover."
-  - id: human-ai-complementarity
-    note: "Genuinely interesting but a single study, and it is closer to an evaluation design question than a model capability."
+  - id: knowledge-unlearning
+    note: "Single paper and largely a training-intervention evaluation that overlaps knowledge-updating and fine-tuning-retention."
+  - id: reasoning-trace-monitorability
+    note: "Already spanned by explanation-faithfulness and strategic-deception."
+  - id: latent-reasoning
+    note: "An architecture/technique question rather than a capability users can observe."
+  - id: modality-parity
+    note: "Interesting one-off framing with too little recurring evidence to track yet."
+  - id: perceptual-quality-assessment
+    note: "Narrow task domain rather than a general capability."
+  - id: relevance-ranking
+    note: "An IR task domain largely bracketed by retrieval-utilization and critique."
+  - id: graph-algorithm-reasoning
+    note: "A benchmark family already covered by multi-step-reasoning and state-tracking."
+  - id: multi-criteria-decision-making
+    note: "One-off framing that reduces to planning plus domain-knowledge."
+  - id: human-cognitive-alignment
+    note: "A research framing about similarity to humans, not a capability that can be better or worse."
+  - id: phonological-reasoning
+    note: "Too narrow a probe to earn a slot in a small index."

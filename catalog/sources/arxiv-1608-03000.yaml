@@ -25,3 +25,37 @@ summary: This paper explores the task of translating natural language queries
 notes: "Forwarded by Russ 2026-09-19: locator papers: generate a reusable
   regex/SQL/XPath once, run it without the model"
 ingested_at: 2026-09-19
+brief: >-
+  A generic attention-based LSTM sequence-to-sequence model translates English
+  descriptions into regular expressions better than a hand-engineered semantic
+  parser that relies on regex-specific semantic equivalence unification. The
+  domain knowledge was not doing the work; data was.
+
+
+  Deep-RegEx is a 6-layer encoder-decoder (1 embedding, 2 encoder, 2 decoder,
+  1 dense; 512-wide stacked LSTMs, global attention, dropout 0.25, 20 epochs).
+  It is compared to Semantic-Unify (Kushman and Barzilay 2013) and a
+  bag-of-words nearest-neighbour baseline, on KB13 (824 pairs) and on NL-RX, a
+  new 10,000-pair corpus built by generating regexes from a 15-nonterminal,
+  6-terminal grammar with synthetic descriptions, then having Mechanical Turk
+  workers paraphrase them.
+
+
+  On NL-RX-Turk test, DFA-equality accuracy is 58.2% versus 38.6% for
+  Semantic-Unify and 16.4% for BoW-NN; on the synthetic version 88.7%. On KB13
+  the model reaches 65.6% versus 65.5%, a 0.1% edge.
+
+
+  The comparison is matched on data and evaluated with DFA equivalence rather
+  than string match, and Semantic-Unify was retrained in consultation with its
+  original authors. There is no ablation of attention or depth, and the big
+  win comes on a dataset the authors constructed, whose regexes originate from
+  their own grammar. KB13 turns out to be 45% unique regexes against 97% for
+  NL-RX-Turk, so the older benchmark rewards memorisation.
+
+
+  Treat prior state-of-the-art regex parsing results as benchmark artifacts
+  more than method advantages.
+brief_generated_at: 2026-09-23
+brief_model: claude-opus-5
+brief_source: full-text
