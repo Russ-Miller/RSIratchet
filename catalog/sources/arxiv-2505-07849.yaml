@@ -6,15 +6,49 @@ year: 2025
 date: 2025-05-07
 arxiv_id: "2505.07849"
 url: https://arxiv.org/abs/2505.07849
-tags: [ingested]
-summary: >-
-  Software issue localization, the task of identifying the precise code
+tags:
+  - ingested
+summary: Software issue localization, the task of identifying the precise code
   locations (files, classes, or functions) relevant to a natural language
   issue description (e.g., bug report, feature request), is a critical yet
   time-consuming aspect of software development. While recent LLM-based
-  agentic approaches demonstrate promise, they often incur significant
-  latency and cost due to complex multi-step reasoning and relying on
-  closed-source LLMs. Alternatively, traditional code ranking models,
-  typically optimized for query-to-code or code-to-code retrieval, struggle
-  with the verbose and failure-descrip
+  agentic approaches demonstrate promise, they often incur significant latency
+  and cost due to complex multi-step reasoning and relying on closed-source
+  LLMs. Alternatively, traditional code ranking models, typically optimized
+  for query-to-code or code-to-code retrieval, struggle with the verbose and
+  failure-descrip
 ingested_at: 2026-09-19
+brief: >-
+  Single-shot retrieve-and-rerank beats multi-turn agentic code exploration
+  for finding the functions a GitHub issue refers to, at a fraction of the
+  cost. The usual assumption that localization needs iterative tool use and a
+  frontier model does not hold once ranking models are trained on issue-shaped
+  queries.
+
+
+  SweRank pairs SweRankEmbed (137M or 7B bi-encoder) with SweRankLLM (7B or
+  32B listwise reranker), both fine-tuned on SweLoc: 67,341 (PR, codebase)
+  pairs from 3387 Python repos, with top-20 consistency filtering and 15 hard
+  negatives per instance. Evaluation is on SWE-Bench-Lite (274 examples) and
+  LocBench (560 examples) against MoatlessTools, SWE-Agent, OpenHands and
+  LocAgent using GPT-4o and Claude-3.5.
+
+
+  SweRankLLM-Large reaches 83.21 file Acc@1 and 88.69 function Acc@10 on
+  SWE-Bench-Lite, versus 77.74 and 77.37 for LocAgent with Claude-3.5, at
+  $0.015 per instance versus $0.66. On issues needing 2-3 function edits
+  LocAgent falls from 82.0% to 47.1% while the retriever holds 77.1%.
+
+
+  Evidence includes ablations on filter threshold K, data fraction, and
+  fine-tuning 3 retrievers (+8.1 to +17.4) and 6 Qwen2.5 rerankers, plus a
+  downstream SWE-Fixer repair test (24.5 vs 22.6 pass@1, oracle 25.9). Agent
+  baselines are reported numbers, not cost-matched reruns.
+
+
+  Limits: Python only, function-level granularity, and issues touching more
+  than 5 functions stay in single-digit accuracy for every method. Repair
+  remains bounded by the editing model, not localization.
+brief_generated_at: 2026-09-23
+brief_model: claude-opus-5
+brief_source: full-text

@@ -1,0 +1,40 @@
+id: automated-unit-test-generation-domain-specific-java-libraries-nlp-toolkits
+ref: CLM-0338
+capability: code-generation
+technique: inject-self-refined-llm-test-snippets-search-stalls
+statement: >-
+  For automated unit test generation on domain-specific Java libraries (NLP
+  toolkits), injecting LLM-written test snippets into a search-based
+  generator's population when the evolutionary search stagnates yields
+  higher branch and line coverage than either the search tool alone or the
+  LLM alone, with the LLM contributing object-construction sequences and
+  domain-shaped string inputs that random search does not reach.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "100 classes from five Java NLP libraries; GPT-4o-class LLM; EvoSuite/DynaMOSA as the search backbone; 900s budget, 5 runs per class. Gains are smaller on mutation score and absent "
+sources:
+  - source: arxiv-2609-14784
+    stance: supports
+    note: >-
+      Validated by: Median branch coverage 68.60% vs 58.03% (CodaMosa-J),
+      53.33% (EvoSuite), 32.64% (LLM-only); Wilcoxon p<<0.05, A12 0.72-0.85;
+      mutation score 63.0% vs 52.0/58.0/38.26. Ablations show class-level
+      context, self-refinement, and repeated calls each contribute;
+      LLM-generated strings alone gave -1.4%.. Measured: 100 classes, 5 runs
+      each, three baselines including a re-implemented CodaMOSA, with
+      Wilcoxon, Friedman/Conover, A12 and bootstrap CIs. Per-class wins
+      36-59 with 2-3 losses. Single LLM family for the main configuration;
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-23
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A replication on the
+  same or comparable domain-specific library corpus in which the hybrid
+  injection gives no coverage gain over the search-based tool alone, or in
+  which an LLM-only baseline with equal compute matches it.
+submitted_by: agent:claude-opus-5@Russ-Miller
