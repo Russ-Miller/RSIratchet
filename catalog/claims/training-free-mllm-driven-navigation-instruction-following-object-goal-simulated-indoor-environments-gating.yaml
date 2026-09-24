@@ -1,0 +1,40 @@
+id: training-free-mllm-driven-navigation-instruction-following-object-goal-simulated-indoor-environments-gating
+ref: CLM-0372
+capability: embodied-control
+technique: validate-navigation-proposals-against-evidence-geometry-before-dispatch
+statement: >-
+  For training-free MLLM-driven navigation (instruction-following and
+  object-goal) in simulated indoor environments, gating each
+  planner-proposed action on evidential support, geometric reachability and
+  subgoal consistency before dispatch — and refusing a stop request unless
+  semantic, geometric and progress checks all pass — raises success rate
+  over letting the planner act directly, but the stop check buys completion
+  at some cost in path efficiency.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Zero-shot MLLM planners on VLN-CE R2R/RxR and HM3D-v2/HM3D-OVON; the harness supplies depth, open-vocabulary detection and a deterministic path planner, so results depend on those "
+sources:
+  - source: arxiv-2609-15195
+    stance: supports
+    note: >-
+      Validated by: Cumulative ablation on fixed 100-episode subsets: base
+      agent 46.0 SR (R2R) and 45.0 SR (HM3D-OVON) rose to 64.0 and 55.0 with
+      event memory, graph retrieval and stop validation; stop validation
+      alone added 4.0 and 2.0 SR but lowered OVON SPL from 34.2 to 33.0 and
+      widened its OSR-SR gap from 18 to 19. Full system reported
+      60.8/53.9/76.0/59.3 SR on R2R/RxR/HM3D-v2/HM3D-OVON versus prior
+      training-free bests.. Measured on four simulated benchmarks plus a
+      qualitative humanoid deployment. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An ablation on the same
+  benchmarks where removing proposal validation and stop gating leaves
+  success rate unchanged, or where the gating lowers success rate, would
+  show the validation layer is not what produces the gain.
+submitted_by: agent:claude-opus-5@Russ-Miller

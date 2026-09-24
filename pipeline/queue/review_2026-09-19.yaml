@@ -30,6 +30,17 @@ candidates:
       concordance and insight in its explanations. These results suggest that large language models
       may have the potential to assist with medical education, and potentially, clinical
       decision-making."
+    verdicts:
+      - capability: domain-knowledge
+        about_capability: true
+        direction: measures
+        confidence: high
+        rationale: The paper benchmarks a general model against a medical licensing exam's human passing
+          threshold without proposing a technique or reporting a regression.
+        scope_condition: ChatGPT (2023) on USMLE Steps 1, 2CK, 3 multiple-choice licensing exam questions,
+          no domain-specific fine-tuning
+        classified_at: 2026-09-23
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W4384071683
     score: 0
     signals:
@@ -106,6 +117,27 @@ candidates:
       medicine. Our human evaluations reveal limitations of today’s models, reinforcing the
       importance of both evaluation frameworks and method development in creating safe, helpful LLMs
       for clinical applications.
+    verdicts:
+      - capability: domain-knowledge
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: The paper introduces instruction prompt tuning yielding Med-PaLM, which improves
+          medical-domain accuracy and human-rated answer quality over the general model while still
+          trailing clinicians.
+        scope_condition: PaLM/Flan-PaLM 540B on medical QA benchmarks (MultiMedQA) with instruction prompt
+          tuning; human evaluation against clinician answers
+        classified_at: 2026-09-23
+        model: claude-opus-5
+      - capability: factual-recall
+        about_capability: false
+        direction: not_applicable
+        confidence: medium
+        rationale: The paper benchmarks medical QA performance and alignment of a domain-adapted LLM, not
+          recall accuracy as a function of fact frequency, entity popularity, or scale in the sense
+          of the capability's scope.
+        classified_at: 2026-09-23
+        model: claude-opus-5
   - openalex_id: s2:a09ca5a76e94086902567838952f3516ac1217ad
     score: 0
     signals:
@@ -141,6 +173,18 @@ candidates:
       GFS identifies, before any fine-tuning, the initially safe model that retains the most refusal
       after small-scale LoRA fine-tuning. These results establish GFS as a practical pre-deployment
       diagnostic for flagging fragile refusal behavior without running an attack.
+    verdicts:
+      - capability: fine-tuning-retention
+        about_capability: true
+        direction: measures
+        confidence: high
+        rationale: The paper introduces a diagnostic that characterizes and predicts refusal fragility under
+          downstream fine-tuning rather than improving or degrading retention.
+        supports_claim_id: refusal-learned-alignment-tuning-lives-low-rank-subspace-hidden-state-activations
+        scope_condition: 21 instruction-tuned LLMs, 3B-32B, six alignment recipes; small-scale benign LoRA
+          fine-tuning
+        classified_at: 2026-09-23
+        model: claude-opus-5
   - openalex_id: s2:67b96ff06454a37a13887599780bc66dbe3fd463
     score: 0
     signals:
@@ -176,12 +220,26 @@ candidates:
       preservation. While our analysis indicates ROPD is not entirely immune to template shifts, its
       performance degradation is negligible compared to existing methods, establishing a new
       standard for robust LLM realignment."
+    verdicts:
+      - capability: fine-tuning-retention
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: The paper proposes routing-based on-policy distillation that restores refusal after a
+          poisoned fine-tune while preserving downstream skill better than baselines that
+          catastrophically forget.
+        supports_claim_id: safety-realignment-after-poisoned-fine-tune-brittle-three-ways-existing
+        scope_condition: Safety realignment after poisoned fine-tuning, three datasets and three base models
+          with varying alignment strength, under prompt-template mismatch
+        classified_at: 2026-09-23
+        model: claude-opus-5
   - openalex_id: s2:2d5fbc53c2a7d142eeb9a53863413b7688a8b00f
     score: 0
     signals:
       - review-proposed
     capabilities:
       - fine-tuning-retention
+      - domain-knowledge
     title: "More Than Catastrophic Forgetting: Integrating General Capabilities For Domain-Specific LLMs"
     date: 2024-05-28
     arxiv_id: "2405.17830"
@@ -210,6 +268,29 @@ candidates:
       and general competencies according to the attention. Extensive experiments are conducted on
       the proposed tasks. The results exhibit the significance of our setting, and the effectiveness
       of our method.
+    verdicts:
+      - capability: fine-tuning-retention
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper addresses loss/integration of general capabilities after domain fine-tuning and
+          proposes ALoRA, an attention-augmented LoRA that better retains and utilizes general
+          skills alongside domain knowledge.
+        scope_condition: LoRA fine-tuning of LLMs on legal domain tasks requiring both general capabilities
+          and domain knowledge
+        classified_at: 2026-09-23
+        model: claude-opus-5
+      - capability: domain-knowledge
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes ALoRA, an attention-augmented LoRA that better fuses general
+          capabilities with domain knowledge and reports improved performance on domain-specific
+          legal tasks.
+        scope_condition: LoRA-style fine-tuning of LLMs for the legal domain on three custom task groups
+          requiring both domain knowledge and general capabilities
+        classified_at: 2026-09-23
+        model: claude-opus-5
   - openalex_id: s2:e3b40832359007fcacc156d7f7cefad905496368
     score: 0
     signals:
@@ -244,12 +325,24 @@ candidates:
       highest rejection rate after two rounds of interaction, nearly doubling the performance of the
       second-best method. Remarkably, It also improves honesty on the retained set. We release our
       data and code at https://github.com/renjiegu."
+    verdicts:
+      - capability: fine-tuning-retention
+        about_capability: true
+        direction: measures
+        confidence: high
+        rationale: It benchmarks honesty/utility retention after unlearning fine-tuning across methods and
+          families, finding all fail, while also proposing ReVa to improve refusal acknowledgment.
+        supports_claim_id: unlearning-methods-make-model-answer-i-don-t-know
+        scope_condition: 9 unlearning methods across 3 LLM families, Q&A and MCQ forget/retain evaluation
+        classified_at: 2026-09-23
+        model: claude-opus-5
   - openalex_id: s2:410d518d5d353bca8d54977b250f08546a7745b3
     score: 0
     signals:
       - review-proposed
     capabilities:
       - multilingual-disparity
+      - code-generation
     title: "UA-Code-Bench: A Competitive Programming Benchmark for Evaluating LLM Code Generation in
       Ukrainian"
     date: 2025-11-03
@@ -278,6 +371,28 @@ candidates:
       way for future research on multilingual code generation and reasoning-enhanced models. The
       benchmark, data parsing, preparation, code generation, and evaluation scripts are available at
       https://huggingface.co/datasets/NLPForUA/ua-code-bench.
+    verdicts:
+      - capability: code-generation
+        about_capability: true
+        direction: measures
+        confidence: high
+        rationale: The paper introduces a benchmark and reports pass rates, uniqueness, and efficiency
+          without proposing a technique or reporting a regression.
+        scope_condition: 13 proprietary/open LLMs, one-shot Python solutions to 500 Ukrainian-language
+          competitive programming problems from Eolymp, hidden-test evaluation
+        classified_at: 2026-09-23
+        model: claude-opus-5
+      - capability: multilingual-disparity
+        about_capability: true
+        direction: measures
+        confidence: medium
+        rationale: The paper introduces a benchmark measuring LLM performance on tasks stated in a
+          low-resource language, reporting that top models solve only half the problems, without
+          proposing a fix.
+        scope_condition: 13 proprietary and open-source LLMs, one-shot Python code generation on 500
+          Ukrainian-language competitive programming problems
+        classified_at: 2026-09-23
+        model: claude-opus-5
   - openalex_id: s2:3eadeada86853ee6b04847064318032f555e17c9
     score: 0
     signals:
@@ -307,6 +422,16 @@ candidates:
       associated challenges. (4) Abundant resources: we collect abundant open-source resources,
       including relevant papers, data corpora, and leaderboards. We hope our work can provide the
       community quick access and spur breakthrough research in MLLMs."
+    verdicts:
+      - capability: multilingual-disparity
+        about_capability: true
+        direction: measures
+        confidence: medium
+        rationale: It is a survey reviewing multilingual LLM alignment progress and challenges rather than
+          proposing or breaking a technique.
+        scope_condition: Survey of multilingual LLM alignment approaches, taxonomies, and resources
+        classified_at: 2026-09-23
+        model: claude-opus-5
   - openalex_id: s2:7dd12766fba8b6d718aeb0c665486e41773cfaa1
     score: 0
     signals:
@@ -340,6 +465,15 @@ candidates:
       English. These LLMs could be valuable resources for medical education and clinical support in
       non-English speaking areas. However, Gemini 1.5 Pro and Command R + show potential but need
       significant improvement to compete with the best-performing models.
+    verdicts:
+      - capability: multilingual-disparity
+        about_capability: false
+        direction: not_applicable
+        confidence: medium
+        rationale: The paper benchmarks LLMs on a Turkish medical exam without a cross-language comparison
+          on identical tasks; it is a domain application study.
+        classified_at: 2026-09-23
+        model: claude-opus-5
   - openalex_id: s2:ae72d58fd5510984f1776b22a338912e80fe0ef4
     score: 0
     signals:
@@ -361,12 +495,23 @@ candidates:
     abstract: >2-
       
        Large Language Models (LLMs) play a critical role in how humans access information. While their core functionality relies on the ability to comprehend written requests, our understanding of this ability is currently constrained, because most benchmarks evaluate LLMs in high-resource languages that are predominantly spoken by Western, Educated, Industrialized, Rich, and Democratic (WEIRD) communities. The default assumption is that English is the best-performing language for LLMs, while smaller, low-resource languages are linked to less natural or reliable outputs, even in multilingual, state-of-the-art models. To track fluctuations in the comprehension abilities of LLMs, we prompt 3 popular models across 12 languages, representing the Indo-European, Afro-Asiatic, Turkic, Sino-Tibetan, and Japonic language families. Our results suggest that the models exhibit remarkable accuracy across typologically diverse languages, yet they may fall behind human baselines, albeit to different degrees. Contrary to what was expected, English is not the best-performing language, as it was systematically outperformed by several Romance languages, even lower-resource ones. We frame the results by highlighting the role of factors that drive LLM performance, such as tokenization, language distance from Spanish and English, size of training data, and data origin in high- vs. low-resource languages and WEIRD vs. non-WEIRD communities.
+    verdicts:
+      - capability: multilingual-disparity
+        about_capability: true
+        direction: measures
+        confidence: high
+        rationale: The paper benchmarks cross-lingual comprehension performance without proposing a fix or
+          reporting a regression, finding English is not the top language.
+        scope_condition: 3 popular LLMs prompted on comprehension tasks across 12 languages from 5 language families
+        classified_at: 2026-09-23
+        model: claude-opus-5
   - openalex_id: s2:e1784a45d6c15a9472c24cb6528baa2e6ef96d06
     score: 0
     signals:
       - review-proposed
     capabilities:
       - multilingual-disparity
+      - prompt-injection
     title: An Empirical Evaluation of Prompt Injection Vulnerabilities in Large Language Models Across
       Multilingual and Obfuscated Attack Scenarios
     date: 2026-04-01
@@ -396,12 +541,34 @@ candidates:
       they do not eliminate them. These results highlight persistent challenges in LLM safety and
       underscore the urgent need for stronger defenses and improved security mechanisms to support
       the ethical and secure deployment of LLMs in cybersecurity sensitive contexts.
+    verdicts:
+      - capability: prompt-injection
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper evaluates direct and obfuscated/multilingual jailbreak prompts eliciting
+          harmful content, not instructions embedded in retrieved documents or tool outputs.
+        classified_at: 2026-09-23
+        model: claude-opus-5
+      - capability: multilingual-disparity
+        about_capability: true
+        direction: measures
+        confidence: high
+        rationale: The paper empirically benchmarks safety compliance and finds non-English prompts
+          consistently yield higher malicious compliance than English, characterizing a multilingual
+          alignment gap without proposing a fix.
+        supports_claim_id: across-six-frontier-chat-models-asked-produce-phishing-deceptive
+        scope_condition: Six frontier chat LLMs (DeepSeek, GPT, Gemini, Grok, Llama, Qwen) under direct and
+          multi-stage prompt-injection attacks across multiple languages and character encodings
+        classified_at: 2026-09-23
+        model: claude-opus-5
   - openalex_id: s2:85bce103ea247ca2f68fa1245b8e44ac323606b2
     score: 0
     signals:
       - review-proposed
     capabilities:
       - planning
+      - long-horizon-execution
     title: Safety Aware Task Planning via Large Language Models in Robotics
     date: 2025-03-19
     arxiv_id: "2503.15707"
@@ -429,6 +596,25 @@ candidates:
       long-horizon tasks involving heterogeneous robotic agents, demonstrating its effectiveness in
       reducing safety violations while maintaining task efficiency. We also verify the task planner
       and safety planner through actual hardware experiments involving multiple robots and a human.
+    verdicts:
+      - capability: planning
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: SAFER adds a safety-agent feedback loop that reduces safety violations in LLM-generated
+          task plans while maintaining efficiency, i.e., it improves the quality of produced plans.
+        scope_condition: LLM-based robotic task planning for long-horizon multi-robot tasks, evaluated on
+          safety violations in generated plans
+        classified_at: 2026-09-23
+        model: claude-opus-5
+      - capability: long-horizon-execution
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper is about embedding safety awareness into robotic LLM task planning, not about
+          varying task length or measuring completion over long horizons.
+        classified_at: 2026-09-23
+        model: claude-opus-5
   - openalex_id: s2:3843469976bd895851bfa08c8208350745bf649f
     score: 0
     signals:
@@ -462,6 +648,19 @@ candidates:
       plans from abstract, and natural language instruction for a mobile manipulator robot to
       execute. We provide real robot video demonstrations on our project page
       https://sayplan.github.io."
+    verdicts:
+      - capability: planning
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes a pipeline (scene-graph semantic search plus iterative replanning
+          against a simulator) that yields executable, grounded long-horizon plans where plain LLM
+          planning fails, i.e., it improves plan validity.
+        scope_condition: LLM task planning over large 3D scene graphs (multi-floor, multi-room) for mobile
+          manipulator robots, with semantic subgraph search, classical path planner, and
+          simulator-feedback iterative replanning
+        classified_at: 2026-09-23
+        model: claude-opus-5
   - openalex_id: s2:2a06620936c10219dbef1122435033ce1476b117
     score: 0
     signals:
@@ -501,6 +700,17 @@ candidates:
       achieves the highest task success rate despite having the smallest number of parameters. In
       tasks involving spatial semantic reasoning, the success rate exceeds that of ReAct by 14.9%.
       Moreover, we demonstrate LightPlanner’s potential to operate on edge devices."
+    verdicts:
+      - capability: planning
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes a planner architecture and fine-tuned lightweight model that raises
+          task planning success rates, e.g. 14.9% over ReAct on spatial semantic reasoning tasks.
+        scope_condition: Lightweight LLMs (1.5B) for robot task planning with parameterized function calls,
+          hierarchical reasoning and memory, trained on LightPlan-40k; tasks of 2-13 action steps
+        classified_at: 2026-09-23
+        model: claude-opus-5
   - openalex_id: s2:809fd2803368801913840712eefba23737d7e64c
     score: 0
     signals:
@@ -537,6 +747,18 @@ candidates:
       that model performance deteriorates as additional layers of conditions or constraints are
       applied across conversation turns, even when accurate retrieved contexts are provided. The
       data and code are available at https://github.com/mtkresearch/RAD-Bench"
+    verdicts:
+      - capability: retrieval-utilization
+        about_capability: true
+        direction: measures
+        confidence: high
+        rationale: The paper introduces a benchmark and reports degradation across turns with accurate
+          contexts, characterizing rather than changing retrieval utilization.
+        supports_claim_id: accurate-retrieved-context-supplied-every-turn-three-turn-dialogue-model
+        scope_condition: Multi-turn (three-turn) retrieval-augmented dialogue benchmark with accurate
+          retrieved contexts, evaluated on commonly used LLMs
+        classified_at: 2026-09-23
+        model: claude-opus-5
   - openalex_id: s2:ba55b7c2fb3ea3db882338344bfaf25ebacfd5ed
     score: 0
     signals:
@@ -570,12 +792,24 @@ candidates:
       language fluency. Comparative results show stable improvements across multiple generation
       quality metrics. This confirms the effectiveness and necessity of coordinated semantic
       alignment and evidence constraint modeling in retrieval augmented generation tasks.
+    verdicts:
+      - capability: retrieval-utilization
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes an evidence-constraint mechanism that forces generation to depend on
+          retrieved evidence and reports stable improvements in factual reliability.
+        scope_condition: LLM-based RAG generation with explicit evidence constraint mechanism, evaluated on
+          generation quality/factuality metrics
+        classified_at: 2026-09-23
+        model: claude-opus-5
   - openalex_id: s2:405ef1bdef49b959aac958374f33d40e44e309d6
     score: 0
     signals:
       - review-proposed
     capabilities:
       - critique
+      - code-generation
     title: "RefineCoder: Iterative Improving of Large Language Models via Adaptive Critique Refinement
       for Code Generation"
     date: 2025-02-13
@@ -602,6 +836,28 @@ candidates:
       on multiple code generation benchmarks. Compared to the baselines of the same size, our
       proposed RefineCoder series can achieve comparable or even superior performance using less
       data.
+    verdicts:
+      - capability: code-generation
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: The paper proposes Adaptive Critique Refinement training that yields continuous
+          performance gains on multiple code generation benchmarks with less data.
+        scope_condition: Small/mid-size code LLMs (RefineCoder series) fine-tuned with iterative adaptive
+          critique refinement, evaluated on function-level code generation benchmarks
+        classified_at: 2026-09-23
+        model: claude-opus-5
+      - capability: critique
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper shows that external model critique of self-generated code, used iteratively in
+          training, yields continuous gains on code benchmarks, i.e., model critique improving
+          downstream output quality.
+        scope_condition: Code-generation LLMs (small/mid-size) fine-tuned iteratively with LLM-as-a-Judge
+          scoring and LLM-as-a-Critic feedback on self-generated code
+        classified_at: 2026-09-23
+        model: claude-opus-5
   - openalex_id: s2:9f1522f81661f476b1f259d310fbd164cc78e1e8
     score: 0
     signals:
@@ -621,12 +877,23 @@ candidates:
        Large Language Models (LLMs) are increasingly used as
        judges
        to evaluate, rank, and critique AI-generated text and code. This survey provides a comprehensive overview of recent advances (2020–early 2026) in LLM-based evaluation, covering techniques, applications, and challenges across domains. We make three main contributions: (1) a unified taxonomy of LLM judging tasks spanning text (summarization, dialogue, factuality, safety) and code (correctness checking, code review, security analysis); (2) a systematic review of prompting strategies (zero/few-shot, rubric-based, pairwise comparison, chain-of-thought) and advanced pipelines (ensemble judges, multi-agent debate, tool-augmented verification); and (3) an analysis of LLM judge quality, documenting systematic biases (length, position, self-preference) and their mitigations. We review practical applications including benchmark evaluation (MT-Bench, Chatbot Arena), data filtering, and reward modeling for RLHF/RLAIF. Key challenges discussed include calibration, fairness, reproducibility, and adversarial robustness. We conclude with future directions emphasizing standardized protocols, uncertainty estimation, and human–AI collaboration. LLM-based judging shows promise for scalable evaluation, but careful design and rigorous validation are essential to ensure these AI judges meet human standards of accuracy and fairness.
+    verdicts:
+      - capability: critique
+        about_capability: true
+        direction: measures
+        confidence: medium
+        rationale: It is a survey characterizing LLM judge agreement with humans and documenting systematic
+          biases rather than proposing a new technique or reporting a regression.
+        scope_condition: Survey of LLM-as-judge literature 2020–early 2026 across text and code evaluation tasks
+        classified_at: 2026-09-23
+        model: claude-opus-5
   - openalex_id: s2:5f2dbd43ed12147b5d97a6978156779dddbce93a
     score: 0
     signals:
       - review-proposed
     capabilities:
       - critique
+      - judge-position-bias
     title: "Evaluating Judges as Evaluators: The JETTS Benchmark of LLM-as-Judges as Test-Time Scaling
       Evaluators"
     date: 2025-04-21
@@ -653,6 +920,26 @@ candidates:
       in reranking, they are consistently worse than process reward models in beam search
       procedures. Furthermore, though unique to LLM-judges, their natural language critiques are
       currently ineffective in guiding the generator towards better responses."
+    verdicts:
+      - capability: critique
+        about_capability: true
+        direction: measures
+        confidence: high
+        rationale: This is the JETTS benchmark paper itself, measuring judge effectiveness as test-time
+          scaling evaluators and finding critiques ineffective for refinement.
+        supports_claim_id: used-steer-test-time-compute-generative-llm-judges-7b-70b-rerank
+        scope_condition: 10 judge models 7B-70B with 8 generators 6.7B-72B on math, code, instruction
+          following in reranking, beam search, and critique refinement
+        classified_at: 2026-09-23
+        model: claude-opus-5
+      - capability: judge-position-bias
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The benchmark measures judge utility for test-time scaling (reranking, beam search,
+          refinement), not positional/verbosity/self-enhancement bias in judging.
+        classified_at: 2026-09-23
+        model: claude-opus-5
   - openalex_id: s2:1c21637abd7557f37fea7b45ffe3680784957536
     score: 0
     signals:
@@ -684,6 +971,18 @@ candidates:
       validation study. Results show that UX judging is neither saturated nor one dimensional:
       models differ meaningfully in report actionability, exhibit distinct rubric-level repair
       signatures, vary in fixture-level reliability, and trade leadership across surface categories"
+    verdicts:
+      - capability: critique
+        about_capability: true
+        direction: measures
+        confidence: high
+        rationale: It introduces a benchmark measuring how actionable model UX critiques are without
+          proposing an improvement method.
+        supports_claim_id: critique-s-worth-measured-whether-fixed-downstream-repair-agent
+        scope_condition: Eight frontier LLMs judging local-first runnable web UI fixtures across ten
+          product-surface families, with repair-lift and blind human validation
+        classified_at: 2026-09-23
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W4394015350
     score: 0
     signals:
@@ -723,6 +1022,18 @@ candidates:
       post-processing steps to enhance the effectiveness of the generated test cases which may
       suffer from syntactic or functional errors and may be ineffective in detecting certain types
       of bugs and testing corner cases in PUT s."
+    verdicts:
+      - capability: error-detection
+        about_capability: true
+        direction: improves
+        confidence: low
+        rationale: Augmenting prompts with surviving mutants raises the rate at which LLM-generated tests
+          reveal faulty code (up to 28% more faulty human-written snippets detected), improving
+          error detection in artifacts the model did not produce.
+        scope_condition: LLM-generated unit tests (MuTAP with mutation-augmented prompts) on Python
+          benchmarks of human-written and synthetic buggy code
+        classified_at: 2026-09-23
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W4405543707
     score: 0
     signals:
@@ -755,6 +1066,17 @@ candidates:
       on our findings, we have identified a series of limitations of existing studies. Additionally,
       we have outlined a roadmap highlighting potential opportunities that we believe are pertinent
       and crucial for future research endeavors.
+    verdicts:
+      - capability: error-detection
+        about_capability: true
+        direction: measures
+        confidence: medium
+        rationale: It is a systematic survey categorizing LLM adaptation techniques for vulnerability
+          detection (finding errors in code) and repair, characterizing the state of the art rather
+          than proposing or breaking a technique.
+        scope_condition: Literature review of 58 papers on LLMs for software vulnerability detection and repair
+        classified_at: 2026-09-23
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W4390940921
     score: 0
     signals:
@@ -787,12 +1109,24 @@ candidates:
       Mathematical Olympiad (IMO) gold medallist. Notably, AlphaGeometry produces human-readable
       proofs, solves all geometry problems in the IMO 2000 and 2015 under human expert evaluation
       and discovers a generalized version of a translated IMO theorem in 2004.
+    verdicts:
+      - capability: formal-math
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: AlphaGeometry produces machine-verifiable symbolic-deduction proofs for olympiad
+          geometry, solving 25/30 vs 10 for the prior best, a clear capability improvement.
+        scope_condition: Euclidean plane geometry olympiad problems (IMO-level), neuro-symbolic LM +
+          symbolic deduction engine trained on synthetic data
+        classified_at: 2026-09-23
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W4410407045
     score: 0
     signals:
       - review-proposed
     capabilities:
       - logical-deduction-robustness
+      - domain-knowledge
     title: "Fundamental Capabilities and Applications of Large Language Models: A Survey"
     date: 2025-05-15
     doi: https://doi.org/10.1145/3735632
@@ -822,6 +1156,25 @@ candidates:
       these insights, we propose evaluation strategies tailored to the essential capabilities
       required in each domain, offering practical guidance for selecting suitable backbone LLMs in
       real-world applications."
+    verdicts:
+      - capability: domain-knowledge
+        about_capability: true
+        direction: measures
+        confidence: medium
+        rationale: It is a survey characterizing which capabilities support domain-specific performance and
+          proposing evaluation strategies, without introducing a technique or reporting a
+          regression.
+        scope_condition: Survey of LLM fundamental capabilities and applications across nine specialist domains
+        classified_at: 2026-09-23
+        model: claude-opus-5
+      - capability: logical-deduction-robustness
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: Broad survey of LLM capabilities and domain applications, not specifically about logical
+          deduction robustness.
+        classified_at: 2026-09-23
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W4403203873
     score: 0
     signals:
@@ -851,6 +1204,15 @@ candidates:
       the field. Furthermore, we illuminate the extensive applications of LLM-based MAS in two
       principal areas: problem-solving and world simulation. Finally, we discuss in detail several
       contemporary challenges and provide insights into potential future directions in this domain."
+    verdicts:
+      - capability: multi-model-coordination
+        about_capability: false
+        direction: not_applicable
+        confidence: medium
+        rationale: It is a broad survey/taxonomy of LLM-based multi-agent systems with no empirical
+          comparison of multi-agent systems against single-model baselines.
+        classified_at: 2026-09-23
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W4406325768
     score: 0
     signals:
@@ -887,6 +1249,7 @@ candidates:
       - review-proposed
     capabilities:
       - multi-model-coordination
+      - planning
     title: Large Language Model Enhanced Multi-Agent Systems for 6G Communications
     date: 2024-08-16
     doi: https://doi.org/10.1109/mwc.016.2300600
@@ -1276,6 +1639,7 @@ candidates:
       - review-proposed
     capabilities:
       - repository-navigation
+      - code-generation
     title: "RepoGraph: Enhancing AI Software Engineering with Repository-level Code Graph"
     date: 2024-10-03
     arxiv_id: "2410.14684"
@@ -1509,6 +1873,7 @@ candidates:
       - review-proposed
     capabilities:
       - abstention-and-self-knowledge
+      - factual-recall
     title: "R-Tuning: Instructing Large Language Models to Say `I Don't Know'"
     date: 2023-11-16
     arxiv_id: "2311.09677"
@@ -1592,6 +1957,7 @@ candidates:
       - review-proposed
     capabilities:
       - abstention-and-self-knowledge
+      - hallucination
     title: Mitigating LLM Hallucinations via Conformal Abstention
     date: 2024-04-04
     arxiv_id: "2405.01563"
@@ -1653,6 +2019,7 @@ candidates:
       - review-proposed
     capabilities:
       - abstention-and-self-knowledge
+      - formal-query-synthesis
     title: Reliable Text-to-SQL with Adaptive Abstention
     date: 2025-02-10
     doi: https://doi.org/10.1145/3709719
@@ -1686,6 +2053,7 @@ candidates:
       - review-proposed
     capabilities:
       - abstention-and-self-knowledge
+      - hallucination
     title: "A Survey on Uncertainty Quantification of Large Language Models: Taxonomy, Open Research
       Challenges, and Future Directions"
     date: 2025-06-07

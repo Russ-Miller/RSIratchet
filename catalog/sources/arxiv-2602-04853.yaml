@@ -1,20 +1,58 @@
 id: arxiv-2602-04853
 ref: SRC-0346
 kind: paper
-title: "Decomposed Prompting Does Not Fix Knowledge Gaps, But Helps Models Say \"I Don't Know\""
+title: Decomposed Prompting Does Not Fix Knowledge Gaps, But Helps Models Say
+  "I Don't Know"
 year: 2026
 date: 2026-02-04
 arxiv_id: "2602.04853"
 url: https://arxiv.org/abs/2602.04853
-tags: [ingested]
-summary: >-
-  Large language models often struggle to recognize their knowledge limits
-  in closed-book question answering, leading to confident hallucinations.
-  While decomposed prompting is typically used to improve accuracy, we
-  investigate its impact on reliability. We evaluate three task-equivalent
-  prompting regimes: Direct, Assistive, and Incremental, across different
-  model scales and multi-hop QA benchmarks. We find that although accuracy
-  gains from decomposition diminish in frontier models, disagreements
-  between prompting regimes remain highly indicative of potential errors.
-  Because factual knowledge is
+tags:
+  - ingested
+summary: "Large language models often struggle to recognize their knowledge
+  limits in closed-book question answering, leading to confident
+  hallucinations. While decomposed prompting is typically used to improve
+  accuracy, we investigate its impact on reliability. We evaluate three
+  task-equivalent prompting regimes: Direct, Assistive, and Incremental,
+  across different model scales and multi-hop QA benchmarks. We find that
+  although accuracy gains from decomposition diminish in frontier models,
+  disagreements between prompting regimes remain highly indicative of
+  potential errors. Because factual knowledge is"
 ingested_at: 2026-09-19
+brief: >-
+  Question decomposition stops improving accuracy once models reach frontier
+  scale, but disagreement between direct and decomposed answers becomes a
+  strong error detector. The paper turns that into a training-free abstention
+  rule.
+
+
+  Setup: 3 task-equivalent prompting regimes (Direct, Assistive, Incremental)
+  built on manually verified gold decompositions in a DSL, run over 9
+  instruction-tuned LLMs (Mistral-7B through GPT-5.1, Gemini-2.5-Pro/Flash)
+  and 6 multi-hop QA benchmarks filtered to 1,433 verified instances, judged
+  for semantic equivalence by Gemini-2.5-Flash.
+
+
+  Non-frontier models gain heavily from decomposition (Qwen-72B +26.8% on
+  Bamboogle); frontier models are near parity or negative (GPT-5.1 MuSiQue
+  Incremental -7.8). Consistency tracks accuracy up to r = 0.98, and correct
+  Direct answers are up to 50x more common among consistent cases for Gemini
+  Pro. DBA beats the "Are You Sure?" baseline on F1 in 17 of 18 model-dataset
+  pairs, with GPT-5.1 F1 gains of +18 to +28 on Bamboogle, HotpotQA and
+  MuSiQue, mostly via recall (Llama-70B Bamboogle recall 37 to 90).
+
+
+  The comparison is matched on task semantics but not on compute: DBA-A costs
+  4 calls and 5.64x tokens versus 1.26x for AYS, and self-consistency (8
+  calls, 6.51x) is relegated to an appendix. Errors that are stable across
+  regimes escape detection: 67% of frontier disagreement cases had both
+  regimes wrong, and DBA recall drops on CRAG. Decompositions came from a
+  strong teacher or human verification, not the evaluated model.
+
+
+  If you need closed-book abstention without retrieval or fine-tuning,
+  cross-prompt disagreement is a better signal than self-reported confidence,
+  at roughly 5x the tokens.
+brief_generated_at: 2026-09-24
+brief_model: claude-opus-5
+brief_source: full-text

@@ -1,0 +1,43 @@
+id: lvlms-asked-describe-people-llava-instructblip-shikra-masking-attention
+ref: CLM-0356
+capability: visual-grounding
+technique: mask-language-only-self-attention-keep-vision-to
+statement: >-
+  In LVLMs asked to describe people (LLaVA, InstructBLIP, Shikra), masking
+  attention so that text tokens read visual tokens but language-only
+  self-attention is suppressed in late decoder layers lowers gender
+  misattribution while keeping answer coverage high, whereas visual-only or
+  language-only masking scores well on the bias metric only because the
+  model names a gender in under 10% of cases.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Training-free inference-time masking on three open LVLMs; gender attribution judged by keyword matching on FACET, MS COCO and FairFace, with outputs that name no gender excluded fr"
+sources:
+  - source: arxiv-2609-16647
+    stance: supports
+    note: >-
+      Validated by: Gender bias score on FACET (0.9274 to 0.9928 for LLaVA),
+      MS COCO (0.6708 to 0.9978), FairFace (0.5988 to 0.8782 for Shikra),
+      against six prior debiasing baselines; POPE accuracy and MMMU score
+      held near baseline (LLaVA 82.63 to 83.06 POPE, 32.4 to 31.8 MMMU);
+      coverage per attention mode reported (V2L 95.8% vs visual-only 9.3%,
+      language-only 4.9%, L2V 0.2%).. Measured on three LVLMs and three
+      person-attribute benchmarks with per-mode coverage reported, plus
+      POPE/MMMU capability checks and a layer-group grid search. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An LVLM where this masking
+  scheme leaves gender misattribution unchanged at matched coverage, or
+  where the reported gains disappear once coverage is held fixed across
+  modes. Drafted stance toward
+  hallucination-metric-unsupported-claim-rate-computed-over-whatever-claims-model:
+  supports -- A bias score computed only over outputs that commit to a
+  gender rewards evasion: two attention modes reach near-perfect scores at
+  under 10% coverage.
+submitted_by: agent:claude-opus-5@Russ-Miller
