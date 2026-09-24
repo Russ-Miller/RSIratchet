@@ -1,0 +1,42 @@
+id: multi-hop-qa-over-28k-896k-token-haystacks-frozen-qwen2-5
+ref: CLM-0362
+capability: long-context-degradation
+technique: summarize-long-context-parallel-hierarchical-tree
+statement: >-
+  For multi-hop QA over 28k-896k token haystacks with frozen Qwen2.5
+  backbones (7B-72B), summarizing the document in a parallel hierarchical
+  tree — overlapping windows scanned ~5x, raw segments scored 'critical'
+  passed straight to the final answer, and one summarization channel per
+  decomposed sub-question — scores higher than sequential memory-agent and
+  BM25 retrieval baselines without training, and beats an RL-trained memory
+  agent on the out-of-distribution dataset while losing to it
+  in-distribution.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "RULER-style needle-in-haystack multi-hop QA (HotpotQA, 2WikiMultiHopQA) with Qwen2.5-Instruct backbones; costs more total tokens than linear scanning and depends on correct query d"
+sources:
+  - source: arxiv-2609-10441
+    stance: supports
+    note: >-
+      Validated by: F1 and Sub-EM on RULER-HotpotQA and
+      RULER-2WikiMultiHopQA at six context lengths against vanilla
+      Qwen2.5-32B, RAG-BM25, MemAgent-w/o-RL, Mem-alpha-w/o-RL, and
+      RL-trained MemAgent and Mem-alpha; ablations on stride, skip
+      connections, channel count, kernel size.. Measured on two
+      RULER-derived synthetic benchmarks only, single model family, one
+      paper, no significance testing; the OOD claim rests partly on two
+      anecdotal cases and the OOD set was synthesized by the authors using
+      the same protocol. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: On the same benchmarks and
+  backbones, the hierarchical parallel scheme scores no better than
+  single-pass sequential memory agents, or its OOD advantage over the
+  RL-trained agent disappears when the RL agent is trained on a broader mix.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,20 +1,57 @@
 id: arxiv-2512-16698
 ref: SRC-0340
 kind: paper
-title: "Do Multi-Agents Solve Better Than Single? Evaluating Agentic Frameworks for Diagram-Grounded Geometry Problem Solving and Reasoning"
+title: Do Multi-Agents Solve Better Than Single? Evaluating Agentic Frameworks
+  for Diagram-Grounded Geometry Problem Solving and Reasoning
 year: 2025
 date: 2025-12-18
 arxiv_id: "2512.16698"
 url: https://arxiv.org/abs/2512.16698
-tags: [ingested]
-summary: >-
-  Diagram-grounded geometry problem solving is a critical benchmark for
-  multimodal large language models (MLLMs), yet the benefits of multi-agent
-  design over single-agent remain unclear. We systematically compare
-  single-agent and multi-agent pipelines on four visual math benchmarks:
-  Geometry3K, MathVerse, OlympiadBench, and We-Math. For open-source models,
-  multi-agent consistently improves performance. For example, Qwen-2.5-VL
-  (7B) gains +6.8 points and Qwen-2.5-VL (32B) gains +3.3 on Geometry3K, and
-  both Qwen-2.5-VL variants see further gains on OlympiadBench and We-Math.
-  In contrast, the close
+tags:
+  - ingested
+summary: "Diagram-grounded geometry problem solving is a critical benchmark
+  for multimodal large language models (MLLMs), yet the benefits of
+  multi-agent design over single-agent remain unclear. We systematically
+  compare single-agent and multi-agent pipelines on four visual math
+  benchmarks: Geometry3K, MathVerse, OlympiadBench, and We-Math. For
+  open-source models, multi-agent consistently improves performance. For
+  example, Qwen-2.5-VL (7B) gains +6.8 points and Qwen-2.5-VL (32B) gains +3.3
+  on Geometry3K, and both Qwen-2.5-VL variants see further gains on
+  OlympiadBench and We-Math. In contrast, the close"
 ingested_at: 2026-09-19
+brief: >-
+  Splitting diagram-grounded geometry into a perception agent and a reasoning
+  agent helps weaker open-source models and mostly hurts a strong proprietary
+  one. The gain comes from the interpreter's quality, not from decomposition
+  itself.
+
+
+  The pipeline, Interpreter-Solver, has a VLM emit formal predicates from the
+  diagram and question, then an LLM solve from those predicates alone. Tested
+  zero-shot on Geometry3K (601 test problems), MathVerse (788 mini-test),
+  OlympiadBench, and We-Math, with Qwen-2.5-VL 7B/32B (4-bit) and
+  Gemini-2.0-Flash; Phi-4 and Qwen3-8B also serve as solvers.
+
+
+  Multi-agent gives Qwen-2.5-VL 7B +6.8 on Geometry3K and +9.4 on
+  OlympiadBench, 32B +3.3 and +6.67. Gemini-2.0-Flash loses in multi-agent
+  mode on Geometry3K (83.86% vs 85.19%), MathVerse (-0.45) and OlympiadBench
+  (-2.46), gaining only +1.74 on We-Math. Qwen 7B drops -6.0 on MathVerse.
+
+
+  An interpreter ablation isolates the cause: with Qwen-2.5-7B as interpreter
+  the Qwen-3 solver reaches 42.26%, rising to 79.53% with Gemini. A
+  cosine-similarity check on predicate fidelity tracks the same ordering
+  (Gemini 0.849, GPT-4o mini 0.794, Qwen-2.5 0.677).
+
+
+  All interpreters in the main table are Gemini, so open-source "gains" partly
+  reflect a stronger perception model. Zero-shot only, fixed prompts, 4-bit
+  quantization, free-form scoring by Gemini-as-judge.
+
+
+  Treat agentic decomposition as a way to borrow a better perception model,
+  not a general win.
+brief_generated_at: 2026-09-24
+brief_model: claude-opus-5
+brief_source: full-text

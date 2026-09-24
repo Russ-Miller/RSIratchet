@@ -1,0 +1,41 @@
+id: semi-extractive-rag-qa-where-model-prompted-put-quoted-evidence
+ref: CLM-0367
+capability: hallucination
+technique: mask-decoding-verbatim-context-spans-inside-quotes
+statement: >-
+  In semi-extractive RAG QA where the model is prompted to put quoted
+  evidence in brackets, the bracketed spans frequently do not appear
+  verbatim in the retrieved context (as low as 0.37 verbatim rate on a
+  medical dataset with Mistral-Nemo), and masking logits during bracketed
+  spans to only tokens continuing a verbatim context span raises verbatim
+  fidelity to near 1.0 across Llama-3.1-8B, Mistral-Nemo and Qwen3-4B
+  without lowering ROUGE-L or BERTScore much.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Instruction-tuned 4-12B models, gold or gold-plus-distractor contexts, quoted spans marked by bracket trigger tokens; extraction fidelity only guaranteed once the trigger token is "
+sources:
+  - source: arxiv-2609-10046
+    stance: supports
+    note: >-
+      Validated by: New Extraction Faithfulness Accuracy metric plus
+      EM/F1/ALR and ROUGE-L/BERTScore/MAUVE/latency on MedMCQA, MESAQA,
+      QuoteSum and a new SEMAeroSQuAD set, against SEMQA, NEST and a
+      DistilBERT extractive baseline, three LLMs, two runs, with
+      McNemar/Wilcoxon and Holm-Bonferroni correction.. Measured on four
+      datasets and three open models; the fidelity guarantee is
+      near-tautological by construction, so the informative parts are the
+      baseline failure rate and the small fluency cost. Latency rises
+      substantially on long contexts. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Show that unconstrained
+  semi-extractive prompting already yields near-1.0 verbatim quote rates on
+  technical domains, or that logit masking to verbatim spans costs large
+  drops in answer correctness or fluency metrics.
+submitted_by: agent:claude-opus-5@Russ-Miller

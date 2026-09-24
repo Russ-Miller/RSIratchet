@@ -1,0 +1,38 @@
+id: llm-assisted-soc-pipeline-where-injections-planted-log-fields-deterministic
+ref: CLM-0351
+capability: prompt-injection
+technique: deterministic-siem-pre-filter-before-semantic-guardrails
+statement: >-
+  In an LLM-assisted SOC pipeline where injections are planted in log
+  fields, a deterministic SIEM pre-filter (regex decoders plus length
+  truncation) catches only the structurally obvious payloads while an LLM
+  self-check input/output rail catches most semantic ones, so the two layers
+  block disjoint attack classes and neither alone is sufficient.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Prototype AI-SOC with Wazuh decoders plus NeMo Guardrails, local Gemma 3 12B analyst model, 20 hand-crafted injected alerts across four MITRE ATLAS vectors."
+sources:
+  - source: arxiv-2609-10707
+    stance: supports
+    note: >-
+      Validated by: On 20 injected Wazuh alerts, Layer 1 intercepted 3 and
+      Layer 2 intercepted 18 of 20; two evasions remained (one tool-abuse,
+      one instruction-override jailbreak). No baseline of undefended
+      pipeline success rate reported, no latency numbers.. Measured on a
+      single hand-built dataset of 20 injections against one 12B model, with
+      per-layer counts but no undefended baseline, no adaptive attacker, and
+      no latency or false-positive measurement; layer-count split is the
+      only quantitative evidence.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A study showing the
+  deterministic pre-filter catches the same injections the semantic rails
+  catch (or vice versa), so removing one layer leaves attack success
+  unchanged on a larger and adversarially adaptive injection set.
+submitted_by: agent:claude-opus-5@Russ-Miller

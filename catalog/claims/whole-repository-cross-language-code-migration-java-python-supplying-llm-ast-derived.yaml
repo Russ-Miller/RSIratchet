@@ -1,0 +1,43 @@
+id: whole-repository-cross-language-code-migration-java-python-supplying-llm-ast-derived
+ref: CLM-0375
+capability: hallucination
+technique: retrieval-augmented-generation
+statement: >-
+  In whole-repository cross-language code migration (Java to Python),
+  supplying an LLM with AST-derived dependency-graph context and translating
+  parent classes before children lowers the rate of calls to nonexistent
+  APIs relative to vector-similarity retrieval of text chunks, while lexical
+  similarity metrics such as CodeBLEU show no difference between the two.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "One repository (spring-petclinic-genai), Gemini 2.5 Pro at temperature 0; gains concentrated in highly coupled files (controllers, tests) and absent for self-contained POJOs whose "
+sources:
+  - source: arxiv-2609-12464
+    stance: supports
+    note: >-
+      Measured on one repository with one model and one baseline
+      configuration; hallucination is scored by a custom global symbol-table
+      lookup, not by running the code, and the scoring rule was itself
+      changed to accommodate cross-file calls, which could favour the graph
+      arm. Complexity and docstring regressions are reported but their
+      causes (over-engineering, attention dilution) are asserted, not
+      tested.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A repository-migration
+  comparison where graph-structured, topologically ordered context yields
+  the same or higher nonexistent-API rate than chunked vector retrieval with
+  the same model, or where the effect disappears once hallucination is
+  scored by actual compilation and execution rather than symbol-table
+  lookup. Drafted stance toward
+  retrieval-moves-the-trust-boundary-rather-than-removing-it: supports --
+  Fabrication drops sharply when what lands in context is a deterministic
+  dependency graph rather than lexically similar chunks, showing the
+  retrieval channel's content sets the hallucination rate.
+submitted_by: agent:claude-opus-5@Russ-Miller

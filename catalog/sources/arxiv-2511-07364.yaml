@@ -1,20 +1,56 @@
 id: arxiv-2511-07364
 ref: SRC-0333
 kind: paper
-title: "Self-Evaluating LLMs for Multi-Step Tasks: Stepwise Confidence Estimation for Failure Detection"
+title: "Self-Evaluating LLMs for Multi-Step Tasks: Stepwise Confidence
+  Estimation for Failure Detection"
 year: 2025
 date: 2025-11-10
 arxiv_id: "2511.07364"
 url: https://arxiv.org/abs/2511.07364
-tags: [ingested]
-summary: >-
-  Reliability and failure detection of large language models (LLMs) is
+tags:
+  - ingested
+summary: "Reliability and failure detection of large language models (LLMs) is
   critical for their deployment in high-stakes, multi-step reasoning tasks.
   Prior work explores confidence estimation for self-evaluating LLM-scorer
-  systems, with confidence scorers estimating the likelihood of errors in
-  LLM responses. However, most methods focus on single-step outputs and
-  overlook the challenges of multi-step reasoning. In this work, we extend
+  systems, with confidence scorers estimating the likelihood of errors in LLM
+  responses. However, most methods focus on single-step outputs and overlook
+  the challenges of multi-step reasoning. In this work, we extend
   self-evaluation techniques to multi-step tasks, testing two intuitive
-  approaches: holistic scoring and step-by-step scoring. Using two
-  multi-step benchmark datasets, we
+  approaches: holistic scoring and step-by-step scoring. Using two multi-step
+  benchmark datasets, we"
 ingested_at: 2026-09-19
+brief: >-
+  Scoring each step of a multi-step LLM trajectory separately, then taking the
+  minimum confidence, detects failures better than scoring the whole solution
+  holistically, though the gain depends on the task.
+
+
+  The setup: Llama-3.2-11B-Instruct fine-tuned for 2 epochs as the agent on
+  GSM8K (tool-assisted arithmetic, average 5.1 steps) and CoQA
+  (context-grounded dialog, average 13.5 steps), with 7 confidence estimators
+  compared at response-level versus step-level granularity, measured by
+  AUC-ROC and FPR at 0.9 recall.
+
+
+  On CoQA every method improved with step-level scoring: self-certainty went
+  from AUC 0.523 to 0.849 (FPR 0.95 to 0.374), and a regression head over
+  hidden states from 0.689 to 0.952 (+38%). On GSM8K gains were smaller and
+  inconsistent: regression rose 0.843 to 0.907, but GPT-4.1-mini fell 0.880 to
+  0.670 and self-certainty fell 0.649 to 0.395, attributed to tool outputs
+  distorting logits. Step-level scoring also caught more of the 60/879 GSM8K
+  cases with correct answers from flawed reasoning (regression recall 0.367 to
+  0.60).
+
+
+  Evidence is a direct matched comparison of the 2 granularities per method,
+  so the granularity effect is isolated, but it rests on 1 agent model family,
+  2 public benchmarks, and 1 private clinical dataset reported by the authors
+  (AUC 0.940). Preference-based reward models performed near chance
+  throughout.
+
+
+  If you gate multi-step agents on confidence, score per step, unless tool
+  calls sit in the token stream.
+brief_generated_at: 2026-09-24
+brief_model: claude-opus-5
+brief_source: full-text

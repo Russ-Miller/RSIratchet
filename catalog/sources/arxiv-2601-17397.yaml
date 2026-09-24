@@ -1,15 +1,16 @@
 id: arxiv-2601-17397
 ref: SRC-0344
 kind: paper
-title: "CLM-Bench: Benchmarking and Analyzing Cross-lingual Misalignment of LLMs in Knowledge Editing"
+title: "CLM-Bench: Benchmarking and Analyzing Cross-lingual Misalignment of
+  LLMs in Knowledge Editing"
 year: 2026
 date: 2026-01-24
 arxiv_id: "2601.17397"
 url: https://arxiv.org/abs/2601.17397
-tags: [ingested]
-summary: >-
-  Knowledge Editing (KE) has emerged as a promising paradigm for updating
-  facts in Large Language Models (LLMs) without retraining. However,
+tags:
+  - ingested
+summary: Knowledge Editing (KE) has emerged as a promising paradigm for
+  updating facts in Large Language Models (LLMs) without retraining. However,
   progress in Multilingual Knowledge Editing (MKE) is currently hindered by
   biased evaluation frameworks. We observe that existing MKE benchmarks are
   typically constructed by mechanically translating English-centric datasets
@@ -18,3 +19,34 @@ summary: >-
   the target language, failing to reflect the true knowledge distribution of
   LLMs. To addre
 ingested_at: 2026-09-19
+brief: >-
+  Knowledge edits applied in Chinese do not propagate to English, and the
+  reason appears geometric: the two languages' edit directions occupy nearly
+  disjoint subspaces. CLM-Bench tests this with 1,010 CounterFact pairs
+  written Chinese-first across 24 knowledge domains (Chinese Literature
+  largest at 10.1%, Modern Chinese History smallest at 0.8%), then aligned to
+  English, avoiding translation artifacts.
+
+
+  MEMIT, AlphaEdit and PMET were run in EasyEdit on Llama3-8B, Mistral-7B,
+  Qwen2-7B and Llama2-chinese-7B, with 1000 monolingual edits or 2000
+  bilingual triplets under sequential editing. On Llama3-8B with MEMIT,
+  Chinese editing gives zh_score 61.71% and zh Reliability 63.21% while en
+  Reliability falls to 19.55%. Mixed editing reproduces the monolingual values
+  rather than improving them (zh Reliability 63.21% mixed vs 63.21%
+  Chinese-only). At batch 1000, AlphaEdit and PMET drop below 20% on several
+  conditions.
+
+
+  The mechanistic claim is measured on mlp_down_proj deltas at layer 12 of 1
+  model: cosine similarity between Chinese and English deltas 0.027–0.042,
+  neuron Jaccard below 0.32, subspace angle above 60°, while mixed vs summed
+  deltas show cosine above 0.976, relative error below 0.23, subspace angle
+  falling from 63° to 12°.
+
+
+  Only Chinese–English, only batch locate-and-edit methods, one layer
+  analysed. Do not expect bilingual editing to buy cross-lingual consistency.
+brief_generated_at: 2026-09-24
+brief_model: claude-opus-5
+brief_source: full-text

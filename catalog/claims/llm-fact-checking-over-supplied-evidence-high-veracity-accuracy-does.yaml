@@ -1,0 +1,42 @@
+id: llm-fact-checking-over-supplied-evidence-high-veracity-accuracy-does
+ref: CLM-0353
+capability: fact-verification
+technique: supervise-abstention-evidence-ablated-inputs
+statement: >-
+  In LLM fact-checking over supplied evidence, high veracity accuracy does
+  not imply the verdict depends on that evidence: when the model's own cited
+  sentences are iteratively removed, off-the-shelf models (GPT-4o-mini,
+  Gemini-2.5-Flash-Lite, Qwen-2.5-32B, Llama-3.1-8B) keep their
+  SUPPORT/REFUTE labels at a non-zero plateau instead of abstaining, and
+  training with paired supervision that requires NOT_ENOUGH_INFO on the
+  evidence-ablated input removes most of that persistence without losing
+  accuracy.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Sentence-level evidence fact-checking with SUPPORT/REFUTE/NEI labels; FEVER training, tested in-domain and on SciFact, Climate-FEVER, Check-COVID; NEI-labelled claims excluded; gol"
+sources:
+  - source: arxiv-2609-08943
+    stance: supports
+    note: >-
+      Validated by: Measured on four datasets against the base model and
+      standard SFT: Immediate Sensitivity on FEVER rose from 10.75 (SFT) to
+      99.06, label accuracy 83.08 to 95.66 over Llama-3.1-8B; ablations show
+      evidence ablation drives grounding metrics and evidence enhancement
+      drives accuracy; replicated on Qwen-2.5-7B. Hidden-state probes show
+      reduced drift toward the no-evidence representation.. Measured across
+      four datasets and two backbones, with per-component ablations and a
+      label-flip check showing the accuracy decay is a shift to neutral
+      rather than guessing. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A model that keeps
+  SUPPORT/REFUTE labels after its cited evidence is ablated but is shown, by
+  independent means, to have used only that evidence; or REAL-style paired
+  training failing to raise ablation sensitivity on a new backbone/dataset.
+submitted_by: agent:claude-opus-5@Russ-Miller
