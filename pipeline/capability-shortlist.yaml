@@ -1,51 +1,45 @@
 # Consolidated capability candidates. Suggestions, not capabilities.
-generated_at: 2026-09-18
-from_raw_proposals: 20
+generated_at: 2026-09-24
+from_raw_proposals: 18
 recommended:
-  - id: contextual-privacy
-    label: "Deciding what private information to disclose to whom"
-    scope_note: "Covers whether a model withholds, redacts, or appropriately shares sensitive personal data given recipient and context, including leaking memorized personal data; excludes generic refusal of harmful requests and prompt-injected instructions."
+  - id: compression-retention
+    label: "Keeping ability after compression"
+    scope_note: "Covers whether quantized, pruned, or distilled models preserve the full-precision model's accuracy and behavior across reasoning, coding, and agentic tasks; excludes fine-tuning-induced skill loss, which fine-tuning-retention already covers."
     paper_count: 3
-    merged_from: [contextual-privacy, privacy-preserving-disclosure, privacy-leakage]
-    note: "Three independent papers converge on the same agentic privacy judgment, and nothing in the index covers disclosure decisions or personal-data leakage."
-  - id: compression-behavior-retention
-    label: "Keeping behavior after compression or inference shortcuts"
-    scope_note: "Covers whether quantization, pruning, distillation, early exit, or speculative decoding preserves the original model's quality and safety/fairness/robustness behavior; excludes fine-tuning-induced skill loss and pure speed benchmarks."
-    paper_count: 3
-    merged_from: [compression-behavior-retention, inference-optimization-fidelity, reasoning-mode-consistency]
-    note: "Distinct deployment-time analogue of fine-tuning-retention, with several papers testing behavior preservation under serving-side modifications."
-  - id: social-bias
-    label: "Treating social groups even-handedly"
-    scope_note: "Covers systematically different outputs, evaluations, or recommendations conditioned on a subject's demographic group in text or images; excludes culture-specific norm knowledge and judge position/length bias."
+    merged_from: [compression-retention, quantization-robustness]
+    note: "Recurring across papers, clearly scoped, and the natural sibling to the existing fine-tuning-retention entry without overlapping it."
+  - id: visual-robustness
+    label: "Staying accurate on perturbed images"
+    scope_note: "Covers whether vision-language accuracy survives adversarial perturbations and everyday image distortions that humans still read fine; excludes text-based jailbreaks and ordinary grounding or hallucination errors."
     paper_count: 2
-    merged_from: [social-bias, demographic-bias]
-    note: "Recurring, well-defined failure mode that neither cultural-competence nor judge-position-bias captures."
-  - id: structured-extraction
-    label: "Turning documents and free text into structured records"
-    scope_note: "Covers OCR/layout parsing and schema-filling extraction that yields machine-readable tables or records; excludes summarization, QA, and general image description."
-    paper_count: 2
-    merged_from: [structured-information-extraction, document-structure-parsing]
-    note: "Two papers on the same underlying skill of producing faithful structured output from unstructured sources, which no existing entry covers."
-  - id: confidence-calibration
-    label: "Matching expressed confidence to actual accuracy"
-    scope_note: "Covers whether verbalized or token-level confidence tracks correctness (calibration error, selective risk); excludes outright abstention and plain accuracy."
+    merged_from: [visual-adversarial-robustness, visual-perturbation-robustness]
+    note: "Two independent papers converge on the same failure mode, and no existing entry covers input-side visual robustness."
+  - id: specification-gaming
+    label: "Gaming the task instead of solving it"
+    scope_note: "Covers agents satisfying the success check by exploiting scoring shortcuts, editing tests, or reading answer keys rather than doing the intended work; excludes ordinary task failure and refusal behavior."
     paper_count: 1
-    merged_from: [confidence-calibration]
-    note: "Calibration is a graded, separately measured property that abstention-and-self-knowledge only partially covers, so it earns its own slot despite thin evidence here."
+    merged_from: [specification-gaming]
+    note: "Only one paper here, but reward hacking is a distinct, heavily discussed agentic failure that none of goal-conflict-safety, strategic-deception, or evaluation-validity actually names."
+  - id: selective-unlearning
+    label: "Removing specific knowledge without collateral damage"
+    scope_note: "Covers targeted forgetting of a fact, behavior, or API from the weights while preserving neighboring knowledge and general ability; excludes adding or updating knowledge and inference-time filtering."
+    paper_count: 1
+    merged_from: [selective-unlearning]
+    note: "Coherent and complementary to knowledge-updating, which covers absorbing knowledge but not removing it."
 set_aside:
-  - id: chart-and-diagram-reasoning
-    note: "Largely a task domain sitting between visual-grounding and multi-step-reasoning, with only one paper behind it."
-  - id: structured-graphics-generation
-    note: "Narrow generation task domains rather than a general capability, and mostly reducible to code-generation plus visual grounding."
-  - id: vulnerability-detection
-    note: "Already sits inside the overlap of error-detection and secure-coding."
-  - id: training-data-membership-inference
-    note: "A measurement technique about models rather than a capability the model is asked to exercise."
-  - id: generation-understanding-consistency
-    note: "One-off framing tied to a specific unified-model architecture."
-  - id: representation-readout-gap
-    note: "Interpretability finding adjacent to explanation-faithfulness, not a trackable capability on its own."
-  - id: convergent-clue-integration
-    note: "A single puzzle-style framing that multi-step-reasoning and decomposition already cover."
-  - id: human-ai-complementarity
-    note: "Genuinely interesting but a single study, and it is closer to an evaluation design question than a model capability."
+  - id: low-level-visual-perception
+    note: "Substantially covered by the existing visual-grounding entry, and the cross-modal framing is a one-off evaluation design."
+  - id: code-quality-beyond-correctness
+    note: "Single-paper framings that sit between the existing code-generation and software-architecture entries without enough recurring evidence to justify their own slots."
+  - id: input-corruption-robustness
+    note: "Two unrelated one-off task setups forced together; neither has recurring evidence as a capability."
+  - id: backdoor-trigger-robustness
+    note: "One paper, and it is closer to a supply-chain attack technique than a model capability the index tracks."
+  - id: action-authorization
+    note: "One-off framing largely spanned by the existing prompt-injection, goal-conflict-safety, and tool-use entries."
+  - id: evidence-independence
+    note: "Narrow single-paper probe that fact-verification and retrieval-utilization already reach."
+  - id: regulatory-compliance-reasoning
+    note: "This is a task domain that domain-knowledge and procedure-following already cover."
+  - id: human-behavior-simulation
+    note: "Two distinct one-off social-science framings rather than a single recurring capability with converging evidence."

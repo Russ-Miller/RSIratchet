@@ -1,0 +1,39 @@
+id: long-horizon-llm-agents-environments-where-erroneous-action-changes-world
+ref: CLM-0365
+capability: long-horizon-execution
+technique: roll-back-environment-keep-distilled-reflection
+statement: >-
+  For long-horizon LLM agents in environments where an erroneous action
+  changes world state, restoring an earlier checkpoint and carrying forward
+  a structured reflection memory that excludes branch-local state claims
+  beats either intervention alone, because reflection alone cannot undo
+  environmental damage and rollback alone re-explores the same failure.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Training-free test-time control on ALFWorld, ScienceWorld and GAIA with Qwen3-14B and DeepSeek-V3, where environment and workspace state can be checkpointed and restored; same LLM "
+sources:
+  - source: arxiv-2609-18304
+    stance: supports
+    note: >-
+      Validated by: Success rate on ALFWorld, ScienceWorld (plus dense
+      reward) and GAIA against ReAct, Reflexion, LATS, Self-Refine and
+      GA-Rollback under matched budgets: average SR 47.00 vs 43.91 best
+      baseline (Qwen3-14B) and 69.43 vs 62.86 (DeepSeek-V3); ablations give
+      76.75 SR vs 70.48 reflection-only and 69.37 rollback-only on
+      ScienceWorld, with 0.92 rollbacks per task vs 2.9 for GA-Rollback..
+      Measured on three benchmarks with two backbones and component
+      ablations that isolate rollback from reflection; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-25
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An ablation on the same
+  benchmarks where reflection-only or rollback-only matches or exceeds the
+  combined method at equal interaction and auxiliary-call budget, or where
+  the gain disappears once the memory is allowed to include current-state
+  claims.
+submitted_by: agent:claude-opus-5@Russ-Miller

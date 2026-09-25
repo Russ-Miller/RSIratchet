@@ -1,20 +1,63 @@
 id: arxiv-2405-01563
 ref: SRC-0309
 kind: paper
-title: "Mitigating LLM Hallucinations via Conformal Abstention"
+title: Mitigating LLM Hallucinations via Conformal Abstention
 year: 2024
 date: 2024-04-04
 arxiv_id: "2405.01563"
 url: https://arxiv.org/abs/2405.01563
-tags: [ingested]
-summary: >-
-  We develop a principled procedure for determining when a large language
-  model (LLM) should abstain from responding (e.g., by saying"I don't know")
-  in a general domain, instead of resorting to possibly"hallucinating"a
+tags:
+  - ingested
+summary: We develop a principled procedure for determining when a large
+  language model (LLM) should abstain from responding (e.g., by saying"I don't
+  know") in a general domain, instead of resorting to possibly"hallucinating"a
   non-sensical or incorrect answer. Building on earlier approaches that use
-  self-consistency as a more reliable measure of model confidence, we
-  propose using the LLM itself to self-evaluate the similarity between each
-  of its sampled responses for a given query. We then further leverage
-  conformal prediction techniques to develop an abstention procedure that
-  benefits from rigorous the
+  self-consistency as a more reliable measure of model confidence, we propose
+  using the LLM itself to self-evaluate the similarity between each of its
+  sampled responses for a given query. We then further leverage conformal
+  prediction techniques to develop an abstention procedure that benefits from
+  rigorous the
 ingested_at: 2026-09-19
+brief: >-
+  Self-consistency across sampled answers, scored by the model itself, gives a
+  better abstention signal than sequence log-probability, and conformal risk
+  control turns that signal into a hallucination rate with a distribution-free
+  upper bound. The advantage over log-probability appears only when answers
+  are long.
+
+
+  The setup: a Gemini Pro model on 2 closed-book QA sets, Temporal Sequences
+  from BIG-bench (4000 question-answer pairs, many long answers) and TriviaQA
+  (1000 pairs, short answers). For each query the greedy response is the
+  reference, k-1 = 10 more are sampled at temperature 0.9, and the score is
+  the number of sampled responses the LLM judges similar to the reference
+  (match count), or an expected count read off token log-probabilities.
+  Thresholds are calibrated by CRC or 3 RCPS bounds (empirical Bernstein,
+  Hoeffding-Bentkus, Bernoulli KL).
+
+
+  On Temporal Sequences at alpha = 0.05 and alpha = 0.1, log-probability
+  scoring gives a worse abstention-error trade-off at any given calibration
+  method once the calibration set is large. On TriviaQA at alpha = 0.1 and
+  alpha = 0.2, log-probability is competitive, somewhat better at 0.1 and
+  worse at 0.2. CRC and RCPS differ negligibly; empirical Bernstein is worse;
+  the uncalibrated baseline violates the risk target on small calibration
+  sets.
+
+
+  Evidence is measured, with calibration sizes varied, 10 resamples with
+  replacement, 20% held out, and a bound comparison that isolates the
+  calibration method from the score. Weaknesses: 1 model, 2 datasets, no
+  human-rated hallucination endpoint beyond 100 manually inspected pairs per
+  dataset used to set the match threshold, and the automatic match function is
+  itself the same LLM. Match-function calibration left 4 mistakes in 100 on
+  Temporal Sequences and 2 on TriviaQA, so reported error rates understate
+  truth by up to 5 and 1 percentage points.
+
+
+  If you already sample multiple responses, this gives you a risk-bounded
+  abstention rule for free; do not expect a gain over log-probability on
+  short-answer tasks.
+brief_generated_at: 2026-09-25
+brief_model: claude-opus-5
+brief_source: full-text

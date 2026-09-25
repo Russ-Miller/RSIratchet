@@ -1,0 +1,45 @@
+arxiv_id: "2609.10540"
+title: Programmable World Model
+url: https://doi.org/10.48550/arxiv.2609.10540
+drafted_at: 2026-09-24
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: state-tracking
+statement: In interactive video world models, world state communicated only
+  through prompt switching is not reliably preserved across a rollout —
+  characters that should stay alive vanish and killed ones keep moving —
+  whereas keeping the canonical state in an external deterministic engine and
+  compiling it into pixel-aligned spatial controls for the video model keeps
+  the rendered frames consistent with that state.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Game-style combat scenes rendered from a single reference
+  frame; evaluated on 50 short clips with a VLM judge counting visibly alive
+  characters and checking death events.
+technique: ""
+proposed_technique: Keep world state in an engine, use video model only as renderer
+technique_summary: An agent compiles natural-language instructions into
+  executable programs whose state a lightweight engine maintains as
+  state-augmented 3D oriented bounding boxes, which are deterministically
+  projected into identity, semantic and motion control maps conditioning a
+  pretrained video generator.
+technique_kind: architecture
+technique_validated_by: On CombatStateBench (50 clips), 94% Count Accuracy and
+  98% State Accuracy versus 40.75/8.00 for LingBot-World-V2 and 32.00/58.00
+  for YUME under prompt switching, plus better VBench consistency scores;
+  judged by a VLM given only RGB frames.
+stance_on_existing: supports
+related_claim_id: models-predict-next-steps-well-can-still-hold
+stance_reason: Baselines generate visually plausible next frames while holding
+  an incoherent implicit world state that breaks on entity counts and
+  persistent death states.
+falsifier: An interactive video world model with no external state engine
+  matching ~94% count and ~98% state accuracy on the same benchmark, or the
+  engine-conditioned system losing state consistency on longer rollouts.
+evidence_note: Measured on one self-built 50-clip benchmark against two
+  baselines that lack an instance-level state interface, so the comparison is
+  partly an interface mismatch rather than an isolated test of state
+  externalization; metrics come from a VLM judge and are coarse (counts,
+  any-frame death depiction).
+confidence: medium

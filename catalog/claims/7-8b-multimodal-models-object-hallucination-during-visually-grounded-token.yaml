@@ -1,0 +1,42 @@
+id: 7-8b-multimodal-models-object-hallucination-during-visually-grounded-token
+ref: CLM-0338
+capability: visual-grounding
+technique: calibrate-value-vectors-synergy-attention-heads
+statement: >-
+  In 7-8B multimodal models, object hallucination during visually grounded
+  token generation tracks a shift of the visual-language information ratio
+  toward language inside mixed-modality "synergy" attention heads rather
+  than a shortage of visual-specific heads, and rescaling visual versus
+  language value vectors in those heads causally moves hallucination in both
+  directions.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "7-8B open multimodal models (LLaVA-1.5/NeXT, Qwen2-2.5-3-VL, InternVL) with accessible internals; inference-time intervention with a per-model equilibrium factor; does not help whe"
+sources:
+  - source: arxiv-2609-09206
+    stance: supports
+    note: >-
+      Validated by: POPE F1 87.7 and accuracy 88.3 and MME total 669.8 on
+      LLaVA-1.5-7B versus 85.4/84.0/565.3 beam-search baseline and above ~20
+      published decoding and attention baselines; CHAIR_S 51.0 to 36.9 and
+      CHAIR_I 15.2 to 10.7 with recall and output length maintained; gains
+      repeated on five other backbones; head assignments 92-95% stable
+      across four masking strategies.. Measured on POPE, CHAIR, MME,
+      LLaVA-Bench and MMHal across seven MLLMs, with bidirectional causal
+      intervention and robustness checks over masking strategies and
+      thresholds. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-25
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Show that hallucinated
+  tokens do not differ from correct tokens in the visual-language ratio of
+  synergy heads once head classification is done properly, or that lowering
+  the visual share in synergy heads does not induce hallucination while
+  lowering it in modality-specific heads does; or that the CHAIR gain comes
+  from reduced object coverage.
+submitted_by: agent:claude-opus-5@Russ-Miller

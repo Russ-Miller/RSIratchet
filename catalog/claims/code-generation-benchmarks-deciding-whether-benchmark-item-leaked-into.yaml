@@ -1,0 +1,44 @@
+id: code-generation-benchmarks-deciding-whether-benchmark-item-leaked-into
+ref: CLM-0349
+capability: evaluation-validity
+technique: detect-benchmark-leakage-code-specific-membership-classifier
+statement: >-
+  For code generation benchmarks, deciding whether a benchmark item leaked
+  into a model's training set is done better by a classifier over
+  code-specific signals (test pass rate, CodeBLEU, edit distance,
+  perplexity, CodeBERT embeddings of generated vs reference code) than by
+  perplexity alone, because memorized items show abnormally high functional
+  correctness and similarity to the reference solution, not just low
+  perplexity.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Black-box query access with token log-probabilities; shadow model fine-tuned on a disjoint benchmark subset; small code LLMs (1.3B-3B) as targets; leakage mostly simulated by fine-"
+sources:
+  - source: arxiv-2609-09865
+    stance: supports
+    note: >-
+      Validated by: Eight benchmarks, four target models, against eight MIA
+      baselines: average gains of 0.05-0.16 Precision, 0.06-0.11 Recall,
+      0.17-0.26 MCC, 0.09-0.13 AUC over the strongest baseline per model;
+      recovered over 65% of 108 known leaked APPS samples in StarCoder-7B..
+      Measured on eight benchmarks and four small code models, but
+      membership is mostly created by the authors' own LoRA fine-tuning,
+      which likely leaves stronger memorization traces than incidental
+      pretraining leakage; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-25
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An evaluation where
+  adding functional-correctness and similarity features to a perplexity-only
+  detector gives no improvement in MCC/AUC, or where the classifier's
+  advantage disappears on real (not fine-tuning-simulated) leakage. Drafted
+  stance toward static-code-benchmarks-saturate-need-continuous-refresh:
+  supports -- The paper documents that widely used code benchmarks leak into
+  training data and that leaked items yield inflated pass@1, which is the
+  pressure behind continuous benchmark refresh.
+submitted_by: agent:claude-opus-5@Russ-Miller

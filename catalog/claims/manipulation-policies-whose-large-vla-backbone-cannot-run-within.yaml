@@ -1,0 +1,40 @@
+id: manipulation-policies-whose-large-vla-backbone-cannot-run-within
+ref: CLM-0370
+capability: embodied-control
+technique: slow-chunk-proposal-plus-fast-rl-trained-action
+statement: >-
+  For manipulation policies whose large VLA backbone cannot run within the
+  control period, letting the slow model propose action chunks from a stale
+  observation while a small RL-trained edit policy adjusts and Q-selects
+  among those chunks using the latest observation recovers more performance
+  than applying RL on top of asynchronous imitation-learning schemes alone,
+  and the gap widens as inference delay or environment speed grows.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Dynamic, reactive manipulation at ~30 Hz with sparse binary rewards, small offline demo set, delay no longer than the chunk execution horizon; shown on Kinetix sim tasks and four r"
+sources:
+  - source: arxiv-2609-18207
+    stance: supports
+    note: >-
+      Validated by: Success rate against RLPD, DSRL, DSRL+RTC, EXPO-FT,
+      EXPO-FT+RTC and SFT baselines: best in 10/10 Kinetix environments
+      (96.2% average under 4-step delay, above the 81.4% zero-delay RLPD
+      baseline) and 29/30 average over four real tasks versus 25/30 for the
+      strongest baseline, plus delay and speed sweeps.. Measured on 10
+      Kinetix tasks (4 seeds) and 4 real robot tasks at 30 trials each,
+      against six baselines including two RTC-augmented ones. Baselines were
+      given more gradient updates, which the authors say favors them.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-25
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A latency-matched
+  comparison where RL fine-tuning on an asynchronous imitation policy (e.g.
+  training-time RTC) matches or beats the slow-propose/fast-edit split, or
+  where the edit policy's advantage disappears as delay grows.
+submitted_by: agent:claude-opus-5@Russ-Miller

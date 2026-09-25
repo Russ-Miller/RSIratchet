@@ -1,0 +1,46 @@
+id: 7-13b-multimodal-models-verifying-each-object-claim-frozen-open-vocabulary
+ref: CLM-0337
+capability: visual-grounding
+technique: verify-object-claims-cross-query-semantic-spatial-agreement
+statement: >-
+  For 7-13B multimodal models, verifying each object claim with a frozen
+  open-vocabulary detector lowers object hallucination only if evidence is
+  pooled across semantically equivalent phrasings and checked for spatial
+  agreement (the preferred boxes of different queries overlapping on one
+  instance); a single-query maximum score is a weaker signal, and shuffling
+  the spatial evidence across samples drives its discrimination to chance.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "LLaVA-1.5-7B, mPLUG-Owl2, MiniGPT-4 Vicuna-13B with a frozen OWL-ViT-base verifier; POPE (COCO/A-OKVQA/GQA), MME-Existence, and CHAIR on 500 COCO images; claims reducible to object"
+sources:
+  - source: arxiv-2609-17269
+    stance: supports
+    note: >-
+      Validated by: On LLaVA-1.5-7B, POPE accuracy averaged over three
+      sources rose 1.81 (Popular) and 3.17 (Adversarial) points over
+      vanilla, CHAIRs fell 49.40 to 32.80 and CHAIRi 13.82 to 8.22; a
+      matched-random-deletion control removing the same number of claims
+      only reached CHAIRs 43.40; ablations show single-query 80.20 vs full
+      81.97 GQA-Adversarial accuracy, and shuffling QIRV evidence drops
+      ROC-AUC 63.32 to 50.43. Random-sampling POPE accuracy fell (90.33 to
+      88.54) and recall drops as calibration strength grows.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-25
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An ablation on the same
+  models and benchmarks showing single-query detector verification at a
+  tuned threshold matches full cross-query semantic-spatial verification on
+  CHAIRi and POPE Adversarial accuracy at equal rejection budget, or
+  spatial-evidence shuffling leaving discrimination intact. Drafted stance
+  toward
+  training-free-inference-time-hallucination-interventions-7b-class-vision-language-models-increasing-intervention:
+  supports -- Raising the external-evidence calibration coefficient keeps
+  correcting errors but cuts recall from 84.93% to 72.13% and lowers
+  accuracy, so lower hallucination at high intervention strength again comes
+  with less content committed.
+submitted_by: agent:claude-opus-5@Russ-Miller

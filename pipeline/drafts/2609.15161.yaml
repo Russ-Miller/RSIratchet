@@ -1,0 +1,49 @@
+arxiv_id: "2609.15161"
+title: "EMR: Self-Evolving Medical Multi-Agent System via Experience Mining
+  and Reuse"
+url: https://arxiv.org/abs/2609.15161
+drafted_at: 2026-09-23
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: harness-self-improvement
+statement: "For medical multiple-choice QA with a multi-agent pipeline, mining
+  natural-language lessons from its own past trajectories (both correct and
+  failed) into a reusable library gives a larger accuracy gain than the
+  multi-agent role decomposition itself, and the gain comes mostly from the
+  most abstract tier: removing principle-level entries costs more than
+  removing pattern- or case-level entries."
+kind: observation
+backing_strength: single-paper
+scope_condition: Text-only medical multiple-choice benchmarks (MedQA, MedMCQA,
+  PubMedQA, MMLU/MMLU-Pro medical subsets) with Qwen3-8B and GPT-4o;
+  ground-truth labels available to tag trajectories as success or failure
+  during mining.
+technique: ""
+proposed_technique: Mine tiered lessons from own trajectories, principles first
+technique_summary: After each labelled run, an agent distills successes into
+  'golden' lessons and failures into 'warning' lessons, consolidates them by
+  embedding similarity into a three-tier library (principles, patterns,
+  cases), and retrieves from it top-down at inference.
+technique_kind: process
+technique_validated_by: Accuracy over nine medical QA sets against single-LLM,
+  static multi-agent (MedAgents, MDAgents) and experience-based baselines
+  (ExpeL, ReasoningBank, G-Memory, MDTeamGPT, EvolveR); average accuracy 81.1
+  vs 77.8 for MDAgents on Qwen3-8B and 93.9 vs 92.4 on GPT-4o; ablations
+  remove experience (-6.7 on MedQA) versus removing planner and department
+  agents (-2.9), and remove each tier (principles -4.6, patterns -2.5, cases
+  -1.2).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation on the same benchmarks where removing the role
+  decomposition costs more accuracy than removing the experience library, or
+  where removing case-level entries costs as much as removing principle-level
+  entries.
+evidence_note: Measured on nine multiple-choice sets with two backbones, three
+  runs averaged, with component and tier ablations only on MedQA and MedMCQA
+  with Qwen3-8B. Gains over the strongest prior baseline are small on some
+  sets (+0.6 MedMCQA). No token-cost or matched-compute baseline reported, and
+  the mining uses ground-truth labels, so this is supervised offline
+  adaptation rather than unsupervised self-improvement.
+confidence: low

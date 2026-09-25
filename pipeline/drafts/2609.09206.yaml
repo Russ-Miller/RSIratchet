@@ -1,0 +1,48 @@
+arxiv_id: "2609.09206"
+title: MLLMs Hallucinate when Information Distribution Drifts in Synergy Heads
+url: https://doi.org/10.48550/arxiv.2609.09206
+drafted_at: 2026-09-24
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: In 7-8B multimodal models, object hallucination during visually
+  grounded token generation tracks a shift of the visual-language information
+  ratio toward language inside mixed-modality "synergy" attention heads rather
+  than a shortage of visual-specific heads, and rescaling visual versus
+  language value vectors in those heads causally moves hallucination in both
+  directions.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: 7-8B open multimodal models (LLaVA-1.5/NeXT, Qwen2-2.5-3-VL,
+  InternVL) with accessible internals; inference-time intervention with a
+  per-model equilibrium factor; does not help when visual evidence was already
+  lost in the encoder.
+technique: ""
+proposed_technique: Calibrate value vectors in synergy attention heads
+technique_summary: Classify attention heads by causal noise intervention and
+  counterfactual difference-in-differences, then at decode time rescale the
+  visual and language value vectors of the mixed 'synergy' heads so their
+  information ratio hits a target equilibrium.
+technique_kind: decoding
+technique_validated_by: POPE F1 87.7 and accuracy 88.3 and MME total 669.8 on
+  LLaVA-1.5-7B versus 85.4/84.0/565.3 beam-search baseline and above ~20
+  published decoding and attention baselines; CHAIR_S 51.0 to 36.9 and CHAIR_I
+  15.2 to 10.7 with recall and output length maintained; gains repeated on
+  five other backbones; head assignments 92-95% stable across four masking
+  strategies.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Show that hallucinated tokens do not differ from correct tokens in
+  the visual-language ratio of synergy heads once head classification is done
+  properly, or that lowering the visual share in synergy heads does not induce
+  hallucination while lowering it in modality-specific heads does; or that the
+  CHAIR gain comes from reduced object coverage.
+evidence_note: Measured on POPE, CHAIR, MME, LLaVA-Bench and MMHal across
+  seven MLLMs, with bidirectional causal intervention and robustness checks
+  over masking strategies and thresholds. Single group, no independent
+  replication; recall and length are reported as maintained, which addresses
+  the usual say-less confound, but ratio statistics are shown only for
+  LLaVA-1.5-7B and the equilibrium factor is tuned per model and benchmark.
+confidence: medium

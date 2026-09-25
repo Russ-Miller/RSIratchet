@@ -1,0 +1,40 @@
+id: open-source-llm-agents-driving-ros-robot-having-model-emit
+ref: CLM-0380
+capability: long-horizon-execution
+technique: persist-pseudo-code-plan-restrict-calls
+statement: >-
+  For open-source LLM agents driving a ROS robot, having the model emit a
+  pseudo-code tool-call plan up front, storing it in a persistent
+  scratchpad, and then restricting each tool invocation to the plan's next
+  step raises task success most on the longest multi-step tasks and for the
+  smaller open models (GPT-OSS-20B on the hardest task rose from 35% with a
+  persistent plan alone to 55% with the constraint), while a strong
+  proprietary model gains little.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "ROS-Agent/ROSA-style agentic loop with about eight custom robot tools; three task tiers; 20 trials per cell in Gazebo simulation plus 40 hardware trials on one task; open models GP"
+sources:
+  - source: arxiv-2609-13335
+    stance: supports
+    note: >-
+      Validated by: Four-configuration ablation (prompt only, transient
+      plan, persistent plan, persistent plan plus execution constraint) over
+      three task tiers and four models, 20 trials each; 40 hardware trials
+      comparing repeated tool calls (19.0% to 6.1%), invalid calls (21.7% to
+      8.1%) and execution time against vanilla ROSA; and a 40-trial
+      failure-mode comparison against re-implemented ReAct (17/40 success),
+      CaP (20/40), ROSA (23/40) and MetaTool (30/40).. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-25
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An ablation on the same
+  pipeline where adding the execution constraint to a persistent plan does
+  not raise success on the longest tasks, or where gains are as large for
+  strong proprietary models as for small open ones, or where
+  repeated/invalid tool-call rates are unchanged.
+submitted_by: agent:claude-opus-5@Russ-Miller
