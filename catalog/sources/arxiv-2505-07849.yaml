@@ -6,15 +6,52 @@ year: 2025
 date: 2025-05-07
 arxiv_id: "2505.07849"
 url: https://arxiv.org/abs/2505.07849
-tags: [ingested]
-summary: >-
-  Software issue localization, the task of identifying the precise code
+tags:
+  - ingested
+summary: Software issue localization, the task of identifying the precise code
   locations (files, classes, or functions) relevant to a natural language
   issue description (e.g., bug report, feature request), is a critical yet
   time-consuming aspect of software development. While recent LLM-based
-  agentic approaches demonstrate promise, they often incur significant
-  latency and cost due to complex multi-step reasoning and relying on
-  closed-source LLMs. Alternatively, traditional code ranking models,
-  typically optimized for query-to-code or code-to-code retrieval, struggle
-  with the verbose and failure-descrip
+  agentic approaches demonstrate promise, they often incur significant latency
+  and cost due to complex multi-step reasoning and relying on closed-source
+  LLMs. Alternatively, traditional code ranking models, typically optimized
+  for query-to-code or code-to-code retrieval, struggle with the verbose and
+  failure-descrip
 ingested_at: 2026-09-19
+brief: >-
+  Single-shot retrieve-and-rerank beats multi-step LLM agents at locating the
+  code a GitHub issue refers to, at a fraction of the cost. The bottleneck was
+  training data, not architecture.
+
+
+  SweRank pairs a bi-encoder retriever (SweRankEmbed, 137M and 7B) with a
+  listwise LLM reranker (SweRankLLM, 7B and 32B), both finetuned on SweLoc:
+  67,341 (PR, codebase) pairs mined from 3387 Python repos, with top-K
+  consistency filtering (K=20) and 15 mined hard negatives. Evaluated on
+  SWE-Bench-Lite (274 examples) and LocBench (560) at file, module and
+  function granularity.
+
+
+  SweRankLLM-Large reaches 88.69 function Acc@10 on SWE-Bench-Lite versus
+  77.37 for LocAgent with Claude-3.5, at $0.015 vs $0.66 per instance. The
+  137M retriever (63.14 function Acc@5) beats 7B embedding baselines. On
+  issues touching 2-3 functions LocAgent falls from 82.0% to 47.1% while
+  SweRankEmbed-Large holds 77.1%.
+
+
+  Evidence is measured, with ablations on filter threshold (no filtering hurts
+  vs the pretrained model), data size, and 3 retriever and 6 reranker base
+  models, all improving after SweLoc finetuning. Agent baselines are taken as
+  configured, not budget-matched.
+
+
+  Limits: Python only, repos excluded from the benchmarks, and issues
+  modifying >5 functions stay in single digits for every method. Downstream
+  repair gains are small (24.5 vs 22.6 pass@1; oracle 25.9).
+
+
+  If you are paying for agentic localization, a trained ranker likely
+  dominates it.
+brief_generated_at: 2026-09-25
+brief_model: claude-opus-5
+brief_source: full-text

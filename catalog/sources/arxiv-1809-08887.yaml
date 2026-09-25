@@ -34,3 +34,37 @@ summary: We present Spider, a large-scale, complex and cross-domain semantic
 notes: "Forwarded by Russ 2026-09-19: locator papers: generate a reusable
   regex/SQL/XPath once, run it without the model"
 ingested_at: 2026-09-19
+brief: >-
+  Text-to-SQL accuracy on prior benchmarks was largely template memorization:
+  when the test databases are unseen, the same class of models drops to
+  near-unusable accuracy. Spider isolates this by splitting on databases
+  rather than examples.
+
+
+  The dataset has 10,181 questions and 5,693 unique SQL queries over 200
+  databases spanning 138 domains, written and reviewed by 11 computer science
+  students over about 1,000 hours. Databases average 27.6 columns and 8.8
+  foreign keys. 5 models were run: Seq2Seq, Seq2Seq+Attention,
+  Seq2Seq+Copying, SQLNet, and TypeSQL, each adapted to take the schema as
+  input.
+
+
+  Under example split, TypeSQL reaches 33.0% exact matching on test; under
+  database split its best-model status disappears and it falls to 8.2%, while
+  SQLNet leads at 12.4%. Plain Seq2Seq goes from 9.4% to 3.7%. On extra hard
+  queries the best database-split score is 1.3%. WHERE clauses are the weakest
+  component (19.8 F1 for SQLNet on database split), and accuracy falls as the
+  number of foreign keys in a database grows.
+
+
+  The example-vs-database split is a clean matched comparison on the same
+  data, so the generalization gap is measured, not argued. Caveats: no value
+  prediction, ambiguous and common-sense questions were excluded, execution
+  accuracy is not reported, and the models predate large pretrained LMs.
+
+
+  Use Spider's database split if you want to know whether a parser understands
+  schemas rather than recalls templates.
+brief_generated_at: 2026-09-25
+brief_model: claude-opus-5
+brief_source: full-text

@@ -1,0 +1,39 @@
+id: fine-tuning-7-8b-code-models-llm-synthesized-verilog-instruction-corpus-training
+ref: CLM-0354
+capability: code-generation
+technique: select-training-data-quality-structural-diversity
+statement: >-
+  When fine-tuning 7-8B code models on an LLM-synthesized Verilog
+  instruction corpus, training on a 20-25% subset selected for functional
+  correctness, instruction-solution alignment, and coverage of Verilog
+  structural clusters (AST, CFG, netlist features) yields higher Pass@1 than
+  training on the full corpus, because the automated corpus carries noise
+  and redundancy that filtering removes.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "RTLCoder-27k as the training pool; Qwen2.5-Coder 7B, CodeLlama 7B, SeedCoder 8B with LoRA SFT; VerilogEval-v2, RTLLM, ResBench as tests"
+sources:
+  - source: arxiv-2609-22765
+    stance: supports
+    note: >-
+      Validated by: Average Pass@1 across three benchmarks versus
+      full-dataset training and versus Random, EL2N, Cherry, VeriCoder and a
+      matched-budget random subsample of VeriCoder's filtered pool;
+      18.49-29.43% relative gain over full data, 1.36-7.95% over best
+      baseline; McNemar p<0.01 against Cherry on SeedCoder 8B; ablations per
+      feature group.. Measured on three models and three benchmarks with 20
+      samples per problem, including a matched-budget controlled baseline
+      (VeriCoder_R) and component ablations; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-25
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Training the same models
+  on the full RTLCoder-27k corpus matching or beating the selected subset on
+  Pass@1, or the subset advantage vanishing once the matched-budget
+  random-subsample baseline is tuned or epochs equalized by compute.
+submitted_by: agent:claude-opus-5@Russ-Miller

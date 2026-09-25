@@ -1,0 +1,42 @@
+id: simple-hls-kernel-generation-tasks-85-designs-chstone-machsuite
+ref: CLM-0385
+capability: code-generation
+statement: >-
+  On simple HLS kernel generation tasks (85 designs from CHStone, MachSuite,
+  Polybench, Rosetta, C2HLSC), giving a modest open-source model
+  (gpt-oss-120b) a shell with a C++ compiler for self-verification and
+  iterative refinement saturates the benchmark at pass@10 (100% through
+  synthesis) and exceeds 90% at pass@1, so this class of task no longer
+  separates models; repeated sampling helps the weaker model far more (+60
+  points synthesis pass rate at k=10 for gpt-oss-20b vs +11 for the 120b).
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Single-kernel HLS designs generated from a natural-language spec plus a provided testbench, two gpt-oss models, mini-swe-agent harness with bash and compiler access, N=10 samples; "
+sources:
+  - source: arxiv-2609-09526
+    stance: supports
+    note: >-
+      Measured pass@k at parse, compile, testbench and synthesis stages on
+      85 designs with 10 samples each, for two models only; no zero-shot
+      control run is reported in this text, so the compiler-access
+      attribution is argued rather than ablated, and no commercial models
+      are tested.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-25
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafter linked technique "external-feedback-repair", which does not list
+  this capability in addresses -- recorded, not asserted. Drafted
+  confidence: medium. Falsifier as drafted: A rerun of the same 85 HLS-Eval
+  generation tasks with the same harness and models showing pass@10 well
+  below 100% through synthesis, or showing the weaker model gaining no more
+  from k=10 sampling than the larger one. Drafted stance toward
+  external-feedback-repair-works-only-with-real-grounding: supports -- The
+  authors attribute the saturation to the agent invoking a real C++ compiler
+  for syntactic and functional self-verification at inference time, an
+  external grounding signal absent in the zero-shot baseline.
+submitted_by: agent:claude-opus-5@Russ-Miller

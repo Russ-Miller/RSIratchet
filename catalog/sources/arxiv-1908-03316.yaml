@@ -30,3 +30,41 @@ summary: In this paper, we propose a multi-modal synthesis technique for
 notes: "Forwarded by Russ 2026-09-19: locator papers: generate a reusable
   regex/SQL/XPath once, run it without the model"
 ingested_at: 2026-09-19
+brief: >-
+  Combining a natural-language description with positive/negative examples
+  synthesizes regular expressions far more often than either modality alone.
+  The natural language is parsed into a "hierarchical sketch" (nested holes
+  annotated with hint sub-regexes) that both prunes and prioritizes a
+  programming-by-example search.
+
+
+  The system, Regel, uses a SEMPRE-based semantic parser (not a seq2seq model,
+  chosen for low data requirements), a top-down enumerative PBE engine with
+  over/under-approximation pruning, symbolic integers solved via Z3, and the
+  Brics automaton library. Evaluation covers over 300 regexes from 2 sources:
+  200 benchmarks adapted from the DeepRegex data set (average 4 positive and 5
+  negative examples each) and 122 harder StackOverflow tasks with ground truth
+  converted into their DSL.
+
+
+  Regel finds the intended regex in 80% of cases, versus 43% for the NLP-only
+  DeepRegex baseline and 26% for a pure-PBE variant. Its PBE engine is an
+  order of magnitude faster at sketch completion than an adaptation of
+  AlphaRegex, including when AlphaRegex's search is given the same sketch. A
+  user study with 20 participants found users twice as likely to produce the
+  intended regex with Regel.
+
+
+  The ablations isolate the two contributions: the PBE-only variant shares the
+  search algorithm, and the AlphaRegex comparison holds the sketch fixed. Weak
+  points: training sketches for the StackOverflow set were hand-written by the
+  authors, budgets differ per data set (10s/top-1 vs 60s/top-5), and up to 4
+  interactive rounds of extra examples are allowed.
+
+
+  If you are weighing natural language against examples as a specification,
+  this argues for treating language as a search prior rather than a
+  translation source.
+brief_generated_at: 2026-09-25
+brief_model: claude-opus-5
+brief_source: full-text
