@@ -1,0 +1,50 @@
+arxiv_id: "2609.21948"
+title: "GALA: Geometry-Aware Latent Action Modeling for Vision-Language-Action
+  Model Pretraining across Embodiments"
+url: https://doi.org/10.48550/arxiv.2609.21948
+drafted_at: 2026-09-26
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: For vision-language-action models pretrained on multi-embodiment
+  video, latent actions learned only from RGB frame pairs miss finger-level
+  end-effector articulation, and adding a shared discrete latent over 3D
+  end-effector point-cloud transitions improves fine-grained motion probing
+  and downstream manipulation success, but only when the geometric latent is
+  forced to encode motion rather than morphology (shared bimanual code,
+  pair-consistent augmentation, bidirectional transitions).
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Manipulation policies co-trained across human hands,
+  dexterous robot hands and parallel-jaw grippers, where end-effector geometry
+  is recoverable from hand reconstruction or URDF forward kinematics.
+technique: ""
+proposed_technique: Add 3D end-effector point-cloud latent actions to image-based ones
+technique_summary: Learns a second discrete latent action code from start-goal
+  end-effector point-cloud transitions, shared across embodiments via a
+  unified bimanual code, pair-consistent random 3D transforms, and
+  forward/backward transition training, and uses it alongside the visual
+  latent as extra supervision for VLA pretraining.
+technique_kind: training
+technique_validated_by: Frozen-latent MLP probing of end-effector
+  translation/rotation/finger angle error on a held-out XHand split;
+  cross-embodiment grasp/hold/release retrieval (R@1 45.67 vs 33.37 without
+  point clouds, 38.69 without the unification designs); RoboCasa GR-1 24-task
+  success (55.7% vs 50.9% image-only, 54.4% without unification; 68.3% under
+  multi-embodiment co-training); 4 real tasks, 50 trials each (75.5% vs 68.5%
+  without unification, 71.5% HARP-VLA).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An image-only latent action model matching or beating the
+  geometry-augmented one on finger-articulation probing and downstream success
+  under identical data and architecture, or the unification designs (shared
+  bimanual code, augmentation, bidirectional training) showing no effect when
+  ablated.
+evidence_note: Measured with matched architecture, data and optimization
+  across LAM variants, plus ablations that separate the point-cloud branch
+  from the unification designs. Single group, one benchmark family plus four
+  real tasks on one hand; downstream comparisons against published baselines
+  are not fully controlled.
+confidence: medium

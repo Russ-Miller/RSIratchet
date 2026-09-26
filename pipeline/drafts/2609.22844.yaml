@@ -1,0 +1,47 @@
+arxiv_id: "2609.22844"
+title: "Towards the Generalizability of Leveraging ChatGPT in APR via
+  Self-enhancing: An Empirical Study"
+url: https://doi.org/10.48550/arxiv.2609.22844
+drafted_at: 2026-09-26
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: self-repair
+statement: For LLM program-repair workflows built on self-correction,
+  generated-knowledge or multi-agent scaffolding, the gain over plain
+  prompting is unstable across benchmarks and can turn negative once extrinsic
+  defect information (error messages, triggering tests, bug comments) is
+  withheld, while simply putting the error message plus the failing test into
+  the prompt yields more correct repairs than the scaffolds do.
+kind: observation
+backing_strength: single-paper
+scope_condition: Three enhancement methods (SRepair, FixAgent, RefinedTRP) on
+  Defects4J, HumanEval-Java and 54 type-related BugsInPy defects, with
+  GPT-3.5-Turbo (and GPT-5.4-mini for the main comparison), method-level fault
+  location given, single run per defect.
+technique: external-feedback-repair
+proposed_technique: Put the error message and failing test in the prompt directly
+technique_summary: Instead of a self-correction or multi-agent loop, append
+  the defect's error message together with its triggering test case to a
+  simple repair prompt.
+technique_kind: prompting
+technique_validated_by: On 54 BugsInPy type-related defects with
+  GPT-3.5-Turbo, error message plus test case fixed 10 bugs vs 7 for the plain
+  prompt, 5 for SRepair w/o E and 6 for FixAgent w/o E; error message alone
+  fixed 8, test case alone 7.
+stance_on_existing: supports
+related_claim_id: external-feedback-repair-works-only-with-real-grounding
+stance_reason: Scaffolds stripped of external defect information gave zero or
+  negative gains, while supplying real execution feedback raised repair
+  counts.
+falsifier: A study showing the same enhancement workflows, with no extrinsic
+  information supplied, deliver consistent positive gains across several
+  benchmarks and exceed prompts that directly include error messages and
+  failing tests.
+evidence_note: "Measured: repair counts with human-adjudicated semantic review
+  across three benchmarks and two models, with and without extrinsic
+  information. Absolute numbers are small on BugsInPy (7 to 10 of 54), single
+  execution per defect at non-zero temperature, so run-to-run variance is
+  unmeasured; benchmarks also differ in language and defect origin, so
+  cross-benchmark differences are not isolated to enhancement quality."
+confidence: medium

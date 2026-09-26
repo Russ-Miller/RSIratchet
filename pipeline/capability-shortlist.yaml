@@ -1,49 +1,69 @@
 # Consolidated capability candidates. Suggestions, not capabilities.
-generated_at: 2026-09-25
-from_raw_proposals: 17
+generated_at: 2026-09-26
+from_raw_proposals: 21
 recommended:
-  - id: spatial-reasoning
-    label: "Reasoning about 3D space and structure"
-    scope_note: "Covers inferring geometry, relative position, and structure across slices or viewpoints of a 3D scene or volume; excludes flat single-image grounding and video temporal ordering."
+  - id: test-generation
+    label: "Writing tests that actually exercise the code"
+    scope_note: "Covers generating test inputs or suites that reach specific branches and expose real bugs; excludes writing implementation code or fixing the bugs found."
     paper_count: 2
-    merged_from: [spatial-reasoning]
-    note: "Coherent, recurring gap not covered by visual-grounding or video-temporal-reasoning."
-  - id: reasoning-compute-efficiency
-    label: "Getting the answer without wasting compute"
-    scope_note: "Covers whether thinking length and tool/inference cost scale sensibly with problem difficulty, including overthinking easy items and truncating hard ones; excludes accuracy comparisons at unbounded budget."
-    paper_count: 2
-    merged_from: [reasoning-token-efficiency, compute-cost-efficiency]
-    note: "Two proposals converge on cost-aware performance, an increasingly measured axis absent from the index."
-  - id: persona-stability
-    label: "Holding an assigned persona or stance"
-    scope_note: "Covers whether a model sustains an assigned viewpoint, trait, or character through extended interaction and pressure, and how steerable those traits are; excludes safety refusals and agreement with a user's stated view."
-    paper_count: 2
-    merged_from: [persona-consistency, persona-steerability]
-    note: "Two proposals target the same underlying trait stability/controllability axis, adjacent to but distinct from sycophancy."
+    merged_from: [test-generation]
+    note: "Coherent, repeatedly measured skill that code-generation and debugging do not capture, since a passing test suite that exercises nothing is a distinct failure mode."
   - id: physical-plausibility-reasoning
-    label: "Reasoning about physical plausibility"
-    scope_note: "Covers whether generated scenes, predictions, or descriptions obey physical constraints like gravity, collision, and causal dynamics; excludes visual realism judgments and robot body control."
+    label: "Reasoning about physical feasibility"
+    scope_note: "Covers whether described, predicted or generated scenes and dynamics respect physics and object-interaction constraints; excludes motor control in a body and static scene description."
+    paper_count: 2
+    merged_from: [physical-plausibility-reasoning, 3d-spatial-reconstruction]
+    note: "Physical and 3D-geometric plausibility form one recurring failure axis for both understanding and generation, not covered by visual-grounding or embodied-control."
+  - id: hypothesis-driven-experimentation
+    label: "Learning a system's rules by probing it"
+    scope_note: "Covers forming hypotheses, choosing informative experiments or probes, and updating beliefs from observed results in a closed loop; excludes one-shot planning and recall of scientific facts."
+    paper_count: 2
+    merged_from: [experiment-design, rule-induction-from-interaction]
+    note: "Two proposals describe the same closed-loop induction ability, which planning and tool-use only partly cover and which is central to agentic science evaluations."
+  - id: social-bias
+    label: "Avoiding stereotyped or discriminatory outputs"
+    scope_note: "Covers demographic stereotyping and disparate treatment in text and vision-language responses; excludes knowledge of cultural norms and ordinary factual error."
     paper_count: 1
-    merged_from: [physical-plausibility-reasoning]
-    note: "A distinct and widely probed world-model capability that no existing entry covers, though currently thin on evidence here."
+    merged_from: [social-bias]
+    note: "A large, well-established evaluation area with no current index entry; cultural-competence covers norm knowledge, not stereotyping."
+  - id: theory-of-mind
+    label: "Modeling what others know and believe"
+    scope_note: "Covers inferring beliefs, knowledge asymmetries and false beliefs and acting on them to communicate or coordinate; excludes deception tasks covered by strategic-deception."
+    paper_count: 1
+    merged_from: [theory-of-mind]
+    note: "Long-running, well-defined benchmark family that underlies persuasion and coordination work but is not itself in the index."
+  - id: multi-turn-dialogue-management
+    label: "Holding up over a long conversation"
+    scope_note: "Covers persona consistency, tracking shifting user intent, and reaching conversational goals across many turns in one session; excludes cross-session recall and single-turn answer quality."
+    paper_count: 1
+    merged_from: [multi-turn-dialogue-management]
+    note: "Distinct from long-term-memory and long-context-degradation, and multi-turn degradation is a consistently reported failure mode."
+  - id: compositional-image-generation
+    label: "Generating images that match a specification"
+    scope_note: "Covers whether generated images contain the requested objects, attributes, relations and counts; excludes aesthetic quality and image understanding."
+    paper_count: 1
+    merged_from: [compositional-image-generation]
+    note: "The index has no generation-side visual entry at all, and specification adherence is the standard measured axis there."
 set_aside:
-  - id: adversarial-probe-generation
-    note: "Single paper and largely a red-teaming technique framing that critique and jailbreak-robustness already bracket."
-  - id: runtime-risk-monitoring
-    note: "One-off framing that sits between existing error-detection, critique, and goal-conflict-safety entries."
-  - id: help-seeking
-    note: "Single paper and closely covered by abstention-and-self-knowledge plus self-repair."
+  - id: visual-counting
+    note: "Too narrow to track separately; falls under visual-grounding plus arithmetic."
+  - id: reasoning-efficiency
+    note: "One-off framing that is closer to a cost metric than a capability, and overlaps context-hygiene and multi-step-reasoning."
   - id: compression-behavior-retention
-    note: "Thin evidence and conceptually the same retention axis as fine-tuning-retention."
-  - id: noisy-input-robustness
-    note: "One-off robustness framing rather than a distinct capability."
-  - id: moral-reasoning
-    note: "The two proposals are only loosely related and overlap heavily with cultural-competence and goal-conflict-safety."
-  - id: equation-discovery-from-data
-    note: "A narrow task domain better handled under domain-knowledge and multi-step-reasoning."
-  - id: game-playing-competence
-    note: "A task domain, not a capability; already decomposes into planning, state-tracking, and code-generation."
-  - id: perceptual-similarity-judgment
-    note: "Single narrow benchmark framing with little recurring evidence."
-  - id: audio-temporal-localization
-    note: "A subskill already inside audio-understanding with only one supporting paper."
+    note: "Essentially the same question as fine-tuning-retention applied to a different intervention, so it belongs there rather than as a new entry."
+  - id: time-series-reasoning
+    note: "Reads as a task domain sitting between forecasting and domain-knowledge, with only single-paper evidence."
+  - id: format-preserving-translation
+    note: "A narrow production task rather than a capability; constraint adherence plus multilingual-disparity already cover it."
+  - id: nonrgb-modality-generalization
+    note: "The two proposals are only loosely related low-level-vision topics and neither has recurring evidence on its own."
+  - id: visual-thinking
+    note: "Currently a technique proposal rather than a stable capability with an agreed measurement."
+  - id: structured-information-extraction
+    note: "A classic task domain largely spanned by retrieval-utilization, formal-query-synthesis and procedure-following."
+  - id: neologism-comprehension
+    note: "Narrow one-off probe better treated as an instance of knowledge-updating."
+  - id: backward-reasoning
+    note: "A direction of inference within multi-step-reasoning, not a separate capability."
+  - id: anonymized-input-robustness
+    note: "Single-paper robustness perturbation rather than a capability the index should track."

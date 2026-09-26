@@ -1,0 +1,48 @@
+arxiv_id: "2609.24124"
+title: "ActiveArena: Benchmarking and Understanding Active Perception in
+  Robotic Manipulation"
+url: https://doi.org/10.48550/arxiv.2609.24124
+drafted_at: 2026-09-26
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: For memory-augmented VLA manipulation policies that must actively
+  move the viewpoint to find task-relevant evidence, writing one memory frame
+  at each fixed action-chunk boundary generalizes better than event-triggered
+  writing (on predicted subtask change or on gripper/head/torso motion), and
+  extra memory capacity helps only under the regular schedule —
+  event-triggered policies degrade further out of distribution because
+  mistimed triggers omit informative views and control jitter fills memory
+  with redundant frames.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: 35 simulated active-perception manipulation tasks on a
+  dual-arm humanoid with controllable head/torso, 100 training trajectories
+  per task, ID and OOD (new backgrounds, denser clutter) splits; single
+  framework (StarVLA/OFT head).
+technique: ""
+proposed_technique: Write memory frames on a fixed chunk schedule, not on events
+technique_summary: Append one observation frame to the policy's visual memory
+  at every action-chunk boundary instead of triggering writes on predicted
+  subtask changes or motion thresholds.
+technique_kind: architecture
+technique_validated_by: "Task success rate across 35 tasks: chunk writing
+  62.97 ID / 47.60 OOD at 12 frames vs subtask writing 28.11 / 16.00 and
+  motion writing 32.80 / 22.69; memory-free baseline 27.37 / 6.12. Capacity 6
+  to 12 helped chunk writing but hurt motion writing in most settings."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On the same or comparable active-perception manipulation
+  benchmarks, an event-triggered write policy (with stable triggers) matching
+  or beating fixed chunk-boundary writing OOD, or increasing capacity
+  improving event-triggered variants as much as chunk-based ones.
+evidence_note: "Measured: six write-policy/capacity variants plus a
+  memory-free baseline, 50 seeds per task per setting, all other components
+  held fixed (same instruction, 18-D proprioception, OFT head, subtask
+  supervision). The mechanism (mistimed triggers, jitter noise) is argued from
+  failure cases and a failure-state decomposition, not isolated by a
+  controlled jitter experiment. Single simulator and one action-head family
+  for the ablation."
+confidence: medium
