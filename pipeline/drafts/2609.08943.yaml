@@ -1,0 +1,51 @@
+arxiv_id: "2609.08943"
+title: Evaluating and Improving Evidence-Grounded Fact-Checking in LLMs via
+  Multi-Round Evidence Ablation
+url: https://doi.org/10.48550/arxiv.2609.08943
+drafted_at: 2026-09-24
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: fact-verification
+statement: "In LLM fact-checking over supplied evidence, high veracity
+  accuracy does not imply the verdict depends on that evidence: when the
+  model's own cited sentences are iteratively removed, off-the-shelf models
+  (GPT-4o-mini, Gemini-2.5-Flash-Lite, Qwen-2.5-32B, Llama-3.1-8B) keep their
+  SUPPORT/REFUTE labels at a non-zero plateau instead of abstaining, and
+  training with paired supervision that requires NOT_ENOUGH_INFO on the
+  evidence-ablated input removes most of that persistence without losing
+  accuracy."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Sentence-level evidence fact-checking with SUPPORT/REFUTE/NEI
+  labels; FEVER training, tested in-domain and on SciFact, Climate-FEVER,
+  Check-COVID; NEI-labelled claims excluded; gold evidence annotations may be
+  incomplete.
+technique: ""
+proposed_technique: Supervise abstention on evidence-ablated inputs
+technique_summary: Fine-tune a verifier on paired inputs — full context with
+  the gold label and evidence, and the same context with gold evidence removed
+  and target NOT_ENOUGH_INFO — with gold evidence sets first expanded by
+  majority vote of three other LLMs.
+technique_kind: training
+technique_validated_by: "Measured on four datasets against the base model and
+  standard SFT: Immediate Sensitivity on FEVER rose from 10.75 (SFT) to 99.06,
+  label accuracy 83.08 to 95.66 over Llama-3.1-8B; ablations show evidence
+  ablation drives grounding metrics and evidence enhancement drives accuracy;
+  replicated on Qwen-2.5-7B. Hidden-state probes show reduced drift toward the
+  no-evidence representation."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A model that keeps SUPPORT/REFUTE labels after its cited evidence
+  is ablated but is shown, by independent means, to have used only that
+  evidence; or REAL-style paired training failing to raise ablation
+  sensitivity on a new backbone/dataset.
+evidence_note: "Measured across four datasets and two backbones, with
+  per-component ablations and a label-flip check showing the accuracy decay is
+  a shift to neutral rather than guessing. Weakness: gold evidence annotations
+  are non-exhaustive, so residual unannotated evidence could justify some
+  persistent labels; the trained model's near-perfect ablation sensitivity
+  could partly be learned abstention on any ablated-looking input rather than
+  genuine grounding."
+confidence: medium

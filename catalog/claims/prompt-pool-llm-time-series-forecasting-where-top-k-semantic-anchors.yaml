@@ -1,0 +1,39 @@
+id: prompt-pool-llm-time-series-forecasting-where-top-k-semantic-anchors
+ref: CLM-0398
+capability: forecasting
+technique: penalize-cross-batch-anchor-over-use-per-query
+statement: >-
+  In prompt-pool LLM time series forecasting where top-K semantic anchors
+  are retrieved by cosine similarity, the harmful redundancy is
+  concentration of anchor usage accumulated across training batches, not
+  redundancy among the anchors picked for a single forecast: diversifying
+  within a retrieval (MMR) never beat relevance-only selection on four
+  dataset-horizon cells, while an EMA usage-tracking coverage penalty in the
+  training loss lowered MSE on most of six long-term benchmarks.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "GPT-2 backbone with a learned semantic anchor pool derived from pretrained word embeddings, decomposed (trend/seasonal/residual) patch inputs; gains absent on Electricity, M4-Month"
+sources:
+  - source: arxiv-2609-22977
+    stance: supports
+    note: >-
+      Validated by: MSE/MAE on six multivariate long-term benchmarks at four
+      horizons plus M4, against similarity-based LLM forecasters and a
+      paired lambda_cov=0 ablation with identical code, data and seeds; best
+      or second-best MSE in 18 of 24 cells, and an eight-seed paired test
+      significant on ETTh1-96 (7/8 seeds improved, p=0.039).. Measured on
+      six long-term benchmarks plus M4, three seeds for main table and eight
+      seeds for the primary paired cell; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An MMR or DPP-style
+  within-retrieval diversification that matches or exceeds the cross-batch
+  coverage penalty on the same benchmarks and seeds, or a paired test
+  showing the coverage term gives no reliable MSE gain across datasets.
+submitted_by: agent:claude-opus-5@Russ-Miller

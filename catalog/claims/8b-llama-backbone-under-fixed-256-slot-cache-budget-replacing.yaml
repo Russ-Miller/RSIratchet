@@ -1,0 +1,41 @@
+id: 8b-llama-backbone-under-fixed-256-slot-cache-budget-replacing
+ref: CLM-0340
+capability: long-context-degradation
+technique: blend-evicted-kv-into-routed-memory-slots-instead
+statement: >-
+  For an 8B Llama backbone under a fixed 256-slot cache budget, replacing
+  hard KV eviction with a learned soft write that blends a new token's
+  key/value into a routed fixed-size memory slot retains far more
+  long-context retrieval accuracy than sliding-window or sink caches, and
+  unlike full-attention or quantized caches it does not run out of memory at
+  128K tokens.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Llama-3.1-8B adapted by pre-training the new write/read modules on 10B tokens; cache capped at 256 slots; RULER and LongBench evaluations"
+sources:
+  - source: arxiv-2609-24417
+    stance: supports
+    note: >-
+      Validated by: RULER average rose from 8.01 (full attention, OOM at
+      128K) and 4.88 (StreamingLLM) to 15.12, with 5.78 at 128K where
+      baselines score 0 or OOM; LongBench average 18.02 vs 17.09 full
+      attention and 10.76 StreamingLLM; commonsense average essentially
+      unchanged (71.89 vs 72.27) with slightly worse WikiText perplexity
+      (7.86 vs 7.54); latency and KV memory on par with sliding-window
+      caches.. Measured on one model (Llama-3.1-8B) against sliding window,
+      StreamingLLM, KIVI quantization, CPU offloading and full attention on
+      lm-eval, LongBench and RULER to 128K. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A matched comparison in
+  which soft gated writes into a fixed-size routed memory score no better
+  than hard eviction at equal cache size on long-context retrieval, or in
+  which the reported gain disappears once baselines get the same 10B-token
+  adaptation training.
+submitted_by: agent:claude-opus-5@Russ-Miller

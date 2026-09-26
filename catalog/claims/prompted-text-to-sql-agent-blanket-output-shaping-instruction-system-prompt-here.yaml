@@ -1,0 +1,38 @@
+id: prompted-text-to-sql-agent-blanket-output-shaping-instruction-system-prompt-here
+ref: CLM-0399
+capability: formal-query-synthesis
+technique: drop-blanket-row-limit-instructions-text-to-sql
+statement: >-
+  In a prompted text-to-SQL agent, a blanket output-shaping instruction in
+  the system prompt (here "LIMIT 10") is applied by the model to every
+  generated query regardless of the question's intent, truncating answers
+  that legitimately need many rows, so removing it raises execution accuracy
+  most on questions whose correct result set is large.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Single open-weight model (gpt-oss-120b) at temperature 0, prompt engineering only, one hand-built 100-question benchmark over one PostgreSQL database (Chicago Crime); no external b"
+sources:
+  - source: arxiv-2609-22917
+    stance: supports
+    note: >-
+      Validated by: Two prompt revisions of the same agent on 100 stratified
+      questions: overall execution accuracy 47%->60% under a hybrid
+      relational equivalence metric (12%->19% strict JSON match), valid SQL
+      rate 87%->93%, synthesis quality 3.91->4.34; hard-tier strict EX
+      7%->17%. Confounded with a concurrent relevance-checker keyword
+      expansion.. Measured but weakly isolated: V1 vs V2 changed both the
+      LIMIT instruction and the relevance-checker keyword list, so the two
+      effects are not fully separated; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Removing a blanket
+  row-limit instruction leaves execution accuracy unchanged, or the gain is
+  concentrated on single-row-answer questions rather than multi-row ones, in
+  a controlled single-variable comparison.
+submitted_by: agent:claude-opus-5@Russ-Miller

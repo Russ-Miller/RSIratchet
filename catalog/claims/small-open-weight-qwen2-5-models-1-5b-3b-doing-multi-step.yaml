@@ -1,0 +1,40 @@
+id: small-open-weight-qwen2-5-models-1-5b-3b-doing-multi-step
+ref: CLM-0403
+capability: hallucination
+technique: score-reasoning-failure-cross-layer-attention-entropy-dispersion
+statement: >-
+  For small open-weight Qwen2.5 models (1.5B-3B) doing multi-step math
+  reasoning, features derived from the spread of attention entropy across
+  layers at each generation step predict whether the final answer is wrong
+  better than output-logit confidence features, with the margin larger on
+  harder problems (+0.0093 AUC on GSM8K, +0.0759 on MATH-500 at 3B).
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "White-box access to all attention layers; only Qwen2.5 1.5B and 3B; only GSM8K and MATH-500; baseline is output-entropy/probability features only, with no sampling-based baselines "
+sources:
+  - source: arxiv-2609-18320
+    stance: supports
+    note: >-
+      Validated by: ROC-AUC under repeated stratified 5-fold
+      cross-validation (10 repeats), against output-logit baseline features,
+      with 95% CIs and one-sided Wilcoxon signed-rank tests; gains of
+      +0.0093 to +0.0759 AUC.. Measured on two benchmarks and two model
+      sizes with cross-validated logistic regression and significance tests,
+      but absolute AUCs are low (0.58-0.70), sample sizes small, no
+      sampling-based baseline, and scale and task difficulty are confounded.
+      Step-parsing coverage was incomplete on MATH-500, possibly a selection
+      effect.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: On the same or other
+  open-weight models, attention-dispersion features fail to beat
+  output-logit baselines in AUC, or the gain disappears when compared
+  against sampling-based baselines such as semantic entropy, or on non-math
+  tasks.
+submitted_by: agent:claude-opus-5@Russ-Miller

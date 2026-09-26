@@ -1,0 +1,39 @@
+id: instruction-tuning-8b-open-model-text-to-sql-curated-set-under
+ref: CLM-0362
+capability: formal-query-synthesis
+technique: select-tiny-sql-tuning-set-schema-coverage-size
+statement: >-
+  For instruction tuning an 8B open model on text-to-SQL, a curated set of
+  under 900 examples selected to cover every table in the target schemas and
+  score well on question-SQL alignment reaches higher execution accuracy
+  than pipelines trained on tens of thousands to millions of samples, and
+  dropping the schema-coverage term from the selection objective costs more
+  accuracy than dropping any single quality term.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen3-8B fine-tuned with SFT then GRPO, evaluated on BIRD-Dev and Spider-Dev execution accuracy; candidate pool itself synthesized from the same benchmark databases, so coverage is"
+sources:
+  - source: arxiv-2609-24186
+    stance: supports
+    note: >-
+      Validated by: BIRD-Dev EX 69.1% and Spider-Dev 88.9% with
+      self-consistency@8 from 796 and 863 samples, versus 67.0% for
+      DB-Explore with 16,457 samples and 63.9-64.2% for OmniSQL trained on
+      2.5M; ablation removing the coverage term drops SFT accuracy from
+      65.4% to 58.4%.. Measured on two benchmarks with one backbone, against
+      published numbers from other systems rather than same-pipeline
+      controls; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Matched-budget comparison
+  where a random or quality-only subset of the same size reaches the same
+  execution accuracy as the coverage-optimized subset, or where the small
+  curated set loses to large-corpus training on databases held out from the
+  selection pool. Automatic check flagged: figures not in the source: 900.
+submitted_by: agent:claude-opus-5@Russ-Miller

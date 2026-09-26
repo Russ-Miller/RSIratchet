@@ -1,0 +1,47 @@
+arxiv_id: "2609.16647"
+title: "ViD: Vision-Dominant Gender Bias Mitigation for Large Vision-Language
+  Models"
+url: https://doi.org/10.48550/arxiv.2609.16647
+drafted_at: 2026-09-24
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: In LVLMs asked to describe people (LLaVA, InstructBLIP, Shikra),
+  masking attention so that text tokens read visual tokens but language-only
+  self-attention is suppressed in late decoder layers lowers gender
+  misattribution while keeping answer coverage high, whereas visual-only or
+  language-only masking scores well on the bias metric only because the model
+  names a gender in under 10% of cases.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Training-free inference-time masking on three open LVLMs;
+  gender attribution judged by keyword matching on FACET, MS COCO and
+  FairFace, with outputs that name no gender excluded from the score.
+technique: ""
+proposed_technique: Mask language-only self-attention, keep vision-to-language flow
+technique_summary: At inference, apply mode-specific attention masks that
+  suppress language-only self-attention in the late decoder layers so text
+  tokens are forced to draw on visual tokens when attributing person
+  attributes.
+technique_kind: decoding
+technique_validated_by: Gender bias score on FACET (0.9274 to 0.9928 for
+  LLaVA), MS COCO (0.6708 to 0.9978), FairFace (0.5988 to 0.8782 for Shikra),
+  against six prior debiasing baselines; POPE accuracy and MMMU score held
+  near baseline (LLaVA 82.63 to 83.06 POPE, 32.4 to 31.8 MMMU); coverage per
+  attention mode reported (V2L 95.8% vs visual-only 9.3%, language-only 4.9%,
+  L2V 0.2%).
+stance_on_existing: supports
+related_claim_id: hallucination-metric-unsupported-claim-rate-computed-over-whatever-claims-model
+stance_reason: "A bias score computed only over outputs that commit to a
+  gender rewards evasion: two attention modes reach near-perfect scores at
+  under 10% coverage."
+falsifier: An LVLM where this masking scheme leaves gender misattribution
+  unchanged at matched coverage, or where the reported gains disappear once
+  coverage is held fixed across modes.
+evidence_note: Measured on three LVLMs and three person-attribute benchmarks
+  with per-mode coverage reported, plus POPE/MMMU capability checks and a
+  layer-group grid search. Bias metric is lexicon-based keyword matching,
+  which the authors concede misses implicit gender cues; no human evaluation,
+  and the causal model is stated as a heuristic rather than identified.
+confidence: low

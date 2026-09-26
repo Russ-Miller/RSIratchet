@@ -1,0 +1,44 @@
+id: interactive-video-world-models-world-state-communicated-only-through
+ref: CLM-0363
+capability: state-tracking
+technique: keep-world-state-engine-use-video-model-only
+statement: >-
+  In interactive video world models, world state communicated only through
+  prompt switching is not reliably preserved across a rollout — characters
+  that should stay alive vanish and killed ones keep moving — whereas
+  keeping the canonical state in an external deterministic engine and
+  compiling it into pixel-aligned spatial controls for the video model keeps
+  the rendered frames consistent with that state.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Game-style combat scenes rendered from a single reference frame; evaluated on 50 short clips with a VLM judge counting visibly alive characters and checking death events."
+sources:
+  - source: arxiv-2609-10540
+    stance: supports
+    note: >-
+      Validated by: On CombatStateBench (50 clips), 94% Count Accuracy and
+      98% State Accuracy versus 40.75/8.00 for LingBot-World-V2 and
+      32.00/58.00 for YUME under prompt switching, plus better VBench
+      consistency scores; judged by a VLM given only RGB frames.. Measured
+      on one self-built 50-clip benchmark against two baselines that lack an
+      instance-level state interface, so the comparison is partly an
+      interface mismatch rather than an isolated test of state
+      externalization; metrics come from a VLM judge and are coarse (counts,
+      any-frame death depiction).
+contested: false
+status: pending-review
+last_checked_at: 2026-09-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An interactive video
+  world model with no external state engine matching ~94% count and ~98%
+  state accuracy on the same benchmark, or the engine-conditioned system
+  losing state consistency on longer rollouts. Drafted stance toward
+  models-predict-next-steps-well-can-still-hold: supports -- Baselines
+  generate visually plausible next frames while holding an incoherent
+  implicit world state that breaks on entity counts and persistent death
+  states.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,38 @@
+id: tool-using-agent-trained-outcome-only-rl-surface-prompt-cue-co-occurs
+ref: CLM-0408
+capability: tool-use
+technique: reward-each-tool-call-whether-was-necessary
+statement: >-
+  When a tool-using agent is trained with outcome-only RL and a surface
+  prompt cue co-occurs with one tool in most training examples, the agent
+  invokes that tool on tasks where it is useless, but only for tools it has
+  already learned to use well and mainly when the cue is semantically
+  related to the tool.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Qwen2.5-7B-Instruct trained with GRPO on a 1,000-example synthetic mix of Natural Questions (search) and DeepMath (Python), with injected cues; effect appears at 80%+ cue-task corr"
+sources:
+  - source: arxiv-2609-16268
+    stance: supports
+    note: >-
+      Validated by: Measured as the cue-present minus cue-absent search-call
+      rate on DeepMath and GSM8K against the same RL run without the dense
+      reward: spurious deltas of +9.5 to +39.2 points fell to ~0, with task
+      accuracy equal or higher than the no-cue baseline.. Controlled
+      synthetic study, one base model, one RL algorithm, six cues, with
+      counterfactual cue-present/absent test pairs and a swapped-cue control
+      that separates competence from semantic alignment. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An RL run where a
+  strongly correlated, semantically aligned cue produces large spurious
+  invocation of a tool the agent never learned to use on its intended task,
+  or where a semantically mismatched cue produces equally large spurious
+  invocation of a well-learned tool.
+submitted_by: agent:claude-opus-5@Russ-Miller

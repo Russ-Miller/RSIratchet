@@ -1,0 +1,41 @@
+id: multi-modal-robot-motion-planning-stated-natural-language-hard-part
+ref: CLM-0386
+capability: planning
+technique: train-llm-write-solver-checked-mip-programs-task
+statement: >-
+  For multi-modal robot motion planning stated in natural language, the hard
+  part for an LLM is synthesizing the cross-modal coupling (meeting points,
+  contact locations, shared intermediate states), not the single-modality
+  formulation: giving an LLM fixed expert single-modal MIP modules and
+  asking it only to predict the interface variables gives 100% single-modal
+  success but 55.6-63.2% multi-modal, below a model fine-tuned with
+  solver-verified rewards to write the joint formulation (80.9%).
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Discretization-based approximate MIP formulations for non-convex robotic planning (UAV, IK, footstep, grasp), 1,316-problem benchmark, Qwen3-8B base plus SFT and GRPO; static envir"
+sources:
+  - source: arxiv-2609-18669
+    stance: supports
+    note: >-
+      Validated by: Task success rate on 276 held-out LLMM3PBench problems
+      versus prompt-only LLMs (GPT-5.2, Gemini 2.5 Flash, open models),
+      PDDLStream, LLM+P, ReAct, sampling-based pipelines, and an Expert-MIP
+      module-selection control; plus 40 real hardware scenarios at 87.5%.
+      Reward ablations at matched 800-step budget show removing
+      trajectory-correctness reward drops SR 84.8 to 50.3.. Measured on one
+      benchmark authored by the same group, one base model (Qwen3-8B), three
+      runs. The Expert-MIP control is the design element that isolates
+      coupling from module quality; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An LLM given fixed
+  expert single-modal MIP modules and asked only to supply interface
+  variables matches or beats an end-to-end solver-RL-trained model on
+  multi-modal composition success on this or a comparable benchmark.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,40 @@
+id: post-training-small-llm-qwen2-5-0-5b-3b-produce-weekly
+ref: CLM-0394
+capability: forecasting
+technique: reward-listwise-rank-correlation-exact-numeric-forecasts
+statement: >-
+  When post-training a small LLM (Qwen2.5 0.5B-3B) to produce weekly
+  asset-return forecasts from news, rewarding rank correlation of a full
+  listwise asset ordering gives a dense learning signal where exact-match
+  GRPO gives almost none (all sampled actions scoring zero on ~35% of
+  steps), and yields higher Spearman correlation and backtest Sharpe than
+  the SFT checkpoint, standard GRPO, and prompted commercial models.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "15 liquid ETFs, weekly horizon, 2010-2019 train / 2020-2025 test, Qwen2.5 base and instruct up to 3B; absolute rank correlations are tiny (~0.02) and evaluation may be contaminated"
+sources:
+  - source: arxiv-2609-24175
+    stance: supports
+    note: >-
+      Validated by: Compared against equal weight, mean-variance, momentum,
+      three commercial LLMs, and same-checkpoint
+      SFT/standard-GRPO/NDCG@3/Kendall reward variants on Spearman, Kendall,
+      NDCG@k, annualized return, Sharpe (0.636 best), and max drawdown,
+      averaged over 5 trials; plus news-removal ablation (Sharpe 0.636 to
+      0.045) and a sentiment-inversion faithfulness check.. Single paper,
+      one asset universe, one 2020-2025 test window of 314 weekly samples.
+      Reward-metric ablation from the same SFT checkpoint isolates the
+      reward design. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A replication on a
+  different asset universe or period where rank-correlation-reward training
+  gives no Sharpe or Spearman gain over the SFT checkpoint, or where
+  exact-match/numeric-target GRPO matches it.
+submitted_by: agent:claude-opus-5@Russ-Miller

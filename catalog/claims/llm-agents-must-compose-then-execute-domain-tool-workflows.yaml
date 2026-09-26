@@ -1,0 +1,41 @@
+id: llm-agents-must-compose-then-execute-domain-tool-workflows
+ref: CLM-0366
+capability: planning
+technique: train-planner-executor-separate-role-adapters
+statement: >-
+  For LLM agents that must compose and then execute domain tool workflows,
+  training separate adapters for the two roles splits the gains cleanly:
+  supervised fine-tuning of the planner on reference tool sequences mainly
+  improves workflow-order fidelity, while node-level RL on argument-match
+  rewards mainly improves tool-argument grounding and final-answer quality,
+  and combining both beats either on a 9B backbone.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Small open-weight backbones (Qwen3.5-4B/9B) on Earth-observation agent tasks with expert-authored skills constraining the tool space; measured only in this framework."
+sources:
+  - source: arxiv-2609-12533
+    stance: supports
+    note: >-
+      Validated by: On Earth-Bench-Pro, the 2x2 adapter composition:
+      base/base 38.31% LLM-as-Judge, planner-tuned only 44.76%,
+      executor-tuned only 43.15%, both 50.00%; planning-only evaluation
+      raised TIO from 71.87 to 83.35, and oracle-plan executor evaluation
+      raised judge accuracy from 46.37 to 52.82 and parameter accuracy from
+      34.19 to 37.20.. Measured on 248 open-world EO tasks with one model
+      family (Qwen3.5-4B/9B) and one framework; isolation is reasonably
+      clean because the paper adds planning-only and oracle-plan evaluations
+      on top of the 2x2 adapter grid. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An ablation where
+  planner-only tuning improves argument grounding as much as executor-only
+  tuning (or vice versa), or where a single monolithic trajectory-level
+  fine-tune matches the combined two-adapter configuration on both
+  workflow-order and answer metrics.
+submitted_by: agent:claude-opus-5@Russ-Miller
