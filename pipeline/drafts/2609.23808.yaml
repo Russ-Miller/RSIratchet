@@ -1,0 +1,50 @@
+arxiv_id: "2609.23808"
+title: "FLARE: A Full-Lifecycle Dense Supervision Paradigm for Long-Horizon
+  Coding Agents via Generative Reward Model"
+url: https://doi.org/10.48550/arxiv.2609.23808
+drafted_at: 2026-09-25
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: critique
+statement: For long-horizon repository-level coding agents, a small (4B)
+  critic trained to diagnose each just-completed step with a severity label,
+  error type and causal rationale, and to redirect the next action when
+  severity is critical, repairs more initially-failing tasks with a single
+  branch (14.1% fail-to-pass) than five full resamples of the base agent
+  (13.7%), at about one-fifth the base-agent output tokens.
+kind: observation
+backing_strength: single-paper
+scope_condition: Four large backbones (GLM-5, Kimi K2.5, Qwen3.5-Plus,
+  DeepSeek V3.2) under Claude Code and Cline-style scaffolds on four SWE
+  benchmarks; conditional protocol where the failing subset is defined by an
+  initial rollout and token counts exclude critic inputs/outputs and agent
+  inputs.
+technique: ""
+proposed_technique: Interrupt the agent when a step-level critic flags critical risk
+technique_summary: A lightweight generative reward model, trained on
+  causal-chain-backtracked step labels from failed trajectories plus injected
+  errors in successful ones, asynchronously diagnoses the agent's last
+  completed step and forces regeneration of the next action when it flags
+  critical risk.
+technique_kind: process
+technique_validated_by: Fail-to-pass Pass@N on initially failed tasks and
+  pass-to-pass Avg@N on initially successful tasks, against global resampling,
+  blind breakpoint rollout, and post-hoc RADAR-guided replay at matched branch
+  budgets, with agent output tokens and turns reported; also ROC-AUC of the
+  derived trajectory score and downstream SFT/RL pass rates.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Under a protocol that charges the critic's own tokens and does not
+  give global rollout the initial failing trajectory as sunk cost,
+  single-branch critic-guided repair matches or falls below matched-token
+  global resampling in fail-to-pass rate.
+evidence_note: Measured across four models and two scaffolds on four SWE
+  benchmarks with per-slice breakdowns and component ablations. The token
+  comparison depends on an accounting choice that excludes critic
+  inputs/outputs and latency, and the conditional protocol charges baselines
+  for the initial rollout, so the claimed 5x saving is not a clean
+  matched-compute comparison. Single paper, point estimates, no variance
+  reported.
+confidence: low

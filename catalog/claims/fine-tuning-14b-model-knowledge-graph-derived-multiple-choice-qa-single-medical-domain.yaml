@@ -1,0 +1,38 @@
+id: fine-tuning-14b-model-knowledge-graph-derived-multiple-choice-qa-single-medical-domain
+ref: CLM-0357
+capability: multi-step-reasoning
+technique: repair-one-hop-gaps-add-same-chunk-context
+statement: >-
+  When fine-tuning a 14B model on knowledge-graph-derived multiple-choice QA
+  for a single medical domain, attaching supporting triples from the same
+  source text chunk to each target triple during supervision, and repairing
+  residual one-hop failures before reinforcement learning, gives higher
+  accuracy on held-out 3-, 4- and 5-hop questions than training on isolated
+  triples or running RL from an unrepaired checkpoint.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Qwen3-14B with LoRA, synthetic multiple-choice QA generated from GraphMERT-extracted disease KGs (Gastroparesis, Diabetes) of roughly 6,000 triples each; RL on 1-hop and 2-hop item"
+sources:
+  - source: arxiv-2609-12230
+    stance: supports
+    note: >-
+      Validated by: Accuracy on 8,000 generated 3-hop, 4-hop and 5-hop QA
+      items per setting, across two disease KGs, comparing KG-grounded vs
+      context-grounded supervision and RL from repaired vs unrepaired SFT
+      checkpoints, plus an answer-option shuffling robustness check..
+      Measured on two disease KGs with matched training configuration, so
+      the supervision-type comparison is isolated. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: On the same KGs and base
+  model, context-augmented supervision and pre-RL repair fail to beat
+  KG-only supervision and RL from unrepaired checkpoints on higher-hop
+  accuracy, or the gain disappears under option shuffling or on
+  human-written multi-hop questions.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,44 @@
+id: llm-driven-iterative-prompt-optimization-restricting-gradient-generation-examples-current
+ref: CLM-0368
+capability: harness-self-improvement
+technique: generate-prompt-edits-only-failures-gate-preservation-set
+statement: >-
+  In LLM-driven iterative prompt optimization, restricting gradient
+  generation to examples the current prompt gets wrong and accepting a
+  candidate edit only when its gain on hard cases exceeds a penalized
+  regression on a preservation set of initially-correct examples yields
+  higher final accuracy than unfiltered textual-gradient optimization, which
+  degrades on some reasoning tasks below the zero-shot prompt.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Reasoning and code benchmarks with exact-match scoring, a weaker executor model driven by a stronger evaluator/optimizer, 12 optimization steps; cost is higher because several cand"
+sources:
+  - source: arxiv-2609-23716
+    stance: supports
+    note: >-
+      Validated by: Accuracy on 10 reasoning benchmarks across three
+      evaluator/optimizer models against Zero-shot CoT, Three-shot CoT,
+      TextGrad and REVOLVE (average ~3.5 points over REVOLVE), plus a
+      modernized run with gpt-5.4-mini/gpt-5.4 on BBEH, GSM8K-Platinum and
+      DS-1000; ablations remove the gate (lower) and swap in full-dataset or
+      correct-only gradients (lower, correct-only falls below the initial
+      prompt).. Measured on 10 benchmarks x 3 optimizer models plus 4
+      modernized tasks, mean of three runs, with component ablations on
+      three datasets. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An evaluation where
+  unfiltered textual-gradient optimization with the same candidate budget
+  and validation-based checkpoint selection matches or beats the error-only
+  plus preservation-gate variant across tasks. Drafted stance toward
+  a-fixed-model-can-improve-its-own-harness-with-a-regression-gated-loop:
+  supports -- It provides independent evidence that gating self-generated
+  harness edits on a non-regression check is what makes the improvement loop
+  stable.
+submitted_by: agent:claude-opus-5@Russ-Miller

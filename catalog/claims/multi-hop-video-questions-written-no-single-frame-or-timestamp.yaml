@@ -1,0 +1,46 @@
+id: multi-hop-video-questions-written-no-single-frame-or-timestamp
+ref: CLM-0385
+capability: video-temporal-reasoning
+technique: react-loop-over-controllable-video-inspection-tools
+statement: >-
+  On multi-hop video questions written so no single frame or timestamp
+  lookup suffices, single-turn MLLMs answer poorly (0.07-0.51 accuracy
+  across 12 proprietary and open models), and wrapping the same models in an
+  agentic loop helps only when the loop lets the agent choose what, where
+  and at what granularity to look: frameworks giving adaptive
+  fps/resolution/interval control raised accuracy and trajectory scores for
+  nearly every model, while a fixed-schedule framework with weak perception
+  tools (STAR) fell below the single-turn baseline for all of them.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "100 hand-authored 26-option multiple-choice questions over 71 openly licensed videos of 8s-27min; accuracy plus an LLM-judged milestone trajectory score; only four agentic framewor"
+sources:
+  - source: arxiv-2609-21386
+    stance: supports
+    note: >-
+      Validated by: Accuracy and trajectory score on AgentVidBench against
+      single-turn and three agentic frameworks; best accuracy 0.58 with
+      Gemini 2.5 Pro versus 0.51 single-turn and 0.56 AVP, with ablations
+      removing each control axis lowering accuracy (e.g. 0.50 without
+      interval control).. Measured across 12 models x 5 settings on one
+      100-question benchmark built by the same authors; the STAR shortfall
+      confounds framework design with the quality of that framework's
+      bundled perception tools, and trajectory scores come from an LLM judge
+      validated only in an appendix.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A replication where
+  fixed-plan agentic frameworks match adaptive-control ones on these
+  questions, or where single-turn MLLMs match the best agentic setups on
+  multi-hop video QA. Drafted stance toward
+  7b-multimodal-models-long-video-qa-multi-turn-agentic-exploration-harness:
+  supports -- Both find that an agentic video-exploration harness can score
+  below plain single-pass answering when the loop or its tools are poorly
+  matched to the model.
+submitted_by: agent:claude-opus-5@Russ-Miller

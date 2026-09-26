@@ -1,0 +1,38 @@
+id: 8b-multimodal-models-preference-tuning-plain-outcome-reward-grpo-lower
+ref: CLM-0341
+capability: visual-grounding
+technique: reward-calibration-stated-confidence-inside-grpo
+statement: >-
+  For 8B multimodal models, preference tuning and plain outcome-reward GRPO
+  lower hallucination rates while making stated confidence worse calibrated
+  than the untuned backbone, because rank- or correctness-based rewards
+  never score the numerical accuracy of the model's own confidence; adding a
+  Brier-plus-group-ECE calibration term to the GRPO reward cuts calibration
+  error sharply and leaves accuracy metrics largely unchanged.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "InternVL3-8B and Qwen3-VL-8B trained on ~100K VQA/hallucination prompts, evaluated on POPE-adv and HallusionBench with verbalised answer confidence"
+sources:
+  - source: arxiv-2609-16601
+    stance: supports
+    note: >-
+      Validated by: ECE (15 bins), Brier, AUROC of 1-confidence,
+      Selective-Risk@90 on POPE-adv and HallusionBench versus base, HA-DPO,
+      RLHF-V and vanilla GRPO; ECE on POPE-adv 0.272 (GRPO) to 0.085, with
+      hallucination metrics (POPE F1, AMBER CHAIR, MMHal) also best and
+      MME/MMBench/MMStar/SEED unchanged; ablation removing the calibration
+      reward returns ECE to 0.268 with accuracy nearly flat.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A run where
+  outcome-reward GRPO leaves calibration error at or below the untuned
+  backbone, or where adding the calibration reward lowers ECE only by also
+  lowering task accuracy (so the ablation removing R_cal shows accuracy loss
+  rather than calibration loss).
+submitted_by: agent:claude-opus-5@Russ-Miller

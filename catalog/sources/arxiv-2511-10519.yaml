@@ -6,15 +6,50 @@ year: 2025
 date: 2025-11-13
 arxiv_id: "2511.10519"
 url: https://arxiv.org/abs/2511.10519
-tags: [ingested]
-summary: >-
-  Large Language Models (LLMs) are commonly evaluated for robustness against
-  paraphrased or semantically equivalent jailbreak prompts, yet little
+tags:
+  - ingested
+summary: Large Language Models (LLMs) are commonly evaluated for robustness
+  against paraphrased or semantically equivalent jailbreak prompts, yet little
   attention has been paid to linguistic variation as an attack surface. In
   this work, we systematically study how linguistic styles such as fear or
   curiosity can reframe harmful intent and elicit unsafe responses from
   aligned models. We construct style-augmented jailbreak benchmark by
   transforming prompts from 3 standard datasets into 11 distinct linguistic
-  styles using handcrafted templates and LLM-based rewrites, while
-  preserving semantic intent. Evalu
+  styles using handcrafted templates and LLM-based rewrites, while preserving
+  semantic intent. Evalu
 ingested_at: 2026-09-19
+brief: >-
+  Rewriting a harmful prompt in an emotional register, without changing its
+  meaning, breaks safety training far more reliably than hostile phrasing
+  does. Fearful, curious and compassionate framings are the strongest vectors;
+  angry, threatening and scolding ones are the weakest.
+
+
+  The authors sampled 156, 156 and 200 harmful prompts from MultiJail,
+  JailbreakHub and HarmBench, rewrote each into 11 linguistic styles via
+  handcrafted templates and GPT-4.1 rewrites, and ran 16 instruction-tuned
+  models (LLaMA, Qwen2.5 0.5B-72B, Ministral, Phi-4-mini, Command R+, GPT-4o
+  mini, Grok4) at temperature 0. GPT-4.1 judged each response Ethical or
+  Unethical.
+
+
+  Attack success rose in every condition. Qwen2.5-0.5B went from 23.1 to 74.4
+  on MultiJail under contextualized rewrites; LLaMA-3.2-3B from 7.0 to 64.5 on
+  HarmBench. Naturalistic rewrites generally beat templates. Scaling reduces
+  but does not remove the effect (Qwen2.5-72B: 1.3 to 6.4 on MultiJail). A
+  GPT-4.1 style-neutralization preprocessor cut ASR sharply, e.g. LLaMA-3.1-8B
+  from 60.9 to 7.0 on JailbreakHub.
+
+
+  Evidence is measured across 3 datasets and 16 models, with the
+  neutralization step acting as the main causal control. Judge reliability was
+  checked on 400 samples against 2 annotators (Cohen's kappa 0.94), but 1
+  judge was used throughout and GPT-4.1 had a 6.0% false negative rate.
+  Single-turn text only; no adaptive adversary, no sarcasm or mixed styles.
+
+
+  If your red-teaming suite varies semantics but holds tone neutral, it is
+  missing most of the attack surface.
+brief_generated_at: 2026-09-26
+brief_model: claude-opus-5
+brief_source: full-text

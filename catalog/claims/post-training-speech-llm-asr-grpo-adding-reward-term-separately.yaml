@@ -1,0 +1,39 @@
+id: post-training-speech-llm-asr-grpo-adding-reward-term-separately
+ref: CLM-0395
+capability: hallucination
+technique: reward-acoustic-fidelity-frozen-judge-during-rl
+statement: >-
+  When post-training a speech LLM for ASR with GRPO, adding a reward term
+  from a separately pretrained, frozen CTC acoustic judge that scores each
+  sampled transcription against the audio cuts insertion errors on
+  out-of-distribution meeting speech (22-28% fewer on AMI) relative to a
+  schedule-matched text-only -WER reward, without raising word error rate
+  and without needing the judge at inference.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "One 7B speech LLM (Qwen2-Audio, LoRA) with a 0.3B character-level wav2vec2-CTC judge, trained on LibriSpeech with additive-noise augmentation, evaluated on one OOD corpus of 16 AMI"
+sources:
+  - source: arxiv-2609-14455
+    stance: supports
+    note: >-
+      Validated by: Insertion counts and WER on 33,282 utterance-condition
+      instances over six difficulty tiers against a schedule-matched mu=0
+      WER-GRPO baseline sharing identical data and schedule; meeting-level
+      clustered bootstrap CIs, three seeds, leave-one-meeting-out, plus
+      counterfactual probes on unintelligible audio, a 32-best CTC rescoring
+      comparison, and insertion-AURC under policy-only confidence..
+      Measured, single paper, one policy and one judge. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A replication where
+  adding the frozen acoustic reward term fails to reduce insertion rates on
+  held-out far-field speech relative to a schedule-matched text-only reward,
+  or where an equal-strength KL/regularization control produces the same
+  insertion reduction without any acoustic signal.
+submitted_by: agent:claude-opus-5@Russ-Miller

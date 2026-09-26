@@ -1,0 +1,41 @@
+arxiv_id: "2609.09526"
+title: Benchmarking Agentic HLS Design Tasks With HLS-Eval
+url: https://doi.org/10.48550/arxiv.2609.09526
+drafted_at: 2026-09-24
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: code-generation
+statement: On simple HLS kernel generation tasks (85 designs from CHStone,
+  MachSuite, Polybench, Rosetta, C2HLSC), giving a modest open-source model
+  (gpt-oss-120b) a shell with a C++ compiler for self-verification and
+  iterative refinement saturates the benchmark at pass@10 (100% through
+  synthesis) and exceeds 90% at pass@1, so this class of task no longer
+  separates models; repeated sampling helps the weaker model far more (+60
+  points synthesis pass rate at k=10 for gpt-oss-20b vs +11 for the 120b).
+kind: observation
+backing_strength: single-paper
+scope_condition: Single-kernel HLS designs generated from a natural-language
+  spec plus a provided testbench, two gpt-oss models, mini-swe-agent harness
+  with bash and compiler access, N=10 samples; testbench and header files
+  protected from edits.
+technique: external-feedback-repair
+proposed_technique: ""
+technique_summary: ""
+technique_kind: ""
+technique_validated_by: ""
+stance_on_existing: supports
+related_claim_id: external-feedback-repair-works-only-with-real-grounding
+stance_reason: The authors attribute the saturation to the agent invoking a
+  real C++ compiler for syntactic and functional self-verification at
+  inference time, an external grounding signal absent in the zero-shot
+  baseline.
+falsifier: A rerun of the same 85 HLS-Eval generation tasks with the same
+  harness and models showing pass@10 well below 100% through synthesis, or
+  showing the weaker model gaining no more from k=10 sampling than the larger
+  one.
+evidence_note: Measured pass@k at parse, compile, testbench and synthesis
+  stages on 85 designs with 10 samples each, for two models only; no zero-shot
+  control run is reported in this text, so the compiler-access attribution is
+  argued rather than ablated, and no commercial models are tested.
+confidence: medium

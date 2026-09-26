@@ -1,14 +1,14 @@
 id: arxiv-2602-00986
 ref: SRC-0377
 kind: paper
-title: "Sparse Reward Subsystem in Large Language Models"
+title: Sparse Reward Subsystem in Large Language Models
 year: 2026
 date: 2026-02-01
 arxiv_id: "2602.00986"
 url: https://arxiv.org/abs/2602.00986
-tags: [ingested]
-summary: >-
-  Recent studies show that LLM hidden states encode reward-related
+tags:
+  - ingested
+summary: "Recent studies show that LLM hidden states encode reward-related
   information, such as answer correctness and model confidence. However,
   existing approaches typically fit black-box probes on the full hidden
   states, offering little insight into how this information is structured
@@ -16,5 +16,43 @@ summary: >-
   concentrated in a sparse subset of neurons. Using simple probing, we
   identify two types of neurons: value neurons, whose activations predict
   state value, and dopamine neurons, whose activations encode step-level
-  temporal difference (TD) errors. Tog
+  temporal difference (TD) errors. Tog"
 ingested_at: 2026-09-22
+brief: >-
+  Reward-related information in LLM hidden states is not spread across the
+  representation but concentrated in under 1% of neurons, and those neurons
+  are causally load-bearing for reasoning.
+
+
+  Two-layer MLP probes were trained on hidden states of
+  Qwen-2.5-7B/14B-SimpleRL-Zoo and others: a value probe trained by
+  temporal-difference learning to predict eventual answer correctness, and a
+  dopamine probe trained to predict step-level TD errors estimated by Monte
+  Carlo rollouts. Neurons were then identified by L1-norm pruning of probe
+  input dimensions, on GSM8K, MATH500, ARC, MBPP+ and IFEval.
+
+
+  AUC and Spearman curves stay flat as pruning removes over 99% of inputs.
+  Zeroing the top 1% of value neurons in 1 layer drops MATH500 accuracy from
+  75.2% to 20.3% on average, versus 74.6% for random, 76.4% for
+  next-token-prediction probe neurons, 71.6% for magnitude and 65.8% for
+  Wanda. Value neurons beat a full-hidden-state linear probe for
+  pre-generation confidence (0.67 vs 0.60 average AUC across 4 models, 2
+  benchmarks). Dopamine neurons as a process reward model in guided search
+  reach 77.8% vs 72.2% greedy and 75.0% for an implicit PRM.
+
+
+  The intervention design includes 4 matched-sparsity baselines, which
+  isolates specificity reasonably well; neuron-position overlap with NTP
+  neurons is 0.7% against a 0.5% random baseline. The PRM result is 1 model, 1
+  dataset subset, 3 seeds. Transfer across models was only tested between
+  siblings of one base model.
+
+
+  If you probe hidden states for correctness, a sparse neuron subset may be
+  enough and cheaper.
+brief_generated_at: 2026-09-26
+brief_model: claude-opus-5
+brief_source: full-text
+brief_unverified_figures:
+  - 99%

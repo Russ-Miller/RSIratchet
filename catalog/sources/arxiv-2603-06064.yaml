@@ -1,20 +1,58 @@
 id: arxiv-2603-06064
 ref: SRC-0349
 kind: paper
-title: "Agentic LLM Planning via Step-Wise PDDL Simulation: An Empirical Characterisation"
+title: "Agentic LLM Planning via Step-Wise PDDL Simulation: An Empirical
+  Characterisation"
 year: 2026
 date: 2026-03-06
 arxiv_id: "2603.06064"
 url: https://arxiv.org/abs/2603.06064
-tags: [ingested]
-summary: >-
-  Task planning, the problem of sequencing actions to reach a goal from an
-  initial state, is a core capability requirement for autonomous robotic
+tags:
+  - ingested
+summary: Task planning, the problem of sequencing actions to reach a goal from
+  an initial state, is a core capability requirement for autonomous robotic
   systems. Whether large language models (LLMs) can serve as viable planners
   alongside classical symbolic methods remains an open question. We present
   PyPDDLEngine, an open-source Planning Domain Definition Language (PDDL)
-  simulation engine that exposes planning operations as LLM tool calls
-  through a Model Context Protocol (MCP) interface. Rather than committing
-  to a complete action sequence upfront, the LLM acts as an interactive
-  search policy that sele
+  simulation engine that exposes planning operations as LLM tool calls through
+  a Model Context Protocol (MCP) interface. Rather than committing to a
+  complete action sequence upfront, the LLM acts as an interactive search
+  policy that sele
 ingested_at: 2026-09-19
+brief: >-
+  Letting an LLM act step by step inside a live PDDL simulator, observing each
+  state transition and resetting when it wants, buys almost nothing over
+  one-shot plan generation. The step feedback confirms only that an action was
+  applicable; it carries no signal about distance to the goal, so progress
+  assessment stays self-generated.
+
+
+  PyPDDLEngine exposes 7 PDDL operations as MCP tool calls. 4 approaches were
+  run on 102 IPC Blocksworld instances under a uniform 180-second budget: Fast
+  Downward lama-first and seq-sat-lama-2011, direct prompting of Claude Haiku
+  4.5 with retries, and agentic stepping via the engine.
+
+
+  Fast Downward reached 85.3% success; direct LLM 63.7%, agentic 66.7%, at
+  5.7x more tokens per solution (44,705 vs 254,796). The agentic run halted
+  early claiming unsolvability on 6 instances, and on 4 of those the direct
+  approach found a valid plan. On 49 co-solved instances both LLM variants
+  returned plans shorter than seq-sat-lama-2011 in most difficulty blocks, and
+  near-identical to each other, which the authors read as training-data recall
+  rather than incremental reasoning.
+
+
+  Measured, with matched time budget and classical baselines, but 1 model
+  tier, 1 run per instance, no variance estimate, and the memorisation account
+  is argued rather than tested with relabelled domains.
+
+
+  One domain only; no reasoning models, no goal-distance heuristic in the
+  feedback.
+
+
+  If you are planning an agentic planner, budget for externally grounded
+  progress signals, not just interaction.
+brief_generated_at: 2026-09-26
+brief_model: claude-opus-5
+brief_source: full-text

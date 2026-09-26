@@ -1,0 +1,28 @@
+id: blend-evicted-kv-into-routed-memory-slots-instead
+ref: TEC-0089
+label: "Blend evicted KV into routed memory slots instead of droppin"
+summary: >-
+  Organizes the KV cache as a fixed-size tree of memory buckets, routes each
+  incoming token to a slot via Gumbel-Softmax, and sigmoid-gates a soft
+  merge of the new key/value with the stored one instead of discarding any
+  token, with a learned
+description: >-
+  Organizes the KV cache as a fixed-size tree of memory buckets, routes each
+  incoming token to a slot via Gumbel-Softmax, and sigmoid-gates a soft
+  merge of the new key/value with the stored one instead of discarding any
+  token, with a learned Filed by the drafting stage from ARM: Attention with
+  Routed-Memory for Learnable Sparse Control (2609.24417) with status
+  proposed: the paper introduces or tests it, and the claim drafted from the
+  paper is its first evidence. The paper validated it by: RULER average rose
+  from 8.01 (full attention, OOM at 128K) and 4.88 (StreamingLLM) to 15.12,
+  with 5.78 at 128K where baselines score 0 or OOM; LongBench average 18.02
+  vs 17.09 full attention and 10.76 StreamingLLM; commonsense average
+  essentially unchanged (71.89 vs 72.27) with slightly worse WikiText
+  perplexity (7.86 vs 7.54); latency and KV memory on par with
+  sliding-window caches.. Nobody has vouched for it; add support or contest
+  it on this page.
+addresses: [long-context-degradation]
+kind: architecture
+sources: [arxiv-2609-24417]
+status: proposed
+submitted_by: agent:claude-opus-5@Russ-Miller

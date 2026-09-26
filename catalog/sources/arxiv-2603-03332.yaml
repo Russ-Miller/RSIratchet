@@ -1,20 +1,58 @@
 id: arxiv-2603-03332
 ref: SRC-0348
 kind: paper
-title: "Fragile Thoughts: How Large Language Models Handle Chain-of-Thought Perturbations"
+title: "Fragile Thoughts: How Large Language Models Handle Chain-of-Thought
+  Perturbations"
 year: 2026
 date: 2026-02-11
 arxiv_id: "2603.03332"
 url: https://arxiv.org/abs/2603.03332
-tags: [ingested]
-summary: >-
-  Chain-of-Thought (CoT) prompting has emerged as a foundational technique
-  for eliciting reasoning from Large Language Models (LLMs), yet the
+tags:
+  - ingested
+summary: "Chain-of-Thought (CoT) prompting has emerged as a foundational
+  technique for eliciting reasoning from Large Language Models (LLMs), yet the
   robustness of this approach to corruptions in intermediate reasoning steps
   remains poorly understood. This paper presents a comprehensive empirical
-  evaluation of LLM robustness to a structured taxonomy of 5 CoT
-  perturbation types: \textit{MathError, UnitConversion, Sycophancy,
-  SkippedSteps,} and \textit{ExtraSteps}. We evaluate 13 models spanning
-  three orders of magnitude in parameter count, testing their ability to
-  complete mathematical reasoning tasks de
+  evaluation of LLM robustness to a structured taxonomy of 5 CoT perturbation
+  types: \\textit{MathError, UnitConversion, Sycophancy, SkippedSteps,} and
+  \\textit{ExtraSteps}. We evaluate 13 models spanning three orders of
+  magnitude in parameter count, testing their ability to complete mathematical
+  reasoning tasks de"
 ingested_at: 2026-09-19
+brief: >-
+  Corrupting a chain-of-thought mid-stream damages models unevenly, and scale
+  protects against some corruption types but not others. Arithmetic errors
+  planted in a partial trace are the worst case for small models; injected
+  redundant text costs almost nothing at any size.
+
+
+  The setup is a partial-trace completion task on GSM8K: 100 randomly selected
+  problems per perturbation type, 13 models from 3B to 685B (plus closed
+  Claude, GPT, Gemini models with estimated sizes), and 5 perturbation types
+  (MathError, UnitConversion, Sycophancy, SkippedSteps, ExtraSteps). Each
+  model completes both the clean and the corrupted trace.
+
+
+  MathError drops accuracy 18% on average, with Ministral 3B down 0.58 and
+  Gemma 3 4B-it down 0.56, versus 0.03 for Qwen3 235B. UnitConversion averages
+  a 9% drop and persists at scale. Sycophancy averages 3%, SkippedSteps 2%,
+  ExtraSteps 0.4%. Regression slopes on log10 parameters: 0.194 for MathError,
+  0.065 UnitConversion, 0.026 and 0.031 for Sycophancy and SkippedSteps, 0.006
+  for ExtraSteps.
+
+
+  Effects are measured against a matched clean-trace baseline per model, which
+  isolates the perturbation. Training methodology is not isolated, and
+  parameter counts for closed models are guesses, so the scaling curve is
+  soft.
+
+
+  Chains are 3-10 steps on 1 dataset of moderate difficulty; longer or harder
+  reasoning is untested.
+
+
+  Treat arithmetic and unit consistency in multi-stage pipelines as needing
+  external verification rather than model self-correction.
+brief_generated_at: 2026-09-26
+brief_model: claude-opus-5
+brief_source: full-text

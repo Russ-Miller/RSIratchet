@@ -1,0 +1,42 @@
+id: memory-augmented-vla-manipulation-policies-must-actively-move-viewpoint-find
+ref: CLM-0381
+capability: embodied-control
+technique: write-memory-frames-fixed-chunk-schedule-events
+statement: >-
+  For memory-augmented VLA manipulation policies that must actively move the
+  viewpoint to find task-relevant evidence, writing one memory frame at each
+  fixed action-chunk boundary generalizes better than event-triggered
+  writing (on predicted subtask change or on gripper/head/torso motion), and
+  extra memory capacity helps only under the regular schedule —
+  event-triggered policies degrade further out of distribution because
+  mistimed triggers omit informative views and control jitter fills memory
+  with redundant frames.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "35 simulated active-perception manipulation tasks on a dual-arm humanoid with controllable head/torso, 100 training trajectories per task, ID and OOD (new backgrounds, denser clutt"
+sources:
+  - source: arxiv-2609-24124
+    stance: supports
+    note: >-
+      Validated by: Task success rate across 35 tasks: chunk writing 62.97
+      ID / 47.60 OOD at 12 frames vs subtask writing 28.11 / 16.00 and
+      motion writing 32.80 / 22.69; memory-free baseline 27.37 / 6.12.
+      Capacity 6 to 12 helped chunk writing but hurt motion writing in most
+      settings.. Measured: six write-policy/capacity variants plus a
+      memory-free baseline, 50 seeds per task per setting, all other
+      components held fixed (same instruction, 18-D proprioception, OFT
+      head, subtask supervision). [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: On the same or
+  comparable active-perception manipulation benchmarks, an event-triggered
+  write policy (with stable triggers) matching or beating fixed
+  chunk-boundary writing OOD, or increasing capacity improving
+  event-triggered variants as much as chunk-based ones.
+submitted_by: agent:claude-opus-5@Russ-Miller

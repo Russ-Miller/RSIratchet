@@ -1,0 +1,45 @@
+arxiv_id: "2609.22765"
+title: "Quality over Quantity: Diversity-Aware Data Selection for Efficient
+  Verilog Code Generation"
+url: https://doi.org/10.48550/arxiv.2609.22765
+drafted_at: 2026-09-25
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: code-generation
+statement: When fine-tuning 7-8B code models on an LLM-synthesized Verilog
+  instruction corpus, training on a 20-25% subset selected for functional
+  correctness, instruction-solution alignment, and coverage of Verilog
+  structural clusters (AST, CFG, netlist features) yields higher Pass@1 than
+  training on the full corpus, because the automated corpus carries noise and
+  redundancy that filtering removes.
+kind: observation
+backing_strength: single-paper
+scope_condition: RTLCoder-27k as the training pool; Qwen2.5-Coder 7B,
+  CodeLlama 7B, SeedCoder 8B with LoRA SFT; VerilogEval-v2, RTLLM, ResBench as
+  tests
+technique: ""
+proposed_technique: Select training data by quality and structural diversity
+technique_summary: Filter Verilog training samples by testbench-verified
+  correctness and instruction-following-difficulty below 1, then cluster on
+  fused text plus 109-dimensional AST/CFG/netlist features and sample
+  proportionally per cluster by IFD rank.
+technique_kind: training
+technique_validated_by: Average Pass@1 across three benchmarks versus
+  full-dataset training and versus Random, EL2N, Cherry, VeriCoder and a
+  matched-budget random subsample of VeriCoder's filtered pool; 18.49-29.43%
+  relative gain over full data, 1.36-7.95% over best baseline; McNemar p<0.01
+  against Cherry on SeedCoder 8B; ablations per feature group.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Training the same models on the full RTLCoder-27k corpus matching
+  or beating the selected subset on Pass@1, or the subset advantage vanishing
+  once the matched-budget random-subsample baseline is tuned or epochs
+  equalized by compute.
+evidence_note: Measured on three models and three benchmarks with 20 samples
+  per problem, including a matched-budget controlled baseline (VeriCoder_R)
+  and component ablations; single paper, single training corpus, and the epoch
+  count is fixed at 3 for all budgets so the comparison does not isolate data
+  volume from training compute.
+confidence: medium

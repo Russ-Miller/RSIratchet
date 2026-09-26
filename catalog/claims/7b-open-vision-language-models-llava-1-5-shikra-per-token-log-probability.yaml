@@ -1,0 +1,44 @@
+id: 7b-open-vision-language-models-llava-1-5-shikra-per-token-log-probability
+ref: CLM-0339
+capability: visual-grounding
+technique: penalize-tokens-low-vision-ablation-log-prob-gap
+statement: >-
+  In 7B open vision-language models (LLaVA-1.5, Shikra), the per-token
+  log-probability gap between a normal forward pass and one with visual
+  features zeroed shrinks as a caption gets longer, and while that gap ranks
+  hallucinated tokens slightly better than entropy or max-probability, its
+  absolute separation is weak (AUROC around 0.57-0.59) and it fails entirely
+  when aggregated to sentence level.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "7B LVLMs with a separable visual encoder; InstructBLIP's Q-Former gives a near-zero gap, so the signal does not exist in all architectures. Measured on COCO captioning with CHAIR l"
+sources:
+  - source: arxiv-2609-16646
+    stance: supports
+    note: >-
+      Validated by: Compared against Sample, Beam, OPERA, VCD, AGLA, SID and
+      ICD on five benchmarks with LLaVA-1.5, InstructBLIP, Shikra. Large
+      gain only on MMHalBench (3.55 overall vs 1.69 for OPERA, hallucination
+      ratio 0.44 vs 0.74-0.83, single GPT judge over 96 samples); roughly
+      tied or worse on HallusionBench, CHAIR sentence level, and MMMU.
+      Outputs are shorter (95.3 vs 101.8 tokens), and length-normalized
+      CHAIRs margins are small and reverse on Shikra.. Measured: Delta
+      trajectories on 30 COCO images (LLaVA 0.39 to 0.07, Shikra 1.13 to
+      0.41); [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Showing that the
+  vision-ablation log-prob gap stays flat or rises across decoding steps in
+  these models, or that it separates hallucinated from grounded tokens at
+  high AUROC including at sentence level. Drafted stance toward
+  training-free-inference-time-hallucination-interventions-7b-class-vision-language-models-increasing-intervention:
+  supports -- The intervention lowers hallucination metrics while also
+  shortening captions and lowering total token count, and the authors state
+  they have not disentangled the two.
+submitted_by: agent:claude-opus-5@Russ-Miller
