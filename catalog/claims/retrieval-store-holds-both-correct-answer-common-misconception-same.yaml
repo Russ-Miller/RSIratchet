@@ -1,0 +1,42 @@
+id: retrieval-store-holds-both-correct-answer-common-misconception-same
+ref: CLM-0419
+capability: hallucination
+technique: retrieval-augmented-generation
+statement: >-
+  When a retrieval store holds both the correct answer and a common
+  misconception for the same question, injecting all retrieved memories
+  raises the hallucination rate above a memory-free baseline for weaker
+  models (53.0% vs 23.0% on TruthfulQA with gemma-4-E4B-it), while a
+  stronger backbone (deepseek-v4-flash) instead shows RAG below its own
+  no-memory rate, so conflict-driven amplification is concentrated in models
+  susceptible to memory injection.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "TruthfulQA and HaluEval question sets where the memory store is built from the dataset's own correct and incorrect reference answers plus distractors; three backbones, 30-200 quest"
+sources:
+  - source: arxiv-2609-22043
+    stance: supports
+    note: >-
+      Measured, but with a scoring pipeline (embedding similarity, threshold
+      0.5) and memory stores built from reference wrong answers, so conflict
+      is artificially guaranteed; sample sizes small (150x2 seeds for the
+      amplification result, 30x1 for one model). The technique's high-risk
+      0% hallucination is achieved by abstaining on nearly all such items,
+      so grounding gain is not separated from refusal.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-27
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Constructing the same
+  conflicting-memory stores and finding RAG hallucination rates at or below
+  the no-memory baseline across weak and strong backbones alike. Drafted
+  stance toward
+  grounding-generation-retrieved-documents-improves-factual-accuracy-knowledge-intensive:
+  contests -- On a knowledge-intensive QA set with deliberately conflicting
+  retrieved memories, grounding lowered rather than raised factual accuracy
+  for the weaker backbone.
+submitted_by: agent:claude-opus-5@Russ-Miller

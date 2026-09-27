@@ -1,0 +1,38 @@
+id: tool-augmented-agents-emit-calls-over-unconstrained-raw-json-surface-rather
+ref: CLM-0425
+capability: hallucination
+technique: reject-tool-calls-do-resolve-registered-tool-signature
+statement: >-
+  When tool-augmented agents emit calls over an unconstrained raw-JSON
+  surface rather than a schema-enforcing function-calling API, every tested
+  hosted model fabricates tool names or undeclared arguments at rates of
+  roughly 13-57%, and parameter count does not reduce this — an 8B and a
+  675B model hallucinate at comparable raw-JSON rates.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Ten hosted Bedrock models (Claude, Nova, GPT-OSS, Llama-3.1, Mistral families), 60 adversarial probes per model per surface, a synthetic 100-tool registry with 10 tools exposed; lo"
+sources:
+  - source: arxiv-2609-19425
+    stance: supports
+    note: >-
+      Validated by: On 322 live-model hallucinations and 400 scripted trials
+      per class, the resolver rejected all H1-H3 cases while a gating-only
+      stack executed them; but both the 322/322 execution and the 0/322
+      rejection are by-construction consequences of the fail-open threat
+      model, and zero honest over-rejection is measured on the resolver's
+      own honest-call generator, so only the emission counts are independent
+      evidence.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-27
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Running the same
+  adversarial probes and finding fabricated-tool and undeclared-argument
+  rates on a raw-JSON surface fall sharply with model scale within a family,
+  or that raw-JSON and schema-enforced surfaces produce comparable emission
+  rates once refusals are accounted for.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -6,15 +6,49 @@ year: 2025
 date: 2025-05-07
 arxiv_id: "2505.07849"
 url: https://arxiv.org/abs/2505.07849
-tags: [ingested]
-summary: >-
-  Software issue localization, the task of identifying the precise code
+tags:
+  - ingested
+summary: Software issue localization, the task of identifying the precise code
   locations (files, classes, or functions) relevant to a natural language
   issue description (e.g., bug report, feature request), is a critical yet
   time-consuming aspect of software development. While recent LLM-based
-  agentic approaches demonstrate promise, they often incur significant
-  latency and cost due to complex multi-step reasoning and relying on
-  closed-source LLMs. Alternatively, traditional code ranking models,
-  typically optimized for query-to-code or code-to-code retrieval, struggle
-  with the verbose and failure-descrip
+  agentic approaches demonstrate promise, they often incur significant latency
+  and cost due to complex multi-step reasoning and relying on closed-source
+  LLMs. Alternatively, traditional code ranking models, typically optimized
+  for query-to-code or code-to-code retrieval, struggle with the verbose and
+  failure-descrip
 ingested_at: 2026-09-19
+brief: >-
+  Single-shot retrieve-and-rerank beats multi-step LLM agents at finding the
+  code a GitHub issue refers to, at a fraction of the cost. SweRank pairs
+  SweRankEmbed, a bi-encoder retriever (137M or 7B), with SweRankLLM, a
+  listwise reranker (7B or 32B), both finetuned on SweLoc: 67,341 issue/patch
+  pairs mined from 3387 Python repos, with top-K consistency filtering (K=20)
+  and 15 mined hard negatives.
+
+
+  On SWE-Bench-Lite (274 examples) SweRankLLM-Large reaches 88.69 function
+  Acc@10 against 77.37 for LocAgent with Claude-3.5; on LocBench (560
+  examples) 76.25 vs 60.71 function Acc@15. Inference cost is $0.015 per
+  instance vs $0.66 for LocAgent with Claude-3.5, up to 6X better
+  performance-cost tradeoff. Localization gains carry downstream: SWE-Fixer
+  repair Pass@1 rises 22.6 to 24.5, with an oracle-localization ceiling of
+  25.9.
+
+
+  Evidence is measured, with ablations that isolate the data: removing
+  consistency filtering makes finetuning worse than the pretrained model, and
+  SweLoc lifts 3 different retriever backbones (+8.1 to +17.4 function Acc@10)
+  and 6 Qwen2.5 rerankers.
+
+
+  Limits: Python only, 2 benchmarks, retrieval granularity fixed at functions,
+  and issues touching >5 functions remain single-digit accuracy for every
+  method tested.
+
+
+  If you are paying for agentic localization, a trained ranker is the cheaper
+  default.
+brief_generated_at: 2026-09-27
+brief_model: claude-opus-5
+brief_source: full-text

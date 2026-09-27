@@ -1,0 +1,43 @@
+arxiv_id: "2609.16268"
+title: "Spurious Tool Use: When RL Agents Learn the Wrong Reason to Act"
+url: https://doi.org/10.48550/arxiv.2609.16268
+drafted_at: 2026-09-25
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: tool-use
+statement: When a tool-using agent is trained with outcome-only RL and a
+  surface prompt cue co-occurs with one tool in most training examples, the
+  agent invokes that tool on tasks where it is useless, but only for tools it
+  has already learned to use well and mainly when the cue is semantically
+  related to the tool.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Qwen2.5-7B-Instruct trained with GRPO on a 1,000-example
+  synthetic mix of Natural Questions (search) and DeepMath (Python), with
+  injected cues; effect appears at 80%+ cue-task correlation and vanishes at
+  70% and below.
+technique: ""
+proposed_technique: Reward each tool call by whether it was necessary
+technique_summary: During RL, an LLM judge labels each tool invocation as
+  necessary or not given the question and tool input, and unnecessary calls
+  get a fixed per-step penalty added to the final-answer reward.
+technique_kind: training
+technique_validated_by: "Measured as the cue-present minus cue-absent
+  search-call rate on DeepMath and GSM8K against the same RL run without the
+  dense reward: spurious deltas of +9.5 to +39.2 points fell to ~0, with task
+  accuracy equal or higher than the no-cue baseline."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An RL run where a strongly correlated, semantically aligned cue
+  produces large spurious invocation of a tool the agent never learned to use
+  on its intended task, or where a semantically mismatched cue produces
+  equally large spurious invocation of a well-learned tool.
+evidence_note: Controlled synthetic study, one base model, one RL algorithm,
+  six cues, with counterfactual cue-present/absent test pairs and a
+  swapped-cue control that separates competence from semantic alignment.
+  Competence is inferred from training curves (NQ accuracy rises, DeepMath
+  flat), not manipulated directly, so the competence claim is correlational
+  across two tasks.
+confidence: medium

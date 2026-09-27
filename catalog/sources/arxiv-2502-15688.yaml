@@ -28,3 +28,34 @@ summary: We present XPath Agent, a production-ready XPath programming agent
 notes: "Forwarded by Russ 2026-09-19: locator papers: generate a reusable
   regex/SQL/XPath once, run it without the model"
 ingested_at: 2026-09-19
+brief: >-
+  Pruning a web page down to visible text plus structure, and asking an LLM to
+  extract both the target value and its "cue text" (the "price:" label before
+  "$100.00"), gives enough anchor material to program XPath queries in 2 LLM
+  calls rather than a traversal loop. XPath Agent splits the job: a weaker
+  model extracts target information from a sanitized page, a stronger model
+  writes the XPath from a condensed DOM, with an evaluator that runs the query
+  on seeded pages and feeds back what is missing or redundant, capped at 3
+  correction loops.
+
+
+  Evaluation is on SWDE: 90 websites across 9 domains, 20414 pages, 3 seed
+  pages per task, 32 sampled pages per task for scoring. GPT 4o scores best at
+  0.7413 accuracy, 0.8561 precision, 0.8467 recall, 0.8514 F1; GPT 4o mini
+  0.7961 F1; Claude 3.5 0.7647 F1; DeepSeek V2.5 0.7337 F1. The sanitizer cuts
+  page size to 10%–20% on average.
+
+
+  The claimed wins over AutoCrawler on token usage and wall-clock are
+  asserted, not tabulated: the comparative section is prose only, with no
+  AutoCrawler numbers, no matched-budget baseline, and no ablation isolating
+  cue texts or the evaluator loop despite cue texts being a headline
+  contribution. The error analysis section is empty and the conclusion is
+  unwritten template text.
+
+
+  Treat the pipeline design as the takeaway and the efficiency claim as
+  unverified.
+brief_generated_at: 2026-09-27
+brief_model: claude-opus-5
+brief_source: full-text

@@ -1,0 +1,48 @@
+arxiv_id: "2609.24417"
+title: "ARM: Attention with Routed-Memory for Learnable Sparse Control"
+url: https://doi.org/10.48550/arxiv.2609.24417
+drafted_at: 2026-09-26
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: long-context-degradation
+statement: For an 8B Llama backbone under a fixed 256-slot cache budget,
+  replacing hard KV eviction with a learned soft write that blends a new
+  token's key/value into a routed fixed-size memory slot retains far more
+  long-context retrieval accuracy than sliding-window or sink caches, and
+  unlike full-attention or quantized caches it does not run out of memory at
+  128K tokens.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Llama-3.1-8B adapted by pre-training the new write/read
+  modules on 10B tokens; cache capped at 256 slots; RULER and LongBench
+  evaluations
+technique: ""
+proposed_technique: Blend evicted KV into routed memory slots instead of dropping
+technique_summary: Organizes the KV cache as a fixed-size tree of memory
+  buckets, routes each incoming token to a slot via Gumbel-Softmax, and
+  sigmoid-gates a soft merge of the new key/value with the stored one instead
+  of discarding any token, with a learned policy choosing how many buckets to
+  read per query.
+technique_kind: architecture
+technique_validated_by: RULER average rose from 8.01 (full attention, OOM at
+  128K) and 4.88 (StreamingLLM) to 15.12, with 5.78 at 128K where baselines
+  score 0 or OOM; LongBench average 18.02 vs 17.09 full attention and 10.76
+  StreamingLLM; commonsense average essentially unchanged (71.89 vs 72.27)
+  with slightly worse WikiText perplexity (7.86 vs 7.54); latency and KV
+  memory on par with sliding-window caches.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched comparison in which soft gated writes into a fixed-size
+  routed memory score no better than hard eviction at equal cache size on
+  long-context retrieval, or in which the reported gain disappears once
+  baselines get the same 10B-token adaptation training.
+evidence_note: "Measured on one model (Llama-3.1-8B) against sliding window,
+  StreamingLLM, KIVI quantization, CPU offloading and full attention on
+  lm-eval, LongBench and RULER to 128K. Confound: ARM's new modules were
+  pre-trained on 10B FineWeb-Edu tokens while baselines were not, so extra
+  training is not isolated from the architecture. The information-theoretic
+  Bayes-optimality argument for gated writes is analytical under de-correlated
+  Gaussian assumptions and covers only the write step."
+confidence: low
