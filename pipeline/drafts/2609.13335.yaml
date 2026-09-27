@@ -1,0 +1,50 @@
+arxiv_id: "2609.13335"
+title: "Bridging Thought and Action: Taming Long-Horizon Instability in
+  Open-Source LLM Agents with a MetaTool-Enhanced ROS Framework"
+url: https://doi.org/10.48550/arxiv.2609.13335
+drafted_at: 2026-09-23
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: long-horizon-execution
+statement: For open-source LLM agents driving a ROS robot, having the model
+  emit a pseudo-code tool-call plan up front, storing it in a persistent
+  scratchpad, and then restricting each tool invocation to the plan's next
+  step raises task success most on the longest multi-step tasks and for the
+  smaller open models (GPT-OSS-20B on the hardest task rose from 35% with a
+  persistent plan alone to 55% with the constraint), while a strong
+  proprietary model gains little.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: ROS-Agent/ROSA-style agentic loop with about eight custom
+  robot tools; three task tiers; 20 trials per cell in Gazebo simulation plus
+  40 hardware trials on one task; open models GPT-OSS-20B/120B and Kimi-K2
+  versus GPT-4o.
+technique: ""
+proposed_technique: Persist a pseudo-code plan and restrict calls to it
+technique_summary: Before any action, the agent generates an ordered
+  pseudo-code sequence of tool calls, writes it to a scratchpad that persists
+  across the whole episode, and the executor admits only the plan-specified
+  tool at each step unless replanning is triggered.
+technique_kind: process
+technique_validated_by: Four-configuration ablation (prompt only, transient
+  plan, persistent plan, persistent plan plus execution constraint) over three
+  task tiers and four models, 20 trials each; 40 hardware trials comparing
+  repeated tool calls (19.0% to 6.1%), invalid calls (21.7% to 8.1%) and
+  execution time against vanilla ROSA; and a 40-trial failure-mode comparison
+  against re-implemented ReAct (17/40 success), CaP (20/40), ROSA (23/40) and
+  MetaTool (30/40).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation on the same pipeline where adding the execution
+  constraint to a persistent plan does not raise success on the longest tasks,
+  or where gains are as large for strong proprietary models as for small open
+  ones, or where repeated/invalid tool-call rates are unchanged.
+evidence_note: Measured, but 20 trials per cell (authors call the results
+  indicative, not statistically significant), one robot platform, one task
+  suite of three hand-written tasks, and baselines re-implemented by the
+  authors rather than run as published. The design does separate persistence
+  from the execution constraint, which is what supports the mechanism reading.
+  Cross-model pattern comes from a single table.
+confidence: low

@@ -1,0 +1,48 @@
+arxiv_id: "2609.21492"
+title: "LogicTrack: Auditing Reasoning Trajectories of Large Language Models
+  with Formal Logic Solvers"
+url: https://doi.org/10.48550/arxiv.2609.21492
+drafted_at: 2026-09-26
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-step-reasoning
+statement: On natural-language logical reasoning benchmarks, auto-formalizing
+  each reasoning step into SMT-LIB and regenerating from the first step the
+  solver cannot verify raises both the share of solver-verified steps and
+  final-answer accuracy over plain chain-of-thought, and greedy regeneration
+  at the failure point beats beam search or MCTS on step verifiability.
+kind: observation
+backing_strength: single-paper
+scope_condition: Eight NL logic/entailment benchmarks (FOLIO, e-SNLI, LogiQA,
+  ProntoQA, ProofWriter, QASC, SARA, SemEval) across seven models, 7B to
+  frontier; tasks must be close enough to formal logic that steps can be
+  auto-formalized. Outcome accuracy sometimes drops on individual
+  model-dataset pairs.
+technique: ""
+proposed_technique: Verify each reasoning step with a solver and backtrack on failure
+technique_summary: Decompose each generated reasoning step into context,
+  implicit assumptions and conclusion, formalize it into a solver
+  specification, score it by premise fidelity plus solver entailment, and
+  regenerate from that step when the score falls below a threshold.
+technique_kind: decoding
+technique_validated_by: Compared against vanilla CoT on 168 benchmark-metric
+  cells across 8 datasets and 7 models, improving in 133; unverified step
+  ratio and verification-weighted accuracy reported per cell; also compared
+  against LogicReward (OA 0.4338 to 0.5765) and against beam search and MCTS
+  variants on SARA.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A controlled comparison showing step-wise solver verification with
+  immediate backtracking gives no better verified-step ratio or answer
+  accuracy than post-hoc whole-chain verification at matched sampling budget,
+  or that the gain disappears once autoformalization failures are accounted
+  for.
+evidence_note: Measured on eight benchmarks and seven models against a vanilla
+  CoT baseline only; no matched-compute baseline, so part of the gain may come
+  from extra generation attempts rather than from solver signal. The VWA
+  metric is partly defined by the same verifier the method optimizes against,
+  which inflates step-validity gains. Search-strategy comparison is on one
+  dataset and two models.
+confidence: medium

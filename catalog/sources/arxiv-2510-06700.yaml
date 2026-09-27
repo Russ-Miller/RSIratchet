@@ -1,20 +1,62 @@
 id: arxiv-2510-06700
 ref: SRC-0325
 kind: paper
-title: "How Language Models Conflate Logical Validity with Plausibility: A Representational Analysis of Content Effects"
+title: "How Language Models Conflate Logical Validity with Plausibility: A
+  Representational Analysis of Content Effects"
 year: 2025
 date: 2025-10-08
 arxiv_id: "2510.06700"
 url: https://arxiv.org/abs/2510.06700
-tags: [ingested]
-summary: >-
-  Both humans and large language models (LLMs) exhibit content effects:
-  biases in which the plausibility of the semantic content of a reasoning
-  problem influences judgments regarding its logical validity. While this
-  phenomenon in humans is best explained by the dual-process theory of
-  reasoning, the mechanisms behind content effects in LLMs remain unclear.
-  In this work, we address this issue by investigating how LLMs encode the
-  concepts of validity and plausibility within their internal
-  representations. We show that both concepts are linearly represented and
-  strongly aligned in representational g
+tags:
+  - ingested
+summary: "Both humans and large language models (LLMs) exhibit content
+  effects: biases in which the plausibility of the semantic content of a
+  reasoning problem influences judgments regarding its logical validity. While
+  this phenomenon in humans is best explained by the dual-process theory of
+  reasoning, the mechanisms behind content effects in LLMs remain unclear. In
+  this work, we address this issue by investigating how LLMs encode the
+  concepts of validity and plausibility within their internal representations.
+  We show that both concepts are linearly represented and strongly aligned in
+  representational g"
 ingested_at: 2026-09-19
+brief: >-
+  Logical validity and real-world plausibility are encoded along nearly the
+  same linear direction inside LLMs, and the tighter that alignment, the more
+  a model's validity judgments track whether the conclusion happens to be
+  true. Steering along the plausibility direction flips validity verdicts, and
+  the validity direction flips plausibility verdicts.
+
+
+  The setup: 1,280 syllogisms covering all 64 syllogism types, balanced for
+  plausible vs implausible conclusions, plus a plausibility (true/false)
+  classification task and 2 control tasks (hypernymy, harmfulness) matched for
+  binary format and vocabulary. 10 instruction-tuned models from Qwen-2.5,
+  Qwen-3 and Gemma-3, 4B–32B, under zero-shot and CoT prompting;
+  difference-in-means vectors added or subtracted at each residual-stream
+  layer.
+
+
+  Qwen2.5-32B-Instruct shows a content effect of 0.348 zero-shot, falling to
+  0.096 with CoT; Qwen3-14B goes from 0.213 to 0.014. Validity–plausibility
+  cosine similarity runs 0.48 to 0.64 against 0.10 to 0.13 for hypernymy and
+  −0.12 to −0.17 for harmlessness. A mixed-effects regression over 57
+  model–prompt points finds similarity predicts content effect (β = 0.557, p =
+  0.017), with zero-shot prompting adding β = 0.188 (p < 0.001). A
+  task-difference vector scaled by α = 1.5 cuts CE to 0.072 and 0.043 while
+  accuracy moves from 81.62 to 82.21 and 86.54 to 96.70.
+
+
+  The causal claim is measured, not just correlational, and the 2 control
+  concepts rule out generic binary-task or lexical overlap artifacts. But the
+  similarity does not differ between zero-shot and CoT (p = 0.625), so it
+  cannot explain why CoT reduces the bias; debiasing was demonstrated on 2
+  models only, zero-shot, at hand-picked layers. Only last-token dense
+  residual activations were examined, and no evidence is given for why the
+  conflation arises.
+
+
+  If you treat content effects as a prompting artifact, this locates them in
+  representational geometry instead, and suggests an inference-time fix.
+brief_generated_at: 2026-09-27
+brief_model: claude-opus-5
+brief_source: full-text

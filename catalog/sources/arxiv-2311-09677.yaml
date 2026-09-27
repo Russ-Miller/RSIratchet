@@ -6,15 +6,49 @@ year: 2023
 date: 2023-11-16
 arxiv_id: "2311.09677"
 url: https://arxiv.org/abs/2311.09677
-tags: [ingested]
-summary: >-
-  Large language models (LLMs) have revolutionized numerous domains with
-  their impressive performance but still face their challenges. A
+tags:
+  - ingested
+summary: Large language models (LLMs) have revolutionized numerous domains
+  with their impressive performance but still face their challenges. A
   predominant issue is the propensity for these models to generate
   non-existent facts, a concern termed hallucination. Our research is
-  motivated by the observation that previous instruction tuning methods
-  force the model to complete a sentence no matter whether the model knows
-  the knowledge or not. When the question is out of the parametric
-  knowledge, it will try to make up something and fail to indicate when it
-  lacks knowledge. In this paper, we present a new ap
+  motivated by the observation that previous instruction tuning methods force
+  the model to complete a sentence no matter whether the model knows the
+  knowledge or not. When the question is out of the parametric knowledge, it
+  will try to make up something and fail to indicate when it lacks knowledge.
+  In this paper, we present a new ap
 ingested_at: 2026-09-19
+brief: >-
+  Fine-tuning a model on the answers it already gets right, and labelling the
+  rest with "I am unsure", teaches refusal as a transferable skill and also
+  improves the accuracy of the answers it does give. R-Tuning splits an
+  instruction-tuning set into certain data D1 and uncertain data D0 by
+  checking whether the pre-trained model's prediction matches the label, then
+  appends "I am sure"/"I am unsure" after each answer.
+
+
+  Tested on OpenLLaMA-3B, LLaMA-7B and LLaMA-13B across 9 datasets,
+  single-task on ParaRel and MMLU and multi-task on 5 datasets with
+  HaluEval-QA held out.
+
+
+  AP scores beat vanilla instruction tuning, with the gap widening at scale:
+  MMLU in-domain 68.87 vs 51.93 at 13B, ParaRel OOD 77.30 vs 64.12. Vanilla AP
+  drops with model size in those settings. On unanswerable questions, refusal
+  rates reach 96.62 on FalseQA and 99.18 on NEC at 7B, against 18.35 and 20.55
+  for vanilla prompted to refuse. An unsupervised variant using 10-sample
+  entropy (R-Tuning-U) generally scores higher still, and beats Vanilla-C,
+  which applies the same 10-sample uncertainty filter at test time instead.
+
+
+  The Vanilla-C comparison isolates the effect of learning uncertainty during
+  training rather than measuring it at inference. Confidence remains binary,
+  only 3 LLaMA-family base models were used, and knowledge-gap identification
+  relies on answer matching rather than checking pre-training data.
+
+
+  If you refuse at inference time via sampling, moving that uncertainty into
+  training may be cheaper and more accurate.
+brief_generated_at: 2026-09-27
+brief_model: claude-opus-5
+brief_source: full-text
