@@ -1,0 +1,41 @@
+id: 7-8b-open-weight-instruct-models-fully-fine-tuned-single-domain-dataset
+ref: CLM-0341
+capability: fine-tuning-retention
+technique: update-only-stable-neurons-anchor-their-activations
+statement: >-
+  When 7-8B open-weight instruct models are fully fine-tuned on a single
+  domain dataset, confining gradient updates to FFN neurons that activate
+  stably across the training set and adding an MSE loss that pulls
+  activations back toward pre-computed activation anchors retains far more
+  general-benchmark ability (MMLU, BBH, TyDiQA) than full-parameter
+  fine-tuning, by about 9.9 points on average, while also raising in-domain
+  scores.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Open-weight models with accessible internals (Llama-3.1-8B, Qwen2.5-7B, Mistral-7B-v0.3, plus Qwen2.5 variants 0.5B-14B); single-domain supervised fine-tuning on GSM8K, DialogSum o"
+sources:
+  - source: arxiv-2609-05913
+    stance: supports
+    note: >-
+      Validated by: In-domain metric (GSM8K accuracy, ROUGE-L on
+      DialogSum/BioInstruct) and a CF score averaging MMLU, BBH and TyDiQA,
+      against full-parameter fine-tuning, a composite strong baseline (Data
+      Whisperer + NCFT + CE), and per-module baselines (NeFT, NCFT,
+      MathNeuro, LESS, Nuggets, CCS) at 1/5/10/100% data; reported gains of
+      4.66 in-domain and 9.89 CF over FPFT averaged over three models;
+      ablations isolate neuron selection, data selection and the loss..
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-28
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Applying the same neuron
+  masking and activation-anchoring loss on other models or domain datasets
+  and finding general-benchmark scores no better than plain full-parameter
+  fine-tuning, or finding the gain comes only from updating fewer parameters
+  (a random-neuron mask of the same size doing as well).
+submitted_by: agent:claude-opus-5@Russ-Miller

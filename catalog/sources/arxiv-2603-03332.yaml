@@ -1,20 +1,58 @@
 id: arxiv-2603-03332
 ref: SRC-0348
 kind: paper
-title: "Fragile Thoughts: How Large Language Models Handle Chain-of-Thought Perturbations"
+title: "Fragile Thoughts: How Large Language Models Handle Chain-of-Thought
+  Perturbations"
 year: 2026
 date: 2026-02-11
 arxiv_id: "2603.03332"
 url: https://arxiv.org/abs/2603.03332
-tags: [ingested]
-summary: >-
-  Chain-of-Thought (CoT) prompting has emerged as a foundational technique
-  for eliciting reasoning from Large Language Models (LLMs), yet the
+tags:
+  - ingested
+summary: "Chain-of-Thought (CoT) prompting has emerged as a foundational
+  technique for eliciting reasoning from Large Language Models (LLMs), yet the
   robustness of this approach to corruptions in intermediate reasoning steps
   remains poorly understood. This paper presents a comprehensive empirical
-  evaluation of LLM robustness to a structured taxonomy of 5 CoT
-  perturbation types: \textit{MathError, UnitConversion, Sycophancy,
-  SkippedSteps,} and \textit{ExtraSteps}. We evaluate 13 models spanning
-  three orders of magnitude in parameter count, testing their ability to
-  complete mathematical reasoning tasks de
+  evaluation of LLM robustness to a structured taxonomy of 5 CoT perturbation
+  types: \\textit{MathError, UnitConversion, Sycophancy, SkippedSteps,} and
+  \\textit{ExtraSteps}. We evaluate 13 models spanning three orders of
+  magnitude in parameter count, testing their ability to complete mathematical
+  reasoning tasks de"
 ingested_at: 2026-09-19
+brief: >-
+  Corrupting an intermediate step of a chain of thought hurts models very
+  unevenly, and scale protects against some corruptions but barely others.
+  Injected arithmetic errors are the worst case; redundant filler text is
+  nearly free.
+
+
+  The setup is partial-trace completion on GSM8K: given a question and the
+  first few solution steps, the model finishes the chain. 5 perturbation types
+  (MathError, UnitConversion, Sycophancy, SkippedSteps, ExtraSteps) were
+  injected into the partial trace, and 13 models from 3B to 685B plus closed
+  frontier models (Claude Haiku/Sonnet 4.5, Gemini 3 Flash, GPT 5.2, Qwen3
+  235B, Ministral 3B/8B, Gemma 3 4B) were scored on 100 problems per
+  perturbation, clean versus perturbed.
+
+
+  MathError cost 18% accuracy on average, with Ministral 3B losing 0.58 and
+  Gemma 3 4B 0.56, while Qwen3 235B lost 0.03 and GPT 5.2 0.07. UnitConversion
+  averaged -0.086 and stayed non-trivial at large scale. Sycophancy (-0.028),
+  SkippedSteps (-0.022) and ExtraSteps (-0.004) were near ceiling.
+  Fixed-effects regression on log10 parameters gives slopes of 0.194 for
+  MathError, 0.065 for UnitConversion, 0.026 and 0.031 for Sycophancy and
+  SkippedSteps, 0.006 for ExtraSteps.
+
+
+  Evidence is a measured clean-versus-perturbed comparison with significance
+  marks, but parameter counts for closed models are guessed (500B/1.2T/2T),
+  only 100 items per condition, and training paradigm is not isolated from
+  scale. Chains are 3-10 steps on 1 dataset of moderate difficulty; deeper
+  injections and harder problems are untested.
+
+
+  If you pipe reasoning between stages, verify arithmetic and units externally
+  rather than trusting a bigger model to notice.
+brief_generated_at: 2026-09-28
+brief_model: claude-opus-5
+brief_source: full-text

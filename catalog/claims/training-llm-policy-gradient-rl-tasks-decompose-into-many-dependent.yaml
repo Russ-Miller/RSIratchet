@@ -1,0 +1,40 @@
+id: training-llm-policy-gradient-rl-tasks-decompose-into-many-dependent
+ref: CLM-0447
+capability: long-horizon-execution
+technique: reward-segments-reference-reasoning-points-reached
+statement: >-
+  When training an LLM with policy-gradient RL on tasks that decompose into
+  many dependent sub-problems, rewarding each trajectory segment by how many
+  reference reasoning points it newly reaches beats a sparse final-answer
+  reward by a margin that widens with task horizon, and still learns on
+  problem sets where the base policy never samples a success and sparse
+  reward gives no gradient at all.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Requires one reference solution per task and a way (symbolic check or LLM judge) to test whether a segment reached a reference reasoning point; shown on 1.7B-4B Qwen3 models on syn"
+sources:
+  - source: arxiv-2609-07303
+    stance: supports
+    note: >-
+      Validated by: GRPO baseline vs trajectory-level and segment-level
+      variants on Multi-Countdown, Matrix Manipulation, GSM-Infinite
+      (success 0.415 vs 0.084 sparse at n=16; 0.191 vs 0.091 at n=24),
+      Polaris pass@1/pass@8 at 16K eval, and a POPE-hard subset where base
+      pass rate is ~0.004 at 8K; also a signal-to-noise theorem.. Measured
+      on three synthetic environments plus two math datasets with small
+      Qwen3 models; baselines include GRPO, SFT, Verifree, OPSD and a
+      process-reward judge. Margins on Polaris are small and some test
+      splits favor baselines. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-28
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: On long-horizon tasks,
+  segment-level reasoning-point rewards match or trail sparse outcome
+  rewards in final success rate, or the gap fails to grow with horizon,
+  under matched compute and reference-trajectory access.
+submitted_by: agent:claude-opus-5@Russ-Miller

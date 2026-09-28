@@ -1,0 +1,47 @@
+arxiv_id: "2609.24186"
+title: "LIMIT: Less Is More for Instruction Tuning in Text-to-SQL"
+url: https://doi.org/10.48550/arxiv.2609.24186
+drafted_at: 2026-09-25
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: formal-query-synthesis
+statement: For instruction tuning an 8B open model on text-to-SQL, a curated
+  set of under 900 examples selected to cover every table in the target
+  schemas and score well on question-SQL alignment reaches higher execution
+  accuracy than pipelines trained on tens of thousands to millions of samples,
+  and dropping the schema-coverage term from the selection objective costs
+  more accuracy than dropping any single quality term.
+kind: observation
+backing_strength: single-paper
+scope_condition: Qwen3-8B fine-tuned with SFT then GRPO, evaluated on BIRD-Dev
+  and Spider-Dev execution accuracy; candidate pool itself synthesized from
+  the same benchmark databases, so coverage is measured against the evaluation
+  schemas.
+technique: ""
+proposed_technique: Select a tiny SQL tuning set for schema coverage, not size
+technique_summary: Filter candidate text-to-SQL examples by dual-model
+  difficulty, attach the shortest correct chain-of-thought, score each on four
+  LLM-judged quality dimensions, then use a genetic search to pick a small
+  subset maximizing table/column coverage plus quality under a size penalty.
+technique_kind: training
+technique_validated_by: BIRD-Dev EX 69.1% and Spider-Dev 88.9% with
+  self-consistency@8 from 796 and 863 samples, versus 67.0% for DB-Explore
+  with 16,457 samples and 63.9-64.2% for OmniSQL trained on 2.5M; ablation
+  removing the coverage term drops SFT accuracy from 65.4% to 58.4%.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Matched-budget comparison where a random or quality-only subset of
+  the same size reaches the same execution accuracy as the coverage-optimized
+  subset, or where the small curated set loses to large-corpus training on
+  databases held out from the selection pool.
+evidence_note: Measured on two benchmarks with one backbone, against published
+  numbers from other systems rather than same-pipeline controls; the module
+  ablation is internal and does isolate the coverage term, but there is no
+  random-subset-of-equal-size baseline and no held-out-database split, so the
+  claim that coverage rather than pool provenance carries the gain is only
+  partly isolated.
+confidence: low
+problems:
+  - "figures not in the source: 900"

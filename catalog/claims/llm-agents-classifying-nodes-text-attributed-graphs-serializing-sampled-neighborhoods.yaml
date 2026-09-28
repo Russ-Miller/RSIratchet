@@ -1,0 +1,41 @@
+id: llm-agents-classifying-nodes-text-attributed-graphs-serializing-sampled-neighborhoods
+ref: CLM-0387
+capability: multi-model-coordination
+technique: pass-graph-structure-permutation-invariant-signature-text
+statement: >-
+  For LLM agents classifying nodes in text-attributed graphs, serializing
+  sampled neighborhoods into prompt text makes the prediction depend on the
+  arbitrary order of neighbors; replacing that text with a fixed-size,
+  permutation-invariant vector of graph statistics (degree, PageRank,
+  clustering, cross-community fraction, label entropy, majority-label
+  fraction) plus only the top-k semantically relevant node texts raises
+  accuracy and cuts per-message tokens.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Node classification on four text-attributed graphs (OGB-Arxiv, OGB-Products, Cora-full, Amazon-Computers) with GPT-4o-mini agents, training-free, one agent per detected community."
+sources:
+  - source: arxiv-2609-09565
+    stance: supports
+    note: >-
+      Validated by: Accuracy and Macro-F1 against single-agent and
+      orchestration-based AGL baselines on four datasets (best accuracy on
+      all four); an ablation that restores ReaGAN-style verbalized neighbors
+      while keeping the numeric signature for collaboration routing produced
+      the largest accuracy drop of four ablations; tokens per cross-agent
+      message compared against serialized 1-hop/2-hop neighborhoods..
+      Measured, one paper, one backbone (GPT-4o-mini), 1,000 test nodes per
+      dataset. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-28
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Show that shuffling
+  neighbor order in verbalized graph evidence leaves predictions and
+  accuracy unchanged for current models, or that the signature-based
+  observation loses accuracy relative to full verbalization once the same
+  total token budget is allowed.
+submitted_by: agent:claude-opus-5@Russ-Miller

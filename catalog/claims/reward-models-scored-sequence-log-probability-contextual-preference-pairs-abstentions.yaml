@@ -1,0 +1,42 @@
+id: reward-models-scored-sequence-log-probability-contextual-preference-pairs-abstentions
+ref: CLM-0433
+capability: critique
+technique: length-balance-rejected-responses-preference-data
+statement: >-
+  When reward models are scored by sequence log-probability on contextual
+  preference pairs, abstentions are systematically shorter than the
+  unsupported answers they are preferred over, so measured
+  grounding/abstention judgement partly tracks response length; rewriting
+  rejected and refusal responses to match the preferred ones in length while
+  keeping the grounding failure raises pairwise accuracy far more than
+  adding more in-domain legal preference data (up to +25.6 points over
+  baseline for Ministral-8B).
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Pairwise contextual reward models (0.5B-27B open-weight) refined with DPO and scored by (length-normalised) sequence log-probability on legal RAG preference pairs built from Victor"
+sources:
+  - source: arxiv-2609-14739
+    stance: supports
+    note: >-
+      Validated by: Pairwise accuracy on LegalRewardBench: Ministral-8B 59.3
+      baseline, 67.6 with CJB-only DPO, 66.0 with CJB+original legal pairs,
+      81.8 with length-augmented legal pairs, 84.9 with
+      CJB+length-augmented; same ordering for Gemma 2-2B.. Measured on 156
+      test preference pairs of one benchmark, two fine-tuned models for the
+      main table; the augmentation is confounded with rewriting (a rewrite
+      may change more than length), and no ablation separates length from
+      other rewrite effects. All labels are LLM-judge derived (91.7%
+      pair-direction agreement across four judges).
+contested: false
+status: pending-review
+last_checked_at: 2026-09-28
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Length-balanced
+  augmentation giving no gain over the unaugmented legal pairs under a
+  length-normalised scoring function, or the gain persisting when response
+  lengths in the original pairs are already matched.
+submitted_by: agent:claude-opus-5@Russ-Miller

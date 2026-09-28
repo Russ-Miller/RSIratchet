@@ -1,0 +1,51 @@
+arxiv_id: "2609.21358"
+title: "FAN: Foresight Action Normalization for Continual Adaptation of
+  Vision-Language-Action Models"
+url: https://doi.org/10.48550/arxiv.2609.21358
+drafted_at: 2026-09-26
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: "When a pretrained vision-language-action policy is fine-tuned
+  sequentially on a stream of real-robot manipulation tasks, the choice of
+  action-normalization statistics is itself a determinant of
+  continual-learning success: statistics that are task-derived,
+  first-task-derived, or recomputed each stage produce forgetting or poor
+  transfer, while statistics estimated once from a small task-independent
+  calibration set covering the embodiment's motion range and then frozen give
+  the best acquisition, retention and task-order stability."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Replay-based continual fine-tuning of a pretrained VLA
+  (pi-0.5) on four real-robot streams of five tasks each, single-arm and
+  bimanual, with percentile-based normalization; 10 rollouts per
+  checkpoint-task.
+technique: ""
+proposed_technique: Freeze normalization statistics from a pre-stream calibration set
+technique_summary: Before continual adaptation, collect a handful of
+  task-independent teleoperated trajectories covering the embodiment's
+  anticipated motion range, compute per-dimension 1st/99th percentile action
+  statistics once, and use those frozen statistics for normalization and
+  denormalization across all later training, replay and inference.
+technique_kind: training
+technique_validated_by: "Average final score across four real-robot streams:
+  95.3 for FAN vs 77.0 for the best baseline (first-task statistics), 62.0,
+  59.0 and 25.9 for the others; forward transfer positive on all four streams
+  (avg 9.1 vs -12.7 to -75.6); mean absolute matched-task difference across
+  stream orders 4.2 points vs 17.5-48.5 for baselines. Ablation: narrowing or
+  widening (2.5x) the frozen range cut average score by roughly 24 points on
+  two streams."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A continual VLA adaptation study on comparable real-robot streams
+  where frozen calibration-set statistics score no better than task-specific
+  or dynamically recomputed statistics, or where the coverage width of the
+  frozen range has no effect on later-task acquisition.
+evidence_note: Measured on one bimanual platform with one base policy, four
+  streams of five tasks, 10 rollouts per cell; five normalization protocols
+  compared with everything else held fixed, so the normalization variable is
+  isolated. Single lab, single embodiment, no repeated seeds reported; the
+  coverage ablation is on two of the four streams.
+confidence: medium

@@ -1,0 +1,50 @@
+arxiv_id: "2609.20791"
+title: "StageGuard: Learning Stage Transitions for Long-Horizon Robot Tasks
+  via Agentic Distillation"
+url: https://doi.org/10.48550/arxiv.2609.20791
+drafted_at: 2026-09-27
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: For deciding when a robot skill has finished and the next subtask
+  should begin, general-purpose VLMs prompted zero-shot are near useless on
+  long-horizon mobile manipulation (under 4% of transitions detected on
+  BEHAVIOR-1K, including a frontier proprietary model), while a sub-1B student
+  fine-tuned on compact self-explanations condensed from teacher reasoning
+  over annotated demonstrations detects about 90% and lifts closed-loop task
+  success from 0.30 to 0.53 against a 0.63 oracle.
+kind: observation
+backing_strength: single-paper
+scope_condition: Hierarchical robot control with a PDDL planner and learned
+  low-level policies; LIBERO-Logic and six BEHAVIOR-1K tasks, 10 training
+  trajectories per task; ground-truth subtask segmentation annotations
+  required.
+technique: ""
+proposed_technique: Distill stage-transition monitoring via student self-explanations
+technique_summary: A large teacher VLM produces layered reasoning traces
+  linking observations and task plan to annotated subtask transitions; a small
+  student rewrites those traces into compact self-explanations, teacher-judged
+  candidates are selected, and the student is fine-tuned on
+  explanation-plus-structured-decision with lower loss weight on the
+  explanation tokens.
+technique_kind: training
+technique_validated_by: Transition completion, full-trajectory rate,
+  next-subtask accuracy and inference Hz against five prompted VLM baselines
+  and two ROVER variants on LIBERO and BEHAVIOR-1K; ablations against
+  full-teacher-CoT training (0% on BEHAVIOR-1K) and decision-only labels
+  (37.7%); closed-loop success on BEHAVIOR-1K and 20 trials on each of two
+  real arms.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A prompted general VLM reaching comparable transition-completion
+  rates on long-horizon mobile manipulation, or the self-explanation step
+  giving no advantage over direct full-CoT or decision-only fine-tuning on a
+  comparable benchmark.
+evidence_note: Measured on two simulation benchmarks plus two real robots, but
+  only six BEHAVIOR-1K tasks, 10 training trajectories each, single
+  student/teacher pair, and baselines are prompted rather than fine-tuned, so
+  part of the gap is task-specific adaptation rather than the distillation
+  design. The ablations do isolate the self-explanation step.
+confidence: medium
