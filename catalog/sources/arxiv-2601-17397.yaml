@@ -1,15 +1,16 @@
 id: arxiv-2601-17397
 ref: SRC-0344
 kind: paper
-title: "CLM-Bench: Benchmarking and Analyzing Cross-lingual Misalignment of LLMs in Knowledge Editing"
+title: "CLM-Bench: Benchmarking and Analyzing Cross-lingual Misalignment of
+  LLMs in Knowledge Editing"
 year: 2026
 date: 2026-01-24
 arxiv_id: "2601.17397"
 url: https://arxiv.org/abs/2601.17397
-tags: [ingested]
-summary: >-
-  Knowledge Editing (KE) has emerged as a promising paradigm for updating
-  facts in Large Language Models (LLMs) without retraining. However,
+tags:
+  - ingested
+summary: Knowledge Editing (KE) has emerged as a promising paradigm for
+  updating facts in Large Language Models (LLMs) without retraining. However,
   progress in Multilingual Knowledge Editing (MKE) is currently hindered by
   biased evaluation frameworks. We observe that existing MKE benchmarks are
   typically constructed by mechanically translating English-centric datasets
@@ -18,3 +19,41 @@ summary: >-
   the target language, failing to reflect the true knowledge distribution of
   LLMs. To addre
 ingested_at: 2026-09-19
+brief: >-
+  Knowledge edits in Chinese and English land in nearly disjoint parameter
+  subspaces, so an edit in one language does not propagate to the other, and
+  editing in both at once produces a parameter update that is close to the
+  vector sum of the two monolingual updates.
+
+
+  CLM-Bench is a Chinese-first CounterFact set of 1,010 pairs across 24
+  knowledge domains, generated with Deepseek-R1 and manually reviewed, then
+  aligned to English counterparts. Batch locate-and-edit methods MEMIT,
+  AlphaEdit and PMET were run under lifelong sequential editing on Llama3-8B,
+  Mistral-7B, Qwen2-7B and llama2-chinese-7B, with 1000 monolingual edits and
+  2000 bilingual edits.
+
+
+  For Llama3-8B with MEMIT, Chinese editing gives zh_score 61.71% and zh
+  reliability 63.21% while en reliability drops to 19.55%. Geometrically,
+  cosine similarity between Chinese and English edit deltas is 0.027–0.042,
+  neuron Jaccard stays below 0.32, subspace angle above 60 degrees. For mixed
+  edits versus the sum of monolingual edits, cosine similarity exceeds 0.976,
+  relative error stays below 0.23, and the subspace angle falls from 63
+  degrees at batch size 1 to 12 degrees at batch size 1000.
+
+
+  Effects are measured, with ablations over batch sizes 1/10/100/1000 and over
+  edited MLP layers, which rules out layer choice as the cause. No comparison
+  against a translated benchmark on the same models, so the culture-native
+  claim is argued rather than tested. Only Chinese-English, only
+  locate-and-edit batch methods, and the geometry comes from layer 12 of 1
+  model.
+
+
+  If you hoped one edit would fix a fact in all languages, plan on editing
+  each language separately; mixed editing inherits the weaker language's
+  failure.
+brief_generated_at: 2026-09-28
+brief_model: claude-opus-5
+brief_source: full-text

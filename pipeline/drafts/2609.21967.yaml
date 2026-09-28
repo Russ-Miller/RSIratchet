@@ -1,0 +1,43 @@
+arxiv_id: "2609.21967"
+title: "NemotronLabs VoiceChat: An Open Full-duplex Speech-to-Speech Model
+  with Tool Calling Capabilities"
+url: https://doi.org/10.48550/arxiv.2609.21967
+drafted_at: 2026-09-27
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: tool-use
+statement: "In a full-duplex speech-to-speech model that emits function calls
+  on a dedicated parallel output stream, choosing the right tool from spoken,
+  disfluent user requests is far easier than filling its arguments:
+  tool-selection F1 reached 82.5% (above two closed realtime APIs) while
+  argument accuracy was 42.2% and end-to-end Pass@1 33.0%, below both."
+kind: observation
+backing_strength: single-paper
+scope_condition: One open 9B-backbone speech-to-speech model evaluated on
+  Full-Duplex-Bench 3.0 (real human speech, chained API calls); authors also
+  report degradation beyond about five exposed tools and unreliable
+  simultaneous multi-tool calls.
+technique: ""
+proposed_technique: Emit tool calls on a parallel function-token stream
+technique_summary: Adds a dedicated autoregressive function channel, with its
+  own head and start/end tool-call boundary tokens supervised alongside
+  padding, running in parallel with the agent-text stream so tool calls are
+  not serialized into the spoken response timeline.
+technique_kind: architecture
+technique_validated_by: Full-Duplex-Bench 3.0 tool-selection F1, argument
+  accuracy and Pass@1 against Gemini Live 2.5 and 3.1; full-duplex behaviour
+  checked on FDB 1.0/1.5 and VoiceBench, but no ablation against a serialized
+  single-channel variant.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A speech-to-speech model on the same benchmark whose argument
+  accuracy and Pass@1 match or exceed its tool-selection F1, or closed APIs
+  showing the same selection-over-argument gap in reverse.
+evidence_note: Measured on one benchmark with one model; baselines are two
+  closed APIs whose numbers come from the benchmark paper. No ablation
+  isolating the parallel-stream design from the backbone or training mixture,
+  so the architecture's contribution to the selection score is not
+  established.
+confidence: medium

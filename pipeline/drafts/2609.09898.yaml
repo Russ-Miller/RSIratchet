@@ -1,0 +1,50 @@
+arxiv_id: "2609.09898"
+title: Grounded Evaluation and Repair for NL-to-PDDL Problem Generation
+url: https://doi.org/10.48550/arxiv.2609.09898
+drafted_at: 2026-09-27
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: evaluation-validity
+statement: When NL-to-PDDL problem generation is scored by operational
+  acceptance (parses, conforms to domain, a planner finds a plan, VAL
+  validates it, an LLM critic accepts), the score overstates faithfulness to
+  the described task, and the gap widens for PDDL 2.1 temporal and numeric
+  problems where operationally accepted instances can almost never reconstruct
+  the curated reference encoding.
+kind: observation
+backing_strength: single-paper
+scope_condition: gpt-4.1-mini generating problem.pddl given a correct domain
+  file, up to three attempts, on Planetarium, AutoPlanBench and six curated
+  IPC-2002-derived PDDL 2.1 variants; reference matching is renaming-invariant
+  structural match (plus semantic equivalence where a Planetarium oracle
+  exists), which is strict and may fail on valid alternative encodings.
+technique: ""
+proposed_technique: Report operational acceptance and reference reconstruction separately
+technique_summary: Use parser, domain-conformance, planner, VAL and LLM-critic
+  checks as the online stopping criterion, but compute renaming-invariant
+  structural match and semantic equivalence against curated reference problems
+  offline as a separate benchmark signal.
+technique_kind: process
+technique_validated_by: "Measured on 60-instance runs per setting: on PDDL
+  2.1, final operational success 0.500 (baseline) and 0.733 (few-shot) against
+  final structural match 0.000 and 0.067, with 0.500 and 0.667 of examples
+  operationally accepted but structurally unmatched; on Planetarium+FS, 0.583
+  operational versus 0.417 semantic and structural. A manual audit of 24
+  outputs found the LLM critic agreed with human faithfulness judgment in
+  13/24 cases."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A setting where operationally accepted PDDL problems match the
+  reference encoding (or a semantics-preserving equivalent, checked by plan
+  transfer) at essentially the same rate as operational acceptance, including
+  on temporal and numeric PDDL 2.1 domains.
+evidence_note: Measured across three benchmark families with one main model
+  (gpt-4.1-mini; two others in appendix reported as showing the same
+  qualitative pattern), 60 instances per classical run and 60 PDDL 2.1
+  instances. The divergence is real but its size depends on a strict
+  reference-reconstruction metric that the authors themselves say does not
+  prove semantic infidelity; no plan-equivalence check was run, so the gap is
+  an upper bound on true unfaithfulness.
+confidence: medium

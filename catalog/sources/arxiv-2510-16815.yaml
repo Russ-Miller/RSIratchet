@@ -1,20 +1,61 @@
 id: arxiv-2510-16815
 ref: SRC-0329
 kind: paper
-title: "Knowing the Facts but Choosing the Shortcut: Understanding How Large Language Models Compare Entities"
+title: "Knowing the Facts but Choosing the Shortcut: Understanding How Large
+  Language Models Compare Entities"
 year: 2025
 date: 2025-10-19
 arxiv_id: "2510.16815"
 url: https://arxiv.org/abs/2510.16815
-tags: [ingested]
-summary: >-
-  Large Language Models (LLMs) are increasingly used for knowledge-based
-  reasoning tasks, yet understanding when they rely on genuine knowledge
-  versus superficial heuristics remains challenging. We investigate this
-  question through entity comparison tasks by asking models to compare
+tags:
+  - ingested
+summary: Large Language Models (LLMs) are increasingly used for
+  knowledge-based reasoning tasks, yet understanding when they rely on genuine
+  knowledge versus superficial heuristics remains challenging. We investigate
+  this question through entity comparison tasks by asking models to compare
   entities along numerical attributes (e.g., ``Which river is longer, the
   Danube or the Nile?''), which offer clear ground truth for systematic
-  analysis. Despite having sufficient numerical knowledge to answer
-  correctly, LLMs frequently make predictions that contradict this
-  knowledge. We identify three heuristic biases
+  analysis. Despite having sufficient numerical knowledge to answer correctly,
+  LLMs frequently make predictions that contradict this knowledge. We identify
+  three heuristic biases
 ingested_at: 2026-09-19
+brief: >-
+  Models often hold the numerical facts needed to compare 2 entities and still
+  answer against them, falling back on surface cues; the ability to pick when
+  to trust the numbers appears with scale rather than better knowledge. The
+  task is pairwise comparison ("Which river is longer, the Danube or the
+  Nile?") over 10 Wikidata attributes, with up to 1000 entities each, tested
+  on Llama3-1B/8B, OLMo2-1B/7B/32B, Qwen3-1.7B/8B/32B, Mistral-7B and
+  Mistral-24B across 6 prompt templates in both entity orders (12 prompts per
+  pair).
+
+
+  Numerical accuracy exceeds pairwise accuracy throughout, and Mistral-7B and
+  Llama3-8B beat much larger models on numbers while losing on comparisons.
+  Order is the strongest cue (Qwen3-1.7B reaches a risk ratio near 2),
+  popularity gives RR approximately 1.1-1.25, co-occurrence approximately
+  1.05-1.15, and internal-knowledge alignment rises to around 1.5 for the
+  largest models. A logistic-regression meta-predictor using only 3 surface
+  cues predicts smaller models' choices better than their own extracted
+  numbers. Reliance on numbers tracks how reliable those numbers are: Cohen's
+  d for the extracted-value gap rises from around 0.04 at 1B to around 0.79 at
+  32B.
+
+
+  The design is the strength: a balanced, orthogonal subset toggles each cue
+  independently, with bootstrapped confidence intervals. The cause of the
+  strategy switch is described, not manipulated; no mechanistic intervention,
+  no weight edits, no few-shot condition.
+
+
+  Chain-of-thought on Qwen3 lifts pairwise accuracy and internal consistency
+  by 5-9 percentage points, but hand inspection of traces shows answers chosen
+  first and numbers produced afterwards as justification. Findings may not
+  carry to non-numerical attributes, multi-entity ranking, or open-domain QA.
+
+
+  Treat high factual recall in a model as weak evidence that it will use that
+  fact when deciding.
+brief_generated_at: 2026-09-28
+brief_model: claude-opus-5
+brief_source: full-text

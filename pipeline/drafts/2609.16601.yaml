@@ -1,0 +1,50 @@
+arxiv_id: "2609.16601"
+title: "SAVOR: Self-Aware Visual Grounding via Confidence-Calibrated
+  Reinforcement Learning for Multimodal Hallucination Mitigation"
+url: https://doi.org/10.48550/arxiv.2609.16601
+drafted_at: 2026-09-24
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: For 8B multimodal models, preference tuning and plain
+  outcome-reward GRPO lower hallucination rates while making stated confidence
+  worse calibrated than the untuned backbone, because rank- or
+  correctness-based rewards never score the numerical accuracy of the model's
+  own confidence; adding a Brier-plus-group-ECE calibration term to the GRPO
+  reward cuts calibration error sharply and leaves accuracy metrics largely
+  unchanged.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: InternVL3-8B and Qwen3-VL-8B trained on ~100K
+  VQA/hallucination prompts, evaluated on POPE-adv and HallusionBench with
+  verbalised answer confidence
+technique: ""
+proposed_technique: Reward calibration of stated confidence inside GRPO
+technique_summary: Augments the output schema with span and answer confidence
+  values and trains with GRPO whose reward adds a Brier penalty against
+  realised rollout correctness, a group-level ECE bonus, an abstention term
+  supervised by group accuracy, and a span-grounding term.
+technique_kind: training
+technique_validated_by: ECE (15 bins), Brier, AUROC of 1-confidence,
+  Selective-Risk@90 on POPE-adv and HallusionBench versus base, HA-DPO, RLHF-V
+  and vanilla GRPO; ECE on POPE-adv 0.272 (GRPO) to 0.085, with hallucination
+  metrics (POPE F1, AMBER CHAIR, MMHal) also best and MME/MMBench/MMStar/SEED
+  unchanged; ablation removing the calibration reward returns ECE to 0.268
+  with accuracy nearly flat.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A run where outcome-reward GRPO leaves calibration error at or
+  below the untuned backbone, or where adding the calibration reward lowers
+  ECE only by also lowering task accuracy (so the ablation removing R_cal
+  shows accuracy loss rather than calibration loss).
+evidence_note: Measured on two 8B backbones across four hallucination
+  benchmarks plus four general-capability benchmarks, with retrained
+  parameter-tuning baselines on the same prompt mix and a component ablation
+  that isolates the calibration reward from the accuracy reward. Three seeds,
+  mean reported. Single paper, authors' own implementation; the confidence
+  pseudo-labels and abstention signal come from the same rollout groups used
+  for the reward, so calibration gains are not validated against an
+  independent correctness source.
+confidence: medium

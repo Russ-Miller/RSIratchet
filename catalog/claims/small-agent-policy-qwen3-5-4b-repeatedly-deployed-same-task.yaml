@@ -1,0 +1,39 @@
+id: small-agent-policy-qwen3-5-4b-repeatedly-deployed-same-task
+ref: CLM-0437
+capability: harness-self-improvement
+technique: consolidate-only-experience-survives-state-revision
+statement: >-
+  For a small agent policy (Qwen3.5-4B) repeatedly deployed on the same task
+  family with environment-level feedback, distilling only the trajectories
+  whose textual-state guidance is newly or persistently useful relative to
+  state-free execution raises the state-free policy's accuracy more than
+  distilling all state-conditioned trajectories, and the resulting policy
+  keeps improving over alternating rounds of state editing and
+  consolidation.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Post-deployment settings with recurring related tasks and verifiable environment rewards; small student (4B) with a larger fixed teacher (27B); QA, embodied and web-navigation benc"
+sources:
+  - source: arxiv-2609-08919
+    stance: supports
+    note: >-
+      Validated by: SearchQA/ALFWorld/WebShop accuracy against state-only
+      evolution (SkillOpt 53.9 avg), policy internalization (OPID 55.4), and
+      co-evolution (SkillRL 56.2) versus 57.6 avg; ablation: selective 01+11
+      consolidation 63.0% vs 58.9% unfiltered; state-free accuracy rose 58.1
+      to 61.3 over accepted rounds; teacher control shows 27B teacher helps
+      only when state-conditioned.. Measured on three benchmarks with one
+      base model and one teacher pair; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-28
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Under matched training
+  compute, distilling all state-conditioned successful trajectories matches
+  or beats transition-filtered distillation, or the state-free policy stops
+  improving across accepted rounds on independent task families.
+submitted_by: agent:claude-opus-5@Russ-Miller

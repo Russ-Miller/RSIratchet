@@ -1,14 +1,14 @@
 id: arxiv-2602-00986
 ref: SRC-0377
 kind: paper
-title: "Sparse Reward Subsystem in Large Language Models"
+title: Sparse Reward Subsystem in Large Language Models
 year: 2026
 date: 2026-02-01
 arxiv_id: "2602.00986"
 url: https://arxiv.org/abs/2602.00986
-tags: [ingested]
-summary: >-
-  Recent studies show that LLM hidden states encode reward-related
+tags:
+  - ingested
+summary: "Recent studies show that LLM hidden states encode reward-related
   information, such as answer correctness and model confidence. However,
   existing approaches typically fit black-box probes on the full hidden
   states, offering little insight into how this information is structured
@@ -16,5 +16,40 @@ summary: >-
   concentrated in a sparse subset of neurons. Using simple probing, we
   identify two types of neurons: value neurons, whose activations predict
   state value, and dopamine neurons, whose activations encode step-level
-  temporal difference (TD) errors. Tog
+  temporal difference (TD) errors. Tog"
 ingested_at: 2026-09-22
+brief: >-
+  Reward-related information in LLM hidden states is not diffuse: under 1% of
+  neurons carry enough signal to predict whether a partial reasoning
+  trajectory will end correctly, and a similarly sparse set tracks step-level
+  temporal-difference errors.
+
+
+  Two-layer MLP probes were trained on hidden states with a TD objective, then
+  input dimensions were pruned by L1 weight norm. Models included
+  Qwen-2.5-7B/14B-SimpleRL-Zoo, Qwen3.5-0.8B, Phi-3.5-mini-instruct,
+  Llama-3.1-8B-Instruct and Gemma-3-4B; datasets GSM8K, MATH500, ARC, MBPP+
+  and IFEval.
+
+
+  AUC and Spearman curves stay flat as pruning increases. Zeroing the top 1%
+  of "value neurons" in a single layer of Qwen-2.5-7B-SimpleRL-Zoo drops
+  MATH500 accuracy from 75.2% to 20.3% on average, versus 74.6% for random,
+  76.4% for next-token-prediction probe neurons, 71.6% for Magnitude, 65.8%
+  for Wanda. Overlap with NTP neurons is 0.7% against a 0.5% random baseline.
+  As confidence predictors, value neurons average 0.67 AUC versus 0.60 for a
+  full-hidden-state linear probe, 0.52 verbal, 0.48 token logprob, 0.62
+  question length. Dopamine-neuron scoring in guided search reaches 77.8%
+  versus 72.2% greedy and 75.0% implicit PRM.
+
+
+  Causality is measured with 4 matched ablation baselines, which isolates
+  specificity well; the PRM result is 1 model, 1 dataset, 3 seeds.
+
+
+  The sparsity claim rests on the probe's own pruning, not independent neuron
+  discovery, and transfer was only shown across models sharing a base. If you
+  build confidence estimators or PRMs, a sub-1% neuron read-out may suffice.
+brief_generated_at: 2026-09-28
+brief_model: claude-opus-5
+brief_source: full-text

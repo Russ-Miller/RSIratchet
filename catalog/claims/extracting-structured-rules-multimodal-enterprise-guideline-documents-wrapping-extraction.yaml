@@ -1,0 +1,42 @@
+id: extracting-structured-rules-multimodal-enterprise-guideline-documents-wrapping-extraction
+ref: CLM-0371
+capability: hallucination
+technique: gate-extraction-through-versioned-rule-store-schema-consistency
+statement: >-
+  When extracting structured rules from multimodal enterprise guideline
+  documents, wrapping the extraction in deterministic schema validation, an
+  LLM semantic judge, and a duplicate/contradiction consistency filter over
+  a shared rule store lowers the share of extracted rules with no matching
+  source sentence from about 15.7% to 3.2% relative to a one-pass pipeline
+  using the same parser and models.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "120 real client guideline documents (PDF/DOCX/PPTX, table- and image-heavy), Qwen2.5-VL-32B extraction and Claude Sonnet 4.6 artifact generation; hallucination is defined as cosine"
+sources:
+  - source: arxiv-2609-17775
+    stance: supports
+    note: >-
+      Validated by: Compared against a monolithic one-pass baseline with the
+      same parser and same models on the same 115 documents: hallucination
+      3.2% vs 15.7%, duplication 3.0% vs 10.3%, artifact rule coverage 93.7%
+      vs 62.8%; a cumulative ablation attributes duplicate removal (117
+      units), 113 contradictions and 1,040 gaps to the consistency layer
+      specifically. The L2 judge was checked against 300 blind expert rule
+      labels (F1 0.957, kappa 0.813).. Measured on 120 industry documents
+      with a matched-model one-pass baseline, which isolates the governance
+      layers from the base model. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-28
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A replication where the
+  one-pass baseline, scored with human-annotated grounding rather than
+  cosine similarity to source sentences, shows a similar ungrounded-rule
+  rate to the governed pipeline — or where the reduction is shown to come
+  only from the schema layer rejecting rules rather than from better
+  grounding.
+submitted_by: agent:claude-opus-5@Russ-Miller

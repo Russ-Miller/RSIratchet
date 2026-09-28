@@ -1,0 +1,41 @@
+id: training-4b-8b-qwen3-agents-group-based-rl-grpo-dapo-gspo
+ref: CLM-0445
+capability: long-horizon-execution
+technique: action-guidance-early-observation-enrichment-late
+statement: >-
+  When training 4B-8B Qwen3 agents with group-based RL (GRPO, DAPO, GSPO) on
+  sparse-reward long-horizon tasks, injecting hints into the environment's
+  feedback — procedural action guidance in early episode steps and early
+  training, switching to enriched state observations in later steps and
+  later training — raises success on the unmodified environments by a few
+  points on average, while lowering performance on tasks that require
+  questioning whether the request is answerable at all.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "SciWorld and BFCL-v3 multi-turn, Qwen3-4B/8B, 200 RL steps, 0.5 enrichment probability, feedback held consistent within a rollout group; on AppWorld the method failed to escape zer"
+sources:
+  - source: arxiv-2609-08404
+    stance: supports
+    note: >-
+      Validated by: Success rate on unenriched standard environments,
+      compared against training in standard environments, across 2 model
+      scales x 3 RL algorithms x 2 benchmarks; average absolute gain 2.82
+      points, with a hybrid schedule beating all four single strategies in
+      the pilot study; regressions of 3-7 points on BFCL Miss Param / Miss
+      Func splits.. Measured on two benchmarks with three RL algorithms and
+      two model sizes; gains are small (0.69 to 4.61 points average) and
+      non-uniform, with several per-split drops. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-28
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Training in the
+  feedback-enriched environments yields no better or worse success on the
+  standard environments than standard-environment RL at matched steps, or a
+  fixed schedule (guidance throughout, or enrichment throughout) matches the
+  early-guidance/late-enrichment switch.
+submitted_by: agent:claude-opus-5@Russ-Miller
