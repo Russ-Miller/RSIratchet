@@ -1,0 +1,45 @@
+arxiv_id: "2609.15079"
+title: "Translating the Translator: Decomposing the Cost of English-Forced
+  Inter-Agent Communication"
+url: https://doi.org/10.48550/arxiv.2609.15079
+drafted_at: 2026-09-28
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: In a two-agent extract-then-answer pipeline on multilingual
+  extractive QA, routing the inter-agent handoff through English
+  (forward-translate facts, answer in English, back-translate) lowers Exact
+  Match relative to keeping handoffs in the user's language, and the loss
+  grows with distance from English (13.0 points Spanish up to 30.6 points
+  Hindi with Aya-23-8B).
+kind: observation
+backing_strength: single-paper
+scope_condition: One 8-bit quantized 8B multilingual model (Aya-23-8B), XQuAD,
+  300 items per language, four languages, zero-shot prompting, three-agent
+  English-forced condition including back-translation scored against native
+  gold answers.
+technique: ""
+proposed_technique: Keep inter-agent handoffs in the user's language
+technique_summary: Have agents pass extracted facts and answers to each other
+  in the user's language instead of pivoting through English translation.
+technique_kind: process
+technique_validated_by: Exact Match and F1 on 300 XQuAD items per language for
+  Spanish, Arabic, Chinese, Hindi, native-handoff condition versus an
+  otherwise identical English-pivot condition; all four paired differences
+  significant under exact McNemar with Bonferroni correction, discordant pairs
+  strongly asymmetric.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An equivalent controlled comparison on other multilingual models or
+  tasks where English-pivot handoffs match or beat native-language handoffs,
+  or where the gap does not widen with typological distance.
+evidence_note: Measured on one model, one dataset, four languages, 300 items
+  each; the native-vs-English comparison shares the extraction core so it
+  isolates the pivot pathway, but back-translation is bundled into the English
+  condition and scoring is Exact Match against native gold, so paraphrase
+  penalties inflate part of the gap. Typological distance is confounded with
+  training-data resourcedness, as the authors note. Quantized model, no
+  unquantized control.
+confidence: medium

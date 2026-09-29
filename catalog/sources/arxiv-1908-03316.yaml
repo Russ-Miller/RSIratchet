@@ -30,3 +30,42 @@ summary: In this paper, we propose a multi-modal synthesis technique for
 notes: "Forwarded by Russ 2026-09-19: locator papers: generate a reusable
   regex/SQL/XPath once, run it without the model"
 ingested_at: 2026-09-19
+brief: >-
+  Combining a natural-language description with positive/negative examples
+  solves far more regex synthesis tasks than either modality alone, because
+  English descriptions are ambiguous or wrong while examples underdetermine
+  intent.
+
+
+  Regel parses an English description with a SEMPRE-based semantic parser into
+  a "hierarchical sketch" (nested constrained holes carrying hints), then runs
+  a programming-by-example engine that uses those hints for
+  over/under-approximation pruning and encodes integer repetition arguments as
+  symbolic integers solved with Z3. Evaluation covers over 300 regexes from 2
+  sources: 200 adapted DeepRegex benchmarks (average 4 positive and 5 negative
+  examples each) and 122 harder StackOverflow tasks with ground truth taken
+  from accepted answers.
+
+
+  Regel finds the intended regex in 80% of cases, against 43% for DeepRegex
+  (seq2seq from language only) and 26% for the example-only variant. Against
+  AlphaRegex adapted to consume the same sketch, Regel's PBE engine is an
+  order of magnitude faster on sketch completion. A user study with 20
+  participants found users twice as likely to produce the intended regex with
+  Regel.
+
+
+  The baselines are matched on time budget and top-k (10s/k=1 for DeepRegex
+  data, 60s/k=5 for StackOverflow), and the example-only ablation isolates the
+  contribution of the sketch; the AlphaRegex comparison also holds the sketch
+  fixed. Sketches for the StackOverflow set were hand-written by the authors,
+  which risks favorable labeling, and the NLP component is a grammar-based
+  parser, not a large pretrained model.
+
+
+  If you care about spec-to-program synthesis, this is evidence that cheap
+  structural hints from text plus example-driven search beats end-to-end
+  translation.
+brief_generated_at: 2026-09-29
+brief_model: claude-opus-5
+brief_source: full-text

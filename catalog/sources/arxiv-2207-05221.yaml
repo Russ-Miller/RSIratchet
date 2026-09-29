@@ -1,20 +1,60 @@
 id: arxiv-2207-05221
 ref: SRC-0305
 kind: paper
-title: "Language Models (Mostly) Know What They Know"
+title: Language Models (Mostly) Know What They Know
 year: 2022
 date: 2022-07-11
 arxiv_id: "2207.05221"
 url: https://arxiv.org/abs/2207.05221
-tags: [ingested]
-summary: >-
-  We study whether language models can evaluate the validity of their own
-  claims and predict which questions they will be able to answer correctly.
-  We first show that larger models are well-calibrated on diverse multiple
-  choice and true/false questions when they are provided in the right
-  format. Thus we can approach self-evaluation on open-ended sampling tasks
-  by asking models to first propose answers, and then to evaluate the
-  probability "P(True)" that their answers are correct. We find encouraging
-  performance, calibration, and scaling for P(True) on a diverse array of
-  tasks. Performance at sel
+tags:
+  - ingested
+summary: We study whether language models can evaluate the validity of their
+  own claims and predict which questions they will be able to answer
+  correctly. We first show that larger models are well-calibrated on diverse
+  multiple choice and true/false questions when they are provided in the right
+  format. Thus we can approach self-evaluation on open-ended sampling tasks by
+  asking models to first propose answers, and then to evaluate the probability
+  "P(True)" that their answers are correct. We find encouraging performance,
+  calibration, and scaling for P(True) on a diverse array of tasks.
+  Performance at sel
 ingested_at: 2026-09-19
+brief: >-
+  Large language models can grade their own sampled answers well enough to
+  separate correct from incorrect ones, and the gap widens with scale,
+  implying verification improves faster than generation.
+
+
+  Anthropic tested 800M, 3B, 12B and 52B pretrained models (850B tokens) on
+  all BIG Bench multiple choice tasks, MMLU, TruthfulQA, LogiQA, QuALITY, plus
+  generative tasks TriviaQA, Lambada, arithmetic, GSM8k, Codex HumanEval and
+  scraped Python function synthesis. Two probes: P(True), asking the model
+  whether its own sample is correct, and P(IK), a finetuned value head
+  predicting whether it will answer a question at all.
+
+
+  Calibration in the lettered-option format improves with size and from 0-shot
+  to 5-shot. Accuracy conditioned on P(True) > 0.5 is substantially above base
+  accuracy, and showing the model 5 of its own T=1 samples before judging one
+  helps short-answer tasks more than long-form ones. A P(IK) head trained only
+  on TriviaQA transfers partially: AUROC 0.864 on TriviaQA, 0.928 arithmetic,
+  0.687 Python synthesis, 0.606 Lambada, 0.624 GSM8k; training on all 4 tasks
+  raises these to 0.873, 0.987, 0.881 and 0.752. OOD calibration is poor,
+  mostly underconfident.
+
+
+  Effects are measured with ablations over format, shot count and training
+  mixture. The self-knowledge claim is weakly isolated: 2 12B models with
+  different pretraining data show only about a 6% P(IK) gap on questions only
+  one answers correctly, and cross-initialization results are mixed.
+
+
+  Boundaries: 1 model family, pretrained only; RLHF policies are miscalibrated
+  until temperature is set to T = 2.5, and replacing an option with "none of
+  the above" degrades both accuracy and calibration even at 52B and 20-shot.
+
+
+  If you filter generations by model-reported confidence, expect real gains
+  in-distribution and unreliable confidence numbers outside it.
+brief_generated_at: 2026-09-29
+brief_model: claude-opus-5
+brief_source: full-text

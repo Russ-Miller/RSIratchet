@@ -1,20 +1,56 @@
 id: arxiv-2504-15253
 ref: SRC-0317
 kind: paper
-title: "Evaluating Judges as Evaluators: The JETTS Benchmark of LLM-as-Judges as Test-Time Scaling Evaluators"
+title: "Evaluating Judges as Evaluators: The JETTS Benchmark of LLM-as-Judges
+  as Test-Time Scaling Evaluators"
 year: 2025
 date: 2025-04-21
 arxiv_id: "2504.15253"
 url: https://arxiv.org/abs/2504.15253
-tags: [ingested]
-summary: >-
-  Scaling test-time computation, or affording a generator large language
-  model (LLM) extra compute during inference, typically employs the help of
-  external non-generative evaluators (i.e., reward models). Concurrently,
-  LLM-judges, models trained to generate evaluations and critiques
-  (explanations) in natural language, are becoming increasingly popular in
-  automatic evaluation. Despite judge empirical successes, their
+tags:
+  - ingested
+summary: Scaling test-time computation, or affording a generator large
+  language model (LLM) extra compute during inference, typically employs the
+  help of external non-generative evaluators (i.e., reward models).
+  Concurrently, LLM-judges, models trained to generate evaluations and
+  critiques (explanations) in natural language, are becoming increasingly
+  popular in automatic evaluation. Despite judge empirical successes, their
   effectiveness as evaluators in test-time scaling settings is largely
   unknown. In this paper, we introduce the Judge Evaluation for Test-Time
   Scaling (JETTS) benchmark, which evaluate
 ingested_at: 2026-09-19
+brief: >-
+  LLM judges that write natural-language critiques are competitive with
+  outcome reward models when reranking whole responses, but they lose to a
+  much smaller process reward model in step-level search, and their critiques
+  do not help generators revise. JETTS evaluates 10 judge models (7B-70B) over
+  8 generators (6.7B-72B) on 3 domains -- math (GSM8k, MATH Lvl 5, CHAMP),
+  code (HumanEval+, MBPP+, BigCodeBench), instruction following (AlpacaEval,
+  IFEval) -- across reranking, (10,2) beam search, and (1,9) critique-based
+  refinement, scored as normalized helpfulness relative to greedy decoding and
+  an oracle.
+
+
+  On the leaderboard the best judges reach 0.177 (Skywork-Critic 70B) and
+  0.171 (SFR-Judge 70B) on reranking versus 0.113 for the best RM, but on beam
+  search the best judge hits 0.138 against 0.195 for the best PRM
+  (Qwen2.5-Math-PRM-7B). Every judge scores below 1.0 on refinement, with
+  instruction following degrading up to 10%. Pairwise round-robin beats
+  single-instance rating everywhere except MBPP+; code helpfulness is negative
+  at all judge-to-generator size ratios; 8B judges guiding 70B generators give
+  negative helpfulness. Only SFR 70B and SC 70B beat majority voting, and only
+  for weaker generators.
+
+
+  Effects are measured with random, greedy, oracle, RM, PRM, and
+  vanilla-Llama-3.1-8B-with-judge-prompt baselines, plus t-tests, though
+  compute is not matched across protocols. Judges were open-weight finetuned
+  evaluators; no frontier or reasoning-trained judge was tested, and steps are
+  defined as lines.
+
+
+  If you plan to swap a reward model for a judge in a search loop, this argues
+  against it for code and for step-level guidance.
+brief_generated_at: 2026-09-29
+brief_model: claude-opus-5
+brief_source: full-text
