@@ -1,55 +1,59 @@
 # Consolidated capability candidates. Suggestions, not capabilities.
-generated_at: 2026-09-28
-from_raw_proposals: 21
+generated_at: 2026-09-29
+from_raw_proposals: 19
 recommended:
-  - id: information-seeking-questions
-    label: "Asking the questions that resolve uncertainty"
-    scope_note: "Covers choosing queries or clarifications that maximize information gain under uncertainty in multi-turn interaction; excludes merely flagging an underspecified request and excludes final-answer accuracy."
+  - id: spatial-reasoning
+    label: "Inferring 3D geometry and spatial relations"
+    scope_note: "Covers depth, metric distance, size, pose, bearing and cross-view correspondence inferred from images or video; excludes object recognition and attribute grounding, which visual-grounding covers."
     paper_count: 2
-    merged_from: [information-seeking-questions, information-seeking-questioning]
-    note: "Distinct, recurring, and not covered by planning or abstention: it is about active elicitation rather than answering or declining."
-  - id: demographic-fairness
-    label: "Treating demographic groups equally"
-    scope_note: "Covers stereotyping in generated content and systematic quality differences conditioned on a user's stated or implied demographic attributes; excludes culture-specific norm knowledge, which cultural-competence already covers."
+    merged_from: [spatial-reasoning-3d, metric-spatial-reasoning]
+    note: "Two independent proposals converge on the same well-defined gap that no existing entry covers, since visual-grounding is about tying answers to image content rather than metric geometry."
+  - id: confidentiality
+    label: "Keeping entrusted secrets secret"
+    scope_note: "Covers resisting extraction of system prompts, keys, and private data the model was told to withhold while still using that data for its task; excludes refusing harmful requests and training-data memorization."
     paper_count: 2
-    merged_from: [social-bias, demographic-fairness]
-    note: "A large, persistent evaluation area with no current index entry, and only partly adjacent to cultural-competence."
-  - id: human-behavior-simulation
-    label: "Simulating an individual person's choices"
-    scope_note: "Covers fidelity when role-playing a specific person's decisions or survey responses, including distributional collapse toward the average; excludes broad cultural viewpoints and world-event forecasting."
-    paper_count: 2
-    merged_from: [human-behavior-simulation]
-    note: "Recurring use case with a characteristic failure mode (compression to the mean) that no existing entry captures."
-  - id: answer-stability-under-irrelevant-variation
-    label: "Same answer when nothing that matters changed"
-    scope_note: "Covers answer flips from order-irrelevant permutation of options or documents, numeric precision, kernel or batching differences; excludes judge position bias and prompt-rewording sensitivity."
-    paper_count: 2
-    merged_from: [input-order-invariance, numerical-precision-stability]
-    note: "Two independent papers converge on the same underlying property — invariance to changes that should not affect the answer — which judge-position-bias only covers in the judging case."
+    merged_from: [contextual-privacy, system-prompt-confidentiality]
+    note: "Distinct from jailbreak-robustness and prompt-injection — the failure is leaking what it holds, not doing what it was told — and two papers attack it from different angles."
+  - id: confidence-calibration
+    label: "Knowing how confident to be"
+    scope_note: "Covers whether verbalized or sampled confidence tracks actual correctness; excludes outright refusal, which abstention-and-self-knowledge covers, and raw accuracy."
+    paper_count: 1
+    merged_from: [confidence-calibration]
+    note: "Graded calibration is a long-standing, heavily measured axis that abstention-and-self-knowledge only covers at the binary extreme."
+  - id: reasoning-length-efficiency
+    label: "Spending only as much reasoning as the problem needs"
+    scope_note: "Covers overthinking, adaptive chain-of-thought length, and whether compressed reasoning preserves accuracy; excludes general accuracy improvements and latency engineering."
+    paper_count: 1
+    merged_from: [reasoning-length-efficiency]
+    note: "Only one paper here, but overthinking in reasoning models is a fast-growing and cleanly measurable failure mode not touched by any existing entry."
+  - id: clarification-seeking
+    label: "Asking the right clarifying question"
+    scope_note: "Covers detecting underspecification, eliciting the missing information through interaction, and then using the answer; excludes flagging unanswerability without a follow-up."
+    paper_count: 1
+    merged_from: [clarification-seeking]
+    note: "A coherent interactive capability that abstention-and-self-knowledge stops short of, and increasingly central to agentic evaluation."
 set_aside:
-  - id: latent-attribute-inference-and-retrieval
-    note: "The two proposals are really different tasks glued together, and each side is largely covered by multi-step-reasoning and retrieval-utilization."
-  - id: assistant-prefill-robustness
-    note: "A specific attack vector within jailbreak-robustness rather than a separate capability."
-  - id: compression-behavior-preservation
-    note: "One-off framing that closely parallels the existing fine-tuning-retention entry."
-  - id: latent-capability-elicitation
-    note: "This is a claim about measurement methodology, already the province of evaluation-validity."
-  - id: synthetic-media-detection
-    note: "Single paper and best read as a task domain sitting under error-detection and visual grounding."
-  - id: multi-turn-instruction-refinement
-    note: "One paper, and largely spanned by state-tracking and procedure-following."
-  - id: strategic-game-behavior
-    note: "Single-paper task domain overlapping planning and strategic-deception."
-  - id: research-replication
-    note: "A composite benchmark task, not a capability distinct from long-horizon-execution plus code-generation."
+  - id: negation-understanding
+    note: "Single paper and narrow linguistic phenomenon better treated as a probe inside logical-deduction-robustness and visual-grounding."
   - id: time-series-reasoning
-    note: "One-off domain slice of arithmetic and multi-step-reasoning."
-  - id: test-time-compute-scaling
-    note: "A technique/scaling property rather than a capability a model is good or bad at."
-  - id: constrained-creative-writing
-    note: "Single paper; a narrow genre of instruction-following without recurring evidence yet."
-  - id: tutoring-effectiveness
-    note: "Interesting but one-off, and its human-outcome measurement is close to persuasion."
-  - id: black-box-optimization
-    note: "A usage pattern from one paper rather than an established capability."
+    note: "Reads as a task domain sitting between forecasting and domain-knowledge rather than a distinct capability."
+  - id: opponent-modeling
+    note: "One-off framing whose evidence is confined to game benchmarks and overlaps planning, strategic-deception and multi-model-coordination."
+  - id: answer-action-consistency
+    note: "A single-paper measurement artifact of multimodal output formats rather than a capability a maintainer could track broadly."
+  - id: human-behavior-simulation
+    note: "Interesting but single-paper, and the evaluative core splits between forecasting and cultural-competence."
+  - id: algorithm-discovery
+    note: "Currently a single high-profile result and largely a scaffolded search technique on top of code-generation and harness-self-improvement."
+  - id: compression-behavior-retention
+    note: "A property of a model-modification pipeline, and close enough to fine-tuning-retention that a separate entry would fragment the index."
+  - id: code-translation
+    note: "A task domain within code-generation rather than a separate capability."
+  - id: semantic-parsing
+    note: "Legacy NLP task with one proposal, already adjacent to formal-query-synthesis and formal-math."
+  - id: persona-consistency
+    note: "Single paper and mostly a special case of procedure-following plus state-tracking over a dialogue."
+  - id: latent-reasoning
+    note: "An architectural technique and research direction, not a capability one can evaluate models on."
+  - id: code-intent-conformance
+    note: "Already covered by the combination of critique and error-detection applied to code."

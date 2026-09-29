@@ -1,0 +1,44 @@
+arxiv_id: "2608.30672"
+title: "HiRS-Agent: A Hierarchical Multi-Agent System for Reliable
+  Long-Horizon Remote Sensing Task Solving"
+url: https://doi.org/10.48550/arxiv.2608.30672
+drafted_at: 2026-09-29
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: long-horizon-execution
+statement: For small open-weight backbones (Qwen3-4B) driving long-horizon
+  remote-sensing tool chains, inserting a step-level verifier that checks each
+  intermediate tool output against schema, sub-goal and domain constraints and
+  triggers replanning is the single largest architectural gain, while
+  hierarchical decomposition without domain-aligned tool grouping adds little
+  and can lower final accuracy relative to a flat agent with the same
+  verifier.
+kind: observation
+backing_strength: single-paper
+scope_condition: Two remote-sensing agent benchmarks (Earth-Bench, ThinkGeo),
+  Qwen3-4B/8B shared-parameter backbone with role prompts, fixed tool
+  registry; all components also trained with domain SFT and hierarchical RL.
+technique: ""
+proposed_technique: Verify each intermediate step against domain constraints, then replan
+technique_summary: After every tool call, a manager role re-reads structured
+  global memory and classifies the output as pass/uncertain/fail on schema
+  validity, sub-goal consistency and domain plausibility, replanning or
+  re-routing on failure.
+technique_kind: process
+technique_validated_by: "Architecture ablation on Earth-Bench with Qwen3-4B:
+  adding the verifier to a flat agent raised Tool-Exact-Match from 6.84/19.42
+  to 29.05/30.14 and Accuracy from 16.53/20.16 to 35.89/31.45; removing the
+  verifier from the full system cut Exact by 11.30/12.43 and Accuracy by
+  4.03/2.82."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation on the same benchmarks where removing step-level
+  verification leaves tool-exactness and final accuracy roughly unchanged, or
+  where hierarchy without domain grouping beats a flat verified agent.
+evidence_note: Measured, single paper, one ablation table on one backbone
+  (Qwen3-4B) and one benchmark; the verifier is entangled with the training
+  stages applied to the same checkpoint, and the counter-intuitive
+  generic-hierarchy result rests on a single row with no variance reported.
+confidence: low

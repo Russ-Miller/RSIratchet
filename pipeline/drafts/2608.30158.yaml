@@ -1,0 +1,48 @@
+arxiv_id: "2608.30158"
+title: "CPR for LLMs: Critical-Point Routing against Catastrophic Forgetting
+  in Domain Adaptation"
+url: https://doi.org/10.48550/arxiv.2608.30158
+drafted_at: 2026-09-29
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: fine-tuning-retention
+statement: For 1.5B-8B base models given a domain SFT expert (math or
+  medical), keeping both models and routing token by token — invoking the
+  expert only on tokens where a trained router predicts the base would fail —
+  preserves general-benchmark accuracy within about 0.5% of the base while
+  exceeding the expert's in-domain accuracy, whereas loss-modifying SFT
+  regularizers still lose up to 16% general accuracy.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Gemma3-4B, Llama3.1-8B, Qwen2.5-1.5B; math (GSM8K-trained)
+  and medical (PubMedQA-trained) experts; MMLU/CSQA/ARC-C as general tests;
+  requires holding both models in memory and an expert that beats the base on
+  some tokens.
+technique: ""
+proposed_technique: Route token by token between base model and SFT expert
+technique_summary: Train a lightweight two-stage router on the base model's
+  hidden states, labelled by tokens where the base's greedy prediction is
+  wrong and the expert's is right, then at decoding mix the two next-token
+  distributions with momentum smoothing and a three-way threshold gate so the
+  expert runs on only about a third of tokens.
+technique_kind: decoding
+technique_validated_by: Four model-domain settings, six benchmarks; compared
+  against vanilla SFT, DFT, EAFT, LfU, RouteLLM, Switch Generation, ensemble
+  and contrastive decoding sharing the same base and expert; highest overall
+  average in all settings, plus ablations on router architecture, momentum and
+  thresholds, and wall-clock latency (1.40-1.44x expert-only vs 1.89-2.25x
+  ensemble).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A setting where token-level routing between base and expert either
+  fails to recover general-capability loss (general accuracy still well below
+  base) or fails to match the expert in domain accuracy, while a loss-side
+  regularizer does both.
+evidence_note: Measured on two backbones by two domains, six benchmarks each,
+  with matched base/expert across all baselines; external-expert
+  generalization tested on two public experts. Only four settings, all
+  QA/multiple-choice style, no open-ended generation in the main tables, and
+  general-capability tests are the same three benchmarks throughout.
+confidence: medium
