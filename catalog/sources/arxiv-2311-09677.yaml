@@ -6,15 +6,50 @@ year: 2023
 date: 2023-11-16
 arxiv_id: "2311.09677"
 url: https://arxiv.org/abs/2311.09677
-tags: [ingested]
-summary: >-
-  Large language models (LLMs) have revolutionized numerous domains with
-  their impressive performance but still face their challenges. A
+tags:
+  - ingested
+summary: Large language models (LLMs) have revolutionized numerous domains
+  with their impressive performance but still face their challenges. A
   predominant issue is the propensity for these models to generate
   non-existent facts, a concern termed hallucination. Our research is
-  motivated by the observation that previous instruction tuning methods
-  force the model to complete a sentence no matter whether the model knows
-  the knowledge or not. When the question is out of the parametric
-  knowledge, it will try to make up something and fail to indicate when it
-  lacks knowledge. In this paper, we present a new ap
+  motivated by the observation that previous instruction tuning methods force
+  the model to complete a sentence no matter whether the model knows the
+  knowledge or not. When the question is out of the parametric knowledge, it
+  will try to make up something and fail to indicate when it lacks knowledge.
+  In this paper, we present a new ap
 ingested_at: 2026-09-19
+brief: >-
+  Fine-tuning a model on its own errors, by labelling training questions it
+  got wrong with "I am unsure", teaches abstention that transfers to unseen
+  tasks and also improves answer accuracy. R-Tuning splits an
+  instruction-tuning set into certain and uncertain halves by comparing the
+  pre-trained model's predictions to labels, then appends "I am sure"/"I am
+  unsure" after each answer.
+
+
+  Tested on OpenLLaMA-3B, LLaMA-7B, and LLaMA-13B across 9 datasets,
+  single-task on ParaRel and MMLU and multi-task on 5 mixed sets with HaluEval
+  as held-out.
+
+
+  AP scores beat vanilla instruction tuning, with the gap widening with size:
+  on MMLU in-domain LLaMA-13B reaches 68.87 vs 51.93, and ParaRel
+  out-of-domain 77.30 vs 64.12. On unanswerable question sets R-Tuning refuses
+  87.32-99.18% versus 0.96-34.79% for vanilla, even when baselines are told
+  refusal is allowed. An unsupervised variant, R-Tuning-U, which labels the
+  50% most entropic questions (k = 10, temperature 0.7) as uncertain, often
+  scores higher still, and beats Vanilla-C, which applies the same 10-sample
+  uncertainty filter at test time instead of training on it.
+
+
+  The Vanilla-C comparison is the key control and it is matched on the
+  uncertainty signal, though not on inference cost. Confidence is binary only,
+  models are 1 family plus OpenLLaMA, and no instruction-tuned or RLHF chat
+  models were tested.
+
+
+  If you are building abstention, train the uncertainty rather than measure it
+  at test time.
+brief_generated_at: 2026-09-29
+brief_model: claude-opus-5
+brief_source: full-text

@@ -1,0 +1,46 @@
+arxiv_id: "2609.24525"
+title: "Bridge3D: Enabling Vision-Language-Action Models to See and Act in 3D"
+url: https://doi.org/10.48550/arxiv.2609.24525
+drafted_at: 2026-09-25
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: "For pretrained 2D vision-language-action manipulation policies,
+  adding 3D geometry only on the perception side is not enough: conditioning
+  the action denoiser directly on a raw 3D semantic point field — at the
+  specific diffusion blocks where linear probes show end-effector-coordinate
+  error rising — raises bimanual task success beyond perception-side 3D fusion
+  alone, and encoding the point cloud with a PointNet++-style encoder instead
+  of keeping raw points lowers success."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Diffusion/flow action experts (RDT, GR00T-N1.5) on bimanual
+  tabletop manipulation in RoboTwin 2.0 and a real humanoid; RGB-D head camera
+  available; ~50-100 demos per task.
+technique: ""
+proposed_technique: Condition action denoising on a raw 3D semantic point
+  field at probed spatial-bottleneck layers
+technique_summary: Fuse frozen 3D-foundation-model features into VLM visual
+  tokens, and let action hidden states cross-attend (with 3D RoPE) to an
+  unencoded point-wise semantic field, inserted only in the diffusion blocks
+  where linear probing shows degraded end-effector localization.
+technique_kind: architecture
+technique_validated_by: Success rate on 10 RoboTwin 2.0 tasks (100 trials
+  each, clean and randomized) against pi-0, Spatial Forcing, PointVLA, 3D
+  Diffusion Policy; ablations removing each strategy (78.8 -> 90.4 -> 92.0 ->
+  95.6 avg), layer-position ablation, PointNet++ encoder ablation, and six
+  real-robot tasks (RDT 34.3 vs Bridge3D 49.0 avg).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A replication where inserting the explicit point-field
+  cross-attention adds nothing over the implicit perception-side fusion alone,
+  or where a PointNet++-encoded point cloud matches or beats raw point-wise
+  conditioning, or where placement at arbitrary diffusion blocks works as well
+  as probe-selected ones.
+evidence_note: Measured on 10 simulated tasks and 6 real tasks with two
+  backbones and component ablations; the layer-selection and raw-vs-encoded
+  claims rest on single ablation tables from one group, and all numbers are
+  self-reported with baselines retrained under the paper's protocol.
+confidence: medium

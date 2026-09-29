@@ -6,15 +6,49 @@ year: 2024
 date: 2024-07-01
 arxiv_id: "2407.01489"
 url: https://arxiv.org/abs/2407.01489
-tags: [ingested]
-summary: >-
-  Recent advancements in large language models (LLMs) have significantly
-  advanced the automation of software development tasks, including code
-  synthesis, program repair, and test generation. More recently, researchers
-  and industry practitioners have developed various autonomous LLM agents to
-  perform end-to-end software development tasks. These agents are equipped
-  with the ability to use tools, run commands, observe feedback from the
-  environment, and plan for future actions. However, the complexity of these
-  agent-based approaches, together with the limited abilities of current
-  LLMs, raises the fo
+tags:
+  - ingested
+summary: Recent advancements in large language models (LLMs) have
+  significantly advanced the automation of software development tasks,
+  including code synthesis, program repair, and test generation. More
+  recently, researchers and industry practitioners have developed various
+  autonomous LLM agents to perform end-to-end software development tasks.
+  These agents are equipped with the ability to use tools, run commands,
+  observe feedback from the environment, and plan for future actions. However,
+  the complexity of these agent-based approaches, together with the limited
+  abilities of current LLMs, raises the fo
 ingested_at: 2026-09-19
+brief: >-
+  Dropping autonomous agent loops entirely and running a fixed 3-stage
+  pipeline matches or beats every open-source SWE-bench agent at a fraction of
+  the cost. Agentless does hierarchical localization (repo tree prompt plus
+  embedding retrieval, then file skeletons, then edit lines), samples patches
+  in a search/replace diff format, and selects one using regression tests,
+  generated reproduction tests, and majority voting, with no tool use and no
+  LLM-chosen next actions.
+
+
+  On SWE-bench Lite (300 problems) with GPT-4o, Agentless resolves 96 (32.00%)
+  at $0.70 and 78,166 tokens average, versus SWE-agent on Claude 3.5 Sonnet at
+  69 (23.00%) and $1.62, and CodeR at 85 (28.33%) and $3.34. Ablations isolate
+  where the gain comes from: majority voting alone gives 77 (25.67%), adding
+  regression tests 81 (27.00%), adding reproduction tests 96 (32.00%). Using 4
+  separate sampled location sets rather than 1 greedy set moves 88 to 96.
+  Oracle selection over all samples would reach 126 (42.0%), so ranking is the
+  bottleneck.
+
+
+  Evidence is measured, with component ablations and localization accuracy
+  (81.67% file-level for the combined retriever) and cost reported per stage.
+  Only 94 of 213 selected reproduction tests actually verify the ground-truth
+  fix. 1 model family, Python repos, bug-fixing issues only. Manual inspection
+  found 10.0% of Lite problems lack necessary information, 4.3% leak the
+  ground-truth patch, and 5.0% contain misleading suggested solutions,
+  motivating a filtered SWE-bench Lite-S.
+
+
+  Treat agent scaffolding as something to justify against this pipeline, not
+  assume.
+brief_generated_at: 2026-09-29
+brief_model: claude-opus-5
+brief_source: full-text

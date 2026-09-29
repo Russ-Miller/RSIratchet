@@ -1,20 +1,63 @@
 id: arxiv-2405-01563
 ref: SRC-0309
 kind: paper
-title: "Mitigating LLM Hallucinations via Conformal Abstention"
+title: Mitigating LLM Hallucinations via Conformal Abstention
 year: 2024
 date: 2024-04-04
 arxiv_id: "2405.01563"
 url: https://arxiv.org/abs/2405.01563
-tags: [ingested]
-summary: >-
-  We develop a principled procedure for determining when a large language
-  model (LLM) should abstain from responding (e.g., by saying"I don't know")
-  in a general domain, instead of resorting to possibly"hallucinating"a
+tags:
+  - ingested
+summary: We develop a principled procedure for determining when a large
+  language model (LLM) should abstain from responding (e.g., by saying"I don't
+  know") in a general domain, instead of resorting to possibly"hallucinating"a
   non-sensical or incorrect answer. Building on earlier approaches that use
-  self-consistency as a more reliable measure of model confidence, we
-  propose using the LLM itself to self-evaluate the similarity between each
-  of its sampled responses for a given query. We then further leverage
-  conformal prediction techniques to develop an abstention procedure that
-  benefits from rigorous the
+  self-consistency as a more reliable measure of model confidence, we propose
+  using the LLM itself to self-evaluate the similarity between each of its
+  sampled responses for a given query. We then further leverage conformal
+  prediction techniques to develop an abstention procedure that benefits from
+  rigorous the
 ingested_at: 2026-09-19
+brief: >-
+  Asking a model how many of its own sampled answers agree with each other
+  gives a better abstention signal than the log-probability of its answer, and
+  conformal calibration turns that signal into a hallucination rate with a
+  distribution-free bound.
+
+
+  The procedure samples a greedy response plus k-1 = 10 responses at
+  temperature 0.9, prompts the LLM itself to judge similarity between the
+  greedy answer and each sample (match count), or to report the number of
+  matches in 1 query and read off log-probabilities of the count tokens
+  (expected match count). A threshold is then calibrated with conformal risk
+  control or 3 Risk-Controlling Prediction Sets variants to bound the error
+  rate at a target alpha. Tested with Gemini Pro on 4000 pairs from Temporal
+  Sequences (BIG-bench, many long answers) and 1000 pairs from TriviaQA (short
+  answers), at alpha = 0.05/0.1 and 0.1/0.2, delta = 0.05.
+
+
+  Match-count scores hold the risk bound at much lower abstention rates than
+  log-probability scores on long answers; on TriviaQA the 2 are comparable,
+  log-probability slightly better at alpha = 0.1 and worse at alpha = 0.2. The
+  uncalibrated baseline that just picks the smallest lambda with empirical
+  loss below alpha violates the risk condition on small calibration sets.
+  Empirical Bernstein is the weakest bound; CRC and the
+  Bernoulli-KL/Hoeffding-Bentkus RCPS variants differ negligibly.
+
+
+  Evidence is measured, with calibration-size sweeps, 10 resamples with
+  replacement, and a 20% holdout, so score functions and calibration methods
+  are separated cleanly. But it is 1 model, 2 datasets, closed-book QA only,
+  and the loss itself depends on a match function calibrated on 100 manually
+  inspected pairs (recall threshold 0.5 on TriviaQA; LLM self-prompt threshold
+  7 with 4 mistakes on Temporal Sequences), so reported error rates can
+  understate the truth by up to 5 percentage points. No test of whether
+  self-consistency catches confidently wrong answers.
+
+
+  If you need a deployable abstention rule with a stated error guarantee, use
+  sampled-response agreement rather than sequence likelihood, especially for
+  long outputs.
+brief_generated_at: 2026-09-29
+brief_model: claude-opus-5
+brief_source: full-text

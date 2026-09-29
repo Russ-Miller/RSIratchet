@@ -1,0 +1,46 @@
+arxiv_id: "2609.18207"
+title: Reinforcement Learning for Real-Time Vision-Language-Action Policies
+url: https://doi.org/10.48550/arxiv.2609.18207
+drafted_at: 2026-09-23
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: For manipulation policies whose large VLA backbone cannot run
+  within the control period, letting the slow model propose action chunks from
+  a stale observation while a small RL-trained edit policy adjusts and
+  Q-selects among those chunks using the latest observation recovers more
+  performance than applying RL on top of asynchronous imitation-learning
+  schemes alone, and the gap widens as inference delay or environment speed
+  grows.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Dynamic, reactive manipulation at ~30 Hz with sparse binary
+  rewards, small offline demo set, delay no longer than the chunk execution
+  horizon; shown on Kinetix sim tasks and four real robot tasks with under 10
+  minutes of online data.
+technique: ""
+proposed_technique: Slow chunk proposal plus fast RL-trained action edit
+technique_summary: A large VLA asynchronously samples candidate action chunks
+  from an older observation, then a lightweight edit policy conditioned on the
+  latest observation perturbs each candidate and a learned Q-function picks
+  the best chunk to execute.
+technique_kind: training
+technique_validated_by: "Success rate against RLPD, DSRL, DSRL+RTC, EXPO-FT,
+  EXPO-FT+RTC and SFT baselines: best in 10/10 Kinetix environments (96.2%
+  average under 4-step delay, above the 81.4% zero-delay RLPD baseline) and
+  29/30 average over four real tasks versus 25/30 for the strongest baseline,
+  plus delay and speed sweeps."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A latency-matched comparison where RL fine-tuning on an
+  asynchronous imitation policy (e.g. training-time RTC) matches or beats the
+  slow-propose/fast-edit split, or where the edit policy's advantage
+  disappears as delay grows.
+evidence_note: Measured on 10 Kinetix tasks (4 seeds) and 4 real robot tasks
+  at 30 trials each, against six baselines including two RTC-augmented ones.
+  Baselines were given more gradient updates, which the authors say favors
+  them. Single lab, task-specific reward classifiers, human resets; no
+  ablation separating the edit policy from the Q-based chunk selection.
+confidence: medium
