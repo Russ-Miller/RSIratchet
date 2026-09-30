@@ -1,0 +1,43 @@
+arxiv_id: "2609.18320"
+title: Attention Dispersion as a Diagnostic Signal for Hallucination in Large
+  Language Models
+url: https://doi.org/10.48550/arxiv.2609.18320
+drafted_at: 2026-09-23
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: For small open-weight Qwen2.5 models (1.5B-3B) doing multi-step
+  math reasoning, features derived from the spread of attention entropy across
+  layers at each generation step predict whether the final answer is wrong
+  better than output-logit confidence features, with the margin larger on
+  harder problems (+0.0093 AUC on GSM8K, +0.0759 on MATH-500 at 3B).
+kind: observation
+backing_strength: single-paper
+scope_condition: White-box access to all attention layers; only Qwen2.5 1.5B
+  and 3B; only GSM8K and MATH-500; baseline is output-entropy/probability
+  features only, with no sampling-based baselines such as semantic entropy;
+  MATH-500 3B sample n=254.
+technique: ""
+proposed_technique: Score reasoning failure by cross-layer attention-entropy dispersion
+technique_summary: At each generation step, average attention entropy per
+  layer, take the standard deviation across layers, and aggregate these over
+  the sequence as features for a logistic-regression hallucination classifier.
+technique_kind: tooling
+technique_validated_by: ROC-AUC under repeated stratified 5-fold
+  cross-validation (10 repeats), against output-logit baseline features, with
+  95% CIs and one-sided Wilcoxon signed-rank tests; gains of +0.0093 to
+  +0.0759 AUC.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On the same or other open-weight models, attention-dispersion
+  features fail to beat output-logit baselines in AUC, or the gain disappears
+  when compared against sampling-based baselines such as semantic entropy, or
+  on non-math tasks.
+evidence_note: Measured on two benchmarks and two model sizes with
+  cross-validated logistic regression and significance tests, but absolute
+  AUCs are low (0.58-0.70), sample sizes small, no sampling-based baseline,
+  and scale and task difficulty are confounded. Step-parsing coverage was
+  incomplete on MATH-500, possibly a selection effect.
+confidence: low

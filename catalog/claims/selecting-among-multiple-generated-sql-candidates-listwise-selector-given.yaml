@@ -1,0 +1,39 @@
+id: selecting-among-multiple-generated-sql-candidates-listwise-selector-given
+ref: CLM-0467
+capability: formal-query-synthesis
+technique: group-candidates-execution-result-then-permute-within-groups
+statement: >-
+  For selecting among multiple generated SQL candidates, a listwise selector
+  given retrieved structured selection criteria distilled from training
+  question-SQL pairs, with candidates grouped by execution result and
+  permuted only within groups, reaches higher execution accuracy than
+  pointwise, pairwise and multi-selector baselines on the same candidate
+  pools while using far fewer selector calls and tokens.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Text-to-SQL candidate selection with 8 or 32 candidates from fixed generators, BIRD-dev, Spider-test and EHRSQL, selector Qwen3-Coder-30B-A3B-Instruct; assumes a labelled training "
+sources:
+  - source: arxiv-2609-00834
+    stance: supports
+    note: >-
+      Validated by: Execution accuracy, selector calls and input tokens per
+      query against greedy, majority voting, pointwise (Contextual-RM-32B),
+      pairwise (CHASE-SQL style) and R3-SQL on the same candidate sets:
+      73.08 vs 71.97 for R3-SQL on BIRD-dev at n=32, +2.02 over pairwise,
+      2.92x fewer tokens; ablations drop 0.55 (no memory) and 0.32 (no
+      permutation); order-consistency rises 18.98 -> 23.04 (global shuffle)
+      -> 29.04 (group-based) -> 33.17 (with tie-break).. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-30
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: On the same candidate
+  pools, a listwise selector with global permutation and no retrieved
+  memories matches or beats this pipeline's execution accuracy and
+  order-consistency, or the reported gains disappear when the pairwise and
+  R3-SQL baselines are given equal token budgets.
+submitted_by: agent:claude-opus-5@Russ-Miller

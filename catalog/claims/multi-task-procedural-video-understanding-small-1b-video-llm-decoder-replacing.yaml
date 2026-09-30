@@ -1,0 +1,42 @@
+id: multi-task-procedural-video-understanding-small-1b-video-llm-decoder-replacing
+ref: CLM-0441
+capability: video-temporal-reasoning
+technique: route-decoder-ffn-experts-task-identity-tokens
+statement: >-
+  For multi-task procedural video understanding with a small (1B) video-LLM
+  decoder, replacing each decoder feed-forward block with task-specific
+  expert copies and routing each video-prompt sample by its known task
+  identity gives higher average top-1 accuracy across the five COIN tasks
+  than the same expert topology run densely or with learned token-level or
+  sample-level routing, with the largest gains on the procedure-forecasting
+  tasks.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Five COIN procedural video tasks (step recognition, next-step forecasting, task recognition, two procedure-forecasting variants) with a Llama-3.2-1B decoder and SigLIP2 encoder; ta"
+sources:
+  - source: arxiv-2608-24763
+    stance: supports
+    note: >-
+      Validated by: COIN five-task average top-1 accuracy: 62.9% for
+      task-index routing versus 61.5% dense all-expert activation, 61.4%
+      learned token top-1, and 62.1% learned sample top-1, all under the
+      same five-expert topology and backbone; also above matched 1B and 3B
+      dense VideoLLM-online baselines (59.3, 59.9) and reported 8B baselines
+      (61.8), while activating ~2B LLM parameters per sample.. Measured on
+      one dataset (COIN) with a single 1B backbone and one training run per
+      condition; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-30
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Under the same expert
+  topology and backbone, learned sample-level or token-level routing
+  matching or beating explicit task-index routing on the COIN five-task
+  average, or the gap vanishing once the dense baseline is trained to
+  convergence with matched compute. Automatic check flagged: figures not in
+  the source: 1.9.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,20 +1,58 @@
 id: arxiv-2510-16815
 ref: SRC-0329
 kind: paper
-title: "Knowing the Facts but Choosing the Shortcut: Understanding How Large Language Models Compare Entities"
+title: "Knowing the Facts but Choosing the Shortcut: Understanding How Large
+  Language Models Compare Entities"
 year: 2025
 date: 2025-10-19
 arxiv_id: "2510.16815"
 url: https://arxiv.org/abs/2510.16815
-tags: [ingested]
-summary: >-
-  Large Language Models (LLMs) are increasingly used for knowledge-based
-  reasoning tasks, yet understanding when they rely on genuine knowledge
-  versus superficial heuristics remains challenging. We investigate this
-  question through entity comparison tasks by asking models to compare
+tags:
+  - ingested
+summary: Large Language Models (LLMs) are increasingly used for
+  knowledge-based reasoning tasks, yet understanding when they rely on genuine
+  knowledge versus superficial heuristics remains challenging. We investigate
+  this question through entity comparison tasks by asking models to compare
   entities along numerical attributes (e.g., ``Which river is longer, the
   Danube or the Nile?''), which offer clear ground truth for systematic
-  analysis. Despite having sufficient numerical knowledge to answer
-  correctly, LLMs frequently make predictions that contradict this
-  knowledge. We identify three heuristic biases
+  analysis. Despite having sufficient numerical knowledge to answer correctly,
+  LLMs frequently make predictions that contradict this knowledge. We identify
+  three heuristic biases
 ingested_at: 2026-09-19
+brief: >-
+  Models can know the numbers and still answer against them. When asked which
+  of 2 entities has the larger value of a numerical attribute, LLMs frequently
+  contradict the ranking implied by their own extracted attribute values, and
+  numerical accuracy is consistently higher than pairwise accuracy.
+
+
+  The setup covers 10 Wikidata attributes (river length, city population,
+  atomic number, Scoville units, stadium capacity, etc.), up to 1000 entities
+  each, 12 prompts per pair (6 templates x 2 orderings), across Llama3-1B/8B,
+  OLMo2-1B/7B/32B, Qwen3-1.7B/8B/32B, Mistral-7B and Mistral-24B.
+
+
+  On a Balanced-Orthogonal Subset that decorrelates popularity, mention order,
+  co-occurrence and internal knowledge, order is the dominant cue: Qwen3-1.7B
+  reaches a risk ratio near 2. Popularity sits at RR 1.1-1.25, co-occurrence
+  at 1.05-1.15, and reliance on internal knowledge grows with scale to RR
+  around 1.5. A logistic meta-predictor using only the 3 surface cues beats
+  following the model's own numbers for the smallest models. Cohen's d for the
+  extracted-value gap rises from about 0.04 at 1B to about 0.79 at 32B, so
+  larger models defer to numbers when the gap is wide and knowledge is stable.
+  Qwen3 thinking mode adds 5-9 percentage points to pairwise accuracy and a
+  similar amount to internal consistency, but hand-inspected traces often
+  rationalize a pre-chosen answer.
+
+
+  The cue isolation is well designed; the strategy-selection analysis is
+  descriptive, not causal, and no mechanistic or weight-editing test was run.
+  Zero-shot only, numerical attributes only, no multi-entity ranking or
+  open-domain QA.
+
+
+  Treat a model's stated facts as a poor predictor of its comparative
+  judgments, especially below 8B.
+brief_generated_at: 2026-09-30
+brief_model: claude-opus-5
+brief_source: full-text

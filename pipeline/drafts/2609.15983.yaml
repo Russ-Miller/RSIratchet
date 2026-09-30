@@ -1,0 +1,51 @@
+arxiv_id: "2609.15983"
+title: "Stellar Colosseum: A Many-Agent Harness for Long-Horizon Research in
+  Mathematics and Theoretical Computer Science"
+url: https://doi.org/10.48550/arxiv.2609.15983
+drafted_at: 2026-09-25
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: long-horizon-execution
+statement: On research-level theorem-proving tasks drawn from recent
+  FOCS/STOC/SODA papers, wrapping a frontier model in a staged harness that
+  explores strategies, gates when to decompose, solves section-level
+  subproblems along a dependency graph, and routes verifier findings back to
+  the affected section raises graded proof accuracy far above prompting the
+  same model directly (30.3% to 54.0% for Gemini 3.1 Pro on TCS-Bench), and
+  two such runs with different backbones make complementary errors, so
+  selecting between them by sampled critiques reaches 71.0% against an oracle
+  ceiling of 77.3%.
+kind: observation
+backing_strength: single-paper
+scope_condition: 300 natural-language theorem-proving tasks with a
+  reference-assisted LLM grader; Gemini 3.1 Pro and 3.7 Flash; no
+  compute-matched baseline against repeated sampling of the base model.
+technique: ""
+proposed_technique: "Stage the proof: explore, gate, decompose by dependency, re-verify"
+technique_summary: Allocates inference across explicit research stages —
+  strategy exploration with a readiness gate, decomposition into a dependency
+  graph of section-level subproblems solved in parallel, and global
+  verification whose findings are routed back to the offending section — with
+  candidates at each stage attacked by falsifiers and merged by overlapping
+  random-sample tree aggregation that keeps critiques attached.
+technique_kind: process
+technique_validated_by: "TCS-Bench accuracy under a reference-assisted
+  automated grader (claimed >90% agreement with expert labels): 30.3% direct
+  Gemini 3.1 Pro vs 54.0% with the harness, 55.0% with 3.7 Flash, 71.0% with
+  cross-model critique selection; also 218/222 accepted Codeforces solutions
+  with an execution probe vs 213 without."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A compute-matched baseline — the same total inference spent on
+  repeated sampling plus simple best-of-n selection from one model — matching
+  or beating the staged harness on TCS-Bench, or the gain vanishing under
+  human grading.
+evidence_note: Measured on one benchmark plus a Codeforces suite, with
+  direct-model baselines reported but no token- or call-matched control;
+  per-stage ablations are absent, so the specific contribution of the
+  readiness gate, dependency decomposition, or critique-preserving aggregation
+  is not isolated. The 71.0% figure depends on a cross-model selection rule,
+  and grading is by an LLM grader that sees the ground-truth proof.
+confidence: medium

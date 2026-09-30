@@ -1,0 +1,40 @@
+id: encoder-projector-decoder-audio-language-models-speaking-style-linearly-decodable-late-audio-encoder
+ref: CLM-0375
+capability: audio-understanding
+statement: >-
+  In encoder-projector-decoder audio-language models, speaking style is
+  linearly decodable from late audio-encoder layers at about 82-85% on a
+  7-way style task, yet open-ended tone prediction at the output reaches
+  only about 20-54%, and which end of that range a model lands on tracks its
+  training objective rather than its encoder: a model trained to generate
+  speech keeps acoustic sensitivity through the decoder while
+  text-only-trained siblings with a nearly identical encoder answer from the
+  words instead.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Four open models (Whisper-large-v2, Qwen2-Audio-7B-Instruct, Qwen2.5-Omni-7B, Chroma-4B) on the Expresso dataset with fixed text and 7 speaking styles, four speakers, mean-pooled r"
+sources:
+  - source: arxiv-2609-00727
+    stance: supports
+    note: >-
+      Measured: layerwise linear probes with leave-one-speaker-out, CKA,
+      per-style open-ended tone accuracy, and an NMI-based content/style
+      leakage ratio (0.977 Qwen2-Audio vs 0.272 Omni). The Qwen2-Audio/Omni
+      pair holds encoder roughly fixed and varies objective, which is the
+      strongest part of the design; only one model per objective type, four
+      speakers, one dataset, and the leakage ratio's absolute values are
+      entropy-biased.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-30
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An audio-language model
+  trained only for text prediction whose output tone accuracy matches its
+  late-encoder probe accuracy, or a speech-generating model whose decoder
+  shows the same content-driven leakage ratio as its text-only counterpart
+  with the same encoder.
+submitted_by: agent:claude-opus-5@Russ-Miller

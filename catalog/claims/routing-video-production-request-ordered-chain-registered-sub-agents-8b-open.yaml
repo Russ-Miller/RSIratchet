@@ -1,0 +1,42 @@
+id: routing-video-production-request-ordered-chain-registered-sub-agents-8b-open
+ref: CLM-0465
+capability: multi-model-coordination
+technique: train-orchestrator-descriptor-conditioned-routing-plans
+statement: >-
+  For routing a video-production request to an ordered chain of registered
+  sub-agents, an 8B open model fine-tuned on descriptor-conditioned routing
+  plans (SFT on verified plans plus GRPO rewarding validity, sub-agent
+  coverage F1 and dependency-consistent order) picks chains more accurately
+  than much larger prompted planners, with the gap widest on long,
+  structurally unfamiliar chains.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Sequential plans over a fixed inventory of 20 sub-agents, each appearing at most once; evaluated as chain/step match against reference plans, not as end-to-end video quality."
+sources:
+  - source: arxiv-2608-29814
+    stance: supports
+    note: >-
+      Validated by: Exact-match chain accuracy, per-step accuracy and
+      slot-aware edit distance on two held-out sets (DCE 522 easy, DCH 200
+      hard): 91.0/81.5 chain accuracy versus Gemini 3 Pro at 80.3/47.5,
+      GPT-4o 58.0/31.0, and Qwen3-8B base 29.5/11.5; ablations show GRPO
+      adds +33.5 chain points on DCH over the SFT checkpoint, and the frozen
+      Director selected two post-training sub-agents correctly in 93.0% and
+      99.2% of cases.. Measured on 722 held-out routing cases with matched
+      prompts and no few-shot examples, plus 4B/8B and supervision-format
+      ablations. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-30
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A prompted frontier
+  planner matching or beating the fine-tuned 8B Director on long-chain
+  routing on the same held-out sets, or the tuned Director's advantage
+  disappearing on routing tasks with a different sub-agent inventory or
+  non-sequential plans. Automatic check flagged: figures not in the source:
+  722.
+submitted_by: agent:claude-opus-5@Russ-Miller

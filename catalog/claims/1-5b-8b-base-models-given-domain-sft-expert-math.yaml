@@ -1,0 +1,41 @@
+id: 1-5b-8b-base-models-given-domain-sft-expert-math
+ref: CLM-0339
+capability: fine-tuning-retention
+technique: route-token-token-between-base-model-sft-expert
+statement: >-
+  For 1.5B-8B base models given a domain SFT expert (math or medical),
+  keeping both models and routing token by token — invoking the expert only
+  on tokens where a trained router predicts the base would fail — preserves
+  general-benchmark accuracy within about 0.5% of the base while exceeding
+  the expert's in-domain accuracy, whereas loss-modifying SFT regularizers
+  still lose up to 16% general accuracy.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Gemma3-4B, Llama3.1-8B, Qwen2.5-1.5B; math (GSM8K-trained) and medical (PubMedQA-trained) experts; MMLU/CSQA/ARC-C as general tests; requires holding both models in memory and an e"
+sources:
+  - source: arxiv-2608-30158
+    stance: supports
+    note: >-
+      Validated by: Four model-domain settings, six benchmarks; compared
+      against vanilla SFT, DFT, EAFT, LfU, RouteLLM, Switch Generation,
+      ensemble and contrastive decoding sharing the same base and expert;
+      highest overall average in all settings, plus ablations on router
+      architecture, momentum and thresholds, and wall-clock latency
+      (1.40-1.44x expert-only vs 1.89-2.25x ensemble).. Measured on two
+      backbones by two domains, six benchmarks each, with matched
+      base/expert across all baselines; external-expert generalization
+      tested on two public experts. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-30
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A setting where
+  token-level routing between base and expert either fails to recover
+  general-capability loss (general accuracy still well below base) or fails
+  to match the expert in domain accuracy, while a loss-side regularizer does
+  both.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,47 @@
+arxiv_id: "2609.22977"
+title: "Beyond Similarity: Coverage-Aware Prompt Selection for Time Series
+  Forecasting with LLMs"
+url: https://doi.org/10.48550/arxiv.2609.22977
+drafted_at: 2026-09-26
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: forecasting
+statement: "In prompt-pool LLM time series forecasting where top-K semantic
+  anchors are retrieved by cosine similarity, the harmful redundancy is
+  concentration of anchor usage accumulated across training batches, not
+  redundancy among the anchors picked for a single forecast: diversifying
+  within a retrieval (MMR) never beat relevance-only selection on four
+  dataset-horizon cells, while an EMA usage-tracking coverage penalty in the
+  training loss lowered MSE on most of six long-term benchmarks."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: GPT-2 backbone with a learned semantic anchor pool derived
+  from pretrained word embeddings, decomposed (trend/seasonal/residual) patch
+  inputs; gains absent on Electricity, M4-Monthly, and few-shot long-horizon,
+  and absent when inputs are not decomposed.
+technique: ""
+proposed_technique: Penalize cross-batch anchor over-use, not per-query redundancy
+technique_summary: Track each prompt-pool anchor's usage as an exponential
+  moving average of its similarity scores across training batches and add a
+  stop-gradient saturating-min penalty that suppresses similarity for
+  over-used anchors, leaving the top-K retrieval rule unchanged.
+technique_kind: training
+technique_validated_by: MSE/MAE on six multivariate long-term benchmarks at
+  four horizons plus M4, against similarity-based LLM forecasters and a paired
+  lambda_cov=0 ablation with identical code, data and seeds; best or
+  second-best MSE in 18 of 24 cells, and an eight-seed paired test significant
+  on ETTh1-96 (7/8 seeds improved, p=0.039).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An MMR or DPP-style within-retrieval diversification that matches
+  or exceeds the cross-batch coverage penalty on the same benchmarks and
+  seeds, or a paired test showing the coverage term gives no reliable MSE gain
+  across datasets.
+evidence_note: Measured on six long-term benchmarks plus M4, three seeds for
+  main table and eight seeds for the primary paired cell; only ETTh1-96
+  reaches significance in the paired test, gains elsewhere are within seed
+  spread, one backbone (GPT-2), and the effect vanishes without decomposed
+  inputs, so the mechanism claim is narrower than the framing suggests.
+confidence: low

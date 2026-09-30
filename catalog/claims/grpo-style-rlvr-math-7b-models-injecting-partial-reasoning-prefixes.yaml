@@ -1,0 +1,40 @@
+id: grpo-style-rlvr-math-7b-models-injecting-partial-reasoning-prefixes
+ref: CLM-0393
+capability: fine-tuning-retention
+technique: complete-prefixes-weaker-out-of-family-model-during
+statement: >-
+  In GRPO-style RLVR on math for 7B models, injecting partial reasoning
+  prefixes from a small out-of-family model (Gemma-2-2B, LLaMA-3.2-1B) into
+  a fraction of rollouts keeps policy entropy higher early in training and
+  raises pass@k, with gains growing as k rises; the effect comes from
+  distributional unfamiliarity rather than prefix quality, since prefixes
+  from same-family models of equal or higher quality give no gain over
+  vanilla GRPO.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Qwen2.5-7B and Qwen2.5-Math-7B trained with GRPO on MATH, evaluated on six math benchmarks; prefix injection probability 0.2, entropy-based truncation; only mathematical reasoning "
+sources:
+  - source: arxiv-2608-27420
+    stance: supports
+    note: >-
+      Validated by: Average pass@1 to pass@128 over AIME 2024/2025, AMC
+      2023, MATH 500, Minerva, OlympiadBench against vanilla GRPO and the
+      untrained base model; ablations on injection probability, random vs
+      entropy truncation, and same-family prefix generators; LLM-graded
+      prefix quality distribution.. Measured on two 7B targets, one training
+      set, six benchmarks, single runs with no seed variance reported;
+      pass@128 still below the untrained base model in most rows, so the
+      method narrows rather than removes coverage loss. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-30
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Prefixes from a
+  same-family model of comparable quality producing pass@k gains equal to
+  out-of-family prefixes, or out-of-family prefixes failing to raise pass@k
+  above vanilla GRPO at matched compute.
+submitted_by: agent:claude-opus-5@Russ-Miller
