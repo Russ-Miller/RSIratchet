@@ -1,0 +1,40 @@
+id: grpo-style-rl-post-training-7b-multimodal-reasoning-models-composing-each
+ref: CLM-0392
+capability: fine-tuning-retention
+technique: stratify-rollouts-confidence-outcome-forming-rl-groups
+statement: >-
+  In GRPO-style RL post-training of 7B multimodal reasoning models,
+  composing each optimization group from rollouts stratified by
+  length-normalized sequence surprisal and outcome (confident-correct
+  anchors, confident-wrong negatives, low-confidence successes) within the
+  same step keeps path entropy from collapsing and avoids the late-training
+  performance decline GRPO and DAPO show after a few hundred steps.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen2.5-VL-7B-Instruct base, verifiable multimodal math/diagram reasoning, ~400 update steps, group size 16, vision encoder frozen; single reported run; does not cover open-ended g"
+sources:
+  - source: arxiv-2609-07148
+    stance: supports
+    note: >-
+      Validated by: Ablation on MathVista/MathVision/MMMU Pass@8: GRPO 60.7
+      avg, DAPO 62.0, +HSR alone 64.7, +PAQM alone 63.8, both 65.8; plus
+      path-entropy curves staying ~0.35-0.60 nats versus baseline collapse.
+      Baselines reported at peak pre-collapse. One run, no seed variance..
+      Measured on three benchmarks in one ablation table plus training
+      curves; the PAQM-vs-full comparison isolates group composition from
+      the teacher-hint curriculum, but baselines are scored at hand-picked
+      peak steps, only one run is reported, and the whole result rests on a
+      single base model.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-30
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A matched-compute
+  replication where stratified group assembly shows the same entropy decline
+  and late-training degradation as GRPO, or where the ablation gain
+  disappears across seeds.
+submitted_by: agent:claude-opus-5@Russ-Miller

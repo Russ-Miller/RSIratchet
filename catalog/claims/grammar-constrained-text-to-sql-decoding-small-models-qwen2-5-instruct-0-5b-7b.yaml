@@ -1,0 +1,40 @@
+id: grammar-constrained-text-to-sql-decoding-small-models-qwen2-5-instruct-0-5b-7b
+ref: CLM-0391
+capability: formal-query-synthesis
+technique: prefer-beam-search-over-sample-and-vote-under
+statement: >-
+  For grammar-constrained text-to-SQL decoding with small models
+  (Qwen2.5-Instruct 0.5B-7B on Spider), beam search is at least as accurate
+  as sample-and-vote at every matched compute budget of 1-8, and better in
+  most, reversing the usual unconstrained finding that sampling with voting
+  beats beam search.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "One model family (Qwen2.5-Instruct, 4-bit), one benchmark (Spider dev, n=1034), schema-aware CFG constraint, sample+vote at temperature 0.7, single decoding run per configuration."
+sources:
+  - source: arxiv-2608-25761
+    stance: supports
+    note: >-
+      Validated by: Execution accuracy on the full 1,034-example Spider dev
+      set at budgets 1, 2, 4, 8 for four model sizes; paired McNemar exact
+      tests on the 16 matched-budget cells — beam significantly better in
+      11, significantly worse in 0, ties in 5.. Measured, not argued: one
+      decoding run per cell, single seed for sampling, paired McNemar on
+      identical examples so the comparison is properly paired. Confounded by
+      the specific grammar, which the authors show is incomplete (it breaks
+      more predictions than it fixes at 3B and 7B), and by a fixed
+      temperature of 0.7 with no sweep. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-30
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: On another model family,
+  constraint type (JSON schema, tool-call grammar), or benchmark,
+  sample+vote at a matched budget beats beam search under
+  grammar-constrained decoding; or repeated seeds on Spider show beam's
+  advantage inside sampling noise.
+submitted_by: agent:claude-opus-5@Russ-Miller

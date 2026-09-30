@@ -1,0 +1,46 @@
+arxiv_id: "2609.14448"
+title: "NeuroActiSep: Detecting Factual Hallucinations from Feed-Forward
+  Neurons in a Single Pass"
+url: https://arxiv.org/abs/2609.14448
+drafted_at: 2026-09-28
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: In 7-8B open-weight instruct models (Mistral-7B, Qwen2.5-7B,
+  Llama-3-8B) answering closed-book factual questions, a small set of
+  feed-forward neurons (top 1% or fewer) selected on one dataset by
+  class-conditional separation of their residual-space contribution at the
+  final prompt token transfers to other factual QA datasets, where probes on
+  those neuron activations detect hallucination about as well as probes on
+  full residual-stream or MLP-output states.
+kind: observation
+backing_strength: single-paper
+scope_condition: Three 7-8B instruction-tuned models, greedy zero-shot
+  closed-book generation; neurons selected on a CounterFact-derived set and
+  transferred to TriviaQA and TruthfulQA; signal read only at the final prompt
+  token before generation.
+technique: ""
+proposed_technique: Rank feed-forward neurons by class-conditional residual contribution
+technique_summary: Score each MLP neuron at the final prompt token by the
+  separation between hallucinated and truthful mean pre-to-post activation
+  change scaled by its output-vector norm, then train a small classifier on
+  the top-ranked neurons' features.
+technique_kind: architecture
+technique_validated_by: AUROC on TriviaQA (held-out dev split) and TruthfulQA
+  (5-fold) against perplexity, mean/min logits, P(True), and linear and MLP
+  probes on mlp_out and resid_post; the neuron classifier ranked in the top
+  two on all six model-dataset pairs.
+stance_on_existing: supports
+related_claim_id: open-weight-7-8b-instruct-models-supervised-detector-built-how-hidden
+stance_reason: Both find hallucination-predictive signal recoverable from
+  internal computation in 7-8B instruct models, here at neuron granularity in
+  the middle-to-late layers.
+falsifier: Neurons selected on one dataset give probes with materially lower
+  AUROC than residual-stream probes on transferred factual QA datasets, or
+  randomly chosen neurons of the same count do as well.
+evidence_note: Measured AUROC across three models and two datasets with
+  several baselines; no random-neuron control at the transfer stage and no
+  causal intervention, so the selection's contribution over an arbitrary
+  sparse feature set is not isolated.
+confidence: medium

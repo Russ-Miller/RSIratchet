@@ -1,0 +1,39 @@
+id: injecting-new-or-counterfactual-facts-into-3-4b-instruct-model
+ref: CLM-0396
+capability: knowledge-updating
+technique: inject-golden-answer-off-policy-trajectory-during-rl
+statement: >-
+  When injecting new or counterfactual facts into a 3-4B instruct model by
+  post-training, supervised fine-tuning on extracted QA pairs binds facts to
+  their training question form — recall of the single fact stays reasonable
+  while multi-source and inferential questions over the same facts collapse
+  — and adding more SFT epochs does not close the gap, whereas mixed-policy
+  RL that supplies the golden answer as an off-policy trajectory when
+  on-policy rollouts fail recovers much of the generalization.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Wiki-style entity-grounded documents, single round of injection, Qwen3-4B and Llama3.2-3B; lexical (ROUGE-L/exact-match) rewards; not tested on procedural, code, or math knowledge "
+sources:
+  - source: arxiv-2608-25243
+    stance: supports
+    note: >-
+      Validated by: On two new document benchmarks (Blank, 776 corpora;
+      Counter, 252 counterfactual corpora) judged by an LLM, against SFT
+      baselines (PIT, Self-Tuning, Autonomous Learning), vanilla GRPO, and
+      LUFFY mixed-policy RL; GRIN reached 21.16% multi-source and 31.69%
+      inferential on Blank vs Self-Tuning's 11.26% and 7.10%, similar
+      single-fact recall, and the lowest prior-belief fail@k (24.05%);
+      baselines trained to 50 epochs still plateaued below it.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-09-30
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An SFT-based injection run
+  at matched compute that reaches the same multi-source and inferential
+  accuracy as Golden-GRPO, or Golden-GRPO failing to beat SFT on
+  generalization on other base models or corpora.
+submitted_by: agent:claude-opus-5@Russ-Miller

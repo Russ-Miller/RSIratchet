@@ -1,0 +1,40 @@
+arxiv_id: "2609.13556"
+title: "Domain-Specific Jargon in Large Language Models: A Comparative
+  Analysis between General-Purpose and Specialist Models"
+url: https://arxiv.org/abs/2609.13556
+drafted_at: 2026-09-23
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: domain-knowledge
+statement: A medically fine-tuned Llama-3.1-8B checkpoint (UltraMedical)
+  scores below its general-purpose Instruct counterpart on both selecting the
+  correct definition of medical jargon in EHR context and judging whether a
+  term is jargon, and its errors are almost entirely false positives — it
+  treats ordinary words in clinical text as specialized.
+kind: observation
+backing_strength: single-paper
+scope_condition: One model pair (Llama-3.1-8B Instruct vs UltraMedical),
+  English medical jargon benchmarks built from README/UMLS; fine-tuning data
+  and procedure are uncontrolled confounds.
+technique: ""
+proposed_technique: Reweight jargon-favoring components post-hoc
+technique_summary: Decompose output logits into per-attention-head and per-MLP
+  direct contributions and learn scalar component weights on a training split,
+  suppressing components that push toward the jargon label.
+technique_kind: training
+technique_validated_by: Raised UltraMedical's jargon-identification accuracy
+  from 53.1% to 56.1% (McNemar p=0.01) by correcting 270 false positives at
+  the cost of 146 new false negatives; the same procedure lowered Instruct's
+  accuracy by 1.0 point and gave under 0.2 points on the understanding task.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A controlled fine-tune on medical text, or other general/medical
+  model pairs, showing the domain-adapted model matching or beating the
+  general model on the same jargon understanding and identification tasks.
+evidence_note: Measured on held-out splits (1,495 JU items, 2,990 JI items)
+  with Wilson intervals and a paired McNemar test; gaps are small (76.1 vs
+  74.1 on JU, 58.8 vs 53.1 on JI) and the design cannot isolate fine-tuning as
+  the cause, since training data and recipe differ.
+confidence: medium

@@ -1,0 +1,41 @@
+id: post-training-pretrained-vision-language-action-manipulation-policy-under-fixed-per-round-frame
+ref: CLM-0453
+capability: embodied-control
+technique: collect-demonstrations-only-where-policy-disagrees-weight-progress
+statement: >-
+  For post-training a pretrained vision-language-action manipulation policy
+  under a fixed per-round frame budget, collecting handheld demonstrations
+  only at states where the human action chunk diverges from the policy's
+  sampled action distribution, and weighting them by a learned task-progress
+  advantage, raises task progress more than collecting the same number of
+  frames of ordinary demonstrations and fine-tuning on them.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Four real-world Franka tasks (two long-horizon, two precision) with a pi-0.5 policy adapted per task; 10 trials per checkpoint; partial-credit task progress score; policy predictio"
+sources:
+  - source: arxiv-2609-20659
+    stance: supports
+    note: >-
+      Validated by: Mean task progress score across rounds on four real
+      tasks versus supervised fine-tuning on equal-budget ordinary UMI
+      demonstrations, plus an ablation removing the advantage model and a
+      comparison to real-robot HG-DAgger on Clean Up Table (higher score,
+      73.4 vs 412.99 ms per collected frame).. Measured on four tasks, 10
+      trials per checkpoint, one policy backbone, one lab, one robot;
+      ablation isolates the advantage component and a threshold sweep on one
+      task shows insensitivity, but the comparison is against a single SFT
+      baseline and evaluation counts are small.
+contested: false
+status: pending-review
+last_checked_at: 2026-09-30
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Under matched frame budgets
+  on comparable manipulation tasks, ordinary demonstration collection plus
+  fine-tuning matches or beats disagreement-targeted collection with
+  advantage conditioning, or the gain disappears once the advantage model is
+  given to both arms.
+submitted_by: agent:claude-opus-5@Russ-Miller
