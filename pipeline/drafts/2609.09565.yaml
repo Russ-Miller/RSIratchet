@@ -1,0 +1,47 @@
+arxiv_id: "2609.09565"
+title: Multi-Agent Agentic Graph Learning via Structural Signatures
+url: https://doi.org/10.48550/arxiv.2609.09565
+drafted_at: 2026-09-27
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: For LLM agents classifying nodes in text-attributed graphs,
+  serializing sampled neighborhoods into prompt text makes the prediction
+  depend on the arbitrary order of neighbors; replacing that text with a
+  fixed-size, permutation-invariant vector of graph statistics (degree,
+  PageRank, clustering, cross-community fraction, label entropy,
+  majority-label fraction) plus only the top-k semantically relevant node
+  texts raises accuracy and cuts per-message tokens.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Node classification on four text-attributed graphs
+  (OGB-Arxiv, OGB-Products, Cora-full, Amazon-Computers) with GPT-4o-mini
+  agents, training-free, one agent per detected community.
+technique: ""
+proposed_technique: Pass graph structure as a permutation-invariant signature, not text
+technique_summary: Summarize sampled graph neighborhoods for an LLM agent as a
+  fixed-length vector of named graph statistics, keeping raw text only for the
+  top-k semantically relevant nodes, so the observation is order-independent
+  and does not grow with neighborhood size.
+technique_kind: prompting
+technique_validated_by: Accuracy and Macro-F1 against single-agent and
+  orchestration-based AGL baselines on four datasets (best accuracy on all
+  four); an ablation that restores ReaGAN-style verbalized neighbors while
+  keeping the numeric signature for collaboration routing produced the largest
+  accuracy drop of four ablations; tokens per cross-agent message compared
+  against serialized 1-hop/2-hop neighborhoods.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Show that shuffling neighbor order in verbalized graph evidence
+  leaves predictions and accuracy unchanged for current models, or that the
+  signature-based observation loses accuracy relative to full verbalization
+  once the same total token budget is allowed.
+evidence_note: Measured, one paper, one backbone (GPT-4o-mini), 1,000 test
+  nodes per dataset. The order-sensitivity claim rests on a five-run
+  preliminary figure on OGB-Arxiv, not a controlled sweep. The main comparison
+  confounds the signature with community partitioning, selective debate and
+  experience learning; the single-component ablation isolates the
+  representation on OGB-Arxiv only, and effect sizes are read from a figure.
+confidence: low

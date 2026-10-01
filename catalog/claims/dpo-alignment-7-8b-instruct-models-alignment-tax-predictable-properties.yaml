@@ -1,0 +1,39 @@
+id: dpo-alignment-7-8b-instruct-models-alignment-tax-predictable-properties
+ref: CLM-0371
+capability: fine-tuning-retention
+technique: filter-preference-pairs-reference-margin-length-gap-lexical
+statement: >-
+  In DPO alignment of 7-8B instruct models, the alignment tax is predictable
+  from properties of the preference pairs themselves: pairs whose
+  chosen/rejected log-probability margin under the reference model is large
+  in magnitude, or whose chosen/rejected token-length difference is large,
+  cause the most loss of general capability, so dropping them keeps most of
+  the alignment gain while cutting forgetting.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Offline DPO on HH-RLHF with Llama-3.1-8B-Instruct and Qwen2.5-7B-Instruct, 5% data budget, general capability measured on MMLU, IFEval, ARC-Challenge, HumanEval, GSM8K."
+sources:
+  - source: arxiv-2608-24192
+    stance: supports
+    note: >-
+      Validated by: Against Full, Random, and nine SFT/alignment
+      data-selection baselines at a fixed 5% budget on HH-RLHF:
+      general-capability drop 0.86/0.38 points (Llama/Qwen, helpfulness)
+      versus 5.35/2.31 for full-data DPO, while alignment gain stayed near
+      the best baseline; bucket experiment shows forgetting rising from 0.08
+      to 3.48 across reference-margin quantiles; ablation removing each
+      score degrades either forgetting or alignment.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-01
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Partitioning a
+  preference dataset by reference-margin magnitude or length difference and
+  training DPO on each bucket shows no monotone relation to
+  general-benchmark degradation, or the composite filter loses as much
+  general capability as random selection at equal budget.
+submitted_by: agent:claude-opus-5@Russ-Miller

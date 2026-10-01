@@ -6,15 +6,52 @@ year: 2024
 date: 2024-07-01
 arxiv_id: "2407.01489"
 url: https://arxiv.org/abs/2407.01489
-tags: [ingested]
-summary: >-
-  Recent advancements in large language models (LLMs) have significantly
-  advanced the automation of software development tasks, including code
-  synthesis, program repair, and test generation. More recently, researchers
-  and industry practitioners have developed various autonomous LLM agents to
-  perform end-to-end software development tasks. These agents are equipped
-  with the ability to use tools, run commands, observe feedback from the
-  environment, and plan for future actions. However, the complexity of these
-  agent-based approaches, together with the limited abilities of current
-  LLMs, raises the fo
+tags:
+  - ingested
+summary: Recent advancements in large language models (LLMs) have
+  significantly advanced the automation of software development tasks,
+  including code synthesis, program repair, and test generation. More
+  recently, researchers and industry practitioners have developed various
+  autonomous LLM agents to perform end-to-end software development tasks.
+  These agents are equipped with the ability to use tools, run commands,
+  observe feedback from the environment, and plan for future actions. However,
+  the complexity of these agent-based approaches, together with the limited
+  abilities of current LLMs, raises the fo
 ingested_at: 2026-09-19
+brief: >-
+  A fixed 3-step pipeline of localization, repair, and patch validation
+  matches or beats autonomous coding agents on repository-level issue fixing,
+  at lower cost. The claimed advantages of tool use, planning, and
+  self-reflection in software agents are not what drives SWE-bench
+  performance.
+
+
+  Agentless uses GPT-4o (gpt-4o-2024-05-13): hierarchical localization (repo
+  tree prompting plus text-embedding-3-small retrieval, then file skeletons,
+  then edit lines), 40 sampled Search/Replace patches per issue, 40 sampled
+  reproduction tests, then regression-test and reproduction-test filtering
+  with majority voting. Compared against 26 agent baselines on SWE-bench Lite
+  (300 problems).
+
+
+  It resolves 96 (32.00%) at $0.70 and 78,166 tokens average, the best among
+  open-source approaches; SWE-agent with Claude 3.5 Sonnet gets 69 (23.00%) at
+  $1.62, CodeR 85 (28.33%) at $3.34. Closed-source entries reach 129 (43.00%).
+  Ablations isolate the gains: majority voting alone 77, plus regression tests
+  81, plus reproduction tests 96. Correct oracle patch exists in 126 (42.0%)
+  of samples, so selection is the bottleneck. Only 94 of 213 selected
+  reproduction tests actually verify the ground truth fix.
+
+
+  Ablations are component-wise on 1 model and 1 benchmark; baselines are
+  reported numbers at differing budgets, not matched-cost reruns, and many
+  closed-source entries release no trajectories. Manual inspection found 4.3%
+  of SWE-bench Lite problems contain the exact ground truth patch, 10.0% lack
+  critical information, and 5.0% include misleading solutions; the authors
+  release the filtered SWE-bench Lite-S.
+
+
+  Treat a sample-and-filter pipeline as the baseline agents must beat.
+brief_generated_at: 2026-10-01
+brief_model: claude-opus-5
+brief_source: full-text

@@ -1,0 +1,47 @@
+arxiv_id: "2609.12230"
+title: "Repair Before Reinforce: Context-Augmented Knowledge Graph Reasoning
+  for Multi-Hop Question Answering"
+url: https://doi.org/10.48550/arxiv.2609.12230
+drafted_at: 2026-09-25
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-step-reasoning
+statement: When fine-tuning a 14B model on knowledge-graph-derived
+  multiple-choice QA for a single medical domain, attaching supporting triples
+  from the same source text chunk to each target triple during supervision,
+  and repairing residual one-hop failures before reinforcement learning, gives
+  higher accuracy on held-out 3-, 4- and 5-hop questions than training on
+  isolated triples or running RL from an unrepaired checkpoint.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Qwen3-14B with LoRA, synthetic multiple-choice QA generated
+  from GraphMERT-extracted disease KGs (Gastroparesis, Diabetes) of roughly
+  6,000 triples each; RL on 1-hop and 2-hop items with answer-correctness plus
+  path-alignment reward.
+technique: ""
+proposed_technique: Repair one-hop gaps and add same-chunk context before RL
+technique_summary: Augments each KG triple with same-source-chunk supporting
+  triples for supervision, then uses LLM judges to separate noisy triples from
+  genuine one-hop knowledge gaps, continually fine-tunes on targeted repair
+  items weighted by failure history, and only then runs GRPO on lower-hop
+  questions.
+technique_kind: training
+technique_validated_by: Accuracy on 8,000 generated 3-hop, 4-hop and 5-hop QA
+  items per setting, across two disease KGs, comparing KG-grounded vs
+  context-grounded supervision and RL from repaired vs unrepaired SFT
+  checkpoints, plus an answer-option shuffling robustness check.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On the same KGs and base model, context-augmented supervision and
+  pre-RL repair fail to beat KG-only supervision and RL from unrepaired
+  checkpoints on higher-hop accuracy, or the gain disappears under option
+  shuffling or on human-written multi-hop questions.
+evidence_note: Measured on two disease KGs with matched training
+  configuration, so the supervision-type comparison is isolated. But all
+  evaluation items are LLM-generated and LLM-filtered from the same KGs, the
+  reported 100% one-hop accuracy is on a validation set from which failing
+  triples were quarantined, and the source text gives no effect sizes for the
+  multi-hop results.
+confidence: low

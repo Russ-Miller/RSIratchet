@@ -1,0 +1,40 @@
+id: llm-agents-acting-partially-observable-environments-replacing-raw-action-observation
+ref: CLM-0403
+capability: planning
+technique: show-llm-bayesian-belief-state-history
+statement: >-
+  For LLM agents acting in partially observable environments, replacing the
+  raw action-observation log in the prompt with an externally maintained
+  Bayesian posterior over latent states makes the agent's action choice a
+  function of the belief alone, removing surface-form sensitivity in which
+  two histories with identical posteriors but different serialized text
+  elicit different actions.
+kind: mechanism
+backing_strength: mechanism-reasoning
+observed_on:
+  era: "Requires a known finite POMDP model (transition and observation kernels) and that the raw history is never shown at decision time; demonstrated only on the Tiger POMDP and a small "
+sources:
+  - source: arxiv-2609-10036
+    stance: supports
+    note: >-
+      Validated by: Paired-seed comparison on Tiger POMDP and a red-team
+      attack graph against a reactive LLM and a natural-language belief
+      tracker, with task return, Brier/NLL/entropy calibration, and a
+      decision-consistency JSD between belief-equivalent history pairs; on
+      Tiger the BSE agent reached 38/40 success vs 32/40 reactive, but only
+      40 seeds, one sampling seed, and CoT/ReAct/QMDP/POMCP were not run..
+      Mostly argued: the sufficiency/soundness result is a proof under four
+      stated axioms, not an empirical finding. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-01
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Show that an LLM given only
+  a serialized posterior still produces different action distributions on
+  belief-equivalent states, or that a history-conditioned agent with matched
+  compute matches the belief-conditioned one on task return and
+  decision-consistency JSD in partially observable tasks.
+submitted_by: agent:claude-opus-5@Russ-Miller

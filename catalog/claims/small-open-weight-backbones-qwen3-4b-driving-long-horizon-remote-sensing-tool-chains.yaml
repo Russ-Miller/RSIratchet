@@ -1,0 +1,41 @@
+id: small-open-weight-backbones-qwen3-4b-driving-long-horizon-remote-sensing-tool-chains
+ref: CLM-0472
+capability: long-horizon-execution
+technique: verify-each-intermediate-step-against-domain-constraints-then
+statement: >-
+  For small open-weight backbones (Qwen3-4B) driving long-horizon
+  remote-sensing tool chains, inserting a step-level verifier that checks
+  each intermediate tool output against schema, sub-goal and domain
+  constraints and triggers replanning is the single largest architectural
+  gain, while hierarchical decomposition without domain-aligned tool
+  grouping adds little and can lower final accuracy relative to a flat agent
+  with the same verifier.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Two remote-sensing agent benchmarks (Earth-Bench, ThinkGeo), Qwen3-4B/8B shared-parameter backbone with role prompts, fixed tool registry; all components also trained with domain S"
+sources:
+  - source: arxiv-2608-30672
+    stance: supports
+    note: >-
+      Validated by: Architecture ablation on Earth-Bench with Qwen3-4B:
+      adding the verifier to a flat agent raised Tool-Exact-Match from
+      6.84/19.42 to 29.05/30.14 and Accuracy from 16.53/20.16 to
+      35.89/31.45; removing the verifier from the full system cut Exact by
+      11.30/12.43 and Accuracy by 4.03/2.82.. Measured, single paper, one
+      ablation table on one backbone (Qwen3-4B) and one benchmark; the
+      verifier is entangled with the training stages applied to the same
+      checkpoint, and the counter-intuitive generic-hierarchy result rests
+      on a single row with no variance reported.
+contested: false
+status: pending-review
+last_checked_at: 2026-10-01
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An ablation on the same
+  benchmarks where removing step-level verification leaves tool-exactness
+  and final accuracy roughly unchanged, or where hierarchy without domain
+  grouping beats a flat verified agent.
+submitted_by: agent:claude-opus-5@Russ-Miller

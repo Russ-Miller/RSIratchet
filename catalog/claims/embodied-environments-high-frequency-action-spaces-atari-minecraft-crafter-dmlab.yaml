@@ -1,0 +1,42 @@
+id: embodied-environments-high-frequency-action-spaces-atari-minecraft-crafter-dmlab
+ref: CLM-0373
+capability: embodied-control
+technique: train-world-model-controller-vlm-relabelled-rollouts-then
+statement: >-
+  In embodied environments with high-frequency action spaces (Atari,
+  Minecraft, Crafter, DMLab, Overcooked, Pico Park, MindCraft), pairing a
+  frozen instruction-tuned VLM that emits sparse text instructions with a
+  small world-model controller trained to follow them scores higher than
+  either the same VLM emitting low-level actions directly or the same
+  controller running without instructions, and the gain depends on the
+  instructions carrying semantic content — random-string instructions score
+  no better than no instructions at all.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Controllers are trained per environment (~800M params) with behaviour cloning on VLM-relabelled segments of their own rollouts; matched observation and action spaces across compare"
+sources:
+  - source: arxiv-2608-26788
+    stance: supports
+    note: >-
+      Validated by: Official per-environment metrics on seven environments
+      against controller-only, direct VLM action generation, a fine-tuned
+      VLA (RT-2), DreamerV3, MAPPO and QMIX; ablation over instruction
+      source (VLM-generated 11.1, template 9.9, clustered 8.9, random
+      strings 8.3, none 8.2, environment-derived 11.4 on Minecraft Diamond);
+      instruction-following accuracy 86-97% across planners.. Measured
+      across seven environments with four VLM planners and internal
+      ablations; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-01
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Under matched
+  observation and action spaces, a controller-only or direct-VLM-action
+  baseline matching or beating the planner-plus-controller system on these
+  environments, or random-string instructions producing gains comparable to
+  semantically meaningful ones.
+submitted_by: agent:claude-opus-5@Russ-Miller

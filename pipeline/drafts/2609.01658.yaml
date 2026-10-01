@@ -1,0 +1,47 @@
+arxiv_id: "2609.01658"
+title: "PRO-Step: Step-level Process Reward Optimization for
+  Retrieval-Augmented Generation"
+url: https://doi.org/10.48550/arxiv.2609.01658
+drafted_at: 2026-09-29
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-step-reasoning
+statement: For agentic retrieval-augmented multi-hop QA with 7B-class policy
+  models, scoring each intermediate step for both logical validity and
+  grounding in the retrieved passages — rather than scoring steps by the final
+  answer — yields higher EM/F1 than outcome-reward and final-answer-based
+  process-reward training, because it removes preference pairs where flawed
+  retrieval happened to reach the right answer.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Qwen2.5-7B-Instruct (plus Llama-3.1-8B, Qwen2.5-3B) policies,
+  Wikipedia retrieval with k=3, five single- and multi-hop QA benchmarks;
+  gains largest on 2WikiMultiHopQA and absent/negative on MuSiQue vs
+  StepSearch.
+technique: ""
+proposed_technique: Score reasoning steps for grounding, not final-answer match
+technique_summary: Train a generative process reward model that labels each
+  interleaved reason/retrieve step for logical validity and evidential
+  grounding, use it in value tree search to build step-level chosen/rejected
+  pairs, and optimize the policy with step-level DPO.
+technique_kind: training
+technique_validated_by: EM/F1 on PopQA, HotpotQA, 2WikiMultiHopQA, Bamboogle,
+  MuSiQue against Search-R1, ReasonRAG, StepSearch; best average (34.5 EM /
+  44.1 F1), ablation removing PRM scoring drops to 32.7/41.9; Bamboogle gap
+  not significant (p=0.66); reranking study shows math/general PRMs degrade
+  with larger N.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched-data comparison where preference pairs built from
+  final-answer-derived step scores match or beat grounding-aware step labels
+  on multi-hop QA, or where the PRM ablation shows no drop.
+evidence_note: Measured on five QA benchmarks with one main backbone plus
+  three generalization backbones; component ablation isolates the PRM's
+  contribution (+1.8 EM average), and a reranking experiment shows
+  math/general PRMs fall below majority voting as candidate pool grows.
+  Training data differs from some baselines (5k seed questions vs 19k
+  GPT-4o-distilled), so the comparison is not compute- or data-matched, and
+  one dataset (MuSiQue) favours a baseline.
+confidence: medium

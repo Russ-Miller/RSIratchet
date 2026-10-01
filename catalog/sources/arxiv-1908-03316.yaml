@@ -30,3 +30,40 @@ summary: In this paper, we propose a multi-modal synthesis technique for
 notes: "Forwarded by Russ 2026-09-19: locator papers: generate a reusable
   regex/SQL/XPath once, run it without the model"
 ingested_at: 2026-09-19
+brief: >-
+  Combining a natural-language semantic parse with programming-by-examples
+  more than doubles regex synthesis accuracy over either modality alone,
+  because the parse supplies structural hints that prune the example-driven
+  search.
+
+
+  Regel parses an English description into a "hierarchical sketch" (a tree of
+  constrained holes over a regex DSL), then runs a PBE engine that uses the
+  sketch to compute over- and under-approximations for pruning and uses Z3 to
+  solve for integer constants in Repeat operators via string-length
+  constraints. Evaluation covers over 300 regexes from 2 sources: 200 adapted
+  DeepRegex benchmarks (on average 4 positive and 5 negative examples each)
+  and 122 harder StackOverflow tasks with ground truth converted into the DSL.
+
+
+  Regel finds the intended regex in 80% of cases, against 26% for a pure PBE
+  variant and 43% for DeepRegex, a seq2seq NL-only model. Its PBE engine
+  completes sketches an order of magnitude faster than an adaptation of
+  AlphaRegex, including a version of AlphaRegex given the same sketch. A user
+  study with 20 participants found users twice as likely to produce the
+  intended regex with Regel.
+
+
+  Comparisons are measured against both single-modality baselines and a
+  sketch-matched AlphaRegex, which isolates the contribution of the sketch
+  itself. Caveats: training sketches for the StackOverflow set were
+  hand-written by the authors, time budgets differ by dataset (10s/top-1 vs
+  60s/top-5), and the NLP component is a SEMPRE semantic parser rather than a
+  modern LLM.
+
+
+  If you work on program synthesis from ambiguous instructions, this argues
+  for parsing language into partial structure rather than final programs.
+brief_generated_at: 2026-10-01
+brief_model: claude-opus-5
+brief_source: full-text
