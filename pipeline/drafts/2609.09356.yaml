@@ -1,0 +1,48 @@
+arxiv_id: "2609.09356"
+title: Auditable Emergency Triage for Maternal and Newborn Care in India
+url: https://doi.org/10.48550/arxiv.2609.09356
+drafted_at: 2026-09-27
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: procedure-following
+statement: "In a deployed multilingual medical triage system, most of the
+  accuracy gain comes from writing the clinicians' implicit decision tree into
+  an explicit scoped rule set rather than from moving the final decision out
+  of the LLM: replacing a flat danger-sign list with 231 structured rules in
+  the same end-to-end prompt raised recall from 0.565 to 0.837 and F1 from
+  0.606 to 0.689, while further handing the decision to a deterministic rule
+  engine over LLM-extracted symptoms left accuracy statistically unchanged
+  (recall 0.810, F1 0.702)."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Short, code-switched WhatsApp maternal/newborn queries in
+  seven Indian languages, 427 held-out test queries, Gemini-2.5-Flash, labels
+  from the organisation's own clinical protocol.
+technique: ""
+proposed_technique: Externalize the expert decision tree into a clinician-editable rule engine
+technique_summary: Restrict the LLM to extracting canonical symptoms and
+  patient context from a clinician-curated vocabulary, and let a deterministic
+  rule engine owned by clinicians make the emergency decision.
+technique_kind: process
+technique_validated_by: Stepwise ablation of four systems on 427 held-out
+  queries with stratified bootstrap CIs; full decomposition matched the
+  rules-in-prompt variant on recall and F1 (overlapping intervals) at 1.5x
+  cost, plus deployment over 152,421 queries with 17.8% over-escalation and no
+  reported rise in missed emergencies.
+stance_on_existing: supports
+related_claim_id: many-failures-come-from-not-following-domain-policy
+stance_reason: The baseline's errors came from the model reasoning from its
+  own training-shaped priors because the clinical decision policy was never
+  given to it.
+falsifier: An ablation on comparable triage data where supplying the explicit
+  rule set inside the prompt gives little or no gain over a flat danger-sign
+  list, while moving the decision into a deterministic engine produces the
+  bulk of the accuracy improvement.
+evidence_note: Measured on one organisation's 427-query test set (147
+  emergencies), single LLM, labels from in-house clinicians with 83% raw
+  agreement. Run-to-run variance checked on validation and small relative to
+  architecture differences. The rules-vs-engine comparison has overlapping
+  confidence intervals, so it shows no measurable difference rather than
+  equivalence. Single site, own protocol, no external replication.
+confidence: medium

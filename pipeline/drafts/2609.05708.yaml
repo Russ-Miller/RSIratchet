@@ -1,0 +1,52 @@
+arxiv_id: "2609.05708"
+title: "CUSP: Decomposable Collective Uncertainty for Multi-Agent Multimodal
+  Reasoning"
+url: https://doi.org/10.48550/arxiv.2609.05708
+drafted_at: 2026-09-28
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: abstention-and-self-knowledge
+statement: For ensembles of heterogeneous VLMs answering multimodal
+  multiple-choice questions, the entropy of a uniformly pooled distribution
+  over semantic-equivalence classes of sampled responses ranks wrong answers
+  above right ones better than majority-vote entropy or picking the single
+  lowest-entropy model, and the advantage grows with ensemble size; the same
+  signal measured at the subagent evidence layer of a multi-step multi-agent
+  system only ranks system failures slightly above chance.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Training-free, no logits needed; 400 ScienceQA and 200
+  MMMU-Pro samples; 10 samples per model at temperature 1.0; three-model
+  ensembles drawn from 8 small open, 6 large open, 6 commercial models;
+  trajectory result on 100 ScienceQA examples with three small VLM subagents
+  and one orchestrator.
+technique: ""
+proposed_technique: Pool semantic opinions across models, then split entropy
+  into dispersion and conflict
+technique_summary: Cluster sampled free-form responses from several VLMs into
+  semantic-equivalence classes, average each model's class distribution
+  uniformly, and report the pooled entropy as collective uncertainty plus
+  Jensen-Shannon divergence as model conflict, which sum exactly to the
+  unnormalized pooled entropy.
+technique_kind: decoding
+technique_validated_by: "AUROC for prediction-error detection and AUARC for
+  abstention against majority voting, naive lowest-entropy selection, and mean
+  single-VLM reference: collective uncertainty 0.764 AUROC / 0.889 AUARC in
+  the small regime (4.7-15.8 points over baselines), 0.906/0.987 large, JSD
+  best in commercial at 0.819/0.910; pooled prediction accuracy up 13.0, 5.6,
+  8.7 points over the average single VLM; trajectory-level 0.619 AUROC / 0.699
+  AUARC."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An evaluation where pooled semantic entropy over several VLMs ranks
+  errors no better than majority-vote entropy or the best single model's
+  semantic entropy, or where its AUROC advantage shrinks rather than grows as
+  models are added.
+evidence_note: Measured on two multimodal benchmarks with combination-level
+  means over 56/20/20 three-model systems plus larger subsets for accuracy.
+  Baselines are other aggregation rules, not a stronger single model, and the
+  commercial pool is six models, so regime claims are not population
+  estimates. The trajectory result rests on 100 examples and 37 failures.
+confidence: medium

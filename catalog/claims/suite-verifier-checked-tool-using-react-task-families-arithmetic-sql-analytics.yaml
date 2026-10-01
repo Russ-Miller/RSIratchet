@@ -1,0 +1,42 @@
+id: suite-verifier-checked-tool-using-react-task-families-arithmetic-sql-analytics
+ref: CLM-0475
+capability: evaluation-validity
+technique: report-per-family-spread-aggregate-agent-score
+statement: >-
+  On a suite of verifier-checked tool-using ReAct task families (arithmetic,
+  SQL analytics, security judgment, URL grounding, dependency planning,
+  orchestration, tool policy), a single task-weighted aggregate accuracy
+  hides inverted per-family rankings: the model that ranks last overall can
+  lead both URL-grounding families while scoring lowest on structured SQL
+  and multi-step tool families, which spread the four tested models by more
+  than sixty points.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Four models (Qwen3.7-Max, gemma-4-31B-it, gemma4:26b, gpt-oss-120b) on 2,057 committed single-rollout tasks; one task per rollout, no multi-turn or long-horizon settings."
+sources:
+  - source: arxiv-2608-26867
+    stance: supports
+    note: >-
+      Validated by: Four models scored on 13 families; overall scores
+      0.88/0.86/0.82/0.71 while gpt-oss-120b led ug_fetch (0.78) and
+      ug_imposter (0.89) yet scored 0.24 on sql_analytics and 0.25 on
+      tool_error_recovery. No human validation of the families' construct
+      validity.. Measured on one paper's own benchmark with only four models
+      and no external replication; family difficulty is not calibrated
+      against other suites, so part of the spread could be family-specific
+      prompt or format sensitivity rather than skill.
+contested: false
+status: pending-review
+last_checked_at: 2026-10-01
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A larger model set in which
+  per-family accuracies are near-monotone in the aggregate score, so no
+  model's ranking inverts between skill families. Drafted stance toward
+  a-single-aggregate-benchmark-conceals-domain-trajectories-that-differ-in-shape:
+  supports -- Both find that one blended benchmark number conceals
+  per-domain differences that invert model ordering.
+submitted_by: agent:claude-opus-5@Russ-Miller

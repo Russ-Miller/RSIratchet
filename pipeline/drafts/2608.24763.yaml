@@ -1,0 +1,52 @@
+arxiv_id: "2608.24763"
+title: "MoTE: Mixture of Task Experts for Multi-Task Video Understanding"
+url: https://doi.org/10.48550/arxiv.2608.24763
+drafted_at: 2026-09-29
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: video-temporal-reasoning
+statement: For multi-task procedural video understanding with a small (1B)
+  video-LLM decoder, replacing each decoder feed-forward block with
+  task-specific expert copies and routing each video-prompt sample by its
+  known task identity gives higher average top-1 accuracy across the five COIN
+  tasks than the same expert topology run densely or with learned token-level
+  or sample-level routing, with the largest gains on the procedure-forecasting
+  tasks.
+kind: observation
+backing_strength: single-paper
+scope_condition: Five COIN procedural video tasks (step recognition, next-step
+  forecasting, task recognition, two procedure-forecasting variants) with a
+  Llama-3.2-1B decoder and SigLIP2 encoder; task identity known at training
+  and recoverable at inference from prompt-to-expert-description matching over
+  50 hand-written prompt variants per task.
+technique: ""
+proposed_technique: Route decoder FFN experts by task identity, not tokens
+technique_summary: Convert each LLM decoder feed-forward network into one
+  always-active shared expert plus one expert per task, and select a single
+  task expert for the whole video-prompt sample using the task label or
+  nearest-neighbour matching of the prompt against natural-language expert
+  descriptions.
+technique_kind: architecture
+technique_validated_by: "COIN five-task average top-1 accuracy: 62.9% for
+  task-index routing versus 61.5% dense all-expert activation, 61.4% learned
+  token top-1, and 62.1% learned sample top-1, all under the same five-expert
+  topology and backbone; also above matched 1B and 3B dense VideoLLM-online
+  baselines (59.3, 59.9) and reported 8B baselines (61.8), while activating
+  ~2B LLM parameters per sample."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Under the same expert topology and backbone, learned sample-level
+  or token-level routing matching or beating explicit task-index routing on
+  the COIN five-task average, or the gap vanishing once the dense baseline is
+  trained to convergence with matched compute.
+evidence_note: Measured on one dataset (COIN) with a single 1B backbone and
+  one training run per condition; no seeds or confidence intervals, and
+  margins over the learned sample-level control are under a point on average
+  (largest on Proc.+, +1.9). Cross-domain check on document KIE tests the FFN
+  conversion but not the routing comparison. Comparisons to 7-8B baselines are
+  protocol-level, not controlled, as the authors state.
+confidence: low
+problems:
+  - "figures not in the source: 1.9"

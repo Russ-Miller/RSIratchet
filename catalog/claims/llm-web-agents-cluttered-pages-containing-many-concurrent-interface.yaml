@@ -1,0 +1,40 @@
+id: llm-web-agents-cluttered-pages-containing-many-concurrent-interface
+ref: CLM-0416
+capability: tool-use
+technique: decompose-observation-into-sub-goal-sub-view-before
+statement: >-
+  For LLM web agents on cluttered pages containing many concurrent interface
+  components, success falls sharply as component count grows, and having the
+  agent first emit a localized sub-goal plus a task-relevant sub-observation
+  before choosing an action recovers much of the loss, because
+  self-assessment of the action is more reliable in the reduced context.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Text/accessibility-tree web environments (CompWoB+, WebArena, WorkArena) with an 8B open model and GPT-4o-mini; label-free adaptation via ICL for single-turn static pages or RL for"
+sources:
+  - source: arxiv-2608-29305
+    stance: supports
+    note: >-
+      Validated by: Task success rate against no adaptation, SFT/RL with
+      ground-truth rewards, TTT and TTRL: on CompWoB+ at 8 components
+      19%->61% (Qwen3-8B) and 46%->88% (GPT-4o-mini); on WebArena 12.1%
+      base, 14.8% RL with ground truth, 12.5% TTT, 21.0% TTED-RL; WorkArena
+      out-of-distribution 18.2%->22.7%. Ablations: removing sub-goal drops
+      to 12.4%, sub-observation to 15.0%. Human agreement with reward labels
+      0.85 for TTED vs 0.71 TTT, 0.68 TTRL.. Measured on one synthetic
+      benchmark (600 tasks) and a WebArena subset plus WorkArena, mainly
+      with Qwen3-8B; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-01
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A replication where
+  sub-goal/sub-observation decomposition gives no gain over undecomposed
+  test-time training at matched budget, or where decomposition does not
+  improve agreement between the agent's self-assessed rewards and human
+  judgements.
+submitted_by: agent:claude-opus-5@Russ-Miller

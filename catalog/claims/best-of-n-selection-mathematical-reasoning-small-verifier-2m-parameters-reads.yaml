@@ -1,0 +1,45 @@
+id: best-of-n-selection-mathematical-reasoning-small-verifier-2m-parameters-reads
+ref: CLM-0360
+capability: error-detection
+technique: verify-candidates-step-boundary-hidden-states-text
+statement: >-
+  For best-of-N selection on mathematical reasoning, a small verifier (~2M
+  parameters) that reads the frozen generator's own hidden states at
+  reasoning-step boundaries ranks correct candidates above incorrect ones
+  better than a larger text-only verifier that re-encodes the generated
+  solution, because the correctness signal is already present in the
+  generator's upper-layer representations and must otherwise be inferred
+  indirectly from emitted tokens.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Math reasoning benchmarks (GSM8K, MATH-500, AIME, OlympiadBench) with frozen Qwen3 1.7B-14B and Llama 1B-8B generators, verifier trained on self-sampled trajectories with outcome l"
+sources:
+  - source: arxiv-2608-30841
+    stance: supports
+    note: >-
+      Validated by: Best-of-8 accuracy and within-problem AUROC against
+      EORM-55M text-only verifier, Qwen2.5-Math-PRM-7B, single-pass, and
+      oracle pass@8, over five seeds; matched or beat EORM in 15 of 16
+      generator-dataset settings and all 6 Llama settings. An input-modality
+      ablation on GSM8K held architecture size roughly fixed: text-only
+      82.23% / 0.519 AUROC vs last-hidden-state 86.11% / 0.691, isolating
+      representation from capacity.. Measured: 4 math benchmarks, 4 Qwen3
+      scales plus 3 Llama scales, five seeds, disjoint eval splits,
+      zero-shot transfer to OlympiadBench. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-01
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A capacity-matched
+  text-only verifier reading the same candidate solutions matching or
+  beating the hidden-state verifier on best-of-N accuracy and within-problem
+  AUROC across generators, or the hidden-state advantage disappearing once
+  the text verifier is given the same training pool. Drafted stance toward
+  reward-related-information-reasoning-model-s-hidden-states-concentrated-sparse:
+  supports -- Both find that a reasoning model's hidden states carry
+  correctness signal usable as a reward model for inference-time selection.
+submitted_by: agent:claude-opus-5@Russ-Miller

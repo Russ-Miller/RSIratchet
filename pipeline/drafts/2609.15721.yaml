@@ -1,0 +1,48 @@
+arxiv_id: "2609.15721"
+title: "Assembling the CREW: A Collaborative Multi-agent Reinforcement
+  Learning Framework for Automated Related Work Generation"
+url: https://arxiv.org/abs/2609.15721
+drafted_at: 2026-09-23
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: "In multi-agent literature-synthesis pipelines, most of the gain
+  over a fixed role-based pipeline comes from the shared-workspace
+  architecture and the added critique/dissemination actions rather than from
+  learning the coordination policy: on OARelatedWork, a learned decentralized
+  RL controller scored 3.82 overall versus 3.80 for a centralized LLM
+  coordinator given the same workspace and action space, while a naive
+  orchestrator without that architecture scored 3.40."
+kind: observation
+backing_strength: single-paper
+scope_condition: Related-work generation from a fixed candidate reference
+  pool, Qwen 2.5 72B agents, LLM-as-judge 1-5 scores averaged over three
+  judges; the RL policy's separate advantages are lower inference time and
+  resilience to coordinator failure.
+technique: ""
+proposed_technique: Learn agent action selection instead of scripting a pipeline
+technique_summary: Each LLM agent reads a 20-dimensional summary of its
+  private notes, shared knowledge, draft and feedback and picks Retrieve,
+  Disseminate, Compose or Critique under a shared IPPO policy, instead of
+  being assigned a fixed pipeline role.
+technique_kind: process
+technique_validated_by: LLM-as-judge quality, citation verification rate,
+  tokens and inference time on OARelatedWork (366 eval papers) against SRW, a
+  centralized orchestrator with the same architecture, a naive orchestrator,
+  GPT-4o long-context/RAG and PRIMERA; plus transfer to other backbones and to
+  Multi-News.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation that keeps the shared workspace and four-action space
+  but replaces the learned policy with round-robin or random action selection
+  and loses a large share of the quality gain would show the policy, not the
+  architecture, carries the effect.
+evidence_note: Measured on one benchmark with one agent count for the main
+  table; the comparison is clean because the orchestrator baseline was built
+  to inherit CREW's architecture, but the 0.02-point margin is within judge
+  noise and no variance is reported. Ablations removing the critique action
+  (-1.24 overall) and social-activity observation support the architectural
+  attribution.
+confidence: medium
