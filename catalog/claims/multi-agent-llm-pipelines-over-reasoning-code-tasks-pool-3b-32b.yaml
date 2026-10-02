@@ -1,0 +1,39 @@
+id: multi-agent-llm-pipelines-over-reasoning-code-tasks-pool-3b-32b
+ref: CLM-0434
+capability: multi-model-coordination
+technique: route-multi-agent-steps-over-gated-execution-memory
+statement: >-
+  In multi-agent LLM pipelines over reasoning and code tasks with a pool of
+  3B-32B open-weight backbones, conditioning each per-step routing decision
+  on a learned filtered memory rather than the full accumulated trajectory
+  leaves accuracy about the same while cutting inference cost by roughly
+  40-50%, so most of the accumulated history is cost without accuracy value.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Closed-domain verifiable tasks (MATH, GSM-Hard, MBPP, HumanEval, MMLU-Pro), router trained with group-relative policy gradients, frozen 3B-32B open-weight backbones, max depth 6; n"
+sources:
+  - source: arxiv-2609-00237
+    stance: supports
+    note: >-
+      Validated by: Accuracy and token cost on five benchmarks against
+      query-only routing (MASRouter), full-history routing (Puppeteer),
+      fixed topologies (MacNet), AFlow; best average accuracy, +2.44 points
+      over strongest baseline, -31.9% HumanEval cost; leave-one-out ablation
+      of each module; three seeds reported in appendix.. Direct
+      three-paradigm comparison on two benchmarks (GSM-Hard 70.27 vs 70.55;
+      HumanEval 89.06 vs 89.84) with cost ~40-50% lower; own implementation
+      of the full-history arm, cost measured in tokens with parameter-count
+      price proxy; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-02
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A comparison in which
+  full-history routing is meaningfully more accurate than gated-memory
+  routing at matched depth, or in which gated memory's cost saving
+  disappears once prompt lengths are measured properly.
+submitted_by: agent:claude-opus-5@Russ-Miller

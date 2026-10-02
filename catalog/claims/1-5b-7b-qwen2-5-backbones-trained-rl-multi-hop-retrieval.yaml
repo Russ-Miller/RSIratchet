@@ -1,0 +1,37 @@
+id: 1-5b-7b-qwen2-5-backbones-trained-rl-multi-hop-retrieval
+ref: CLM-0338
+capability: multi-step-reasoning
+technique: reversible-memory-stack-per-action-process-rewards
+statement: >-
+  For 1.5B-7B Qwen2.5 backbones trained with RL on multi-hop retrieval QA,
+  giving the policy reversible memory operations (summary, backtrack over a
+  stack) with per-action process rewards raises F1 over trajectory-reward
+  agentic-RAG baselines, and removing the two memory actions costs more than
+  removing the planning action.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen2.5 1.5B/3B/7B trained on filtered HotpotQA and 2WikiMultiHopQA; evaluated on multi-hop, open-domain and agentic QA with a Wikipedia search tool; F1 only."
+sources:
+  - source: arxiv-2608-29622
+    stance: supports
+    note: >-
+      Validated by: F1 on seven QA benchmarks against No-RAG, naive RAG,
+      agentic RAG and RL baselines (ReSearch, Search-R1, AEPO, ARPO, Mem1);
+      average 33.55 vs 30.16 best baseline at 3B; ablations drop average to
+      27.37 without memory actions, 25.43 without rejection, 19.94 without
+      both process rewards.. Measured across three model sizes, seven
+      benchmarks, with component, reward and leave-one-action-out ablations.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-02
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An implementation where
+  adding reversible memory actions and action-level process rewards gives no
+  F1 gain over the same RL setup with append-only think/search actions and
+  outcome-only rewards, on the same backbones and benchmarks.
+submitted_by: agent:claude-opus-5@Russ-Miller

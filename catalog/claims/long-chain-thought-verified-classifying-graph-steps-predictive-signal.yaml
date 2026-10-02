@@ -1,0 +1,38 @@
+id: long-chain-thought-verified-classifying-graph-steps-predictive-signal
+ref: CLM-0417
+capability: multi-step-reasoning
+technique: build-reasoning-graph-local-nli-model-then-classify
+statement: >-
+  When a long chain of thought is verified by classifying a graph of its
+  steps, the predictive signal comes almost entirely from the semantic
+  content of the steps, not the graph shape: replacing step embeddings with
+  purely structural metadata (child/parent counts, chain index, position)
+  drops accuracy to near chance on math, science and multiple-choice
+  reasoning, while remaining above chance only on code.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "8,000 long chains of thought from three open reasoning models (DeepSeek-R1 distills, QwQ-32B) over MATH, GPQA, LiveCodeBench-v5 and MMLU-Pro; correctness of the final answer is the"
+sources:
+  - source: arxiv-2608-30679
+    stance: supports
+    note: >-
+      Validated by: Accuracy averaged over five runs against LCoT2Tree and a
+      length-based classifier on four benchmarks: average 77.03 for the
+      proposed method vs 74.68 for LCoT2Tree, with gains on LiveCodeBench
+      and GPQA and losses on MATH and MMLU-Pro.. Measured ablation:
+      metadata-only features scored roughly 53 average vs 75-78 for
+      embedding features across three generating models, with LiveCodeBench
+      the exception (66-70). Single paper, one graph-construction pipeline,
+      chain-level rather than step-level labels; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-02
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A structure-only feature
+  set (no step text embeddings) reaching accuracy close to the
+  embedding-based verifier on these same chain-correctness datasets.
+submitted_by: agent:claude-opus-5@Russ-Miller

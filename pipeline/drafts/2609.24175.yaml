@@ -1,0 +1,46 @@
+arxiv_id: "2609.24175"
+title: "FinRankGRPO: Optimizing LLMs for Listwise Financial Asset Ranking via
+  Group Relative Policy Optimization"
+url: https://doi.org/10.48550/arxiv.2609.24175
+drafted_at: 2026-09-26
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: forecasting
+statement: When post-training a small LLM (Qwen2.5 0.5B-3B) to produce weekly
+  asset-return forecasts from news, rewarding rank correlation of a full
+  listwise asset ordering gives a dense learning signal where exact-match GRPO
+  gives almost none (all sampled actions scoring zero on ~35% of steps), and
+  yields higher Spearman correlation and backtest Sharpe than the SFT
+  checkpoint, standard GRPO, and prompted commercial models.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: 15 liquid ETFs, weekly horizon, 2010-2019 train / 2020-2025
+  test, Qwen2.5 base and instruct up to 3B; absolute rank correlations are
+  tiny (~0.02) and evaluation may be contaminated by pretraining exposure to
+  the test period.
+technique: ""
+proposed_technique: Reward listwise rank correlation, not exact numeric forecasts
+technique_summary: Train the model with GRPO using a Spearman rank-correlation
+  reward between its generated asset ordering and realized future returns,
+  with a fixed penalty for malformed or hallucinated asset lists, then feed
+  the ranking into Entropy Pooling as relative-view constraints.
+technique_kind: training
+technique_validated_by: Compared against equal weight, mean-variance,
+  momentum, three commercial LLMs, and same-checkpoint
+  SFT/standard-GRPO/NDCG@3/Kendall reward variants on Spearman, Kendall,
+  NDCG@k, annualized return, Sharpe (0.636 best), and max drawdown, averaged
+  over 5 trials; plus news-removal ablation (Sharpe 0.636 to 0.045) and a
+  sentiment-inversion faithfulness check.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A replication on a different asset universe or period where
+  rank-correlation-reward training gives no Sharpe or Spearman gain over the
+  SFT checkpoint, or where exact-match/numeric-target GRPO matches it.
+evidence_note: Single paper, one asset universe, one 2020-2025 test window of
+  314 weekly samples. Reward-metric ablation from the same SFT checkpoint
+  isolates the reward design. Absolute ranking signal is near zero (0.023
+  Spearman), so portfolio gains rest on thin margins, and the authors concede
+  possible lookahead contamination.
+confidence: low

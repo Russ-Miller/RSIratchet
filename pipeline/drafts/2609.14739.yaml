@@ -1,0 +1,45 @@
+arxiv_id: "2609.14739"
+title: Building Legal Reward Models for Grounding and Abstention
+url: https://doi.org/10.48550/arxiv.2609.14739
+drafted_at: 2026-09-28
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: critique
+statement: When reward models are scored by sequence log-probability on
+  contextual preference pairs, abstentions are systematically shorter than the
+  unsupported answers they are preferred over, so measured
+  grounding/abstention judgement partly tracks response length; rewriting
+  rejected and refusal responses to match the preferred ones in length while
+  keeping the grounding failure raises pairwise accuracy far more than adding
+  more in-domain legal preference data (up to +25.6 points over baseline for
+  Ministral-8B).
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Pairwise contextual reward models (0.5B-27B open-weight)
+  refined with DPO and scored by (length-normalised) sequence log-probability
+  on legal RAG preference pairs built from Victorian criminal law plus a
+  general contextual benchmark; judgement labels come from LLM judges, not
+  legal experts.
+technique: ""
+proposed_technique: Length-balance rejected responses in preference data
+technique_summary: Rewrite refusal and rejected responses to match the length
+  and structure of the preferred grounded answer while preserving the
+  underlying grounding failure, so preference learning cannot key on length.
+technique_kind: training
+technique_validated_by: "Pairwise accuracy on LegalRewardBench: Ministral-8B
+  59.3 baseline, 67.6 with CJB-only DPO, 66.0 with CJB+original legal pairs,
+  81.8 with length-augmented legal pairs, 84.9 with CJB+length-augmented; same
+  ordering for Gemma 2-2B."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Length-balanced augmentation giving no gain over the unaugmented
+  legal pairs under a length-normalised scoring function, or the gain
+  persisting when response lengths in the original pairs are already matched.
+evidence_note: Measured on 156 test preference pairs of one benchmark, two
+  fine-tuned models for the main table; the augmentation is confounded with
+  rewriting (a rewrite may change more than length), and no ablation separates
+  length from other rewrite effects. All labels are LLM-judge derived (91.7%
+  pair-direction agreement across four judges).
+confidence: medium

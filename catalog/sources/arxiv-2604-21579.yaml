@@ -1,20 +1,55 @@
 id: arxiv-2604-21579
 ref: SRC-0352
 kind: paper
-title: "A Metamorphic Testing Approach to Diagnosing Memorization in LLM-Based Program Repair"
+title: A Metamorphic Testing Approach to Diagnosing Memorization in LLM-Based
+  Program Repair
 year: 2026
 date: 2026-04-23
 arxiv_id: "2604.21579"
 url: https://arxiv.org/abs/2604.21579
-tags: [ingested]
-summary: >-
-  LLM-based automated program repair (APR) techniques have shown promising
-  results in reducing debugging costs. However, prior results can be
+tags:
+  - ingested
+summary: "LLM-based automated program repair (APR) techniques have shown
+  promising results in reducing debugging costs. However, prior results can be
   affected by data leakage: large language models (LLMs) may memorize bug
   fixes when evaluation benchmarks overlap with their pretraining data,
   leading to inflated performance estimates. In this paper, we investigate
   whether we can better reveal data leakage by combining metamorphic testing
   (MT) with negative log-likelihood (NLL), which has been used in prior work
   as a proxy for memorization. We construct variant benchmarks by applying
-  semantics-preserving t
+  semantics-preserving t"
 ingested_at: 2026-09-19
+brief: >-
+  Rewriting buggy Java code in semantics-preserving ways drops LLM repair
+  success rates, and the drop is largest exactly on the code the model finds
+  most familiar, which points at memorization rather than reasoning.
+
+
+  CodeCocoon applies 9 natural transformations (identifier renaming via
+  synonyms, for-to-while, nested else-if, operand swaps, unary expansion) to
+  Defects4J (854 bugs) and GitBug-Java (199 bugs, 44 excluded). 7 models
+  (Claude-3.7-Sonnet, GPT-4o, GPT-4o-mini, Llama 3.1 8B, Gemma 2 27B, Mistral
+  7B v0.3, StarCoder2 7B) were prompted 10 times per bug with
+  Chain-of-Thought, function-level fault localization, and test-suite
+  validation.
+
+
+  On Defects4J all 7 models dropped significantly (p < 0.001): -4.01% for
+  GPT-4o up to -15.98% for Llama-3.1, with worst cases of -100.00% (Claude-3.7
+  on Jsoup-15). Easy bugs suffered most. GitBug-Java showed no consistent drop
+  (Claude-3.7 +0.27%, p = 0.819), though individual bugs fell from 100% to
+  30%. For the 4 open models, Spearman correlation between NLL and
+  success-rate drop was r = 0.303 (Gemma-2), 0.218 (Mistral), 0.165 (Llama),
+  0.401 for StarCoder2 (p = 0.0798).
+
+
+  The drop is measured against paired original bugs; the leakage attribution
+  is correlational, uses NLL values partly borrowed from prior work, and
+  cannot cover proprietary models. Patch validity is test-suite pass, not
+  manual correctness. Java and APR only.
+
+
+  If you report Defects4J numbers, report transformed variants too.
+brief_generated_at: 2026-10-02
+brief_model: claude-opus-5
+brief_source: full-text

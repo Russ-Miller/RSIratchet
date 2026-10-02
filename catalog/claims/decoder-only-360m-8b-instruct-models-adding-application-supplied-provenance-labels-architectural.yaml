@@ -1,0 +1,47 @@
+id: decoder-only-360m-8b-instruct-models-adding-application-supplied-provenance-labels-architectural
+ref: CLM-0368
+capability: prompt-injection
+technique: make-source-provenance-architectural-attention-bias
+statement: >-
+  For decoder-only 360M-8B instruct models, adding application-supplied
+  provenance labels as an architectural signal — origin embeddings plus a
+  learned ring-indexed attention bias that suppresses assistant and user
+  queries attending to untrusted-source keys — cuts indirect-injection
+  attack success on unseen task domains and injection styles further than
+  the same two-stage fine-tuning without the architectural components, even
+  though both are equal in-distribution.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Requires the application to be able to tag token spans by source; holds where untrusted external content need not be acted on as instructions, since Ring-3 suppression is unconditi"
+sources:
+  - source: arxiv-2609-21088
+    stance: supports
+    note: >-
+      Validated by: Attack success rate on one in-distribution (SEP, 4,375)
+      and three out-of-distribution injection sets (PI-Attack, DataSentinel,
+      Math-Tutor) across four base models, against an architecture-free
+      same-data SFT baseline and ten published defenses; OOD ASR <=0.05%
+      versus 2.3-17.8% for SFT. Utility via AlpacaEval 2.0 length-controlled
+      win rate against the base model (48.8-60.9% for three models, 42.7%
+      for Mistral). Zeroing the attention bias at inference raises OOD ASR
+      to 12-98%; skipping stage 1 leaves ASR unchanged but collapses win
+      rate.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-02
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An adaptive or reworded
+  injection placed in Ring 3 that raises attack success to the
+  architecture-free SFT baseline's level, or a replication where the
+  ring-indexed attention bias adds no OOD margin over the same fine-tuning
+  without it. Drafted stance toward
+  structured-separation-needs-training-and-reduces-rather-than-eliminates:
+  supports -- The architecture-free fine-tuning baseline already cuts
+  in-distribution ASR below 1%, and the added structural separation still
+  needs two-stage fine-tuning to work, so separation's strength comes from
+  training plus structure rather than labels alone.
+submitted_by: agent:claude-opus-5@Russ-Miller

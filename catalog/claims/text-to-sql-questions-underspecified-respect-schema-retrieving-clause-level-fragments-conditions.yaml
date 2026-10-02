@@ -1,0 +1,43 @@
+id: text-to-sql-questions-underspecified-respect-schema-retrieving-clause-level-fragments-conditions
+ref: CLM-0477
+capability: formal-query-synthesis
+technique: retrieve-clause-level-knowledge-database-s-sql-query
+statement: >-
+  On text-to-SQL questions that are underspecified with respect to the
+  schema, retrieving clause-level fragments (conditions, joins,
+  calculations, groupings, output specs) from a database's own past
+  successful SQL queries and prepending them to existing few-shot pipelines
+  raises execution accuracy across four different pipelines, but the gain
+  saturates and can reverse once too many candidates are retrieved, because
+  high recall with low precision lets the generator pick a
+  plausible-but-wrong pattern.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Questions whose missing knowledge (join paths, value conventions, formulas) is recoverable from a per-database pool of clean, successful historical queries; retrieval restricted to"
+sources:
+  - source: arxiv-2608-29345
+    stance: supports
+    note: >-
+      Validated by: Execution accuracy on BIRD-History (1,393 tasks, 11
+      databases) against each pipeline's own retriever: DAIL-SQL 40.78 to
+      51.33, OpenSearch-SQL 59.15 to 60.95, N-rep 54.49 to 57.79, CodeS-7B
+      12.92 to 18.95; retrieval F1 49.77 vs 28.69-34.88 for baseline
+      retrievers; shot-count sweep shows EX peaking at 4 shots (61.31) with
+      precision falling from 57.95 to 35.53 as recall rises to 83.07..
+      Measured on one LLM-generated, human-validated benchmark built from
+      BIRD dev queries as the history pool, with four pipelines and
+      ablations on shots and similarity threshold. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-02
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Showing that on a
+  comparable history-grounded benchmark, clause-level log retrieval gives no
+  execution-accuracy gain over the pipelines' own question-similarity
+  retrievers, or that accuracy keeps rising monotonically with
+  retrieved-fragment count so the precision penalty does not exist.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,40 @@
+id: 8b-14b-generative-reward-models-trained-judges-making-model-generate
+ref: CLM-0346
+capability: critique
+technique: reward-judge-s-self-generated-rubric-scored-teacher
+statement: >-
+  For 8B-14B generative reward models trained as judges, making the model
+  generate input-adaptive evaluation criteria inside its own reasoning chain
+  and rewarding the quality of those criteria with a stronger teacher model
+  raises agreement with preference labels, and the gain scales with the
+  teacher's capability rather than with the presence of the rubric step
+  alone.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen3-8B/14B backbones, SFT on distilled judge traces then GRPO, evaluated on RewardBench, M-RewardBench, MM-Eval, JudgeBench and RewardBench v2"
+sources:
+  - source: arxiv-2609-05910
+    stance: supports
+    note: >-
+      Validated by: Pairwise accuracy on RewardBench, MM-Eval and JudgeBench
+      against the untrained Qwen3-8B backbone (overall 0.809) and against
+      ablations: dropping the rubric reward gives 0.854 and the full model
+      0.863; swapping the rubric-scoring teacher from Qwen3-32B to
+      Qwen3-Flash to Qwen3-Max moves overall from 0.840 to 0.849 to 0.863..
+      Measured on four pairwise benchmarks plus one listwise, with
+      reward-component and teacher-capability ablations on the 8B model
+      only. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-02
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An equally trained judge
+  whose self-generated rubrics are rewarded by a weak teacher, or not
+  rewarded at all, matching the strong-teacher version's accuracy on the
+  same benchmarks; or the rubric segment adding nothing over a plain
+  reasoning chain of similar length.
+submitted_by: agent:claude-opus-5@Russ-Miller

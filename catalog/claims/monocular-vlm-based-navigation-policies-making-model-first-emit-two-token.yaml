@@ -1,0 +1,40 @@
+id: monocular-vlm-based-navigation-policies-making-model-first-emit-two-token
+ref: CLM-0432
+capability: embodied-control
+technique: point-first-then-emit-quantized-trajectory-tokens
+statement: >-
+  For monocular VLM-based navigation policies, making the model first emit a
+  two-token pointing prefix (one affordance point for free space, one object
+  point for the goal) on an image-plane grid and then three residual
+  vector-quantized action tokens decoded to 10 SE(2) waypoints lets one
+  compact 4B backbone handle instruction following, object-goal search and
+  target tracking without task-specific action heads or task identifier
+  tokens.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Monocular RGB navigation with a pretrained VLM backbone (Qwen3-VL-4B), staged embodied-reasoning mid-training, SFT with DAgger and GRPO post-training; simulation benchmarks plus qu"
+sources:
+  - source: arxiv-2608-30935
+    stance: supports
+    note: >-
+      Validated by: Reported state-of-the-art monocular success rates across
+      10 public navigation simulation settings (R2R/RxR val-unseen, MP3D and
+      HM3D v1/v2 ObjectNav, HM3D-OVON, EVT-Bench STT/DT) with one checkpoint
+      and no benchmark-specific fine-tuning; the tokenizer's 0.72 cm average
+      displacement error versus 2.48 cm for a single-level 4096-entry
+      planning vocabulary; embodied-reasoning checkpoint scored on 8 spatial
+      benchmarks. No ablation isolating the pointing prefix is shown in the
+      given text.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-02
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An ablation removing the
+  pointing prefix (action tokens only) matching or beating the full model on
+  the same navigation settings, or the unified single-backbone model failing
+  to match task-specific policies on any of the three task families.
+submitted_by: agent:claude-opus-5@Russ-Miller
