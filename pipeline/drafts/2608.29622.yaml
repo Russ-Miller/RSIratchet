@@ -1,0 +1,46 @@
+arxiv_id: "2608.29622"
+title: "AgenticRag-R1: Agentic Reinforcement Learning with Stack Memory for
+  Multi-Step Reasoning, Retrieval and Memorizing"
+url: https://doi.org/10.48550/arxiv.2608.29622
+drafted_at: 2026-09-29
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-step-reasoning
+statement: For 1.5B-7B Qwen2.5 backbones trained with RL on multi-hop
+  retrieval QA, giving the policy reversible memory operations (summary,
+  backtrack over a stack) with per-action process rewards raises F1 over
+  trajectory-reward agentic-RAG baselines, and removing the two memory actions
+  costs more than removing the planning action.
+kind: observation
+backing_strength: single-paper
+scope_condition: Qwen2.5 1.5B/3B/7B trained on filtered HotpotQA and
+  2WikiMultiHopQA; evaluated on multi-hop, open-domain and agentic QA with a
+  Wikipedia search tool; F1 only.
+technique: ""
+proposed_technique: Reversible memory stack with per-action process rewards
+technique_summary: Gives an RL-trained retrieval agent a LIFO memory stack
+  with push/pop actions (plan, think, search, summary, backtrack, conclusion)
+  and assigns format, retrieval-relevance and memory-usefulness rewards to the
+  tokens of each action, plus batch-level rejection of low-variance,
+  low-reward rollouts.
+technique_kind: training
+technique_validated_by: F1 on seven QA benchmarks against No-RAG, naive RAG,
+  agentic RAG and RL baselines (ReSearch, Search-R1, AEPO, ARPO, Mem1);
+  average 33.55 vs 30.16 best baseline at 3B; ablations drop average to 27.37
+  without memory actions, 25.43 without rejection, 19.94 without both process
+  rewards.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An implementation where adding reversible memory actions and
+  action-level process rewards gives no F1 gain over the same RL setup with
+  append-only think/search actions and outcome-only rewards, on the same
+  backbones and benchmarks.
+evidence_note: "Measured across three model sizes, seven benchmarks, with
+  component, reward and leave-one-action-out ablations. Gains are a few F1
+  points and not uniform: the 7B model loses 6.4 points on NQ, and on
+  Bamboogle under varying step budgets it falls well below baselines at 10 and
+  20 steps. No compute-matched baseline; the process rewards use a large
+  general reward model, so part of the gain may be distilled from that model."
+confidence: low

@@ -1,0 +1,38 @@
+id: full-duplex-speech-to-speech-model-emits-function-calls-dedicated-parallel-output
+ref: CLM-0387
+capability: tool-use
+technique: emit-tool-calls-parallel-function-token-stream
+statement: >-
+  In a full-duplex speech-to-speech model that emits function calls on a
+  dedicated parallel output stream, choosing the right tool from spoken,
+  disfluent user requests is far easier than filling its arguments:
+  tool-selection F1 reached 82.5% (above two closed realtime APIs) while
+  argument accuracy was 42.2% and end-to-end Pass@1 33.0%, below both.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "One open 9B-backbone speech-to-speech model evaluated on Full-Duplex-Bench 3.0 (real human speech, chained API calls); authors also report degradation beyond about five exposed too"
+sources:
+  - source: arxiv-2609-21967
+    stance: supports
+    note: >-
+      Validated by: Full-Duplex-Bench 3.0 tool-selection F1, argument
+      accuracy and Pass@1 against Gemini Live 2.5 and 3.1; full-duplex
+      behaviour checked on FDB 1.0/1.5 and VoiceBench, but no ablation
+      against a serialized single-channel variant.. Measured on one
+      benchmark with one model; baselines are two closed APIs whose numbers
+      come from the benchmark paper. No ablation isolating the
+      parallel-stream design from the backbone or training mixture, so the
+      architecture's contribution to the selection score is not established.
+contested: false
+status: pending-review
+last_checked_at: 2026-10-02
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A speech-to-speech model
+  on the same benchmark whose argument accuracy and Pass@1 match or exceed
+  its tool-selection F1, or closed APIs showing the same
+  selection-over-argument gap in reverse.
+submitted_by: agent:claude-opus-5@Russ-Miller

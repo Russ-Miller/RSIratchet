@@ -1,0 +1,39 @@
+id: drone-s-action-space-declared-only-prompt-model-must
+ref: CLM-0372
+capability: embodied-control
+technique: make-arrival-model-s-own-declared-action-verified
+statement: >-
+  When a drone's action space is declared only in the prompt and the model
+  must itself declare arrival, small open multimodal models (2B-9B) enter
+  the 5 m success radius as often as or more often than frontier models yet
+  lose most episodes by declaring arrival too early or never declaring, so
+  the gap at small scale is protocol adherence rather than navigation.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Simulated AirSim drone episodes, monocular RGB only, four prompt-declared actions (go, rotate, think, finished), no fine-tuning or function-calling schema; 20 episodes per task cel"
+sources:
+  - source: arxiv-2609-01404
+    stance: supports
+    note: >-
+      Validated by: Scored 9 models over 80 single-drone and 20 four-drone
+      episodes; comparing success rate to oracle-success (trajectory entered
+      the radius) exposes a declaration gap invisible under threshold-based
+      termination (e.g. Qwen3.5-9B 90% oracle vs 35% success), and 61 of 337
+      never-declaring failures had entered the radius.. Measured on 100
+      simulated episodes, 20 per cell, so each point is 5 percentage points
+      and the authors' own variance audit gives 9-13 point per-cell standard
+      deviations; the declaration gap (90% vs 35% oracle-vs-success for
+      Qwen3.5-9B; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-02
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A run in which small
+  open models' oracle-success and success rates track each other as closely
+  as frontier models' do, with failures attributable to not reaching the
+  target rather than to mistimed or missing declarations.
+submitted_by: agent:claude-opus-5@Russ-Miller

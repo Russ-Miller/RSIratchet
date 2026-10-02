@@ -1,0 +1,35 @@
+id: multi-session-dialogue-questions-whose-answers-depend-only-how-utterance
+ref: CLM-0439
+capability: audio-understanding
+statement: >-
+  On multi-session dialogue questions whose answers depend only on how an
+  utterance was delivered, a cascaded ASR-then-LLM pipeline (Whisper
+  large-v3 into a frontier model) scores below 7B audio-native models on the
+  same clips, and below even a transcript-only baseline, because the
+  transcription step drops delivery cues entirely and adds content errors.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Synthesized two-speaker evidence sessions (104 clips, TTS with acted-emotion reference conditioning), evidence-only context of roughly 10-15k tokens; only two 7B audio-native model"
+sources:
+  - source: arxiv-2609-00570
+    stance: supports
+    note: >-
+      Measured: Whisper->Opus 4.8 scored 0.254 vs Qwen2-Audio 0.354 and
+      Qwen2.5-Omni 0.412, with a blind text baseline at 0.325 and
+      descriptive text at 0.675; transcript analysis found no bracketed
+      voice events or fillers in any of the 104 transcripts. Cascade and
+      audio arms differ in model scale and in modality, so the comparison
+      does not isolate scale, and the audio is entirely TTS-generated.
+contested: false
+status: pending-review
+last_checked_at: 2026-10-02
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A cascade whose ASR
+  emits or annotates paralinguistic markers, or a frontier cascade that
+  matches or beats audio-native models on the same delivery-dependent items,
+  would show the loss is not architectural.
+submitted_by: agent:claude-opus-5@Russ-Miller
