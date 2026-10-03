@@ -1,0 +1,40 @@
+id: agentic-retrieval-augmented-multi-hop-qa-7b-class-policy-models-scoring-each
+ref: CLM-0359
+capability: multi-step-reasoning
+technique: score-reasoning-steps-grounding-final-answer-match
+statement: >-
+  For agentic retrieval-augmented multi-hop QA with 7B-class policy models,
+  scoring each intermediate step for both logical validity and grounding in
+  the retrieved passages — rather than scoring steps by the final answer —
+  yields higher EM/F1 than outcome-reward and final-answer-based
+  process-reward training, because it removes preference pairs where flawed
+  retrieval happened to reach the right answer.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Qwen2.5-7B-Instruct (plus Llama-3.1-8B, Qwen2.5-3B) policies, Wikipedia retrieval with k=3, five single- and multi-hop QA benchmarks; gains largest on 2WikiMultiHopQA and absent/ne"
+sources:
+  - source: arxiv-2609-01658
+    stance: supports
+    note: >-
+      Validated by: EM/F1 on PopQA, HotpotQA, 2WikiMultiHopQA, Bamboogle,
+      MuSiQue against Search-R1, ReasonRAG, StepSearch; best average (34.5
+      EM / 44.1 F1), ablation removing PRM scoring drops to 32.7/41.9;
+      Bamboogle gap not significant (p=0.66); reranking study shows
+      math/general PRMs degrade with larger N.. Measured on five QA
+      benchmarks with one main backbone plus three generalization backbones;
+      component ablation isolates the PRM's contribution (+1.8 EM average),
+      and a reranking experiment shows math/general PRMs fall below majority
+      voting as candidate pool grows. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-03
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A matched-data
+  comparison where preference pairs built from final-answer-derived step
+  scores match or beat grounding-aware step labels on multi-hop QA, or where
+  the PRM ablation shows no drop.
+submitted_by: agent:claude-opus-5@Russ-Miller

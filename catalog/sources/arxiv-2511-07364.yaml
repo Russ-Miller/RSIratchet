@@ -1,20 +1,56 @@
 id: arxiv-2511-07364
 ref: SRC-0333
 kind: paper
-title: "Self-Evaluating LLMs for Multi-Step Tasks: Stepwise Confidence Estimation for Failure Detection"
+title: "Self-Evaluating LLMs for Multi-Step Tasks: Stepwise Confidence
+  Estimation for Failure Detection"
 year: 2025
 date: 2025-11-10
 arxiv_id: "2511.07364"
 url: https://arxiv.org/abs/2511.07364
-tags: [ingested]
-summary: >-
-  Reliability and failure detection of large language models (LLMs) is
+tags:
+  - ingested
+summary: "Reliability and failure detection of large language models (LLMs) is
   critical for their deployment in high-stakes, multi-step reasoning tasks.
   Prior work explores confidence estimation for self-evaluating LLM-scorer
-  systems, with confidence scorers estimating the likelihood of errors in
-  LLM responses. However, most methods focus on single-step outputs and
-  overlook the challenges of multi-step reasoning. In this work, we extend
+  systems, with confidence scorers estimating the likelihood of errors in LLM
+  responses. However, most methods focus on single-step outputs and overlook
+  the challenges of multi-step reasoning. In this work, we extend
   self-evaluation techniques to multi-step tasks, testing two intuitive
-  approaches: holistic scoring and step-by-step scoring. Using two
-  multi-step benchmark datasets, we
+  approaches: holistic scoring and step-by-step scoring. Using two multi-step
+  benchmark datasets, we"
 ingested_at: 2026-09-19
+brief: >-
+  Scoring each step of a multi-step LLM trajectory separately, then flagging
+  the whole response on the worst step, detects failures better than scoring
+  the finished response as a whole. The gap is largest for conversational
+  tasks and unreliable for tool-assisted math.
+
+
+  A fine-tuned Llama-3.2-11B-Instruct agent was run on GSM8K (average 5.1
+  steps, with an expression-evaluator tool) and CoQA (average 13.5 steps), and
+  7 confidence estimators were applied at both granularities: self-verbalized
+  confidence, Llama-3.2-11B as judge, GPT-4.1-mini as judge, a regression
+  head, a preference reward model, self-certainty, and a hidden-activations
+  regressor.
+
+
+  On CoQA, step-level scoring beat response-level for every method:
+  self-certainty rose from AUC-ROC 0.523 to 0.849 (FPR@0.9 recall 0.95 to
+  0.374), and the regression model reached 0.952 AUC with FPR 0.169. On GSM8K
+  gains were inconsistent: GPT-4.1-mini fell 0.880 to 0.670 and self-certainty
+  dropped 40%, attributed to tool outputs distorting logits. Step-level
+  scoring also caught more of the 60/879 GSM8K cases with correct answers from
+  flawed reasoning (regression recall 0.60 vs 0.367).
+
+
+  Evidence is a measured within-method comparison at matched granularity, but
+  only 1 agent model family, 2 benchmarks, and 1 private clinical dataset
+  (AUC-ROC 0.940, FPR@0.9 rec 0.152); no external replication. Preference
+  reward models were weak throughout.
+
+
+  If you gate a multi-step agent on confidence, score steps, not transcripts,
+  unless tools intervene.
+brief_generated_at: 2026-10-03
+brief_model: claude-opus-5
+brief_source: full-text

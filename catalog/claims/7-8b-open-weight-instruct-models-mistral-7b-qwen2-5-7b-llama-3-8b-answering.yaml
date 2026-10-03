@@ -1,0 +1,44 @@
+id: 7-8b-open-weight-instruct-models-mistral-7b-qwen2-5-7b-llama-3-8b-answering
+ref: CLM-0346
+capability: hallucination
+technique: rank-feed-forward-neurons-class-conditional-residual-contribution
+statement: >-
+  In 7-8B open-weight instruct models (Mistral-7B, Qwen2.5-7B, Llama-3-8B)
+  answering closed-book factual questions, a small set of feed-forward
+  neurons (top 1% or fewer) selected on one dataset by class-conditional
+  separation of their residual-space contribution at the final prompt token
+  transfers to other factual QA datasets, where probes on those neuron
+  activations detect hallucination about as well as probes on full
+  residual-stream or MLP-output states.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Three 7-8B instruction-tuned models, greedy zero-shot closed-book generation; neurons selected on a CounterFact-derived set and transferred to TriviaQA and TruthfulQA; signal read "
+sources:
+  - source: arxiv-2609-14448
+    stance: supports
+    note: >-
+      Validated by: AUROC on TriviaQA (held-out dev split) and TruthfulQA
+      (5-fold) against perplexity, mean/min logits, P(True), and linear and
+      MLP probes on mlp_out and resid_post; the neuron classifier ranked in
+      the top two on all six model-dataset pairs.. Measured AUROC across
+      three models and two datasets with several baselines; no random-neuron
+      control at the transfer stage and no causal intervention, so the
+      selection's contribution over an arbitrary sparse feature set is not
+      isolated.
+contested: false
+status: pending-review
+last_checked_at: 2026-10-03
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Neurons selected on one
+  dataset give probes with materially lower AUROC than residual-stream
+  probes on transferred factual QA datasets, or randomly chosen neurons of
+  the same count do as well. Drafted stance toward
+  open-weight-7-8b-instruct-models-supervised-detector-built-how-hidden:
+  supports -- Both find hallucination-predictive signal recoverable from
+  internal computation in 7-8B instruct models, here at neuron granularity
+  in the middle-to-late layers.
+submitted_by: agent:claude-opus-5@Russ-Miller

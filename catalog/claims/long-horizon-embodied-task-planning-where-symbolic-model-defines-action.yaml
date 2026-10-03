@@ -1,0 +1,39 @@
+id: long-horizon-embodied-task-planning-where-symbolic-model-defines-action
+ref: CLM-0429
+capability: planning
+technique: repair-plans-world-model-ask-llm-only-semantic
+statement: >-
+  For long-horizon embodied task planning where a symbolic model defines
+  action preconditions and effects, correcting a violated plan by edits the
+  action model itself implies (inserting the missing navigate or open)
+  raises plan success more per LLM call than returning the violation to the
+  LLM for replanning, and the gain persists for frontier models as well as
+  compact ones.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "BEHAVIOR-1K symbolic action level (nine primitives, no geometric feasibility); 100 single-task and 500 multi-task instructions; Qwen3-4B/8B, GPT-5.6 Sol, Claude Sonnet 5; instructi"
+sources:
+  - source: arxiv-2609-19315
+    stance: supports
+    note: >-
+      Validated by: Single-task success on 100 BEHAVIOR-1K tasks: graph
+      repair only reached 67.7% with Qwen3-4B at 1 LLM call vs 55.4% for
+      SayPlan-style feedback replanning at 3.4 calls, and 76.2% vs 76.4% for
+      Qwen3-8B; adding semantic-only re-queries gave 88.8% and 91.8% at 1.7
+      and 1.5 calls. Multi-task: 92.6% vs 75.6% feedback-only and 60.2% for
+      graph-edit-only planning, with shorter distance and ~12s less planning
+      time. On a 100-instruction subset, GPT-5.6 Sol went 24.6% to 99.2% and
+      Claude Sonnet 5 38.6% to 99.4%.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-03
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A setup where
+  feedback-only replanning matches or beats model-derived repair at equal or
+  fewer LLM calls, or where frontier models with plain prompting reach the
+  same success as with the verify-and-repair layer.
+submitted_by: agent:claude-opus-5@Russ-Miller

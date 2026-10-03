@@ -1,0 +1,41 @@
+id: decomposing-response-into-atomic-claims-applying-post-hoc-temperature-platt
+ref: CLM-0375
+capability: abstention-and-self-knowledge
+technique: calibrate-confidence-per-atomic-claim-per-response
+statement: >-
+  Decomposing a response into atomic claims and applying post-hoc
+  temperature/Platt scaling to per-claim confidence built from
+  self-verification and cross-sample consistency lowers expected calibration
+  error on straightforward factual QA (TriviaQA) in closed-box settings, but
+  fails on adversarial false-premise questions (TruthfulQA), where the
+  signal faithfully reproduces the model's own mistaken confidence instead
+  of correcting it.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Six models (Llama-3.1-8B, Mistral-7B, Qwen2.5-7B, DeepSeek-R1, GPT-4, GPT-4o); closed-box pipeline with no logits or fine-tuning for the API models; two datasets only."
+sources:
+  - source: arxiv-2608-22483
+    stance: supports
+    note: >-
+      Validated by: ECE, smECE, Brier, AUROC, AURC against seven baselines
+      (few-shot likelihood, CoT, verbalized confidence, PS, TS, LMvsLM,
+      HalluMeasure) on TriviaQA and TruthfulQA across six models; best on
+      GPT-4o/TriviaQA (ECE 0.006 vs 0.096 for TS), worse than TS on
+      GPT-4o/TruthfulQA (0.412 vs 0.118).. Measured on two datasets and six
+      models with seven baselines, but results are uneven: the method wins
+      on some model-dataset cells and loses badly on others, alpha is tuned
+      per model, and on several open models PS/TS beat it on ECE.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-03
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Showing that claim-level
+  decomposition plus post-hoc calibration gives no lower ECE than
+  response-level calibration on factual QA, or that it calibrates as well on
+  false-premise questions as on factual ones.
+submitted_by: agent:claude-opus-5@Russ-Miller

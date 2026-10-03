@@ -1,0 +1,50 @@
+arxiv_id: "2609.10036"
+title: "Belief-State Engine: Augmenting LLMs for Principled Planning Under
+  Partial Observability"
+url: https://doi.org/10.48550/arxiv.2609.10036
+drafted_at: 2026-09-27
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: planning
+statement: For LLM agents acting in partially observable environments,
+  replacing the raw action-observation log in the prompt with an externally
+  maintained Bayesian posterior over latent states makes the agent's action
+  choice a function of the belief alone, removing surface-form sensitivity in
+  which two histories with identical posteriors but different serialized text
+  elicit different actions.
+kind: mechanism
+backing_strength: mechanism-reasoning
+scope_condition: Requires a known finite POMDP model (transition and
+  observation kernels) and that the raw history is never shown at decision
+  time; demonstrated only on the Tiger POMDP and a small attack-graph task
+  with a heavily reduced evaluation (40 paired seeds, 3 of 6 baselines, 3 of
+  10 ablations, no open-weights replication).
+technique: ""
+proposed_technique: Show the LLM a Bayesian belief state, not the history
+technique_summary: An external module runs a two-step Bayes filter over a
+  specified POMDP and passes only the normalized posterior over latent states
+  to the LLM, which selects an action from that posterior with no access to
+  the action-observation log.
+technique_kind: architecture
+technique_validated_by: Paired-seed comparison on Tiger POMDP and a red-team
+  attack graph against a reactive LLM and a natural-language belief tracker,
+  with task return, Brier/NLL/entropy calibration, and a decision-consistency
+  JSD between belief-equivalent history pairs; on Tiger the BSE agent reached
+  38/40 success vs 32/40 reactive, but only 40 seeds, one sampling seed, and
+  CoT/ReAct/QMDP/POMCP were not run.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Show that an LLM given only a serialized posterior still produces
+  different action distributions on belief-equivalent states, or that a
+  history-conditioned agent with matched compute matches the
+  belief-conditioned one on task return and decision-consistency JSD in
+  partially observable tasks.
+evidence_note: "Mostly argued: the sufficiency/soundness result is a proof
+  under four stated axioms, not an empirical finding. The empirical side is a
+  self-acknowledged reduced run (40 paired seeds, one sampling seed, 3 of 6
+  baselines, 3 of 10 ablations, no open-weights replication, only partial
+  tables shown), so the design isolates belief representation vs. text belief
+  vs. no belief but with wide intervals and no classical-planner comparison."
+confidence: low

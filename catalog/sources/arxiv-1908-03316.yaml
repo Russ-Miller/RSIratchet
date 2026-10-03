@@ -30,3 +30,40 @@ summary: In this paper, we propose a multi-modal synthesis technique for
 notes: "Forwarded by Russ 2026-09-19: locator papers: generate a reusable
   regex/SQL/XPath once, run it without the model"
 ingested_at: 2026-09-19
+brief: >-
+  Combining a natural-language description with positive/negative examples
+  synthesizes regular expressions far more reliably than either modality
+  alone. The claim is that English descriptions are ambiguous and examples
+  underspecify, and that parsing the description into a partial program
+  structure gives an example-based search engine enough scaffolding to close
+  the gap.
+
+
+  Regel parses English into a "hierarchical sketch" using a SEMPRE-based
+  semantic parser, then runs a programming-by-example engine that uses sketch
+  hints for over-/under-approximation pruning and a Z3 encoding to solve for
+  integer constants in Repeat operators. It is evaluated on 200 adapted
+  DeepRegex benchmarks (avg 4 positive and 5 negative examples each) and 122
+  harder StackOverflow tasks.
+
+
+  Regel finds the intended regex in 80% of cases against 43% for DeepRegex
+  (NLP-only) and 26% for a PBE-only ablation of Regel itself. Its PBE engine
+  completes sketches an order of magnitude faster than an adaptation of
+  AlphaRegex, even when AlphaRegex is given the same sketches. A user study
+  with 20 participants found users twice as likely to produce the intended
+  regex with Regel.
+
+
+  Evidence is reasonably well isolated: the PBE-only variant shares Regel's
+  search algorithm, and AlphaRegex was given sketch access, so both
+  comparisons separate the sketch from the engine. Caveats: h-sketch training
+  labels for the StackOverflow set were hand-written by the authors, the user
+  study is self-run, and the DSL excludes capture groups and backreferences.
+
+
+  If you assume natural-language program synthesis is bottlenecked on parser
+  accuracy, this suggests the parser only needs to get the skeleton right.
+brief_generated_at: 2026-10-03
+brief_model: claude-opus-5
+brief_source: full-text

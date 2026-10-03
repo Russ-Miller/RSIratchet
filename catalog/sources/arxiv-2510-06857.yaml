@@ -1,20 +1,55 @@
 id: arxiv-2510-06857
 ref: SRC-0326
 kind: paper
-title: "Autoformalizer with Tool Feedback"
+title: Autoformalizer with Tool Feedback
 year: 2025
 date: 2025-10-08
 arxiv_id: "2510.06857"
 url: https://arxiv.org/abs/2510.06857
-tags: [ingested]
-summary: >-
-  Autoformalization addresses the scarcity of data for Automated Theorem
-  Proving (ATP) by translating mathematical problems from natural language
-  into formal statements. Efforts in recent work shift from directly
+tags:
+  - ingested
+summary: Autoformalization addresses the scarcity of data for Automated
+  Theorem Proving (ATP) by translating mathematical problems from natural
+  language into formal statements. Efforts in recent work shift from directly
   prompting large language models to training an end-to-end formalizer model
   from scratch, achieving remarkable advancements. However, existing
   formalizer still struggles to consistently generate valid statements that
-  meet syntactic validity and semantic consistency. To address this issue,
-  we propose the Autoformalizer with Tool Feedback (ATF), a novel approach
-  that incorporates syntactic
+  meet syntactic validity and semantic consistency. To address this issue, we
+  propose the Autoformalizer with Tool Feedback (ATF), a novel approach that
+  incorporates syntactic
 ingested_at: 2026-09-19
+brief: >-
+  Letting a formalizer call a Lean 4 compiler and an LLM consistency judge
+  mid-generation, then revise, lifts semantic consistency far more than
+  scaling the model does. ATF trains Qwen3-32B in 3 stages: cold start on 24K
+  Claude-4-Sonnet tool-call trajectories, expert iteration over a
+  178,469-query NuminaMath-1.5 subset, then DPO on 10K pairs to cut useless
+  revisions.
+
+
+  Against Kimina-Autoformalizer-7B, StepFun-Formalizer-7B/32B and
+  Goedel-V2-Formalizer-8B/32B on FormalMath-Lite, ProverBench and
+  out-of-distribution CombiBench, ATF-32B Pass@1 consistency reaches 94.51%,
+  89.78% and 65.38%, beating Goedel-V2-Formalizer-32B by 9.1%, 10.08% and
+  29.13%. On CombiBench it hits 100% syntax and 96.00% consistency at Pass@16.
+  Revision budget was capped so output length roughly matched
+  Goedel-V2-Formalizer-32B.
+
+
+  The cause is isolated by ablation: removing both tools drops CombiBench
+  consistency Pass@1 to 23.69%, syntax-only gives 41.68%, and each training
+  stage is reported separately. Human evaluation on 100 sampled instances per
+  benchmark, 3 experts each, agrees with the tool judge at Pearson 0.746.
+
+
+  Limits: 1 base model family, 1 Lean version (4.15), consistency judged
+  largely by an ensemble of QWQ-32B and Qwen3-32B whose own FPR is 0.0579 and
+  recall only 0.5967, and no downstream prover results. Revision success
+  decays from 69.5% on attempt 1 to 8.8% by attempt 8.
+
+
+  If you generate formal statements, budget for verifier-in-the-loop revision
+  rather than a bigger formalizer.
+brief_generated_at: 2026-10-03
+brief_model: claude-opus-5
+brief_source: full-text

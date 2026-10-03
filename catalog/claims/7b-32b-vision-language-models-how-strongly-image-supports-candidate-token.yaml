@@ -1,0 +1,41 @@
+id: 7b-32b-vision-language-models-how-strongly-image-supports-candidate-token
+ref: CLM-0348
+capability: visual-grounding
+technique: penalize-tokens-whose-pooled-visual-position-rank-falls
+statement: >-
+  In 7B-32B vision-language models, how strongly the image supports a
+  candidate token can be read off the vocabulary rank each visual-position
+  hidden state assigns to that token, and pooling those ranks works where
+  pooling the corresponding probabilities does not, because probability
+  magnitudes differ by up to an order of magnitude across visual positions
+  for the same ordinal rank and affine rescaling does not remove the gap.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Open 7B-32B LVLMs with accessible hidden states and output head; measured on object-description tasks with MS COCO images; needs a one-time offline calibration pass per model."
+sources:
+  - source: arxiv-2608-19075
+    stance: supports
+    note: >-
+      Validated by: CHAIR_I hallucinated-object rate on four 7B backbones
+      fell by up to 21.3% with descriptive and general multimodal scores
+      largely preserved or improved; reductions reported across 11 models
+      from six families up to 32B; 1.33% average added latency per token.
+      Token-specific references cut held-out calibration error by 91-92%
+      versus a single global reference and beat all 1,000 random
+      token-to-reference reassignments. Rank-derived suppression strengths
+      unchanged under position-wise rescaling, while probability-derived
+      ones shifted by ~0.045.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-03
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Show that pooling raw or
+  affine-equalized probabilities across visual positions gives equal or
+  better hallucination reduction than rank pooling at matched cost, or that
+  a single global reference matches token-specific references on held-out
+  images.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,41 @@
+id: within-one-model-family-relative-distribution-reasoning-failure-modes
+ref: CLM-0511
+capability: critique
+technique: retrieve-in-context-critiques-weak-model-failure-mode
+statement: >-
+  Within one model family, the relative distribution of reasoning failure
+  modes stays similar from 1.5B to 72B, so critiques mined offline from
+  small models' wrong answers, retrieved by failure mode and inserted as
+  in-context exemplars, raise a large model's math accuracy above random,
+  fixed, or embedding-similarity exemplar selection at a single generation.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Qwen2.5 (32B, 72B) and Llama-3.1-70B targets with CritBank built from 1-8B same-family models; math reasoning (GSM8K, MATH, AMC23, AIME24/25), greedy decoding, 5-shot; some extensi"
+sources:
+  - source: arxiv-2608-27455
+    stance: supports
+    note: >-
+      Validated by: Pass@1 on GSM8K, MATH, AMC23, AIME24/25 against
+      zero/1/3/5-shot ICL, self-consistency@3/5/7, self-reflection and
+      LLM-as-judge; CritICL-static reached 49.8 overall on Qwen2.5-32B vs
+      46.0 for 5-shot fixed and 49.5 for Consistency@7, at 1 generation and
+      3768 total tokens vs 5440; ablation swapping selection for
+      random/fixed/semantic lost 4-6 points on AMC23/AIME25.. Measured on
+      two Qwen targets and one Llama target over five math benchmarks with
+      ICL and test-time-scaling baselines and a selection ablation;
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-03
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Show that critique
+  exemplars retrieved by failure mode do no better than semantically similar
+  or random exemplars of the same length on the same benchmarks, or that
+  small- and large-model failure mode distributions in a family are
+  uncorrelated while the method still helps (or fails to help). Automatic
+  check flagged: figures not in the source: 0.2.
+submitted_by: agent:claude-opus-5@Russ-Miller

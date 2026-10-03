@@ -1,0 +1,36 @@
+id: two-agent-extract-then-answer-pipeline-multilingual-extractive-qa-routing-inter-agent-handoff
+ref: CLM-0502
+capability: multi-model-coordination
+technique: keep-inter-agent-handoffs-user-s-language
+statement: >-
+  In a two-agent extract-then-answer pipeline on multilingual extractive QA,
+  routing the inter-agent handoff through English (forward-translate facts,
+  answer in English, back-translate) lowers Exact Match relative to keeping
+  handoffs in the user's language, and the loss grows with distance from
+  English (13.0 points Spanish up to 30.6 points Hindi with Aya-23-8B).
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "One 8-bit quantized 8B multilingual model (Aya-23-8B), XQuAD, 300 items per language, four languages, zero-shot prompting, three-agent English-forced condition including back-trans"
+sources:
+  - source: arxiv-2609-15079
+    stance: supports
+    note: >-
+      Validated by: Exact Match and F1 on 300 XQuAD items per language for
+      Spanish, Arabic, Chinese, Hindi, native-handoff condition versus an
+      otherwise identical English-pivot condition; all four paired
+      differences significant under exact McNemar with Bonferroni
+      correction, discordant pairs strongly asymmetric.. Measured on one
+      model, one dataset, four languages, 300 items each; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-03
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An equivalent controlled
+  comparison on other multilingual models or tasks where English-pivot
+  handoffs match or beat native-language handoffs, or where the gap does not
+  widen with typological distance.
+submitted_by: agent:claude-opus-5@Russ-Miller

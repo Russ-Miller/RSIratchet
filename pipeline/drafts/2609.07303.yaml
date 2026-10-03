@@ -1,0 +1,46 @@
+arxiv_id: "2609.07303"
+title: Long-Horizon Language Model Reinforcement Learning via Progressive
+  Point Matching
+url: https://doi.org/10.48550/arxiv.2609.07303
+drafted_at: 2026-09-28
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: long-horizon-execution
+statement: When training an LLM with policy-gradient RL on tasks that
+  decompose into many dependent sub-problems, rewarding each trajectory
+  segment by how many reference reasoning points it newly reaches beats a
+  sparse final-answer reward by a margin that widens with task horizon, and
+  still learns on problem sets where the base policy never samples a success
+  and sparse reward gives no gradient at all.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Requires one reference solution per task and a way (symbolic
+  check or LLM judge) to test whether a segment reached a reference reasoning
+  point; shown on 1.7B-4B Qwen3 models on synthetic multi-turn tasks and math
+  datasets. At medium training token budgets the method can collapse to short
+  greedy answers.
+technique: ""
+proposed_technique: Reward segments by reference reasoning points reached
+technique_summary: Split each sampled trajectory into segments and give each
+  segment a reward equal to the increase in the count of reference-solution
+  reasoning points it has reached, with credit shortcut so that reaching the
+  goal counts all points.
+technique_kind: training
+technique_validated_by: GRPO baseline vs trajectory-level and segment-level
+  variants on Multi-Countdown, Matrix Manipulation, GSM-Infinite (success
+  0.415 vs 0.084 sparse at n=16; 0.191 vs 0.091 at n=24), Polaris
+  pass@1/pass@8 at 16K eval, and a POPE-hard subset where base pass rate is
+  ~0.004 at 8K; also a signal-to-noise theorem.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On long-horizon tasks, segment-level reasoning-point rewards match
+  or trail sparse outcome rewards in final success rate, or the gap fails to
+  grow with horizon, under matched compute and reference-trajectory access.
+evidence_note: Measured on three synthetic environments plus two math datasets
+  with small Qwen3 models; baselines include GRPO, SFT, Verifree, OPSD and a
+  process-reward judge. Margins on Polaris are small and some test splits
+  favor baselines. Authors note limited scale and that a judge quality choice
+  (Kendall 0.856 vs 0.768) affects the reward signal.
+confidence: medium

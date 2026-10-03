@@ -1,0 +1,48 @@
+arxiv_id: "2609.16646"
+title: What Do Hallucinations Reveal About Multimodal Reasoning? Diagnosing
+  Visual Grounding Failures via Contrastive Decoding Probes
+url: https://doi.org/10.48550/arxiv.2609.16646
+drafted_at: 2026-09-25
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: In 7B open vision-language models (LLaVA-1.5, Shikra), the
+  per-token log-probability gap between a normal forward pass and one with
+  visual features zeroed shrinks as a caption gets longer, and while that gap
+  ranks hallucinated tokens slightly better than entropy or max-probability,
+  its absolute separation is weak (AUROC around 0.57-0.59) and it fails
+  entirely when aggregated to sentence level.
+kind: observation
+backing_strength: single-paper
+scope_condition: 7B LVLMs with a separable visual encoder; InstructBLIP's
+  Q-Former gives a near-zero gap, so the signal does not exist in all
+  architectures. Measured on COCO captioning with CHAIR labels.
+technique: ""
+proposed_technique: Penalize tokens with a low vision-ablation log-prob gap
+technique_summary: Run a second decoding pass with the visual features zeroed,
+  score each candidate token by the log-probability difference between the two
+  paths, and subtract a decaying penalty from candidates whose score falls
+  below a threshold.
+technique_kind: decoding
+technique_validated_by: Compared against Sample, Beam, OPERA, VCD, AGLA, SID
+  and ICD on five benchmarks with LLaVA-1.5, InstructBLIP, Shikra. Large gain
+  only on MMHalBench (3.55 overall vs 1.69 for OPERA, hallucination ratio 0.44
+  vs 0.74-0.83, single GPT judge over 96 samples); roughly tied or worse on
+  HallusionBench, CHAIR sentence level, and MMMU. Outputs are shorter (95.3 vs
+  101.8 tokens), and length-normalized CHAIRs margins are small and reverse on
+  Shikra.
+stance_on_existing: supports
+related_claim_id: training-free-inference-time-hallucination-interventions-7b-class-vision-language-models-increasing-intervention
+stance_reason: The intervention lowers hallucination metrics while also
+  shortening captions and lowering total token count, and the authors state
+  they have not disentangled the two.
+falsifier: Showing that the vision-ablation log-prob gap stays flat or rises
+  across decoding steps in these models, or that it separates hallucinated
+  from grounded tokens at high AUROC including at sentence level.
+evidence_note: "Measured: Delta trajectories on 30 COCO images (LLaVA 0.39 to
+  0.07, Shikra 1.13 to 0.41); AUROC 0.588 on 50 COCO images vs entropy 0.380
+  and confidence 0.401; 0.574 on 100 images, 0.464 sentence-level. Small image
+  samples, one label source (CHAIR, ~1.2% positive rate), no human
+  validation."
+confidence: low
