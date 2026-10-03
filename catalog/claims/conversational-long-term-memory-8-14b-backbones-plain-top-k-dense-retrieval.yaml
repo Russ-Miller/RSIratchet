@@ -1,0 +1,39 @@
+id: conversational-long-term-memory-8-14b-backbones-plain-top-k-dense-retrieval
+ref: CLM-0371
+capability: long-term-memory
+technique: write-memory-into-self-configured-orthogonal-views
+statement: >-
+  For conversational long-term memory with 8-14B backbones and plain top-K
+  dense retrieval, writing each dialogue span into several complementary
+  low-overlap semantic views before indexing retrieves gold evidence for
+  more queries than structured extraction into a single view, and the
+  advantage is largest at small retrieval budgets.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Qwen3-8B/14B on LoCoMo and PersonaMem-32k, shared e5-base-v2 embeddings, fixed top-30 per-store budget; evidence-level dedup by provenance"
+sources:
+  - source: arxiv-2609-21940
+    stance: supports
+    note: >-
+      Validated by: LoCoMo overall LLM-Judge 0.837 vs 0.774 for single-view
+      structured extraction and 0.683-0.783 for
+      Mem0/MemGAS/MemoryBank/A-mem; no-positive rate 5.14% vs 5.53%
+      single-view and 9.83% without consolidation; PersonaMem-32k accuracy
+      69.10 at 14B vs 63.33 best baseline. Measured on two benchmarks (1,540
+      LoCoMo questions, 589 PersonaMem items) with two backbones and four
+      memory baselines; ablations separate multi-view organization, DPP
+      selection and consolidation. Judge is Qwen3-8B, same family as
+      generators, so judge bias is not isolated; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-03
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A replication where
+  single-view structured extraction with the same embeddings and budget
+  matches or beats multi-view organization on no-positive rate and judged
+  answer quality, or where the multi-view gain vanishes at small K.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,46 @@
+arxiv_id: "2609.10441"
+title: "ConvMem: Convolutional Memory for Long-Context Reasoning"
+url: https://doi.org/10.48550/arxiv.2609.10441
+drafted_at: 2026-09-23
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: long-context-degradation
+statement: For multi-hop QA over 28k-896k token haystacks with frozen Qwen2.5
+  backbones (7B-72B), summarizing the document in a parallel hierarchical tree
+  — overlapping windows scanned ~5x, raw segments scored 'critical' passed
+  straight to the final answer, and one summarization channel per decomposed
+  sub-question — scores higher than sequential memory-agent and BM25 retrieval
+  baselines without training, and beats an RL-trained memory agent on the
+  out-of-distribution dataset while losing to it in-distribution.
+kind: observation
+backing_strength: single-paper
+scope_condition: RULER-style needle-in-haystack multi-hop QA (HotpotQA,
+  2WikiMultiHopQA) with Qwen2.5-Instruct backbones; costs more total tokens
+  than linear scanning and depends on correct query decomposition.
+technique: ""
+proposed_technique: Summarize long context as a parallel hierarchical tree
+technique_summary: Treats a query-prompted frozen LLM as a convolution kernel
+  that summarizes overlapping text windows in parallel, recursing over
+  summaries layer by layer, with high-relevance raw segments skipped forward
+  to the final answer and a separate channel per decomposed sub-question.
+technique_kind: prompting
+technique_validated_by: F1 and Sub-EM on RULER-HotpotQA and
+  RULER-2WikiMultiHopQA at six context lengths against vanilla Qwen2.5-32B,
+  RAG-BM25, MemAgent-w/o-RL, Mem-alpha-w/o-RL, and RL-trained MemAgent and
+  Mem-alpha; ablations on stride, skip connections, channel count, kernel
+  size.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On the same benchmarks and backbones, the hierarchical parallel
+  scheme scores no better than single-pass sequential memory agents, or its
+  OOD advantage over the RL-trained agent disappears when the RL agent is
+  trained on a broader mix.
+evidence_note: Measured on two RULER-derived synthetic benchmarks only, single
+  model family, one paper, no significance testing; the OOD claim rests partly
+  on two anecdotal cases and the OOD set was synthesized by the authors using
+  the same protocol. Ablations isolate stride, skip connections and
+  multi-kernel individually but token cost is higher than baselines and not
+  held equal.
+confidence: low

@@ -1,0 +1,49 @@
+arxiv_id: "2608.25243"
+title: "From Memorization to Absorption: Mixed-Policy RL for Continual
+  Knowledge Injection"
+url: https://doi.org/10.48550/arxiv.2608.25243
+drafted_at: 2026-09-29
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: knowledge-updating
+statement: When injecting new or counterfactual facts into a 3-4B instruct
+  model by post-training, supervised fine-tuning on extracted QA pairs binds
+  facts to their training question form — recall of the single fact stays
+  reasonable while multi-source and inferential questions over the same facts
+  collapse — and adding more SFT epochs does not close the gap, whereas
+  mixed-policy RL that supplies the golden answer as an off-policy trajectory
+  when on-policy rollouts fail recovers much of the generalization.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Wiki-style entity-grounded documents, single round of
+  injection, Qwen3-4B and Llama3.2-3B; lexical (ROUGE-L/exact-match) rewards;
+  not tested on procedural, code, or math knowledge or on repeated injection
+  rounds.
+technique: ""
+proposed_technique: Inject the golden answer as an off-policy trajectory during RL
+technique_summary: During GRPO-style knowledge-injection RL, add the gold
+  answer to each rollout group and apply it as a direct supervised gradient
+  scaled by its group-relative advantage (no importance ratio or clipping), so
+  learning signal survives when all on-policy rollouts fail.
+technique_kind: training
+technique_validated_by: On two new document benchmarks (Blank, 776 corpora;
+  Counter, 252 counterfactual corpora) judged by an LLM, against SFT baselines
+  (PIT, Self-Tuning, Autonomous Learning), vanilla GRPO, and LUFFY
+  mixed-policy RL; GRIN reached 21.16% multi-source and 31.69% inferential on
+  Blank vs Self-Tuning's 11.26% and 7.10%, similar single-fact recall, and the
+  lowest prior-belief fail@k (24.05%); baselines trained to 50 epochs still
+  plateaued below it.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An SFT-based injection run at matched compute that reaches the same
+  multi-source and inferential accuracy as Golden-GRPO, or Golden-GRPO failing
+  to beat SFT on generalization on other base models or corpora.
+evidence_note: Measured on two benchmarks the authors built themselves with
+  LLM-generated questions and an LLM judge, one base model for the main table
+  plus one cross-model replication on Counter only. Compute-matched epoch
+  sweep supports the ceiling claim. Ablations separate data diversity from the
+  training objective. Single lab, no independent replication; benchmark
+  construction and grading share the same model family assumptions.
+confidence: low

@@ -6,15 +6,48 @@ year: 2025
 date: 2025-05-07
 arxiv_id: "2505.07849"
 url: https://arxiv.org/abs/2505.07849
-tags: [ingested]
-summary: >-
-  Software issue localization, the task of identifying the precise code
+tags:
+  - ingested
+summary: Software issue localization, the task of identifying the precise code
   locations (files, classes, or functions) relevant to a natural language
   issue description (e.g., bug report, feature request), is a critical yet
   time-consuming aspect of software development. While recent LLM-based
-  agentic approaches demonstrate promise, they often incur significant
-  latency and cost due to complex multi-step reasoning and relying on
-  closed-source LLMs. Alternatively, traditional code ranking models,
-  typically optimized for query-to-code or code-to-code retrieval, struggle
-  with the verbose and failure-descrip
+  agentic approaches demonstrate promise, they often incur significant latency
+  and cost due to complex multi-step reasoning and relying on closed-source
+  LLMs. Alternatively, traditional code ranking models, typically optimized
+  for query-to-code or code-to-code retrieval, struggle with the verbose and
+  failure-descrip
 ingested_at: 2026-09-19
+brief: >-
+  Single-shot retrieval and reranking beats multi-turn LLM agents at finding
+  which functions a GitHub issue refers to, at a fraction of the cost. SweRank
+  pairs SweRankEmbed, a bi-encoder trained contrastively on SweLoc (67,341
+  issue-codebase pairs from 3387 PyPI repositories, with top-20 consistency
+  filtering and 15 mined hard negatives), with SweRankLLM, a listwise reranker
+  trained to emit only the top identifier since no full gold ordering exists.
+
+
+  On SWE-Bench-Lite (274 of 300 examples) SweRankLLM-Large (32B) reaches 83.21
+  file Acc@1 and 88.69 function Acc@10, against 77.74 and 77.37 for LocAgent
+  with Claude-3.5; on LocBench (560 examples) it reaches 76.25 function Acc@15
+  versus 60.71. Inference costs $0.015 per example versus $0.66 for LocAgent
+  with Claude-3.5, up to 6X better performance-cost tradeoff.
+
+
+  The data contribution is isolated by ablation: filtering threshold K sweeps
+  (no filtering hurts versus the pretrained model), data-fraction curves, and
+  finetuning 3 retrievers (+8.1 to +17.4 function Acc@10) and 6 Qwen2.5
+  rerankers, all gaining. Complexity stratification shows SweRankEmbed-Large
+  holding 77.1% where LocAgent falls from 82.0% to 47.1% at num_gold=2–3.
+
+
+  Boundaries: Python-only repositories, single-digit accuracy for all models
+  above 5 gold functions, and downstream repair gains are small (24.5 Pass@1
+  versus 22.6, oracle 25.9).
+
+
+  If you are paying agent prices for localization, a trained ranker is likely
+  enough.
+brief_generated_at: 2026-10-03
+brief_model: claude-opus-5
+brief_source: full-text

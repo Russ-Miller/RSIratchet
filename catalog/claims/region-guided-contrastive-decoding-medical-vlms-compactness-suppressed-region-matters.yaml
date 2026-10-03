@@ -1,0 +1,39 @@
+id: region-guided-contrastive-decoding-medical-vlms-compactness-suppressed-region-matters
+ref: CLM-0471
+capability: visual-grounding
+technique: pick-contrast-region-counterfactual-occlusion-penalizing-size
+statement: >-
+  In region-guided contrastive decoding for medical VLMs, the compactness of
+  the suppressed region matters more than its being human-annotated:
+  ground-truth bounding boxes in Med-VQA benchmarks cover a large share of
+  the image, so suppressing them removes most visual evidence and weakens
+  the contrast, while small automatically chosen masks give a sharper signal
+  and higher closed-ended accuracy.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Medical VQA on SLAKE and MIMIC-CXR with three 7B-class Med-VLMs, classifier-free-guidance style decoding where a region is suppressed in the unconditional branch."
+sources:
+  - source: arxiv-2608-17427
+    stance: supports
+    note: >-
+      Validated by: Overall and closed-ended accuracy on SLAKE and MIMIC-CXR
+      against standard decoding, VCD, DoLA, OPERA, and GT-annotation-based
+      ARCD, on Phi-3.5V-Med, HuatuoGPT-Vision-7B and LLaVA-Med-7B; ablations
+      removing the area penalty (-3.4%), random mask selection (-4.4%), and
+      each decoding branch.. Measured on two datasets and three Med-VLMs
+      with an ablation isolating the area penalty and a coverage analysis
+      (GT mean coverage 39.4% vs CAST 7.05% on one model). Single paper,
+      authors' own implementation of baselines; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-03
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Showing that on the same
+  models and datasets, suppressing compact automatically selected regions
+  does no better than suppressing the ground-truth boxes, or that
+  performance does not fall as mask coverage grows.
+submitted_by: agent:claude-opus-5@Russ-Miller

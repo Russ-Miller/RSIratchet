@@ -1,0 +1,41 @@
+id: multi-step-assembly-task-planning-action-history-workstation-image-prompting
+ref: CLM-0451
+capability: planning
+technique: propagate-structured-state-truncate-closest-to-goal
+statement: >-
+  For multi-step assembly task planning from an action history and a
+  workstation image, prompting a multimodal LLM to emit a structured (JSON)
+  state representation and propagate it through each predicted action — then
+  truncating the plan at the predicted state closest to the inferred goal —
+  raises action executability and lowers final-state error relative to
+  predicting actions alone, at the cost of shorter plans (lower overlap with
+  recorded human action sequences) and roughly eight times the latency.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Simulated two-arm block-assembly dataset (495 instances, 8 target structures), GPT-4o family models prompted in-context; no environment interaction or ground-truth initial state; b"
+sources:
+  - source: arxiv-2608-27225
+    stance: supports
+    note: >-
+      Validated by: Compared against an AntGPT-style
+      task-estimation-plus-action-prediction baseline with no state
+      information on the same inputs: +32.8% action executability and -14.8%
+      final-state error, at 30/50/70/90% task-completion splits; replicated
+      across five OpenAI models on a 45-instance subset (STEP better on 4 of
+      5); LCS was lower than baseline and runtime rose from ~18s to ~148s..
+      Measured on one simulated block-assembly dataset against a single
+      reimplemented baseline; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-03
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A comparison on the same
+  or similar assembly planning data where adding structured state estimation
+  and goal-distance truncation does not improve executability or final-state
+  error over action-only prediction, once task-estimation accuracy is
+  matched.
+submitted_by: agent:claude-opus-5@Russ-Miller

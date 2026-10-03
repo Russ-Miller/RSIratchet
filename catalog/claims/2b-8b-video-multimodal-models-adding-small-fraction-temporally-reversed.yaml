@@ -1,0 +1,38 @@
+id: 2b-8b-video-multimodal-models-adding-small-fraction-temporally-reversed
+ref: CLM-0341
+capability: video-temporal-reasoning
+technique: put-reversed-videos-rl-exploration-group
+statement: >-
+  For 2B-8B video multimodal models, adding a small fraction of temporally
+  reversed videos into each GRPO exploration group (one reversed in a group
+  of seven) raises accuracy on action and temporal-reasoning video QA over
+  standard GRPO on the same checkpoint, while raising the reversed share
+  further (2 or 3 of 7) gives back most of that gain.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen3-VL 2B/4B/8B and InternVL2.5-8B trained with an explicit frame-difference motion branch and a prior SFT stage; 1,000-sample subsets of STAR, SSv2, NExT-QA, CLEVRER, LLaVA-178K"
+sources:
+  - source: arxiv-2608-21030
+    stance: supports
+    note: >-
+      Validated by: Ablation from one shared Stage-I checkpoint on
+      Qwen3-VL-8B at fixed group size 7: average accuracy 76.5 (no RL), 78.0
+      standard GRPO (7+0), 78.8 at 6+1, 78.4 at 5+2, 77.6 at 4+3; main table
+      also shows gains over SFT, GRPO, Flow4Agent and TempFlex baselines
+      across scales.. Measured on four backbones over six 1,000-example
+      benchmark subsets; the reversed-fraction ablation is controlled (same
+      checkpoint, same group size), so the optimization effect is isolated
+      from the architecture. Gains are a couple of points; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-03
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: On the same Stage-I
+  checkpoints and benchmarks, mixing reversed videos into GRPO groups gives
+  no gain over standard GRPO at matched group size and compute, or the gain
+  does not fall as the reversed fraction grows.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,43 @@
+id: 8b-instruct-backbones-training-correction-adapter-first-name-typed
+ref: CLM-0351
+capability: self-repair
+technique: correct-reasoning-inverting-named-typed-error-operator
+statement: >-
+  For 8B instruct backbones, training a correction adapter to first name a
+  typed, executable error operator (error type, step location, corrupted and
+  repaired proposition) and then apply its inverse to the trace improves
+  accuracy more than free-form self-revision methods (Self-Refine, RISE,
+  SCoRe) on math, code and commonsense benchmarks, and most of the gain
+  arrives in the first few denoising iterations.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "8B instruct backbones (Llama-3-8B-Instruct, Qwen3-8B), a fixed operator library, a few thousand training transition pairs; gains smallest on factual multiple-choice (MMLU) and loca"
+sources:
+  - source: arxiv-2608-22090
+    stance: supports
+    note: >-
+      Validated by: Six in-domain benchmarks (GSM8K, MATH, HumanEval+, MBPP,
+      MMLU, PIQA) on a common Llama-3-8B-Instruct backbone: average 67.5 vs
+      64.3 for the strongest baseline (DiffCoT) and 63.7 for SCoRe, over
+      five seeds with Holm correction; seven cross-dataset transfer targets
+      on two backbones; ablations show operator-only and adjacent-state-only
+      objectives both lose points.. Measured on 13 datasets with one author,
+      single paper, 8B models only; baselines run from official code with
+      shared prompts and extractors; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-03
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A matched-compute
+  comparison in which free-form self-revision or plain SFT on correct traces
+  equals this operator-typed denoiser on the same backbone and benchmarks,
+  or ablations showing the typed operator prediction contributes nothing
+  beyond the adjacent-state reconstruction loss. Drafted stance toward
+  self-critique-without-grounding-unreliable: supports -- Unconstrained
+  self-revision baselines (Self-Refine) barely improved over base CoT, while
+  structured typed-edit supervision did.
+submitted_by: agent:claude-opus-5@Russ-Miller

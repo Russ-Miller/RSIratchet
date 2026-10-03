@@ -1,0 +1,43 @@
+id: 7-9b-instruct-backbones-fine-tuned-small-ensemble-differently-configured-lora-adapters
+ref: CLM-0347
+capability: abstention-and-self-knowledge
+technique: commit-only-adapter-disagreement-rules-out-every-rival
+statement: >-
+  For 7-9B instruct backbones fine-tuned with a small ensemble of
+  differently-configured LoRA adapters, reading the adapters as a set of
+  distributions and answering only when one candidate's minimum probability
+  across adapters exceeds every rival's maximum gives a threshold-free
+  abstention rule whose commitment rate collapses when the supplied evidence
+  is corrupted (CoQA 31-48% down to 4-8%), while the mean-pooled version of
+  the same adapters, thresholded to the same clean coverage, keeps answering
+  more corrupted prompts.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Short-answer QA (CoQA, TriviaQA, OpenBookQA, ARC-Challenge) with 5 LoRA adapters on a frozen backbone; corruption is a replaced passage, used as a proxy for hallucination condition"
+sources:
+  - source: arxiv-2608-23244
+    stance: supports
+    note: >-
+      Validated by: AUROC for detecting the model's own errors and corrupted
+      inputs vs standard LLM entropy, semantic entropy,
+      Laplace/Bayesian-LoRA and mean-pooled LoRA ensemble; accuracy at 80%
+      coverage; ECE/NLL; commit rate and accuracy-when-committed on clean vs
+      corrupted passages across three backbones and five datasets.. Measured
+      on three backbones (Gemma-2-9B, Llama-3.1-8B, Qwen2.5-7B) and five
+      datasets against six baseline families; the mean-pooled ensemble on
+      the identical adapters isolates the credal reading from ensembling
+      itself. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-03
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A replication where
+  commitment rate under corrupted evidence stays near the clean rate, or
+  where a mean-pooled ensemble score thresholded to the same clean coverage
+  abstains on corrupted prompts at least as often as the interval-dominance
+  rule.
+submitted_by: agent:claude-opus-5@Russ-Miller

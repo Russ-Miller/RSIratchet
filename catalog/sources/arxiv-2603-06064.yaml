@@ -1,20 +1,56 @@
 id: arxiv-2603-06064
 ref: SRC-0349
 kind: paper
-title: "Agentic LLM Planning via Step-Wise PDDL Simulation: An Empirical Characterisation"
+title: "Agentic LLM Planning via Step-Wise PDDL Simulation: An Empirical
+  Characterisation"
 year: 2026
 date: 2026-03-06
 arxiv_id: "2603.06064"
 url: https://arxiv.org/abs/2603.06064
-tags: [ingested]
-summary: >-
-  Task planning, the problem of sequencing actions to reach a goal from an
-  initial state, is a core capability requirement for autonomous robotic
+tags:
+  - ingested
+summary: Task planning, the problem of sequencing actions to reach a goal from
+  an initial state, is a core capability requirement for autonomous robotic
   systems. Whether large language models (LLMs) can serve as viable planners
   alongside classical symbolic methods remains an open question. We present
   PyPDDLEngine, an open-source Planning Domain Definition Language (PDDL)
-  simulation engine that exposes planning operations as LLM tool calls
-  through a Model Context Protocol (MCP) interface. Rather than committing
-  to a complete action sequence upfront, the LLM acts as an interactive
-  search policy that sele
+  simulation engine that exposes planning operations as LLM tool calls through
+  a Model Context Protocol (MCP) interface. Rather than committing to a
+  complete action sequence upfront, the LLM acts as an interactive search
+  policy that sele
 ingested_at: 2026-09-19
+brief: >-
+  Letting an LLM step through a PDDL simulation one action at a time,
+  observing each resulting state, buys almost nothing over generating a whole
+  plan in one pass. The authors attribute this to the feedback being
+  self-assessed: a per-step confirmation says an action was applicable, not
+  whether the agent is closer to the goal.
+
+
+  PyPDDLEngine exposes 7 planning operations (execute action, query state,
+  reset, validate plan, etc.) as MCP tools. 4 approaches ran on 102 IPC
+  Blocksworld instances under a uniform 180-second budget: Fast Downward
+  lama-first, seq-sat-lama-2011, direct Claude Haiku 4.5 with retries, and
+  agentic Claude Haiku 4.5 via the engine.
+
+
+  Fast Downward solved 85.3%. Direct reached 63.7%, agentic 66.7%, at 5.7x
+  more tokens per solution (44,705 vs 254,796); the 3 extra solutions cost
+  roughly 14.4 million tokens. Agentic halted early claiming unsolvability on
+  6 instances, 4 of which direct solved. On the 49 co-solved instances both
+  LLM approaches produced shorter plans than seq-sat-lama-2011 across most
+  difficulty blocks, which the authors read as training-data recall rather
+  than search.
+
+
+  Measured, with matched time budgets and a co-solved subset to avoid
+  survivorship bias, but 1 model tier, 1 domain, 1 run per instance, no
+  variance estimate, and the memorisation account is argued rather than tested
+  via relabelling.
+
+
+  If you are planning an agentic loop, budget for grounded progress signals,
+  not just state observations.
+brief_generated_at: 2026-10-03
+brief_model: claude-opus-5
+brief_source: full-text

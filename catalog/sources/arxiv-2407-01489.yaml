@@ -6,15 +6,51 @@ year: 2024
 date: 2024-07-01
 arxiv_id: "2407.01489"
 url: https://arxiv.org/abs/2407.01489
-tags: [ingested]
-summary: >-
-  Recent advancements in large language models (LLMs) have significantly
-  advanced the automation of software development tasks, including code
-  synthesis, program repair, and test generation. More recently, researchers
-  and industry practitioners have developed various autonomous LLM agents to
-  perform end-to-end software development tasks. These agents are equipped
-  with the ability to use tools, run commands, observe feedback from the
-  environment, and plan for future actions. However, the complexity of these
-  agent-based approaches, together with the limited abilities of current
-  LLMs, raises the fo
+tags:
+  - ingested
+summary: Recent advancements in large language models (LLMs) have
+  significantly advanced the automation of software development tasks,
+  including code synthesis, program repair, and test generation. More
+  recently, researchers and industry practitioners have developed various
+  autonomous LLM agents to perform end-to-end software development tasks.
+  These agents are equipped with the ability to use tools, run commands,
+  observe feedback from the environment, and plan for future actions. However,
+  the complexity of these agent-based approaches, together with the limited
+  abilities of current LLMs, raises the fo
 ingested_at: 2026-09-19
+brief: >-
+  A fixed 3-stage pipeline with no agent loop matches or beats most agentic
+  SWE-bench systems at a fraction of the cost, suggesting that the gains
+  attributed to autonomous tool use and planning come mostly from localization
+  quality and sampling plus filtering.
+
+
+  Agentless runs hierarchical localization (file via prompting over a repo
+  tree plus embedding retrieval, then a class/function skeleton, then edit
+  lines), repair by sampling Search/Replace diffs, and patch selection via
+  LLM-filtered regression tests, generated reproduction tests, and majority
+  voting. It uses GPT-4o on SWE-bench Lite (300 problems) against 26 agent
+  baselines.
+
+
+  It resolves 96 (32.00%) at $0.70 and 78,166 tokens average, the best among
+  open-source approaches, versus SWE-agent on GPT-4o at 55 (18.33%) and $2.53.
+  Ablations isolate the pieces: majority voting alone gives 77 (25.67%),
+  adding regression tests 81 (27.00%), adding reproduction tests 96 (32.00%);
+  4 sampled location sets x 10 patches gives 96 versus 88 for greedy
+  locations. Oracle selection over all 40 samples would reach 126 (42.0%).
+
+
+  Evidence is measured with component ablations and cost-matched comparison,
+  but 1 model family, 1 benchmark, and baselines taken from leaderboard
+  self-reports. Reproduction tests are weak: 213 of 300 reproduce the issue,
+  only 94 confirm the ground-truth fix. Manual inspection found 4.3% of Lite
+  problems leak the exact patch, 10.0% lack critical information, and 5.0%
+  include misleading solutions, motivating a filtered SWE-bench Lite-S.
+
+
+  Treat agent scaffolding as something to justify against a simple pipeline
+  baseline.
+brief_generated_at: 2026-10-03
+brief_model: claude-opus-5
+brief_source: full-text

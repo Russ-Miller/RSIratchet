@@ -1,0 +1,52 @@
+arxiv_id: "2609.22043"
+title: "An Interpretable Memory Decision Controller for LLM Agents Based on
+  Three-Signal Complementarity: Decoupling Confidence and Consistency"
+url: https://doi.org/10.48550/arxiv.2609.22043
+drafted_at: 2026-09-27
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: When a retrieval store holds both the correct answer and a common
+  misconception for the same question, injecting all retrieved memories raises
+  the hallucination rate above a memory-free baseline for weaker models (53.0%
+  vs 23.0% on TruthfulQA with gemma-4-E4B-it), while a stronger backbone
+  (deepseek-v4-flash) instead shows RAG below its own no-memory rate, so
+  conflict-driven amplification is concentrated in models susceptible to
+  memory injection.
+kind: observation
+backing_strength: single-paper
+scope_condition: TruthfulQA and HaluEval question sets where the memory store
+  is built from the dataset's own correct and incorrect reference answers plus
+  distractors; three backbones, 30-200 questions each, embedding-similarity
+  hallucination scoring
+technique: retrieval-augmented-generation
+proposed_technique: Gate retrieved memories on a risk-inverted confidence score
+technique_summary: A zero-parameter geometric layer between retrieval and
+  generation fuses relevance, a lexical stance-conflict reliability score, and
+  a task-risk coefficient into a confidence and a consistency scalar, and maps
+  them to adopt / partial / silent / abstain actions.
+technique_kind: retrieval
+technique_validated_by: "End-to-end hallucination rate vs no-memory and
+  standard-RAG baselines on TruthfulQA and HaluEval across three backbones:
+  high-risk hallucination fell to 0.0% and overall from 53.0% to 23.3% on
+  gemma-4 (p=0.014); but overall rate matched plain RAG on deepseek (0.048 vs
+  0.048) with refusal rates near 88%, and on the decision-accuracy ablation
+  the controller (61.2%) scored below logistic regression (63.3%) and XGBoost
+  (64.6%), and below its own variant with the orthogonal subspaces removed
+  (64.0%)"
+stance_on_existing: contests
+related_claim_id: grounding-generation-retrieved-documents-improves-factual-accuracy-knowledge-intensive
+stance_reason: On a knowledge-intensive QA set with deliberately conflicting
+  retrieved memories, grounding lowered rather than raised factual accuracy
+  for the weaker backbone.
+falsifier: Constructing the same conflicting-memory stores and finding RAG
+  hallucination rates at or below the no-memory baseline across weak and
+  strong backbones alike.
+evidence_note: Measured, but with a scoring pipeline (embedding similarity,
+  threshold 0.5) and memory stores built from reference wrong answers, so
+  conflict is artificially guaranteed; sample sizes small (150x2 seeds for the
+  amplification result, 30x1 for one model). The technique's high-risk 0%
+  hallucination is achieved by abstaining on nearly all such items, so
+  grounding gain is not separated from refusal.
+confidence: low

@@ -6,15 +6,50 @@ year: 2023
 date: 2023-11-16
 arxiv_id: "2311.09677"
 url: https://arxiv.org/abs/2311.09677
-tags: [ingested]
-summary: >-
-  Large language models (LLMs) have revolutionized numerous domains with
-  their impressive performance but still face their challenges. A
+tags:
+  - ingested
+summary: Large language models (LLMs) have revolutionized numerous domains
+  with their impressive performance but still face their challenges. A
   predominant issue is the propensity for these models to generate
   non-existent facts, a concern termed hallucination. Our research is
-  motivated by the observation that previous instruction tuning methods
-  force the model to complete a sentence no matter whether the model knows
-  the knowledge or not. When the question is out of the parametric
-  knowledge, it will try to make up something and fail to indicate when it
-  lacks knowledge. In this paper, we present a new ap
+  motivated by the observation that previous instruction tuning methods force
+  the model to complete a sentence no matter whether the model knows the
+  knowledge or not. When the question is out of the parametric knowledge, it
+  will try to make up something and fail to indicate when it lacks knowledge.
+  In this paper, we present a new ap
 ingested_at: 2026-09-19
+brief: >-
+  Fine-tuning a model on only the answers it already gets right, with "I am
+  sure"/"I am unsure" appended, teaches it to decline questions outside its
+  parametric knowledge and also raises accuracy on the ones it does answer.
+  R-Tuning splits an instruction-tuning set into certain data D1 (model
+  prediction matches label) and uncertain data D0, pads each with the matching
+  confidence phrase, and fine-tunes normally; at inference the model is asked
+  "Are you sure you accurately answered the question based on your internal
+  knowledge?"
+
+
+  Tested on OpenLLaMA-3B, LLaMA-7B, LLaMA-13B across 9 datasets, single-task
+  on ParaRel and MMLU and multi-task on 5 datasets with HaluEval-QA held out.
+  AP scores beat vanilla instruction tuning, with the gap widening at scale:
+  on MMLU in-domain, LLaMA-13B reaches 68.87 vs 51.93, and out-of-domain 77.41
+  vs 67.38. Vanilla AP drops with model size on ParaRel OOD (78.08 to 64.12).
+  On unanswerable questions, refusal rates are 87.32-99.18 for R-Tuning vs
+  0.96-34.79 for vanilla, even when baselines were told they could refuse.
+
+
+  Comparisons are matched against vanilla fine-tuning and against two
+  test-time uncertainty baselines (Vanilla-C with k=10 sampling, Vanilla-U);
+  an unsupervised variant R-Tuning-U, which labels the 50% most uncertain
+  questions by entropy over 10 samples, generally scores higher still.
+  Perplexity and GPT-3.5-turbo answer entropy on D0 vs D1 support the claim
+  that the split tracks difficulty.
+
+
+  Confidence is binary only, all models are LLaMA-family base models at 3-13B,
+  and no instruction-tuned or RLHF chat models are tested. If you are building
+  abstention behaviour, train on the uncertainty rather than filtering at test
+  time.
+brief_generated_at: 2026-10-03
+brief_model: claude-opus-5
+brief_source: full-text

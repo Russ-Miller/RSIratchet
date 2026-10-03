@@ -1,0 +1,40 @@
+id: training-free-generate-critique-revise-loop-over-frozen-backbone-no-external-verifier
+ref: CLM-0499
+capability: self-repair
+technique: stop-self-critique-loop-confirmed-sentinel-self-reported
+statement: >-
+  For a training-free generate-critique-revise loop over a frozen backbone
+  with no external verifier, the accuracy gain tracks how unreliable
+  single-shot answering is on the task: on a benchmark where the model
+  already scores high (BBH ~74%) depth-3 looping leaves accuracy flat within
+  the confidence interval, while on tasks where single-shot is weak (MATH
+  26.2%) the same loop adds about 14 points.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Pure-reasoning benchmarks (BBH, GSM8K, MATH) with exact-answer matching, frozen API backbones (deepseek-v4-flash, Qwen2.5-72B), loop depth 3, no tools or external feedback."
+sources:
+  - source: arxiv-2608-18884
+    stance: supports
+    note: >-
+      Validated by: On BBH the sentinel stopped 82-88% of items at ~2.1
+      generations with accuracy unchanged versus single-shot and versus
+      fixed-depth Self-Refine (which fell to 71.2% at 3 generations); a
+      sweep of confidence thresholds 0.6-0.9 halted every item at the first
+      generation, so the numeric tag provided no selective stopping point..
+      Measured on n=500 GSM8K and MATH splits (disjoint Wilson intervals,
+      McNemar p<0.01) and n=100-500 BBH, with matched-compute baselines
+      (single-shot, self-consistency k=2/3, fixed-depth Self-Refine) and
+      replication on a second backbone. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-03
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A run on the same
+  benchmarks where ungrounded self-critique raises accuracy as much on a
+  high-baseline task as on a low-baseline one, or where the MATH gain
+  disappears under a matched-compute self-consistency baseline.
+submitted_by: agent:claude-opus-5@Russ-Miller

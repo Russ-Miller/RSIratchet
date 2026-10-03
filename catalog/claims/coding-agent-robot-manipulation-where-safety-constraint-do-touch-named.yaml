@@ -1,0 +1,43 @@
+id: coding-agent-robot-manipulation-where-safety-constraint-do-touch-named
+ref: CLM-0370
+capability: embodied-control
+technique: re-check-safety-constraint-tool-prompt
+statement: >-
+  For coding-agent robot manipulation where a safety constraint (do not
+  touch a named obstacle) is given only as text in the task prompt, the
+  agent restates the constraint early and then plans the shortest path
+  through the obstacle, and enforcing the same constraint with an external
+  stateless verifier that re-checks each route against grounded obstacle
+  boxes before motion raises both task success and collision avoidance.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Simulated tabletop manipulation (SafeLIBERO, 32 tasks, 10 seeds) with a single declared obstacle per scene, parallel-jaw gripper, frozen pi-0.5 policy, GPT-5.5/GPT-6 planners."
+sources:
+  - source: arxiv-2609-20822
+    stance: supports
+    note: >-
+      Validated by: On SafeLIBERO with 10 seeds per task across 32 tasks:
+      71.9% task success and 87.5% collision avoidance with GPT-6, versus
+      31.0/59.0 for the same agent with skills but no harnesses, and
+      67.5/68.9 for AEGIS (barrier-function filter over the frozen policy);
+      ablation holds prompt, skill memory and VLA fixed.. Measured on one
+      simulated benchmark with one obstacle per scene; ablation isolates the
+      harnesses from model scale by holding prompt, skill memory and VLA
+      fixed. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-03
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An agent given only the
+  textual constraint, with no external verification tool, reaching
+  comparable collision-avoidance rates on the same benchmark, or the harness
+  failing to improve collision avoidance over the skills-only agent under a
+  matched step budget. Drafted stance toward
+  fixes-in-the-harness-compound-fixes-in-the-prompt-do-not: supports -- The
+  constraint stated in the prompt is dropped by step three hundred while the
+  same constraint encoded as a verification tool holds across the episode.
+submitted_by: agent:claude-opus-5@Russ-Miller
