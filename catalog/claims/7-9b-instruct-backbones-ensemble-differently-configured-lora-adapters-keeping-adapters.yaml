@@ -1,0 +1,42 @@
+id: 7-9b-instruct-backbones-ensemble-differently-configured-lora-adapters-keeping-adapters
+ref: CLM-0347
+capability: abstention-and-self-knowledge
+technique: abstain-interval-dominance-over-lora-adapter-credal-set
+statement: >-
+  For 7-9B instruct backbones with an ensemble of differently-configured
+  LoRA adapters, keeping the adapters' per-answer probabilities as interval
+  bounds (min/max) and committing only when one candidate's lower bound
+  exceeds every other's upper bound yields a threshold-free abstention rule
+  that collapses commitment when the supplied passage is corrupted (CoQA
+  31-48% down to 4-8%), whereas mean-pooled or single-model uncertainty
+  scores thresholded to the same clean-data coverage keep answering more of
+  the corrupted prompts.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Short-answer QA (CoQA, TriviaQA, OpenBookQA, ARC-Challenge) with 5 LoRA adapters on a frozen 7-9B backbone; corruption is a controlled proxy for hallucination conditions; intervals"
+sources:
+  - source: arxiv-2608-23244
+    stance: supports
+    note: >-
+      Validated by: Commit rate and accuracy-when-committed on clean vs
+      corrupted inputs; AUROC for error and corruption detection; accuracy
+      at 80% coverage and ECE/NLL against standard LLM entropy/max-prob,
+      semantic entropy (NLI and cosine), Bayesian/Laplace-LoRA, and the same
+      five adapters mean-pooled, across three backbones and five datasets..
+      Measured on three backbones (Gemma-2-9B, Llama-3.1-8B, Qwen2.5-7B) and
+      five datasets against six baseline families, with baselines given the
+      advantage of thresholds tuned to the rule's own coverage. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-04
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A replication where the
+  credal interval rule's commit rate falls no more under corrupted context
+  than mean-pooled entropy thresholded to the same clean coverage, or where
+  its selective accuracy at fixed coverage is no better than single-model
+  baselines on open-ended QA.
+submitted_by: agent:claude-opus-5@Russ-Miller

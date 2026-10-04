@@ -1,0 +1,46 @@
+id: training-free-generate-critique-revise-loop-frozen-backbone-unaided-self-critique-raises-accuracy
+ref: CLM-0500
+capability: self-repair
+technique: stop-self-critique-confirmed-sentinel-confidence-score
+statement: >-
+  In a training-free generate-critique-revise loop on a frozen backbone,
+  unaided self-critique raises accuracy only where single-shot accuracy is
+  already weak (MATH 26.2% to 40.4%, GSM8K 93.6% to 97.8%) and leaves it
+  flat on tasks the model already does well (BBH ~74% at every loop depth),
+  while a fixed-depth loop that ignores an early-stop sentinel actively
+  lowers accuracy on the easy set through over-correction.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Pure-reasoning benchmarks (BBH, GSM8K, MATH), no tools or external feedback, two frozen backbones (deepseek-v4-flash, Qwen2.5-72B), n=100 to 500 per cell."
+sources:
+  - source: arxiv-2608-18884
+    stance: supports
+    note: >-
+      Validated by: Compared against single-shot, self-consistency k=2/3,
+      and fixed-depth Self-Refine at matched compute on n=500 splits; the
+      sentinel stopped 82-88% of items at ~2.1 generations with equal or
+      higher accuracy, while every numeric confidence threshold >=0.6
+      collapsed the loop to a single generation because declared confidence
+      was never low.. Measured across nine experiments on three benchmarks
+      and two backbones, with Wilson intervals and McNemar tests;
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-04
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafter linked technique "self-critique-without-grounding-unreliable",
+  which does not list this capability in addresses -- recorded, not
+  asserted. Drafted confidence: medium. Falsifier as drafted: A
+  self-critique loop with no external signal that produces gains above the
+  confidence interval on a benchmark where the model's single-shot accuracy
+  is already high, or a fixed-depth loop that does not degrade accuracy on
+  such a benchmark. Drafted stance toward
+  self-critique-without-grounding-unreliable: supports -- On the clean
+  benchmark the ungrounded critique loop gave no accuracy gain and
+  fixed-depth refinement dropped accuracy from 73.8% to 71.2% by revising
+  correct answers.
+submitted_by: agent:claude-opus-5@Russ-Miller

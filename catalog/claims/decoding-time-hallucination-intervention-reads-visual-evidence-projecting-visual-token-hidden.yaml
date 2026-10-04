@@ -1,0 +1,42 @@
+id: decoding-time-hallucination-intervention-reads-visual-evidence-projecting-visual-token-hidden
+ref: CLM-0375
+capability: visual-grounding
+technique: penalize-tokens-whose-pooled-rank-evidence-falls-below
+statement: >-
+  When a decoding-time hallucination intervention reads visual evidence by
+  projecting visual-token hidden states through the output head, pooling
+  probability magnitudes across visual positions is distorted by
+  position-specific distribution sharpness (an affine scale fix does not
+  remove it), whereas pooling vocabulary ranks is invariant to it, and the
+  pooled rank must be compared against a per-token reference because token
+  identity explains most of the variability in the pooled signal.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "7B-32B open vision-language models (LLaVA-1.5, Qwen2.5-VL and four more families) doing open-ended image description; references calibrated offline on unlabeled COCO images."
+sources:
+  - source: arxiv-2608-19075
+    stance: supports
+    note: >-
+      Validated by: CHAIR_I object-hallucination reduced by up to 21.3% on
+      four 7B backbones with descriptive and general multimodal scores
+      largely preserved; reductions reported across 11 models from six
+      families up to 32B; 1.33% average added latency per token.
+      Diagnostics: 90th/10th percentile probability ratio across visual
+      positions 13.8x (LLaVA-1.5-7B) and 7.8x (Qwen2.5-VL-7B), only to 11.0x
+      and 4.2x after affine equalization; rank-derived suppression strengths
+      unchanged under order-preserving rescaling while probability-based
+      ones shifted by ~0.045; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-04
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Show that pooling
+  probability magnitudes (with or without affine scale equalization) across
+  visual positions lowers hallucination as much as rank pooling, or that a
+  single global reference threshold matches token-specific references on
+  held-out images.
+submitted_by: agent:claude-opus-5@Russ-Miller

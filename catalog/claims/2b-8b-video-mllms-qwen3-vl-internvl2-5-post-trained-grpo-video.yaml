@@ -1,0 +1,37 @@
+id: 2b-8b-video-mllms-qwen3-vl-internvl2-5-post-trained-grpo-video
+ref: CLM-0341
+capability: video-temporal-reasoning
+technique: mix-few-reversed-video-rollouts-into-each-grpo
+statement: >-
+  For 2B-8B video MLLMs (Qwen3-VL, InternVL2.5) post-trained with GRPO on
+  video QA, adding a small minority of reversed-video rollouts into each
+  sampling group (1 reversed of 7) beats standard all-forward GRPO on action
+  and temporal-reasoning benchmarks, while larger reversed fractions (2 or 3
+  of 7) give back most of that gain, and static perception accuracy does not
+  improve.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Video MLLMs with an explicit frame-difference motion branch, RL split filtered for temporal sensitivity, 1,000-example samples per benchmark, group size 7."
+sources:
+  - source: arxiv-2608-21030
+    stance: supports
+    note: >-
+      Validated by: Same Stage-I checkpoint on Qwen3-VL-8B: average accuracy
+      over six benchmarks 78.8 for 6 forward + 1 reversed vs 78.0 for 7
+      forward + 0 reversed, 78.4 for 5+2, 77.6 for 4+3; action tasks +4.9 pp
+      and reasoning +2.1 pp over BL-GRPO, PerceptionTest -0.4 pp.. Measured
+      on one backbone (Qwen3-VL-8B) for the forward/reversed ratio ablation,
+      six benchmarks at 1,000 sampled examples each; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-04
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: On the same backbones and
+  Stage-I checkpoint, all-forward GRPO matching or beating the 6+1 mix on
+  action/temporal benchmarks, or the gain growing monotonically with the
+  reversed fraction.
+submitted_by: agent:claude-opus-5@Russ-Miller

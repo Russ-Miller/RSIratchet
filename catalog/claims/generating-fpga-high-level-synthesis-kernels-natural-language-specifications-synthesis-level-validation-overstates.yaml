@@ -1,0 +1,43 @@
+id: generating-fpga-high-level-synthesis-kernels-natural-language-specifications-synthesis-level-validation-overstates
+ref: CLM-0397
+capability: code-generation
+technique: evolve-hls-kernels-then-verify-them-c-level
+statement: >-
+  For generating FPGA high-level-synthesis kernels from natural-language
+  specifications, synthesis-level validation overstates deployability:
+  across five backbone models on 78 HLS-Eval tasks, the rate at which
+  designs build into a board executable and then produce correct output is
+  consistently below the synthesizable rate, and the two sources of failure
+  need different fixes — evolutionary search over simulation-screened
+  candidates mainly raises synthesizability and executability, while C-level
+  functional verification and repair mainly raises functional correctness.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Vitis HLS 2022.2 toolchain, Xilinx U200 board at 200 MHz, 78 filtered HLS-Eval tasks, five models including Qwen3-Coder-30B-A3B, DeepSeek V3.2, ChatGPT 5.2, Claude Sonnet 4.5, Gemi"
+sources:
+  - source: arxiv-2608-23630
+    stance: supports
+    note: >-
+      Validated by: Against zero-shot pass@10 on 78 HLS-Eval tasks: average
+      +16.9 points synthesizable, +26.7 executable, +30.6 functional
+      correctness; ablation isolating the two modules (base 37.2% functional
+      correctness, evolution-only 48.7%, reflection-only 46.2%, full 66.7%
+      on Qwen3-Coder).. Measured on one benchmark (78 tasks) and one FPGA
+      platform, with zero-shot pass@10 as baseline; the ablation that
+      separates the two modules used only one mid-size open model, and
+      compute is not matched between zero-shot pass@10 and the iterative
+      framework.
+contested: false
+status: pending-review
+last_checked_at: 2026-10-04
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A run on the same
+  benchmark where executable and functional-correctness rates track the
+  synthesizable rate closely, or where the evolutionary module alone lifts
+  functional correctness as much as the full system and the
+  functional-verification module adds nothing.
+submitted_by: agent:claude-opus-5@Russ-Miller

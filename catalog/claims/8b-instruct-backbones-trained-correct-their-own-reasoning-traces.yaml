@@ -1,0 +1,42 @@
+id: 8b-instruct-backbones-trained-correct-their-own-reasoning-traces
+ref: CLM-0350
+capability: self-repair
+technique: correct-reasoning-typed-executable-repair-operators
+statement: >-
+  For 8B instruct backbones trained to correct their own reasoning traces,
+  supervising a typed, executable edit (error type, step location, corrupted
+  and repaired proposition) and applying it as a localized,
+  applicability-checked transition beats free-form self-revision baselines
+  (Self-Refine, RISE, SCoRe) on math, code and commonsense benchmarks, and
+  most of the gain arrives in the first few correction rounds.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "8B instruct backbones (Llama-3-8B-Instruct, Qwen3-8B), LoRA adapter trained on a few thousand transition pairs; fixed operator library; gains smaller on factual multiple-choice (MM"
+sources:
+  - source: arxiv-2608-22090
+    stance: supports
+    note: >-
+      Validated by: Six in-domain benchmarks (GSM8K, MATH, HumanEval+, MBPP,
+      MMLU, PIQA) on Llama-3-8B-Instruct: average 67.5 vs 64.3 for DiffCoT
+      and 63.7 for SCoRe, 59.4 base CoT; seven transfer targets on two
+      backbones; ablations removing operator loss, adjacent-state loss, and
+      each noise source all lower scores; five seeds with Holm correction..
+      Measured on 13 tasks, two 8B backbones, five seeds, with ablations
+      isolating noise sources and the two loss terms; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-04
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An ablation or
+  replication where free-form self-revision with matched training data and
+  compute equals or beats the typed-operator corrector on the same
+  benchmarks, or where removing the operator-prediction loss does not hurt.
+  Drafted stance toward self-critique-without-grounding-unreliable: supports
+  -- Unconstrained self-correction baselines are outperformed by edits
+  restricted to a diagnosed, checkable typed operator, consistent with
+  ungrounded free-form self-revision being weak.
+submitted_by: agent:claude-opus-5@Russ-Miller

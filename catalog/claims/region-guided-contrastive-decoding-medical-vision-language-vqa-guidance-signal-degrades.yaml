@@ -1,0 +1,37 @@
+id: region-guided-contrastive-decoding-medical-vision-language-vqa-guidance-signal-degrades
+ref: CLM-0471
+capability: visual-grounding
+technique: pick-occlusion-roi-counterfactual-likelihood-drop-penalizing-size
+statement: >-
+  In region-guided contrastive decoding for medical vision-language VQA, the
+  guidance signal degrades as the suppressed region gets larger, so compact
+  automatically discovered masks (about 7% mean image coverage) outperform
+  ground-truth bounding boxes (about 39% coverage), which can leave
+  closed-ended accuracy below plain decoding.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Three Med-VLMs (Phi-3.5V-Med, HuatuoGPT-Vision-7B, LLaVA-Med-7B) on SLAKE and MIMIC-CXR VQA; classifier-free-guidance decoding where an unconditional branch suppresses attention to"
+sources:
+  - source: arxiv-2608-17427
+    stance: supports
+    note: >-
+      Validated by: Overall/closed/open scores on SLAKE and MIMIC-CXR
+      against plain decoding, VCD, DoLA, OPERA and GT-mask ARCD across three
+      Med-VLMs; ablations removing the area penalty (-3.4%), replacing
+      counterfactual selection with random masks (-4.4%), and using a single
+      occlusion operator (-3.3%/-4.0%).. Measured on two Med-VQA datasets,
+      three models; coverage analysis only reported for one model
+      (HuatuoGPT-V-7B on SLAKE). [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-04
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Matched experiments
+  where region-guided CFG with large ground-truth masks equals or beats
+  compact automatically selected masks, or where shrinking mask coverage
+  does not improve closed-ended accuracy.
+submitted_by: agent:claude-opus-5@Russ-Miller

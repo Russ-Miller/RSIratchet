@@ -1,0 +1,39 @@
+id: tool-calling-agents-fabricate-parameters-user-never-specified-blocking-call
+ref: CLM-0496
+capability: hallucination
+technique: return-hallucinated-parameter-name-generic-block
+statement: >-
+  For tool-calling agents that fabricate parameters a user never specified,
+  blocking the call with a generic error raises parameter precision but cuts
+  recall and causes retry loops, whereas returning the specific hallucinated
+  parameter name as the block message raises both precision and recall and
+  roughly halves wasted retries.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Qwen3-4B and Llama-xLAM-2-8B agents in a ReAct loop on underspecified tool-calling scenarios, with hallucination detected by a LoRA adapter reading the base model's residual stream"
+sources:
+  - source: arxiv-2608-10430
+    stance: supports
+    note: >-
+      Validated by: On 500 in-distribution and 200 ToolAlpaca
+      out-of-distribution trajectories: parameter F1 61.2 with specific
+      feedback vs 51.3 generic and 52.1 no intervention (ID); false block
+      rate 2.9% vs 9.4%; recovery rate 37.0% vs 23.9% (ID) and 29.3% vs
+      20.0% (OOD); failed retry attempts 1.06 vs 1.47. Detection itself
+      reached 0.966 AUROC ID vs 0.915 external judge and 0.782 linear
+      probe.. Measured on two backbones with human-verified evaluation
+      labels and bootstrap intervals, against generic-block and
+      no-intervention baselines. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-04
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An agent setup where
+  replacing a generic block message with the exact ungrounded parameter name
+  does not improve recall, recovery rate, or false-block rate over the
+  generic block.
+submitted_by: agent:claude-opus-5@Russ-Miller
