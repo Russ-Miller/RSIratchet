@@ -1,0 +1,49 @@
+arxiv_id: "2608.27338"
+title: "One Model, Many Minds: Unlocking Multi-Agent Synergy in a Single Agent
+  via Mixture of Roles"
+url: https://arxiv.org/abs/2608.27338
+drafted_at: 2026-09-29
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: On knowledge, math and medical QA benchmarks with 8B open backbones
+  (Llama-3.1-8B-Instruct, Qwen3-8B), the accuracy advantage of multi-agent
+  debate pipelines over a single agent can be matched by a single-turn single
+  agent whose hidden state is steered by a query-composed mixture of role
+  vectors, at roughly a twentieth of the token cost, so the benefit of these
+  pipelines comes from multi-perspective specialization rather than from
+  inter-agent text exchange.
+kind: observation
+backing_strength: single-paper
+scope_condition: Two 8B instruct backbones with accessible hidden states; five
+  short-answer reasoning benchmarks plus a personality benchmark; MAS
+  baselines LLM Debate, AutoGen, AgentVerse, DyLAN; does not cover
+  long-horizon agentic tasks or API-only models.
+technique: ""
+proposed_technique: Compose role steering vectors per query instead of debating
+technique_summary: A learnable codebook of role steering vectors, warm-started
+  from contrastive activation directions and fused by a query-aware top-K
+  router, is added to the last prompt token's residual stream at the middle
+  layer of a frozen LLM, trained by staged SFT plus GRPO over the router's
+  role-subset policy.
+technique_kind: training
+technique_validated_by: Average accuracy and average rank over MMLU, TriviaQA,
+  MATH, GSM8K, MedQA against vanilla, text-role, CAA, ActAdd, Prompt FT, Billy
+  single-agent baselines and four MAS baselines, plus PersonalityBench scores;
+  token counts compared; ablations on router, codebook and steering position.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A single-agent steered variant that stays well below multi-agent
+  debate and AgentVerse accuracy on the same benchmarks and backbones, or a
+  setting where the MAS gain survives only with actual inter-agent text
+  exchange and no activation-space composition reproduces it.
+evidence_note: Measured on two 8B backbones and five reasoning benchmarks;
+  MoRe averaged 69.32 vs AgentVerse 69.28 on Llama and 71.48 vs 72.40 on Qwen,
+  with about 1/20 the tokens. Margins over the best single-agent baseline are
+  under one point, so the single-agent-beating part is thin; the cost claim is
+  large and clear. No frontier models, no agentic or tool tasks, and the
+  transfer of the MAS-mechanism interpretation is inferred from matching
+  scores rather than directly isolated.
+confidence: medium
