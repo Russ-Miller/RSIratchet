@@ -1,0 +1,52 @@
+arxiv_id: "2609.10316"
+title: Ensembling LLMs for AI-Augmented Cybersecurity Software Requirements
+  Generation
+url: https://arxiv.org/abs/2609.10316
+drafted_at: 2026-09-23
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: When multiple stochastic runs of several mid-tier LLMs each produce
+  an unranked set of candidate security requirements from the same control
+  templates, pooling the runs recovers far more valid items than any single
+  run but also many hallucinations, and ranking the pooled candidates by how
+  many runs produced them separates valid from hallucinated items well enough
+  to beat every individual run's precision-recall and ROC area.
+kind: observation
+backing_strength: single-paper
+scope_condition: 24 runs from 12 configurations across four non-frontier model
+  families (Llama 3.1 405B, Qwen-2 72B, Mixtral 8x22B, GPT-4 Turbo), ten
+  ISO/IEC 27002:2022 controls on one specified target system,
+  expert-adjudicated closed universe of 183 candidates with 72 valid; metrics
+  computed on the same corpus used to fit weights, with bootstrap internal
+  validation only.
+technique: ""
+proposed_technique: Rank pooled multi-run outputs by cross-run vote count
+technique_summary: Treat each LLM run as a black-box retrieval system casting
+  a binary vote per candidate requirement, sum the votes (optionally weighted
+  by each model family's estimated true-positive/false-positive log-odds), and
+  hand reviewers the resulting ranked queue instead of one run's output.
+technique_kind: process
+technique_validated_by: "Tie-aware average precision and ROC AUC over the
+  183-candidate judged universe: uniform vote fusion exceeded the best single
+  configuration by 0.142 AP and 0.118 ROC AUC; Naive-Bayes reliability
+  weighting added 0.039 and 0.052, reaching 0.864 and 0.869. Gains stayed
+  positive in at least 92% of out-of-bag bootstrap resamples and in every
+  structured-perturbation sample."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On a comparable expert-adjudicated corpus, vote-count fusion over
+  repeated runs ranks hallucinations as highly as valid requirements (AP/ROC
+  AUC at or below the best single run), showing cross-run agreement does not
+  track validity.
+evidence_note: "Measured on one frozen corpus from a prior study: one target
+  system, ten controls, 183 candidates, 72 valid, 111 hallucinations.
+  Baselines are the individual runs and configuration averages, plus random,
+  pattern-oracle and numerically optimized reference curves. Naive-Bayes
+  weights were fitted on the same labelled corpus they are evaluated on, so
+  the weighted variant's margin is apparent performance; bootstrap refitting
+  is internal, not external, validation. Single system and single domain means
+  generalization is untested."
+confidence: medium
