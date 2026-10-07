@@ -1,0 +1,58 @@
+arxiv_id: "2609.17269"
+title: Semantic-Spatial Agreement Verification for Mitigating Object
+  Hallucination in Multimodal Large Language Models
+url: https://doi.org/10.48550/arxiv.2609.17269
+drafted_at: 2026-09-25
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: For 7-13B multimodal models, verifying each object claim with a
+  frozen open-vocabulary detector lowers object hallucination only if evidence
+  is pooled across semantically equivalent phrasings and checked for spatial
+  agreement (the preferred boxes of different queries overlapping on one
+  instance); a single-query maximum score is a weaker signal, and shuffling
+  the spatial evidence across samples drives its discrimination to chance.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: LLaVA-1.5-7B, mPLUG-Owl2, MiniGPT-4 Vicuna-13B with a frozen
+  OWL-ViT-base verifier; POPE (COCO/A-OKVQA/GQA), MME-Existence, and CHAIR on
+  500 COCO images; claims reducible to object existence within a fixed
+  category vocabulary.
+technique: ""
+proposed_technique: Verify object claims by cross-query semantic and spatial agreement
+technique_summary: For each object claim, query a frozen open-vocabulary
+  detector with four paraphrased prompts, average the top scores for semantic
+  support, score whether the queries' preferred boxes form one overlapping
+  cluster with a dominant candidate, fuse the two by geometric mean, and use
+  the score to shift the yes/no logit margin or delete the claim from a
+  caption.
+technique_kind: tooling
+technique_validated_by: On LLaVA-1.5-7B, POPE accuracy averaged over three
+  sources rose 1.81 (Popular) and 3.17 (Adversarial) points over vanilla,
+  CHAIRs fell 49.40 to 32.80 and CHAIRi 13.82 to 8.22; a
+  matched-random-deletion control removing the same number of claims only
+  reached CHAIRs 43.40; ablations show single-query 80.20 vs full 81.97
+  GQA-Adversarial accuracy, and shuffling QIRV evidence drops ROC-AUC 63.32 to
+  50.43. Random-sampling POPE accuracy fell (90.33 to 88.54) and recall drops
+  as calibration strength grows.
+stance_on_existing: supports
+related_claim_id: training-free-inference-time-hallucination-interventions-7b-class-vision-language-models-increasing-intervention
+stance_reason: Raising the external-evidence calibration coefficient keeps
+  correcting errors but cuts recall from 84.93% to 72.13% and lowers accuracy,
+  so lower hallucination at high intervention strength again comes with less
+  content committed.
+falsifier: An ablation on the same models and benchmarks showing single-query
+  detector verification at a tuned threshold matches full cross-query
+  semantic-spatial verification on CHAIRi and POPE Adversarial accuracy at
+  equal rejection budget, or spatial-evidence shuffling leaving discrimination
+  intact.
+evidence_note: Measured on three base models, three POPE sources under three
+  samplings, MME-Existence, and CHAIR-500, with vanilla and published
+  decoding-intervention baselines, a matched-rejection-budget control, an
+  evidence-shuffling control, and fusion-operator/IoU/dominance sensitivity.
+  Single-paper, authors' own implementation; some baselines are numbers
+  reported by other studies. Does not isolate how much of the gain is the
+  detector's own accuracy versus the agreement criterion, and gains on Random
+  sampling are negative.
+confidence: medium
