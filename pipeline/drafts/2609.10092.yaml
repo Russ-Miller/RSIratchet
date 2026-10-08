@@ -1,0 +1,49 @@
+arxiv_id: "2609.10092"
+title: "RAP: Research Attention Prediction Reveals Target-Conditioned Evidence
+  Acquisition Biases"
+url: https://arxiv.org/abs/2609.10092
+drafted_at: 2026-09-28
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: forecasting
+statement: When a search agent is asked to forecast a future distribution
+  rather than report the current state over the same cumulative literature
+  archive, the forward-looking target changes what it retrieves — it allocates
+  a smaller share of retrieved documents to the most recent window, which is
+  the more predictive evidence — so carrying the agent's own state estimate
+  forward beats its explicit forecast.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Agents searching a temporally restricted arXiv corpus with a
+  BM25 interface and full pre-cutoff (expanding-history) access; measured on
+  four models (GPT-5.5, Qwen3.6-27B, GPT-OSS-120B, DeepSeek-V3) predicting
+  six-month direction shares. The reversal is small and sign-inconsistent when
+  search is restricted to the preceding six months.
+technique: ""
+proposed_technique: Ask for the current state, then carry it forward
+technique_summary: Instead of prompting the agent to forecast directly, have
+  it search for and estimate the most recent period's distribution and use
+  that estimate as the forecast.
+technique_kind: prompting
+technique_validated_by: State-as-Forecast beat direct Forecast on
+  episode-level Spearman agreement for all four diagnostic models under
+  expanding-history access; frozen-evidence replay with byte-identical query
+  traces and matched search-call budgets attributed a shared part of the gap
+  to retrieval rather than readout.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A setup where forecast-conditioned queries retrieve as large or
+  larger a share of recent evidence as state-conditioned queries, or where
+  direct forecasting matches or beats state carry-forward under matched search
+  budgets on cumulative-history access.
+evidence_note: Measured on 1,055 held-out episodes across 211 fields with five
+  rolling origins; four diagnostic models; frozen replay of 86,284 recorded
+  search calls isolates acquisition from readout, and same-query
+  counterfactuals showed the state wording itself gave at most +0.011
+  evidence-future alignment while applying recent-window relevance to
+  forecast's own queries gained +0.086 to +0.124. Replay does not rerun the
+  readout, so repaired forecast accuracy is not estimated, and matched calls
+  do not equalize retrieved-paper volume.
+confidence: medium

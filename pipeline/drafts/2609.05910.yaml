@@ -1,0 +1,46 @@
+arxiv_id: "2609.05910"
+title: "UniRRM: Unified Reasoning Reward Models Across Languages and
+  Evaluation Paradigms"
+url: https://doi.org/10.48550/arxiv.2609.05910
+drafted_at: 2026-09-28
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: critique
+statement: For 8B-14B generative reward models trained as judges, making the
+  model generate input-adaptive evaluation criteria inside its own reasoning
+  chain and rewarding the quality of those criteria with a stronger teacher
+  model raises agreement with preference labels, and the gain scales with the
+  teacher's capability rather than with the presence of the rubric step alone.
+kind: observation
+backing_strength: single-paper
+scope_condition: Qwen3-8B/14B backbones, SFT on distilled judge traces then
+  GRPO, evaluated on RewardBench, M-RewardBench, MM-Eval, JudgeBench and
+  RewardBench v2
+technique: ""
+proposed_technique: Reward the judge's self-generated rubric, scored by a teacher
+technique_summary: The judge model emits an analysis segment, then
+  task-generic and instruction-specific scoring criteria, then its evaluation,
+  and during GRPO a stronger teacher model scores the generated criteria as
+  one term of the reward.
+technique_kind: training
+technique_validated_by: "Pairwise accuracy on RewardBench, MM-Eval and
+  JudgeBench against the untrained Qwen3-8B backbone (overall 0.809) and
+  against ablations: dropping the rubric reward gives 0.854 and the full model
+  0.863; swapping the rubric-scoring teacher from Qwen3-32B to Qwen3-Flash to
+  Qwen3-Max moves overall from 0.840 to 0.849 to 0.863."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An equally trained judge whose self-generated rubrics are rewarded
+  by a weak teacher, or not rewarded at all, matching the strong-teacher
+  version's accuracy on the same benchmarks; or the rubric segment adding
+  nothing over a plain reasoning chain of similar length.
+evidence_note: Measured on four pairwise benchmarks plus one listwise, with
+  reward-component and teacher-capability ablations on the 8B model only. The
+  teacher ladder is monotone but spans a small range (0.840-0.863) and teacher
+  identity is confounded with family/scale. No matched-token-budget control
+  for the added rubric text, so the gain is not cleanly separated from longer
+  reasoning. Point-wise generalization is reported but only compared against a
+  small set of baselines.
+confidence: medium
