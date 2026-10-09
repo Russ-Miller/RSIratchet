@@ -1,0 +1,45 @@
+arxiv_id: "2609.16098"
+title: Universal Defenses for Tool-Integrated LLM Agents Against Adversarial Attacks
+url: https://doi.org/10.48550/arxiv.2609.16098
+drafted_at: 2026-09-24
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: prompt-injection
+statement: For tool-integrated LLM agents where the attack works by adding
+  attacker-controlled tools, overwriting the agent's visible toolset with the
+  saved user toolset immediately before planning drives attack success to near
+  zero across direct and indirect injection, memory poisoning and backdoor
+  attacks, but its effect on benign task success is model-dependent — raising
+  it for 7-9B open models and lowering it for GPT-3.5/GPT-4.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: ASB benchmark, 10 agent domains; attacks that operate by
+  injecting or tampering with tools; requires white-box access to restore a
+  trusted toolset before planning; not tested in dynamic real-world
+  environments
+technique: ""
+proposed_technique: Restore the trusted toolset just before planning
+technique_summary: Save the user's original tool list and overwrite whatever
+  toolset the agent can see with it immediately before the planning step, so
+  plans can only reference user-approved tools.
+technique_kind: tooling
+technique_validated_by: Attack success rate and original task success rate on
+  the ASB benchmark across four open 7-9B models and GPT-3.5/GPT-4/GPT-5,
+  against no defense and against ASB's paraphrasing and delimiter defenses;
+  ASR fell to 0 on several models under IPI, MP and backdoor, while OTSR fell
+  for GPT models under IPI/MP/backdoor.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An attack that manipulates only prompt or memory content while
+  using only legitimate tools, on which toolset restoration leaves attack
+  success unchanged; or a replication where restoration also degrades task
+  success on open models.
+evidence_note: Measured on one benchmark (ASB) with four attack families and
+  seven models; the reported configuration always bundles NTR with CoT,
+  paraphrasing and reflection, and only one ablation figure (Context Ignoring
+  DPI) isolates NTR, so the attribution of the near-zero ASR to restoration
+  alone rests on that single ablation. No external replication; defenses
+  compared only to ASB's own baselines.
+confidence: medium

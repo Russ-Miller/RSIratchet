@@ -1,0 +1,58 @@
+arxiv_id: "2609.21088"
+title: "Origin Is All You Need: Provenance-Aware Transformers for Structural
+  Trust-Boundary Separation"
+url: https://doi.org/10.48550/arxiv.2609.21088
+drafted_at: 2026-09-27
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: prompt-injection
+statement: For decoder-only 360M-8B instruct models, adding
+  application-supplied provenance labels as an architectural signal — origin
+  embeddings plus a learned ring-indexed attention bias that suppresses
+  assistant and user queries attending to untrusted-source keys — cuts
+  indirect-injection attack success on unseen task domains and injection
+  styles further than the same two-stage fine-tuning without the architectural
+  components, even though both are equal in-distribution.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Requires the application to be able to tag token spans by
+  source; holds where untrusted external content need not be acted on as
+  instructions, since Ring-3 suppression is unconditional and would also
+  suppress legitimate retrieved directives.
+technique: ""
+proposed_technique: Make source provenance an architectural attention bias
+technique_summary: Tag each input token with a discrete origin ring, add a
+  learned origin embedding scaled by a learnable gate, and add a learned
+  ring-by-ring bias to attention logits that suppresses attention from
+  assistant/user queries to untrusted-source keys, then fine-tune in two
+  stages (origin semantics, then suppression).
+technique_kind: architecture
+technique_validated_by: Attack success rate on one in-distribution (SEP,
+  4,375) and three out-of-distribution injection sets (PI-Attack,
+  DataSentinel, Math-Tutor) across four base models, against an
+  architecture-free same-data SFT baseline and ten published defenses; OOD ASR
+  <=0.05% versus 2.3-17.8% for SFT. Utility via AlpacaEval 2.0
+  length-controlled win rate against the base model (48.8-60.9% for three
+  models, 42.7% for Mistral). Zeroing the attention bias at inference raises
+  OOD ASR to 12-98%; skipping stage 1 leaves ASR unchanged but collapses win
+  rate.
+stance_on_existing: supports
+related_claim_id: structured-separation-needs-training-and-reduces-rather-than-eliminates
+stance_reason: The architecture-free fine-tuning baseline already cuts
+  in-distribution ASR below 1%, and the added structural separation still
+  needs two-stage fine-tuning to work, so separation's strength comes from
+  training plus structure rather than labels alone.
+falsifier: An adaptive or reworded injection placed in Ring 3 that raises
+  attack success to the architecture-free SFT baseline's level, or a
+  replication where the ring-indexed attention bias adds no OOD margin over
+  the same fine-tuning without it.
+evidence_note: "Measured on four base models, one IID and three OOD injection
+  benchmarks, with a matched same-data SFT ablation that isolates the
+  architecture, plus inference-time bias zeroing and stage-1 ablations.
+  Weaknesses: OOD sets are mostly classification-style; the Ring-3 suppression
+  is unconditional, so near-zero ASR partly reflects ignoring all external
+  content, and the benchmarks do not require acting on retrieved instructions.
+  Adaptive attacks are two white-box methods on one model. Utility is a single
+  LLM-judged win rate, below parity on Mistral."
+confidence: medium
