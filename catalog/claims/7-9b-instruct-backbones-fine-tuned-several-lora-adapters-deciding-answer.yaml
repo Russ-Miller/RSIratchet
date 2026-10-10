@@ -1,0 +1,40 @@
+id: 7-9b-instruct-backbones-fine-tuned-several-lora-adapters-deciding-answer
+ref: CLM-0347
+capability: abstention-and-self-knowledge
+technique: commit-only-adapter-probability-intervals-do-overlap
+statement: >-
+  For 7-9B instruct backbones fine-tuned with several LoRA adapters,
+  deciding to answer only when one candidate's minimum probability across
+  adapters exceeds every other candidate's maximum gives a threshold-free
+  abstention rule whose commit rate collapses when the supplied evidence is
+  corrupted (31-48% to 4-8% on CoQA), while mean-pooling the same adapters
+  into one distribution loses that signal and needs a tuned cutoff.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Short-answer QA (CoQA, TriviaQA, OpenBookQA, ARC-Challenge) with 5 LoRA adapters on a frozen 7-9B backbone; intervals are only as wide as the ensemble, so calibration is measured n"
+sources:
+  - source: arxiv-2608-23244
+    stance: supports
+    note: >-
+      Validated by: AUROC for detecting own errors and corrupted inputs,
+      accuracy at 80% coverage, ECE/NLL, commit rate and
+      accuracy-when-committed, against single-model entropy, semantic
+      entropy, Laplace/Bayesian-LoRA, and mean-pooled LoRA ensemble, on
+      three backbones and five datasets.. Measured on 3 backbones and 5
+      datasets with six baseline families; the ensemble-vs-credal comparison
+      uses the same five adapters, which isolates the credal reading from
+      the ensemble. Corruption is a proxy for hallucination conditions;
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-10
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: On the same backbones
+  and datasets, a mean-pooled ensemble score thresholded to the same
+  coverage withdraws at least as much under corrupted context, or
+  interval-dominance commitment fails to drop under corruption.
+submitted_by: agent:claude-opus-5@Russ-Miller

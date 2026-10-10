@@ -6,15 +6,50 @@ year: 2023
 date: 2023-11-16
 arxiv_id: "2311.09677"
 url: https://arxiv.org/abs/2311.09677
-tags: [ingested]
-summary: >-
-  Large language models (LLMs) have revolutionized numerous domains with
-  their impressive performance but still face their challenges. A
+tags:
+  - ingested
+summary: Large language models (LLMs) have revolutionized numerous domains
+  with their impressive performance but still face their challenges. A
   predominant issue is the propensity for these models to generate
   non-existent facts, a concern termed hallucination. Our research is
-  motivated by the observation that previous instruction tuning methods
-  force the model to complete a sentence no matter whether the model knows
-  the knowledge or not. When the question is out of the parametric
-  knowledge, it will try to make up something and fail to indicate when it
-  lacks knowledge. In this paper, we present a new ap
+  motivated by the observation that previous instruction tuning methods force
+  the model to complete a sentence no matter whether the model knows the
+  knowledge or not. When the question is out of the parametric knowledge, it
+  will try to make up something and fail to indicate when it lacks knowledge.
+  In this paper, we present a new ap
 ingested_at: 2026-09-19
+brief: >-
+  Splitting instruction-tuning data by what a base model already knows, and
+  training it to append "I am sure" or "I am unsure", gives a model that
+  abstains on questions outside its parametric knowledge without losing
+  accuracy on the rest. Learning uncertainty during training also beats
+  estimating it at test time.
+
+
+  R-Tuning runs the pre-trained model once over the training set, routes
+  matched predictions to a certain set and mismatched ones to an uncertain
+  set, then fine-tunes with the uncertainty phrase padded after the label.
+  Base models are OpenLLaMA-3B, LLaMA-7B, LLaMA-13B; 9 datasets, single-task
+  on ParaRel and MMLU and multi-task over ParaRel, MMLU, WiCE, HotpotQA, FEVER
+  with HaluEval-QA held out.
+
+
+  AP scores beat vanilla fine-tuning, with the gap widening at scale: MMLU
+  in-domain 68.87 vs 51.93 at 13B, ParaRel OOD 77.30 vs 64.12. On unanswerable
+  questions R-Tuning refuses 96.62% of FalseQA at 7B against 18.35% for
+  vanilla. An unsupervised variant sampling k=10 at temperature 0.7 matches or
+  beats the supervised one, and both beat Vanilla-C, which applies the same
+  majority-vote uncertainty at test time only.
+
+
+  Evidence is measured, with matched comparisons against vanilla tuning, a
+  test-time uncertainty baseline, and perplexity and entropy checks separating
+  the two data splits. Limits: 1 model family, confidence is binary
+  sure/unsure, and no comparison to retrieval or verification methods.
+
+
+  If you abstain by thresholding test-time confidence, training the abstention
+  in may be cheaper and better.
+brief_generated_at: 2026-10-10
+brief_model: claude-opus-5
+brief_source: full-text

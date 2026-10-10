@@ -1,0 +1,43 @@
+arxiv_id: "2609.22917"
+title: "An Iterative LangGraph Agent for Text-to-SQL: Natural Language Access
+  to the Chicago Crime Database"
+url: https://doi.org/10.48550/arxiv.2609.22917
+drafted_at: 2026-09-26
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: formal-query-synthesis
+statement: In a prompted text-to-SQL agent, a blanket output-shaping
+  instruction in the system prompt (here "LIMIT 10") is applied by the model
+  to every generated query regardless of the question's intent, truncating
+  answers that legitimately need many rows, so removing it raises execution
+  accuracy most on questions whose correct result set is large.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Single open-weight model (gpt-oss-120b) at temperature 0,
+  prompt engineering only, one hand-built 100-question benchmark over one
+  PostgreSQL database (Chicago Crime); no external baseline and no public
+  benchmark.
+technique: ""
+proposed_technique: Drop blanket row-limit instructions from text-to-SQL prompts
+technique_summary: Remove global output-shaping directives such as "LIMIT 10"
+  from the SQL-generation system prompt so row count is decided by the
+  question rather than the prompt.
+technique_kind: prompting
+technique_validated_by: "Two prompt revisions of the same agent on 100
+  stratified questions: overall execution accuracy 47%->60% under a hybrid
+  relational equivalence metric (12%->19% strict JSON match), valid SQL rate
+  87%->93%, synthesis quality 3.91->4.34; hard-tier strict EX 7%->17%.
+  Confounded with a concurrent relevance-checker keyword expansion."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Removing a blanket row-limit instruction leaves execution accuracy
+  unchanged, or the gain is concentrated on single-row-answer questions rather
+  than multi-row ones, in a controlled single-variable comparison.
+evidence_note: "Measured but weakly isolated: V1 vs V2 changed both the LIMIT
+  instruction and the relevance-checker keyword list, so the two effects are
+  not fully separated; per-tier and failure-mode tables (LIMIT truncation
+  failures 4 -> 0) support the attribution. Single model, single run,
+  LLM-judged metrics with no agreement statistics."
+confidence: medium

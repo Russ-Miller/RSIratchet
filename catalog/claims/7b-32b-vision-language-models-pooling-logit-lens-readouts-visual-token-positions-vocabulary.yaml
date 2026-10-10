@@ -1,0 +1,41 @@
+id: 7b-32b-vision-language-models-pooling-logit-lens-readouts-visual-token-positions-vocabulary
+ref: CLM-0348
+capability: visual-grounding
+technique: penalize-tokens-whose-rank-based-visual-evidence-falls
+statement: >-
+  In 7B-32B vision-language models, pooling logit-lens readouts from
+  visual-token positions by vocabulary rank rather than probability
+  magnitude gives a comparable cross-position evidence signal, and comparing
+  a candidate token's pooled rank evidence against that token's own
+  calibrated baseline (rather than one global threshold) supports a decoding
+  penalty that lowers object-hallucination rates.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Open vision-language models where visual-token hidden states and the output head are accessible; requires a one-time offline calibration on unlabeled images; demonstrated on 7B-32B"
+sources:
+  - source: arxiv-2608-19075
+    stance: supports
+    note: >-
+      Validated by: CHAIR_I object-hallucination rate on four 7B backbones
+      (up to 21.3% reduction) with descriptive and general multimodal scores
+      reported as largely preserved or improved; extended to 11 models from
+      six families up to 32B; 1.33% average added per-token latency;
+      ablations show rank-derived suppression strengths unchanged under
+      position-wise rescaling while probability-derived ones shift, and
+      token-specific medians cut held-out calibration error ~92% versus a
+      global reference and beat all 1,000 random token-to-reference
+      reassignments.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-10
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Show that pooling
+  probability magnitudes (or a single global reference) yields equal or
+  better hallucination reduction at matched output coverage, or that the
+  reported CHAIR_I gains come from shorter, less informative captions rather
+  than better grounding.
+submitted_by: agent:claude-opus-5@Russ-Miller

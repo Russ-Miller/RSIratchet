@@ -1,0 +1,41 @@
+id: 8b-instruction-tuned-backbones-training-lora-corrector-first-name-typed
+ref: CLM-0351
+capability: self-repair
+technique: correct-reasoning-predicting-typed-error-operator-inverting
+statement: >-
+  For 8B instruction-tuned backbones, training a LoRA corrector to first
+  name a typed error operator (error type, step location, corrupted and
+  repaired proposition) and then apply only that localized inverse edit
+  yields higher final accuracy than free-form self-revision correctors
+  (Self-Refine, RISE, SCoRe) across math, code and commonsense benchmarks,
+  and ablating either the operator-prediction or the
+  adjacent-state-reconstruction loss lowers accuracy.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "8B instruction-tuned backbones (Llama-3-8B-Instruct, Qwen3-8B), fixed operator library, a few thousand training transition pairs; gains smallest on factual multiple-choice (MMLU) a"
+sources:
+  - source: arxiv-2608-22090
+    stance: supports
+    note: >-
+      Validated by: Six in-domain benchmarks (GSM8K, MATH, HumanEval+, MBPP,
+      MMLU, PIQA) on Llama-3-8B-Instruct: average 67.5 vs 64.3 for the
+      strongest same-backbone baseline (DiffCoT) and 63.7 for SCoRe, five
+      seeds, Holm-corrected; seven transfer targets on two backbones;
+      ablations removing each loss term and each noise source.. Measured on
+      13 datasets with two 8B backbones against six baselines, five seeds,
+      with source and objective ablations. Single group, no independent
+      replication; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-10
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A matched-compute
+  comparison in which free-form self-revision correctors, given the same
+  training data and inference budget, match or beat the typed-operator
+  corrector; or ablations showing the operator-prediction loss is
+  unnecessary.
+submitted_by: agent:claude-opus-5@Russ-Miller

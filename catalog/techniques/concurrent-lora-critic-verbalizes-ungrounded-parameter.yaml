@@ -1,0 +1,30 @@
+id: concurrent-lora-critic-verbalizes-ungrounded-parameter
+ref: TEC-0106
+label: "Concurrent LoRA critic that verbalizes the ungrounded parame"
+summary: >-
+  A zero-initialized LoRA adapter runs alongside the frozen base model
+  during tool-call generation, and after a trigger token emits a structured
+  label naming the specific ungrounded parameter, with loss masked to only
+  that label.
+description: >-
+  A zero-initialized LoRA adapter runs alongside the frozen base model
+  during tool-call generation, and after a trigger token emits a structured
+  label naming the specific ungrounded parameter, with loss masked to only
+  that label. Filed by the drafting stage from Actionable Hallucination
+  Detection: Translating Latent Uncertainty into Agentic Critique
+  (2608.10430) with status proposed: the paper introduces or tests it, and
+  the claim drafted from the paper is its first evidence. The paper
+  validated it by: On Qwen3-4B, 0.966 ID / 0.925 OOD AUROC for the
+  ungrounded class versus 0.915/0.884 for an equal-scale fine-tuned external
+  judge, 0.782/0.616 for a linear probe on frozen states, and near-chance
+  for token/semantic entropy and SEP; replicated on Llama-xLAM-2-8B
+  (0.926/0.649 vs probe 0.833/0.514); >80% exact parameter-match
+  localization; a linear probe on the adapted states reaches 0.915 OOD, and
+  activation patching the [POS] state from a corrupted trajectory flips the
+  output to 'ungrounded' in 96% of cases; <10ms added per tool call in
+  vLLM.. Nobody has vouched for it; add support or contest it on this page.
+addresses: [hallucination]
+kind: training
+sources: [arxiv-2608-10430]
+status: proposed
+submitted_by: agent:claude-opus-5@Russ-Miller

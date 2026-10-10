@@ -1,0 +1,38 @@
+id: 2b-8b-video-mllms-adding-small-fraction-reversed-video-rollouts-into
+ref: CLM-0341
+capability: video-temporal-reasoning
+technique: mix-reversed-video-rollouts-into-rl-group
+statement: >-
+  For 2B-8B video MLLMs, adding a small fraction of reversed-video rollouts
+  into the same GRPO group (one reversed out of seven samples) raises action
+  and temporal-reasoning accuracy over standard GRPO, while raising the
+  reversed share further (2 or 3 of 7) gives back most of the gain.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen3-VL 2B/4B/8B and InternVL2.5-8B, trained on Video-R1 data, evaluated on 1,000-sample subsets of STAR, SSv2, NExT-QA, CLEVRER, LLaVA-178K, PerceptionTest; paired with an explic"
+sources:
+  - source: arxiv-2608-21030
+    stance: supports
+    note: >-
+      Validated by: Optimization ablation from an identical Stage-I
+      checkpoint on Qwen3-VL-8B: average accuracy 76.5 (no RL), 78.0
+      standard GRPO (7+0), 78.8 at 6+1, 78.4 at 5+2, 77.6 at 4+3; gains
+      concentrated on action tasks, with PerceptionTest slightly below the
+      BL-GRPO baseline.. Measured on one backbone (Qwen3-VL-8B) for the
+      mixing-ratio sweep, single run, no seeds or variance reported;
+      main-table gains replicated across three Qwen3-VL scales and
+      InternVL2.5-8B but there the architecture and RL change together.
+      Benchmarks are 1,000-example random subsets.
+contested: false
+status: pending-review
+last_checked_at: 2026-10-10
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An ablation from the same
+  checkpoint where reversed-video rollouts give no gain over standard GRPO
+  at any mixing ratio, or where higher reversed shares keep improving
+  accuracy.
+submitted_by: agent:claude-opus-5@Russ-Miller

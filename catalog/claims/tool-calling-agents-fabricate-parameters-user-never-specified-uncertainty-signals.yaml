@@ -1,0 +1,44 @@
+id: tool-calling-agents-fabricate-parameters-user-never-specified-uncertainty-signals
+ref: CLM-0496
+capability: hallucination
+technique: concurrent-lora-critic-verbalizes-ungrounded-parameter
+statement: >-
+  For tool-calling agents that fabricate parameters the user never
+  specified, uncertainty signals read off the output distribution (token
+  entropy, semantic entropy) fail because the model is confidently wrong,
+  while a LoRA adapter trained only on a diagnostic label appended after the
+  tool call restructures the residual stream into a linearly separable
+  grounding direction that detects and names the ungrounded parameter and
+  transfers out of distribution better than a passive probe on the frozen
+  states.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Structured tool-calling with parameter-level ground truth from a simulated-user specification mask; tested on Qwen3-4B and Llama-xLAM-2-8B, in-distribution plus ToolAlpaca OOD; det"
+sources:
+  - source: arxiv-2608-10430
+    stance: supports
+    note: >-
+      Validated by: On Qwen3-4B, 0.966 ID / 0.925 OOD AUROC for the
+      ungrounded class versus 0.915/0.884 for an equal-scale fine-tuned
+      external judge, 0.782/0.616 for a linear probe on frozen states, and
+      near-chance for token/semantic entropy and SEP; replicated on
+      Llama-xLAM-2-8B (0.926/0.649 vs probe 0.833/0.514); >80% exact
+      parameter-match localization; a linear probe on the adapted states
+      reaches 0.915 OOD, and activation patching the [POS] state from a
+      corrupted trajectory flips the output to 'ungrounded' in 96% of cases;
+      <10ms added per tool call in vLLM.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-10
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Showing that a probe or
+  MLP on the frozen base states, or a sampling-based entropy method, matches
+  the adapter's OOD AUROC and parameter localization on comparable
+  tool-calling data; or that an identically trained adapter with the same
+  added capacity but no masked diagnostic objective yields the same
+  separability.
+submitted_by: agent:claude-opus-5@Russ-Miller

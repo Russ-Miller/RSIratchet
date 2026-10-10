@@ -1,20 +1,64 @@
 id: arxiv-2207-05221
 ref: SRC-0305
 kind: paper
-title: "Language Models (Mostly) Know What They Know"
+title: Language Models (Mostly) Know What They Know
 year: 2022
 date: 2022-07-11
 arxiv_id: "2207.05221"
 url: https://arxiv.org/abs/2207.05221
-tags: [ingested]
-summary: >-
-  We study whether language models can evaluate the validity of their own
-  claims and predict which questions they will be able to answer correctly.
-  We first show that larger models are well-calibrated on diverse multiple
-  choice and true/false questions when they are provided in the right
-  format. Thus we can approach self-evaluation on open-ended sampling tasks
-  by asking models to first propose answers, and then to evaluate the
-  probability "P(True)" that their answers are correct. We find encouraging
-  performance, calibration, and scaling for P(True) on a diverse array of
-  tasks. Performance at sel
+tags:
+  - ingested
+summary: We study whether language models can evaluate the validity of their
+  own claims and predict which questions they will be able to answer
+  correctly. We first show that larger models are well-calibrated on diverse
+  multiple choice and true/false questions when they are provided in the right
+  format. Thus we can approach self-evaluation on open-ended sampling tasks by
+  asking models to first propose answers, and then to evaluate the probability
+  "P(True)" that their answers are correct. We find encouraging performance,
+  calibration, and scaling for P(True) on a diverse array of tasks.
+  Performance at sel
 ingested_at: 2026-09-19
+brief: >-
+  Large pretrained language models can assign calibrated probabilities to
+  whether their own sampled answers are correct, and verification scales
+  faster than generation. The result supports the view that self-evaluation
+  signal exists in base models, while cutting against the assumption that
+  models are uniformly overconfident about their own output.
+
+
+  Anthropic models at 800M, 3B, 12B and 52B parameters (pretrained for 850B
+  tokens) were tested on BIG Bench multiple choice, MMLU, TruthfulQA, LogiQA,
+  QuALITY, and on 5 sampling tasks: TriviaQA, Lambada, arithmetic, GSM8k, and
+  Codex HumanEval, plus scraped Python function synthesis.
+
+
+  Calibration improves with size and with 0-shot to 5-shot prompting, but only
+  in a format where lettered options are visible; replacing an option with
+  "none of the above" degrades accuracy and calibration even 20-shot. Asking
+  the model P(True) on its own T=1 samples separates correct from incorrect,
+  and filtering to P(True) > 0.5 raises accuracy; showing 5 of its own samples
+  first helps short-answer tasks more than long-form ones. A finetuned P(IK)
+  head trained on TriviaQA reaches AUROC 0.864 in-distribution and transfers
+  partially: 0.928 on arithmetic, 0.687 on Python synthesis, 0.606 on Lambada,
+  0.624 on GSM8k, all improving when trained on 4 tasks. P(IK) rises when a
+  relevant Wikipedia article or a correct GSM8k hint is in context, and falls
+  for distracting hints.
+
+
+  Evidence is measured across many tasks with size sweeps and training-set
+  ablations. The self-knowledge claim is isolated only weakly: 2 12B models
+  with different pretraining data showed roughly 6% higher P(IK) on their own
+  correct questions, and the cross-initialization test gave an effect in 1
+  direction only.
+
+
+  RLHF policies appear miscalibrated until temperature is set to T=2.5;
+  findings are for 1 model family, mostly pretrained models, 5 sampling
+  datasets.
+
+
+  If you want a cheap correctness filter, sampling plus P(True) is usable
+  on-distribution but not calibrated off it.
+brief_generated_at: 2026-10-10
+brief_model: claude-opus-5
+brief_source: full-text

@@ -1,0 +1,41 @@
+id: decomposing-response-into-atomic-claims-applying-post-hoc-calibration-temperature
+ref: CLM-0375
+capability: abstention-and-self-knowledge
+technique: calibrate-confidence-per-atomic-claim-per-response
+statement: >-
+  Decomposing a response into atomic claims and applying post-hoc
+  calibration (temperature/Platt scaling) to per-claim confidence derived
+  from self-verification and cross-sample consistency lowers expected
+  calibration error on straightforward factual QA, but on adversarial
+  false-premise questions it is worse than response-level temperature
+  scaling, because the per-claim signal reproduces the model's own confident
+  wrong belief rather than challenging it.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Closed-box setting with no logits or fine-tuning; six models (Llama-3.1-8B, Mistral-7B, Qwen2.5-7B, DeepSeek-R1, GPT-4, GPT-4o) on TriviaQA (factual) and TruthfulQA (false-premise)"
+sources:
+  - source: arxiv-2608-22483
+    stance: supports
+    note: >-
+      Validated by: ECE, smECE, Brier, AUROC, AURC against seven baselines
+      (few-shot likelihood, CoT, verbalized confidence, PS, TS, LMvsLM,
+      HalluMeasure) on TriviaQA and TruthfulQA across six models; best
+      result GPT-4o/TriviaQA ECE 0.006 vs 0.096 for TS, worst
+      GPT-4o/TruthfulQA ECE 0.412 vs 0.118 for TS.. Measured on two datasets
+      and six models with seven baselines, but results are mixed and
+      model-dependent: claim-level is not best on TriviaQA for every model
+      (PS wins on Llama and Mistral), and the false-premise failure is
+      argued most strongly from the GPT-4o contrast. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-10
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A claim-level
+  calibration pipeline of this kind that matches or beats response-level
+  temperature scaling on ECE for false-premise questions across models,
+  without adding an external probe or evidence source.
+submitted_by: agent:claude-opus-5@Russ-Miller

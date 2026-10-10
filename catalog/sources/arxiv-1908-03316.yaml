@@ -30,3 +30,41 @@ summary: In this paper, we propose a multi-modal synthesis technique for
 notes: "Forwarded by Russ 2026-09-19: locator papers: generate a reusable
   regex/SQL/XPath once, run it without the model"
 ingested_at: 2026-09-19
+brief: >-
+  Combining a natural-language description with positive/negative examples
+  synthesizes regular expressions far more reliably than either modality
+  alone, because English regex descriptions are ambiguous and examples
+  underdetermine intent.
+
+
+  The system, Regel, parses the English description with a SEMPRE-based
+  semantic parser into a "hierarchical sketch" (nested holes constrained to
+  contain given sub-regexes), then runs a programming-by-example engine that
+  uses the sketch for both search prioritization and over-/under-approximation
+  pruning, plus symbolic integers solved with Z3 instead of enumerating repeat
+  constants. Evaluation covers over 300 regexes from 2 sources: 200 adapted
+  DeepRegex benchmarks (average 4 positive and 5 negative examples each) and
+  122 harder StackOverflow tasks.
+
+
+  Regel finds the intended regex in 80% of cases, against 43% for the NLP-only
+  DeepRegex seq2seq baseline and 26% for a pure PBE variant. Its PBE engine is
+  an order of magnitude faster at sketch completion than AlphaRegex, even when
+  AlphaRegex is adapted to consume the sketch. A user study with 20
+  participants found users twice as likely to produce the desired regex with
+  Regel.
+
+
+  The PBE ablation (Regel-Pbe is the same engine with an unconstrained sketch)
+  isolates the contribution of the sketch, and the AlphaRegex comparison is
+  sketch-matched. Sketch supervision was hand-written for the StackOverflow
+  set, which couples the result to annotation quality; the DeepRegex examples
+  were solicited rather than user-authored, and settings differ by dataset
+  (10s/top-1 vs 60s/top-5).
+
+
+  If you assume neural text-to-code needs more data, note the semantic parser
+  here is chosen precisely to avoid it.
+brief_generated_at: 2026-10-10
+brief_model: claude-opus-5
+brief_source: full-text

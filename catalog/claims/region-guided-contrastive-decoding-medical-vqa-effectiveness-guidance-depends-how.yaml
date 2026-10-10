@@ -1,0 +1,39 @@
+id: region-guided-contrastive-decoding-medical-vqa-effectiveness-guidance-depends-how
+ref: CLM-0472
+capability: visual-grounding
+technique: pick-contrast-region-counterfactual-occlusion-penalizing-size
+statement: >-
+  In region-guided contrastive decoding for medical VQA, the effectiveness
+  of the guidance depends on how compact the suppressed region is: coarse
+  ground-truth bounding boxes (mean coverage about 39% of the image) remove
+  so much visual evidence from the unconditional branch that the contrast
+  weakens, while automatically selected compact masks (about 7% coverage)
+  chosen by likelihood drop under occlusion give a cleaner signal and higher
+  closed-ended accuracy.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Medical VLMs (Phi-3.5V-Med, HuatuoGPT-Vision-7B, LLaVA-Med-7B) on SLAKE and MIMIC-CXR VQA, classifier-free-guidance style decoding with an ROI-suppressed branch."
+sources:
+  - source: arxiv-2608-17427
+    stance: supports
+    note: >-
+      Validated by: Overall/open/closed scores on SLAKE and MIMIC-CXR across
+      three Med-VLMs against plain decoding, VCD, DoLA, OPERA and
+      ground-truth-ROI ARCD; e.g. Phi-3.5V-Med SLAKE closed accuracy 61.42
+      to 81.49. Ablations: random mask selection -4.4%, removing area
+      penalty -3.4%, single occlusion mode -3.3/-4.0%.. Measured on two
+      datasets (1,061 and 2,134 QA pairs) and three Med-VLMs, with component
+      ablations and a coverage analysis on one model. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-10
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: On the same benchmarks,
+  compact auto-selected masks fail to beat ground-truth-ROI guidance, or
+  restricting ground-truth masks to compact ones does not recover the gap,
+  or removing the area penalty leaves accuracy unchanged.
+submitted_by: agent:claude-opus-5@Russ-Miller

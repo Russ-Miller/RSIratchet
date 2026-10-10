@@ -1,20 +1,58 @@
 id: arxiv-2510-02816
 ref: SRC-0324
 kind: paper
-title: "NCV: A Node-Wise Consistency Verification Approach for Low-Cost Structured Error Localization in LLM Reasoning"
+title: "NCV: A Node-Wise Consistency Verification Approach for Low-Cost
+  Structured Error Localization in LLM Reasoning"
 year: 2025
 date: 2025-10-03
 arxiv_id: "2510.02816"
 url: https://arxiv.org/abs/2510.02816
-tags: [ingested]
-summary: >-
-  Verifying multi-step reasoning in large language models is difficult due
-  to imprecise error localization and high token costs. Existing methods
-  either assess entire reasoning chains, suffering attention dilution, or
-  rely on expensive multi-sampling. We introduce Node-wise Consistency
-  Verification (NCV), a training-free framework that recasts verification as
-  lightweight binary consistency checks at the node level. By decomposing
-  the chain of thought into interconnected verification nodes, NCV precisely
-  localizes errors and avoids unnecessary long-form generation. Experiments
-  demonstrate that ou
+tags:
+  - ingested
+summary: Verifying multi-step reasoning in large language models is difficult
+  due to imprecise error localization and high token costs. Existing methods
+  either assess entire reasoning chains, suffering attention dilution, or rely
+  on expensive multi-sampling. We introduce Node-wise Consistency Verification
+  (NCV), a training-free framework that recasts verification as lightweight
+  binary consistency checks at the node level. By decomposing the chain of
+  thought into interconnected verification nodes, NCV precisely localizes
+  errors and avoids unnecessary long-form generation. Experiments demonstrate
+  that ou
 ingested_at: 2026-09-19
+brief: >-
+  Asking a model a long chain of yes/no questions about single claims
+  localizes reasoning errors better and far cheaper than asking it to verify
+  the whole chain with Chain-of-Thought. Node-wise Consistency Verification
+  (NCV) decomposes a solution into atomic assertions, verifies each
+  conditioned on previously accepted nodes, restricts output to 4 tokens, and
+  takes 3 samples per node with voting.
+
+
+  Evaluation covers all 4 ProcessBench subsets (GSM8K 400 cases, MATH 1,000,
+  OlympiadBench 1,000, Omni-MATH 1,000) on Qwen2.5-7B/32B/72B and
+  Llama-3.3-70B, against E2E-cot greedy and 8-vote baselines.
+
+
+  Average F1 gains run 10-25%. For Qwen2.5-32B the improvements over 8-vote
+  are 13.3 points on GSM8K, 20.9 on MATH, 21.9 on OlympiadBench, 23.8 on
+  Omni-MATH, with error localization 55.8% vs 25.3% on OlympiadBench. Cost:
+  28.1 tokens per sample at 61.4 F1, against 177.4 tokens at 45.2 (greedy) and
+  1619.2 at 49.3 (8-vote), a 6.3x and 57.6x reduction.
+
+
+  An ablation on Qwen2.5-32B separates the two ingredients: voting alone 48.3,
+  consistency alone 54.9, both 61.4, per-node CoT 69.0. Token budgets are
+  reported, so the efficiency claim is measured, not argued.
+
+
+  The gain is not universal: on Llama-3.3-70B average F1 is 58.0, matching the
+  8-vote baseline, and GSM8K F1 drops. Testing is confined to mathematical
+  process verification with human-annotated first-error labels, 2 model
+  families, no training-based PRM comparison.
+
+
+  If you are paying for verifier tokens, binary node checks are the better
+  default.
+brief_generated_at: 2026-10-10
+brief_model: claude-opus-5
+brief_source: full-text

@@ -1,0 +1,38 @@
+id: frozen-backbone-running-ungrounded-generate-critique-revise-loop-pure-reasoning-benchmarks-loop
+ref: CLM-0393
+capability: self-repair
+technique: stop-self-critique-loop-confirmed-sentinel-confidence-tag
+statement: >-
+  For a frozen backbone running an ungrounded generate-critique-revise loop
+  on pure-reasoning benchmarks, the loop's accuracy gain is concentrated
+  where single-shot accuracy is already low: it leaves accuracy flat on a
+  benchmark the model mostly solves in one shot (BBH, ~74%) while adding
+  +4.2pp on GSM8K and +14.2pp on MATH (single-shot 26.2%), with the same
+  pattern on a second backbone.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Frozen instruct backbones (deepseek-v4-flash, Qwen2.5-72B), depth-3 critique loop, tool-free reasoning benchmarks, n=100-500 per cell; no external verifier in the loop."
+sources:
+  - source: arxiv-2608-18884
+    stance: supports
+    note: >-
+      Validated by: On BBH the sentinel stopped 82-88% of items at ~2.1
+      generations with accuracy unchanged versus single-shot and versus
+      fixed-depth Self-Refine (which fell to 71.2%); a sweep of confidence
+      thresholds tau in {0.6,0.7,0.8,0.9} halted every item at the first
+      generation, so the numeric tag gave no selective working point..
+      Measured on three benchmarks with Wilson intervals and McNemar tests
+      at n=500 for GSM8K/MATH; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-10
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A run on the same backbones
+  showing comparable accuracy gains from the ungrounded loop on a benchmark
+  where single-shot accuracy is already high, or no gain on a
+  low-single-shot benchmark like MATH.
+submitted_by: agent:claude-opus-5@Russ-Miller
