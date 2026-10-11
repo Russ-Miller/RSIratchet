@@ -1,0 +1,41 @@
+id: 8b-instruction-tuned-backbones-training-correction-adapter-first-name-typed
+ref: CLM-0351
+capability: self-repair
+technique: correct-reasoning-inverting-typed-error-operators
+statement: >-
+  For 8B instruction-tuned backbones, training a correction adapter to first
+  name a typed, executable error operator (error type, step location,
+  corrupted and repaired proposition) and then apply its inverse to the
+  trajectory yields higher final accuracy than free-form self-revision
+  methods (Self-Refine, RISE, SCoRe) on math, code and commonsense tasks,
+  with most of the gain in the first few correction iterations.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Llama-3-8B-Instruct and Qwen3-8B with LoRA adapters; six in-domain and seven transfer datasets; fixed operator library; gains smaller on factual multiple-choice (MMLU) than on math"
+sources:
+  - source: arxiv-2608-22090
+    stance: supports
+    note: >-
+      Validated by: Average over six in-domain benchmarks 67.5 vs 64.3 for
+      the strongest same-backbone baseline (DiffCoT) and 63.7 for SCoRe,
+      five seeds, Holm-corrected; transfer averages 76.4 (Llama-3) and 80.2
+      (Qwen3) vs base 67.7 and 72.9; ablations show operator-only (e.g. 79.1
+      GSM8K) and adjacent-state-only variants both below full SRD.. Measured
+      on 13 datasets, two 8B backbones, five seeds, with ablations isolating
+      noise sources and the two loss terms; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-11
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A controlled comparison
+  where a free-form trained corrector matched on data and compute equals or
+  beats the typed-operator corrector on the same benchmarks and backbones.
+  Drafted stance toward self-critique-without-grounding-unreliable: supports
+  -- The paper's free-form correction baselines (Self-Refine) barely improve
+  over base CoT while structured, applicability-checked edits do, consistent
+  with unconstrained self-critique being a weak signal.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -6,15 +6,48 @@ year: 2025
 date: 2025-02-01
 arxiv_id: "2502.00350"
 url: https://arxiv.org/abs/2502.00350
-tags: [ingested]
-summary: >-
-  Recent developments in Large Language Model (LLM) agents are
+tags:
+  - ingested
+summary: Recent developments in Large Language Model (LLM) agents are
   revolutionizing Autonomous Software Engineering (ASE), enabling automated
   coding, problem fixes, and feature improvements. However, localization --
   precisely identifying software problems by navigating to relevant code
-  sections -- remains a significant challenge. Current approaches often
-  yield suboptimal results due to a lack of effective integration between
-  LLM agents and precise code search mechanisms. This paper introduces
-  OrcaLoca, an LLM agent framework that improves accuracy for software issue
-  localization by integrating priori
+  sections -- remains a significant challenge. Current approaches often yield
+  suboptimal results due to a lack of effective integration between LLM agents
+  and precise code search mechanisms. This paper introduces OrcaLoca, an LLM
+  agent framework that improves accuracy for software issue localization by
+  integrating priori
 ingested_at: 2026-09-19
+brief: >-
+  Scaffolding around the search step, not the LLM itself, is where issue
+  localization gains come from: managing which code-search action runs next
+  and pruning retrieved context lifts function-level localization and carries
+  through to more resolved patches.
+
+
+  OrcaLoca builds a CodeGraph over a Python repo and adds 3 pieces on top of a
+  ReAct-style agent: a priority queue over LLM-proposed search actions with
+  redundancy elimination, decomposition of class/file skeleton results into
+  sub-actions ranked by a scoring sub-agent, and context pruning that keeps
+  the 12 search results closest in graph distance to the current candidate bug
+  locations. Claude-3.5-Sonnet-20241022, temperature 0.1, evaluated on
+  SWE-bench Lite with Agentless-1.5's repair stage bolted on.
+
+
+  Function match rate 65.33% (196 of 300) and file match 83.33% (250),
+  resolved 41.00% (123). Against a self-reproduced Agentless-1.5: +6.67 points
+  function match, +4.62 points precision, +6.33 points resolved. Ablations on
+  a 93-instance subset drop function match from 76.34% to 70.97%–73.12%.
+
+
+  The main comparison is a reproduction the authors ran themselves, and the
+  leaderboard rows differ in model and harness, so no matched-cost baseline
+  exists; search costs $0.87 and editing $0.90 per instance. Ablations are on
+  93 instances. 1 model, Python only, no open-weight model tested.
+
+
+  If you are building a localization stage, the action-scheduling and pruning
+  machinery is worth copying; treat the ranking claim as softer.
+brief_generated_at: 2026-10-11
+brief_model: claude-opus-5
+brief_source: full-text

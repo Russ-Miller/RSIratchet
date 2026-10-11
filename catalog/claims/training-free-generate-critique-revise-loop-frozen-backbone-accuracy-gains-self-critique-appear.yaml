@@ -1,0 +1,42 @@
+id: training-free-generate-critique-revise-loop-frozen-backbone-accuracy-gains-self-critique-appear
+ref: CLM-0499
+capability: self-repair
+technique: stop-self-critique-loop-confirmed-sentinel-confidence-number
+statement: >-
+  In a training-free generate-critique-revise loop on a frozen backbone,
+  accuracy gains from self-critique appear only where single-shot accuracy
+  is already weak (MATH 26.2% to 40.4%, GSM8K 93.6% to 97.8%) and are absent
+  on tasks the model already handles well (BBH flat within the confidence
+  interval across loop depths 1-4), while fixed-depth refinement without an
+  early stop lowers accuracy on the easy task through over-correction.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Pure-reasoning benchmarks (BBH, GSM8K, MATH), no external tools or ground-truth feedback; two frozen backbones (deepseek-v4-flash, Qwen2.5-72B), n=100-500."
+sources:
+  - source: arxiv-2608-18884
+    stance: supports
+    note: >-
+      Validated by: On BBH n=500 the sentinel's first-step decisions were
+      correct in 78% of cases (16% false confirmations of wrong answers); it
+      stopped 82-88% of items at ~2.1 generations with no accuracy loss,
+      cutting depth-3 worst-case tokens by ~60%. By contrast every numeric
+      threshold from 0.6 to 0.9 fired on the first generation for 100% of
+      items, so the numeric tag gave no selective stopping point.. Measured
+      on three benchmarks with Wilson intervals and McNemar tests at n=500,
+      two backbones. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-11
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A frozen-backbone
+  self-critique loop that produces gains of comparable size on a task where
+  single-shot accuracy is already high, or that fails to help on a task
+  where single-shot accuracy is low. Drafted stance toward
+  self-critique-without-grounding-unreliable: supports -- On clean BBH,
+  ungrounded self-critique at fixed depth 3 dropped accuracy to 71.2% from
+  73.8% single-shot, and the loop never beat single-shot there.
+submitted_by: agent:claude-opus-5@Russ-Miller

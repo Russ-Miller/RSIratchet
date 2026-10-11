@@ -1,20 +1,54 @@
 id: arxiv-2510-06857
 ref: SRC-0326
 kind: paper
-title: "Autoformalizer with Tool Feedback"
+title: Autoformalizer with Tool Feedback
 year: 2025
 date: 2025-10-08
 arxiv_id: "2510.06857"
 url: https://arxiv.org/abs/2510.06857
-tags: [ingested]
-summary: >-
-  Autoformalization addresses the scarcity of data for Automated Theorem
-  Proving (ATP) by translating mathematical problems from natural language
-  into formal statements. Efforts in recent work shift from directly
+tags:
+  - ingested
+summary: Autoformalization addresses the scarcity of data for Automated
+  Theorem Proving (ATP) by translating mathematical problems from natural
+  language into formal statements. Efforts in recent work shift from directly
   prompting large language models to training an end-to-end formalizer model
   from scratch, achieving remarkable advancements. However, existing
   formalizer still struggles to consistently generate valid statements that
-  meet syntactic validity and semantic consistency. To address this issue,
-  we propose the Autoformalizer with Tool Feedback (ATF), a novel approach
-  that incorporates syntactic
+  meet syntactic validity and semantic consistency. To address this issue, we
+  propose the Autoformalizer with Tool Feedback (ATF), a novel approach that
+  incorporates syntactic
 ingested_at: 2026-09-19
+brief: >-
+  Letting a formalizer call a Lean 4 compiler and an LLM consistency judge
+  during generation, then revise, raises semantic consistency far more than
+  training on more informal-formal pairs does.
+
+
+  ATF trains Qwen3-32B in 3 stages: cold-start on 24K Claude-4-Sonnet
+  tool-calling trajectories, expert iteration over a 178,469-query
+  NuminaMath-1.5 subset, and DPO on 10K pairs favouring fewer revisions. The
+  consistency tool is an ensemble vote of QWQ-32B and Qwen3-32B, chosen on an
+  800-query perturbation benchmark where it cut false positive rate to 0.0579
+  versus 0.0950 for Qwen3-32B alone.
+
+
+  On FormalMath-Lite, ProverBench and CombiBench, ATF-32B reaches Pass@1
+  consistency of 94.51%, 89.78% and 65.38%, beating Goedel-V2-Formalizer-32B
+  by 9.1%, 10.08% and 29.13%. Human evaluation on 100 instances per benchmark,
+  3 experts each, gives 95.00, 85.00 and 49.00 versus 92.00, 81.00 and 22.00.
+
+
+  Ablations isolate the tools: removing both drops CombiBench consistency to
+  23.69% Pass@1; syntax-only gives 41.68%. Revision attempts were capped so
+  output lengths roughly match the strongest baseline, which is the closest
+  thing to a matched-budget comparison. Baselines do not get the same tool
+  loop, so part of the gap is tool access rather than training.
+
+
+  One model family, Lean 4 v4.15, competition math only. Consistency is partly
+  scored by the same judge ATF trains against; Pearson correlation with humans
+  is 0.746. Treat verifier-in-the-loop generation as the cheaper lever than
+  more formalization data.
+brief_generated_at: 2026-10-11
+brief_model: claude-opus-5
+brief_source: full-text

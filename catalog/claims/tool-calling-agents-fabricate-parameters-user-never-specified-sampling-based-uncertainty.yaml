@@ -1,0 +1,40 @@
+id: tool-calling-agents-fabricate-parameters-user-never-specified-sampling-based-uncertainty
+ref: CLM-0495
+capability: hallucination
+technique: lora-latent-critic-names-ungrounded-parameter
+statement: >-
+  For tool-calling agents that fabricate parameters the user never
+  specified, sampling-based uncertainty detectors (token and semantic
+  entropy) fail because the model generates these fabrications confidently,
+  while a zero-initialized LoRA adapter trained with a masked diagnostic
+  objective on the frozen model's own hidden states detects and names the
+  ungrounded parameter.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Structured tool-calling with parameter-level grounding labels, 4-8B Qwen and Llama-xLAM backbones; detection degrades when the base model's generation itself collapses, and the adv"
+sources:
+  - source: arxiv-2608-10430
+    stance: supports
+    note: >-
+      Validated by: On human-verified labels, 0.966 ID AUROC and 0.925 OOD
+      AUROC versus 0.915/0.884 for an equivalent-scale fine-tuned external
+      judge, 0.782/0.616 for a linear probe on frozen base states, and
+      near-chance for token/semantic entropy and SEP; >80% exact
+      parameter-match localization; replicated on Llama-xLAM-2-8B; in a
+      closed-loop ReAct setting specific feedback gave parameter F1 61.2 vs
+      51.3 generic and 52.1 no intervention, with false blocks 2.9% vs 9.4%;
+      <10ms added latency in vLLM.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-11
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Showing that
+  entropy-based sampling detectors separate ungrounded from grounded tool
+  parameters as well as the adapter on the same human-verified sets, or that
+  an equivalent-capacity probe on frozen base states matches the adapter's
+  out-of-distribution AUROC.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,51 @@
+arxiv_id: "2608.27455"
+title: "CritICL: Inference-Time Weak-to-Strong Generalization from Small
+  Language Model Failure Modes"
+url: https://doi.org/10.48550/arxiv.2608.27455
+drafted_at: 2026-09-29
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: critique
+statement: Within one model family, the relative distribution of reasoning
+  failure modes stays similar from 1.5B to 72B, so critiques mined offline
+  from small models' wrong answers, retrieved by failure mode and inserted as
+  in-context exemplars, raise a large model's math accuracy above random,
+  fixed, or embedding-similarity exemplar selection at a single generation.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Qwen2.5 (32B, 72B) and Llama-3.1-70B targets with CritBank
+  built from 1-8B same-family models; math reasoning (GSM8K, MATH, AMC23,
+  AIME24/25), greedy decoding, 5-shot; some extension to chemistry/biology
+  reported in appendix.
+technique: ""
+proposed_technique: Retrieve in-context critiques by weak-model failure mode
+technique_summary: Build an offline bank of wrong answers from small
+  same-family models labelled with clustered failure modes plus
+  natural-language critiques, then retrieve critique exemplars for a large
+  model either by its dominant family-level failure profile (static) or by
+  predicted per-query failure modes (dynamic).
+technique_kind: prompting
+technique_validated_by: Pass@1 on GSM8K, MATH, AMC23, AIME24/25 against
+  zero/1/3/5-shot ICL, self-consistency@3/5/7, self-reflection and
+  LLM-as-judge; CritICL-static reached 49.8 overall on Qwen2.5-32B vs 46.0 for
+  5-shot fixed and 49.5 for Consistency@7, at 1 generation and 3768 total
+  tokens vs 5440; ablation swapping selection for random/fixed/semantic lost
+  4-6 points on AMC23/AIME25.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Show that critique exemplars retrieved by failure mode do no better
+  than semantically similar or random exemplars of the same length on the same
+  benchmarks, or that small- and large-model failure mode distributions in a
+  family are uncorrelated while the method still helps (or fails to help).
+evidence_note: Measured on two Qwen targets and one Llama target over five
+  math benchmarks with ICL and test-time-scaling baselines and a selection
+  ablation; margins over the strongest test-time-scaling baseline are small
+  (0.2-0.3 points overall) and the mechanism claim rests on eyeballed
+  distribution similarity in figures rather than a reported correlation
+  statistic. Failure labels and critiques come from gpt-4o-mini, so some gain
+  may come from that frontier annotator rather than from the weak models.
+confidence: low
+problems:
+  - "figures not in the source: 0.2"

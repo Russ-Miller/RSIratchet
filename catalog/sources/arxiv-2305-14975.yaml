@@ -1,20 +1,59 @@
 id: arxiv-2305-14975
 ref: SRC-0306
 kind: paper
-title: "Just Ask for Calibration: Strategies for Eliciting Calibrated Confidence Scores from Language Models Fine-Tuned with Human Feedback"
+title: "Just Ask for Calibration: Strategies for Eliciting Calibrated
+  Confidence Scores from Language Models Fine-Tuned with Human Feedback"
 year: 2023
 date: 2023-05-24
 arxiv_id: "2305.14975"
 url: https://arxiv.org/abs/2305.14975
-tags: [ingested]
-summary: >-
-  A trustworthy real-world prediction system should produce well-calibrated
-  confidence scores; that is, its confidence in an answer should be
-  indicative of the likelihood that the answer is correct, enabling deferral
-  to an expert in cases of low-confidence predictions. Recent studies have
-  shown that unsupervised pre-training produces large language models (LMs)
-  whose conditional probabilities are remarkably well-calibrated. However,
-  the most widely-used LMs are fine-tuned with reinforcement learning from
-  human feedback (RLHF-LMs), and some studies have suggested that RLHF-LMs
-  produce conditional
+tags:
+  - ingested
+summary: A trustworthy real-world prediction system should produce
+  well-calibrated confidence scores; that is, its confidence in an answer
+  should be indicative of the likelihood that the answer is correct, enabling
+  deferral to an expert in cases of low-confidence predictions. Recent studies
+  have shown that unsupervised pre-training produces large language models
+  (LMs) whose conditional probabilities are remarkably well-calibrated.
+  However, the most widely-used LMs are fine-tuned with reinforcement learning
+  from human feedback (RLHF-LMs), and some studies have suggested that
+  RLHF-LMs produce conditional
 ingested_at: 2026-09-19
+brief: >-
+  Asking an RLHF-tuned model to state its confidence in words gives
+  better-calibrated numbers than its own sampled token probabilities,
+  reversing part of the calibration damage attributed to RLHF.
+
+
+  The comparison covers gpt-3.5-turbo, gpt-4, claude-1, claude-2, and
+  Llama-2-70b-chat on 1000 sampled TriviaQA questions, 1000 SciQ questions,
+  and all 817 TruthfulQA questions, scored with ECE, temperature-scaled ECE,
+  Brier score, and selective-accuracy AUC. Conditional probabilities were
+  estimated from n = 10 samples since log-probs are unavailable for closed
+  models.
+
+
+  For gpt-3.5-turbo, SciQ ECE falls from 0.256 for label probability to 0.065
+  for verbalized 1-stage top-4 and 0.064 for optimized linguistic expressions;
+  on TruthfulQA, 0.451 to 0.203 and 0.125. For gpt-4, TriviaQA ECE goes 0.078
+  to 0.024. Prompting for several candidate answers before scoring helps;
+  chain-of-thought does not.
+
+
+  The effect is measured, with matched prompting variants and temperature
+  scaling applied to both sides, and Figure 2 shows RLHF worsening log-prob
+  calibration on Llama-2-70B base versus chat. Correctness was judged by GPT-4
+  or GPT-3.5 equivalence checking, not exact match.
+
+
+  It holds unevenly: claude-1 verbalizes poorly, Llama-2-70b-chat only
+  inconsistently, and 1-stage versus 2-stage prompts differ sharply. All tasks
+  are short-form factual recall; reasoning and long-form generation were not
+  tested.
+
+
+  If you need confidence from a closed chat model, ask for it rather than
+  sampling.
+brief_generated_at: 2026-10-11
+brief_model: claude-opus-5
+brief_source: full-text

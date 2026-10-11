@@ -28,3 +28,33 @@ summary: We present XPath Agent, a production-ready XPath programming agent
 notes: "Forwarded by Russ 2026-09-19: locator papers: generate a reusable
   regex/SQL/XPath once, run it without the model"
 ingested_at: 2026-09-19
+brief: >-
+  Pruning a web page before asking an LLM to write an XPath query, and having
+  the model emit "cue texts" alongside the target values, is enough to
+  generate reusable extractors from 3 sample pages. XPath Agent splits the job
+  into an information-extraction stage on sanitized HTML and an
+  XPath-programming stage on condensed HTML, with a conversational evaluator
+  that runs the query on the seed pages and feeds back missing and redundant
+  matches, capped at 3 loops.
+
+
+  Evaluation uses the SWDE dataset: 90 websites across 9 domains, 20414 web
+  pages, with 3 seeds per task and 32 pages sampled per task. Reported
+  accuracy/F1: DeepSeek V2.5 0.5794/0.7337, GPT 4o mini 0.6613/0.7961, GPT 4o
+  0.7413/0.8514, Claude 3.5 0.6191/0.7647. Sanitization cuts page size to 10%
+  20% on average, measured over 128 pages per category from SWDE.
+
+
+  The efficiency claim is the paper's headline but no token counts or clock
+  times appear, and the comparison to AutoCrawler is argued in prose rather
+  than measured. There is no ablation isolating the cue-text or condenser
+  contributions despite the cue-text claim, the error analysis section is a
+  TODO, and the results text contradicts its own table about which model is
+  best.
+
+
+  Treat the pipeline design as the usable contribution and the efficiency and
+  baseline claims as unsupported.
+brief_generated_at: 2026-10-11
+brief_model: claude-opus-5
+brief_source: full-text

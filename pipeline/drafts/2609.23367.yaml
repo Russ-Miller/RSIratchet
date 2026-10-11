@@ -1,0 +1,50 @@
+arxiv_id: "2609.23367"
+title: LLM-Based FORM Code Generation with Verification-Driven Fine-Tuning
+url: https://doi.org/10.48550/arxiv.2609.23367
+drafted_at: 2026-09-25
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: code-generation
+statement: For a domain-specific language essentially absent from pretraining
+  corpora (FORM symbolic algebra), QLoRA fine-tuning an 8B model on a few
+  thousand examples validated by executing them through the language's own
+  interpreter beats frontier open-weight models of up to 756B parameters given
+  syntax documentation in context, on execution rate and strict output match
+  for the larger benchmarks, while general reasoning scores drop under 3
+  points.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Zero-resource DSL with a deterministic execution oracle;
+  single-attempt, temperature-0 generation; frontier baselines are open-weight
+  only and get 6,000 characters of docs; benchmarks built by the same author
+  who built the model.
+technique: ""
+proposed_technique: Mine training data through the language's own interpreter
+technique_summary: Generate candidate programs from natural-language
+  instructions with a frontier LLM, keep only those that pass a
+  deterministic-wording filter, compile and run in the target language's
+  binary, produce non-trivial output, and pass an independent LLM consistency
+  audit, then QLoRA-fine-tune a small model on the survivors.
+technique_kind: training
+technique_validated_by: "840 single-attempt tasks across four benchmarks:
+  97.7% exact output match on 664 deterministic tasks vs 75.5% for GLM-5.2 and
+  62.3% for DeepSeek-V4 Flash (non-overlapping 95% CIs); 83.0% execution and
+  18.0% strict match on Instruct-100 vs 65.0%/5.6% best frontier (McNemar
+  p<=0.007); no lead on the 41- and 22-task benchmarks (p>=0.375); MMLU
+  -2.6pp, GSM8K -1.5pp, HumanEval -0.6pp."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A frontier model with the same documentation matching or beating
+  the fine-tuned 8B specialist on the 664-task deterministic and Instruct-100
+  strict metrics, or the specialist's lead disappearing on a benchmark built
+  by an independent party.
+evidence_note: "Measured, single author, single base model, author-built
+  benchmarks. Verified by execution against the FORM binary with
+  difference-to-zero equality, which is strong. Two confounds the paper itself
+  names: training data shares a generation pipeline with the Instruct-100
+  references, so part of the strict lead may be convention familiarity; and no
+  proprietary API models were tested. On the two small benchmarks the
+  specialist does not lead."
+confidence: medium

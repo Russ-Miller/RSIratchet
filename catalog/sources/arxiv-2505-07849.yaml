@@ -6,15 +6,49 @@ year: 2025
 date: 2025-05-07
 arxiv_id: "2505.07849"
 url: https://arxiv.org/abs/2505.07849
-tags: [ingested]
-summary: >-
-  Software issue localization, the task of identifying the precise code
+tags:
+  - ingested
+summary: Software issue localization, the task of identifying the precise code
   locations (files, classes, or functions) relevant to a natural language
   issue description (e.g., bug report, feature request), is a critical yet
   time-consuming aspect of software development. While recent LLM-based
-  agentic approaches demonstrate promise, they often incur significant
-  latency and cost due to complex multi-step reasoning and relying on
-  closed-source LLMs. Alternatively, traditional code ranking models,
-  typically optimized for query-to-code or code-to-code retrieval, struggle
-  with the verbose and failure-descrip
+  agentic approaches demonstrate promise, they often incur significant latency
+  and cost due to complex multi-step reasoning and relying on closed-source
+  LLMs. Alternatively, traditional code ranking models, typically optimized
+  for query-to-code or code-to-code retrieval, struggle with the verbose and
+  failure-descrip
 ingested_at: 2026-09-19
+brief: >-
+  Single-shot retrieve-and-rerank beats multi-turn agentic codebase
+  exploration at software issue localization, at a fraction of the cost.
+  SweRank pairs SweRankEmbed, a bi-encoder trained contrastively on
+  issue-to-modified-function pairs, with SweRankLLM, a listwise reranker
+  trained only to emit the identifier of the single known positive. Training
+  data is SweLoc: 67,341 (PR, codebase) pairs from 3387 GitHub Python repos,
+  with top-K consistency filtering (K=20) and 15 mined hard negatives.
+
+
+  On SWE-Bench-Lite (274 of 300 examples) SweRankLLM-Large (32B) reaches 83.21
+  file Acc@1 and 88.69 function Acc@10, against LocAgent with Claude-3.5 at
+  77.74 and 77.37. On LocBench (560 examples) it reaches 86.61 file Acc@5
+  versus 83.39. Inference cost is $0.015 per example versus $0.66 for LocAgent
+  with Claude-3.5, up to 6X better performance-cost tradeoff. Localization
+  gains carry downstream: SWE-Fixer repair Pass@1 rises from 22.6 with
+  LocAgent to 24.5, with an oracle ceiling of 25.9.
+
+
+  The causal attribution is reasonable: ablations vary filtering threshold K,
+  data fraction, and 3 retriever and 6 reranker base models, all improving
+  after SweLoc finetuning. Comparisons to agents are not matched on compute or
+  tokens, and agent baselines are taken as configured.
+
+
+  Limits: Python only, function-level patches, and all methods fall to
+  single-digit accuracy when >5 functions must change.
+
+
+  If you are paying for agentic localization, a trained reranker is the
+  cheaper default.
+brief_generated_at: 2026-10-11
+brief_model: claude-opus-5
+brief_source: full-text

@@ -1,0 +1,51 @@
+arxiv_id: "2609.05913"
+title: "Neuron-Guided Fine-Tuning: Unlocking Efficient Alignment Mechanisms
+  for Large Language Models"
+url: https://doi.org/10.48550/arxiv.2609.05913
+drafted_at: 2026-09-28
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: fine-tuning-retention
+statement: When 7-8B open-weight instruct models are fully fine-tuned on a
+  single domain dataset, confining gradient updates to FFN neurons that
+  activate stably across the training set and adding an MSE loss that pulls
+  activations back toward pre-computed activation anchors retains far more
+  general-benchmark ability (MMLU, BBH, TyDiQA) than full-parameter
+  fine-tuning, by about 9.9 points on average, while also raising in-domain
+  scores.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Open-weight models with accessible internals (Llama-3.1-8B,
+  Qwen2.5-7B, Mistral-7B-v0.3, plus Qwen2.5 variants 0.5B-14B); single-domain
+  supervised fine-tuning on GSM8K, DialogSum or BioInstruct; the alignment
+  loss is switched on only after cross-entropy loss falls below ~0.04.
+technique: ""
+proposed_technique: Update only stable neurons and anchor their activations
+technique_summary: Select FFN neurons with low activation coefficient of
+  variation, mask gradients to those neurons only, and after cross-entropy
+  converges add an MSE term pulling current activations toward a pre-computed
+  activation anchor.
+technique_kind: training
+technique_validated_by: In-domain metric (GSM8K accuracy, ROUGE-L on
+  DialogSum/BioInstruct) and a CF score averaging MMLU, BBH and TyDiQA,
+  against full-parameter fine-tuning, a composite strong baseline (Data
+  Whisperer + NCFT + CE), and per-module baselines (NeFT, NCFT, MathNeuro,
+  LESS, Nuggets, CCS) at 1/5/10/100% data; reported gains of 4.66 in-domain
+  and 9.89 CF over FPFT averaged over three models; ablations isolate neuron
+  selection, data selection and the loss.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Applying the same neuron masking and activation-anchoring loss on
+  other models or domain datasets and finding general-benchmark scores no
+  better than plain full-parameter fine-tuning, or finding the gain comes only
+  from updating fewer parameters (a random-neuron mask of the same size doing
+  as well).
+evidence_note: Measured on three 7-8B instruct models, three domain datasets,
+  four data budgets, with three general benchmarks averaged into one CF score,
+  plus scaling checks on Qwen2.5 0.5B-14B. Ablations separate the three
+  components, and random-neuron and full-FFN controls are included. Single
+  paper, authors' own framework; hyperparameter thresholds were tuned on the
+  same benchmarks, and no independent replication.
+confidence: medium

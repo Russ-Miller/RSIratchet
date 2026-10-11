@@ -1,0 +1,42 @@
+id: llm-generated-fpga-high-level-synthesis-code-simulation-synthesis-success-does-imply
+ref: CLM-0422
+capability: code-generation
+technique: pair-evolutionary-kernel-search-c-level-functional-repair
+statement: >-
+  For LLM-generated FPGA high-level-synthesis code, simulation and synthesis
+  success does not imply the design builds into a board executable or
+  behaves correctly on hardware, and the two gaps need separate mechanisms:
+  evolutionary search over simulation-screened kernel candidates raises
+  synthesizable and executable rates, while a C/C++-level functional
+  verify-and-repair loop raises functional correctness without improving
+  executability.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Natural-language-specification-to-HLS generation on 78 HLS-Eval tasks, Vitis HLS 2022.2, Xilinx U200 board at 200 MHz, five frontier/open backbones; ablation run only on Qwen3-Code"
+sources:
+  - source: arxiv-2608-23630
+    stance: supports
+    note: >-
+      Validated by: Against zero-shot pass@10 on 78 HLS-Eval tasks: average
+      +16.9% synthesizable, +26.7% executable, +30.6% functional
+      correctness; best 92.3% correctness with Gemini 3.1 Pro. Ablation on
+      Qwen3-Coder-30B-A3B: evolution-only 80.1/66.7/48.7, reflection-only
+      57.7/50.0/46.2 (synthesizability slightly down), full 83.3/75.6/66.7
+      from a base of 59.0/47.4/37.2.. Measured on one benchmark (78 of 94
+      instances, interfaces adjusted) and one board/toolchain; module
+      ablation on a single mid-size open model, so the division of labour
+      between modules is one data point. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-11
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An ablation on several
+  backbones where the C-level functional repair module alone also lifts
+  executable rate as much as evolutionary search does, or where
+  simulation-passing kernels build and run correctly on board at essentially
+  the same rate as they simulate.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,41 @@
+id: 7b-class-vision-language-models-visual-evidence-candidate-token-read-out
+ref: CLM-0348
+capability: visual-grounding
+technique: penalize-tokens-whose-rank-pooled-visual-evidence-falls
+statement: >-
+  In 7B-class vision-language models, visual evidence for a candidate token
+  read out of visual-token hidden states must be pooled by vocabulary rank
+  rather than probability magnitude and compared against a per-token
+  reference, because position-wise output distributions differ in sharpness
+  by nearly an order of magnitude (so probability pooling over-weights sharp
+  positions and is not fixed by affine rescaling) and token identity
+  explains most of the variability in the pooled evidence (66.4% on
+  LLaVA-1.5-7B), making a single global threshold uninformative.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Open 7B-32B LVLMs where visual-token hidden states can be projected through the output head; measured on LLaVA-1.5-7B and Qwen2.5-VL-7B for the diagnostics, MS COCO images for cali"
+sources:
+  - source: arxiv-2608-19075
+    stance: supports
+    note: >-
+      Validated by: CHAIR_I hallucinated object mentions fell by up to 21.3%
+      on four 7B backbones, with reductions reported across 11 models from
+      six families up to 32B, while descriptive and general multimodal
+      scores were largely preserved or improved; added latency 1.33% per
+      token. Internal ablations: rank-derived suppression strengths
+      unchanged under position-scale reassignment while probability-derived
+      ones shifted by ~0.045; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-11
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Show that pooling
+  probability magnitudes (with or without affine scale equalization) across
+  visual positions, or using a single global evidence threshold, reduces
+  CHAIR hallucination as much as rank pooling with per-token references at
+  equal informativeness/coverage.
+submitted_by: agent:claude-opus-5@Russ-Miller

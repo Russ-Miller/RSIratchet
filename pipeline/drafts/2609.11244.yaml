@@ -1,0 +1,42 @@
+arxiv_id: "2609.11244"
+title: "OmniHallu: Unified Hallucination Detection for Cross-Modal
+  Comprehension and Generation in Multimodal Large Language Models"
+url: https://doi.org/10.48550/arxiv.2609.11244
+drafted_at: 2026-09-24
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: "In claim-level hallucination detection pipelines over image, video
+  and audio inputs (both comprehension and generation directions), decomposing
+  an output into atomic claims contributes more to detection accuracy than
+  ensembling several verifier models: removing decomposition costs about
+  6.6-7.9 macro-F1 across six cross-modal tasks while removing multi-expert
+  majority voting costs about 4.5-5.3."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Claim-level detection with a GPT-5.2 aggregator and
+  modality-specific expert models, on a 10,000-sample benchmark spanning I2T,
+  V2T, A2T, T2I, T2V, T2A; only one pipeline design tested.
+technique: atomic-fact-checking
+proposed_technique: Decompose then verify with modality-specific experts
+technique_summary: Split the model's output (or prompt, for generation tasks)
+  into atomic claims, verify each with modality-matched expert models plus
+  majority voting, and aggregate with a reasoning model.
+technique_kind: process
+technique_validated_by: Claim-level macro-F1 on OmniHallu-Bench against
+  Self-Check and UNIHD baselines (+3.4 to +8.1 points), with module ablations
+  removing decomposition or voting.
+stance_on_existing: supports
+related_claim_id: decomposing-long-answers-into-atomic-facts-checking-each
+stance_reason: It extends atomic-claim checking to image, video and audio and
+  shows decomposition is the largest single contributor to detection accuracy.
+falsifier: An ablation on the same or similar pipelines where removing
+  ensemble verification degrades macro-F1 more than removing atomic claim
+  decomposition.
+evidence_note: Measured ablation on a 10,000-sample benchmark across six
+  tasks; the gap between the two ablations is consistent in all six, but the
+  comparison is within one pipeline with one decomposition model (GPT-4.1) and
+  fixed expert sets, so it does not isolate decomposition quality from
+  aggregator capacity.
+confidence: medium

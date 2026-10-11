@@ -6,15 +6,48 @@ year: 2023
 date: 2023-11-16
 arxiv_id: "2311.09677"
 url: https://arxiv.org/abs/2311.09677
-tags: [ingested]
-summary: >-
-  Large language models (LLMs) have revolutionized numerous domains with
-  their impressive performance but still face their challenges. A
+tags:
+  - ingested
+summary: Large language models (LLMs) have revolutionized numerous domains
+  with their impressive performance but still face their challenges. A
   predominant issue is the propensity for these models to generate
   non-existent facts, a concern termed hallucination. Our research is
-  motivated by the observation that previous instruction tuning methods
-  force the model to complete a sentence no matter whether the model knows
-  the knowledge or not. When the question is out of the parametric
-  knowledge, it will try to make up something and fail to indicate when it
-  lacks knowledge. In this paper, we present a new ap
+  motivated by the observation that previous instruction tuning methods force
+  the model to complete a sentence no matter whether the model knows the
+  knowledge or not. When the question is out of the parametric knowledge, it
+  will try to make up something and fail to indicate when it lacks knowledge.
+  In this paper, we present a new ap
 ingested_at: 2026-09-19
+brief: >-
+  Fine-tuning a model to append "I am unsure" to the training examples it
+  originally got wrong teaches a refusal ability that transfers to unseen
+  tasks, and also improves answer accuracy relative to running
+  consistency-based uncertainty filtering at test time.
+
+
+  R-Tuning splits an instruction tuning set into certain data (pre-trained
+  prediction matches label) and uncertain data (it does not), pads each with
+  "I am sure"/"I am unsure", then fine-tunes. Base models are OpenLLaMA-3B,
+  LLaMA-7B, LLaMA-13B, over 9 datasets including ParaRel, MMLU, WiCE,
+  HotpotQA, FEVER, with HaluEval held out, scored by Average Precision.
+
+
+  Single-task AP beats vanilla fine-tuning and the gap widens with size: on
+  MMLU in-domain, LLaMA-13B reaches 68.87 vs 51.93; ParaRel out-of-domain
+  77.30 vs 64.12. The unsupervised variant, which labels the 50% most
+  entropy-uncertain questions as uncertain using k = 10 samples, is often
+  better still (ParaRel OOD 80.87 at 13B) and beats test-time majority-vote
+  filtering (Vanilla-C, 69.12). On unanswerable questions, refusal rates are
+  87.32–99.18 versus 0.96–34.79 for baselines explicitly told they could
+  refuse.
+
+
+  Evidence is measured, with a matched test-time-uncertainty baseline
+  (Vanilla-C) and an unsupervised ablation, but confined to 1 model family at
+  3 sizes and short-answer or multiple-choice formats. Confidence is binary,
+  not graded, and long-form generation is untested. If you are building
+  abstention, learning uncertainty during tuning may be cheaper and better
+  than sampling at inference.
+brief_generated_at: 2026-10-11
+brief_model: claude-opus-5
+brief_source: full-text

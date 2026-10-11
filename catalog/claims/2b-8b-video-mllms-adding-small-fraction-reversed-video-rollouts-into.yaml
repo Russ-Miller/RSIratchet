@@ -1,0 +1,38 @@
+id: 2b-8b-video-mllms-adding-small-fraction-reversed-video-rollouts-into
+ref: CLM-0341
+capability: video-temporal-reasoning
+technique: mix-reversed-video-rollouts-into-grpo-group
+statement: >-
+  For 2B-8B video MLLMs, adding a small fraction of reversed-video rollouts
+  into the same GRPO group (1 reversed per 6 forward) raises accuracy on
+  action and temporal-reasoning video QA over standard GRPO, and the gain
+  shrinks as the reversed share grows beyond that.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen3-VL 2B/4B/8B and InternVL2.5-8B, trained with CoT distillation first; benchmarks are 1,000-example samples of STAR, SSv2, NExT-QA, CLEVRER, LLaVA-178K, PerceptionTest; gains c"
+sources:
+  - source: arxiv-2608-21030
+    stance: supports
+    note: >-
+      Validated by: From the same Stage I checkpoint on Qwen3-VL-8B with
+      group size 7: average accuracy 78.0 for 7+0 standard GRPO vs 78.8 for
+      6+1, 78.4 for 5+2, 77.6 for 4+3; also beats reproduced Flow4Agent and
+      TempFlex baselines at three scales.. Measured on four backbones across
+      six benchmarks with 1,000 sampled examples each; the optimization
+      ablation holds architecture and Stage I checkpoint fixed, which
+      isolates the mixing ratio. No seed variance or confidence intervals
+      reported, margins are under one point on the average, and the
+      reversed-ratio sweep is on one model only.
+contested: false
+status: pending-review
+last_checked_at: 2026-10-11
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A replication where
+  reversed-sample mixing at a 1-in-7 ratio gives no gain over standard GRPO
+  on action and temporal video QA, or where larger reversed shares do at
+  least as well.
+submitted_by: agent:claude-opus-5@Russ-Miller

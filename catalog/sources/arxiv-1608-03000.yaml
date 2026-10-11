@@ -25,3 +25,38 @@ summary: This paper explores the task of translating natural language queries
 notes: "Forwarded by Russ 2026-09-19: locator papers: generate a reusable
   regex/SQL/XPath once, run it without the model"
 ingested_at: 2026-09-19
+brief: >-
+  A generic attention-based LSTM sequence-to-sequence model translates natural
+  language into regular expressions better than a domain-engineered semantic
+  parser that relies on regex-specific semantic equivalence checks. Domain
+  knowledge was not needed for this formalism.
+
+
+  Deep-RegEx is a 6-layer encoder-decoder (word embedding, 2 encoder layers, 2
+  decoder layers, dense output, 512-wide stacked LSTMs, global attention) that
+  emits regex characters directly. It is evaluated on KB13, the 814-example
+  corpus from Kushman and Barzilay (2013), and on NL-RX, a new 10,000-pair
+  dataset built by stochastically generating regexes from a 15-nonterminal,
+  6-terminal grammar with synthetic verbalizations, then having Mechanical
+  Turk workers paraphrase them. Scoring uses DFA-Equal functional equality,
+  with Semantic-Unify and a bag-of-words nearest-neighbour as baselines.
+
+
+  On NL-RX-Turk test, 58.2% vs 38.6% for Semantic-Unify and 16.4% for BoW-NN;
+  on the easier synthetic descriptions, 88.7%. On KB13 the margin nearly
+  vanishes: 65.6% vs 65.5%.
+
+
+  The comparison is measured, with the prior model retrained in consultation
+  with its authors, and accuracy rises with training-set size. The headline
+  19.6% gain comes from the authors' own generated corpus, which the
+  grammar-based construction may favour; KB13 is 45% unique regexes against
+  97% for NL-RX-Turk, so the two datasets are not comparable in difficulty. No
+  test on other formal languages, despite the claim it should transfer.
+
+
+  Treat the engineered-semantics advantage in regex synthesis as
+  dataset-dependent.
+brief_generated_at: 2026-10-11
+brief_model: claude-opus-5
+brief_source: full-text

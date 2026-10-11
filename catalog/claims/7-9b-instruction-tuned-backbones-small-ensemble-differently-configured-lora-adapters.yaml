@@ -1,0 +1,42 @@
+id: 7-9b-instruction-tuned-backbones-small-ensemble-differently-configured-lora-adapters
+ref: CLM-0347
+capability: abstention-and-self-knowledge
+technique: commit-only-adapter-probability-intervals-do-overlap
+statement: >-
+  For 7-9B instruction-tuned backbones with a small ensemble of differently
+  configured LoRA adapters, deciding to answer only when one candidate's
+  minimum probability across adapters exceeds every rival's maximum yields
+  threshold-free abstention whose commitment rate collapses when the
+  supplied passage is corrupted (31-48% to 4-8% on CoQA), while mean-pooled
+  entropy and single-model scores thresholded to the same clean coverage
+  still answer more corrupted prompts.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Short-answer QA (CoQA, TriviaQA, OpenBookQA, ARC-Challenge) with 5 LoRA adapters on a frozen backbone; corrupted context used as a proxy for hallucination conditions; interval widt"
+sources:
+  - source: arxiv-2608-23244
+    stance: supports
+    note: >-
+      Validated by: AUROC for detecting the model's own errors and corrupted
+      inputs, accuracy at 80% coverage, ECE/NLL, gold-in-set rate, and
+      commit rate on clean vs corrupted context, against standard LLM
+      entropy, mean-pooled LoRA ensemble, Bayesian/Laplace-LoRA, and
+      semantic entropy, on three backbones and five datasets.. Measured on 3
+      backbones (Gemma-2-9B, Llama-3.1-8B, Qwen2.5-7B) and 5 datasets
+      against six baseline families with their standard budgets; baselines
+      were given the advantage of being thresholded to the rule's own chosen
+      coverage. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-11
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: On the same datasets and
+  backbones, a mean-pooled or single-model uncertainty score thresholded to
+  match the credal rule's clean coverage abstains on at least as many
+  corrupted-context prompts, or the credal rule's commit rate barely falls
+  under corruption.
+submitted_by: agent:claude-opus-5@Russ-Miller

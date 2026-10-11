@@ -1,0 +1,38 @@
+id: decomposing-response-into-atomic-claims-calibrating-each-claim-self-verification
+ref: CLM-0374
+capability: abstention-and-self-knowledge
+technique: calibrate-confidence-per-atomic-claim-per-response
+statement: >-
+  Decomposing a response into atomic claims and calibrating each claim from
+  self-verification and cross-sample consistency lowers calibration error on
+  straightforward factual QA, but on adversarial false-premise questions it
+  is worse than plain response-level temperature scaling, because the
+  pipeline faithfully reports the model's own mistaken confidence in fluent,
+  systematically wrong claims.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Closed-box inference-time use (no logits or fine-tuning required for the verbalized variant), evaluated on TriviaQA and TruthfulQA with six models (Llama-3.1-8B, Mistral-7B, Qwen2."
+sources:
+  - source: arxiv-2608-22483
+    stance: supports
+    note: >-
+      Validated by: ECE, smECE, Brier, AUROC, AURC against seven baselines
+      (sequence likelihood, verbalized confidence, PS, TS, HalluMeasure,
+      LMvsLM) on TriviaQA and TruthfulQA; best on GPT-4o/TriviaQA (ECE 0.006
+      vs 0.096 for TS) but far worse on TruthfulQA (0.412 vs 0.118 for TS)..
+      Measured on two datasets and six models against seven baselines;
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-11
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A claim-level
+  consistency/self-verification calibration pipeline that matches or beats
+  response-level temperature scaling on calibration error for false-premise
+  questions across several models, without an external probe or retrieval
+  step.
+submitted_by: agent:claude-opus-5@Russ-Miller
