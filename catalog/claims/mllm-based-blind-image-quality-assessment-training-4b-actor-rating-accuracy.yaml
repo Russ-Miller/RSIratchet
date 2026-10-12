@@ -1,0 +1,42 @@
+id: mllm-based-blind-image-quality-assessment-training-4b-actor-rating-accuracy
+ref: CLM-0441
+capability: explanation-faithfulness
+technique: reward-reasoning-whether-edit-prescribes-improves-image
+statement: >-
+  For MLLM-based blind image quality assessment, training a 4B actor with
+  rating-accuracy rewards alone raises human rating correlation to near the
+  best reported level while leaving its stated quality reasoning no more
+  faithful than the untrained baseline — measured by whether editing the
+  image to fix the factors the reasoning named actually raises an
+  independent judge's quality score (mean gain -0.260 for rating-only vs
+  -0.136 baseline), so rating alignment is not a proxy for faithful
+  reasoning.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "4B Qwen-class actor trained with GRPO on the KonIQ-10k split; faithfulness operationalised as judge-scored quality gain from a frozen diffusion editor conditioned on the reasoning."
+sources:
+  - source: arxiv-2608-18579
+    stance: supports
+    note: >-
+      Validated by: Mean judge-scored quality gain on a 5,866-image subset
+      across six IQA datasets: +0.789 for the trained actor vs +0.213 for
+      Q-Insight and -0.137 for the untrained backbone, with direction
+      preserved under a swapped editor (Mage-Flow) and two alternative
+      judges including GPT-5.6 Sol (81.4% 3AFC wins); rating PLCC/SRCC held
+      at 0.838/0.812 average, comparable to baselines. Without the credit
+      mask the raw gain was higher (+1.442) but collapsed to a single
+      normalized edit, so raw gain alone does not establish
+      image-conditioned reasoning.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-12
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A rating-only-trained
+  IQA model whose reasoning-guided edits produce judge-scored quality gains
+  equal to or above an explicitly reasoning-supervised model, under swapped
+  editors and judges.
+submitted_by: agent:claude-opus-5@Russ-Miller

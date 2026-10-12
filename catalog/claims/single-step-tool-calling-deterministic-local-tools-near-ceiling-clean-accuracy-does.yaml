@@ -1,0 +1,40 @@
+id: single-step-tool-calling-deterministic-local-tools-near-ceiling-clean-accuracy-does
+ref: CLM-0486
+capability: tool-use
+technique: stage-aligned-perturbation-cascade-aware-failure-attribution
+statement: >-
+  In single-step tool-calling with deterministic local tools, near-ceiling
+  clean accuracy does not predict robustness: perturbing the returned tool
+  output (missing, noisy, or competing evidence) degrades end-to-end success
+  far more than perturbing tool names and descriptions, and no tested model
+  reaches 0.60 under output perturbation while interface perturbation leaves
+  it around 0.92.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "7 frontier/mid-tier models, 16 sampled deterministic local tools, single-call tasks with no long-horizon dependencies; absolute rates specific to this controlled local environment."
+sources:
+  - source: arxiv-2608-23635
+    stance: supports
+    note: >-
+      Validated by: Counterfactual repair at the attributed stage recovered
+      71/98 failed instances (100% for single-fault, 82.1% for cascades, 0%
+      for multi-fault); human audit on 30 ambiguous cases gave 74.2%
+      agreement; labels predicted that an S1 alias fix raised gpt-5.4-mini
+      from 21/30 to 30/30 while an S3 CoT fix changed nothing.. Measured on
+      15,456 single-family records (7 models x 14 subtypes x 3 severities
+      plus clean baselines). Clean mean 0.979 vs overall robustness
+      0.664-0.766; family means: interface 0.918, intent 0.773, runtime
+      0.688, observation 0.455. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-12
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A model set where
+  output/observation perturbations cost no more end-to-end success than
+  interface perturbations of matched constructed severity, or where clean
+  accuracy predicts perturbed accuracy across families.
+submitted_by: agent:claude-opus-5@Russ-Miller

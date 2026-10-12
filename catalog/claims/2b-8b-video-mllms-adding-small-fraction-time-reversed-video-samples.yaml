@@ -1,0 +1,39 @@
+id: 2b-8b-video-mllms-adding-small-fraction-time-reversed-video-samples
+ref: CLM-0341
+capability: video-temporal-reasoning
+technique: mix-reversed-video-samples-into-rl-group
+statement: >-
+  For 2B-8B video MLLMs, adding a small fraction of time-reversed video
+  samples into the same GRPO exploration group (one reversed out of seven)
+  raises action and temporal-reasoning accuracy over standard GRPO from the
+  same checkpoint, while raising the reversed share further (2 or 3 of 7)
+  erodes the gain as the auxiliary condition crowds out the forward
+  objective.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Qwen3-VL 2B/4B/8B and InternVL2.5-8B, trained on Video-R1 splits, evaluated on 1,000-sample subsets of STAR, SSv2, NExT-QA, CLEVRER, LLaVA-178K, PerceptionTest; paired with an expl"
+sources:
+  - source: arxiv-2608-21030
+    stance: supports
+    note: >-
+      Validated by: Same Stage I checkpoint, Qwen3-VL-8B, group size 7:
+      average accuracy 78.0 for 7+0 standard GRPO vs 78.8 for 6+1, 78.4 for
+      5+2, 77.6 for 4+3; gains concentrated on action tasks (+4.9 pp over
+      BL-GRPO at 8B), with PerceptionTest down 0.4 pp.. Measured: one
+      optimization ablation at a single scale (8B) for the mixing ratio,
+      plus main-table comparisons across four backbones. Ratio sweep is
+      single-seed, no variance reported, and the reversed-mix effect is not
+      separated from the Taylor motion branch it is argued to depend on.
+      Benchmarks are 1,000-example subsets.
+contested: false
+status: pending-review
+last_checked_at: 2026-10-12
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: On the same backbones and
+  benchmarks, standard GRPO matching or beating the 6+1 reversed mix, or
+  accuracy increasing monotonically with reversed share.
+submitted_by: agent:claude-opus-5@Russ-Miller

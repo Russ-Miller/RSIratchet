@@ -6,15 +6,49 @@ year: 2025
 date: 2025-02-01
 arxiv_id: "2502.00350"
 url: https://arxiv.org/abs/2502.00350
-tags: [ingested]
-summary: >-
-  Recent developments in Large Language Model (LLM) agents are
+tags:
+  - ingested
+summary: Recent developments in Large Language Model (LLM) agents are
   revolutionizing Autonomous Software Engineering (ASE), enabling automated
   coding, problem fixes, and feature improvements. However, localization --
   precisely identifying software problems by navigating to relevant code
-  sections -- remains a significant challenge. Current approaches often
-  yield suboptimal results due to a lack of effective integration between
-  LLM agents and precise code search mechanisms. This paper introduces
-  OrcaLoca, an LLM agent framework that improves accuracy for software issue
-  localization by integrating priori
+  sections -- remains a significant challenge. Current approaches often yield
+  suboptimal results due to a lack of effective integration between LLM agents
+  and precise code search mechanisms. This paper introduces OrcaLoca, an LLM
+  agent framework that improves accuracy for software issue localization by
+  integrating priori
 ingested_at: 2026-09-19
+brief: >-
+  Scaffolding around the search loop, not the model, is what lifts bug
+  localization: a priority queue over LLM-proposed search actions plus
+  graph-distance context pruning raises function match rate and carries
+  through to patch success. OrcaLoca builds a CodeGraph of a repository, has
+  Claude-3.5-Sonnet-20241022 emit observations and candidate search actions
+  each step, schedules them by relevance and repeat-count, decomposes
+  class/file skeleton hits into top-k sub-actions via a scoring sub-agent, and
+  prunes retrieved context by shortest-path distance to current bug
+  candidates.
+
+
+  On SWE-bench Lite it reaches 65.33% (196) function match and 83.33% (250)
+  file match, the best open-source figures on the leaderboard as of the
+  cutoff, and 41.00% (123) resolved after bolting on Agentless-1.5's repair
+  stage. Against a full in-house reproduction of Agentless-1.5, that is +6.67
+  percentage points function match, +4.62 percentage points match precision,
+  and +6.33 percentage points resolved. Ablations on a 93-instance SWE-bench
+  Common subset drop function match from 76.34% (71) to 70.97%-73.12% when
+  priority scheduling, decomposition, or pruning is removed.
+
+
+  The localization gain is measured against 1 reproduced baseline and
+  leaderboard entries that differ in model and editor, so the comparison is
+  not budget-matched; search costs about $0.87 per instance plus $0.90
+  editing. Only 1 model family, Python repositories, and a 93-instance
+  ablation set were tested.
+
+
+  If you build repo-level agents, treat action scheduling and context pruning
+  as separate tunable components rather than prompt details.
+brief_generated_at: 2026-10-12
+brief_model: claude-opus-5
+brief_source: full-text

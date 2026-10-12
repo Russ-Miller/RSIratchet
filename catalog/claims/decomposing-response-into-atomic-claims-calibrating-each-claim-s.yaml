@@ -1,0 +1,43 @@
+id: decomposing-response-into-atomic-claims-calibrating-each-claim-s
+ref: CLM-0373
+capability: abstention-and-self-knowledge
+technique: calibrate-confidence-per-atomic-claim-per-response
+statement: >-
+  Decomposing a response into atomic claims and calibrating each claim's
+  confidence from self-verification and cross-sample consistency (no logits
+  or fine-tuning needed) lowers expected calibration error on
+  straightforward factual QA, but fails on adversarial false-premise
+  questions, where the pipeline reproduces the model's own confident wrong
+  belief rather than flagging it.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Closed-box inference-time use on short factual QA (TriviaQA) versus misconception-laden QA (TruthfulQA); six models including Llama-3.1-8B, Mistral-7B, Qwen2.5-7B, DeepSeek-R1, GPT"
+sources:
+  - source: arxiv-2608-22483
+    stance: supports
+    note: >-
+      Validated by: ECE, smECE, Brier, AUROC, AURC on TriviaQA and
+      TruthfulQA against seven baselines (few-shot likelihood, CoT,
+      verbalized confidence, PS, TS, LMvsLM, HalluMeasure) across six
+      models; best on GPT-4o/TriviaQA (ECE 0.006 vs 0.096 for TS), worse
+      than TS on GPT-4o/TruthfulQA (0.412 vs 0.118).. Measured on two
+      datasets and six models with seven baselines, single paper.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-12
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A run where claim-level
+  decomposition plus post-hoc calibration gives lower ECE than
+  response-level temperature scaling on false-premise questions across most
+  models, or where it fails to beat uncalibrated baselines on ordinary
+  factual QA. Drafted stance toward
+  abstention-rule-built-self-consistency-where-model-samples-several-answers:
+  supports -- Both find self-consistency-derived confidence usable for
+  abstention decisions, and this paper adds that the signal collapses when
+  the model's errors are systematic rather than variable.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,43 @@
+id: 7b-32b-vision-language-models-evidence-candidate-token-read-off-visual-token
+ref: CLM-0348
+capability: visual-grounding
+technique: penalize-tokens-whose-pooled-rank-evidence-falls-below
+statement: >-
+  In 7B-32B vision-language models, evidence for a candidate token read off
+  visual-token hidden states via the output head cannot be pooled as
+  probabilities across visual positions, because each position's
+  distribution sharpness differs by roughly an order of magnitude and an
+  affine scale correction does not remove it; pooling vocabulary ranks
+  instead is invariant to per-position monotone rescaling, and the pooled
+  rank must be compared against that token's own typical level because token
+  identity explains most of the variability.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Open-weight LVLMs where visual-token hidden states and the output head are accessible; evidence measured over visual positions during prefill; calibration on unlabeled images of th"
+sources:
+  - source: arxiv-2608-19075
+    stance: supports
+    note: >-
+      Validated by: CHAIR_I object-hallucination reduced by up to 21.3% on
+      four 7B backbones with descriptive and general multimodal scores
+      largely preserved; reductions reported across 11 models from six
+      families up to 32B; 1.33% average added per-token latency;
+      rank-derived suppression strengths unchanged under per-position
+      rescaling while probability-derived strengths shifted ~0.045;
+      token-specific medians cut held-out calibration error 91-92% versus a
+      global reference and beat all 1,000 random token-to-reference
+      reassignments.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-12
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Showing that averaging
+  probability readouts across visual positions, after affine scale
+  equalization, gives the same or better hallucination reduction as rank
+  pooling, or that a single global reference matches token-specific
+  references on held-out images.
+submitted_by: agent:claude-opus-5@Russ-Miller

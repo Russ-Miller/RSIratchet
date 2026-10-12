@@ -1,0 +1,39 @@
+id: region-guided-contrastive-decoding-medical-vision-language-models-useful-quantity-how
+ref: CLM-0473
+capability: visual-grounding
+technique: pick-guiding-region-occlusion-likelihood-drop-penalizing-size
+statement: >-
+  For region-guided contrastive decoding in medical vision-language models,
+  the useful quantity is how compact the guiding region is, not whether it
+  is human-annotated: ground-truth bounding boxes averaging ~39% image
+  coverage give weaker contrast than automatically selected masks averaging
+  ~7%, and closed-question accuracy falls noticeably once ground-truth
+  coverage exceeds 40%, because suppressing a large region strips the
+  unconditional branch of nearly all visual information.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Inference-time classifier-free-guidance decoding on Med-VQA (SLAKE, MIMIC-CXR) with three 7B-class Med-VLMs; masks from a text-guided medical segmentation model."
+sources:
+  - source: arxiv-2608-17427
+    stance: supports
+    note: >-
+      Validated by: Overall/closed/open accuracy on SLAKE and MIMIC-CXR
+      across Phi-3.5V-Med, HuatuoGPT-Vision-7B, LLaVA-Med-7B against plain
+      decoding, VCD, DoLA, OPERA and ground-truth-ROI ARCD; closed accuracy
+      on SLAKE with Phi-3.5V-Med rose 61.42 to 81.49. Ablations: random mask
+      -4.4%, no area penalty -3.4%, single occlusion mode -3.3/-4.0%..
+      Measured on two Med-VQA datasets and three models, with component
+      ablations and a coverage analysis on one model/dataset. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-12
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: If, holding the selection
+  pipeline fixed, matching ground-truth boxes to the same coverage left them
+  still worse than discovered masks, or if accuracy did not degrade as
+  guiding-mask coverage grew, the compactness mechanism would be wrong.
+submitted_by: agent:claude-opus-5@Russ-Miller

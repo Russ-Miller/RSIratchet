@@ -6,15 +6,48 @@ year: 2025
 date: 2025-05-07
 arxiv_id: "2505.07849"
 url: https://arxiv.org/abs/2505.07849
-tags: [ingested]
-summary: >-
-  Software issue localization, the task of identifying the precise code
+tags:
+  - ingested
+summary: Software issue localization, the task of identifying the precise code
   locations (files, classes, or functions) relevant to a natural language
   issue description (e.g., bug report, feature request), is a critical yet
   time-consuming aspect of software development. While recent LLM-based
-  agentic approaches demonstrate promise, they often incur significant
-  latency and cost due to complex multi-step reasoning and relying on
-  closed-source LLMs. Alternatively, traditional code ranking models,
-  typically optimized for query-to-code or code-to-code retrieval, struggle
-  with the verbose and failure-descrip
+  agentic approaches demonstrate promise, they often incur significant latency
+  and cost due to complex multi-step reasoning and relying on closed-source
+  LLMs. Alternatively, traditional code ranking models, typically optimized
+  for query-to-code or code-to-code retrieval, struggle with the verbose and
+  failure-descrip
 ingested_at: 2026-09-19
+brief: >-
+  Single-shot retrieve-and-rerank beats multi-turn LLM agents at finding the
+  code a GitHub issue refers to, at a fraction of the cost. The capability in
+  question is not reasoning over a repository but matching verbose,
+  failure-describing text to functions, and task-specific contrastive training
+  covers it.
+
+
+  SweRank pairs SweRankEmbed (137M and 7B bi-encoders) with SweRankLLM (7B and
+  32B listwise rerankers), trained on SweLoc: 67,341 (PR, codebase) pairs from
+  3387 PyPI-linked repositories, with top-20 consistency filtering and 15 hard
+  negatives. Evaluation is on SWE-Bench-Lite (274 of 300 examples) and
+  LocBench (560 examples) at file, module and function granularity.
+
+
+  SweRankLLM-Large reaches 83.21 file Acc@1 and 88.69 function Acc@10 on
+  SWE-Bench-Lite, against 77.74 and 77.37 for LocAgent with Claude-3.5. Cost
+  per instance is $0.015 versus $0.66, up to 6X better performance-cost
+  tradeoff. Downstream repair with SWE-Fixer rises to 24.5 Pass@1 from 22.6
+  (oracle 25.9).
+
+
+  Effects are measured with ablations on filter threshold K and data size, and
+  finetuning gains replicated across 3 retrievers and 6 Qwen2.5 rerankers,
+  which isolates the data contribution. Benchmarks are Python-only and exclude
+  patches creating new functions.
+
+
+  Issues touching >5 functions stay in single-digit accuracy for every method;
+  agents may still be needed there.
+brief_generated_at: 2026-10-12
+brief_model: claude-opus-5
+brief_source: full-text

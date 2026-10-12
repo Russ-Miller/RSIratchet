@@ -6,15 +6,47 @@ year: 2024
 date: 2024-07-01
 arxiv_id: "2407.01489"
 url: https://arxiv.org/abs/2407.01489
-tags: [ingested]
-summary: >-
-  Recent advancements in large language models (LLMs) have significantly
-  advanced the automation of software development tasks, including code
-  synthesis, program repair, and test generation. More recently, researchers
-  and industry practitioners have developed various autonomous LLM agents to
-  perform end-to-end software development tasks. These agents are equipped
-  with the ability to use tools, run commands, observe feedback from the
-  environment, and plan for future actions. However, the complexity of these
-  agent-based approaches, together with the limited abilities of current
-  LLMs, raises the fo
+tags:
+  - ingested
+summary: Recent advancements in large language models (LLMs) have
+  significantly advanced the automation of software development tasks,
+  including code synthesis, program repair, and test generation. More
+  recently, researchers and industry practitioners have developed various
+  autonomous LLM agents to perform end-to-end software development tasks.
+  These agents are equipped with the ability to use tools, run commands,
+  observe feedback from the environment, and plan for future actions. However,
+  the complexity of these agent-based approaches, together with the limited
+  abilities of current LLMs, raises the fo
 ingested_at: 2026-09-19
+brief: >-
+  Dropping autonomy from an LLM software-engineering pipeline does not cost
+  performance. Agentless replaces tool-using agents with a fixed 3-phase loop:
+  hierarchical localization (file via prompting plus embedding retrieval, then
+  skeleton-level elements, then edit lines), sampled Search/Replace patches,
+  and patch selection using regression plus LLM-generated reproduction tests.
+
+
+  On SWE-bench Lite (300 problems) with GPT-4o, Agentless resolves 96 (32.00%)
+  at $0.70 and 78,166 tokens average, the best among open-source entries and
+  above SWE-agent with Claude 3.5 Sonnet at 69 (23.00%) and $1.62. Ablations
+  isolate the gains: majority voting alone 77 (25.67%), plus regression tests
+  81 (27.00%), plus reproduction tests 96 (32.00%). Sampling 4 location sets x
+  10 patches beats a single greedy location set, 96 vs 88 (29.33%). Oracle
+  selection over all samples would reach 126 (42.0%), so selection is the
+  bottleneck. Of 213 reproduction tests that reproduced the issue, only 94
+  also verified the ground-truth patch.
+
+
+  Evidence is measured with component ablations and cost reported, but
+  baseline numbers are taken from leaderboards and papers, not rerun, and many
+  are closed-source with no trajectories. 1 model (GPT-4o), 1 benchmark,
+  Python only, bug-fixing issues. Manual inspection found 4.3% of problems
+  leak the ground-truth patch, 10.0% lack critical information, 5.0% give
+  misleading solutions; SWE-bench Lite-S removes these.
+
+
+  Treat a fixed pipeline plus sampling and test-based filtering as the
+  baseline before adding agency.
+brief_generated_at: 2026-10-12
+brief_model: claude-opus-5
+brief_source: full-text

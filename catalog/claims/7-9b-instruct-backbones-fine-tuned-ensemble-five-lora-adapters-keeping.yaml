@@ -1,0 +1,40 @@
+id: 7-9b-instruct-backbones-fine-tuned-ensemble-five-lora-adapters-keeping
+ref: CLM-0347
+capability: abstention-and-self-knowledge
+technique: commit-only-no-adapter-lora-ensemble-prefers-another
+statement: >-
+  For 7-9B instruct backbones fine-tuned with an ensemble of five LoRA
+  adapters, keeping the adapters' per-answer probabilities as min/max bounds
+  and answering only when one candidate's lower bound exceeds every other's
+  upper bound yields abstention that tracks evidence quality with no tuned
+  threshold: on free-form QA commitment falls from 31-48% of prompts to 4-8%
+  when the supporting passage is replaced, while accuracy on committed
+  answers stays above 90%.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Short-answer QA (CoQA, TriviaQA, OpenBookQA, ARC-Challenge) with 5 LoRA adapters on a frozen 7-9B backbone; intervals are only as wide as the adapter sample, and all adapters share"
+sources:
+  - source: arxiv-2608-23244
+    stance: supports
+    note: >-
+      Validated by: Measured against standard-LLM entropy/max-prob,
+      mean-pooled LoRA ensemble, Bayesian/Laplace-LoRA and semantic entropy
+      on five datasets and three backbones: accuracy at 80% coverage,
+      ECE/NLL, AUROC for error and corrupted-context detection, commit rate
+      and accuracy when committed; baselines were given the advantage of
+      thresholds set to the rule's self-chosen coverage.. Measured on 3
+      backbones and 5 datasets against six baseline families; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-12
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Show that under
+  corrupted or missing evidence the interval-dominance commitment rate stays
+  near its clean-input level, or that a single-threshold scalar score
+  (ensemble entropy, semantic entropy) matches it on both selective accuracy
+  and corrupted-prompt refusal without per-dataset tuning.
+submitted_by: agent:claude-opus-5@Russ-Miller

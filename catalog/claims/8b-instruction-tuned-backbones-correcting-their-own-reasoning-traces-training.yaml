@@ -1,0 +1,42 @@
+id: 8b-instruction-tuned-backbones-correcting-their-own-reasoning-traces-training
+ref: CLM-0351
+capability: self-repair
+technique: correct-reasoning-inverting-typed-error-operators
+statement: >-
+  For 8B instruction-tuned backbones correcting their own reasoning traces,
+  training a LoRA corrector to name a typed error operator (error type, step
+  location, corrupted and repaired proposition) and then execute its inverse
+  edit outperforms free-form self-revision baselines (Self-Refine, RISE,
+  SCoRe) on math, code and commonsense benchmarks, and ablations show the
+  typed-operator and adjacent-state objectives are each needed.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "8B instruction-tuned backbones (Llama-3-8B-Instruct, Qwen3-8B), fixed operator library, a few thousand training transition pairs; gains smallest on factual multiple-choice (MMLU), "
+sources:
+  - source: arxiv-2608-22090
+    stance: supports
+    note: >-
+      Validated by: Six in-domain benchmarks: average 67.5 vs 64.3 for the
+      strongest same-backbone baseline (DiffCoT) and 63.7 for SCoRe, five
+      seeds, significant after Holm correction; seven transfer targets
+      improve base average from 67.7 to 76.4 (Llama-3) and 72.9 to 80.2
+      (Qwen3); ablations drop 2-7 points when a noise source or loss term is
+      removed.. Measured on 13 datasets, two 8B backbones, five seeds, with
+      baselines run under matched prompts and extractors; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-12
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A matched-compute
+  comparison in which free-form self-revision or plain SFT on the same
+  correction data equals the typed-operator corrector, or where the
+  operator-only/adjacent-state-only ablations match full SRD. Drafted stance
+  toward self-critique-without-grounding-unreliable: supports -- The paper's
+  free-form self-revision baseline (Self-Refine) gains little over base CoT,
+  while gains come from trained, structurally constrained local edits rather
+  than unaided critique.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,53 @@
+arxiv_id: "2608.29537"
+title: "AGM: Achievement-Grounded Memory for Closed-Loop Agents with Frozen
+  VLA Policies"
+url: https://doi.org/10.48550/arxiv.2608.29537
+drafted_at: 2026-09-29
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: For frozen VLA policies executing repetitive, perceptually aliased
+  manipulation tasks (counting pick-and-place), a progress memory that
+  advances after each attempted action converts transient grasp or placement
+  failures into persistent task-state errors, so writes must be gated on
+  observed physical evidence of the intended transition; gating this way
+  raised success far above the frozen policy and above memory-augmented
+  baselines.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Repetitive counting manipulation where the current image
+  cannot reveal which repetition is underway; subgoals anchored to gripper
+  open/close events; verified in RoboMME Counting simulation and on one
+  physical robot.
+technique: ""
+proposed_technique: Advance progress memory only on verified achievement
+technique_summary: Represents the task as a subgoal sequence with a progress
+  pointer, triggers verification at gripper-load events, and uses frozen point
+  tracking (grasp) and language-conditioned cross-view embeddings plus a
+  2.43M-parameter head (placement) to advance, retain, or roll back the
+  pointer.
+technique_kind: process
+technique_validated_by: "Success rate on RoboMME Counting 50-episode official
+  test split: 100.0% PickXTimes and 84.0% BinFill, four-task average 55.96% vs
+  48.83% for MemER and 28.78% for frozen pi-0.5; past-action conditioning gave
+  29.09%. Per-count breakdown shows frozen policy collapsing to 0% by N=5
+  while AGM holds. Real robot: 100.0% and 82.0%. Ablations:
+  proprioception-only grasp check 98.0/78.0; flattened thresholds 98.0/74.0."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An attempt-based progress memory matching or beating
+  verification-gated writing on the same frozen policy and subgoal interface,
+  or verification gating failing to improve over no progress memory on
+  comparable repetitive manipulation tasks.
+evidence_note: Measured on four RoboMME Counting tasks (50 episodes each, two
+  runs averaged) plus 50 real-robot trials per task, against six baselines
+  including two 4B external VLM memory systems. The claim that attempt-based
+  memory can be worse than no memory is asserted in the text as a finding but
+  no head-to-head attempt-based-memory number appears in the given text; the
+  ablation showing proprioception-only gating already beats the best baseline
+  supports that gating rather than evidence richness carries most of the gain.
+  Only two of four tasks are gripper-anchored; on the other two AGM merely
+  matches the frozen policy.
+confidence: medium

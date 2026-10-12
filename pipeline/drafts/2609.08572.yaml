@@ -1,0 +1,46 @@
+arxiv_id: "2609.08572"
+title: "AgentGrad: Intervention-guided Prompt Optimization for Multi Agent Systems"
+url: https://doi.org/10.48550/arxiv.2609.08572
+drafted_at: 2026-09-28
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: harness-self-improvement
+statement: When automatically rewriting the prompts of a multi-agent LLM
+  system from its failures, locating the responsible agent by injecting a hint
+  into one agent at a time and using that agent's hint-corrected intermediate
+  output as the supervision signal produces prompt updates that generalize
+  better than critique derived only from the system-level output.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Multi-agent pipelines of a few LLM agents with a scalar
+  reward and a training set; tested on HotpotQA, HoVer, PUPA, IFBench and MATH
+  with GPT-5-mini and Qwen3-8B.
+technique: ""
+proposed_technique: Find the responsible agent by hint injection, then learn
+  from its corrected output
+technique_summary: For each failed run, inject a ground-truth-derived hint
+  into one agent at a time in reverse execution order until the failure
+  resolves, then contrast that agent's original and hint-corrected outputs to
+  write its prompt update, clustering similar updates before applying them.
+technique_kind: process
+technique_validated_by: "Against MIPROv2, TextGrad, GEPA and a no-optimization
+  baseline on five MAS benchmarks, three seeds: average gain over
+  no-optimization +11.76 with GPT-5-mini (vs +9.24 for GEPA) and +9.67 with
+  Qwen3-8B; wall-clock optimization time 2.5x lower than the next-fastest
+  baseline; ablation adds target identification (+1.44 HotpotQA, +3.84 PUPA),
+  agent-level supervision, and gradient clustering separately; optimized
+  prompts also transferred best on five unseen in-domain benchmarks."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation or replication in which locating the target agent by
+  hint injection and using its corrected output gives no advantage over
+  whole-system critique at matched rollout budget, or fails to transfer to
+  unseen benchmarks.
+evidence_note: Measured on five benchmarks, two backbones, three seeds,
+  against three published optimizers with a shared rollout budget; component
+  ablations only on HotpotQA and PUPA. Hint construction uses ground truth at
+  training time, so the method needs labelled training failures. No human
+  check that identified target agents are genuinely responsible.
+confidence: medium

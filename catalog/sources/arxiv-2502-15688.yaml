@@ -28,3 +28,36 @@ summary: We present XPath Agent, a production-ready XPath programming agent
 notes: "Forwarded by Russ 2026-09-19: locator papers: generate a reusable
   regex/SQL/XPath once, run it without the model"
 ingested_at: 2026-09-19
+brief: >-
+  Pruning a web page down to the nodes near the target text, then asking an
+  LLM to write an XPath over that condensed HTML, gets usable extraction
+  accuracy with far less context than traversal-based agents. The claim of
+  lower token use and faster wall-clock time is asserted rather than measured
+  in the text shown.
+
+
+  XPath Agent runs 2 stages: a weaker LLM extracts the target values plus "cue
+  texts" (anchors like "price:") from a sanitized page, then a stronger LLM
+  programs an XPath over condensed HTML seeded with 3 pages, with a feedback
+  evaluator capped at 3 loops. Evaluation uses SWDE, 90 websites across 9
+  domains, 20414 web pages, with 32 pages sampled per task.
+
+
+  GPT 4o leads on accuracy 0.7413 and F1 0.8514; GPT 4o mini reaches 0.6613
+  accuracy, 0.7961 F1; Claude 3.5 gets 0.6191 accuracy with the highest recall
+  0.8551; DeepSeek V2.5 is lowest at 0.5794 accuracy. Sanitization reduces
+  page size to 10%–20% on average.
+
+
+  Evidence is thin. The AutoCrawler comparison promised in the contributions
+  appears only as prose, with no numbers, no token or latency measurements,
+  and no ablation isolating the contribution of cue texts despite that being a
+  stated finding. The error analysis section is a TODO, and the prose about
+  model strengths contradicts the table.
+
+
+  Treat the pipeline design as the takeaway and the efficiency claims as
+  unverified.
+brief_generated_at: 2026-10-12
+brief_model: claude-opus-5
+brief_source: full-text
