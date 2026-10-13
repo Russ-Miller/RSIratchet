@@ -1,0 +1,46 @@
+id: training-free-generate-critique-revise-loop-frozen-backbone-accuracy-gains-appear-only
+ref: CLM-0498
+capability: self-repair
+technique: stop-self-critique-confirmed-sentinel-confidence-score
+statement: >-
+  In a training-free generate-critique-revise loop on a frozen backbone,
+  accuracy gains appear only where single-shot reasoning is already weak: on
+  clean multi-step reasoning (BBH, ~74-78% single-shot) depth sweeps leave
+  accuracy flat, while on competition math (MATH, 26.2% single-shot) the
+  same loop adds about 14 points, with the loop's main value on easy tasks
+  being a self-issued CONFIRMED stop that halts 82-88% of items at ~2.1
+  generations.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Pure-reasoning benchmarks with no tools, deepseek-v4-flash and Qwen2.5-72B backbones, n=100-500, max loop depth 3; no external feedback signal in the loop."
+sources:
+  - source: arxiv-2608-18884
+    stance: supports
+    note: >-
+      Validated by: Accuracy and mean tokens/calls per question against
+      single-shot, self-consistency (k=2,3) and fixed-depth Self-Refine on
+      BBH, GSM8K, MATH (n=500): matched accuracy on BBH at 2.15 generations
+      vs 3.00, higher accuracy on GSM8K/MATH at lower token cost; a sweep of
+      confidence thresholds 0.6-0.9 collapsed the loop to one generation on
+      100% of items, showing the numeric tag is not selective.. Measured on
+      three benchmarks, two backbones, n=100 probes plus n=500 for the
+      significance tests, with Wilson intervals and McNemar tests;
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-13
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A run on the same or
+  similar backbones showing the ungrounded critique loop raising accuracy
+  beyond the confidence interval on a benchmark where single-shot accuracy
+  is already high, or failing to help on a low-single-shot benchmark.
+  Drafted stance toward self-critique-without-grounding-unreliable: supports
+  -- Unaided self-critique moved accuracy not at all on clean BBH and
+  fixed-depth self-refinement dropped below single-shot there (71.2% vs
+  73.8%), consistent with ungrounded critique being an unreliable
+  improvement signal.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,43 @@
+id: 8b-instruction-tuned-backbones-training-lora-corrector-first-diagnose-typed
+ref: CLM-0349
+capability: self-repair
+technique: correct-reasoning-predicting-typed-error-operator-then-inverting
+statement: >-
+  For 8B instruction-tuned backbones, training a LoRA corrector to first
+  diagnose a typed, localized reasoning error (type, step location,
+  corrupted and repaired proposition) and then apply only that inverse edit
+  improves accuracy over free-form self-revision methods (Self-Refine, RISE,
+  SCoRe) on math, code and commonsense benchmarks, and dropping either the
+  operator-diagnosis loss or the adjacent-state-reconstruction loss lowers
+  accuracy on all tested tasks.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Llama-3-8B-Instruct and Qwen3-8B; a few thousand constructed transition pairs; small denoising budget (gains mostly in first few steps); gains smaller on factual multiple-choice (M"
+sources:
+  - source: arxiv-2608-22090
+    stance: supports
+    note: >-
+      Validated by: Accuracy on six in-domain benchmarks (avg 67.5 vs 64.3
+      for DiffCoT, 63.7 SCoRe, 60.9 Self-Refine, 59.4 base CoT), five seeds
+      with Holm correction; seven cross-dataset transfer targets on two
+      backbones; ablations removing each loss and each noise source..
+      Measured on 13 tasks, two 8B backbones, five seeds, with ablations
+      isolating noise sources and losses; no matched-compute control for the
+      extra supervision data, and all baselines are reproductions by the
+      same authors.
+contested: false
+status: pending-review
+last_checked_at: 2026-10-13
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A matched-compute
+  comparison in which free-form revision training on the same
+  corrupted-trajectory data equals the typed-operator corrector, or
+  ablations showing either loss alone matches full SRD. Drafted stance
+  toward self-critique-without-grounding-unreliable: supports --
+  Unconstrained self-revision (Self-Refine) barely beat base CoT here, while
+  a trained, structurally constrained local edit did better.
+submitted_by: agent:claude-opus-5@Russ-Miller

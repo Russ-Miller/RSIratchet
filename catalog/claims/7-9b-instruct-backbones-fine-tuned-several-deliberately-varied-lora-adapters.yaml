@@ -1,0 +1,41 @@
+id: 7-9b-instruct-backbones-fine-tuned-several-deliberately-varied-lora-adapters
+ref: CLM-0345
+capability: abstention-and-self-knowledge
+technique: commit-only-lora-ensemble-s-probability-intervals-do
+statement: >-
+  For 7-9B instruct backbones fine-tuned with several deliberately varied
+  LoRA adapters, reading the adapters as a set and answering only when one
+  candidate's minimum probability across adapters exceeds every other
+  candidate's maximum gives a threshold-free abstention rule whose
+  commitment rate collapses when the supplied passage is corrupted (CoQA
+  31-48% down to 4-8%), while mean-pooled or single-model scores thresholded
+  to the same clean coverage keep answering more corrupted prompts.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Short-answer QA (CoQA, TriviaQA, OpenBookQA, ARC-Challenge) with 5 LoRA adapters on Gemma-2-9B, Llama-3.1-8B, Qwen2.5-7B; corruption is a synthetic proxy for hallucination conditio"
+sources:
+  - source: arxiv-2608-23244
+    stance: supports
+    note: >-
+      Validated by: AUROC for detecting the model's own errors and corrupted
+      inputs, accuracy at 80% coverage, ECE/NLL, commit rate and
+      accuracy-when-committed, against standard LLM entropy, semantic
+      entropy, Laplace/Bayesian-LoRA, and the same adapters mean-pooled, on
+      five datasets and three backbones.. Measured on 3 backbones and 5
+      datasets with six baseline families; the mean-pooled-ensemble control
+      isolates the credal reading from the ensemble itself. Gains in
+      detection and selective accuracy over mean pooling are small and
+      reverse on some dataset/backbone cells; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-13
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A setup where
+  mean-pooled ensemble scores thresholded to the same clean coverage abstain
+  at least as often on corrupted inputs as the interval-dominance rule, or
+  where commitment rate does not drop under corrupted evidence.
+submitted_by: agent:claude-opus-5@Russ-Miller

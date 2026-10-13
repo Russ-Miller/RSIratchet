@@ -1,0 +1,47 @@
+arxiv_id: "2609.04841"
+title: "MABPD: Multi-Agent Bias Probing & Detection via Structured Argument Debate"
+url: https://arxiv.org/abs/2609.04841
+drafted_at: 2026-09-28
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: "In zero-shot media-bias sentence classification, the gain from
+  structured multi-agent deliberation over a single agent or a rule-based
+  consensus of the same agents is almost entirely a recall gain: single-agent
+  and no-debate configurations run at high precision (>90%) and low recall,
+  and adding evidence-weighted debate raises recall by about 20 points while
+  precision falls."
+kind: observation
+backing_strength: single-paper
+scope_condition: Binary media-bias detection on BABE sentences, all agents
+  built on one LLM (LLaMA 3.3 70B) with prompt-only specialization; single
+  serving environment, no per-agent ablation.
+technique: ""
+proposed_technique: Weight debate votes by grounded textual evidence, asymmetrically
+technique_summary: Three prompt-specialized agents submit verdicts with cited
+  spans; votes are weighted by role, confidence and a polarity-aware evidence
+  factor that zeroes any 'biased' claim lacking a span verified against the
+  article text, with an asymmetric verifier that may only flip biased to
+  neutral.
+technique_kind: process
+technique_validated_by: "Ablation on BABE: full pipeline 84.7 binary F1 on the
+  1,000-sentence test split vs 74.1 without debate and 65.2 single-agent, and
+  80.0 for an external strong single-agent baseline (Qwen-3.5 122B); macro F1
+  83.4 vs supervised SOTA MAGPIE 84.1; paired bootstrap p<0.001 against the
+  no-debate arm."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation holding the same agent outputs fixed and varying only
+  the aggregation rule that shows plain majority vote or unweighted debate
+  recovers the same recall gain, or a setting where debate raises precision
+  rather than recall.
+evidence_note: Measured on 4,121 BABE sentences plus a 1,000-sentence test
+  split, with two runs and paired bootstrap; error analysis reports 716 of 718
+  corrected cases were rescued false negatives at 152 added false positives.
+  The design does not separate the aggregation rule from the added agents,
+  per-agent ablations are missing, and the serving environment is no longer
+  reachable so nothing can be re-run. Cross-dataset HyperPartisan shows the
+  same recall-heavy skew (88.8 recall, 61.4 precision) on truncated articles.
+confidence: medium

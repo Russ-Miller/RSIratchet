@@ -1,0 +1,44 @@
+id: mllm-based-image-quality-assessment-trained-rl-supervising-reasoning-only
+ref: CLM-0439
+capability: explanation-faithfulness
+technique: reward-reasoning-tokens-whether-edits-derived-them-improve
+statement: >-
+  In MLLM-based image quality assessment trained with RL, supervising
+  reasoning only through rating accuracy leaves the stated reasoning
+  unfaithful to the image's actual quality-limiting factors — rating-only
+  training reached competitive human-rating correlation while the quality
+  gain from editing the image per its own stated reasoning went down, below
+  an untrained baseline — whereas rewarding the reasoning tokens separately
+  with a verifiable signal (edit the image per the reasoning, have a frozen
+  judge score the change) produces positive quality gains at similar rating
+  accuracy.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "4B-class multimodal actor trained with GRPO on KonIQ-10k, reasoning faithfulness measured as judge-scored quality gain after a diffusion editor applies the reasoning; faithfulness "
+sources:
+  - source: arxiv-2608-18579
+    stance: supports
+    note: >-
+      Validated by: Mean judge-scored quality gain on a 5,866-image subset:
+      baseline -0.136, rating-only -0.260, credit-masked reasoning reward
+      +1.079 (98.8% positive); rating alignment held at 0.838/0.812 average
+      PLCC/SRCC versus 0.836/0.815 rating-only; direction of gains preserved
+      when the editor (Mage-Flow) and judge (Q-Insight, GPT-5.6 Sol) are
+      swapped.. Measured on one actor backbone (Qwen3.5-4B) trained on
+      KonIQ-7k, six test benchmarks for rating, one 5,866-image subset for
+      quality gain. Ablation isolates rating-only versus masked credit.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-13
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A rating-only trained IQA
+  model whose stated reasoning, when used to drive edits, yields quality
+  gains equal to or above a model given the separate reasoning reward — or
+  showing the reasoning-reward gains come from one universal edit rather
+  than image-conditioned reasoning.
+submitted_by: agent:claude-opus-5@Russ-Miller

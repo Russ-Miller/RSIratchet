@@ -1,0 +1,40 @@
+id: confidence-signals-derived-model-s-own-self-verification-cross-sample-consistency
+ref: CLM-0369
+capability: abstention-and-self-knowledge
+technique: calibrate-confidence-per-extracted-claim-per-response
+statement: >-
+  Confidence signals derived from a model's own self-verification and
+  cross-sample consistency, calibrated post-hoc at the level of individual
+  extracted claims, lower calibration error on straightforward factual QA
+  but get worse than simple response-level temperature scaling on
+  adversarial false-premise questions, because the pipeline faithfully
+  reports the model's own mistaken certainty rather than correcting it.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Closed-box setting with no logits or fine-tuning; tested on TriviaQA (factual) versus TruthfulQA (false premises) with six models including Llama-3.1-8B, Mistral-7B, Qwen2.5-7B, De"
+sources:
+  - source: arxiv-2608-22483
+    stance: supports
+    note: >-
+      Validated by: ECE, smECE, Brier, AUROC, AURC against seven baselines
+      (few-shot likelihood, CoT, verbalized confidence, PS, TS, LMvsLM,
+      HalluMeasure) on TriviaQA and TruthfulQA; best case GPT-4o/TriviaQA
+      ECE 0.006 vs 0.096 for TS, but on GPT-4o/TruthfulQA ECE 0.412 vs 0.118
+      for TS.. Measured on two datasets and six models with seven baselines,
+      single paper. The false-premise failure is clearest on GPT-4o and
+      Qwen; cross-examination (LMvsLM), which actively probes for
+      contradictions, does better there, supporting the stated mechanism.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-13
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A closed-box claim-level
+  calibration pipeline using only self-verification and sampling consistency
+  that matches or beats response-level temperature scaling on calibration
+  error for false-premise questions across several models.
+submitted_by: agent:claude-opus-5@Russ-Miller

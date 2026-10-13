@@ -1,0 +1,42 @@
+id: region-guided-contrastive-decoding-medical-vision-language-models-compactness-guiding-region
+ref: CLM-0471
+capability: visual-grounding
+technique: pick-contrastive-region-counterfactual-occlusion-penalizing-size
+statement: >-
+  In region-guided contrastive decoding for medical vision-language models,
+  the compactness of the guiding region matters more than whether it is
+  expert-annotated: automatically discovered masks selected by
+  counterfactual occlusion (mean coverage about 7%) raise closed-ended
+  Med-VQA accuracy above decoding guided by ground-truth bounding boxes
+  (about 39% coverage), because suppressing a large region strips most
+  visual evidence from the unconditional branch and dilutes the contrast.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Three Med-VLMs (Phi-3.5V-Med, HuatuoGPT-Vision-7B, LLaVA-Med-7B) on SLAKE and MIMIC-CXR VQA; classifier-free-guidance-style contrastive decoding where the unconditional branch supp"
+sources:
+  - source: arxiv-2608-17427
+    stance: supports
+    note: >-
+      Validated by: Overall and closed-ended accuracy on SLAKE and MIMIC-CXR
+      against plain decoding, VCD, DoLA, OPERA and ground-truth-ROI ARCD,
+      across three Med-VLMs; ablations removing spatial CFG, temporal
+      contrast, counterfactual selection (random masks), the area penalty,
+      and one occlusion operator.. Measured on two Med-VQA datasets and
+      three models, with an ablation showing random mask selection costs
+      4.4% and removing the area penalty 3.4%, plus a coverage analysis
+      (39.4% GT vs 7.05% CAST on one model). Single paper, same authors as
+      the GT-based baseline's comparison; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-13
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Matching the automatic
+  masks' size while using ground-truth regions (e.g. shrinking GT boxes to
+  comparable coverage) closes or reverses the gap, or on other datasets
+  GT-guided decoding beats counterfactually selected compact masks at equal
+  coverage.
+submitted_by: agent:claude-opus-5@Russ-Miller

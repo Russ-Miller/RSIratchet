@@ -1,0 +1,43 @@
+id: 7b-32b-vision-language-models-pooling-logit-lens-readouts-across-visual-token
+ref: CLM-0346
+capability: visual-grounding
+technique: penalize-tokens-weak-rank-based-visual-evidence-decoding
+statement: >-
+  In 7B-32B vision-language models, pooling logit-lens readouts across
+  visual token positions by vocabulary rank rather than probability
+  magnitude gives a scale-invariant grounding signal, because per-position
+  probability magnitudes vary by roughly an order of magnitude at the same
+  rank and affine rescaling does not remove that dispersion; penalizing
+  candidate tokens whose pooled rank evidence falls below a token-specific
+  reference lowers object-hallucination rates at about 1.3% added latency
+  per token.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Open-weight LVLMs with accessible hidden states and output head; free-form captioning and general multimodal benchmarks; requires a one-time offline calibration on unlabeled images"
+sources:
+  - source: arxiv-2608-19075
+    stance: supports
+    note: >-
+      Validated by: CHAIR_I object hallucination on four 7B backbones
+      (reduced up to 21.3%), extended to 11 models across six families up to
+      32B; descriptive and general multimodal scores reported as largely
+      preserved or improved; latency overhead 1.33% per token; held-out
+      calibration error on 4,969 disjoint COCO images versus a global
+      reference and 1,000 random reference shuffles.. Measured: ablation
+      holding vocabulary order fixed while reshuffling per-position scale
+      changed probability-based suppression strength (mean abs change
+      ~0.045) but left rank-based strength identical; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-13
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Show that pooling
+  probability magnitudes (after scale equalization) suppresses hallucination
+  as well as rank pooling, or that the token-specific reference adds nothing
+  over a single global threshold, or that the CHAIR gain comes from
+  shorter/less detailed captions rather than better grounding.
+submitted_by: agent:claude-opus-5@Russ-Miller

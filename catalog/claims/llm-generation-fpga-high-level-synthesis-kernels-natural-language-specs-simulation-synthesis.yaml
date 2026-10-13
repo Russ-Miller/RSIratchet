@@ -1,0 +1,41 @@
+id: llm-generation-fpga-high-level-synthesis-kernels-natural-language-specs-simulation-synthesis
+ref: CLM-0421
+capability: code-generation
+technique: evolve-hls-kernels-then-verify-them-real-hardware
+statement: >-
+  For LLM generation of FPGA high-level-synthesis kernels from
+  natural-language specs, simulation and synthesis success overstates
+  deployability: designs that pass Vitis HLS simulation still fail timing
+  closure, routing or board execution, and an agent loop that adds
+  evolutionary kernel search plus C-level functional verification raises
+  synthesizable, executable and functionally correct rates separately, with
+  search mainly lifting synthesizability/executability and functional
+  reflection mainly lifting correctness.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "78 HLS-Eval tasks, Vitis HLS 2022.2, Xilinx U200 board at 200 MHz, five backbone models from Qwen3-Coder-30B to Gemini 3.1 Pro; single benchmark, ablation on one model only."
+sources:
+  - source: arxiv-2608-23630
+    stance: supports
+    note: >-
+      Validated by: Against zero-shot pass@10 on 78 HLS-Eval tasks: average
+      +16.9 points synthesizable rate, +26.7 executable, +30.6 functional
+      correctness; ablation on Qwen3-Coder-30B gave base 59.0/47.4/37.2,
+      evolution only 80.1/66.7/48.7, reflection only 57.7/50.0/46.2, full
+      83.3/75.6/66.7.. Measured on one benchmark (78 tasks) and one FPGA
+      platform, with zero-shot pass@10 as baseline; ablation only on the
+      weakest backbone, and no matched-compute comparison against simply
+      sampling more zero-shot candidates with the same simulation screening.
+contested: false
+status: pending-review
+last_checked_at: 2026-10-13
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A run on another HLS
+  benchmark and board where synthesizable designs are nearly always
+  board-executable, or where the evolutionary and reflection modules move
+  the same metrics rather than different ones.
+submitted_by: agent:claude-opus-5@Russ-Miller
