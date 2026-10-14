@@ -1,0 +1,48 @@
+arxiv_id: "2609.08919"
+title: "Experience Funnel: A State-Policy Alternating Loop for Self-Evolving Agents"
+url: https://doi.org/10.48550/arxiv.2609.08919
+drafted_at: 2026-09-28
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: harness-self-improvement
+statement: For a small agent policy (Qwen3.5-4B) repeatedly deployed on the
+  same task family with environment-level feedback, distilling only the
+  trajectories whose textual-state guidance is newly or persistently useful
+  relative to state-free execution raises the state-free policy's accuracy
+  more than distilling all state-conditioned trajectories, and the resulting
+  policy keeps improving over alternating rounds of state editing and
+  consolidation.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Post-deployment settings with recurring related tasks and
+  verifiable environment rewards; small student (4B) with a larger fixed
+  teacher (27B); QA, embodied and web-navigation benchmarks; single runs per
+  configuration.
+technique: ""
+proposed_technique: Consolidate only experience that survives state revision
+technique_summary: Alternates fast edits to an explicit textual state
+  (validation-gated) with distillation into the policy, keeping only
+  trajectories that the updated state makes newly or persistently better than
+  state-free execution, weighted by per-token divergence between
+  state-conditioned and state-free predictions.
+technique_kind: training
+technique_validated_by: "SearchQA/ALFWorld/WebShop accuracy against state-only
+  evolution (SkillOpt 53.9 avg), policy internalization (OPID 55.4), and
+  co-evolution (SkillRL 56.2) versus 57.6 avg; ablation: selective 01+11
+  consolidation 63.0% vs 58.9% unfiltered; state-free accuracy rose 58.1 to
+  61.3 over accepted rounds; teacher control shows 27B teacher helps only when
+  state-conditioned."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Under matched training compute, distilling all state-conditioned
+  successful trajectories matches or beats transition-filtered distillation,
+  or the state-free policy stops improving across accepted rounds on
+  independent task families.
+evidence_note: Measured on three benchmarks with one base model and one
+  teacher pair; margins over the nearest co-evolution baseline are small (1.4
+  points average), most configurations are single runs, and cross-environment
+  training budgets differ, so the selective-filtering ablation (4.1 points) is
+  the strongest part of the evidence.
+confidence: low

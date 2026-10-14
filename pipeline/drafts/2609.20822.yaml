@@ -1,0 +1,46 @@
+arxiv_id: "2609.20822"
+title: Coding Agents with an Obstacle-Aware Harness for Safe Robot Manipulation
+url: https://doi.org/10.48550/arxiv.2609.20822
+drafted_at: 2026-09-27
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: For coding-agent robot manipulation where a safety constraint (do
+  not touch a named obstacle) is given only as text in the task prompt, the
+  agent restates the constraint early and then plans the shortest path through
+  the obstacle, and enforcing the same constraint with an external stateless
+  verifier that re-checks each route against grounded obstacle boxes before
+  motion raises both task success and collision avoidance.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Simulated tabletop manipulation (SafeLIBERO, 32 tasks, 10
+  seeds) with a single declared obstacle per scene, parallel-jaw gripper,
+  frozen pi-0.5 policy, GPT-5.5/GPT-6 planners.
+technique: ""
+proposed_technique: Re-check the safety constraint in a tool, not the prompt
+technique_summary: Ground objects as bounding boxes, have the agent propose a
+  waypoint route, reject and replan any route that intersects the obstacle box
+  (before and during motion), and pick the contact side by an adjacency test
+  with the obstacle.
+technique_kind: tooling
+technique_validated_by: "On SafeLIBERO with 10 seeds per task across 32 tasks:
+  71.9% task success and 87.5% collision avoidance with GPT-6, versus
+  31.0/59.0 for the same agent with skills but no harnesses, and 67.5/68.9 for
+  AEGIS (barrier-function filter over the frozen policy); ablation holds
+  prompt, skill memory and VLA fixed."
+stance_on_existing: supports
+related_claim_id: fixes-in-the-harness-compound-fixes-in-the-prompt-do-not
+stance_reason: The constraint stated in the prompt is dropped by step three
+  hundred while the same constraint encoded as a verification tool holds
+  across the episode.
+falsifier: An agent given only the textual constraint, with no external
+  verification tool, reaching comparable collision-avoidance rates on the same
+  benchmark, or the harness failing to improve collision avoidance over the
+  skills-only agent under a matched step budget.
+evidence_note: Measured on one simulated benchmark with one obstacle per
+  scene; ablation isolates the harnesses from model scale by holding prompt,
+  skill memory and VLA fixed. The context-length explanation for constraint
+  drop is argued from rollout traces and cited literature, not directly
+  manipulated. No matched-compute baseline for the extra planning calls.
+confidence: medium

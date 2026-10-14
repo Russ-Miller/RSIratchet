@@ -1,0 +1,48 @@
+arxiv_id: "2609.20659"
+title: "HIL-UMI: Bringing Human-in-the-Loop Post-Training of
+  Vision-Language-Action Models to Universal Manipulation Interface"
+url: https://doi.org/10.48550/arxiv.2609.20659
+drafted_at: 2026-09-27
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: For post-training a pretrained vision-language-action manipulation
+  policy under a fixed per-round frame budget, collecting handheld
+  demonstrations only at states where the human action chunk diverges from the
+  policy's sampled action distribution, and weighting them by a learned
+  task-progress advantage, raises task progress more than collecting the same
+  number of frames of ordinary demonstrations and fine-tuning on them.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Four real-world Franka tasks (two long-horizon, two
+  precision) with a pi-0.5 policy adapted per task; 10 trials per checkpoint;
+  partial-credit task progress score; policy predictions are never executed on
+  the robot.
+technique: ""
+proposed_technique: Collect demonstrations only where the policy disagrees,
+  and weight by progress
+technique_summary: During handheld demonstration, query the current policy on
+  the same observation stream without executing it, record extra demonstration
+  segments when an energy score between the human action chunk and the
+  policy's sampled chunks exceeds a threshold, and train with
+  advantage-conditioned behavioral cloning using a separately refined progress
+  estimator.
+technique_kind: training
+technique_validated_by: Mean task progress score across rounds on four real
+  tasks versus supervised fine-tuning on equal-budget ordinary UMI
+  demonstrations, plus an ablation removing the advantage model and a
+  comparison to real-robot HG-DAgger on Clean Up Table (higher score, 73.4 vs
+  412.99 ms per collected frame).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Under matched frame budgets on comparable manipulation tasks,
+  ordinary demonstration collection plus fine-tuning matches or beats
+  disagreement-targeted collection with advantage conditioning, or the gain
+  disappears once the advantage model is given to both arms.
+evidence_note: Measured on four tasks, 10 trials per checkpoint, one policy
+  backbone, one lab, one robot; ablation isolates the advantage component and
+  a threshold sweep on one task shows insensitivity, but the comparison is
+  against a single SFT baseline and evaluation counts are small.
+confidence: low

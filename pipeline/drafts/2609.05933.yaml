@@ -1,0 +1,48 @@
+arxiv_id: "2609.05933"
+title: Rethinking the Evaluation of Efficiency Methods for Multi-Agent Systems
+url: https://doi.org/10.48550/arxiv.2609.05933
+drafted_at: 2026-09-28
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: When multi-agent pruning methods (AgentPrune, AgentDropout, AGP,
+  DAGP, GPTSwarm) are re-run under a fixed backbone, agent registry,
+  role-to-node assignment and runtime, their accuracy-cost gains do not hold
+  across starting topologies and mostly do not beat random pruning at the same
+  structural budget — averaged over 20 cells the optimized systems lost 0.77
+  accuracy points against the original system versus 0.44 for matched random
+  pruning, and only 12 of 25 method-topology pairs beat their random control.
+kind: observation
+backing_strength: single-paper
+scope_condition: Five compression-style MAS optimizers, four task families
+  (GSM8K, MMLU-500, HumanEval, LiveCodeBench-150), small open-weight 4B-8B
+  backbones, 6 agents, 2 rounds, mostly no tool access; English tasks;
+  method-specific prompts stripped out.
+technique: ""
+proposed_technique: Compare agent pruning against random pruning at equal budget
+technique_summary: For every structural change a multi-agent optimizer emits,
+  build a random topology with the same node/edge budget and evaluate it under
+  identical model, agents, roles and runtime, so the credit goes to the
+  optimizer rather than to having deleted structure.
+technique_kind: process
+technique_validated_by: Applied to 20 main-grid cells across five starting
+  topologies and four tasks; the random control preserved accuracy about as
+  well as the learned optimizers (-0.44 vs -0.77 points from the uncompressed
+  system), exposing cells where the full multi-agent structure was not needed
+  at all.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Re-running the same five methods under the same controlled harness
+  and finding they beat matched random pruning in most topology-task cells,
+  with gains that hold across starting topologies and exceed run-to-run
+  variance.
+evidence_note: Measured on a 38-cell anchor-plus-one-axis grid with a pinned
+  backbone per task family and a per-source observation filter, so deltas are
+  attributable to the emitted topology. Random control used one sample per
+  budget and repeated-run variance was measured on only one task family
+  (0.6-2.1 points, comparable to most reported gains), so individual cell
+  differences are weakly resolved. Stripping method-native prompts may
+  understate some methods.
+confidence: medium

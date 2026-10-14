@@ -1,0 +1,45 @@
+arxiv_id: "2609.10046"
+title: Guaranteeing Faithful Evidence Extraction in Speculative
+  Retrieval-Augmented Generation
+url: https://doi.org/10.48550/arxiv.2609.10046
+drafted_at: 2026-09-24
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: In semi-extractive RAG QA where the model is prompted to put quoted
+  evidence in brackets, the bracketed spans frequently do not appear verbatim
+  in the retrieved context (as low as 0.37 verbatim rate on a medical dataset
+  with Mistral-Nemo), and masking logits during bracketed spans to only tokens
+  continuing a verbatim context span raises verbatim fidelity to near 1.0
+  across Llama-3.1-8B, Mistral-Nemo and Qwen3-4B without lowering ROUGE-L or
+  BERTScore much.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Instruction-tuned 4-12B models, gold or gold-plus-distractor
+  contexts, quoted spans marked by bracket trigger tokens; extraction fidelity
+  only guaranteed once the trigger token is emitted in isolation.
+technique: ""
+proposed_technique: Mask decoding to verbatim context spans inside quotes
+technique_summary: When a quote-opening token is generated, restrict the
+  next-token logits (via a suffix tree over tokenised retrieved contexts) to
+  tokens that extend the current span into a continuous verbatim substring of
+  some retrieved passage, plus the closing bracket.
+technique_kind: decoding
+technique_validated_by: New Extraction Faithfulness Accuracy metric plus
+  EM/F1/ALR and ROUGE-L/BERTScore/MAUVE/latency on MedMCQA, MESAQA, QuoteSum
+  and a new SEMAeroSQuAD set, against SEMQA, NEST and a DistilBERT extractive
+  baseline, three LLMs, two runs, with McNemar/Wilcoxon and Holm-Bonferroni
+  correction.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Show that unconstrained semi-extractive prompting already yields
+  near-1.0 verbatim quote rates on technical domains, or that logit masking to
+  verbatim spans costs large drops in answer correctness or fluency metrics.
+evidence_note: Measured on four datasets and three open models; the fidelity
+  guarantee is near-tautological by construction, so the informative parts are
+  the baseline failure rate and the small fluency cost. Latency rises
+  substantially on long contexts. Fluency claims rest on automatic metrics
+  only, and one dataset was LLM-augmented by the authors.
+confidence: medium
