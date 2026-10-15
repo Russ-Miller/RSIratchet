@@ -1,0 +1,39 @@
+id: agentic-tool-calling-frozen-4-8b-base-models-specification-grounding-hallucinations-parameters
+ref: CLM-0359
+capability: hallucination
+technique: concurrent-lora-critic-verbalizes-which-parameter-ungrounded
+statement: >-
+  For agentic tool-calling with frozen 4-8B base models,
+  specification-grounding hallucinations (parameters the user never
+  supplied) are confidently generated, so sampling-based uncertainty signals
+  such as token and semantic entropy sit near the trivial decision floor,
+  while a concurrently-run LoRA adapter trained with a masked diagnostic
+  objective on the base model's own hidden states detects and names the
+  ungrounded parameter.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Tool-calling with structured schemas and simulated ambiguous users; Qwen3-4B and Llama-xLAM-2-8B; hallucination defined as lack of support in dialogue history, not factual falsity."
+sources:
+  - source: arxiv-2608-10430
+    stance: supports
+    note: >-
+      Validated by: 0.966 AUROC and >80% exact-parameter localization
+      in-distribution on Qwen3-4B versus 0.915 for an equivalent-scale
+      fine-tuned external judge, 0.782 for a linear probe, and ~0.64-0.67
+      for entropy baselines; 0.925 AUROC out of distribution on ToolAlpaca;
+      replicated on Llama-xLAM-2-8B (0.926 vs 0.833 probe ID); in a ReAct
+      loop, specific feedback gave parameter F1 61.2 vs 52.1 base and 51.3
+      generic-block, with false blocks 2.9% vs 9.4%.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-15
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Show that on the same
+  specification-grounding errors, entropy-based or external-judge detectors
+  match the adapter's AUROC and localization, or that a passive probe on
+  frozen states transfers equally well out of distribution.
+submitted_by: agent:claude-opus-5@Russ-Miller

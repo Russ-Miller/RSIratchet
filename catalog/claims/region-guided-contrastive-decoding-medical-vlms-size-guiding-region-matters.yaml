@@ -1,0 +1,39 @@
+id: region-guided-contrastive-decoding-medical-vlms-size-guiding-region-matters
+ref: CLM-0472
+capability: visual-grounding
+technique: pick-contrast-region-counterfactual-occlusion-penalising-size
+statement: >-
+  In region-guided contrastive decoding for medical VLMs, the size of the
+  guiding region matters more than whether it is expert-annotated:
+  suppressing a coarse ground-truth bounding box (mean coverage about 39% of
+  the image) leaves too little context for a usable contrast, while a
+  compact automatically discovered mask (about 7% coverage) selected by the
+  likelihood drop under occlusion gives higher closed-ended VQA accuracy on
+  SLAKE and MIMIC-CXR across three Med-VLMs.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Medical VQA on SLAKE and MIMIC-CXR with Phi-3.5V-Med, HuatuoGPT-Vision-7B and LLaVA-Med-7B; classifier-free-guidance-style decoding where the unconditional branch suppresses the re"
+sources:
+  - source: arxiv-2608-17427
+    stance: supports
+    note: >-
+      Validated by: Overall/closed/open scores on SLAKE and MIMIC-CXR
+      against plain decoding, VCD, DoLA, OPERA and ground-truth-ROI ARCD, on
+      three Med-VLMs; ablations removing the area penalty (-3.4%), using
+      random masks (-4.4%), or a single occlusion operator (-3.3/-4.0%)..
+      Measured on two datasets and three Med-VLMs with per-component
+      ablations and a coverage analysis (39.41% vs 7.05% mean coverage;
+      closed accuracy falls when GT coverage exceeds 40%). [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-15
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Matching the compactness
+  of the automatic masks to the ground-truth boxes (or cropping GT boxes
+  down) closes the gap, or compact automatic masks fail to beat GT boxes on
+  datasets where GT annotations are already tight.
+submitted_by: agent:claude-opus-5@Russ-Miller

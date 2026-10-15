@@ -6,15 +6,50 @@ year: 2024
 date: 2024-07-01
 arxiv_id: "2407.01489"
 url: https://arxiv.org/abs/2407.01489
-tags: [ingested]
-summary: >-
-  Recent advancements in large language models (LLMs) have significantly
-  advanced the automation of software development tasks, including code
-  synthesis, program repair, and test generation. More recently, researchers
-  and industry practitioners have developed various autonomous LLM agents to
-  perform end-to-end software development tasks. These agents are equipped
-  with the ability to use tools, run commands, observe feedback from the
-  environment, and plan for future actions. However, the complexity of these
-  agent-based approaches, together with the limited abilities of current
-  LLMs, raises the fo
+tags:
+  - ingested
+summary: Recent advancements in large language models (LLMs) have
+  significantly advanced the automation of software development tasks,
+  including code synthesis, program repair, and test generation. More
+  recently, researchers and industry practitioners have developed various
+  autonomous LLM agents to perform end-to-end software development tasks.
+  These agents are equipped with the ability to use tools, run commands,
+  observe feedback from the environment, and plan for future actions. However,
+  the complexity of these agent-based approaches, together with the limited
+  abilities of current LLMs, raises the fo
 ingested_at: 2026-09-19
+brief: >-
+  Dropping autonomy from a software-engineering agent does not cost you
+  accuracy. Agentless replaces tool use and iterative planning with a fixed
+  3-phase pipeline: hierarchical localization (file, then class/function, then
+  edit lines), sampled Search/Replace patches, and patch selection via
+  regression plus LLM-generated reproduction tests.
+
+
+  Built on GPT-4o, evaluated on SWE-bench Lite (300 problems) against 26
+  agent-based baselines drawn from the leaderboard and papers.
+
+
+  Agentless resolves 96 (32.00%) at $0.70 average cost and 78,166 average
+  tokens, the best of the open-source approaches; SWE-agent with GPT-4o
+  resolves 55 (18.33%) at $2.53. Ablations isolate the parts: majority voting
+  alone gives 77 (25.67%), adding regression tests 81 (27.00%), adding
+  reproduction tests 96 (32.00%). File-level localization reaches 81.67%
+  ground-truth coverage from combining prompting (78.67%) and embedding
+  retrieval (67.67%). If any of the 40 sampled patches counted, 126 (42.0%)
+  would be solved. Of 300 issues, 213 reproduction tests reproduce the bug but
+  only 94 verify the ground-truth fix.
+
+
+  Component ablations and cost are measured on 1 model and 1 benchmark;
+  baseline numbers are self-reported by other teams, and several closed-source
+  systems score higher. Manual inspection found 4.3% of problems leak the
+  ground-truth patch, 10.0% lack critical information, 5.0% carry misleading
+  solutions, motivating a filtered SWE-bench Lite-S.
+
+
+  Treat a scaffolded localize-repair-validate pipeline as the baseline before
+  adding agent machinery.
+brief_generated_at: 2026-10-15
+brief_model: claude-opus-5
+brief_source: full-text

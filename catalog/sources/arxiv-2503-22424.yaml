@@ -1,20 +1,58 @@
 id: arxiv-2503-22424
 ref: SRC-0314
 kind: paper
-title: "Issue Localization via LLM-Driven Iterative Code Graph Searching"
+title: Issue Localization via LLM-Driven Iterative Code Graph Searching
 year: 2025
 date: 2025-03-28
 arxiv_id: "2503.22424"
 url: https://arxiv.org/abs/2503.22424
-tags: [ingested]
-summary: >-
-  Issue solving aims to generate patches to fix re-ported issues in
+tags:
+  - ingested
+summary: Issue solving aims to generate patches to fix re-ported issues in
   real-world code repositories according to issue descriptions. Issue
   localization forms the basis for accurate issue solving. Recently, large
   language model (LLM) based issue localization methods have demonstrated
   state-of-the-art performance. However, these methods either search from
   files mentioned in issue descriptions or in the whole repository and
-  struggle to balance the breadth and depth of the search space to converge
-  on the target efficiently. Moreover, they allow LLM to explore whole
+  struggle to balance the breadth and depth of the search space to converge on
+  the target efficiently. Moreover, they allow LLM to explore whole
   repositories freely, making it challe
 ingested_at: 2026-09-19
+brief: >-
+  Constraining where a code agent is allowed to look beats letting it roam the
+  repository. CoSIL localizes issues by first widening the file-level search
+  space with a dynamically built module call graph, then expanding into a
+  function call graph for iterative search, with a pruner agent that rejects
+  irrelevant nodes and a short-context reflection step that reformats the
+  final answer.
+
+
+  Evaluated on SWE-bench Lite (300 instances) and SWE-bench Verified (500
+  instances) with Qwen2.5-Coder-7B/14B/32B against Agentless-FL, OrcaLoca, and
+  LocAgent.
+
+
+  With Qwen2.5-Coder-32B, function-level Top-1 reaches 0.433 on Lite and 0.446
+  on Verified, an average 96.04% gain over baselines; file-level gains are
+  small and sometimes negative, with LocAgent beating it at file-level Top-1
+  (0.647 vs 0.613). The empty-result rate drops to 0.00% versus 13.67% for
+  LocAgent. Feeding locations into Agentless raises resolution by 2.98%–30.5%.
+
+
+  Ablations isolate each part on Lite with the 32B model: removing iterative
+  search costs 27.8% of function Top-1, module call graph 11.5%, reflective
+  alignment 9.9%, pruning 4.6%. Costs are reported ($0.02 per instance on
+  DeepSeek-v3, $0.34 on GPT-4o), but token budgets are not matched across
+  methods, and generalization tests use only 50-instance subsets.
+
+
+  One caveat the authors surface: CoSIL@40 resolves 31.3% versus
+  Agentless-1.5's reported 32.0% despite 15% higher function Top-5, suggesting
+  better localization does not reliably convert to patches. Python only.
+
+
+  If you build localization pipelines, pruning and output-format reflection
+  are the cheap wins here; expect the repair stage to absorb much of the gain.
+brief_generated_at: 2026-10-15
+brief_model: claude-opus-5
+brief_source: full-text

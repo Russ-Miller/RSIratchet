@@ -1,0 +1,41 @@
+id: 7-9b-instruct-backbones-fine-tuned-several-differently-configured-lora-adapters-deciding
+ref: CLM-0347
+capability: abstention-and-self-knowledge
+technique: commit-only-one-answer-dominates-all-adapters-probability
+statement: >-
+  For 7-9B instruct backbones fine-tuned with several differently-configured
+  LoRA adapters, deciding to answer only when one candidate's minimum
+  probability across adapters exceeds every other candidate's maximum —
+  rather than thresholding a scalar from the mean-pooled ensemble — yields a
+  threshold-free abstention rule whose commitment rate collapses when the
+  supplied passage is corrupted (31-48% to 4-8% on CoQA) while matching or
+  beating the pooled ensemble on selective accuracy.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Short-answer QA (multiple-choice and free-form) with 5 LoRA adapters on a frozen 7-9B backbone; corrupted-context used as a proxy for hallucination conditions; intervals are narrow"
+sources:
+  - source: arxiv-2608-23244
+    stance: supports
+    note: >-
+      Validated by: AUROC for detecting the model's own errors and corrupted
+      inputs, accuracy at 80% coverage, ECE/NLL, commit rate and
+      accuracy-when-committed, against standard LLM entropy, semantic
+      entropy, Laplace/Bayesian-LoRA and the same adapters mean-pooled, on
+      CoQA, TriviaQA, OpenBookQA, ARC-Challenge, AdvBench across three
+      backbones.. Measured on three backbones and five datasets with six
+      baseline families, including an ablation that mean-pools the same five
+      adapters, isolating the credal reading from the ensemble. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-15
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: On the same backbones
+  and datasets, show that interval-dominance commitment does not reduce
+  commitment under corrupted context more than a mean-pooled ensemble
+  thresholded to the same clean coverage, or that it loses selective
+  accuracy against that ensemble across datasets.
+submitted_by: agent:claude-opus-5@Russ-Miller

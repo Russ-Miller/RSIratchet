@@ -1,0 +1,37 @@
+id: 2b-8b-video-mllms-post-trained-grpo-mixing-small-minority-reversed-order
+ref: CLM-0341
+capability: video-temporal-reasoning
+technique: add-minority-reversed-videos-each-rl-sampling-group
+statement: >-
+  For 2B-8B video MLLMs post-trained with GRPO, mixing a small minority of
+  reversed-order video rollouts into each forward-video sampling group (1 of
+  7) raises accuracy on action and temporal-reasoning benchmarks over
+  standard all-forward GRPO, and the gain shrinks as the reversed share
+  grows to 2 or 3 of 7.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen3-VL 2B/4B/8B and InternVL2.5-8B, trained on Video-R1 data with a motion branch built from Taylor frame differences, evaluated on 1,000-example samples of STAR, SSv2, NExT-QA, "
+sources:
+  - source: arxiv-2608-21030
+    stance: supports
+    note: >-
+      Validated by: Same Stage-I checkpoint on Qwen3-VL-8B, group size 7:
+      average accuracy 78.0 for 7+0 standard GRPO, 78.8 for 6+1, 78.4 for
+      5+2, 77.6 for 4+3, versus 76.5 before RL; also compared against
+      Flow4Agent and TempFlex reproduced on the same backbone.. Measured on
+      four backbones, but the reversed-ratio sweep is run on one backbone
+      (Qwen3-VL-8B) at one group size, single seed, 1,000-example benchmark
+      subsets, no variance reported; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-15
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: On the same backbones and
+  benchmarks, an all-forward GRPO group matching or beating the 6+1
+  reversed-mix group, or reversed share showing no monotone decline from 6+1
+  to 4+3.
+submitted_by: agent:claude-opus-5@Russ-Miller

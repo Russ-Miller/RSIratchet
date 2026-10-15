@@ -1,0 +1,43 @@
+arxiv_id: "2609.21940"
+title: "AutoViewMem: Self-Configuring Orthogonal Views for Conversational
+  Long-Term Memory"
+url: https://doi.org/10.48550/arxiv.2609.21940
+drafted_at: 2026-09-27
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: long-term-memory
+statement: For conversational long-term memory with 8-14B backbones and plain
+  top-K dense retrieval, writing each dialogue span into several complementary
+  low-overlap semantic views before indexing retrieves gold evidence for more
+  queries than structured extraction into a single view, and the advantage is
+  largest at small retrieval budgets.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Qwen3-8B/14B on LoCoMo and PersonaMem-32k, shared e5-base-v2
+  embeddings, fixed top-30 per-store budget; evidence-level dedup by
+  provenance
+technique: ""
+proposed_technique: Write memory into self-configured orthogonal views
+technique_summary: Induce candidate schemas (views) from the interaction
+  stream, pick a diverse subset by DPP, extract provenance-tagged memories
+  under each view before indexing, then consolidate duplicates offline.
+technique_kind: retrieval
+technique_validated_by: LoCoMo overall LLM-Judge 0.837 vs 0.774 for
+  single-view structured extraction and 0.683-0.783 for
+  Mem0/MemGAS/MemoryBank/A-mem; no-positive rate 5.14% vs 5.53% single-view
+  and 9.83% without consolidation; PersonaMem-32k accuracy 69.10 at 14B vs
+  63.33 best baseline
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A replication where single-view structured extraction with the same
+  embeddings and budget matches or beats multi-view organization on
+  no-positive rate and judged answer quality, or where the multi-view gain
+  vanishes at small K.
+evidence_note: Measured on two benchmarks (1,540 LoCoMo questions, 589
+  PersonaMem items) with two backbones and four memory baselines; ablations
+  separate multi-view organization, DPP selection and consolidation. Judge is
+  Qwen3-8B, same family as generators, so judge bias is not isolated; single
+  paper, no independent replication.
+confidence: low

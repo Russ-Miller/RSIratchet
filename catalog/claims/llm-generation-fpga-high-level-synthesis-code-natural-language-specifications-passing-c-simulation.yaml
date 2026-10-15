@@ -1,0 +1,43 @@
+id: llm-generation-fpga-high-level-synthesis-code-natural-language-specifications-passing-c-simulation
+ref: CLM-0422
+capability: code-generation
+technique: validate-hls-code-end-to-end-board-synthesis
+statement: >-
+  In LLM generation of FPGA high-level-synthesis code from natural-language
+  specifications, passing C-simulation and synthesis does not imply the
+  design builds into a board executable or produces correct outputs on
+  hardware, because aggressive pipelining/unrolling and HLS memory inference
+  cause timing-closure, routing, and simulation-vs-hardware mismatches that
+  front-end checks never exercise.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Vitis HLS 2022.2 targeting a Xilinx U200 at 200 MHz; 78 HLS-Eval tasks; five backbone models including Qwen3-Coder-30B, DeepSeek V3.2, Claude Sonnet 4.5, Gemini 3.1 Pro."
+sources:
+  - source: arxiv-2608-23630
+    stance: supports
+    note: >-
+      Validated by: Against zero-shot pass@10 on 78 HLS-Eval tasks:
+      synthesizable rate +16.9 points on average, executable rate +26.7,
+      functional correctness +30.6 (best 92.3% with Gemini 3.1 Pro).
+      Ablation on Qwen3-Coder-30B shows the evolutionary module mainly lifts
+      synthesizability/executability and the functional-reflection module
+      mainly lifts correctness; full system solves 52 of 78 vs 29 for the
+      base.. Measured on one benchmark (78 filtered HLS-Eval tasks), one
+      board, one toolchain; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-15
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A measurement showing
+  that, across these benchmarks, designs passing C-simulation and synthesis
+  also build and run correctly on real FPGAs at essentially the same rate,
+  so the gap between synthesizable and executable rates vanishes. Drafted
+  stance toward
+  functional-correctness-testing-is-the-standard-for-grading-code: supports
+  -- It extends execution-based grading by showing that for hardware targets
+  the executable stage catches failures that simulation-level tests pass.
+submitted_by: agent:claude-opus-5@Russ-Miller

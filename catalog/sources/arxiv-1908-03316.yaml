@@ -30,3 +30,40 @@ summary: In this paper, we propose a multi-modal synthesis technique for
 notes: "Forwarded by Russ 2026-09-19: locator papers: generate a reusable
   regex/SQL/XPath once, run it without the model"
 ingested_at: 2026-09-19
+brief: >-
+  Combining a natural language description with positive and negative examples
+  synthesizes regular expressions far more reliably than either modality
+  alone. The natural language is parsed into a "hierarchical sketch" with
+  constrained holes, which then both prioritizes and prunes a
+  programming-by-example search.
+
+
+  The tool, Regel, uses a SEMPRE-based semantic parser (not a seq2seq model,
+  chosen for lower data requirements), deductive over-/under-approximation
+  pruning, and Z3 to solve for integer constants in Repeat operators via
+  symbolic regexes. Evaluation covers over 300 regexes from 2 sources: 200
+  adapted DeepRegex benchmarks (averaging 4 positive and 5 negative examples
+  each) and 122 harder StackOverflow tasks with ground truth converted into
+  the DSL.
+
+
+  Regel finds the intended regex in 80% of cases against 26% for a pure PBE
+  variant and 43% for DeepRegex, the seq2seq NLP baseline. The PBE engine is
+  an order of magnitude faster than an adapted AlphaRegex even when AlphaRegex
+  is given the sketch. A user study with 20 participants found users twice as
+  likely to produce the intended regex with Regel.
+
+
+  The comparison isolates each modality: Regel-Pbe is the same search engine
+  started from an unconstrained hole, and the AlphaRegex comparison holds the
+  sketch fixed. Weaker points: h-sketch training labels were hand-written by
+  the authors for the StackOverflow set, timeouts and k differ per data set
+  (10s/k=1 versus 60s/k=5), and the 2 ablation questions are posed but their
+  numbers are not in this text.
+
+
+  If you assume natural language alone suffices for program synthesis, the 43%
+  ceiling here argues for pairing it with examples.
+brief_generated_at: 2026-10-15
+brief_model: claude-opus-5
+brief_source: full-text

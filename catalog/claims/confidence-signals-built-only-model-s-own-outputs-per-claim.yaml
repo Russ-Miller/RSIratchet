@@ -1,0 +1,41 @@
+id: confidence-signals-built-only-model-s-own-outputs-per-claim
+ref: CLM-0371
+capability: abstention-and-self-knowledge
+technique: calibrate-confidence-per-atomic-claim-per-response
+statement: >-
+  Confidence signals built only from a model's own outputs — per-claim
+  self-verification plus cross-sample consistency, then post-hoc
+  temperature/Platt scaling — lower claim-level calibration error on
+  straightforward factual QA (TriviaQA) but get worse on adversarial
+  false-premise questions (TruthfulQA), because the model samples the same
+  wrong claim consistently and the signal faithfully reports its mistaken
+  confidence.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Closed-box setting with no logits or fine-tuning; six models (Llama-3.1-8B, Mistral-7B, Qwen2.5-7B, DeepSeek-R1, GPT-4, GPT-4o) on TriviaQA and TruthfulQA; verbalized confidence fo"
+sources:
+  - source: arxiv-2608-22483
+    stance: supports
+    note: >-
+      Validated by: ECE, smECE, Brier, AUROC, AURC against seven baselines
+      (few-shot likelihood, CoT, verbalized confidence, PS, TS, LMvsLM,
+      HalluMeasure) on TriviaQA and TruthfulQA across six models; on
+      GPT-4o/TriviaQA ECE 0.006 versus 0.096 for temperature scaling, but on
+      GPT-4o/TruthfulQA 0.412 versus 0.118 for temperature scaling..
+      Measured on two datasets and six models with seven baselines, but
+      results are mixed: the proposed method is not best on most TriviaQA
+      rows (PS/TS often lower ECE), and the headline win is one
+      model-dataset cell. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-15
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A closed-box,
+  confidence-only claim-level pipeline that matches or beats response-level
+  temperature scaling on calibration error for false-premise questions
+  across these models, without an external probe or evidence source.
+submitted_by: agent:claude-opus-5@Russ-Miller

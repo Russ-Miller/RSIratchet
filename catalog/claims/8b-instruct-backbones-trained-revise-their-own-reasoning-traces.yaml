@@ -1,0 +1,44 @@
+id: 8b-instruct-backbones-trained-revise-their-own-reasoning-traces
+ref: CLM-0351
+capability: self-repair
+technique: correct-reasoning-typed-executable-error-operator-edits
+statement: >-
+  For 8B instruct backbones trained to revise their own reasoning traces,
+  supervising correction as a typed, executable edit (error type, step
+  location, corrupted and repaired proposition) applied iteratively beats
+  free-form revise-the-whole-answer correction methods such as Self-Refine,
+  RISE and SCoRe, and both halves of the supervision are needed: predicting
+  only the error operator or only the repaired adjacent state each scores
+  below the joint objective.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "8B instruct models (Llama-3-8B-Instruct, Qwen3-8B) with LoRA adapters, a fixed operator library, and a few thousand transition pairs; math, code, commonsense and reading benchmarks"
+sources:
+  - source: arxiv-2608-22090
+    stance: supports
+    note: >-
+      Validated by: Average over six in-domain benchmarks 67.5 vs 64.3 for
+      the strongest same-backbone baseline (DiffCoT) and 63.7 for SCoRe,
+      with five seeds and Holm correction; cross-dataset transfer averages
+      76.4 (Llama-3, base 67.7) and 80.2 (Qwen3, base 72.9); ablations show
+      operator-only and adjacent-state-only variants losing several points
+      on GSM8K, MATH, CSQA and BBH.. Measured on 13 tasks across two 8B
+      backbones against learn-to-solve and learn-to-correct baselines, five
+      seeds, with ablations isolating noise sources and the two loss terms.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-15
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A replication where the
+  typed-operator corrector does not beat Self-Refine/RISE/SCoRe on the same
+  backbone and prompts, or where operator-only supervision matches the joint
+  objective. Drafted stance toward
+  self-critique-without-grounding-unreliable: supports -- Unconstrained
+  self-correction baselines (Self-Refine) barely beat base CoT here, while a
+  constrained, trained, localized edit does better.
+submitted_by: agent:claude-opus-5@Russ-Miller

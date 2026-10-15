@@ -1,0 +1,41 @@
+id: training-free-generate-critique-revise-loop-over-frozen-backbone-no-external-feedback
+ref: CLM-0499
+capability: self-repair
+technique: stop-self-critique-loop-confirmed-sentinel-confidence-number
+statement: >-
+  In a training-free generate-critique-revise loop over a frozen backbone
+  with no external feedback, accuracy gains appear only where single-shot
+  accuracy is already weak: on a benchmark the model mostly gets right the
+  loop leaves accuracy flat, while on competition math where single-shot
+  accuracy is low it adds double-digit points.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Pure-reasoning benchmarks with no tools; two frozen backbones (deepseek-v4-flash, Qwen2.5-72B); loop depth 3; critique produced by the same model."
+sources:
+  - source: arxiv-2608-18884
+    stance: supports
+    note: >-
+      Validated by: On BBH the sentinel stopped 82-88% of items at accuracy
+      inside the single-shot Wilson interval with ~2.1 generations per
+      question, versus fixed-depth Self-Refine at 3 generations and 71.2%
+      accuracy; every numeric confidence threshold at or above 0.6 fired on
+      the first generation, collapsing the loop to single-shot.. Measured on
+      three benchmarks, n=100 for probes and n=500 for the cross-benchmark
+      and cross-model runs, with Wilson intervals and McNemar tests;
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-15
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A run on the same frozen
+  backbones showing the ungrounded critique loop raising accuracy beyond the
+  confidence interval on a benchmark where single-shot accuracy is already
+  high. Drafted stance toward self-critique-without-grounding-unreliable:
+  supports -- With no external signal the loop did not beat single-shot on
+  clean BBH and fixed-depth self-refinement fell below single-shot there
+  (71.2% vs 73.8%).
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,39 @@
+id: single-step-tool-calling-agents-near-perfect-clean-success-does-predict-robustness
+ref: CLM-0486
+capability: tool-use
+technique: attribute-tool-call-failures-earliest-pipeline-stage
+statement: >-
+  For single-step tool-calling agents, near-perfect clean success does not
+  predict robustness to stage-aligned perturbations: across 7 models,
+  perturbing the returned tool output (structure noise, evidence loss,
+  corruption, competing evidence) is the dominant failure point, with
+  average success falling to 0.455 and no model above 0.60, while perturbing
+  tool names and descriptions costs far less (0.918).
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Deterministic local tool environment (40 tools, 16 sampled), single-call tasks, 15,456 records across 7 frontier/mid-tier models; no long-horizon or multi-turn dependencies; absolu"
+sources:
+  - source: arxiv-2608-23635
+    stance: supports
+    note: >-
+      Validated by: Counterfactual repair at the attributed stage recovered
+      71/98 failed instances (100% for single-error cases, 82.1% for
+      cascades, 0% for multi-fault); human audit on 30 ambiguous cases gave
+      74.2% agreement; boundary-violation rate 0.006 for the runtime family
+      despite a 0.638 cascade rate. Labels also predicted intervention
+      outcomes on gpt-5.4-mini: aliases fixed A-family failures 21/30 to
+      30/30, while S3 chain-of-thought left B-family at 21/30.. Measured on
+      a purpose-built deterministic benchmark; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-15
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A replication on
+  comparable single-call tool tasks where output/observation perturbation
+  costs no more than interface or intent perturbation, or where clean
+  success rank-orders robustness.
+submitted_by: agent:claude-opus-5@Russ-Miller
