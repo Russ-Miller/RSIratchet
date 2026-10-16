@@ -1,0 +1,47 @@
+arxiv_id: "2609.01404"
+title: "Evaluating Multimodal LLMs as Generalist Vision-Language-Action Agents
+  for Drone Control: Commanding, Approaching, Tracking and Searching"
+url: https://doi.org/10.48550/arxiv.2609.01404
+drafted_at: 2026-09-29
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: When a drone's action space is declared only in the prompt and the
+  model must itself declare arrival, small open multimodal models (2B-9B)
+  enter the 5 m success radius as often as or more often than frontier models
+  yet lose most episodes by declaring arrival too early or never declaring, so
+  the gap at small scale is protocol adherence rather than navigation.
+kind: observation
+backing_strength: single-paper
+scope_condition: Simulated AirSim drone episodes, monocular RGB only, four
+  prompt-declared actions (go, rotate, think, finished), no fine-tuning or
+  function-calling schema; 20 episodes per task cell, success requires a
+  declaration within 5 m with the target visible.
+technique: ""
+proposed_technique: Make arrival the model's own declared action, verified after the fact
+technique_summary: Instead of ending an episode by an external distance
+  threshold, the agent exposes a 'finished' action the model emits, keeps
+  flying, and a verifier later checks whether any declaration was within the
+  success radius with the target visible.
+technique_kind: process
+technique_validated_by: Scored 9 models over 80 single-drone and 20 four-drone
+  episodes; comparing success rate to oracle-success (trajectory entered the
+  radius) exposes a declaration gap invisible under threshold-based
+  termination (e.g. Qwen3.5-9B 90% oracle vs 35% success), and 61 of 337
+  never-declaring failures had entered the radius.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A run in which small open models' oracle-success and success rates
+  track each other as closely as frontier models' do, with failures
+  attributable to not reaching the target rather than to mistimed or missing
+  declarations.
+evidence_note: Measured on 100 simulated episodes, 20 per cell, so each point
+  is 5 percentage points and the authors' own variance audit gives 9-13 point
+  per-cell standard deviations; the declaration gap (90% vs 35%
+  oracle-vs-success for Qwen3.5-9B; 2B declaring at 1.28 of start distance;
+  Cosmos3-Edge-2B never declaring) is much larger than that noise, but the
+  design does not separate protocol failure from general instruction-following
+  weakness at small scale.
+confidence: medium

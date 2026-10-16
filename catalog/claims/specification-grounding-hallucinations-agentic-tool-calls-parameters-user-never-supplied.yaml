@@ -1,0 +1,39 @@
+id: specification-grounding-hallucinations-agentic-tool-calls-parameters-user-never-supplied
+ref: CLM-0490
+capability: hallucination
+technique: lora-critic-verbalizes-which-parameter-ungrounded
+statement: >-
+  For specification-grounding hallucinations in agentic tool calls —
+  parameters the user never supplied — sampling-based uncertainty detectors
+  (token entropy, semantic entropy, SEP) fail because the model fabricates
+  plausible values with low entropy, while a signal separating grounded from
+  ungrounded parameters is present in the residual stream and can be read
+  out in a single pass.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Structured tool-calling with parameter-level ground truth from a simulated user that withholds specifications; Qwen3-4B and Llama-xLAM-2-8B; in-distribution and ToolAlpaca OOD sets"
+sources:
+  - source: arxiv-2608-10430
+    stance: supports
+    note: >-
+      Validated by: AUROC/F1/AUPRC against an equivalent-scale fine-tuned
+      external judge, a linear probe on base hidden states, and
+      token/semantic entropy and SEP, on in-distribution (N=303) and
+      ToolAlpaca OOD (N=522) sets: 0.966 vs 0.915 (judge) and 0.782 (probe)
+      ID AUROC on Qwen3-4B, 0.925 OOD; >80% exact parameter-match
+      localization; in a ReAct loop, specific feedback gave parameter F1
+      61.2 vs 51.3 generic and 52.1 no intervention, false blocks 2.9% vs
+      9.4%.. Measured on two backbones with bootstrap intervals; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-16
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A sampling-based entropy
+  detector reaching comparable AUROC to internal-state readout on ungrounded
+  tool parameters, or a probe/adapter on hidden states failing to beat
+  chance on the same labels.
+submitted_by: agent:claude-opus-5@Russ-Miller

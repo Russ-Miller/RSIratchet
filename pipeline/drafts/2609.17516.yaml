@@ -1,0 +1,55 @@
+arxiv_id: "2609.17516"
+title: When Should LLMs Abstain? Chain-of-Self-Questioning for Selective Risk
+  Control
+url: https://arxiv.org/abs/2609.17516
+drafted_at: 2026-09-28
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: abstention-and-self-knowledge
+statement: On factual QA (817-item TruthfulQA multiple-choice, plus a 300-item
+  Natural Questions short-answer set), a prompt-only three-stage gate in which
+  the model lists the information units a question needs, scores its support
+  for each, and answers only when the mean score clears a threshold lowers the
+  unconditional wrong-answer rate and raises accuracy on answered items for
+  all eleven models tested, but most of the abstentions it produces fall on
+  questions plain chain-of-thought answered correctly (about 69% at the
+  primary operating point), so the gain is bought with lost coverage rather
+  than with selective self-knowledge.
+kind: observation
+backing_strength: single-paper
+scope_condition: Eleven open-weight and hosted instruction-tuned models; short
+  factual QA with deterministic scoring; confidence elicited from the same
+  model that answers; no fine-tuning or logit access; three to four model
+  calls per question.
+technique: ""
+proposed_technique: Gate the answer on self-scored information needs
+technique_summary: Before answering, the model enumerates the information
+  units the question requires, assigns each a confidence score, and commits to
+  an answer only if the aggregate score passes a fixed threshold, otherwise
+  abstaining.
+technique_kind: prompting
+technique_validated_by: "Compared against forced-choice Direct and
+  chain-of-thought baselines on 817 balanced-option TruthfulQA-MC items across
+  11 models: wrong-commitment rate fell from 13.1% to 8.9% and answered
+  accuracy rose from 86.9% to 89.7% at 87.6% coverage, with 11/11 models
+  improving on both axes (paired one-sided Wilcoxon p=0.00049); an abstention
+  audit paired each abstention with the CoT outcome, and a 300-item NQ
+  short-answer run with 5 models showed the same direction."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A replication where the same gate either fails to lower the
+  wrong-commitment rate for most models, or where the abstained-on questions
+  are mostly ones the baseline got wrong (correct-abstention share above 50%),
+  would break it.
+evidence_note: "Measured, not argued: 17 conditions × 11 models on a fixed
+  817-question set with balanced option positions and forced-choice baselines,
+  full threshold sweep prespecified, bootstrap CIs and paired tests reported.
+  Single author, single paper. The eleven endpoints are not independent
+  samples, and hosted model versions are not pinned. The design does not
+  isolate whether the gain comes from the self-assessment content or simply
+  from any mechanism that withholds answers on harder items — no
+  random-abstention or entropy-threshold control at matched coverage is
+  reported."
+confidence: medium

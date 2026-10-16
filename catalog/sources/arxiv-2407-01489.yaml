@@ -6,15 +6,56 @@ year: 2024
 date: 2024-07-01
 arxiv_id: "2407.01489"
 url: https://arxiv.org/abs/2407.01489
-tags: [ingested]
-summary: >-
-  Recent advancements in large language models (LLMs) have significantly
-  advanced the automation of software development tasks, including code
-  synthesis, program repair, and test generation. More recently, researchers
-  and industry practitioners have developed various autonomous LLM agents to
-  perform end-to-end software development tasks. These agents are equipped
-  with the ability to use tools, run commands, observe feedback from the
-  environment, and plan for future actions. However, the complexity of these
-  agent-based approaches, together with the limited abilities of current
-  LLMs, raises the fo
+tags:
+  - ingested
+summary: Recent advancements in large language models (LLMs) have
+  significantly advanced the automation of software development tasks,
+  including code synthesis, program repair, and test generation. More
+  recently, researchers and industry practitioners have developed various
+  autonomous LLM agents to perform end-to-end software development tasks.
+  These agents are equipped with the ability to use tools, run commands,
+  observe feedback from the environment, and plan for future actions. However,
+  the complexity of these agent-based approaches, together with the limited
+  abilities of current LLMs, raises the fo
 ingested_at: 2026-09-19
+brief: >-
+  A fixed 3-step pipeline of localize, repair, validate matches or beats
+  autonomous LLM agents on repository-level issue fixing, at lower cost.
+  Agentless never lets the model choose its next action or call tools.
+
+
+  The system hierarchically localizes to files (prompting over a repo tree
+  plus embedding retrieval), then to classes/functions via a skeleton format,
+  then to edit lines; samples patches in a search/replace diff format; and
+  selects a patch using regression tests, LLM-generated reproduction tests,
+  and majority voting. Evaluated on SWE-bench Lite (300 problems) with GPT-4o,
+  against 26 agent baselines.
+
+
+  Agentless resolves 96 (32.00%) at $0.70 average cost, the best among
+  open-source approaches; SWE-agent with Claude 3.5 Sonnet reaches 69 (23.00%)
+  at $1.62, and commercial CodeStory Aide reaches 129 (43.00%). Patch
+  selection drives much of this: majority voting alone gives 77 (25.67%),
+  +regression tests 81 (27.00%), +reproduction tests 96 (32.00%). Any-sample
+  upper bound is 126 (42.0%).
+
+
+  Component ablations are reported with cost per step, isolating localization
+  format (skeleton 58.33% vs complete file 53.67% ground-truth retention) and
+  sampling strategy. Costs for most commercial baselines are unreported, so
+  cost comparisons are partial, and baseline numbers are taken from
+  leaderboards rather than rerun.
+
+
+  Only 1 model (GPT-4o) and 1 benchmark variant; reproduction tests are weak,
+  with 213 reproducing the issue but only 94 verifying the ground-truth fix.
+  Manual inspection found 4.3% of problems leak the exact ground truth patch,
+  10.0% lack critical information, and 5.0% contain misleading solutions,
+  motivating the filtered SWE-bench Lite-S.
+
+
+  Treat agent scaffolding as something to justify against a simple pipeline
+  baseline, not assume.
+brief_generated_at: 2026-10-16
+brief_model: claude-opus-5
+brief_source: full-text

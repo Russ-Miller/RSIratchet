@@ -1,0 +1,41 @@
+id: region-guided-contrastive-decoding-medical-vqa-compact-automatically-selected-anatomical
+ref: CLM-0471
+capability: visual-grounding
+technique: pick-contrastive-roi-counterfactual-occlusion-penalizing-size
+statement: >-
+  In region-guided contrastive decoding for medical VQA, a compact
+  automatically selected anatomical region outperforms the dataset's
+  ground-truth ROI annotation, because coarse bounding boxes (mean coverage
+  ~39% versus ~7% for the selected masks) strip almost all visual evidence
+  from the suppressed branch and dilute the contrastive signal.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Medical VLMs (Phi-3.5V-Med, HuatuoGPT-Vision-7B, LLaVA-Med-7B) on SLAKE and MIMIC-CXR VQA, inference-time classifier-free-guidance decoding with a text-prompted medical segmenter a"
+sources:
+  - source: arxiv-2608-17427
+    stance: supports
+    note: >-
+      Validated by: Overall/closed/open scores on SLAKE and MIMIC-CXR across
+      three Med-VLMs against standard decoding, VCD, DoLA, OPERA and
+      ground-truth-ROI ARCD; closed accuracy on SLAKE with Phi-3.5V-Med rose
+      61.42 to 81.49. Ablations: random mask selection -4.4%, removing the
+      area penalty -3.4%.. Measured on two datasets and three Med-VLMs with
+      four decoding baselines; the compactness mechanism is supported by a
+      coverage analysis (39.41% vs 7.05%) and an area-penalty ablation on
+      one model/dataset only. Accuracy and recall are proxies for
+      hallucination; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-16
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Running the same
+  pipeline with ground-truth ROIs restricted to compact annotations, or
+  re-measuring with masks matched for coverage, showing ground-truth
+  guidance matches or beats the counterfactually selected regions — or
+  showing the gain comes from the temporal contrast rather than region
+  choice.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,42 @@
+id: 7-9b-instruction-tuned-backbones-fine-tuned-small-ensemble-differently-configured-lora-adapters
+ref: CLM-0347
+capability: abstention-and-self-knowledge
+technique: commit-only-one-answer-survives-interval-dominance-across
+statement: >-
+  For 7-9B instruction-tuned backbones fine-tuned with a small ensemble of
+  differently-configured LoRA adapters, deciding whether to answer by
+  interval dominance over the adapters' lower and upper probabilities —
+  rather than thresholding a scalar from the mean-pooled distribution —
+  yields abstention that collapses when the supplied evidence is corrupted
+  (commitment on CoQA falling from 31-48% to 4-8%) with no threshold tuned,
+  while matching or exceeding the mean-pooled ensemble's selective accuracy.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Three 7-9B instruct backbones (Gemma-2-9B, Llama-3.1-8B, Qwen2.5-7B), 5 LoRA adapters, short-answer QA (OpenBookQA, ARC-Challenge, CoQA, TriviaQA); corrupted context used as a prox"
+sources:
+  - source: arxiv-2608-23244
+    stance: supports
+    note: >-
+      Validated by: AUROC for detecting the model's own errors and corrupted
+      inputs, accuracy at 80% coverage, ECE/NLL, gold-in-set rate, and
+      commit rate on clean vs corrupted prompts, against standard LLM
+      entropy/max-prob, semantic entropy (NLI and cosine), Bayesian-LoRA
+      KFAC, Laplace-LoRA, and the same five adapters mean-pooled, across
+      three backbones and five datasets.. Measured across three backbones
+      and five datasets with six baseline families; the mean-pooled-ensemble
+      baseline isolates the credal reading from the ensemble itself, which
+      is the key control. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-16
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: On the same backbones
+  and datasets, showing that mean-pooled ensemble scores thresholded on
+  clean data abstain at least as often under corrupted context as interval
+  dominance does, at equal clean coverage and accuracy — or that
+  interval-dominance commitment rates do not drop when evidence is replaced.
+submitted_by: agent:claude-opus-5@Russ-Miller

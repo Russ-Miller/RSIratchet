@@ -1,0 +1,39 @@
+id: 8b-instruct-backbones-training-correction-adapter-diagnose-typed-executable
+ref: CLM-0351
+capability: self-repair
+technique: correct-reasoning-inverting-typed-error-operators
+statement: >-
+  For 8B instruct backbones, training a correction adapter to diagnose a
+  typed, executable error operator (error type, step location, corrupted and
+  repaired proposition) and apply its inverse edit yields higher accuracy on
+  math, code and commonsense benchmarks than free-form self-revision
+  baselines (Self-Refine, RISE, SCoRe), and most of the gain arrives within
+  the first few denoising iterations.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Llama-3-8B-Instruct and Qwen3-8B with LoRA adapters, a few thousand constructed transition pairs, tasks where a local reasoning error determines the answer; weaker on factual multi"
+sources:
+  - source: arxiv-2608-22090
+    stance: supports
+    note: >-
+      Validated by: Average 67.5 across six in-domain benchmarks versus 64.3
+      for the strongest same-backbone baseline (DiffCoT) and 63.7 for SCoRe,
+      five seeds, improvements significant after Holm correction;
+      cross-dataset transfer averages 76.4 (Llama-3) and 80.2 (Qwen3);
+      ablations removing operator-only or adjacent-state-only supervision
+      lose on all four tasks.. Measured on 13 datasets with two backbones,
+      five seeds, shared prompts and extractors, plus source and objective
+      ablations. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-16
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A matched-compute
+  comparison in which free-form revision baselines trained on the same
+  number of correction pairs equal or beat the operator-based corrector, or
+  in which randomly typed/located operators do as well as diagnosed ones.
+submitted_by: agent:claude-opus-5@Russ-Miller

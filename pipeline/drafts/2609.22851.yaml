@@ -1,0 +1,49 @@
+arxiv_id: "2609.22851"
+title: "Discrete vs. Continuous: A Comprehensive Study of Unified Audio
+  Understanding in LALMs"
+url: https://doi.org/10.48550/arxiv.2609.22851
+drafted_at: 2026-09-26
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: audio-understanding
+statement: In audio language models that feed encoder outputs into a text LLM,
+  downstream understanding accuracy across speech, sound and music is set by
+  how semantically text-aligned the encoder is rather than by whether its
+  representation is discrete or continuous — reconstruction-oriented codecs
+  with high acoustic fidelity underperform, semantically distilled tokenizers
+  can beat their own continuous teacher, and scaling the LLM backbone does not
+  recover the lost information.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Encoders frozen or lightly adapted, fed through a projector
+  into 135M-8B text LLM backbones (SmolLM2 with LoRA, Llama-3 frozen-probing);
+  understanding tasks only, not generation or reconstruction.
+technique: ""
+proposed_technique: Pick audio encoders by semantic alignment, not fidelity
+technique_summary: When choosing an audio front end for an audio-LLM, select
+  encoders whose training imposed text/semantic constraints (weakly supervised
+  or semantically distilled) instead of maximizing reconstruction fidelity or
+  preferring continuous over discrete.
+technique_kind: architecture
+technique_validated_by: Nine encoders compared under identical task configs on
+  ~20 datasets across speech/sound/music; Whisper led overall (0.735 vs 0.418
+  for Wav2Vec2 at 135M), SpeechTokenizer beat HuBERT on emotion recognition,
+  DAC and WavTokenizer scored lowest on semantic tasks despite higher
+  fidelity; performance fell in about 53% of encoder-task configs when the
+  backbone was scaled.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A controlled comparison in which a purely reconstruction-trained
+  codec matches or beats text-aligned encoders on speech/sound/music
+  understanding under the same projector and backbone, or in which scaling the
+  backbone closes the gap between low- and high-semantic encoders on
+  data-limited tasks.
+evidence_note: Measured on one framework (UniARC) with nine encoders, four
+  backbones, ~20 datasets, identical per-task configs. Projector is a simple
+  MLP, which the authors note may itself bottleneck scaling; the
+  semantic-vs-fidelity split is inferred from encoder training recipes rather
+  than manipulated directly, so the mechanism is correlational across
+  encoders.
+confidence: medium

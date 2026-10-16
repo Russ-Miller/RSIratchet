@@ -1,0 +1,40 @@
+id: llm-generated-hls-code-fpgas-scoring-simulation-synthesis-stage-overstates
+ref: CLM-0422
+capability: evaluation-validity
+technique: validate-generated-hls-code-building-running-board
+statement: >-
+  For LLM-generated HLS code for FPGAs, scoring at the simulation and
+  synthesis stage overstates deployability: across five backbone models, the
+  share of designs that synthesize is consistently higher than the share
+  that builds into an FPGA executable and runs, which is in turn higher than
+  the share that produces correct board-level output, because timing
+  closure, place-and-route and memory-inference effects only bite after
+  synthesis.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "HLS C/C++ kernels generated from natural-language task specifications, evaluated on 78 HLS-Eval tasks with Vitis HLS 2022.2 on a Xilinx U200 at 200 MHz; one benchmark, one board."
+sources:
+  - source: arxiv-2608-23630
+    stance: supports
+    note: >-
+      Validated by: Against zero-shot pass@10 on 78 HLS-Eval tasks with five
+      models: average +16.9 points synthesizable rate, +26.7 executable
+      rate, +30.6 functional correctness; ablation isolates the evolutionary
+      module (mostly synthesizability/executability) from the functional
+      reflection module (mostly correctness).. Measured on one benchmark (78
+      of 94 HLS-Eval tasks, interfaces adjusted) and one board, with five
+      models and the three staged metrics reported for each; the monotone
+      ordering holds in every row. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-16
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A study where HLS
+  designs that pass simulation and synthesis convert to running,
+  functionally correct FPGA executables at near the same rate, so the staged
+  metrics do not separate.
+submitted_by: agent:claude-opus-5@Russ-Miller

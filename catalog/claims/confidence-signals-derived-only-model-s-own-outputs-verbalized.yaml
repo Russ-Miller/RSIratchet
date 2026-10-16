@@ -1,0 +1,43 @@
+id: confidence-signals-derived-only-model-s-own-outputs-verbalized
+ref: CLM-0370
+capability: abstention-and-self-knowledge
+technique: calibrate-confidence-per-atomic-claim-per-response
+statement: >-
+  Confidence signals derived only from a model's own outputs — verbalized
+  self-verification, token log-probability, and cross-sample consistency —
+  can be post-hoc calibrated at the atomic-claim level to lower expected
+  calibration error on straightforward factual QA, but on adversarial
+  false-premise questions they degrade because the pipeline reproduces the
+  model's own mistaken certainty, while an active cross-examination probe
+  stays calibrated there.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Closed-box inference-time setup (no logits for API models, no fine-tuning), six models (Llama-3.1-8B, Mistral-7B, Qwen2.5-7B, DeepSeek-R1, GPT-4, GPT-4o) on TriviaQA and TruthfulQA"
+sources:
+  - source: arxiv-2608-22483
+    stance: supports
+    note: >-
+      Validated by: ECE, smECE, Brier, AUROC, AURC against seven baselines
+      (few-shot likelihood, CoT, verbalized confidence, PS, TS, LMvsLM,
+      HalluMeasure) on TriviaQA and TruthfulQA; best on GPT-4o/TriviaQA (ECE
+      0.006) but worse than temperature scaling on TruthfulQA for most
+      models.. Measured on two datasets and six models with seven baselines;
+      no method wins consistently — the proposed method loses to PS/TS on
+      several models even on TriviaQA, and the mixture weight is tuned per
+      model, so the TriviaQA advantage is weakly isolated. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-16
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Show that claim-level
+  self-confidence plus post-hoc calibration matches or beats response-level
+  temperature scaling on false-premise benchmarks across models, or that the
+  TriviaQA gains disappear under a different claim extractor. Drafted stance
+  toward self-critique-without-grounding-unreliable: supports -- The paper
+  finds confidence-only self-assessment fails exactly where the model is
+  confidently wrong, and recommends external retrieval or cross-examination.
+submitted_by: agent:claude-opus-5@Russ-Miller

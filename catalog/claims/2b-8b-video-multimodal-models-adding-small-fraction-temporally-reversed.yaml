@@ -1,0 +1,38 @@
+id: 2b-8b-video-multimodal-models-adding-small-fraction-temporally-reversed
+ref: CLM-0341
+capability: video-temporal-reasoning
+technique: put-reversed-videos-same-rl-sampling-group
+statement: >-
+  For 2B-8B video multimodal models, adding a small fraction of temporally
+  reversed videos into the same GRPO exploration group (one reversed out of
+  seven samples) raises accuracy on action and temporal-reasoning benchmarks
+  over standard GRPO, while raising the reversed share further (3 of 7)
+  erodes the gain.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen3-VL 2B/4B/8B and InternVL2.5-8B trained on Video-R1 splits with an explicit direction-preserving motion branch (Taylor frame differences) already in place from a prior SFT sta"
+sources:
+  - source: arxiv-2608-21030
+    stance: supports
+    note: >-
+      Validated by: Same Stage-I checkpoint on Qwen3-VL-8B: average accuracy
+      over six benchmarks 76.5 (no RL), 78.0 (standard GRPO 7+0), 78.8
+      (6+1), 78.4 (5+2), 77.6 (4+3); 1,000 sampled examples per benchmark..
+      Measured on six benchmarks with 1,000 sampled examples each, against
+      pretrained, SFT, standard GRPO and two reproduced temporal baselines;
+      the optimization ablation holds architecture and Stage-I checkpoint
+      fixed, so it isolates the reversed-sample ratio, but single-seed and
+      no compute-matched control.
+contested: false
+status: pending-review
+last_checked_at: 2026-10-16
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Matching the 6+1
+  reversed-sample gain with standard GRPO at equal compute, or finding the
+  gain absent when the motion branch is removed or on other backbones, would
+  show the reversed-contrast grouping is not what helps.
+submitted_by: agent:claude-opus-5@Russ-Miller
