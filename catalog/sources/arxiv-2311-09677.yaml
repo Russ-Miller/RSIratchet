@@ -6,15 +6,49 @@ year: 2023
 date: 2023-11-16
 arxiv_id: "2311.09677"
 url: https://arxiv.org/abs/2311.09677
-tags: [ingested]
-summary: >-
-  Large language models (LLMs) have revolutionized numerous domains with
-  their impressive performance but still face their challenges. A
+tags:
+  - ingested
+summary: Large language models (LLMs) have revolutionized numerous domains
+  with their impressive performance but still face their challenges. A
   predominant issue is the propensity for these models to generate
   non-existent facts, a concern termed hallucination. Our research is
-  motivated by the observation that previous instruction tuning methods
-  force the model to complete a sentence no matter whether the model knows
-  the knowledge or not. When the question is out of the parametric
-  knowledge, it will try to make up something and fail to indicate when it
-  lacks knowledge. In this paper, we present a new ap
+  motivated by the observation that previous instruction tuning methods force
+  the model to complete a sentence no matter whether the model knows the
+  knowledge or not. When the question is out of the parametric knowledge, it
+  will try to make up something and fail to indicate when it lacks knowledge.
+  In this paper, we present a new ap
 ingested_at: 2026-09-19
+brief: >-
+  Fine-tuning a model on its own errors, labelled with "I am unsure", teaches
+  refusal as a transferable skill and also improves answer accuracy on the
+  questions it still attempts. R-Tuning splits an instruction-tuning set into
+  certain data (model's pre-tuning prediction matches the label) and uncertain
+  data, appends "I am sure"/"I am unsure" to each, then fine-tunes normally.
+
+
+  Tested on OpenLLaMA-3B, LLaMA-7B and LLaMA-13B across 9 datasets,
+  single-task on ParaRel and MMLU and multi-task on 5 datasets with
+  HaluEval-QA held out, scored by Average Precision over confidence-ranked
+  answers.
+
+
+  AP gains over vanilla instruction tuning grow with size: MMLU in-domain
+  68.87 vs 51.93 at 13B but 59.05 vs 58.16 at 7B; ParaRel OOD 77.30 vs 64.12
+  at 13B, and 74.61 vs 78.08 at 7B, the one reversal. On unanswerable
+  questions, refusal rates reach 95.90–99.18 for R-Tuning versus 2.07–34.79
+  for vanilla, with baselines explicitly prompted that refusal was allowed.
+
+
+  Comparisons are matched against vanilla tuning on the same data, and an
+  unsupervised variant (10 samples, entropy split) plus a test-time
+  uncertainty-filtering baseline (Vanilla-C) are both included; R-Tuning-U
+  usually beats Vanilla-C, e.g. 64.69 vs 48.34 on MMLU ID at 7B. All results
+  are self-reported on 1 model family, binary confidence only, no chat-tuned
+  or larger models.
+
+
+  If you are building abstention behaviour, the training-time route looks
+  cheaper and better calibrated than sampling at test time.
+brief_generated_at: 2026-10-17
+brief_model: claude-opus-5
+brief_source: full-text

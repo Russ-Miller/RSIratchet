@@ -30,3 +30,41 @@ summary: In this paper, we propose a multi-modal synthesis technique for
 notes: "Forwarded by Russ 2026-09-19: locator papers: generate a reusable
   regex/SQL/XPath once, run it without the model"
 ingested_at: 2026-09-19
+brief: >-
+  Combining a natural-language parse with input/output examples synthesizes
+  regular expressions far more often than either modality alone. Regel parses
+  an English description into a "hierarchical sketch" with constrained holes,
+  then runs a programming-by-example search that uses the sketch both to
+  prioritize enumeration and to compute tighter over- and under-approximations
+  for pruning, plus symbolic integers solved with Z3 instead of enumerating
+  repeat counts.
+
+
+  Evaluation covers over 300 regexes from 2 sources: 200 benchmarks adapted
+  from the DeepRegex data set, annotated by users with on average 4 positive
+  and 5 negative examples, and 122 harder StackOverflow tasks with ground
+  truth converted by hand into the DSL. Regel finds the intended regex in 80%
+  of cases; the pure PBE variant reaches 26% and the DeepRegex seq2seq
+  baseline 43%. Against an adapted AlphaRegex, the PBE engine is an order of
+  magnitude faster on sketch completion, including when AlphaRegex's search is
+  given the sketch.
+
+
+  The comparison is well isolated: Regel-Pbe is the same engine with an
+  unconstrained sketch, and AlphaRegex is given the sketch too, so the gain is
+  attributable to the hints and to the engine separately. Weaker points:
+  training sketches were constructed by the authors, manually for
+  StackOverflow, and the user study of 20 participants reporting users are
+  twice as likely to succeed is self-run.
+
+
+  Settings differ by data set (10s and top-1 vs 60s and top-5), and up to 4
+  rounds of extra examples are supplied interactively, so single-shot accuracy
+  is not what is reported. The DSL excludes capture groups and lookaround.
+
+
+  If you treat regex generation as an NLP task, this says the examples are
+  doing most of the disambiguation work.
+brief_generated_at: 2026-10-17
+brief_model: claude-opus-5
+brief_source: full-text

@@ -1,20 +1,57 @@
 id: arxiv-2510-02816
 ref: SRC-0324
 kind: paper
-title: "NCV: A Node-Wise Consistency Verification Approach for Low-Cost Structured Error Localization in LLM Reasoning"
+title: "NCV: A Node-Wise Consistency Verification Approach for Low-Cost
+  Structured Error Localization in LLM Reasoning"
 year: 2025
 date: 2025-10-03
 arxiv_id: "2510.02816"
 url: https://arxiv.org/abs/2510.02816
-tags: [ingested]
-summary: >-
-  Verifying multi-step reasoning in large language models is difficult due
-  to imprecise error localization and high token costs. Existing methods
-  either assess entire reasoning chains, suffering attention dilution, or
-  rely on expensive multi-sampling. We introduce Node-wise Consistency
-  Verification (NCV), a training-free framework that recasts verification as
-  lightweight binary consistency checks at the node level. By decomposing
-  the chain of thought into interconnected verification nodes, NCV precisely
-  localizes errors and avoids unnecessary long-form generation. Experiments
-  demonstrate that ou
+tags:
+  - ingested
+summary: Verifying multi-step reasoning in large language models is difficult
+  due to imprecise error localization and high token costs. Existing methods
+  either assess entire reasoning chains, suffering attention dilution, or rely
+  on expensive multi-sampling. We introduce Node-wise Consistency Verification
+  (NCV), a training-free framework that recasts verification as lightweight
+  binary consistency checks at the node level. By decomposing the chain of
+  thought into interconnected verification nodes, NCV precisely localizes
+  errors and avoids unnecessary long-form generation. Experiments demonstrate
+  that ou
 ingested_at: 2026-09-19
+brief: >-
+  Asking a model a long string of 4-token yes/no questions about individual
+  reasoning claims localizes errors better than asking it to verify the whole
+  chain with Chain-of-Thought, and costs far less. Node-wise Consistency
+  Verification (NCV) decomposes a solution into atomic assertions, verifies
+  each conditioned on previously accepted nodes, and aggregates 3 binary
+  samples per node.
+
+
+  Evaluation is on all 4 ProcessBench subsets (3,400 cases: GSM8K 400, MATH
+  1,000, OlympiadBench 1,000, Omni-MATH 1,000), with Qwen2.5-7B/32B/72B and
+  Llama-3.3-70B, against end-to-end CoT verification with greedy decoding and
+  8-sample majority voting.
+
+
+  For Qwen2.5-32B, average F1 rises from 45.2 (greedy) and 49.3 (8-vote) to
+  61.4, with gains growing by difficulty: 13.3 points on GSM8K, 20.9 on MATH,
+  21.9 on OlympiadBench, 23.8 on Omni-MATH. Error localization accuracy on
+  OlympiadBench is 55.8% vs 25.3%. Token use is 28.1 per sample vs 177.4 and
+  1619.2, a 6.3x and 57.6x reduction. Per-node CoT (NCV@3-cot) reaches 69.0
+  F1.
+
+
+  The ablation separates structure from consistency (48.3 for 3-vote without
+  structure, 54.9 for structure without consistency) on 1 model, and token
+  costs are reported at matched comparisons. Gains are uneven across models:
+  on Llama-3.3-70B average F1 is 58.0, tied with the 8-vote baseline and worse
+  on GSM8K, and Qwen2.5-72B gains only 63.3 vs 61.2.
+
+
+  If you verify math reasoning, constrained binary node checks are a cheaper
+  default than chain-level CoT, but confirm the gain holds for your model
+  family.
+brief_generated_at: 2026-10-17
+brief_model: claude-opus-5
+brief_source: full-text

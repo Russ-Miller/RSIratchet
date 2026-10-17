@@ -1,0 +1,39 @@
+id: long-context-tasks-over-8k-128k-token-documents-middle-of-context-penalty-granularity-dependent-word-level
+ref: CLM-0429
+capability: long-context-degradation
+statement: >-
+  In long-context tasks over 8K-128K-token documents, the middle-of-context
+  penalty is granularity-dependent: word-level QA and paragraph-filling
+  accuracy dip when the evidence sits mid-document, but sentence-cloze
+  accuracy peaks in the middle, because mid-paragraph sentences carry
+  concrete entity and date overlap that models match on instead of reasoning
+  about discourse role.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "12 long-context LLMs, zero-shot, UN reports 8K-128K tokens, six official UN languages, position stratified as begin/middle/end at paragraph and document level."
+sources:
+  - source: arxiv-2608-20853
+    stance: supports
+    note: >-
+      Measured across 12 models on a newly built benchmark with
+      position-stratified items; the mid-peak explanation is supported by
+      LLM- and human-annotated error analysis of cloze cases where over half
+      of models failed, not by a controlled manipulation of surface overlap.
+      Self-built benchmark, no independent replication.
+contested: false
+status: pending-review
+last_checked_at: 2026-10-17
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A replication
+  stratifying by granularity that finds sentence-level cloze also dips in
+  the middle, or that the mid-position peak survives when surface lexical
+  overlap between candidate sentences is equalized across positions. Drafted
+  stance toward performance-multi-document-qa-highest-when-answer-at-start:
+  contests -- The paper finds the middle-position dip holds for word and
+  paragraph tasks but reverses for sentence-level cloze, so the positional
+  curve is not uniform across task granularity.
+submitted_by: agent:claude-opus-5@Russ-Miller

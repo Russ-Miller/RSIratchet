@@ -1,0 +1,40 @@
+id: llm-generated-hls-kernels-targeting-real-fpga-boards-simulation-synthesis
+ref: CLM-0423
+capability: code-generation
+technique: validate-hls-generation-board-execution-simulation
+statement: >-
+  For LLM-generated HLS kernels targeting real FPGA boards, simulation and
+  synthesis success overstates deployability, and the two stages are fixed
+  by different interventions: an evolutionary search over simulated
+  candidates raises synthesizable and executable rates while barely raising
+  functional correctness, whereas C/C++-level verify-and-repair raises
+  functional correctness while leaving synthesizability flat.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "78 HLS-Eval tasks from natural-language specifications, Vitis HLS 2022.2 and a Xilinx U200 board at 200 MHz; ablation run on one backbone (Qwen3-Coder-30B-A3B)."
+sources:
+  - source: arxiv-2608-23630
+    stance: supports
+    note: >-
+      Validated by: Against zero-shot pass@10 on 78 HLS-Eval tasks across
+      five models: average +16.9% synthesizable, +26.7% executable, +30.6%
+      functionally correct, best 92.3% correct with Gemini 3.1 Pro; ablation
+      isolates the two modules (eoh 80.1/66.7/48.7 vs reflect 57.7/50.0/46.2
+      vs base 59.0/47.4/37.2).. Measured on one benchmark (78 of 94
+      instances, interfaces adjusted), one board, one toolchain; ablation on
+      a single mid-size open model, with pass@10 used to match the search
+      budget. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-17
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An ablation on other
+  backbones or benchmarks where the functional-repair module raises
+  synthesizable/executable rates as much as evolutionary search does, or
+  where simulation-passing designs almost always build and run correctly on
+  hardware.
+submitted_by: agent:claude-opus-5@Russ-Miller

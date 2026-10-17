@@ -1,0 +1,51 @@
+arxiv_id: "2609.00184"
+title: Synthetic Worlds for Temporal Evaluation and Knowledge Updating in LLMs
+url: https://doi.org/10.48550/arxiv.2609.00184
+drafted_at: 2026-09-29
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: knowledge-updating
+statement: When new knowledge is a set of interconnected fictional future
+  events rather than isolated fact edits, updating 4-8B instruct models by
+  mid-training on teacher-generated long-form articles plus preference tuning
+  (preferring reasoned answers over outdated, hallucinated, or needlessly
+  abstaining ones) beats graph-retrieval and in-context editing baselines on
+  multi-hop and causal questions, while remaining worse than in-context
+  methods on exact numeric single-hop recall unless retrieved facts are also
+  supplied.
+kind: observation
+backing_strength: single-paper
+scope_condition: LLaMA-3.1-8B, Olmo-3-7B and Gemma-3-4B instruct models; 20 to
+  1,536 inserted facts from a synthetic future-event knowledge graph; GPT-4.1
+  as the teacher generating the synthetic data
+technique: ""
+proposed_technique: Update knowledge by synthetic news mid-training plus
+  abstention preference pairs
+technique_summary: A teacher model turns a new-event knowledge graph into
+  long-form synthetic news articles for next-token mid-training, plus
+  preference pairs that reward chain-of-thought answers and punish outdated
+  values, hallucinations, and unwarranted abstention, with separate pairs
+  enforcing abstention on unanswerable queries.
+technique_kind: training
+technique_validated_by: "QA accuracy on the ParallelEvents benchmark
+  (single-hop, multi-hop, causal) after inserting 542 facts: 73.67%
+  (LLaMA-3.1), 64.92% (Olmo-3), 79.07% (Gemma-3) versus best in-context
+  baseline IKE at 63.32/57.73/53.73%, graph-retrieval baselines at 17.09%, and
+  LoRA/single-layer tuning at 12.02%; paired bootstrap significance;
+  general-ability checks on MMLU-Pro, PopQA, IFEval, IFBench; portability
+  check on MQuAKE-Remastered"
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Fine-tuning baselines trained on the same synthetic articles and QA
+  pairs matching or beating the preference-tuned pipeline on causal and
+  multi-hop accuracy, or in-context retrieval methods matching it once given
+  comparable fact retrieval.
+evidence_note: Measured on one benchmark the authors built, three instruct
+  models, four edit scales, with several baselines including matched
+  fine-tuning on the same synthetic data and a same-teacher advantage the
+  authors argue against; single paper, benchmark and method by the same group,
+  and correctness of causal questions is scored loosely (one relevant causal
+  event plus trend).
+confidence: medium

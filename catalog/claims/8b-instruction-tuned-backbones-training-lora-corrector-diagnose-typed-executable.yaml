@@ -1,0 +1,44 @@
+id: 8b-instruction-tuned-backbones-training-lora-corrector-diagnose-typed-executable
+ref: CLM-0351
+capability: self-repair
+technique: correct-reasoning-inverting-typed-error-operators
+statement: >-
+  For 8B instruction-tuned backbones, training a LoRA corrector to diagnose
+  a typed, executable error operator (error type, step location, corrupted
+  and repaired proposition) and apply its inverse as a localized edit raises
+  accuracy over free-form self-revision baselines (Self-Refine, RISE, SCoRe)
+  on math, code and commonsense tasks, and dropping either the
+  operator-prediction loss or the adjacent-state reconstruction loss loses
+  most of the gain.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Llama-3-8B-Instruct and Qwen3-8B; six in-domain and seven transfer benchmarks; a few thousand constructed transition pairs; gains smaller on factual multiple-choice (MMLU) where SC"
+sources:
+  - source: arxiv-2608-22090
+    stance: supports
+    note: >-
+      Validated by: In-domain average 67.5 vs 64.3 for the strongest
+      same-backbone baseline (DiffCoT) and 63.7 for SCoRe over GSM8K, MATH,
+      HumanEval+, MBPP, MMLU, PIQA, five seeds, Holm-corrected; transfer
+      averages 76.4 (Llama-3, base 67.7) and 80.2 (Qwen3, base 72.9);
+      ablations drop to 79.1/80.6 on GSM8K for operator-only and
+      adjacent-state-only.. Measured on 13 datasets with two 8B backbones,
+      five seeds, same prompt/extractor per benchmark, and component
+      ablations; baselines are published correction methods. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-17
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A replication where a
+  free-form self-revision baseline matches the operator-based corrector on
+  the same backbones and benchmarks, or where the operator-only objective
+  alone reaches the full method's accuracy. Drafted stance toward
+  self-critique-without-grounding-unreliable: supports -- Free-form
+  self-revision baselines gained little over base CoT while structured,
+  applicability-checked operator edits gained more, consistent with
+  unconstrained self-critique being a weak signal.
+submitted_by: agent:claude-opus-5@Russ-Miller
