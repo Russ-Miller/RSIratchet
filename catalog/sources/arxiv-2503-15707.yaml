@@ -30,3 +30,36 @@ notes: "Filed as a source on planning from the classifier's judgement that the
   maintaining efficiency, i.e., it improves the quality of produced plans. No
   claim has been drafted from it yet."
 ingested_at: 2026-09-23
+brief: >-
+  Splitting robotic task planning across 2 LLMs — one planner, one dedicated
+  safety critic — cuts detected safety violations far more than asking a
+  single model to handle both, and the gain tracks the critic model's
+  reasoning strength.
+
+
+  SAFER adds a Safety Planning LLM alongside the task planner, an execution
+  LLM per robot, a feedback loop, and an LLM-as-a-Judge that scores plans
+  against 15 risk criteria. It is tested on 40 tasks from the COHERENT
+  multi-agent benchmark (8 tasks per scene across 5 scenes: 2 mono-type, 3
+  dual-type, 3 trio-type), with GPT-4o and DeepSeek-r1 as planners, plus
+  Control Barrier Functions at the control layer.
+
+
+  Against GPT-4o without SAFER, average safety violations fall 47% with GPT-4o
+  and 77.5% with DeepSeek-r1, with average steps broadly comparable (e.g.
+  scene 3: 22.3 steps / 51.5 violations baseline vs 14.5 / 16.8 for SAFER-4o).
+  Overhead is 2 extra API calls per step.
+
+
+  The violation metric is itself produced by an LLM judge, so the headline
+  effect is partly self-evaluated; there is no matched-prompt baseline giving
+  a single planner the same safety instructions, and no human-rated violation
+  count. Hardware validation is 1 qualitative demonstration with 2 Kuka arms
+  and 1 human, not a success-rate study.
+
+
+  Treat the 47–77.5% reductions as evidence that role separation helps, not as
+  calibrated absolute safety.
+brief_generated_at: 2026-10-18
+brief_model: claude-opus-5
+brief_source: full-text

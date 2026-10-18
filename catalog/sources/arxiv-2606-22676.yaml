@@ -1,15 +1,16 @@
 id: arxiv-2606-22676
 ref: SRC-0320
 kind: paper
-title: "Skin-Deep: A Geometric Diagnostic for Alignment Fragility in Large Language Model Representations"
+title: "Skin-Deep: A Geometric Diagnostic for Alignment Fragility in Large
+  Language Model Representations"
 year: 2026
 date: 2026-06-21
 arxiv_id: "2606.22676"
 url: https://arxiv.org/abs/2606.22676
-tags: [ingested]
-summary: >-
-  Alignment tuning is meant to make harmful-request refusal robust, yet this
-  safety behavior can be erased by a small set of benign fine-tuning
+tags:
+  - ingested
+summary: Alignment tuning is meant to make harmful-request refusal robust, yet
+  this safety behavior can be erased by a small set of benign fine-tuning
   examples. This is a deployment risk for open-weight models because a
   checkpoint can pass refusal tests at release time and later lose refusal
   under low-cost downstream fine-tuning. Prior work has established these
@@ -18,3 +19,40 @@ summary: >-
   intervention is run. We introduce Skin-Deep, a geometric diagnostic that
   detects alignment fragility dir
 ingested_at: 2026-09-19
+brief: >-
+  Refusal in instruction-tuned models sits on a low-rank set of
+  residual-stream directions, and you can measure that geometry before
+  touching the weights, though the link to post-fine-tuning fragility rests on
+  a single model comparison. Skin-Deep contrasts aligned and version-matched
+  base activations with contrastive PCA, measures harmful/benign separation,
+  ablates candidate directions, and sums the layer profile into a Geometric
+  Fragility Score.
+
+
+  The pool is 21 instruction-tuned models, 3B–32B, split into overlapping
+  cohorts, with 500 harmful prompts (AdvBench, HarmBench, BeaverTails) matched
+  by token count to 500 benign ones (Alpaca, OASST).
+
+
+  Held-out cPCA separation is large for the core 4 models (Cohen's d
+  2.71–3.23, probe accuracy 0.904–0.959); mean train-minus-test gap across 14
+  models is +0.070, minimum held-out effect 1.69. Ablation cuts refusal in 4
+  of 6 models, but the effective direction differs: PCA-PC1 for Llama (0.14 to
+  0.02), Arditi for Qwen (0.86 to 0.68) and SOLAR (0.22 to 0.06); random
+  directions move nothing.
+
+
+  The direction ablations are well controlled, with random and non-leading-PCA
+  controls and Wilson intervals. The predictive claim is not: after benign
+  LoRA on 200 Alpaca examples, every model reaches full harmful compliance
+  except Gemma-2-9B (mean 0.68, sd 0.17, range 0.48–0.80), which also has the
+  lowest GFS. That is 1 model, heterogeneous cohort, 1 fine-tuning protocol,
+  English only, no multilingual or MoE test, and a base checkpoint is
+  required.
+
+
+  Treat GFS as a diagnostic hypothesis, not a calibrated predictor of
+  fine-tuning fragility.
+brief_generated_at: 2026-10-18
+brief_model: claude-opus-5
+brief_source: full-text

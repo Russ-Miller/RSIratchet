@@ -31,3 +31,41 @@ notes: "Filed as a source on code-generation from the classifier's judgement
   multiple code generation benchmarks with less data. No claim has been
   drafted from it yet."
 ingested_at: 2026-09-23
+brief: >-
+  Replacing teacher-distilled code responses with the model's own best sample,
+  plus a written critique when the teacher's answer still wins, keeps
+  improving a code LLM across repeated SFT rounds without preference learning
+  or golden labels.
+
+
+  Adaptive Critique Refinement (ACR) samples 7 responses at temperature 0.7,
+  ranks them with Qwen2.5-32B-Instruct as judge plus a code executor, and
+  rewrites each training item as either single-turn self-generated code or a
+  2-turn critique trace. Applied 3 times to DSCoder-6.7B-Base and
+  Qwen2.5-Coder-7B-Base over an 80K GPT-4o-built Python set, giving
+  RefineCoder-DS-6.7B and RefineCoder-QW-7B.
+
+
+  Average pass@1 on LiveCodeBench and BigCodeBench-hard rose 2.7 and 3.1
+  points over 3 iterations, with the largest single jump from Iter0 to Iter1
+  (2.0 and 2.3). On HumanEval(+)/MBPP(+)/BigCodeBench the gains were 2.7 and
+  4.5. MultiPL-E, out of distribution for a Python-only set, improved 1.0 and
+  2.1.
+
+
+  Evidence includes per-module ablations across iterations (removing the
+  2nd-turn critique data hurt most) and a leakage audit using TLI showing 3
+  baseline datasets contaminated on HumanEval(+)/MBPP(+), which explains the
+  remaining gap there. The judge itself was checked only by best-vs-worst
+  sampling gaps (error rate 4.3 and 3.1 on HumanEval+).
+
+
+  No matched-data-budget rerun of plain distillation, 2 base models, 1 judge
+  model, and no test beyond code.
+
+
+  If you distil code SFT data, keeping the student's own winning samples is
+  worth trying before scaling the teacher.
+brief_generated_at: 2026-10-18
+brief_model: claude-opus-5
+brief_source: full-text

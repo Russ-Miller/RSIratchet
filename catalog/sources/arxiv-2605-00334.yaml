@@ -28,3 +28,36 @@ notes: "Forwarded by Russ 2026-09-26: forwarded by Russ; contests the claim
   that open models trail commercial ones on agent work, and proposes routing
   routine calls to small models"
 ingested_at: 2026-09-26
+brief: >-
+  Small open-weight models handle short, structured tool calls as reliably as
+  a frontier model, and the gap sits almost entirely in long-horizon planning
+  under persistent constraints, where both sides fail.
+
+
+  AgentFloor is a deterministic 30-task benchmark, 5 tasks per tier across 6
+  tiers (no-tool instruction following, single tool, 2-tool chain, branching,
+  multi-source synthesis, long-horizon planning), using 8 abstract tools over
+  an in-memory fixture database, no live APIs. 16 open-weight models from
+  0.27B to 32B served via Ollama plus GPT-5, 16,542 scored runs, native tool
+  calling only, temperature 0.
+
+
+  Paired across 30 tasks (n = 270), gemma4:26b vs GPT-5 gives Δ = + 0.4 pp,
+  90% CI [ − 4.0 , + 5.1 ], both near 60% TCR, at about 15x lower cost per
+  passed task on Mac self-hosting and 2.5x faster. Open-weight wins A0 (100%
+  vs 80%, Δ = + 20.0 pp) and ties on single-tool use; on tier E GPT-5 scores
+  10% vs 0% (Δ = − 10.2 pp).
+
+
+  Evidence is pre-registered with TOST at a ± 10 pp margin and 10,000-resample
+  bootstrap CIs, but per-tier n = 45 leaves B, C and D descriptive only, and
+  GPT-5 is the sole frontier anchor. Failure-mode cascades show equal TCR
+  hiding different bottlenecks: GPT-5 fails by resignation (F5 39%),
+  gemma4:26b by step exhaustion (F4 41%) and hallucinated tools (F1 36%).
+
+
+  Use it as a routing prior, not a portability claim: no human baseline, no
+  live APIs, 5 tasks per tier.
+brief_generated_at: 2026-10-18
+brief_model: claude-opus-5
+brief_source: full-text
