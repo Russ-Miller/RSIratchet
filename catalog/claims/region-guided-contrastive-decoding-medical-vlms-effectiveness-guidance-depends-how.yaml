@@ -1,0 +1,41 @@
+id: region-guided-contrastive-decoding-medical-vlms-effectiveness-guidance-depends-how
+ref: CLM-0473
+capability: visual-grounding
+technique: pick-contrast-region-counterfactual-occlusion-penalising-size
+statement: >-
+  In region-guided contrastive decoding for medical VLMs, the effectiveness
+  of the guidance depends on how much of the image the guiding mask covers:
+  coarse ground-truth boxes (mean ~39% coverage on SLAKE) suppress so much
+  of the unconditional branch that the contrast weakens, while compact
+  automatically discovered masks (~7% coverage) selected by the drop in
+  answer likelihood under occlusion give a sharper signal and higher
+  closed-ended accuracy.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Medical VQA (SLAKE, MIMIC-CXR) with three 7B-class Med-VLMs, inference-time contrastive decoding with classifier-free guidance on an anatomical region."
+sources:
+  - source: arxiv-2608-17427
+    stance: supports
+    note: >-
+      Validated by: Overall/open/closed accuracy on SLAKE and MIMIC-CXR
+      across Phi-3.5V-Med, HuatuoGPT-Vision-7B and LLaVA-Med-7B against
+      plain decoding, VCD, DoLA, OPERA and GT-mask ARCD; ablations removing
+      the area penalty (-3.4%), replacing counterfactual selection with
+      random masks (-4.4%), and using a single occlusion mode.. Measured on
+      two datasets and three Med-VLMs, with a coverage analysis on one model
+      showing closed accuracy falling once GT coverage exceeds 40% and
+      per-sample gains concentrated on large-GT cases. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-17
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Matching the
+  automatically selected masks' coverage to ground-truth boxes (or shrinking
+  GT boxes to similar compactness) yields the same closed-ended accuracy,
+  showing coverage is not what drives the gap; or random compact masks match
+  counterfactually selected ones.
+submitted_by: agent:claude-opus-5@Russ-Miller

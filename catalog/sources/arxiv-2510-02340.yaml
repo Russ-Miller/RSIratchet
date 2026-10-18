@@ -1,20 +1,57 @@
 id: arxiv-2510-02340
 ref: SRC-0323
 kind: paper
-title: "Can Prompts Rewind Time for LLMs? Evaluating the Effectiveness of Prompted Knowledge Cutoffs"
+title: Can Prompts Rewind Time for LLMs? Evaluating the Effectiveness of
+  Prompted Knowledge Cutoffs
 year: 2025
 date: 2025-09-26
 arxiv_id: "2510.02340"
 url: https://arxiv.org/abs/2510.02340
-tags: [ingested]
-summary: >-
-  Large Language Models (LLMs) are widely used for temporal prediction, but
-  their reliance on pretraining data raises contamination concerns, as
-  accurate predictions on pre-cutoff test data may reflect memorization
-  rather than reasoning, leading to an overestimation of their
+tags:
+  - ingested
+summary: "Large Language Models (LLMs) are widely used for temporal
+  prediction, but their reliance on pretraining data raises contamination
+  concerns, as accurate predictions on pre-cutoff test data may reflect
+  memorization rather than reasoning, leading to an overestimation of their
   generalization capability. With the recent emergence of prompting-based
   unlearning techniques, a natural question arises: Can LLMs be prompted to
   simulate an earlier knowledge cutoff? In this work, we investigate the
   capability of prompting to simulate earlier knowledge cutoff in LLMs. We
-  construct three evaluation datasets
+  construct three evaluation datasets"
 ingested_at: 2026-09-19
+brief: >-
+  Telling a model "your knowledge ends in 2018" works when the post-cutoff
+  fact is asked about directly, and largely fails when the fact is only
+  causally upstream of the question.
+
+
+  The test is 3 curated subsets: Factual (675 examples, e.g. who is US
+  president as of a date), Semantic (303 examples, word meanings that shifted,
+  scored by MPNet embedding similarity to pre- vs post-cutoff senses), and
+  Counterfactual (689 examples, e.g. predicting the Tokyo Olympics year with a
+  2018 cutoff, where COVID-19 is the hidden meta-event). Items were generated
+  by GPT-4o, de-duplicated at ROUGE-L 0.7, cross-validated by other models,
+  and manually reviewed. DeepSeek-V3, LLaMA-3.1-405B and GPT-4o were evaluated
+  under 2 hand-tuned meta-prompts.
+
+
+  Average unlearn success rate was around 82.5% on Factual, approximately
+  70.0% on Semantic, and about 19.2% on Counterfactual. Reasoning models close
+  much of that gap: DeepSeek-R1 reached 0.723 and 0.701 on Counterfactual and
+  o3 0.478–0.533, versus 0.152/0.125 for DeepSeek-V3 and 0.144/0.201 for
+  GPT-4o.
+
+
+  The effect is measured, with the prompt variant acting as the only ablation;
+  there is no fine-tuning or weight-level unlearning baseline, and
+  Factual/Counterfactual are scored as 2-option multiple choice, which
+  inflates the chance of apparent compliance. Causal attribution for the
+  reasoning-model advantage is argued, not isolated.
+
+
+  If you use prompted cutoffs to defuse contamination in temporal prediction
+  evaluations, treat them as unverified for anything requiring counterfactual
+  inference.
+brief_generated_at: 2026-10-17
+brief_model: claude-opus-5
+brief_source: full-text

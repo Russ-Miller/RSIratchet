@@ -1,0 +1,51 @@
+arxiv_id: "2609.12464"
+title: "Beyond Vector Similarity: Hierarchical Context-Aware Graph RAG vs
+  Standard RAG in Enterprise Code Migration"
+url: https://doi.org/10.48550/arxiv.2609.12464
+drafted_at: 2026-09-24
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: In whole-repository cross-language code migration (Java to Python),
+  supplying an LLM with AST-derived dependency-graph context and translating
+  parent classes before children lowers the rate of calls to nonexistent APIs
+  relative to vector-similarity retrieval of text chunks, while lexical
+  similarity metrics such as CodeBLEU show no difference between the two.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: One repository (spring-petclinic-genai), Gemini 2.5 Pro at
+  temperature 0; gains concentrated in highly coupled files (controllers,
+  tests) and absent for self-contained POJOs whose full context fits one
+  chunk.
+technique: retrieval-augmented-generation
+proposed_technique: Retrieve by code dependency graph, migrate parents first
+technique_summary: Parse the repository into an AST, store
+  INHERITS/CALLS/IMPORTS edges in a property graph, cache a serialized
+  architecture skeleton in the model's context, and translate files in
+  topological order so already-translated parent code grounds each child.
+technique_kind: retrieval
+technique_validated_by: "On spring-petclinic-genai, hallucinated-API rate fell
+  56.4% to 16.2%, dependency resolution 34.8% to 65.9%, parent-child
+  consistency 26.7% to 45.5%, weighted migration quality 65.5% to 83.2%,
+  versus a chunked vector-RAG baseline (800 chars, k=5) with the same model;
+  CodeBLEU was 90.6% vs 91.1%. Costs: cyclomatic-complexity consistency 71.6%
+  to 46.7% and docstring preservation 67.0% to 61.0%. No execution or
+  compile-pass measurement."
+stance_on_existing: supports
+related_claim_id: retrieval-moves-the-trust-boundary-rather-than-removing-it
+stance_reason: Fabrication drops sharply when what lands in context is a
+  deterministic dependency graph rather than lexically similar chunks, showing
+  the retrieval channel's content sets the hallucination rate.
+falsifier: A repository-migration comparison where graph-structured,
+  topologically ordered context yields the same or higher nonexistent-API rate
+  than chunked vector retrieval with the same model, or where the effect
+  disappears once hallucination is scored by actual compilation and execution
+  rather than symbol-table lookup.
+evidence_note: Measured on one repository with one model and one baseline
+  configuration; hallucination is scored by a custom global symbol-table
+  lookup, not by running the code, and the scoring rule was itself changed to
+  accommodate cross-file calls, which could favour the graph arm. Complexity
+  and docstring regressions are reported but their causes (over-engineering,
+  attention dilution) are asserted, not tested.
+confidence: low

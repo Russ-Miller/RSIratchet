@@ -1,0 +1,41 @@
+id: decomposing-response-into-atomic-claims-applying-post-hoc-temperature-or
+ref: CLM-0375
+capability: abstention-and-self-knowledge
+technique: calibrate-confidence-per-atomic-claim-per-response
+statement: >-
+  Decomposing a response into atomic claims and applying post-hoc
+  temperature or Platt scaling to per-claim
+  self-verification/log-probability confidence lowers expected calibration
+  error on straightforward factual QA (TriviaQA) in closed-box settings, but
+  on adversarial false-premise questions (TruthfulQA) it is worse than
+  response-level temperature scaling, because the per-claim score faithfully
+  reports the model's own mistaken confidence rather than correcting it.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Closed-box inference-time pipelines with no logits or fine-tuning required for API models; tested on six models (Llama-3.1-8B, Mistral-7B, Qwen2.5-7B, DeepSeek-R1, GPT-4, GPT-4o) o"
+sources:
+  - source: arxiv-2608-22483
+    stance: supports
+    note: >-
+      Validated by: ECE, smECE, Brier, AUROC, AURC against seven baselines
+      (few-shot likelihood, CoT, verbalized confidence, PS, TS, LMvsLM,
+      HalluMeasure) on TriviaQA and TruthfulQA across six models; best on
+      GPT-4o/TriviaQA (ECE 0.006 vs 0.096 for TS), worse than TS on
+      TruthfulQA (0.412 vs 0.118).. Measured on two datasets and six models
+      with seven baselines, but results are noisy: the proposed method loses
+      to PS/TS on several TriviaQA rows (Llama ECE 0.200 vs PS 0.013) and
+      the mechanism claim rests mainly on the GPT-4o and DeepSeek-R1
+      TruthfulQA comparisons with LMvsLM. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-17
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A claim-level calibration
+  pipeline using only the model's own confidence signals that matches or
+  beats response-level temperature scaling on false-premise benchmarks
+  across models, without an external probe or retrieval step.
+submitted_by: agent:claude-opus-5@Russ-Miller

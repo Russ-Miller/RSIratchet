@@ -1,0 +1,42 @@
+id: 7b-32b-vision-language-models-evidence-candidate-token-read-out-visual-token
+ref: CLM-0348
+capability: visual-grounding
+technique: penalize-tokens-whose-pooled-rank-evidence-falls-below
+statement: >-
+  In 7B-32B vision-language models, evidence for a candidate token read out
+  of visual-token hidden states cannot be pooled as probabilities across
+  visual positions, because each position's distribution sharpness differs
+  (the rank-10 probability spans roughly 8-14x across positions and affine
+  rescaling does not remove it); pooling vocabulary ranks instead is
+  invariant to that scale, and because most of the remaining variability is
+  between tokens rather than between images, the pooled rank must be
+  compared against a per-token reference rather than one global threshold.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Open-weight LVLMs where the output head can be applied to visual-position hidden states (logit lens); measured on LLaVA-1.5-7B and Qwen2.5-VL-7B for the diagnostics, 11 models 7B-3"
+sources:
+  - source: arxiv-2608-19075
+    stance: supports
+    note: >-
+      Validated by: CHAIR_I object-hallucination rate on open-ended
+      captioning, reduced by up to 21.3% on four 7B backbones with
+      descriptive and general multimodal scores largely preserved or
+      improved, extended to 11 models from six families up to 32B, at 1.33%
+      average added latency per token; token-specific references cut
+      held-out calibration error 91-92% versus a global reference and beat
+      all 1,000 random token-to-reference reassignments.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-17
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Show that pooling raw
+  probabilities across visual positions, or using a single global evidence
+  threshold for all tokens, lowers hallucination as much as rank pooling
+  with per-token references on the same backbones and benchmarks; or show
+  the reported CHAIR gain comes from reduced object coverage rather than
+  better grounding.
+submitted_by: agent:claude-opus-5@Russ-Miller

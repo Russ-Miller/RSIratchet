@@ -1,0 +1,39 @@
+id: agentic-tool-calls-where-parameter-fabricated-rather-than-grounded
+ref: CLM-0360
+capability: hallucination
+technique: lora-latent-critic-verbalizes-which-parameter-ungrounded
+statement: >-
+  For agentic tool calls where a parameter is fabricated rather than
+  grounded in the dialogue, sampling-based uncertainty detectors (token
+  entropy, semantic entropy, SEP) fail at near-chance because the model
+  fabricates plausible parameters with high confidence, while the model's
+  hidden states at the moment the parameter is generated do carry a
+  separable grounding signal.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Tool-calling agents (Qwen3-4B, Llama-xLAM-2-8B) under underspecified user instructions; hallucination defined as a parameter unsupported by dialogue history, not factually wrong."
+sources:
+  - source: arxiv-2608-10430
+    stance: supports
+    note: >-
+      Validated by: Detection AUROC 0.966 ID / 0.925 OOD on Qwen3-4B vs
+      0.915/0.884 for an equal-scale fine-tuned external judge, 0.782/0.616
+      for a linear probe, and ~0.5 for entropy baselines; >80%
+      exact-parameter localization; in a closed ReAct loop, specific
+      feedback gave parameter F1 61.2 vs 51.3 generic and 52.1 base, false
+      blocks 2.9% vs 9.4%, recovery rate 37.0% vs 23.9%; <10ms overhead in
+      vLLM.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-17
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Show that on the same
+  specification-grounding tool-call data, semantic entropy or token entropy
+  separates ungrounded from grounded parameters at AUROC comparable to
+  hidden-state methods, or that a linear probe on raw base states transfers
+  OOD as well as the adapted states.
+submitted_by: agent:claude-opus-5@Russ-Miller

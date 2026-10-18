@@ -1,0 +1,43 @@
+id: frozen-llm-run-generate-critique-revise-loop-no-external-feedback-accuracy
+ref: CLM-0394
+capability: self-repair
+technique: stop-self-critique-loop-confirmed-sentinel
+statement: >-
+  For a frozen LLM run in a generate-critique-revise loop with no external
+  feedback, the accuracy gain is concentrated where single-shot reasoning is
+  already unreliable: on clean multi-step reasoning (BBH, ~74% single-shot)
+  depth makes no difference beyond the confidence interval, while on harder
+  math (MATH, 26.2% single-shot) the same loop gains +14.2 points, with
+  GSM8K in between (+4.2).
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Pure-reasoning benchmarks with no tools; two frozen backbones (deepseek-v4-flash, Qwen2.5-72B); loop depth 3; n=500 for the significant cells, n=100 for BBH sweeps."
+sources:
+  - source: arxiv-2608-18884
+    stance: supports
+    note: >-
+      Validated by: Early-stopped 82-88% of items at ~2.1 generations with
+      accuracy equal to single-shot on BBH, and beat fixed-depth Self-Refine
+      (74.0% vs 71.2% on BBH n=500) at lower token cost; a
+      confidence-threshold sweep collapsed to one generation at every
+      tau>=0.6, so the numeric tag gave no selective stop.. Measured on
+      three benchmarks with Wilson intervals and a McNemar paired test;
+      n=500 for GSM8K/MATH, n=100 for the BBH depth sweep where the interval
+      half-width is ~8.7pp. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-17
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A setup where an
+  ungrounded self-critique loop raises accuracy by a margin outside the
+  confidence interval on a task the model already answers correctly most of
+  the time, or fails to gain on a task where single-shot accuracy is low.
+  Drafted stance toward self-critique-without-grounding-unreliable: supports
+  -- Ungrounded self-critique left clean-task accuracy flat and fixed-depth
+  refinement actually lowered it (71.2% vs 73.8% single-shot on BBH),
+  consistent with over-correction of correct answers.
+submitted_by: agent:claude-opus-5@Russ-Miller

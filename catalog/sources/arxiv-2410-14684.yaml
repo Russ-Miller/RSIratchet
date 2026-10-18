@@ -1,20 +1,54 @@
 id: arxiv-2410-14684
 ref: SRC-0311
 kind: paper
-title: "RepoGraph: Enhancing AI Software Engineering with Repository-level Code Graph"
+title: "RepoGraph: Enhancing AI Software Engineering with Repository-level
+  Code Graph"
 year: 2024
 date: 2024-10-03
 arxiv_id: "2410.14684"
 url: https://arxiv.org/abs/2410.14684
-tags: [ingested]
-summary: >-
-  Large Language Models (LLMs) excel in code generation yet struggle with
-  modern AI software engineering tasks. Unlike traditional function-level or
-  file-level coding tasks, AI software engineering requires not only basic
-  coding proficiency but also advanced skills in managing and interacting
-  with code repositories. However, existing methods often overlook the need
-  for repository-level code understanding, which is crucial for accurately
+tags:
+  - ingested
+summary: Large Language Models (LLMs) excel in code generation yet struggle
+  with modern AI software engineering tasks. Unlike traditional function-level
+  or file-level coding tasks, AI software engineering requires not only basic
+  coding proficiency but also advanced skills in managing and interacting with
+  code repositories. However, existing methods often overlook the need for
+  repository-level code understanding, which is crucial for accurately
   grasping the broader context and developing effective solutions. On this
   basis, we present RepoGraph, a plug-in module that manages a
   repository-level structure
 ingested_at: 2026-09-19
+brief: >-
+  Giving a coding agent a line-level dependency graph of the repository,
+  rather than file-level retrieval, improves where it decides to edit and how
+  often its patch passes tests. RepoGraph parses a repo with tree-sitter into
+  a graph whose nodes are code lines tagged "def" or "ref" and whose edges are
+  "contain" and "invoke", filters out built-in and third-party calls, then
+  retrieves k-hop ego-graphs around a search term. It was bolted onto 4
+  open-source SWE-bench-Lite systems: RAG and Agentless (procedural),
+  SWE-agent and AutoCodeRover (agents), using GPT-4 and GPT-4o.
+
+
+  Resolve rate rose from 2.67 to 5.33 for RAG, 27.33 to 29.67 for Agentless,
+  19.00 to 21.33 for AutoCodeRover, and 18.33 to 20.33 for SWE-agent, an
+  average relative gain of 32.8%. File-level localization accuracy rose
+  4.4-5.6 points; line-level only 1.6-2.7. On a 2,665-sample Python subset of
+  CrossCodeEval, code-match EM went from 10.5 to 28.7 with GPT-4o and 10.2 to
+  19.7 with Deepseek-Coder.
+
+
+  The effect is measured against each framework's own baseline with matched
+  configs, and token/cost accounting is reported (Agentless 42,376 to 47,323
+  tokens, $0.34 to $0.39), but there is no baseline given the same extra token
+  budget by other means. A variant ablation shows 2-hop flattened context
+  drops Agentless to 26.00, below baseline, so the gain depends on retrieval
+  depth and summarization choices. Only Python was tested, and contextual
+  misalignment remains the dominant error type.
+
+
+  If you are building repo-level agents, structural context helps localization
+  more than final patch correctness.
+brief_generated_at: 2026-10-17
+brief_model: claude-opus-5
+brief_source: full-text
