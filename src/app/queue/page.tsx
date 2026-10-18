@@ -1,8 +1,10 @@
 import Link from "next/link";
-import { getCapability, getClaim } from "@/lib/catalog";
+import { getCapability, getClaim, getSources } from "@/lib/catalog";
 import { candidateUrl, challengers, groupByCapability, loadQueue, verdictFor, type Direction, type QueueCandidate } from "@/lib/queue";
 
 export const metadata = { title: "Review queue" };
+
+const UNMATCHED_SHOWN = 150;
 
 function ScorePill({ score }: { score: number }) {
   const tone = score >= 15
@@ -69,12 +71,6 @@ function Candidate({ c, capabilityId }: { c: QueueCandidate; capabilityId?: stri
               also: {c.capabilities.map((id) => getCapability(id)?.label ?? id).join(", ")}
             </div>
           ) : null}
-          {c.abstract ? (
-            <details className="mt-1.5">
-              <summary className="cursor-pointer text-xs text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-300">Abstract</summary>
-              <p className="mt-1 text-sm leading-relaxed text-neutral-700 dark:text-neutral-300">{c.abstract}</p>
-            </details>
-          ) : null}
         </div>
       </div>
     </li>
@@ -82,7 +78,14 @@ function Candidate({ c, capabilityId }: { c: QueueCandidate; capabilityId?: stri
 }
 
 export default function QueuePage() {
-  const { candidates, windows, generatedAt } = loadQueue();
+  // The page shows what still needs a decision. A candidate already filed as
+  // a catalog source has had one; abstracts live on arXiv one click away.
+  // Both cuts matter: this page is prerendered, and at 25 MB it exceeded
+  // Vercel's 20 MB page limit and failed every nightly deploy for 18 days.
+  const all = loadQueue();
+  const filed = new Set(getSources().map((s) => s.arxiv_id).filter(Boolean));
+  const candidates = all.candidates.filter((c) => !c.arxiv_id || !filed.has(c.arxiv_id));
+  const { windows, generatedAt } = all;
   const { groups, unmatched } = groupByCapability(candidates);
   const matchedCount = candidates.length - unmatched.length;
   // Had its own page until /contested was folded into the claims list. This is
@@ -170,8 +173,14 @@ export default function QueuePage() {
               also where a capability worth adding would first show up.
             </p>
             <ul className="space-y-2">
-              {unmatched.map((c) => <Candidate key={c.openalex_id} c={c} />)}
+              {[...unmatched].sort((a, b) => String(b.date ?? "").localeCompare(String(a.date ?? ""))).slice(0, UNMATCHED_SHOWN).map((c) => <Candidate key={c.openalex_id} c={c} />)}
             </ul>
+            {unmatched.length > UNMATCHED_SHOWN && (
+              <p className="text-xs text-neutral-500">
+                Showing the newest {UNMATCHED_SHOWN} of {unmatched.length}. The rest feed the
+                capability-proposal stage, which is where they do their work.
+              </p>
+            )}
           </section>
         </>
       )}

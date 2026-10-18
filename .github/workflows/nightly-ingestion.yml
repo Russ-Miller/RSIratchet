@@ -280,6 +280,7 @@ jobs:
       # supply-chain step in the one job that holds the production token. Same
       # `npm run deploy` runs locally, so there is one deploy command, not two.
       - name: Deploy to Vercel
+        continue-on-error: true   # a failed deploy must not stop the state from persisting
         if: env.HAS_VERCEL_TOKEN == 'true'
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
@@ -304,6 +305,7 @@ jobs:
           } >> "$RUN_LOG"
 
       - name: Persist pipeline state
+        if: always()   # every night's work is saved even if an earlier step failed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
