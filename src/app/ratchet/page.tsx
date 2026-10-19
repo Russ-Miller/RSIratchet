@@ -41,6 +41,7 @@ export default function RatchetPage() {
         </p>
       </div>
 
+      <Hypothesis />
       <WhyFailures />
       <Techniques />
 
@@ -162,6 +163,64 @@ function WhyFailures() {
         which conditions. The ratchet is the loop that would read it when something fails and file
         back what it learns. That loop is the open experiment, and the sources below are about
         systems that try to build one.
+      </p>
+    </section>
+  );
+}
+
+// The claim the site is built to test, shown as a hypothesis with its status
+// and the experiment that would settle it, prediction written before the run.
+// Deliberately boxed and above everything else on the page, and deliberately
+// labelled argued-not-measured: prominence is not endorsement.
+function Hypothesis() {
+  const link = "underline decoration-neutral-400 underline-offset-2 hover:decoration-neutral-700 dark:hover:decoration-neutral-300";
+  return (
+    <section className="max-w-3xl space-y-3 rounded border border-neutral-300 p-4 text-sm text-neutral-700 dark:border-neutral-700 dark:text-neutral-300">
+      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+        <h2 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">The hypothesis we are trying to prove</h2>
+        <span className="rounded bg-neutral-100 px-1.5 py-0.5 text-xs text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400">argued, not yet measured</span>
+      </div>
+      <p className="text-base text-neutral-900 dark:text-neutral-100">
+        Models trained on a literature that hides its failures inherit its optimism: asked what
+        works, they overrate it, and they miss the conditions under which it stops working.
+      </p>
+      <p>
+        The argument is Sungmin Lee&rsquo;s, in{" "}
+        <Link href="/sources/arxiv-2604-06236" className={link}>LLMs Have Made Failure Worth Publishing</Link>{" "}
+        (2026), filed here as a{" "}
+        <Link href="/claims/language-models-inherit-the-positive-bias-of-the-literature" className={link}>claim reviewed by AI</Link>.
+        The paper proposes experiments to test it and does not run them. If it holds, it is the
+        strongest reason for this catalog to exist: an agent asking a model what works would be
+        asking a reader of a tilted sample, and needs the failures written down somewhere else.
+      </p>
+      <div className="space-y-1">
+        <h3 className="font-semibold text-neutral-900 dark:text-neutral-100">The experiment, and what would count</h3>
+        <ul className="ml-4 list-disc space-y-1">
+          <li>
+            For techniques the catalog has evidence on &mdash; above all the contested ones, and those
+            whose claims record when they fail &mdash; ask models from several families, without the
+            catalog, whether the technique helps and when it does not.
+          </li>
+          <li>
+            Score each answer against the filed evidence: does it call a contested technique settled,
+            does it name the failure condition the evidence records, does it claim an effect where the
+            evidence records none or harm.
+          </li>
+          <li>
+            <strong className="font-medium">Prediction, written before the run:</strong> models rate
+            techniques more favourably than the evidence, and omit failure conditions far more often
+            than they invent them.
+          </li>
+          <li>
+            <strong className="font-medium">What would refute it:</strong> answers that match the
+            evidence, or that err as often toward pessimism as toward optimism.
+          </li>
+        </ul>
+      </div>
+      <p className="text-neutral-500">
+        Two limits, stated in advance. The catalog draws on the same published literature, so it is a
+        less tilted reference, not ground truth. And scoring the answers is itself a judgment: it needs
+        a model from a different family than the ones tested, and a person checking a sample.
       </p>
     </section>
   );
