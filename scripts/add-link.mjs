@@ -25,9 +25,14 @@ const noFeature = args.includes("--no-feature"); // evidence ingestion adds sour
 const TODAY = new Date().toISOString().slice(0, 10);
 
 function featureIt(sourceId, why) {
-  const existing = fs.existsSync("pipeline/til.yaml") ? YAML.parse(fs.readFileSync("pipeline/til.yaml", "utf8")) : {};
+  // A fresh record, not a merge with the last pick: merging carried the
+  // previous paper's claim list over to the new one. The claims shown are the
+  // ones that cite this source, read from the catalog.
+  const claims = fs.readdirSync("catalog/claims").filter((f) => /\.ya?ml$/.test(f))
+    .map((f) => YAML.parse(fs.readFileSync(`catalog/claims/${f}`, "utf8")))
+    .filter((c) => (c.sources ?? []).some((s) => s.source === sourceId)).map((c) => c.id);
   fs.writeFileSync("pipeline/til.yaml", YAML.stringify({
-    ...existing, source: sourceId, why: why ?? "forwarded by hand as worth a look",
+    source: sourceId, ...(claims.length ? { claims } : {}), why: why ?? "forwarded by hand as worth a look",
     forwarded: true, picked_at: TODAY,
     note: "Picked as something worth a look, not as something judged correct. Nothing here is vouched for by being featured.",
   }, { lineWidth: 78 }));
