@@ -1,0 +1,40 @@
+id: multi-agent-llm-workflows-mixed-size-model-zoo-choosing-which-model
+ref: CLM-0542
+capability: multi-model-coordination
+technique: route-each-agent-step-predicted-task-progress-gain
+statement: >-
+  In multi-agent LLM workflows with a mixed-size model zoo, choosing which
+  model instantiates each agent step-by-step from an online estimate of
+  task-progress gain plus remaining time and cost budget keeps task quality
+  near the best single-model policy at lower energy than one-shot
+  query-level routing or stall-triggered escalation.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Code generation (HumanEval Plus, MBPP), math (MATH-500) and retrieval-augmented long-form QA (ASQA), with 7-9 open-weight models per zoo and an imposed long-term energy budget; not"
+sources:
+  - source: arxiv-2608-25992
+    stance: supports
+    note: >-
+      Validated by: Pass rate / citation precision, energy in Joules and
+      wall-clock time against single-model policies, MasRouter (one-shot),
+      CASCADIA (escalation) and an Educated Guessing baseline on four
+      benchmarks, with a fixed long-term energy budget marking feasible
+      methods; best or near-best among budget-satisfying methods on 3 of 4
+      datasets, and 3.5 points below CASCADIA on MATH-500 at lower energy..
+      Measured on four benchmarks with 100-200 items each (164 for HumanEval
+      Plus), single runs reported without variance, authors' own method
+      versus three baselines. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-19
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A matched comparison where
+  step-wise progress-guided routing fails to beat one-shot query-level
+  routing on quality at equal or lower energy, or where its gain disappears
+  once the progress scorer's domain-specific milestone definitions are
+  removed.
+submitted_by: agent:claude-opus-5@Russ-Miller

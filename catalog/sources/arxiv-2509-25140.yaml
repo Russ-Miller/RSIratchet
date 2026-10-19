@@ -35,3 +35,43 @@ notes: "Forwarded by Russ 2026-10-19: forwarded by Russ with the code repo; an
   ratchet run inside the agent Code:
   https://github.com/google-research/reasoning-bank (Apache-2.0)."
 ingested_at: 2026-10-19
+brief: >-
+  Agents that distill failed attempts into reusable strategy notes, not just
+  successful trajectories, improve over a stream of tasks where success-only
+  memory stalls. ReasoningBank stores each experience as a
+  title/description/content memory item, retrieves top-k by embedding
+  similarity, and uses an LLM-as-a-judge for correctness labels with no ground
+  truth.
+
+
+  Tested on WebArena (684 tasks across 5 subsets), Mind2Web
+  (cross-task/website/domain), and SWE-Bench-Verified, with Gemini-2.5-flash,
+  Gemini-2.5-pro, and Claude-3.7-sonnet, against No Memory, Synapse (raw
+  trajectories), and AWM (workflows).
+
+
+  Overall WebArena success rate gains over memory-free agents were +8.3, +7.2,
+  and +4.6, with average steps falling by up to 1.4. On SWE-Bench-Verified,
+  resolve rate rose 34.2 to 38.8 (flash) and 54.0 to 57.4 (pro). Adding
+  memory-aware test-time scaling (MaTTS, parallel k=5) raised
+  WebArena-Shopping from 49.7 to 55.1 versus 52.4 for vanilla TTS and 42.2
+  without memory.
+
+
+  Evidence is measured, with matched comparisons at the same scaling factor,
+  an ablation separating success-only from success-plus-failure memory (AWM
+  drops 44.4 to 42.2 when failures are added; ReasoningBank rises 46.5 to
+  49.7), and a judge-noise simulation from 100% down to 50% accuracy against a
+  measured 72.7% baseline.
+
+
+  Scaling analyses run on 1 subset and 1 model; no cost-matched baseline is
+  reported in the main tables; Mind2Web task-level success stays low
+  (1.0-5.1).
+
+
+  If you build streaming agents, memory curation quality, not extra rollouts,
+  is where the gain comes from.
+brief_generated_at: 2026-10-19
+brief_model: claude-opus-5
+brief_source: full-text

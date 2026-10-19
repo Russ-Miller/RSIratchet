@@ -30,3 +30,37 @@ notes: "Filed as a source on planning from the classifier's judgement that the
   maintaining efficiency, i.e., it improves the quality of produced plans. No
   claim has been drafted from it yet."
 ingested_at: 2026-09-23
+brief: >-
+  Splitting task planning and safety checking across 2 separate LLMs cuts
+  detected safety violations in multi-robot plans more than prompting a single
+  planner, and the stronger reasoner does better at it. SAFER pairs a Task
+  Planning LLM with a Safety Planning LLM that audits and revises sequences,
+  plus an execution LLM per robot, a feedback loop, and an LLM-as-a-Judge
+  scoring plans against 15 risk criteria.
+
+
+  Evaluation uses the COHERENT multi-agent benchmark, 40 tasks across 5
+  scenes, 8 per scene (2 mono-type, 3 dual-type, 3 trio-type), with GPT-4o and
+  DeepSeek-r1. SAFER with DeepSeek-r1 reduces average safety violations by
+  77.5%; with GPT-4o, by 47%. Average steps mostly fall or stay comparable
+  (e.g. scene S3: 22.3 steps / 51.5 violations baseline vs 14.5 / 16.8 for
+  SAFER-4o). Overhead is 2 extra API calls per step.
+
+
+  The central weakness is that the safety metric is itself an LLM judge, so
+  the framework is largely scored by the same class of model it uses; the
+  authors argue judges are unbiased on safety but do not verify against human
+  labels. No ablation separates the safety LLM from the feedback module, and
+  only 2 models are tested.
+
+
+  Hardware validation is a single demonstration with 2 Kuka IIWA LBR 14 arms
+  (7 DoF) on mobile bases, with CBF constraints parsed from the safety LLM's
+  output; no success-rate statistics.
+
+
+  Treat the violation reductions as suggestive of decomposition helping, not
+  as calibrated safety measurement.
+brief_generated_at: 2026-10-19
+brief_model: claude-opus-5
+brief_source: full-text

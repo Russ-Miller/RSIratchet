@@ -6,15 +6,52 @@ year: 2026
 date: 2026-05-09
 arxiv_id: "2605.08765"
 url: https://arxiv.org/abs/2605.08765
-tags: [ingested]
-summary: >-
-  Unlearning in large language models (LLMs) aims to remove harmful training
-  data while preserving overall utility. However, we find that existing
-  methods often hallucinate, generate abnormal token sequences, or behave
-  inconsistently, raising safety and trust concerns. According to prior
+tags:
+  - ingested
+summary: "Unlearning in large language models (LLMs) aims to remove harmful
+  training data while preserving overall utility. However, we find that
+  existing methods often hallucinate, generate abnormal token sequences, or
+  behave inconsistently, raising safety and trust concerns. According to prior
   literature on LLM honesty, such behaviors are often associated with
   dishonesty. This motivates us to investigate the notion of honesty in the
   context of model unlearning. We propose a formal definition of unlearning
-  honesty, which includes: (1) preserving both utility and honesty on
-  retained knowledge, and (2) e
+  honesty, which includes: (1) preserving both utility and honesty on retained
+  knowledge, and (2) e"
 ingested_at: 2026-09-19
+brief: >-
+  Unlearned language models mostly do not say "I don't know" about what they
+  forgot; they hallucinate substitutes, emit degenerate tokens, or refuse once
+  and then answer on the follow-up. The paper reframes unlearning evaluation
+  around honesty: self-knowledge (refusing forgotten content) and
+  self-expression (refusing consistently).
+
+
+  The setup is WMDP-Bio on Zephyr-7b-beta and Llama3-8b, 9 unlearning methods
+  in 3 families (rejection-based like IDK+AP, gradient-ascent like NPO/SimNPO,
+  feature-randomize like RMU/BLUR/ME+GD), with metrics for rejection rate
+  (RR), 2-turn rejection (RR2R), IDK-option selection (CIR), a control option
+  (COR), and retain-set utility and honesty (AR on CSQA, MRS on BBH).
+
+
+  IDK fine-tuning produces high RR while keeping high WMDP accuracy, and
+  RMU+IDK's multi-turn consistency drops to around 40%. Gradient-ascent
+  methods show high CIR, but COR stays high too, and under randomized option
+  positions both fall to near the 20% baseline (NPO: CIR 19.24%, COR 17.65%;
+  SimNPO: CIR 20.77%, COR 19.87%). Their first-token entropy collapses. The
+  proposed ReVa, which aligns forget-set residual activations (layers 18/25)
+  to a refusal direction distilled from 20 prompts, reaches RR 60.86 and RR2R
+  45.42 versus RMU+IDK's 63.41/26.17, with AR 91.00, MRS 71.37, STD 2.24, and
+  5.91 min training vs 210.66 for IDK+AP.
+
+
+  The COR and position-shuffle controls isolate spurious IDK selection well.
+  ReVa is only compared on 1 benchmark, and its MCQ self-knowledge stays low
+  (CIR 7.18); relearning and adversarial fine-tuning robustness were not
+  tested.
+
+
+  Treat high refusal rates in unlearning papers as unverified until re-asked
+  and position-controlled.
+brief_generated_at: 2026-10-19
+brief_model: claude-opus-5
+brief_source: full-text

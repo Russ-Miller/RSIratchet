@@ -32,3 +32,39 @@ notes: "Filed as a source on fine-tuning-retention from the classifier's
   general skills alongside domain knowledge. No claim has been drafted from it
   yet."
 ingested_at: 2026-09-23
+brief: >-
+  Preventing catastrophic forgetting is not the same as being able to use a
+  general skill on a domain task. Models fine-tuned on legal QA keep producing
+  complete reasoning chains yet fail to fold the law-article knowledge into
+  the answer, which the authors call General Capabilities Integration (GCI).
+
+
+  The setup is a Chinese legal LLM with 3 train/test pairs: train on law
+  Article QA, test on reasoning and numerical calculation; train on Article
+  QA, test on ethic-attack and contaminated-query dialogues; train on legal
+  IE, test on event summary and MRC. Datasets were built from scraped legal
+  consulting data, CAIL competitions, court verdicts, and GPT-4 expansion of
+  hand-written seeds. Baselines include LoRA SFT, wise-ft, L1/L2/KL
+  regularization, DAS, MixTraining, and MixDA*. The proposed ALoRA puts a
+  multi-head attention module over LoRA so the adapter sees preceding tokens.
+
+
+  6 baselines hit 100 on "Chain" while BLEU_R stays low. DAS improves the
+  training task but leaves test scores near the untuned chat model (Score_E of
+  2, same as general LLM). ALoRA's best average on reasoning/calculation is
+  20.73, beating baselines by 0.87; on safe dialogues Score_E reaches 47.94;
+  on MRC it gains 1.81 BLEU and 2.68 ROUGE.
+
+
+  Ablations remove residual, KL, and attention, and add a rank-16 LoRA to
+  match parameter count; removing attention costs nearly 10, extra parameters
+  gain only about 0.7. Margins over strong baselines are small, 1 domain and 1
+  language, GPT-4 is both data generator and judge for 2 tasks, and ALoRA
+  degrades on long verdict summarization.
+
+
+  If you evaluate domain fine-tuning only by retained general benchmark
+  scores, this suggests that measure misses the failure that matters.
+brief_generated_at: 2026-10-19
+brief_model: claude-opus-5
+brief_source: full-text
