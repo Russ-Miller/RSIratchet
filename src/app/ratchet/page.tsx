@@ -41,6 +41,7 @@ export default function RatchetPage() {
         </p>
       </div>
 
+      <WhyFailures />
       <Techniques />
 
       <ListSearch noun="sources" />
@@ -116,6 +117,52 @@ function Section({ title, rows }: { title: string; rows: { s: ReturnType<typeof 
           </li>
         ))}
       </ul>
+    </section>
+  );
+}
+
+// The case for the site's failure-first design, from claims filed in the
+// catalog rather than asserted here. Every figure links to the claim that
+// carries it, and each claim to the paper it came from.
+function WhyFailures() {
+  const link = "underline decoration-neutral-400 underline-offset-2 hover:decoration-neutral-700 dark:hover:decoration-neutral-300";
+  return (
+    <section className="max-w-3xl space-y-3 text-sm text-neutral-700 dark:text-neutral-300">
+      <h2 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">Why it files what failed</h2>
+      <p>
+        The published record is tilted toward what worked. In psychology, 96% of standard papers
+        reported a positive first result against 44% of Registered Reports, which journals accept
+        before the results are known; across all disciplines the share of papers reporting support
+        for their hypothesis rose from 70% in 1990 to 86% by 2007 (
+        <Link href="/claims/the-published-literature-overreports-positive-results" className={link}>the claim and its two sources</Link>).
+        Machine learning has its own version: beating a benchmark is the publishable result, so
+        methods that did not work go unreported and the same dead ends get paid for again (
+        <Link href="/claims/machine-learning-research-leaves-negative-results-unpublished" className={link}>Karl et al., 2024</Link>
+        ). In their words, registering what does not work is no less important than registering
+        what works.
+      </p>
+      <p>
+        Language models make this costlier. They are trained on the tilted record, so a model asked
+        what works is a reader of a biased sample, and models are now asked exactly that (
+        <Link href="/claims/language-models-inherit-the-positive-bias-of-the-literature" className={link}>Lee, 2026</Link>
+        ). An agent trying to improve itself needs the boundary conditions most: when a technique
+        stops helping, and what the evidence against it says.
+      </p>
+      <p>
+        So the catalog is built around the missing half. Every efficacy claim states the condition
+        under which it fails; a claim with evidence on both sides is filed as contested, not
+        averaged; adages are tested for where they break; and a technique with nothing measured is
+        listed as a research brief, not omitted. The catalog is honest about its own limit: its
+        sources are mostly published papers, so it inherits the same tilt. The counterweights are
+        failures filed from use — a person&rsquo;s own observations, and later, failures reported
+        back by agents.
+      </p>
+      <p className="text-neutral-500">
+        What exists today is the bank: the shared record of what works, what breaks, and under
+        which conditions. The ratchet is the loop that would read it when something fails and file
+        back what it learns. That loop is the open experiment, and the sources below are about
+        systems that try to build one.
+      </p>
     </section>
   );
 }
