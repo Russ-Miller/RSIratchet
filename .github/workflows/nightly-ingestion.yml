@@ -88,6 +88,13 @@ jobs:
           if git fetch origin "$STATE_BRANCH" 2>/dev/null; then
             git checkout "origin/$STATE_BRANCH" -- pipeline/ || true
             echo "Restored pipeline/ from $STATE_BRANCH"
+            # til.yaml is curated directly on main (scripts/add-link.mjs --til,
+            # or by hand) and is not pipeline bookkeeping, so the blanket
+            # restore above must not win for this one file -- it already did
+            # once, silently reverting the front-page spotlight to a week-old
+            # pick until this was noticed. main's committed copy always wins;
+            # whatever this run features later overwrites it again as normal.
+            git checkout HEAD -- pipeline/til.yaml 2>/dev/null || true
           else
             echo "No $STATE_BRANCH yet — first run, starting from the committed state."
           fi
