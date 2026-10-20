@@ -6,15 +6,56 @@ year: 2026
 date: 2026-06-15
 arxiv_id: "2606.16262"
 url: https://arxiv.org/abs/2606.16262
-tags: [ingested]
-summary: >-
-  Large language models (LLMs) are increasingly deployed as UX judges that
-  inspect interfaces, diagnose usability problems, and propose repairs. Yet
-  no controlled benchmark measures whether the resulting critiques are
-  reliable and actionable across heterogeneous product surfaces. We
-  introduce UXBench, a benchmark for evaluating LLMs as interaction-grounded
-  UX judges. UXBench comprises local-first runnable web fixtures spanning
-  ten product-surface families, paired with coverage-gated browser
-  exploration that forces models to collect interaction evidence before
-  reporting. Each judge model produces
+tags:
+  - ingested
+summary: Large language models (LLMs) are increasingly deployed as UX judges
+  that inspect interfaces, diagnose usability problems, and propose repairs.
+  Yet no controlled benchmark measures whether the resulting critiques are
+  reliable and actionable across heterogeneous product surfaces. We introduce
+  UXBench, a benchmark for evaluating LLMs as interaction-grounded UX judges.
+  UXBench comprises local-first runnable web fixtures spanning ten
+  product-surface families, paired with coverage-gated browser exploration
+  that forces models to collect interaction evidence before reporting. Each
+  judge model produces
 ingested_at: 2026-09-19
+brief: >-
+  Frontier models all produce UX critiques that a downstream repair agent can
+  act on, but the differences between them are small in aggregate and reorder
+  completely by product surface. UXBench treats UX judging as
+  report-conditioned repair: the judge explores a running interface, writes an
+  evidence-grounded report, and a fixed Claude Code repair agent edits the
+  fixture under brand and interaction invariants, after which a fixed scorer
+  (GPT-5.4-Mini) rates 7 rubric dimensions on a 1–5 scale.
+
+
+  The suite is 41 fixtures, 11 real anchors and 30 synthetic siblings, across
+  10 product-surface families, served locally as static HTML/CSS/JS, with a
+  coverage gate that rejects premature termination until salient controls have
+  been exercised.
+
+
+  Across 8 models, every judge improved on the 3.27 baseline. GPT-5.4 led with
+  +0.22, Gemini-3.1-Pro trailed at +0.14, an 0.08-point spread. Per-dimension
+  leaders differ: Kimi-K2.5 on feedback and trust, Claude-Sonnet-4.6 on
+  goal-state clarity, Qwen-3.6-Plus on flow and scanability. GPT-5.4,
+  Kimi-K2.5 and GLM-5.1 each sit near 0.57 pairwise win rate, with many
+  head-to-head cells near 0.5.
+
+
+  The design isolates the judge well: same fixtures, same repair agent, same
+  blinded scorer. Evidence weakens elsewhere. 1 run per model–fixture pair, 1
+  scoring model, and blind human review by only 6 reviewers, which placed
+  GPT-5.4 and Sonnet-4.6 in a top cluster rather than reproducing the
+  automated order.
+
+
+  Static local fixtures exclude personalization, backend failures and live
+  drift, and actionability is defined only relative to this one repair
+  pipeline.
+
+
+  Treat aggregate UX-judge rankings as unreliable and pick by surface family
+  instead.
+brief_generated_at: 2026-10-20
+brief_model: claude-opus-5
+brief_source: full-text

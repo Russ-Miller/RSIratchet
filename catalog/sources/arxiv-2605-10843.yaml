@@ -1,20 +1,55 @@
 id: arxiv-2605-10843
 ref: SRC-0357
 kind: paper
-title: "Training-Free Cultural Alignment of Large Language Models via Persona Disagreement"
+title: Training-Free Cultural Alignment of Large Language Models via Persona
+  Disagreement
 year: 2026
 date: 2026-05-11
 arxiv_id: "2605.10843"
 url: https://arxiv.org/abs/2605.10843
-tags: [ingested]
-summary: >-
-  Large language models increasingly mediate decisions that turn on moral
-  judgement, yet a growing body of evidence shows that their implicit
-  preferences are not culturally neutral. Existing cultural alignment
-  methods either require per-country preference data and fine-tuning budgets
-  or assume white-box access to model internals that commercial APIs do not
-  expose. In this work, we focus on this realistic black-box,
-  public-data-only regime and observe that within-country sociodemographic
-  disagreement, not consensus, is the primary steering signal. We introduce
-  DISCA (Disagreement-Informed Steerin
+tags:
+  - ingested
+summary: Large language models increasingly mediate decisions that turn on
+  moral judgement, yet a growing body of evidence shows that their implicit
+  preferences are not culturally neutral. Existing cultural alignment methods
+  either require per-country preference data and fine-tuning budgets or assume
+  white-box access to model internals that commercial APIs do not expose. In
+  this work, we focus on this realistic black-box, public-data-only regime and
+  observe that within-country sociodemographic disagreement, not consensus, is
+  the primary steering signal. We introduce DISCA (Disagreement-Informed
+  Steerin
 ingested_at: 2026-09-19
+brief: >-
+  Disagreement among persona prompts, not their consensus, carries the usable
+  signal for steering a model toward a country's moral preferences at
+  inference time. DISCA instantiates each of 20 countries as a panel of 4
+  World-Values-Survey-grounded persona agents, reads the spread of their
+  decision-token logit gaps on MultiTP trolley scenarios, and converts it into
+  a bounded, loss-averse logit correction that shrinks toward zero when the 2
+  independent passes disagree.
+
+
+  On binary dilemmas across 7 open-weight backbones (2B-70B, 5 families),
+  macro misalignment drops 10-24% on the 6 backbones at 3.8B or larger and
+  3.4% on the 2B model; open-ended scenarios improve 2-7%. Phi-4 (14B) with
+  DISCA reaches 0.346 MIS, below vanilla Llama-3.3-70B.
+
+
+  The effect is measured against 6 training-free baselines on a matched Phi-4
+  20-country grid, including activation steering (0.430), MC-Dropout (0.403),
+  and vanilla decoding (0.454), plus 2 oracle baselines fit on human AMCEs
+  that still do worse (0.506, 0.513). An ablation on 3 backbones isolates
+  persona diversity as the dominant component (+.047 to +.061 MIS when
+  removed); 3 seeds are reported.
+
+
+  It does not transfer to factual cultural QA on BLEnD, needs decision-token
+  logprobs, costs roughly 4x vanilla latency, and optimises toward a survey
+  statistic rather than any judgment of legitimacy.
+
+
+  If you serve many countries from 1 black-box model, this is a cheap lever
+  for value-style forced choices only.
+brief_generated_at: 2026-10-20
+brief_model: claude-opus-5
+brief_source: full-text

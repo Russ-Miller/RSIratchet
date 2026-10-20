@@ -31,3 +31,38 @@ notes: "Filed as a source on planning from the classifier's judgement that the
   success rates, e.g. 14.9% over ReAct on spatial semantic reasoning tasks. No
   claim has been drafted from it yet."
 ingested_at: 2026-09-23
+brief: >-
+  Letting a small language model generate skill-function parameters itself,
+  instead of filling fixed templates, closes most of the gap to GPT-4 planners
+  on robot instructions with relational semantics like "the largest block".
+
+
+  LightPlanner fine-tunes Qwen2.5-1.5B-Instruct on LightPlan-40k, a dataset of
+  40,000 single-step action decisions derived from 60 hand-annotated tasks
+  with action chains of 2 to 13 steps over 13 skill functions. It adds 3-level
+  reasoning before each step (execution feedback, semantic parsing, parameter
+  validation) and a memory module that replaces growing context. Evaluation
+  uses a UR3 arm on 30 real tasks, each run 3 times, for 90 trials.
+
+
+  On dynamic semantic reasoning tasks, success rate reaches 79.5% medium-term
+  (vs 71.4% for GPT-4-based CoPAL) and 66.1% long-term (vs 54.1% for CAPE). On
+  simple mapping tasks it beats ReAct-3B 83.6% vs 80.3% medium-term and 70.5%
+  vs 67.3% long-term. On 10 unseen 8-step task categories, 62.6% SR vs 53.8%
+  CoPAL and 42.0% ReAct-3B. Prompting GPT-4 with the same scheme reaches 75.8%
+  long-term SR.
+
+
+  Baselines ReAct and MLDT were fine-tuned on the same dataset, which isolates
+  the method rather than the data. Ablations attribute 7.5% SR to dynamic
+  skill control, 5.8% to hierarchical reasoning, 5.0% to memory. GPT-4
+  baselines were not trained on the data, so that comparison is not matched.
+  90 trials is a small sample, 1 robot, 1 model family, static scenes only.
+
+
+  If you are planning on edge hardware, parameterized skill calls are worth
+  trying before scaling parameters; it runs at 10 words/s and 3.9 GB on a
+  Jetson Xavier Orin.
+brief_generated_at: 2026-10-20
+brief_model: claude-opus-5
+brief_source: full-text

@@ -32,3 +32,43 @@ notes: "Filed as a source on fine-tuning-retention from the classifier's
   general skills alongside domain knowledge. No claim has been drafted from it
   yet."
 ingested_at: 2026-09-23
+brief: >-
+  Fixing catastrophic forgetting does not make a fine-tuned model actually use
+  its general skills on domain tasks. After legal fine-tuning, models keep the
+  surface form of general reasoning while failing to combine it with the
+  injected domain knowledge, a failure the authors name General Capabilities
+  Integration (GCI).
+
+
+  The setup is 3 pairs of Chinese legal train/test tasks: train on law Article
+  QA, test on reasoning and numerical calculation; test on adversarial Ethic
+  and Contamination dialogues; train on Legal IE, test on event summary and
+  MRC. Datasets are built from legal consulting data, CAIL competitions, court
+  verdicts, and GPT-4 expansion of hand-written seeds. Baselines include LoRA
+  SFT, wise-ft, L1/L2 and KL regularization, DAS, MixTraining, and MixDA*.
+
+
+  The separation is visible in the numbers: 6 baselines reach 100 on "Chain"
+  (complete reasoning chain generated) while BLEU_R stays low, e.g. 8.33 for
+  the general LLM and 16.42 for LoRA SFT. DAS improves the training task but
+  leaves test performance near the untuned model (Score_E of 2 on Ethic, same
+  as general LLM). The proposed ALoRA, which adds multi-head attention over
+  prior-layer keys/values on top of LoRA, reaches average 20.73 on
+  reasoning/calculation versus 19.86 for the best baseline, a 0.87 gap.
+
+
+  Evidence is measured, with an ablation separating attention, residual
+  connection, KL loss, and a rank-16 parameter-matched LoRA control; removing
+  attention costs nearly 10 on mixture training. Gains over strong baselines
+  are small and sometimes negative: on Legal IE, MixDA* scores higher F1, and
+  ALoRA trained on domain data only struggles with long-verdict Event Summary.
+  Only the legal domain and 1 base setting are covered; several scores come
+  from GPT-4 as judge.
+
+
+  Use this if you evaluate domain fine-tuning: forgetting metrics on general
+  benchmarks can look clean while composed domain-plus-general tasks stay
+  broken.
+brief_generated_at: 2026-10-20
+brief_model: claude-opus-5
+brief_source: full-text

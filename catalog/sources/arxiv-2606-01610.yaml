@@ -1,20 +1,58 @@
 id: arxiv-2606-01610
 ref: SRC-0359
 kind: paper
-title: "Revisiting Ripple Effects in Knowledge Editing through Pressure-Aware Joint Neighborhood Optimization"
+title: Revisiting Ripple Effects in Knowledge Editing through Pressure-Aware
+  Joint Neighborhood Optimization
 year: 2026
 date: 2026-06-01
 arxiv_id: "2606.01610"
 url: https://arxiv.org/abs/2606.01610
-tags: [ingested]
-summary: >-
-  Single-edit updates in large language models can trigger ripple effects
-  across local knowledge neighborhoods: desirable propagation to related
-  facts and unintended perturbation of preserved ones. Existing methods
-  address these two effects separately, without explicitly modeling their
-  coupling. We challenge this separation through an analysis of ripple
+tags:
+  - ingested
+summary: "Single-edit updates in large language models can trigger ripple
+  effects across local knowledge neighborhoods: desirable propagation to
+  related facts and unintended perturbation of preserved ones. Existing
+  methods address these two effects separately, without explicitly modeling
+  their coupling. We challenge this separation through an analysis of ripple
   responses across typical baselines, identifying two coupled design
-  pressures: editable-side coordination and preserved-side leakage. We
-  propose Joint Neighborhood Optimization (JNO), a new knowledge-editing
-  framework to formalize and jointly addr
+  pressures: editable-side coordination and preserved-side leakage. We propose
+  Joint Neighborhood Optimization (JNO), a new knowledge-editing framework to
+  formalize and jointly addr"
 ingested_at: 2026-09-19
+brief: >-
+  Planning edit targets for a whole knowledge neighborhood at once, instead of
+  handling propagation and preservation separately, improves both sides of the
+  ripple effect in locate-then-edit methods. Across 5 baselines on GPT-J (6B),
+  average Positive Ripple Rate is 62.53% while average Negative Ripple Rate
+  reaches 64.74%, so neither desirable propagation nor preservation is
+  reliable today.
+
+
+  JNO builds a neighborhood of editable and preserved facts, jointly optimizes
+  target representations with 2 regularizers (exposure-weighted residual,
+  pairwise coordination), then abstains via a semantic loss gate before
+  writing weights, using an AlphaEdit-style null-space backend. Evaluation
+  covers RippleEdits-POPULAR (839 edits), CounterFact and ZsRE (2,000 edits
+  each), on Qwen2.5-1.5B-Instruct, GPT-J (6B), LLaMA3 (8B), 3 seeds.
+
+
+  On RippleEdits, JNO gains at least 7.0% relative over the strongest baseline
+  per metric, up to 30.9% on FF (GPT-J), at the cost of a roughly 3.0%
+  relative Reliability drop. Gains on CounterFact/ZsRE are smaller: 2.2-2.6%
+  Specificity, 8.6% ZsRE Specificity on GPT-J.
+
+
+  Evidence is reasonably isolated: ablations attribute preservation to the
+  residual term (RS/FF drop 16.3/19.2 points) and propagation to the pairwise
+  term (LG/RE/SA drop 10.9/10.8/10.6), and a coverage-matched comparison at
+  96.3% shows gains are not from selective rejection. The diagnostic analysis
+  behind the 2 pressures is correlational, not interventional; neighborhoods
+  are rule-mined with a 2.9% conflict rate; no multilingual, long-context, or
+  non-locate-then-edit settings.
+
+
+  If you edit facts in production, budget for a reliability-versus-ripple
+  tradeoff rather than expecting both.
+brief_generated_at: 2026-10-20
+brief_model: claude-opus-5
+brief_source: full-text
