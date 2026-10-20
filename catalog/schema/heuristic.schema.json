@@ -1,9 +1,9 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://modelselfhelp.dev/schema/adage.schema.json",
+  "$id": "https://modelselfhelp.dev/schema/heuristic.schema.json",
   "type": "object",
   "additionalProperties": false,
-  "description": "A law, maxim or rule of thumb from human systems, filed so the catalog can test whether it transfers to models. The evidence list is what makes it an entry rather than a quotation: each item is a claim in this catalog and a verdict on what that claim says about the transfer.",
+  "description": "A decision rule for a model or the harness around it, filed with evidence for whether it holds. Borrowed heuristics are a law, maxim or rule of thumb imported from human systems and tested for transfer; distilled heuristics are synthesized bottom-up from this catalog's own claims, with no outside source. The evidence list is what makes it an entry rather than a quotation: each item is a claim in this catalog and a verdict on what that claim says about it.",
   "required": [
     "id",
     "ref",
@@ -11,6 +11,7 @@
     "statement",
     "origin",
     "transfer",
+    "provenance",
     "status",
     "submitted_by"
   ],
@@ -39,22 +40,30 @@
       "type": "string",
       "minLength": 10,
       "maxLength": 300,
-      "description": "The adage as usually stated."
+      "description": "The heuristic as usually stated, if borrowed; as distilled, if not."
     },
     "origin": {
       "type": "string",
       "minLength": 10,
-      "description": "Who said it, where, roughly when, and the human domain it came from."
+      "description": "For a borrowed heuristic: who said it, where, roughly when, and the human domain it came from. For a distilled one: which claims it was generalized from and why that pattern was worth naming."
     },
     "transfer": {
       "type": "string",
       "minLength": 60,
-      "description": "Why it should or should not apply to models: the mechanism, not the analogy. Goodhart transfers because of optimisation pressure on a proxy, not because models are people."
+      "description": "Why it should or should not apply to models: the mechanism, not the analogy. Goodhart transfers because of optimisation pressure on a proxy, not because models are people. For a distilled heuristic this is the mechanism the generalization rests on, not a transfer from elsewhere."
+    },
+    "provenance": {
+      "type": "string",
+      "enum": [
+        "borrowed",
+        "distilled"
+      ],
+      "description": "borrowed: imported from outside, with its own origin and author -- Goodhart's law, Hyrum's law. distilled: synthesized bottom-up from this catalog's own claims, no eponym, no outside source."
     },
     "sources": {
       "type": "array",
       "$ref": "common.schema.json#/$defs/slugList",
-      "description": "Where the adage itself is stated or named. Evidence about whether it holds for models goes in `evidence`, as claims."
+      "description": "Where the heuristic itself is stated or named, for a borrowed one. Evidence about whether it holds for models goes in `evidence`, as claims."
     },
     "evidence": {
       "type": "array",
@@ -77,7 +86,7 @@
               "breaks",
               "narrows"
             ],
-            "description": "holds: the claim shows the adage applying to models. breaks: it shows the adage failing. narrows: it holds only under a condition the note states."
+            "description": "holds: the claim shows the heuristic applying to models. breaks: it shows the heuristic failing. narrows: it holds only under a condition the note states."
           },
           "note": {
             "type": "string",

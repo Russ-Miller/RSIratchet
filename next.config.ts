@@ -4,7 +4,7 @@ import YAML from "yaml";
 
 // /id/<ref> -> the record's page. Refs are stable; slugs are not. The map is
 // read from the allocation ledger at build time, so it needs no runtime.
-const SECTION: Record<string, string> = { CAP: "capabilities", CLM: "claims", TEC: "techniques", SRC: "sources", ADG: "adages", MOD: "models" };
+const SECTION: Record<string, string> = { CAP: "capabilities", CLM: "claims", TEC: "techniques", SRC: "sources", ADG: "heuristics", MOD: "models" };
 function refRedirects() {
   const ledger = YAML.parse(fs.readFileSync("catalog/ids.yaml", "utf8")) as { refs: Record<string, string> };
   return Object.entries(ledger.refs)
@@ -13,7 +13,14 @@ function refRedirects() {
 }
 
 const nextConfig: NextConfig = {
-  async redirects() { return refRedirects(); },
+  async redirects() {
+    return [
+      ...refRedirects(),
+      // Adages renamed to Heuristics; old links keep working.
+      { source: "/adages", destination: "/heuristics", permanent: true },
+      { source: "/adages/:id", destination: "/heuristics/:id", permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;

@@ -1784,3 +1784,32 @@ those that improve the work while starving the loop of signal — silent
 recovery, retries that hide an error class, capability outrunning the
 evaluator. None of the current 84 was flagged that way; the value is not
 in the schema until there is a case.
+
+## 2026-10-20 — Adages renamed to Heuristics; borrowed vs. distilled
+
+Prompted by ReasoningBank (arXiv 2509.25140): it "banks" a distilled
+strategy from an agent's own judged experience, not a borrowed saying,
+and Russ's reaction was that "adage" invites exactly the wrong thing --
+reaching for something pithy and named over something precise and
+actionable. Renamed throughout: directory, schema, route (`/adages`
+redirects to `/heuristics`), types and functions in `src/lib/catalog.ts`,
+the MCP server, `index.json` and `llms.txt`. The `ADG` ref prefix is
+unchanged, same as `CLM`/`TEC`/`SRC` are already opaque prefixes
+decoupled from their display word.
+
+Added `provenance: borrowed | distilled`, required on every entry.
+`borrowed` is a law or maxim imported from outside with its own origin
+and author (Goodhart's law, Hyrum's law) -- all 25 existing entries are
+this. `distilled` is synthesized bottom-up from this catalog's own
+claims, no eponym, no outside source -- the home for a future
+claims-mining pass, same shape as `file-matched-sources.mjs` for papers.
+None exist yet.
+
+A fresh survey of evidence before this change (prompted by a plan to also
+retire the "cute" ones -- First impressions last, Two heads are better
+than one, Practice makes perfect) found the opposite of what a
+month-old snapshot had suggested: every one of the 25 carries real,
+reviewed evidence, several with `breaks` verdicts, the catalog's most
+valued kind -- Practice makes perfect had just picked up a `narrows`
+verdict from ReasoningBank itself. Nothing was retired. The naming
+complaint was real; the content underneath it was not thin.

@@ -19,7 +19,7 @@ const SECTIONS = [
   { href: "/capabilities", label: "Capabilities" },
   { href: "/claims", label: "Claims" },
   { href: "/techniques", label: "Techniques" },
-  { href: "/adages", label: "Adages" },
+  { href: "/heuristics", label: "Heuristics" },
   { href: "/ratchet", label: "The ratchet" },
   { href: "/about", label: "About" },
   // Everything from here on is gated by src/proxy.ts and hidden unless signed in.

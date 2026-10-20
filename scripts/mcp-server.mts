@@ -13,7 +13,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
 // Type-only, so it is erased and does not load the catalog before chdir.
-import type { Adage, Capability, Claim, Source, Technique } from "../src/lib/catalog";
+import type { Heuristic, Capability, Claim, Source, Technique } from "../src/lib/catalog";
 
 // src/lib reads the catalog relative to cwd; make that the repo root wherever
 // the client launched us from, before those modules load.
@@ -25,8 +25,8 @@ const emb = await import("../src/lib/embeddings");
 const { buildSearchIndex } = await import("../src/lib/search-index");
 
 const SITE = "https://rsiratchet.com";
-const KIND = { c: "capability", m: "claim", t: "technique", s: "source", a: "adage" } as const;
-const PATH = { c: "capabilities", m: "claims", t: "techniques", s: "sources", a: "adages" } as const;
+const KIND = { c: "capability", m: "claim", t: "technique", s: "source", a: "heuristic" } as const;
+const PATH = { c: "capabilities", m: "claims", t: "techniques", s: "sources", a: "heuristics" } as const;
 type K = keyof typeof KIND;
 const url = (k: K, id: string) => `${SITE}/${PATH[k]}/${id}`;
 
@@ -96,7 +96,7 @@ function claimView(c: Claim) {
     capability: c.capability, technique: c.technique, contested: c.contested,
     disagreement_axis: c.disagreement_axis, reviewed_by: cat.reviewLabel(c),
     sources: c.sources.map((l: Claim["sources"][number]) => { const s = cat.getSource(l.source); return { id: l.source, title: s?.title, url: s?.url, stance: l.stance, note: l.note }; }),
-    adages: cat.adagesForClaim(c.id).map((x) => ({ id: x.adage.id, label: x.adage.label, verdict: x.verdict })),
+    heuristics: cat.heuristicsForClaim(c.id).map((x) => ({ id: x.heuristic.id, label: x.heuristic.label, verdict: x.verdict })),
     notes: c.notes, last_checked_at: c.last_checked_at, url: url("m", c.id),
   };
 }
@@ -120,10 +120,10 @@ function capabilityView(c: Capability) {
     url: url("c", c.id),
   };
 }
-function adageView(a: Adage) {
+function heuristicView(a: Heuristic) {
   return {
     id: a.id, label: a.label, aliases: a.aliases, statement: a.statement, origin: a.origin, transfer: a.transfer,
-    standing: cat.ADAGE_STANDING_LABEL[cat.adageStanding(a)],
+    standing: cat.HEURISTIC_STANDING_LABEL[cat.heuristicStanding(a)],
     evidence: (a.evidence ?? []).map((e) => { const c = cat.getClaim(e.claim); return { claim: e.claim, verdict: e.verdict, note: e.note, statement: c?.statement, reviewed_by: c ? cat.reviewLabel(c) : undefined, url: url("m", e.claim) }; }),
     evidence_search: a.evidence_search, notes: a.notes, url: url("a", a.id),
   };
@@ -144,8 +144,8 @@ const server = new McpServer({ name: "rsiratchet", version: "0.1.0" });
 
 server.registerTool("search", {
   title: "Search the RSI Ratchet catalog",
-  description: "Find capabilities, claims, techniques, sources and adages by words or by meaning. Keyword hits come first; entries that matched only on meaning are marked via=meaning with a similarity. Use this first when asked whether the catalog covers something.",
-  inputSchema: { query: z.string(), kinds: z.array(z.enum(["capability", "claim", "technique", "source", "adage"])).optional(), limit: z.number().int().min(1).max(50).default(15) },
+  description: "Find capabilities, claims, techniques, sources and heuristics by words or by meaning. Keyword hits come first; entries that matched only on meaning are marked via=meaning with a similarity. Use this first when asked whether the catalog covers something.",
+  inputSchema: { query: z.string(), kinds: z.array(z.enum(["capability", "claim", "technique", "source", "heuristic"])).optional(), limit: z.number().int().min(1).max(50).default(15) },
 }, async ({ query, kinds, limit }) => {
   const ks = kinds?.map((k) => (Object.entries(KIND).find(([, v]) => v === k)![0]) as K);
   return text(await search(query, ks, limit));
@@ -204,7 +204,7 @@ async function advise(input: { situation: string; capability?: string; model_tie
       counter_evidence: against.map((e) => ({ effect: e.effect, statement: e.claim.statement, url: url("m", e.claim.id) })),
       unreviewed_evidence: k.unreviewed.map((e) => ({ effect: e.effect, statement: e.claim.statement, fails_when: e.fails_when, reviewed_by: "AI", url: url("m", e.claim.id) })),
       evidence_search: t.evidence_search,
-      adages: cat.getAdages().flatMap((a) => (a.evidence ?? []).filter((e) => [...k.effects, ...k.unreviewed].some((x) => x.claim.id === e.claim)).map((e) => ({ id: a.id, label: a.label, verdict: e.verdict, url: url("a", a.id) }))),
+      heuristics: cat.getHeuristics().flatMap((a) => (a.evidence ?? []).filter((e) => [...k.effects, ...k.unreviewed].some((x) => x.claim.id === e.claim)).map((e) => ({ id: a.id, label: a.label, verdict: e.verdict, url: url("a", a.id) }))),
       _rank: [usable ? 0 : 1, STANDING_RANK[st.standing], -st.supporting] as const,
     };
   });
@@ -242,14 +242,14 @@ server.registerTool("advise", {
 
 server.registerTool("get", {
   title: "Get one catalog entry in full",
-  description: "Full record with derived fields: a technique with its standing and evidence, a claim with its sources and review status, a capability with its claims and techniques, an adage with its verdicts, a source with the claims drawn from it.",
-  inputSchema: { kind: z.enum(["capability", "claim", "technique", "source", "adage"]), id: z.string() },
+  description: "Full record with derived fields: a technique with its standing and evidence, a claim with its sources and review status, a capability with its claims and techniques, a heuristic with its verdicts, a source with the claims drawn from it.",
+  inputSchema: { kind: z.enum(["capability", "claim", "technique", "source", "heuristic"]), id: z.string() },
 }, async ({ kind, id }) => {
   const rec =
     kind === "claim" ? (cat.getClaim(id) && claimView(cat.getClaim(id)!)) :
     kind === "technique" ? (cat.getTechnique(id) && techniqueView(cat.getTechnique(id)!)) :
     kind === "capability" ? (cat.getCapability(id) && capabilityView(cat.getCapability(id)!)) :
-    kind === "adage" ? (cat.getAdage(id) && adageView(cat.getAdage(id)!)) :
+    kind === "heuristic" ? (cat.getHeuristic(id) && heuristicView(cat.getHeuristic(id)!)) :
     (cat.getSource(id) && sourceView(cat.getSource(id)!));
   return text(rec ?? { error: `no ${kind} with id ${id}` });
 });
@@ -262,8 +262,8 @@ server.registerTool("technique_standing", {
 
 server.registerTool("related_claims", {
   title: "Claims nearest in meaning to an entry",
-  description: "Nearest claims by embedding similarity to a claim, capability, technique, source or adage.",
-  inputSchema: { kind: z.enum(["capability", "claim", "technique", "source", "adage"]), id: z.string(), k: z.number().int().min(1).max(20).default(5) },
+  description: "Nearest claims by embedding similarity to a claim, capability, technique, source or heuristic.",
+  inputSchema: { kind: z.enum(["capability", "claim", "technique", "source", "heuristic"]), id: z.string(), k: z.number().int().min(1).max(20).default(5) },
 }, async ({ kind, id, k }) => {
   const key = (Object.entries(KIND).find(([, v]) => v === kind)![0]) as K;
   return text(emb.relatedClaims(key, id, { k, floor: 0.3 }).map(({ claim, sim }) => ({ id: claim.id, statement: claim.statement, similarity: Number(sim.toFixed(2)), reviewed_by: cat.reviewLabel(claim), url: url("m", claim.id) })));
@@ -271,24 +271,24 @@ server.registerTool("related_claims", {
 
 server.registerTool("list", {
   title: "List entries of one kind",
-  description: "Ids and labels for every entry of a kind; for techniques includes standing, for adages includes standing, for claims includes review status.",
-  inputSchema: { kind: z.enum(["capability", "claim", "technique", "source", "adage"]) },
+  description: "Ids and labels for every entry of a kind; for techniques includes standing, for heuristics includes standing, for claims includes review status.",
+  inputSchema: { kind: z.enum(["capability", "claim", "technique", "source", "heuristic"]) },
 }, async ({ kind }) => text(
   kind === "capability" ? cat.getCapabilities().map((c) => ({ id: c.id, label: c.label, status: c.status })) :
   kind === "technique" ? cat.getTechniques().map((t) => ({ id: t.id, label: t.label, standing: cat.STANDING_LABEL[cat.techniqueStanding(t.id).standing] })) :
-  kind === "adage" ? cat.getAdages().map((a) => ({ id: a.id, label: a.label, standing: cat.ADAGE_STANDING_LABEL[cat.adageStanding(a)] })) :
+  kind === "heuristic" ? cat.getHeuristics().map((a) => ({ id: a.id, label: a.label, standing: cat.HEURISTIC_STANDING_LABEL[cat.heuristicStanding(a)] })) :
   kind === "claim" ? cat.getClaims().map((c) => ({ id: c.id, statement: c.statement, reviewed_by: cat.reviewLabel(c) })) :
   cat.getSources().map((s) => ({ id: s.id, title: s.title, kind: s.kind, year: s.year }))
 ));
 
 server.registerTool("open_questions", {
   title: "What nobody has measured yet",
-  description: "Techniques with no measured evidence (searched or not), capabilities with no measured fix, and adages filed untested. These are the research briefs.",
+  description: "Techniques with no measured evidence (searched or not), capabilities with no measured fix, and heuristics filed untested. These are the research briefs.",
   inputSchema: {},
 }, async () => text({
   techniques: cat.openQuestions().map((q) => ({ id: q.technique.id, label: q.technique.label, kind: q.kind, evidence_search: q.technique.evidence_search, url: url("t", q.technique.id) })),
   capabilities: cat.unsolvedCapabilities().map((u) => ({ id: u.capability.id, label: u.capability.label, kind: u.kind, url: url("c", u.capability.id) })),
-  adages: cat.getAdages().filter((a) => cat.adageStanding(a) === "untested").map((a) => ({ id: a.id, label: a.label, evidence_search: a.evidence_search, url: url("a", a.id) })),
+  heuristics: cat.getHeuristics().filter((a) => cat.heuristicStanding(a) === "untested").map((a) => ({ id: a.id, label: a.label, evidence_search: a.evidence_search, url: url("a", a.id) })),
 }));
 
 await server.connect(new StdioServerTransport());

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { RefTag } from "@/components/ref-tag";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { notFound } from "next/navigation";
-import { EFFECT_LABEL, NEED_LABEL, adagesForClaim, cardsNamedIn, claimActivity, getCapability, getClaim, getClaims, getModel, getSource, getTagLabel, isPending, isQuietSource, displayName, reviewLabel, reviewers } from "@/lib/catalog";
+import { EFFECT_LABEL, NEED_LABEL, heuristicsForClaim, cardsNamedIn, claimActivity, getCapability, getClaim, getClaims, getModel, getSource, getTagLabel, isPending, isQuietSource, displayName, reviewLabel, reviewers } from "@/lib/catalog";
 import type { SourceLink } from "@/lib/catalog";
 import { ContestedBadge, EvidenceSignal, KindBadge, ReviewBadge, StanceBadge, StrengthBadge } from "@/components/badges";
 import { EvidenceForm } from "@/components/evidence-form";
@@ -58,13 +58,13 @@ export default async function ClaimPage({ params }: PageProps<"/claims/[id]">) {
         </div>
         <h1 className="text-2xl font-semibold tracking-tight">{c.statement}</h1>
         {(() => {
-          const ad = adagesForClaim(c.id);
+          const ad = heuristicsForClaim(c.id);
           if (!ad.length) return null;
           return (
             <p className="text-sm text-neutral-500">
-              Evidence for: {ad.map(({ adage, verdict }, i) => (
-                <span key={adage.id}>{i > 0 && ", "}
-                  <Link href={`/adages/${adage.id}`} className="text-neutral-700 hover:underline dark:text-neutral-300">{adage.label}</Link>
+              Evidence for: {ad.map(({ heuristic, verdict }, i) => (
+                <span key={heuristic.id}>{i > 0 && ", "}
+                  <Link href={`/heuristics/${heuristic.id}`} className="text-neutral-700 hover:underline dark:text-neutral-300">{heuristic.label}</Link>
                   {" "}({verdict})
                 </span>
               ))}

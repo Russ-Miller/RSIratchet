@@ -5,7 +5,7 @@
 // search dependency: the page ships the index and scores in the browser. That
 // keeps the site static, which is what makes it free to host and impossible to
 // break with a bad query.
-import { getAdages, getCapabilities, getClaims, getSources, getTechniques, isPending } from "./catalog";
+import { getHeuristics, getCapabilities, getClaims, getSources, getTechniques, isPending } from "./catalog";
 import { packedFor } from "./embeddings";
 
 export interface SearchRecord {
@@ -47,7 +47,7 @@ export function buildSearchIndex(): SearchRecord[] {
     out.push({ k: "s", id: s.id, title: s.title, ...vec("s", s.id), sub: s.authors?.[0] ? `${s.authors[0]}${s.authors.length > 1 ? " et al." : ""}${s.year ? `, ${s.year}` : ""}` : s.kind,
       text: [s.ref, s.title, s.summary ?? "", ...(s.authors ?? []), s.arxiv_id ?? "", ...(s.tags ?? [])].join(" ").toLowerCase() });
   }
-  for (const a of getAdages()) {
+  for (const a of getHeuristics()) {
     out.push({ k: "a", id: a.id, title: a.label, sub: a.statement, ...vec("a", a.id),
       text: [a.id, a.ref, a.label, a.statement, a.origin, a.transfer, ...(a.aliases ?? [])].join(" ").toLowerCase() });
   }

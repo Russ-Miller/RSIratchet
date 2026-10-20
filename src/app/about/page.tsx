@@ -221,7 +221,7 @@ export default function HowThisWorksPage() {
         </pre>
         <p className="text-sm text-neutral-600 dark:text-neutral-400">
           Then ask, in any session: &ldquo;does rsiratchet have a technique for a quorum of several
-          models?&rdquo; The honest answer today is no, with two adages that explain why, which is the
+          models?&rdquo; The honest answer today is no, with two heuristics that explain why, which is the
           kind of answer this is built to give. A hosted version at a fixed URL is on the roadmap.
         </p>
       </section>
