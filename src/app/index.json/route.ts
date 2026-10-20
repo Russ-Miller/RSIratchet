@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { adageStanding, claimsAboutTechnique, claimsCiting, claimsFor, getAdages, getCapabilities, getClaims, getSources, getTechniques, sourcesFor, techniquesFor } from "@/lib/catalog";
+import { heuristicStanding, claimsAboutTechnique, claimsCiting, claimsFor, getHeuristics, getCapabilities, getClaims, getSources, getTechniques, sourcesFor, techniquesFor } from "@/lib/catalog";
 
 // A machine-readable index of the whole catalog, built once at deploy time.
 // Same content as the pages, minus prose: refs, labels, summaries, counts and
@@ -34,14 +34,14 @@ export function GET() {
     counts: { claims: claimsCiting(s.id).length },
     url: `${SITE}/sources/${s.id}`,
   }));
-  const adages = getAdages().map((a) => ({
-    ref: a.ref, id: a.id, label: a.label, statement: a.statement, standing: adageStanding(a),
-    counts: { evidence: (a.evidence ?? []).length }, url: `${SITE}/adages/${a.id}`,
+  const heuristics = getHeuristics().map((a) => ({
+    ref: a.ref, id: a.id, label: a.label, statement: a.statement, provenance: a.provenance, standing: heuristicStanding(a),
+    counts: { evidence: (a.evidence ?? []).length }, url: `${SITE}/heuristics/${a.id}`,
   }));
   return NextResponse.json({
     site: SITE, generated_at: new Date().toISOString().slice(0, 10), license: { code: "MIT", content: "CC BY 4.0" },
     ref_lookup: `${SITE}/id/<ref>`,
-    counts: { capabilities: capabilities.length, techniques: techniques.length, claims: claims.length, sources: sources.length, adages: adages.length },
-    capabilities, techniques, claims, sources, adages,
+    counts: { capabilities: capabilities.length, techniques: techniques.length, claims: claims.length, sources: sources.length, heuristics: heuristics.length },
+    capabilities, techniques, claims, sources, heuristics,
   });
 }

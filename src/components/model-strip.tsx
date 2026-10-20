@@ -11,7 +11,7 @@ export function ModelStrip({ compact = false }: { compact?: boolean }) {
     ["/claims", "Claims", "are the findings: one scoped statement, with the sources that support or contest it."],
     ["/techniques", "Techniques", "are the fixes; whether a fix works is itself a claim."],
     ["/sources", "Sources", "are the evidence."],
-    ["/adages", "Adages", "are borrowed rules, tested the same way."],
+    ["/heuristics", "Heuristics", "are borrowed or distilled rules, tested the same way."],
   ];
   return (
     <p className={`max-w-3xl rounded border border-neutral-200 bg-neutral-50 px-3 py-2 text-sm text-neutral-700 dark:border-neutral-800 dark:bg-neutral-900/40 dark:text-neutral-300 ${compact ? "text-xs" : ""}`}>

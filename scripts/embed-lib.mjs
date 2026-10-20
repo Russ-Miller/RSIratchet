@@ -20,7 +20,7 @@ export function recordTexts(cat) {
   for (const t of rows(cat.techniques)) out.push({ key: `t:${t.id}`, text: [t.label, t.summary, t.description].filter(Boolean).join(". ") });
   for (const m of rows(cat.claims)) out.push({ key: `m:${m.id}`, text: [m.statement, m.notes].filter(Boolean).join(". ") });
   for (const s of rows(cat.sources)) out.push({ key: `s:${s.id}`, text: [s.title, s.summary].filter(Boolean).join(". ") });
-  for (const a of rows(cat.adages ?? [])) out.push({ key: `a:${a.id}`, text: [a.label, a.statement, a.transfer].filter(Boolean).join(". ") });
+  for (const a of rows(cat.heuristics ?? [])) out.push({ key: `a:${a.id}`, text: [a.label, a.statement, a.transfer].filter(Boolean).join(". ") });
   return out;
 }
 

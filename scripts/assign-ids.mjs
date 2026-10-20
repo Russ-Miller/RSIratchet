@@ -14,7 +14,7 @@ import path from "node:path";
 import YAML from "yaml";
 import { loadCatalog, CATALOG } from "./catalog-lib.mjs";
 
-export const PREFIX = { capabilities: "CAP", claims: "CLM", techniques: "TEC", sources: "SRC", adages: "ADG", models: "MOD" };
+export const PREFIX = { capabilities: "CAP", claims: "CLM", techniques: "TEC", sources: "SRC", heuristics: "ADG", models: "MOD" };
 export const REF_RE = /^(CAP|CLM|TEC|SRC|ADG|MOD)-\d{4}$/;
 const LEDGER = path.join(CATALOG, "ids.yaml");
 

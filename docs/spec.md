@@ -594,12 +594,19 @@ roles/permissions system beyond a single `is_admin` flag if that phase
 happens, and — for v1 specifically — the entire contributor-platform
 surface in §9.
 
-## Adages
+## Heuristics
 
-An adage is a law or maxim from human systems filed so the catalog can test
-whether it transfers to models. Fields: `statement`, `origin`, `transfer` (the
-mechanism by which it should or should not apply), and `evidence` — claims in
-this catalog with a verdict of `holds`, `breaks` or `narrows`. Standing is
+A heuristic is a decision rule filed so the catalog can test whether it
+holds. Most are `borrowed`: a law or maxim from human systems, imported with
+its own origin and author (Goodhart's law, Hyrum's law), tested for whether
+it transfers to models. Some are `distilled`: synthesized bottom-up from this
+catalog's own claims, with no outside source and no eponym — the version of
+"banking a lesson" (ReasoningBank, arXiv 2509.25140) built for a catalog
+rather than a single agent's memory. Fields: `statement`, `origin`,
+`transfer` (the mechanism by which it should or should not apply, or the
+mechanism a distilled rule rests on), `provenance`, and `evidence` — claims
+in this catalog with a verdict of `holds`, `breaks` or `narrows`. Standing is
 computed from reviewed claims only. The catalog values breaks over holds: a
-break is a finding about how models differ from people. See decisions.md,
-2026-09-11.
+break is a finding about how models differ from people. Renamed from
+"Adages" 2026-10-20; the `ADG` ref prefix and route redirects from `/adages`
+are unchanged. See decisions.md, 2026-09-11 and 2026-10-20.

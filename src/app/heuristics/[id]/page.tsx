@@ -2,43 +2,43 @@ import Link from "next/link";
 import { RefTag } from "@/components/ref-tag";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { notFound } from "next/navigation";
-import { ADAGE_STANDING_LABEL, adageStanding, getAdage, getAdages, getCapability, getClaim, getSource, type AdageVerdict } from "@/lib/catalog";
+import { HEURISTIC_STANDING_LABEL, heuristicStanding, getHeuristic, getHeuristics, getCapability, getClaim, getSource, type HeuristicVerdict } from "@/lib/catalog";
 import { ContestedBadge, ReviewBadge } from "@/components/badges";
-import { AdageChallengeLink } from "@/components/challenge";
+import { HeuristicChallengeLink } from "@/components/challenge";
 
 export function generateStaticParams() {
-  return getAdages().map((a) => ({ id: a.id }));
+  return getHeuristics().map((a) => ({ id: a.id }));
 }
 
-export async function generateMetadata({ params }: PageProps<"/adages/[id]">) {
+export async function generateMetadata({ params }: PageProps<"/heuristics/[id]">) {
   const { id } = await params;
-  return { title: getAdage(id)?.label ?? "Adage" };
+  return { title: getHeuristic(id)?.label ?? "Heuristic" };
 }
 
-const VERDICT: Record<AdageVerdict, { heading: string; lede: string }> = {
-  breaks: { heading: "Where it breaks", lede: "Claims showing the adage failing for models." },
-  narrows: { heading: "Where it holds only under a condition", lede: "Claims that keep the adage but bound it." },
-  holds: { heading: "Where it holds", lede: "Claims showing the adage applying to models." },
+const VERDICT: Record<HeuristicVerdict, { heading: string; lede: string }> = {
+  breaks: { heading: "Where it breaks", lede: "Claims showing the heuristic failing for models." },
+  narrows: { heading: "Where it holds only under a condition", lede: "Claims that keep the heuristic but bound it." },
+  holds: { heading: "Where it holds", lede: "Claims showing the heuristic applying to models." },
 };
 
-export default async function AdagePage({ params }: PageProps<"/adages/[id]">) {
+export default async function HeuristicPage({ params }: PageProps<"/heuristics/[id]">) {
   const { id } = await params;
-  const a = getAdage(id);
+  const a = getHeuristic(id);
   if (!a) notFound();
-  const standing = adageStanding(a);
+  const standing = heuristicStanding(a);
   const ev = a.evidence ?? [];
   // Breaks first: they carry the information.
-  const order: AdageVerdict[] = ["breaks", "narrows", "holds"];
+  const order: HeuristicVerdict[] = ["breaks", "narrows", "holds"];
 
   return (
     <article className="space-y-6">
       <Breadcrumbs trail={[
         { href: "/", label: "Home" },
-        { href: "/adages", label: "Adages" },
-        { label: "This adage" },
+        { href: "/heuristics", label: "Heuristics" },
+        { label: "This heuristic" },
       ]} />
       <header className="space-y-2">
-        <div className="text-sm text-neutral-500"><code className="font-mono">{a.id}</code> <RefTag refId={a.ref} title={a.label} />{a.status === "retired" ? " · retired" : ""}</div>
+        <div className="text-sm text-neutral-500"><code className="font-mono">{a.id}</code> <RefTag refId={a.ref} title={a.label} />{a.status === "retired" ? " · retired" : ""}{a.provenance === "distilled" ? " · distilled here" : ""}</div>
         <h1 className="text-3xl font-semibold tracking-tight">{a.label}</h1>
         <p className="text-lg text-neutral-700 dark:text-neutral-300">&ldquo;{a.statement}&rdquo;</p>
         {a.aliases?.length ? <p className="text-sm text-neutral-500">Also: {a.aliases.join(" · ")}</p> : null}
@@ -62,7 +62,7 @@ export default async function AdagePage({ params }: PageProps<"/adages/[id]">) {
       </section>
 
       <section className="text-sm">
-        <h2 className="mb-1 font-semibold">Standing: {ADAGE_STANDING_LABEL[standing]}</h2>
+        <h2 className="mb-1 font-semibold">Standing: {HEURISTIC_STANDING_LABEL[standing]}</h2>
         <p className="text-xs text-neutral-500">
           Standing counts claims a person has reviewed. Claims reviewed by AI alone are listed and marked, and do not move it.
         </p>
@@ -114,7 +114,7 @@ export default async function AdagePage({ params }: PageProps<"/adages/[id]">) {
       })}
 
       <div className="border-t border-neutral-200 pt-4 dark:border-neutral-800">
-        <AdageChallengeLink adage={a} />
+        <HeuristicChallengeLink heuristic={a} />
         <p className="mt-2 max-w-2xl text-xs text-neutral-500">
           A break is worth more than a hold. If you have seen this fail for a model, with the setup
           written down, that is the most useful thing you can add here.
