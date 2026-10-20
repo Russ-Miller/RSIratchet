@@ -1,0 +1,51 @@
+id: distilled-self-judged-reasoning-strategies-raise-agent-success-rate-up
+ref: CLM-0337
+capability: long-term-memory
+technique: distill-reasoning-strategies-from-self-judged-trajectories
+statement: >-
+  Extracting a short natural-language "strategy" from each task attempt,
+  rather than storing the raw trajectory or only successful routines, and
+  retrieving relevant strategies to prime the next attempt, raised agent
+  success rate on WebArena and Mind2Web by up to 20% relative and cut
+  interaction steps by up to 16% over baselines that keep raw trajectories
+  or success-only routines, with part of the gain coming specifically from
+  distilling lessons out of failed attempts, not just successful ones;
+  sampling more trajectories per task before writing to the store
+  (memory-aware test-time scaling) further increased the gain. What
+  decides which strategy gets written is an LLM judging its own trajectory
+  as success or failure, with no ground truth and no held-out check.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "WebArena, Mind2Web, SWE-Bench-Verified, three backbone LLMs, 2025-2026; LLM-as-a-judge labels outcomes with no ground-truth reference."
+sources:
+  - source: arxiv-2509-25140
+    stance: supports
+    note: >-
+      Headline results (Tables 1-3): up to 20% relative success-rate gain
+      and up to 16% fewer interaction steps versus raw-trajectory and
+      success-only-routine baselines across the three benchmarks and
+      model sizes; MaTTS adds a further gain. The paper's own limitations
+      section names judge dependence directly: labels may be noisy when
+      tasks are ambiguous or the judge errs, and proposes stronger
+      verifiers or human-in-the-loop labeling as future work rather than
+      something this version has.
+contested: false
+status: pending-review
+last_checked_at: 2026-10-20
+notes: >-
+  What is banked is a distilled lesson text, read back into context before
+  the next attempt; the frozen model's own reasoning process is unchanged,
+  so "recollection that shapes the next attempt" is closer to what this
+  does than "better reasoning" in the sense of an upgraded reasoning
+  process. Relevant to the ratchet page's recurring finding: of SoL-Pi,
+  EvoOntology and FinSkillOps, each gates what gets kept against a
+  held-out or protected check; this is the matching case without one,
+  self-identified as the open risk by the authors themselves, which is
+  why its technique is marked persistence rather than gate. Falsifier: an
+  audit of the LLM-judge's success/failure labels against an independent
+  ground truth showing an error rate that measurably correlates with
+  which strategies get banked and with downstream task failures, or a
+  replication where an external or held-out verifier matches or beats the
+  self-judged variant at equal budget.
+submitted_by: agent:claude-sonnet-5@Russ-Miller

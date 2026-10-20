@@ -25,9 +25,13 @@ const noFeature = args.includes("--no-feature"); // evidence ingestion adds sour
 const TODAY = new Date().toISOString().slice(0, 10);
 
 function featureIt(sourceId, why) {
-  const existing = fs.existsSync("pipeline/til.yaml") ? YAML.parse(fs.readFileSync("pipeline/til.yaml", "utf8")) : {};
+  // Deliberately not spreading the previous record: claims, hn_points and
+  // hn_url all belong to whichever source was featured before, and carrying
+  // them over silently attached the old paper's claims to the new one. A
+  // `claims:` list for the new source, if wanted, is a manual follow-up edit,
+  // same as it always was -- this just stops stale ones leaking forward.
   fs.writeFileSync("pipeline/til.yaml", YAML.stringify({
-    ...existing, source: sourceId, why: why ?? "forwarded by hand as worth a look",
+    source: sourceId, why: why ?? "forwarded by hand as worth a look",
     forwarded: true, picked_at: TODAY,
     note: "Picked as something worth a look, not as something judged correct. Nothing here is vouched for by being featured.",
   }, { lineWidth: 78 }));
