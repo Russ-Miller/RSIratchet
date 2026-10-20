@@ -1,0 +1,39 @@
+id: multimodal-llms-behavioral-perturbation-signature-answer-confidence-change-under
+ref: CLM-0562
+capability: abstention-and-self-knowledge
+technique: probe-failure-structure-before-scoring-abstention
+statement: >-
+  For multimodal LLMs, a behavioral perturbation signature
+  (answer/confidence change under visual degradation, blank-image
+  replacement, and grounding/relation probes) predicts which failure family
+  an error belongs to far better than scalar confidence, yet folding the
+  same signature into confidence as a direct penalty makes
+  answer-versus-abstain ranking worse than scalar confidence alone.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Four open-weight MLLM families (Gemma 4, Qwen3-VL, LLaVA-Mistral, LLaVA-Vicuna) on HallusionBench, POPE, VSR and VizWiz-VQA; abstention tested only with three hand-designed scalari"
+sources:
+  - source: arxiv-2608-29193
+    stance: supports
+    note: >-
+      Validated by: Pooled XGBoost failure-family AUROC over 58,440 examples
+      rose from 0.78 with scalar confidence to 0.95 with the signature and
+      0.97 with confidence added; per-dataset gains 0.634 to 0.769 on
+      HallusionBench and 0.707 to 0.817 on VizWiz, near-neutral on VSR.
+      Abstention AUROC fell under all three scalarizations (e.g. Qwen3-VL
+      0.81 to 0.73). Matched correction routing beat a generic prompt in 10
+      of 16 settings and cut break rate 15.5% to 2.7% on Qwen3-VL/VSR..
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-20
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A simple direct
+  scalarization of the same probe signature that improves
+  answer-versus-abstain AUROC over scalar confidence across these models, or
+  showing the diagnosis gain disappears once dataset identity is controlled.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -35,3 +35,42 @@ notes: "Forwarded by Russ 2026-10-19: forwarded by Russ with the code repo; an
   ratchet run inside the agent Code:
   https://github.com/google-research/reasoning-bank (Apache-2.0)."
 ingested_at: 2026-10-19
+brief: >-
+  Storing distilled reasoning strategies from an agent's own failures, not
+  just its successful trajectories, is what makes test-time memory pay off.
+  ReasoningBank extracts titled, described strategy items from both
+  self-judged successes and failures, retrieves them by embedding similarity
+  for each new streaming task, and appends new items afterward, with no
+  ground-truth labels.
+
+
+  Testing covers WebArena (684 tasks across 5 subsets), Mind2Web
+  cross-task/website/domain splits, and SWE-Bench-Verified, on
+  Gemini-2.5-flash, Gemini-2.5-pro and Claude-3.7-sonnet, against No Memory,
+  trajectory memory (Synapse) and workflow memory (AWM).
+
+
+  WebArena overall success rate rises +8.3, +7.2 and +4.6 over memory-free
+  agents across the 3 backbones; SWE-Bench-Verified resolve rate goes 34.2 to
+  38.8 (flash) and 54.0 to 57.4 (pro). Adding memory-aware test-time scaling,
+  parallel scaling reaches 55.1 at k=5 on WebArena-Shopping versus 52.4 for
+  vanilla TTS and 42.2 with no memory.
+
+
+  The causal story is well isolated: ablations separate failure traces (AWM
+  drops 44.4 to 42.2 when failures are added, ReasoningBank rises 46.5 to
+  49.7), separate aggregation from raw scaling, and simulate judge accuracy
+  from 50% to 100%, with the real judge at 72.7% and little sensitivity in the
+  70%-90% range.
+
+
+  Scaling analyses use 1 subset and 1 model; no matched-token-budget baseline
+  is reported, and gains on Mind2Web task-level success remain small in
+  absolute terms (SR 1.0-5.1).
+
+
+  If you build agents, this argues failure-derived strategy memory is the
+  component that turns extra test-time compute into gains.
+brief_generated_at: 2026-10-20
+brief_model: claude-opus-5
+brief_source: full-text
