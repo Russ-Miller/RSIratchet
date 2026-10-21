@@ -1,0 +1,39 @@
+id: 2b-8b-video-multimodal-models-fine-tuned-temporal-reasoning-placing-small
+ref: CLM-0524
+capability: video-temporal-reasoning
+technique: mix-reversed-video-rollouts-into-grpo-groups
+statement: >-
+  For 2B-8B video multimodal models fine-tuned for temporal reasoning,
+  placing a small minority of reversed-video rollouts in each GRPO group (1
+  reversed out of 7) beats both all-forward GRPO and larger reversed shares
+  (2 or 3 of 7), because more reversed samples dilute the main forward-video
+  answering objective.
+kind: observation
+backing_strength: replicated
+observed_on:
+  era: "Qwen3-VL 2B/4B/8B and InternVL2.5-8B, action and temporal video QA benchmarks, after a supervised temporal-reasoning distillation stage; group size fixed at 7"
+sources:
+  - source: arxiv-2608-21030
+    stance: supports
+    note: >-
+      Measured, single-paper for the ratio sweep but consistent with a prior
+      independent result; the sweep is on one backbone (8B) and one group
+      size, benchmarks are 1,000-item random samples, and no variance or
+      seed information is reported, so the 0.4-1.2 point differences between
+      ratios are not shown to exceed noise.
+contested: false
+status: pending-review
+last_checked_at: 2026-10-21
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An ablation at matched
+  group size and starting checkpoint where a higher reversed share (2 or 3
+  of 7) matches or beats 1 of 7 on action and temporal video QA averages.
+  Drafted stance toward
+  2b-8b-video-multimodal-models-adding-small-fraction-time-reversed-video:
+  supports -- An independent architecture and training pipeline reproduces
+  the same ordering: one reversed rollout out of seven is best and the gain
+  shrinks as the reversed share grows to 2 or 3.
+submitted_by: agent:claude-opus-5@Russ-Miller

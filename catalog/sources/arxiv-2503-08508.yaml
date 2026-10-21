@@ -31,3 +31,39 @@ notes: "Filed as a source on planning from the classifier's judgement that the
   success rates, e.g. 14.9% over ReAct on spatial semantic reasoning tasks. No
   claim has been drafted from it yet."
 ingested_at: 2026-09-23
+brief: >-
+  Letting a lightweight planner generate skill parameters itself, rather than
+  filling fixed templates, closes most of the gap to GPT-4-based planners on
+  instructions with relational semantics like "largest" or "leftmost".
+  LightPlanner has the LLM call parameterized skill functions (perception
+  decoupled from action, bounding boxes passed as arguments), reason at 3
+  levels before each step (feedback, semantic parsing, parameter validity),
+  and keep history in a memory module instead of growing context.
+
+
+  Qwen2.5-1.5B-Instruct was fine-tuned on LightPlan-40k, 40,000 single-step
+  decision samples derived from 60 hand-annotated tasks expanded to 6,000 by
+  GPT-4. Evaluation ran on a UR3 arm across 30 tasks, each repeated three
+  times, 90 trials, split into simple semantic mapping and dynamic semantic
+  reasoning, with action chains of 2 to 8 steps.
+
+
+  On dynamic semantic reasoning, LightPlanner-1.5B reached 79.5% SR
+  medium-term versus 71.4% for GPT-4-based CoPAL, and 66.1% long-term versus
+  54.1% for CAPE and 51.2% for ReAct-3B. On 10 unseen task categories it
+  scored 62.6% SR against 53.8% for CoPAL and 42.0% for ReAct-3B.
+
+
+  Baselines ReAct and MLDT were retrained on the same dataset, which isolates
+  the planner design from data advantage; an ablation attributes 7.5% SR to
+  dynamic skill control, 5.8% to hierarchical reasoning, 5.0% to memory.
+  Prompt-based baselines were not retrained and the whole evaluation is 1
+  robot, 1 lab, self-reported, with no token-budget matching. The authors note
+  failure risk in environments that change unpredictably mid-task.
+
+
+  If you assumed relational grounding needs a large model, the
+  parameterization trick is worth trying on a small one.
+brief_generated_at: 2026-10-21
+brief_model: claude-opus-5
+brief_source: full-text

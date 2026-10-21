@@ -35,3 +35,38 @@ notes: "Forwarded by Russ 2026-10-19: forwarded by Russ with the code repo; an
   ratchet run inside the agent Code:
   https://github.com/google-research/reasoning-bank (Apache-2.0)."
 ingested_at: 2026-10-19
+brief: >-
+  Storing distilled reasoning strategies from both successful and failed
+  trajectories beats storing raw trajectories or success-only workflows, and
+  failure traces help rather than hurt when the memory format is
+  strategy-level. ReasoningBank keeps structured items (title, description,
+  content) that an agent retrieves by embedding similarity, with an
+  LLM-as-a-judge supplying correctness labels since no ground truth exists at
+  test time.
+
+
+  Tested on WebArena (684 tasks, 5 subsets), Mind2Web
+  cross-task/website/domain, and SWE-Bench-Verified, with Gemini-2.5-flash,
+  Gemini-2.5-pro, and Claude-3.7-sonnet, against No Memory, Synapse
+  (trajectories) and AWM (workflows).
+
+
+  WebArena overall success rate rises +8.3, +7.2, +4.6 over memory-free
+  agents; SWE-Bench-Verified resolve rate goes 34.2 to 38.8 (flash) and 54.0
+  to 57.4 (pro), with fewer steps. Memory-aware test-time scaling lifts
+  WebArena-Shopping from 49.7 at k=1 to 55.1 at k=5 parallel, versus 52.4 for
+  vanilla TTS and only 39.0 to 42.2 without memory. Adding failures moves AWM
+  from 44.4 down to 42.2 but ReasoningBank from 46.5 up to 49.7.
+
+
+  Evidence is measured, with ablations isolating memory format, aggregation,
+  and judge quality (base judge accuracy 72.7%, simulated 50%-100% barely
+  changes results). Scaling curves come from 1 subset and 1 model; MaTTS was
+  not run on SWE-Bench or Mind2Web.
+
+
+  If you build streaming agents, failure traces are usable supervision given
+  the right abstraction.
+brief_generated_at: 2026-10-21
+brief_model: claude-opus-5
+brief_source: full-text

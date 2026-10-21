@@ -1,20 +1,55 @@
 id: arxiv-2606-10554
 ref: SRC-0361
 kind: paper
-title: "Benchmarking Knowledge Editing using Logical Rules"
+title: Benchmarking Knowledge Editing using Logical Rules
 year: 2026
 date: 2026-06-09
 arxiv_id: "2606.10554"
 url: https://arxiv.org/abs/2606.10554
-tags: [ingested]
-summary: >-
-  Large Language Models (LLMs) are increasingly deployed in real-world
+tags:
+  - ingested
+summary: Large Language Models (LLMs) are increasingly deployed in real-world
   applications that require access to up-to-date knowledge. However,
   retraining LLMs is computationally expensive. Therefore, knowledge editing
   techniques are crucial for maintaining current information and correcting
   erroneous assertions within pre-trained models. Current benchmarks for
   knowledge editing primarily focus on recalling edited facts, often
   neglecting their logical consequences. To address this limitation, we
-  introduce a new benchmark designed to evaluate how knowledge editing
-  methods handle the logical consequence
+  introduce a new benchmark designed to evaluate how knowledge editing methods
+  handle the logical consequence
 ingested_at: 2026-09-19
+brief: >-
+  Editing a fact into a model's weights does not propagate to what that fact
+  entails, and the gap shows up even when the direct edit registers. An
+  automated benchmark builds this test without hand-written multi-hop
+  questions: entities are pulled from knowledge editing datasets with spaCy,
+  matched to DBpedia URIs, triples retrieved via SPARQL, logical rules mined
+  with AMIE3, and an LLM prompted to turn each rule plus its assertions into a
+  multi-hop QA pair.
+
+
+  The setup covers ROME, constrained fine-tuning, and Knowledge Neurons
+  applied to gpt2-medium, gpt2-large and gpt2-xl, evaluated on the English
+  single-hop free-form subset of MLaKE and the MQuAKE-T subset, with 831 and
+  961 questions retained from 1000 sampled prompts.
+
+
+  The abstract reports a gap up to 24% between direct and entailed knowledge
+  for ROME and FT. Constrained FT collapses on correlated knowledge, from
+  24.58 F1 to 0.45 on MLaKE for gpt2-large. KN is the exception, rising from
+  1.34 to 14.26 F1 on MLaKE and 4.67 to 18.53 on MQuAKE.
+
+
+  The effect is measured, but absolute scores are so low (EM frequently 0.0)
+  that direct-edit baselines are barely above floor, which makes the
+  direct-versus-correlated contrast hard to attribute. Only GPT-2 models and
+  parameter-based editors were tested; memory-based methods like MeLLo and
+  modern LLMs were not. Rule quality is unaudited, and the sample QA
+  confidence scores range 0.67-0.99 with some rules that look spurious.
+
+
+  Treat the KN result as the one worth following up, and the rest as a
+  measurement framework more than a settled number.
+brief_generated_at: 2026-10-21
+brief_model: claude-opus-5
+brief_source: full-text
