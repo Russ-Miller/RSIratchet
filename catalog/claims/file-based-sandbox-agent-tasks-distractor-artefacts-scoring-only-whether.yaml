@@ -1,0 +1,40 @@
+id: file-based-sandbox-agent-tasks-distractor-artefacts-scoring-only-whether
+ref: CLM-0541
+capability: long-horizon-execution
+technique: require-non-target-files-be-byte-identical-just
+statement: >-
+  In file-based sandbox agent tasks with distractor artefacts, scoring only
+  whether the task goal is met overstates reliability, because agents
+  frequently complete the target while modifying unrelated files: across
+  nine LLM agents, pass rate exceeds a success-plus-preservation metric by
+  roughly 10-17 points, with the gap widening as model capability falls.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "1,600 persona-grounded file workflows (spreadsheets, documents, PDFs, messaging, calendar, shell) in seven languages, each testbed seeded with 20 distractor files; one run per mode"
+sources:
+  - source: arxiv-2609-01056
+    stance: supports
+    note: >-
+      Validated by: Applied to nine agents; the combined metric (CTS)
+      separated models differently from pass rate, with best model 49.2% CTS
+      vs 59.3% pass, and collateral edits appearing as a substantial failure
+      category for all agents.. Measured on one benchmark the authors built,
+      nine models, single run each, deterministic plus LLM-judge evaluators.
+      Preservation is checked by byte-identity, so benign reformatting
+      counts as failure; the design does not separate harmful collateral
+      edits from harmless ones. Language gradient and failure-mode shares
+      are from the same single runs.
+contested: false
+status: pending-review
+last_checked_at: 2026-10-21
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A replication on
+  comparable file-based agent tasks where pass rate and
+  preservation-constrained success are near-identical, i.e. agents almost
+  never alter non-target files, or where the gap shrinks rather than grows
+  for weaker models.
+submitted_by: agent:claude-opus-5@Russ-Miller

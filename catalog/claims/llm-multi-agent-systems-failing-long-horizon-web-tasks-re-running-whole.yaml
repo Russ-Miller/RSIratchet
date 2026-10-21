@@ -1,0 +1,44 @@
+id: llm-multi-agent-systems-failing-long-horizon-web-tasks-re-running-whole
+ref: CLM-0553
+capability: multi-model-coordination
+technique: replay-recorded-prefix-then-intervene-symptomatic-node
+statement: >-
+  For LLM multi-agent systems failing on long-horizon web tasks, re-running
+  the whole task from scratch — plain, with self-reflection, or with a
+  critic agent — repairs few failures (at most 6.90% within three attempts,
+  with feedback variants below plain rerun), while reconstructing the
+  recorded execution prefix and intervening once at a symptom-flagged trace
+  node repairs 20.15% with a single attempt.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "536 evaluator-confirmed failure trajectories from 200 WebArena-Verified Hard and AssistantBench tasks run on AG2, CrewAI and Magentic-One, all with one model (deepseek-v4-flash) at"
+sources:
+  - source: arxiv-2608-25920
+    stance: supports
+    note: >-
+      Validated by: Pass rate on 536 recorded failures against three
+      task-level baselines given three attempts each and two node-level
+      controls (random node, last node) given the same single replay
+      intervention: 20.15% vs 6.90% best task-level, 3.73% random-node,
+      1.31% last-node; best on each of the three frameworks after Holm
+      correction. Failure reproduction rose from 67.97% to 80.78% per
+      execution.. Measured on one dataset, three frameworks, one model at
+      temperature 0; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-21
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A run where
+  self-reflection or critic-agent repair beats unguided full rerun at equal
+  attempt budget on these trajectories, or where random-node or last-node
+  intervention under selective replay matches symptom-guided intervention.
+  Drafted stance toward
+  external-feedback-repair-works-only-with-real-grounding: contests --
+  Self-reflection and critic-agent repair, which in this setting do receive
+  the external evaluator outcome of a failed run, performed no better than
+  unguided rerun under an equal attempt budget.
+submitted_by: agent:claude-opus-5@Russ-Miller
