@@ -1,0 +1,44 @@
+id: clinical-calculator-tasks-where-formula-gold-variables-full-note-all
+ref: CLM-0546
+capability: arithmetic
+technique: program-aided-computation
+statement: >-
+  On clinical-calculator tasks where the formula, gold variables and full
+  note are all supplied, having an open-weight model write case-specific
+  Python for a restricted executor instead of doing the arithmetic itself
+  gives no reliable gain at 7B (+3.29 pp, calculator-cluster CI crossing
+  zero) but a clear gain at 32B (+7.05 pp, CI clear of zero), and the
+  remaining errors are invented unit conversions and one-tier slips in
+  banded scores rather than raw computation.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "MedCalc-Bench Verified (1,100 cases, 55 calculators), Qwen2.5-7B and Qwen2.5-32B-AWQ, five seeds, formula and gold variables supplied; Mistral-7B and Phi-3.5-mini moved in opposite"
+sources:
+  - source: arxiv-2609-10728
+    stance: supports
+    note: >-
+      Measured on one benchmark (1,100 cases, 55 calculators) with two Qwen
+      checkpoints plus two other 7B-class checkpoints as secondary arms;
+      cluster bootstrap over calculators, effective sample 120-190 cases for
+      the arithmetic comparisons. Two checkpoints do not establish scaling
+      and the authors say so; benchmark formulas themselves were audited and
+      16 flagged.
+contested: false
+status: pending-review
+last_checked_at: 2026-10-22
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A matched-access
+  comparison on clinical calculators where program generation beats direct
+  arithmetic with an interval clear of zero at 7B as well, or where the
+  residual program-route errors are shown to be computation rather than
+  formula/variable/unit handling. Drafted stance toward
+  offloading-computation-generated-code-interpreter-removes-most-arithmetic:
+  contests -- Under matched formula and variable access, code offloading did
+  not reliably beat direct arithmetic at 7B and left unit-conversion and
+  banding errors at both scales, so it does not uniformly remove arithmetic
+  error.
+submitted_by: agent:claude-opus-5@Russ-Miller

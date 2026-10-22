@@ -1,0 +1,48 @@
+arxiv_id: "2608.25920"
+title: Repair or Resample? Rethinking Failure Debugging in LLM Multi-Agent Systems
+url: https://doi.org/10.48550/arxiv.2608.25920
+drafted_at: 2026-10-20
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: For LLM multi-agent systems failing on long-horizon web tasks,
+  re-running the whole task from scratch — plain, with self-reflection, or
+  with a critic agent — repairs few failures (at most 6.90% within three
+  attempts, with feedback variants below plain rerun), while reconstructing
+  the recorded execution prefix and intervening once at a symptom-flagged
+  trace node repairs 20.15% with a single attempt.
+kind: observation
+backing_strength: single-paper
+scope_condition: 536 evaluator-confirmed failure trajectories from 200
+  WebArena-Verified Hard and AssistantBench tasks run on AG2, CrewAI and
+  Magentic-One, all with one model (deepseek-v4-flash) at temperature 0.
+technique: ""
+proposed_technique: Replay the recorded prefix, then intervene at the symptomatic node
+technique_summary: Log every model and tool boundary interaction as an
+  event-dependency graph, replay it deterministically up to a node flagged by
+  symptom rules plus a semantic judge, inject a repair instruction conditioned
+  on the symptom category, and resume live execution from there.
+technique_kind: process
+technique_validated_by: "Pass rate on 536 recorded failures against three
+  task-level baselines given three attempts each and two node-level controls
+  (random node, last node) given the same single replay intervention: 20.15%
+  vs 6.90% best task-level, 3.73% random-node, 1.31% last-node; best on each
+  of the three frameworks after Holm correction. Failure reproduction rose
+  from 67.97% to 80.78% per execution."
+stance_on_existing: contests
+related_claim_id: external-feedback-repair-works-only-with-real-grounding
+stance_reason: Self-reflection and critic-agent repair, which in this setting
+  do receive the external evaluator outcome of a failed run, performed no
+  better than unguided rerun under an equal attempt budget.
+falsifier: A run where self-reflection or critic-agent repair beats unguided
+  full rerun at equal attempt budget on these trajectories, or where
+  random-node or last-node intervention under selective replay matches
+  symptom-guided intervention.
+evidence_note: Measured on one dataset, three frameworks, one model at
+  temperature 0; repair success judged by the native benchmark evaluators,
+  failure reproduction by an LLM judge with an audited ~3.3% confirmed
+  disagreement rate. Target selection and repair guidance were not ablated
+  apart, so the split between the two is unknown. Attempt budgets differ (1 vs
+  3) but in the proposed method's disfavour.
+confidence: medium

@@ -1,15 +1,16 @@
 id: arxiv-2606-22676
 ref: SRC-0320
 kind: paper
-title: "Skin-Deep: A Geometric Diagnostic for Alignment Fragility in Large Language Model Representations"
+title: "Skin-Deep: A Geometric Diagnostic for Alignment Fragility in Large
+  Language Model Representations"
 year: 2026
 date: 2026-06-21
 arxiv_id: "2606.22676"
 url: https://arxiv.org/abs/2606.22676
-tags: [ingested]
-summary: >-
-  Alignment tuning is meant to make harmful-request refusal robust, yet this
-  safety behavior can be erased by a small set of benign fine-tuning
+tags:
+  - ingested
+summary: Alignment tuning is meant to make harmful-request refusal robust, yet
+  this safety behavior can be erased by a small set of benign fine-tuning
   examples. This is a deployment risk for open-weight models because a
   checkpoint can pass refusal tests at release time and later lose refusal
   under low-cost downstream fine-tuning. Prior work has established these
@@ -18,3 +19,41 @@ summary: >-
   intervention is run. We introduce Skin-Deep, a geometric diagnostic that
   detects alignment fragility dir
 ingested_at: 2026-09-19
+brief: >-
+  Refusal in aligned models sits on a small set of residual-stream directions,
+  and which direction actually carries the behavior differs per model, so
+  variance dominance is a poor guide to behavioral importance. Skin-Deep
+  measures this geometry on the unmodified checkpoint by contrasting aligned
+  and base-model activation covariances with contrastive PCA, then summarizes
+  separation, depth, and angular distance from the Arditi refusal direction
+  into a Geometric Fragility Score.
+
+
+  The study spans 21 instruction-tuned models at 3B-32B across 5 overlapping
+  cohorts, using 500 harmful prompts (AdvBench, HarmBench, BeaverTails)
+  matched by token count to 500 benign Alpaca/OASST instructions.
+
+
+  Held-out cPCA separation is strong for the core 4 models (Cohen's d
+  2.71-3.23, probe accuracy 0.904-0.959), with a minimum held-out effect of
+  1.69 across a 14-model check. Ablating a single direction cuts refusal in 4
+  of 6 models, but the effective direction varies: PCA-PC1 drops Llama from
+  0.14 to 0.02, the Arditi direction drops Qwen from 0.86 to 0.68. Random
+  directions leave rates near baseline.
+
+
+  Controls are reasonable: prompt-shuffle nulls for CKA, random and
+  non-leading PCA direction controls, PERMANOVA with 1000 permutations, Wilson
+  intervals. The predictive claim is much weaker. Among initially safe models,
+  exactly 1 model (Gemma) has both the lowest score and the lowest post-LoRA
+  harmful compliance (mean 0.68, range 0.48-0.80), with all others at full
+  compliance at n=200. That is an n-of-1 association, not a calibrated
+  forecast.
+
+
+  English only, open-weight only, 1 harmless fine-tuning protocol, and a
+  version-matched base checkpoint is required. Treat the geometry findings as
+  solid and the score's predictive value as untested.
+brief_generated_at: 2026-10-22
+brief_model: claude-opus-5
+brief_source: full-text

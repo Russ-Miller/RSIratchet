@@ -31,3 +31,41 @@ notes: "Filed as a source on code-generation from the classifier's judgement
   multiple code generation benchmarks with less data. No claim has been
   drafted from it yet."
 ingested_at: 2026-09-23
+brief: >-
+  Retraining a code model on its own best samples, with teacher-written
+  critiques attached only when the samples lose, beats fine-tuning on the
+  teacher's answers directly. Adaptive Critique Refinement (ACR) replaces each
+  SFT example either with the winning self-sample or with a 2-turn
+  (instruction, bad self-code, critique, teacher code) record, then refits
+  from the base checkpoint.
+
+
+  DS-Coder-6.7B-Base and Qwen2.5-Coder-7B-Base were tuned on an 80K
+  GPT-4o-generated Python set, with 7 samples at temperature 0.7 per
+  instruction, Qwen2.5-32B-Instruct as judge and critic, and 3 iterations.
+  Benchmarks: HumanEval(+), MBPP(+), BigCodeBench, BigCodeBench-hard,
+  LiveCodeBench, MultiPL-E.
+
+
+  Average pass@1 rose 2.7 and 3.1 points on LiveCodeBench plus
+  BigCodeBench-hard, and 2.7 and 4.5 points on
+  HumanEval(+)/MBPP(+)/BigCodeBench; iter0 to iter1 alone gave 2.0 and 2.3.
+  MultiPL-E, never trained on, gained 1.0 and 2.1.
+
+
+  The critique data is ablated per iteration on both models, and removing the
+  2nd-turn critique hurts most. The scoring system was checked separately:
+  best-scoring of 10 samples beat worst by 15.8 and 8.6 on HumanEval+, with
+  4.3% and 3.1% error rates. A TLI contamination analysis shows 3 baseline
+  datasets leak HumanEval(+)/MBPP(+), which explains the remaining gap but
+  also means baseline comparisons are not clean.
+
+
+  Only 2 7B-class code models, Python SFT data, no preference-learning or
+  matched-token baseline, no math or other reasoning domains.
+
+
+  If you distil from a teacher, consider ranking your own samples first.
+brief_generated_at: 2026-10-22
+brief_model: claude-opus-5
+brief_source: full-text

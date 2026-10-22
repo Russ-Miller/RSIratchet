@@ -1,20 +1,62 @@
 id: arxiv-2606-01610
 ref: SRC-0359
 kind: paper
-title: "Revisiting Ripple Effects in Knowledge Editing through Pressure-Aware Joint Neighborhood Optimization"
+title: Revisiting Ripple Effects in Knowledge Editing through Pressure-Aware
+  Joint Neighborhood Optimization
 year: 2026
 date: 2026-06-01
 arxiv_id: "2606.01610"
 url: https://arxiv.org/abs/2606.01610
-tags: [ingested]
-summary: >-
-  Single-edit updates in large language models can trigger ripple effects
-  across local knowledge neighborhoods: desirable propagation to related
-  facts and unintended perturbation of preserved ones. Existing methods
-  address these two effects separately, without explicitly modeling their
-  coupling. We challenge this separation through an analysis of ripple
+tags:
+  - ingested
+summary: "Single-edit updates in large language models can trigger ripple
+  effects across local knowledge neighborhoods: desirable propagation to
+  related facts and unintended perturbation of preserved ones. Existing
+  methods address these two effects separately, without explicitly modeling
+  their coupling. We challenge this separation through an analysis of ripple
   responses across typical baselines, identifying two coupled design
-  pressures: editable-side coordination and preserved-side leakage. We
-  propose Joint Neighborhood Optimization (JNO), a new knowledge-editing
-  framework to formalize and jointly addr
+  pressures: editable-side coordination and preserved-side leakage. We propose
+  Joint Neighborhood Optimization (JNO), a new knowledge-editing framework to
+  formalize and jointly addr"
 ingested_at: 2026-09-19
+brief: >-
+  Planning edit targets for a whole knowledge neighborhood at once, instead of
+  handling propagation and preservation separately, improves both at the same
+  time. Existing locate-then-edit methods treat the two ripple directions as
+  independent problems, and the paper's diagnostics argue they are coupled
+  responses to one weight update.
+
+
+  JNO builds a neighborhood of variable neighbors (should co-update) plus
+  preserved neighbors (should not move), optimizes target representations
+  under a joint objective with key-coupling and preserved-exposure weights,
+  then abstains from updates whose targets fail a semantic-loss check. Tested
+  on RippleEdits-POPULAR (839 edits), CounterFact and ZsRE (2,000 edits each),
+  on Qwen2.5-1.5B-Instruct, GPT-J (6B) and LLaMA3 (8B), against 9 baselines
+  including AlphaEdit, GLAME, SAKE, SUIT.
+
+
+  On LLaMA3, RE rises 18.1% and SA 7.0% over the strongest baseline; on GPT-J,
+  RS and FF rise 16.7% and 30.9%. Reliability drops ~3.0% relative, staying
+  above 95.9%. Specificity gains on CounterFact and ZsRE are smaller,
+  2.2%-8.6%.
+
+
+  Evidence is measured with the designs that matter: ablations show prox and
+  pair terms split the labor (removing prox costs 16.3/19.2 points RS/FF;
+  removing pair costs 10.9/10.8/10.6 LG/RE/SA), and a coverage-matched
+  comparison gives baselines the same gate at 96.3% coverage, where JNO still
+  leads. Baselines were re-run under JNO's own neighborhood construction
+  protocol, so the comparison is not entirely independent of it.
+
+
+  The structural probes are correlational, not randomized. Neighborhoods come
+  from rule-guided mining with a 2.9% conflict rate; multilingual,
+  long-context and multi-hop settings are untested, and 1 GPU limits scale.
+
+
+  If you edit facts in place, expect to trade a few points of reliability for
+  sizable ripple control.
+brief_generated_at: 2026-10-22
+brief_model: claude-opus-5
+brief_source: full-text
