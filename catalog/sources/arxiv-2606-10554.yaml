@@ -1,20 +1,53 @@
 id: arxiv-2606-10554
 ref: SRC-0361
 kind: paper
-title: "Benchmarking Knowledge Editing using Logical Rules"
+title: Benchmarking Knowledge Editing using Logical Rules
 year: 2026
 date: 2026-06-09
 arxiv_id: "2606.10554"
 url: https://arxiv.org/abs/2606.10554
-tags: [ingested]
-summary: >-
-  Large Language Models (LLMs) are increasingly deployed in real-world
+tags:
+  - ingested
+summary: Large Language Models (LLMs) are increasingly deployed in real-world
   applications that require access to up-to-date knowledge. However,
   retraining LLMs is computationally expensive. Therefore, knowledge editing
   techniques are crucial for maintaining current information and correcting
   erroneous assertions within pre-trained models. Current benchmarks for
   knowledge editing primarily focus on recalling edited facts, often
   neglecting their logical consequences. To address this limitation, we
-  introduce a new benchmark designed to evaluate how knowledge editing
-  methods handle the logical consequence
+  introduce a new benchmark designed to evaluate how knowledge editing methods
+  handle the logical consequence
 ingested_at: 2026-09-19
+brief: >-
+  Editing a fact into a model's weights does not propagate to what that fact
+  entails. Parameter-based editors recall the direct assertion but fail the
+  multi-hop questions implied by it.
+
+
+  The benchmark builds a DBpedia knowledge graph from entities extracted out
+  of existing editing datasets (spaCy + SPARQL), mines logical rules with
+  AMIE3, then prompts an LLM to turn each rule plus its assertions into a
+  multi-hop QA pair. Edits were applied with ROME, constrained fine-tuning
+  (FT), and Knowledge Neurons (KN) on gpt2-medium, gpt2-large, and gpt2-xl,
+  scored by F1 and Exact Match on MLaKE (English single-hop subset) and
+  MQuAKE-T, from 1000 sampled prompts reduced to 831 and 961 questions.
+
+
+  ROME on MLaKE drops from 16.36 F1 direct to 8.67 correlated on gpt2-medium;
+  FT collapses further, from 24.58 to 0.45 F1 on gpt2-large, and to 0.0 F1 on
+  gpt2-xl for MQuAKE. The abstract states a gap of up to 24%. KN reverses the
+  pattern, scoring 14.26 vs 1.34 F1 on MLaKE.
+
+
+  The gap is measured, but on 1 model family (GPT-2), 3 editors, and no
+  memory-based method such as MeLLo. Direct-edit F1 is itself in the single to
+  low double digits, so the correlated scores sit near a floor, and the
+  entailed answers come from LLM-generated QA pairs with no reported human
+  validation.
+
+
+  Treat direct edit-success numbers as uninformative about entailment, and
+  note that KN behaves differently from ROME and FT here.
+brief_generated_at: 2026-10-22
+brief_model: claude-opus-5
+brief_source: full-text

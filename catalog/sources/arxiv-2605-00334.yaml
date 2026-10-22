@@ -28,3 +28,45 @@ notes: "Forwarded by Russ 2026-09-26: forwarded by Russ; contests the claim
   that open models trail commercial ones on agent work, and proposes routing
   routine calls to small models"
 ingested_at: 2026-09-26
+brief: >-
+  Small open-weight models handle short, structured tool use as reliably as a
+  frontier model, and the gap is confined to long-horizon planning under
+  persistent constraints, where both fail.
+
+
+  AgentFloor is a deterministic 30-task benchmark, 5 tasks per tier, organized
+  as a 6-tier ladder (no-tool instruction following, single tool, 2-tool
+  chain, branching, multi-source synthesis, long-horizon planning) over 8
+  abstract tools and an in-memory fixture database, with no filesystem or live
+  APIs. 16 open-weight models from 0.27B to 32B served via Ollama, plus GPT-5,
+  across 16,542 scored runs.
+
+
+  Paired across 30 tasks (n=270), gemma4:26b equals GPT-5 at a pre-registered
+  ±10 pp margin (Δ=+0.4 pp, 90% CI [−4.0,+5.1]), at about 15x lower cost per
+  passed task on Mac self-hosting, 3x on cloud GPU, and 2.5x faster. It beats
+  GPT-5 on the no-tool tier (100% vs 80%, Δ=+20.0 pp) and loses on tier E (0%
+  vs 10%, Δ=−10.2 pp).
+
+
+  Effects were measured with 10,000-resample bootstrap CIs, pre-registered
+  TOST equivalence, and Holm correction. Tiers B, C, D are underpowered at
+  n=45 pairs: point estimates within 9 pp but CIs 24–35 pp wide, so no formal
+  equivalence. Failure-cascade analysis shows GPT-5's tier-E mass in early
+  resignation (F5 39%, F5b 24%) and gemma4:26b's in step exhaustion and
+  hallucinated tools (F4 41%, F1 36%), which explains why interventions did
+  not transfer: explicit-submission lifted ministral-3:8b on E1 by +100 pp and
+  was null on 4 other models, while a plan/execute/submit prompt regressed
+  every model tested (up to −33 pp).
+
+
+  Only 1 frontier anchor, 5 tasks per tier, abstract tools rather than real
+  APIs, GUIs or web, no human baseline.
+
+
+  If you route agent calls, sub-5B models cover A0/A at 80% reliability and
+  $0.00007–$0.0010 per pass; C, D and E clear no threshold in 60–90 without
+  intervention.
+brief_generated_at: 2026-10-22
+brief_model: claude-opus-5
+brief_source: full-text

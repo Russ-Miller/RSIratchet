@@ -6,15 +6,50 @@ year: 2026
 date: 2026-05-04
 arxiv_id: "2605.02215"
 url: https://arxiv.org/abs/2605.02215
-tags: [ingested]
-summary: >-
-  Recent Large Language Models (LLMs) have shown strong performance on
+tags:
+  - ingested
+summary: Recent Large Language Models (LLMs) have shown strong performance on
   automated program repair across standard benchmarks. However, these
   benchmarks evaluate models on a single canonical form of buggy code and do
   not reflect the syntactic variations commonly observed in real-world
-  software, leaving robustness largely unexamined. In this work, we
-  construct HEJ-Robust, a robustness benchmark built from HumanEval-Java-Bug
-  using eight semantics-preserving code transformations, resulting in 1,450
-  transformed instances. We evaluate five fine-tuned LLMs on this benchmark
-  and show that model performanc
+  software, leaving robustness largely unexamined. In this work, we construct
+  HEJ-Robust, a robustness benchmark built from HumanEval-Java-Bug using eight
+  semantics-preserving code transformations, resulting in 1,450 transformed
+  instances. We evaluate five fine-tuned LLMs on this benchmark and show that
+  model performanc
 ingested_at: 2026-09-19
+brief: >-
+  Renaming a single local variable cuts fine-tuned program-repair models'
+  Pass@10 roughly in half, while CodeBLEU barely moves. HEJ-Robust applies 8
+  semantics-preserving transformations to HumanEval-Java-Bug's 164 Java
+  programs with injected bugs, yielding 1,450 transformed instances with
+  manually re-annotated buggy-line locations and executable tests.
+
+
+  The models are the 5 publicly released fine-tuned APR models from Jiang et
+  al.: PLBART base/large and CodeT5 small/base/large, run unchanged with 10
+  candidate patches per bug.
+
+
+  Local variable renaming (100 bugs) drops Pass@10 by 50.5% to 57.31% across
+  all 5 models. Try-catch insertion (114 bugs) costs 10.4%–42.87%; condition
+  reordering (603 bugs) 7.05%–13.69%; method renaming and log insertion under
+  10% for most models. Parameter renaming slightly improves plbart_base and
+  plbart_large by 4.65% and 3.23%. CodeBLEU stays near-flat throughout, so it
+  does not detect functional degradation.
+
+
+  The effect is measured against each model's own score on the matched
+  untransformed subset, so the transformation is isolated. Renaming uses
+  naturalness-aware substitution via CodeBERT/GraphCodeBERT rather than random
+  strings, which rules out unnatural-token artifacts. Boolean exchange has
+  only 7 instances and the authors exclude it themselves.
+
+
+  Only 2 model families, both encoder-decoder and fine-tuned; no
+  instruction-tuned or agent-based LLMs, and no project-level bugs with
+  inter-file dependencies. Treat similarity metrics as uninformative for
+  repair robustness and report execution-based Pass@k.
+brief_generated_at: 2026-10-22
+brief_model: claude-opus-5
+brief_source: full-text

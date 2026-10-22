@@ -1,0 +1,43 @@
+id: multi-agent-llm-networks-where-correct-minority-peer-disagrees-agreeing
+ref: CLM-0585
+capability: multi-model-coordination
+technique: weight-peers-cognitive-snr-divergence
+statement: >-
+  In multi-agent LLM networks where a correct minority peer disagrees with
+  an agreeing majority, ranking peers by raw divergence from the receiver's
+  own belief systematically prefers the wrong peers, while scoring each peer
+  by asserted precision divided by its divergence from a second-order model
+  of what that peer should have concluded given its data subscription
+  isolates the correct one.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Demonstrated on a simulated 5-agent O-RAN control plane with locally deployed 1B-parameter telecom SLMs, one signaling-storm scenario; requires the receiver to know each peer's tel"
+sources:
+  - source: arxiv-2609-01779
+    stance: supports
+    note: >-
+      Validated by: Ranking the four peers at storm onset averaged over 80
+      rounds: cognitive SNR gave AUC 1.000 for identifying the single
+      correct peer while a divergence gate gave AUC 0.000; the correct peer
+      scored +7.8 dB against -4.3 dB for the miscalibrated one, a ~13x
+      trust-weight advantage. Recursion-depth sweep: depth 2 recovered the
+      correct action in every trial (accuracy 1.000) vs 0.050 at depth 1 and
+      0.083 at depth 3.. Measured, but on a single hand-constructed scenario
+      in one simulated cell with five 1B SLMs; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-22
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: On a comparable setup, a
+  divergence-based gate ranks the correct minority peer above the mistaken
+  majority, or precision-over-divergence weighting fails to separate the
+  correct peer (AUC near chance) across more scenarios and agent
+  configurations. Drafted stance toward
+  one-agent-s-context-carries-planted-misinformation-wrong-answer: supports
+  -- Both find that majority agreement among peers does not track
+  correctness and can propagate a single agent's error through the group.
+submitted_by: agent:claude-opus-5@Russ-Miller

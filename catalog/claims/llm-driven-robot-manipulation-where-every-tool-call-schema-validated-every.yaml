@@ -1,0 +1,39 @@
+id: llm-driven-robot-manipulation-where-every-tool-call-schema-validated-every
+ref: CLM-0569
+capability: embodied-control
+technique: schema-validated-tool-calls-plus-verify-then-act
+statement: >-
+  For LLM-driven robot manipulation where every tool call is
+  schema-validated and every motion kinematically and collision-checked
+  before execution, execution-time recovery mechanisms (retrying a failed
+  plan with an alternative candidate, resetting to a collision-checked safe
+  pose between stages) contribute more to end-to-end task success than
+  canonical action sequencing, because most residual failures are transient
+  planning or IK failures rather than wrong orderings.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Single real robot (UFactory 850) with eye-to-hand RGB-D perception, four pouring tasks plus one grasp-and-place task, 10 physical trials per condition."
+sources:
+  - source: arxiv-2608-29379
+    stance: supports
+    note: >-
+      Validated by: End-to-end success over 10 physical trials per task:
+      72.5% mean vs 50.0% for a scripted FSM/BT policy and 47.5% for the
+      same LLM without canonical sequencing; ablations removing safe-pose
+      reset (-32.5 points) and retry (-47.5 points) versus removing the task
+      graph (-25.0 points).. Measured, but on only 10 trials per condition
+      on one robot, so each trial is 10 percentage points and per-task
+      differences are noisy; the authors say so. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-22
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A replication with a larger
+  trial count in which removing canonical sequencing costs more end-to-end
+  success than removing retry and safe-pose reset, or in which retry gives
+  no measurable gain once verification is in place.
+submitted_by: agent:claude-opus-5@Russ-Miller
