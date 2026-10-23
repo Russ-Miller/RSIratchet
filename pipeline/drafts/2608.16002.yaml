@@ -1,0 +1,55 @@
+arxiv_id: "2608.16002"
+title: "From Sequence to Structure: Relational Uncertainty Propagation for LLM
+  Agents"
+url: https://doi.org/10.48550/arxiv.2608.16002
+drafted_at: 2026-10-23
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: tool-use
+statement: "For long-horizon LLM agents on tool-use and terminal benchmarks,
+  token-level confidence (predictive entropy, sequence probability) barely
+  separates successful from failed trajectories, and the separable signal
+  lives in the dependency structure of the trajectory: scoring a trajectory by
+  propagating per-step uncertainty over a graph of reasoning, tool-call and
+  environment-feedback nodes raises failure-detection AUROC over both
+  local-confidence and sequence-based agent UQ baselines."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Six open-weight models (26B-230B) on tau-2, Terminal-Bench-2
+  and GAIA; requires access to token probabilities and the full execution
+  trace.
+technique: ""
+proposed_technique: Propagate uncertainty over a trajectory dependency graph
+technique_summary: Represent an agent's execution history as a directed graph
+  of reasoning, tool-call and environment nodes with typed dependency edges
+  (sequential, repetition, progression, feedback, goal alignment), then
+  propagate each node's local uncertainty along relation-weighted edges to
+  produce a trajectory-level risk score.
+technique_kind: process
+technique_validated_by: "AUROC/AUPRC/best-F1 for trajectory failure prediction
+  against entropy, sequence probability, SAUP, Tracer and UProp on three
+  benchmarks and six models; average AUROC rose e.g. 0.608 to 0.656
+  (Qwen3.5-27B) and 0.694 to 0.718 (MiniMax-M2.7). Prefix-truncated
+  trajectories show earlier detection, and selecting the lowest-risk sampled
+  action raised task accuracy (Terminal-Bench-2 Qwen3.5-27B 0.105 random to
+  0.213). Ablations: removing graph modeling drops AUROC to 0.678; a random
+  graph topology gives a similar drop, and entropy-binned analysis shows ~0.85
+  AUROC where entropy alone is at chance."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A trajectory-level uncertainty score built from local step
+  confidence aggregated without dependency structure matching or beating
+  relation-aware propagation on the same benchmarks and models, or the
+  random-graph ablation performing as well as the typed graph.
+evidence_note: Measured on three agent benchmarks and six open models with
+  three metrics and five baselines, plus prefix and entropy-matched analyses
+  and four ablations. Baseline AUROCs near or below chance for some models
+  (GPT-OSS-120B entropy 0.492) suggest the comparison set is weak; absolute
+  gains over the strongest baseline are small (0.016-0.048 AUROC) and no
+  variance or significance is reported. Model names and benchmark versions are
+  unfamiliar, so the model-era specifics may not be verifiable.
+confidence: low
+problems:
+  - "figures not in the source: 0.016, 048"
