@@ -1,0 +1,54 @@
+arxiv_id: "2608.27311"
+title: "Verify Smarter, Evolve Further: Efficient Harness Evolution through
+  Behavior-Aware Verification"
+url: https://doi.org/10.48550/arxiv.2608.27311
+drafted_at: 2026-10-19
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: harness-self-improvement
+statement: "When an agent harness is evolved from execution traces under a
+  fixed interaction budget, verifying each candidate edit on tasks chosen for
+  the behavior it targets and accepting it only when the gain is attributable
+  to that behavior beats scoring every candidate on a shared fixed, random or
+  coreset task split, and larger verification budgets do not compensate:
+  fixed-split methods using up to 24x the rollouts fell below the unmodified
+  harness in half of their harness-benchmark pairs."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Three coding-agent harnesses (OpenCode, Codex CLI, Pi) on
+  four benchmarks, one model family (deepseek-v4-flash-preview), 30 TRAIN
+  tasks, budget capped at 200 units; gains largest where the benchmark has
+  recurring similar weaknesses and near zero where task goals are diverse or
+  the starting harness is already strong.
+technique: ""
+proposed_technique: Verify harness edits on behavior-matched tasks with an attribution gate
+technique_summary: For each proposed harness modification, select verification
+  tasks linked to the supporting trajectories plus regression-risk tasks, run
+  both old and new harness on them, and accept only if the trajectory evidence
+  attributes the improvement to the targeted behavior with no observed
+  regression.
+technique_kind: process
+technique_validated_by: Held-out pass@1 across 3 harnesses x 4 benchmarks
+  against the unmodified harness and three trajectory-based evolution
+  baselines (Self-Harness, Meta-Harness, HarnessFix); best or tied-best in 8
+  of 12 pairs, average +7.6-13.6%, never below baseline harness. Ablations on
+  OpenCode replace the behavior-aware batch with fixed, random and RHO-based
+  batches (all fall back to the initial harness score) and replace the
+  attribution gate with an aggregate-metric gate (gains only on Retail).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A harness-evolution run where behavior-matched verification plus
+  attribution gating yields no better held-out score than an equal-budget
+  fixed or random verification batch, or where scaling fixed-split
+  verification rollouts reliably closes the gap.
+evidence_note: Measured on 12 harness-benchmark cells with one model family
+  and 30 training tasks each; baselines run at their own original budgets
+  rather than matched budgets, and the paper's budget unit mixes LLM sessions
+  with rollouts without normalizing tokens or cost, so the efficiency
+  comparison is coarse. Ablations isolate selection and gating but only on one
+  harness and three benchmarks, and several ablation cells are exact ties with
+  the initial harness, meaning no edit was made rather than a graded
+  difference.
+confidence: medium

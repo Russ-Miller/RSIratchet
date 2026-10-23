@@ -1,0 +1,49 @@
+arxiv_id: "2609.10728"
+title: Towards a Deterministic Math Solver for Clinical Language Models
+url: https://doi.org/10.48550/arxiv.2609.10728
+drafted_at: 2026-10-22
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: arithmetic
+statement: On clinical-calculator tasks where the formula, gold variables and
+  full note are all supplied, having an open-weight model write case-specific
+  Python for a restricted executor instead of doing the arithmetic itself
+  gives no reliable gain at 7B (+3.29 pp, calculator-cluster CI crossing zero)
+  but a clear gain at 32B (+7.05 pp, CI clear of zero), and the remaining
+  errors are invented unit conversions and one-tier slips in banded scores
+  rather than raw computation.
+kind: observation
+backing_strength: single-paper
+scope_condition: MedCalc-Bench Verified (1,100 cases, 55 calculators),
+  Qwen2.5-7B and Qwen2.5-32B-AWQ, five seeds, formula and gold variables
+  supplied; Mistral-7B and Phi-3.5-mini moved in opposite directions on the
+  same comparison
+technique: program-aided-computation
+proposed_technique: Let the model write case-specific Python for a restricted executor
+technique_summary: Instead of hardcoding one validated function per clinical
+  calculator, the model translates the supplied formula into a short Python
+  program that a sandboxed local executor containing no calculator-specific
+  code runs.
+technique_kind: tooling
+technique_validated_by: Accuracy on 1,100 MedCalc-Bench Verified cases over
+  five seeds against open-book direct arithmetic with matched
+  formula/variable/note access, and against a 22-calculator hand-written
+  library; paired gaps with 10,000-draw calculator-cluster bootstrap
+  intervals.
+stance_on_existing: contests
+related_claim_id: offloading-computation-generated-code-interpreter-removes-most-arithmetic
+stance_reason: Under matched formula and variable access, code offloading did
+  not reliably beat direct arithmetic at 7B and left unit-conversion and
+  banding errors at both scales, so it does not uniformly remove arithmetic
+  error.
+falsifier: A matched-access comparison on clinical calculators where program
+  generation beats direct arithmetic with an interval clear of zero at 7B as
+  well, or where the residual program-route errors are shown to be computation
+  rather than formula/variable/unit handling.
+evidence_note: Measured on one benchmark (1,100 cases, 55 calculators) with
+  two Qwen checkpoints plus two other 7B-class checkpoints as secondary arms;
+  cluster bootstrap over calculators, effective sample 120-190 cases for the
+  arithmetic comparisons. Two checkpoints do not establish scaling and the
+  authors say so; benchmark formulas themselves were audited and 16 flagged.
+confidence: medium

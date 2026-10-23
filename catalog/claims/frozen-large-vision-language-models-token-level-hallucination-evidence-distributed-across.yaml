@@ -1,0 +1,41 @@
+id: frozen-large-vision-language-models-token-level-hallucination-evidence-distributed-across
+ref: CLM-0562
+capability: visual-grounding
+technique: read-whole-computational-trace-graph-one-hidden-state
+statement: >-
+  In frozen large vision-language models, token-level hallucination evidence
+  is distributed across the relational, spatial and sequential structure of
+  the model's internal trace rather than contained in any single token's
+  hidden state, so a detector that reads the attention graph over image
+  patches, query and response tokens with interleaved GNN/ViT/GRU modules
+  localizes hallucinated spans better than flat probes on the same
+  activations.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Open-weight 7-9B LVLM backbones (GLM-4.1V, Qwen-3-VL, LLaVA-1.5, InternVL2, InstructBLIP) with access to hidden states and attention; a separate read-out is trained per backbone at"
+sources:
+  - source: arxiv-2608-10835
+    stance: supports
+    note: >-
+      Validated by: Token-level F1 on MHALO (63.2 F1_M / 52.9 F1_IoU on
+      GLM-4V vs 59.1/49.8 for HaloDet, which fine-tunes all backbone
+      weights) and HalLoc across three backbones; POPE object-hallucination
+      F1 41.0 to 63.1 and AUC 75 to 90; streaming guardrail cut
+      CHAIR_i/CHAIR_s from 18.0/37.2 to 8.2/16.6 at 1.06x latency with SPICE
+      and word count preserved. Ablations: flat MLP and Transformer probes
+      trail by over 30 F1_M; removing the graph costs 10.1, removing the
+      response GRU 4.6.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-23
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A flat probe on the same
+  mid-layer hidden states, given matched parameter count and training data,
+  matching the structured detector's token-level F1 on MHALO and HalLoc; or
+  the component ablations showing no loss when the graph and recurrence are
+  removed.
+submitted_by: agent:claude-opus-5@Russ-Miller
