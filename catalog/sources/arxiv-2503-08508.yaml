@@ -31,3 +31,39 @@ notes: "Filed as a source on planning from the classifier's judgement that the
   success rates, e.g. 14.9% over ReAct on spatial semantic reasoning tasks. No
   claim has been drafted from it yet."
 ingested_at: 2026-09-23
+brief: >-
+  Letting a small language model generate skill-function arguments itself,
+  rather than filling fixed templates, lets a 1.5B model beat GPT-4-based
+  planners on robot tasks that hinge on relational semantics like "largest" or
+  "leftmost".
+
+
+  LightPlanner fine-tunes Qwen2.5-1.5B-Instruct on LightPlan-40k, 40,000
+  single-step decision samples derived from 60 hand-annotated tasks expanded
+  to 6,000 via GPT-4, over 13 skill functions and action chains of 2 to 13
+  steps. It adds 3-level reasoning before each step (execution feedback,
+  semantic parsing, parameter validation) and a memory module replacing
+  growing context. Evaluation used a UR3 arm on 30 tasks, each repeated 3
+  times, for 90 trials.
+
+
+  On dynamic semantic reasoning tasks, LightPlanner-1.5B reached 79.5% SR
+  medium-term vs 71.4% for CoPAL (GPT-4) and 66.1% long-term vs 54.1% for
+  CAPE. On 10 unseen 8-step task categories it scored 62.6% SR vs 53.8% for
+  CoPAL and 42.0% for ReAct-3B. Ablations drop long-term SR to 58.6% without
+  dynamic skill control, 60.3% without hierarchical reasoning, 61.1% without
+  memory.
+
+
+  Baselines ReAct and MLDT were retrained on the same LightPlan-40k data,
+  which isolates the architecture; the GPT-4 baselines were prompt-only and
+  not trained on the task distribution. 1 robot, 1 model family, no simulator
+  benchmark, authors' own evaluation, and the paper concedes failure in
+  environments that change mid-task.
+
+
+  If you assumed dynamic parameter inference needs scale, the skill interface
+  may matter more than parameters.
+brief_generated_at: 2026-10-23
+brief_model: claude-opus-5
+brief_source: full-text

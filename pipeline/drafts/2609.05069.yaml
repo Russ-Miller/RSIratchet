@@ -1,0 +1,50 @@
+arxiv_id: "2609.05069"
+title: A Structured Debate-Mixture-of-Agents Framework for Complex Clinical
+  Diagnostic Decision Support
+url: https://doi.org/10.48550/arxiv.2609.05069
+drafted_at: 2026-10-22
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: On complex clinical diagnosis from published case reports (rare
+  disease and challenging cases), running several presenter-rebutter debater
+  pairs on one backbone and synthesizing their revised hypotheses with an
+  aggregator raises exact-match diagnostic accuracy and rated safety over the
+  same model prompted once, while giving no measurable gain on multiple-choice
+  clinical knowledge questions.
+kind: observation
+backing_strength: single-paper
+scope_condition: GPT-4o, GPT-3.5 and GPT-4o-mini backbones; 297 rare disease
+  and 1,719 challenging published cases; accuracy graded by exact match to the
+  reference diagnosis and safety by an LLM judge rubric; the 4x2 structure and
+  a 16,000-token role budget were best, and performance degraded with smaller
+  budgets or partitioned patient information.
+technique: ""
+proposed_technique: "Debate-Mixture-of-Agents: rebut, revise, then aggregate"
+technique_summary: Each debater runs a presenter that drafts a diagnosis, a
+  rebutter that attacks it for missing evidence and unsafe omissions, and a
+  presenter revision; a separate aggregator then merges all revised hypotheses
+  without forcing consensus.
+technique_kind: process
+technique_validated_by: Top-1/top-3 exact-match accuracy and rubric safety
+  rate against single-model prompting, a single model prompted to imitate the
+  debate, MoA with the rebutter removed, and a MAC-style single-debater
+  multi-round dialogue; on challenging cases GPT-4o rose from 14.50% to 25.34%
+  top-1 accuracy and 63.46% to 76.14% top-1 safety, with McNemar p<0.01, and
+  all three ablations scored below the full topology.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched-compute single-model baseline (same token spend, repeated
+  sampling and self-critique) reaching the same accuracy and safety on these
+  case sets, or the gain vanishing when the exact-match grader is replaced
+  with a less brittle one.
+evidence_note: Measured on two case sets with paired one-sided McNemar tests
+  and three ablation variants across three backbones; the aggregate
+  10.21-point accuracy and 11.36-point safety gains are over GPT-4o. Safety is
+  scored by GPT-4o-mini with agreement 86-96% against two other LLM judges,
+  never human clinicians. No compute-matched single-model baseline, so part of
+  the gain could be extra inference tokens rather than the topology, though
+  the prompt-only and MoA ablations argue against a pure prompt explanation.
+confidence: medium

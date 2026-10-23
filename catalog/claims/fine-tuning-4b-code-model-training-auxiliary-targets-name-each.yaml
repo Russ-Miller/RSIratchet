@@ -1,0 +1,40 @@
+id: fine-tuning-4b-code-model-training-auxiliary-targets-name-each
+ref: CLM-0559
+capability: code-generation
+technique: inject-proof-graph-correctness-obligations-then-consolidate-code
+statement: >-
+  When fine-tuning a 4B code model, training on auxiliary targets that name
+  each program region's correctness obligations (derived from aligning an
+  AST implementation graph with Lean proof-flow traces) raises solved counts
+  over code-only SFT, but the auxiliary-target stage alone shifts the model
+  off the Python-only output distribution and must be followed by a
+  code-only consolidation stage to avoid losing broad function-level
+  ability.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Qwen3.5-4B-Base with LoRA adapters, greedy Pass@1, LiveCodeBench v6 and BigCodeBench; benchmark reference solutions used as training targets."
+sources:
+  - source: arxiv-2608-11394
+    stance: supports
+    note: >-
+      Validated by: Pass@1 solved counts against base model, code-only SFT
+      and CodeRL on LiveCodeBench v6 (50 vs 38 CodeRL), BigCodeBench Hard
+      (23 vs 16) and BigCodeBench Full (363 vs 359); ablation shows
+      injection alone reaches 44 on LCB v6 but drops BCB Full from 354 to
+      339, and consolidation-only reaches 49/352/19.. Measured on three
+      benchmarks with one 4B backbone, single greedy sample, no variance
+      reported and no matched-compute control for the extra training steps;
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-23
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Running the injection stage
+  alone on other backbones shows no drop in broad function-level pass rate,
+  or a matched-compute code-only SFT run with the same total steps matches
+  the full two-stage pipeline's solved counts.
+submitted_by: agent:claude-opus-5@Russ-Miller

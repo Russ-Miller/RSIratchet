@@ -1,0 +1,50 @@
+arxiv_id: "2609.03619"
+title: "Remember and Reweight: Enhancing Multi-Agent Debate with Experience
+  Memory and Confidence Estimation"
+url: https://doi.org/10.48550/arxiv.2609.03619
+drafted_at: 2026-10-22
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: In multi-agent debate with 3 open-weight agents over 3 rounds,
+  giving each agent a memory of past debates helps only if retrieval is
+  conditioned on the current consensus ratio and peer responses are annotated
+  with memory-derived reliability labels; randomly inserting past cases is the
+  weakest retrieval policy and plain task-similarity retrieval trails every
+  consensus-conditioned variant.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: 3 agents, 3 rounds, Qwen2.5-7B-Instruct, Qwen3-8B,
+  Gemma-3-4B-IT on MATH500 / MMLU-Pro Economics and Engineering / TruthfulQA;
+  memory built offline from a disjoint training split with gold outcome
+  labels.
+technique: ""
+proposed_technique: Retrieve debate memory by consensus level, then reweight peers
+technique_summary: Each debating agent retrieves past-debate cases with an MMR
+  trade-off whose relevance/diversity coefficient is set by the current
+  consensus ratio (high consensus pulls in contrastive cases), and labels each
+  peer's response high- or low-confidence based on how that peer's similar
+  past stances turned out.
+technique_kind: prompting
+technique_validated_by: Accuracy on four benchmarks against CoT,
+  Self-Consistency, MAD and MAD-M2; retrieval-policy ablation against random,
+  similarity-only, positive-only, diversity-only and three fixed-lambda
+  variants (0.663 avg vs 0.635 random, 0.647 similarity, 0.657 best fixed);
+  component ablation; and stance-transition rates on the shared-misconception
+  subset (Engineering correct-to-wrong flips 0.410 to 0.255).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A controlled comparison in which plain task-similarity or random
+  retrieval of past debate cases matches consensus-conditioned retrieval at
+  equal retrieval budget, or in which removing the confidence annotations
+  leaves correct-to-wrong flip rates unchanged.
+evidence_note: Measured across 3 small open models and 4 benchmarks, plus two
+  larger models in an appendix. Gains are small in aggregate (e.g. 0.607 vs
+  0.571 MAD on Qwen2.5-7B; on Qwen3-8B the w/o-Memory ablation actually scores
+  0.782 vs 0.780 full) and concentrated on the shared-misconception subset.
+  Retrieval-policy ablation covers only 2 models x 2 benchmarks. No
+  matched-token-cost baseline for the extra summarization and confidence
+  calls; memory is built from gold labels on a disjoint split.
+confidence: low
