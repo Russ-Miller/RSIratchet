@@ -1,0 +1,40 @@
+id: frozen-pretrained-time-series-forecaster-leaves-structured-residual-error-having
+ref: CLM-0573
+capability: forecasting
+technique: mine-frozen-forecaster-s-residual-named-features
+statement: >-
+  When a frozen pretrained time-series forecaster leaves structured residual
+  error, having an LLM propose named semantic features of that residual
+  (e.g. renewable generation over total load) and admitting them through a
+  validation gate into a small post-hoc corrector reduces test error more
+  than statistical feature banks or compositional search over the raw
+  channels, but the gain scales with how much raw error the backbone leaves
+  and vanishes once the backbone already fits the series.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Six public forecasting datasets, six frozen pretrained backbones, covariates routed only to the corrector; holds under two LLM backends and on top of fine-tuned backbones; no relia"
+sources:
+  - source: arxiv-2608-05207
+    stance: supports
+    note: >-
+      Validated by: Mean reduction in test wMAPE versus the raw frozen
+      backbone across 36 backbone-dataset cells under a rolling-origin,
+      multi-seed protocol, against three external feature-engineering
+      systems (TSFresh, CAAFE, LLM-FE) run through the identical gate and
+      corrector, plus a no-LLM ablation, a covariate-only corrector, and a
+      head-only fine-tune; paired Wilcoxon p<0.01, up to 27% error reduction
+      on the weakest backbones, and the advantage holds at every feature
+      budget K.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A run on the same grid
+  where the LLM-named features add no lift beyond compositional search and
+  statistical banks at matched budget, or where lift is uncorrelated with
+  the backbone's raw error.
+submitted_by: agent:claude-opus-5@Russ-Miller

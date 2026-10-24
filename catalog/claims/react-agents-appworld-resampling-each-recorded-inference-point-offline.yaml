@@ -1,0 +1,41 @@
+id: react-agents-appworld-resampling-each-recorded-inference-point-offline
+ref: CLM-0628
+capability: harness-self-improvement
+technique: target-guidelines-flip-prone-steps-found-resampling
+statement: >-
+  For ReAct agents on AppWorld, resampling each recorded inference point
+  offline (N=30, temperature 0.5) to find steps whose responses vary across
+  samples, then writing short natural-language guidelines targeting those
+  steps into retrievable episodic memory, raises the fraction of tasks
+  passing all five repeat runs by +16 points same-task and +13 points
+  similar-task with GPT-4.1 (+6 and +8.7 with GPT-OSS-120B) without lowering
+  mean per-run accuracy.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "ReAct agent, AppWorld test_normal 168 tasks, GPT-4.1 and GPT-OSS-120B on hosted endpoints; guidelines generated from a single baseline trajectory per task, no validation gate befor"
+sources:
+  - source: arxiv-2609-08832
+    stance: supports
+    note: >-
+      Validated by: Pass^5, Mean@5 and normalized consistency over five runs
+      per task on AppWorld test_normal (168 tasks, 336 similar-task
+      evaluations), against the same agent with no guidelines; trajectory
+      consistency also scored as a pass/fail predictor (AUROC 0.699 on 50
+      test_challenge tasks).. Measured on one benchmark, one agent
+      architecture, two models, five runs per task; no ablation isolating
+      the consistency-targeting signal from ordinary trajectory-derived
+      memory, and no matched-token-cost baseline (resampling costs ~30x
+      tokens). [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Guidelines derived from
+  steps flagged by resampling raise Pass^5 no more than guidelines derived
+  from randomly chosen steps, or from outcome-only trajectory extraction, at
+  matched guideline count.
+submitted_by: agent:claude-opus-5@Russ-Miller

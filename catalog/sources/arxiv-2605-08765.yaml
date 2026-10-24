@@ -6,15 +6,50 @@ year: 2026
 date: 2026-05-09
 arxiv_id: "2605.08765"
 url: https://arxiv.org/abs/2605.08765
-tags: [ingested]
-summary: >-
-  Unlearning in large language models (LLMs) aims to remove harmful training
-  data while preserving overall utility. However, we find that existing
-  methods often hallucinate, generate abnormal token sequences, or behave
-  inconsistently, raising safety and trust concerns. According to prior
+tags:
+  - ingested
+summary: "Unlearning in large language models (LLMs) aims to remove harmful
+  training data while preserving overall utility. However, we find that
+  existing methods often hallucinate, generate abnormal token sequences, or
+  behave inconsistently, raising safety and trust concerns. According to prior
   literature on LLM honesty, such behaviors are often associated with
   dishonesty. This motivates us to investigate the notion of honesty in the
   context of model unlearning. We propose a formal definition of unlearning
-  honesty, which includes: (1) preserving both utility and honesty on
-  retained knowledge, and (2) e
+  honesty, which includes: (1) preserving both utility and honesty on retained
+  knowledge, and (2) e"
 ingested_at: 2026-09-19
+brief: >-
+  Unlearned models rarely admit that they no longer know something: they
+  hallucinate the forgotten fact, emit repetitive rare tokens, or refuse once
+  and then answer the same question on a mild follow-up.
+
+
+  The authors define honest unlearning as self-knowledge plus stable
+  self-expression, and score 9 methods across 3 families (rejection-based
+  IDK+AP, gradient-ascent GA/NPO/SimNPO, feature-randomize RMU/BLUR/ME+GD) on
+  Zephyr-7b-beta and Llama3-8b unlearned on WMDP-Bio, with retain-side checks
+  on MMLU, CSQA and BBH.
+
+
+  RMU's rejection rate is 1.36 with RR2R 0.19; IDK tuning produces high
+  refusal while WMDP accuracy stays high, and RMU+IDK refuses at 63.41 but
+  only 26.17 after re-asking, with QAMRC around 40%. Gradient-ascent methods
+  pick an "I don't know" option often but pick an irrelevant option in the
+  same slot almost as often; under randomized option positions both fall to
+  chance (NPO: CIR 19.24%, COR 17.65%; SimNPO: CIR 20.77%, COR 19.87%). Their
+  proposed ReVa, which aligns forget-set activations to a distilled refusal
+  direction, reaches RR 60.86 and RR2R 45.42, with AR 91.00 and MRS 71.37, in
+  5.91 minutes versus 210.66 for IDK+AP.
+
+
+  The position-shuffle and content-swap controls cleanly isolate the
+  fake-refusal artefact; the ReVa comparison is self-reported, on 1 dataset,
+  with no independent replication and no relearning or adversarial fine-tuning
+  tests. MCQ abstention stays weak (CIR 7.18).
+
+
+  If you read high refusal rates as evidence of successful forgetting, re-ask
+  the question before believing it.
+brief_generated_at: 2026-10-24
+brief_model: claude-opus-5
+brief_source: full-text

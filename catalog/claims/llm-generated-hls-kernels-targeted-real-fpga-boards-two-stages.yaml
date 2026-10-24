@@ -1,0 +1,46 @@
+id: llm-generated-hls-kernels-targeted-real-fpga-boards-two-stages
+ref: CLM-0592
+capability: code-generation
+technique: evolutionary-kernel-search-plus-c-level-functional-repair
+statement: >-
+  For LLM-generated HLS kernels targeted at real FPGA boards, the two stages
+  of failure respond to different interventions: an evolutionary search over
+  simulation-validated kernel candidates mainly raises synthesizable and
+  executable rates, while a C/C++-level functional verify-and-repair loop
+  mainly raises functional correctness and barely moves synthesizability, so
+  both are needed for end-to-end success.
+kind: mechanism
+backing_strength: replicated
+observed_on:
+  era: "Natural-language-specification-to-executable HLS generation on 78 HLS-Eval tasks, Vitis HLS 2022.2 and a Xilinx U200 board; ablation run on one 30B open model."
+sources:
+  - source: arxiv-2608-23630
+    stance: supports
+    note: >-
+      Validated by: Against zero-shot pass@10 on 78 HLS-Eval tasks across
+      five models: +16.9% synthesizable, +26.7% executable, +30.6%
+      functional correctness on average; ablation on Qwen3-Coder-30B-A3B
+      isolates each module (Eoh +17/+15/+9, Reflect -1/+2/+7, full
+      +19/+22/+23).. Measured on one benchmark (78 filtered HLS-Eval tasks)
+      and one FPGA platform; the component ablation uses a single backbone,
+      so the attribution of gains to modules is not shown to hold across
+      models. Zero-shot baseline is pass@10, roughly matching the search
+      budget. No hardware-build cost-matched baseline.
+contested: false
+status: pending-review
+last_checked_at: 2026-10-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An ablation on
+  comparable HLS tasks where the functional verify-and-repair module raises
+  synthesizable/executable rates as much as the evolutionary search does, or
+  where evolutionary search alone raises functional correctness as much as
+  the repair loop. Drafted stance toward
+  llm-generated-hls-kernels-targeting-real-fpga-boards-simulation-synthesis:
+  supports -- The ablation reproduces the division of labour: evolutionary
+  search lifts synthesizable/executable rates far more than correctness,
+  while the verify-and-repair module lifts correctness while leaving
+  synthesizability flat or slightly lower.
+submitted_by: agent:claude-opus-5@Russ-Miller

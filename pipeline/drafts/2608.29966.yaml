@@ -1,0 +1,50 @@
+arxiv_id: "2608.29966"
+title: "DataFoundry: Evolving Data Preparators via Recursive Self-Improvement"
+url: https://doi.org/10.48550/arxiv.2608.29966
+drafted_at: 2026-10-22
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: harness-self-improvement
+statement: For LLM data-preparation pipelines in specialist domains (math,
+  finance, law, medicine), diagnosing a small pilot set of generated samples
+  against domain-selected quality criteria and rewriting the individual
+  pipeline components (chunking, instruction builder, response generator)
+  before full-scale generation yields training data with higher downstream
+  fine-tuning utility than post-hoc filtering or one-shot agent/skill
+  generators using the same backbone — but the gain is non-monotonic in
+  rounds, peaking at two and degrading after.
+kind: observation
+backing_strength: single-paper
+scope_condition: GPT-5.6 Sol as the coding-agent backbone; two RSI rounds;
+  downstream SFT of Qwen2.5-7B and Llama-3.1-8B on domain data mixed with
+  Dolly-15k; four domains with 53-154 source documents each.
+technique: ""
+proposed_technique: Evolve the data-generation pipeline on pilot sets before scaling
+technique_summary: A controller compiles a data-preparation runtime
+  specification, generates a small pilot dataset, assesses it against
+  domain-selected quality criteria, and emits an adapter that revises specific
+  pipeline components while preserving their interfaces, iterating before
+  full-scale data production.
+technique_kind: process
+technique_validated_by: "Downstream benchmark averages after SFT on the
+  produced data, versus DataFlow filtering pipelines, direct LLM generators,
+  agent generators and skill generators including same-backbone controls: +3.3
+  Math, +1.3 Finance, +1.4 Law, +2.2 Medical over the strongest competitor on
+  Qwen2.5-7B, and +3.8/+6.2/+7.9/+5.9 over the same-backbone skill generator;
+  round sweep shows Math 25.6 to 28.4 to 28.8 then 26.1."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched comparison in which post-hoc filtering of a larger
+  candidate pool, or the same backbone given equal compute without pipeline
+  evolution, produces data with equal or better downstream domain scores; or
+  rounds beyond two improving monotonically.
+evidence_note: "Measured on DataPrep-Bench across four domains with two
+  downstream base models and same-backbone agent/skill controls, which
+  isolates framework from backbone. Benchmark results for baselines were
+  adopted from prior work rather than re-run. No token/compute-matched
+  baseline; the round-count degradation is observed on only two domains and
+  the stopping rule (two rounds) was set from pilot assessment, not held out.
+  Law is the weakest case: DataFoundry does not lead on Llama-3.1-8B there."
+confidence: low

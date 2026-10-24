@@ -1,0 +1,54 @@
+arxiv_id: "2608.13292"
+title: "Refine After Generation: Toward Correct and Concise Patches in
+  LLM-based Program Repair"
+url: https://doi.org/10.48550/arxiv.2608.13292
+drafted_at: 2026-10-23
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: cutting-to-the-chase
+statement: In LLM-based repository-level program repair, telling the generator
+  to be minimal or constraining its output format does not shrink patches,
+  because verbosity comes from the capability-raising machinery itself
+  (iterative refinement, broad context); a separate post-generation refiner
+  that rewrites an already-plausible patch is what reduces size without losing
+  fixes.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Repository-level issue fixing measured on SWE-bench Verified;
+  patch size measured relative to the developer patch across 28 leaderboard
+  systems and four host agents.
+technique: ""
+proposed_technique: Shrink the patch after generation, not during it
+technique_summary: A small refiner model (SFT plus DPO on verbose-to-concise
+  patch pairs with distilled reasoning traces) is plugged in after an existing
+  repair framework's patch generation to rewrite the candidate patch into a
+  smaller one, with optional judge- or test-gated fallback to the original.
+technique_kind: process
+technique_validated_by: "On SWE-bench Verified across four host systems
+  (Agentless, SWE-agent, Moatless, OpenHands), average total changes relative
+  to developer patches fell from +242.14% to +4.24% and net changes from
+  +348.24% to -39.75%, while resolved instances were preserved or improved by
+  up to +42; prompting Claude-4.5-Sonnet, Atomizer untangling, AdaPatcher and
+  PRepair all shrank patches only by losing 29-217 resolved instances.
+  Ablation: SFT alone over-compresses (resolves 276 avg, below the untrained
+  293); DPO restores 332."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A repair system whose patches match developer patch size after only
+  a minimality instruction or output-format change, with resolution unchanged;
+  or a post-generation refiner that shrinks patches no more than a minimality
+  prompt at matched resolution.
+evidence_note: "Measured. RQ-1 compares 28 leaderboard approaches on resolved
+  instances against gold patches, with Kruskal-Wallis/Mann-Whitney tests:
+  explicit minimality instruction +208.83% total changes vs none +191.39%,
+  while iterative refinement +406.46% vs +95.60% (p<0.001) and top-12 vs
+  bottom-12 resolvers +223.39% vs +118.09% (p<0.001) — effect sizes are small
+  (|delta| 0.13-0.21) and the authors call the design-factor analysis
+  association, not causation, since design labels come from public reports.
+  RQ-2 compares RECAP to four baselines on four hosts. Correctness is
+  SWE-bench test passing, i.e. plausibility, not semantic correctness; part of
+  the measured size inflation comes from auxiliary test/reproduction edits,
+  which the authors count separately."
+confidence: medium

@@ -1,0 +1,41 @@
+id: step-level-verification-structured-quantitative-stem-reasoning-training-7b-process
+ref: CLM-0643
+capability: error-detection
+technique: train-step-verifier-only-symbolically-valid-wrong-steps
+statement: >-
+  For step-level verification of structured quantitative STEM reasoning,
+  training a 7B process reward model only on hard negatives that are
+  constructed to pass a deterministic symbolic verifier (swapped formula or
+  unit-matched variable, with values recomputed so the math balances), and
+  running the verifier as a hard filter before the PRM scores candidates,
+  detects flawed steps better than monolithic PRMs that must judge
+  arithmetic and logic together.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Problems expressible as sequences of deterministic calculations or algebraic manipulations with units; verifier coverage limited to the schema's ~120 primitives; excludes qualitati"
+sources:
+  - source: arxiv-2608-26329
+    stance: supports
+    note: >-
+      Validated by: ProcessBench average F1 74.2 for verifier+CSP-PRM vs
+      73.5 for Qwen2.5-Math-PRM-7B and 68.8 for the same CSP-PRM without the
+      verifier; PRMBench soundness/sensitivity gains; Best-of-8 downstream
+      average 51.5 vs 49.4 best baseline; perturbation ablation with
+      identical positives gave 75.4 joint vs 71.2 logic-only and 70.9
+      operand-only.. Measured on ProcessBench, PRMBench, Best-of-8 decoding
+      and science benchmarks with one 7B backbone; verifier and CSP data are
+      ablated separately and the two perturbation policies are isolated with
+      identical positives. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A PRM trained on ordinary
+  mixed negatives, with the same verifier-first pruning at inference and
+  matched compute, matching or beating the
+  constraint-preserving-hard-negative PRM on step-level F1.
+submitted_by: agent:claude-opus-5@Russ-Miller

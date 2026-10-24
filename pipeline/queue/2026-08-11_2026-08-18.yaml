@@ -48,6 +48,38 @@ candidates:
       improvements enabled by the Latent Critic architecture across Qwen and Llama-based models.
       Demonstrating superior real-time efficacy, our approach significantly outperforms
       equivalent-scale fine-tuned external detectors, semantic entropy baselines, an
+    verdicts:
+      - capability: critique
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper is about detecting and localizing hallucinated tool-calling actions via a LoRA
+          critic, i.e., defined-error detection, not measuring model judgements against careful
+          human evaluation.
+        classified_at: 2026-10-18
+        model: claude-opus-5
+      - capability: hallucination
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: The paper proposes a LoRA 'Latent Critic' that detects and localizes hallucinated
+          tool-calling actions in real time, outperforming external detectors and semantic entropy
+          baselines and yielding downstream improvements.
+        scope_condition: Qwen and Llama-based models in tool-calling/agentic settings with a LoRA critic
+          operating on the frozen base model's residual stream
+        classified_at: 2026-10-18
+        model: claude-opus-5
+      - capability: self-repair
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes a LoRA adapter that converts latent uncertainty into localized
+          natural-language critique during generation, improving detection and downstream correction
+          over external detectors and entropy baselines.
+        scope_condition: Qwen and Llama base models with a frozen backbone plus LoRA 'Latent Critic',
+          tool-calling/specification-grounding hallucinations
+        classified_at: 2026-10-23
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7203454185
     score: 23
     signals:
@@ -92,6 +124,18 @@ candidates:
       through natural language reasoning traces. These advances in cross-dataset image
       classification pave the way for more reliable general-purpose vision systems such as AI
       assistants and autonomous robots.
+    verdicts:
+      - capability: multi-model-coordination
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes an MLLM router that combines multiple vision models and reports
+          competitive/improved cross-domain performance versus specialized routers and individual
+          backbones, attributing gains to the routing/combination rule.
+        scope_condition: Cross-dataset image classification with an ensemble of heterogeneous vision
+          backbones (ResNet, SSL, VLM) routed per-image by an MLLM agent
+        classified_at: 2026-10-23
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7203499091
     score: 21
     signals:
@@ -135,6 +179,18 @@ candidates:
       users of pretrained systems, for whom supervised fine-tuning, reasoning scaffolds, and
       external tools are more practical. We conclude with deployment recommendations and research
       directions for more reliable numerical behavior in foundation models.
+    verdicts:
+      - capability: arithmetic
+        about_capability: true
+        direction: measures
+        confidence: high
+        rationale: It is a survey/evaluation characterizing numeracy failure modes and their structural
+          causes rather than proposing a new fix.
+        supports_claim_id: position-embeddings-encode-digit-place-let-small-transformers
+        scope_condition: Survey plus coordinated evaluation of three frontier model families on Number
+          Cookbook, NumericBench, GSM-Symbolic
+        classified_at: 2026-10-23
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7203504191
     score: 20
     signals:
@@ -181,6 +237,20 @@ candidates:
       a Difficulty-Aware Adaptive Search mechanism (DAAS) that adjusts search depth to question
       difficulty. UAV-MAS with a 32B open-source MLLM achieves 77.0% overall accuracy on
       UAVQA-Bench, surpassing Gemini 3 Pro "
+    verdicts:
+      - capability: multi-model-coordination
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes a training-free multi-agent pipeline whose combination rules (tool
+          routing, refinement, adaptive search) raise a 32B open MLLM to 77.0% accuracy, surpassing
+          strong single-model baselines.
+        supports_claim_id: four-diagram-grounded-geometry-benchmarks-multi-agent-pipeline-consistently-helps-open-source
+        scope_condition: UAV aerial image understanding/reasoning benchmark (UAVQA-Bench), training-free
+          multi-agent system with tool routing, iterative validation and adaptive search over a 32B
+          open-source MLLM
+        classified_at: 2026-10-23
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7203469189
     score: 20
     signals:
@@ -195,6 +265,7 @@ candidates:
       - +mitigation
     capabilities:
       - debugging
+      - cutting-to-the-chase
     title: "Refine After Generation: Toward Correct and Concise Patches in LLM-based Program Repair"
     date: 2026-08-13
     arxiv_id: "2608.13292"
@@ -226,6 +297,30 @@ candidates:
       Across four host systems, prompting, commit-untangling, and minimality-aware baselines reduce
       patch size only by sacrificing 49 to 217 resolved instances. In contrast, RECAP achieves a
       substantially better size-correctness tradeoff, cutting average
+    verdicts:
+      - capability: cutting-to-the-chase
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper measures that LLM patches are substantially more verbose than needed and that
+          minimality/format prompts barely help, then proposes RECAP which reduces patch size with
+          far less correctness loss than baselines.
+        supports_claim_id: no-thinking-controls-do-not-stop-visible-reasoning
+        scope_condition: LLM-based agentic program repair on SWE-bench Verified; patch verbosity relative to
+          developer patches, with a post-generation refiner adapter across four host systems
+        classified_at: 2026-10-23
+        model: claude-opus-5
+      - capability: debugging
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper measures patch verbosity in existing repair systems and proposes RECAP, a
+          post-generation refiner that reduces patch size with a better size-correctness tradeoff
+          than baselines.
+        scope_condition: LLM-based agentic APR on SWE-bench Verified, repository-level issues; RECAP adapter
+          attached to four host repair systems
+        classified_at: 2026-10-23
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7203471172
     score: 19
     signals:
@@ -271,6 +366,18 @@ candidates:
       multiple reasoning and coding benchmarks demonstrate that E2-Explainer identifies critical
       communication subgraphs that preserve successful collaboration. These subgraphs can also be
       executed directly to prune redundant communication edg
+    verdicts:
+      - capability: multi-model-coordination
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes a causal-attribution explainer whose identified subgraphs can be
+          executed directly to prune redundant communication edges while preserving collaborative
+          task performance.
+        scope_condition: LLM multi-agent systems with learned communication topologies, evaluated on
+          reasoning and coding benchmarks
+        classified_at: 2026-10-23
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7202355228
     score: 19
     signals:
@@ -315,6 +422,18 @@ candidates:
       families and diverse benchmarks demonstrate that TTH consistently improves accuracy and
       robustness, underscoring its generalizability and practical effectiveness. Code is released at
       https://github.com/Mehran-TAM/
+    verdicts:
+      - capability: hallucination
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes TTH, a training-free token-level fusion with a zero-shot multimodal
+          classifier that reportedly reduces object hallucination and improves accuracy/robustness
+          across LVLMs.
+        scope_condition: Training-free decoding-time intervention on object hallucination in large
+          vision-language models across multiple LVLM families and hallucination benchmarks
+        classified_at: 2026-10-23
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7202341208
     score: 18
     signals:
@@ -355,6 +474,17 @@ candidates:
       31.6% and 43.8%, while also improving BigCodeBench Full from 359 to 363 tasks. The ablation
       study further shows that verification-graph injection produces the initial reasoning gain,
       while verification to code consolidation is essential for robust cross-benchmark transfer.
+    verdicts:
+      - capability: code-generation
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: The paper proposes a training framework that raises solved counts over base, code-only
+          SFT, and CodeRL baselines on code benchmarks.
+        scope_condition: Training code LLMs with implementation graphs plus Lean-derived proof-flow graphs;
+          evaluated on LiveCodeBench v6 and BigCodeBench
+        classified_at: 2026-10-23
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7203713868
     score: 18
     signals:
@@ -398,6 +528,29 @@ candidates:
       require complex reasoning and are prone to ambiguity or hallucinations, uncertainty-guided
       orchestration yields more reliable outcomes than uncertainty-unaware coordination. Semantic
       entropy and semantic density in tandem outperformed either metric a
+    verdicts:
+      - capability: multi-model-coordination
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes semantic-uncertainty-guided orchestration that makes multi-agent
+          coordination more reliable than uncertainty-unaware coordination, attributing gains to the
+          combination rule.
+        scope_condition: Hierarchical LLM multi-agent framework evaluated on StrategyQA, JailbreakBench,
+          TruthfulQA; comparison is against uncertainty-unaware coordination
+        classified_at: 2026-10-23
+        model: claude-opus-5
+      - capability: hallucination
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes semantic entropy/density-guided orchestration that verifies and
+          reprompts intermediate outputs, reporting more reliable, less hallucination-prone outcomes
+          than uncertainty-unaware coordination.
+        scope_condition: Hierarchical LLM multi-agent orchestration evaluated on StrategyQA, JailbreakBench,
+          TruthfulQA
+        classified_at: 2026-10-23
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7202343001
     score: 18
     signals:
@@ -439,6 +592,18 @@ candidates:
       and multi-objective trade-offs. Overall, our results suggest that much of the performance in
       multilingual API grounding can be achieved through careful supervised training, with RL
       providing targeted rather than fundamental improvements.
+    verdicts:
+      - capability: tool-use
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: SFT substantially improves argument language consistency and end-to-end function-call
+          accuracy, with RL adding only incremental gains.
+        supports_claim_id: adapting-qwen3-instruction-tuned-models-0-6b-32b-tool-calling-corpora
+        scope_condition: Multilingual API-calling benchmarks; post-training (SFT vs GRPO) to fix argument
+          language mismatch
+        classified_at: 2026-10-23
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7213373416
     score: 17
     signals:
@@ -471,6 +636,16 @@ candidates:
       extensive experiments on speech QA datasets, we show that these unlearning methods can reduce
       the privacy leakage rate by up to 80% while maintaining near-neutral performance on
       non-private speech QA and general speech understanding benchmarks.
+    verdicts:
+      - capability: audio-understanding
+        about_capability: false
+        direction: not_applicable
+        confidence: medium
+        rationale: The paper is about machine unlearning of private knowledge in audio-language models,
+          using speech QA benchmarks only as a utility-retention check rather than making claims
+          about audio understanding itself.
+        classified_at: 2026-10-23
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7202281407
     score: 17
     signals:
@@ -515,6 +690,18 @@ candidates:
       during generation, and a self-adaptation strategy aligning the detector with the LVLM's own
       generations. Across diverse LVLM backbones, UniProbe achieves state-of-the-art token-level and
       object-hallucination detection. During decoding, it reduce"
+    verdicts:
+      - capability: hallucination
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: The paper proposes a learnable internal-representation probe that achieves
+          state-of-the-art token-level hallucination detection and reduces hallucination during
+          decoding.
+        scope_condition: Frozen large vision-language models; token-level and object hallucination detection
+          plus hallucination-aware decoding
+        classified_at: 2026-10-23
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7202344962
     score: 17
     signals:
@@ -558,6 +745,17 @@ candidates:
       reasoning - entity disambiguation, cross-source grounding, rather than tool invocation
       mechanics. Code is available https://github.com/IBM/VAKRA. Dataset is available
       https://huggingface.co/datasets/ibm-research/VAKRA"
+    verdicts:
+      - capability: multi-step-reasoning
+        about_capability: true
+        direction: measures
+        confidence: medium
+        rationale: The benchmark varies reasoning depth and reports over 50% performance degradation as hop
+          count increases, characterizing rather than fixing the limitation.
+        scope_condition: Frontier and open-weight LLMs in a fixed ReAct harness on multi-hop API/retrieval
+          tasks across 62 domains
+        classified_at: 2026-10-23
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7203468428
     score: 16
     signals:
@@ -602,6 +800,17 @@ candidates:
       Judgement, while even the strongest closed-source model remains substantially below human
       performance. These results indicate that current MLLMs function as lossy summarizers rather
       than faithful memorizers, highlighting the need for architec"
+    verdicts:
+      - capability: video-temporal-reasoning
+        about_capability: true
+        direction: measures
+        confidence: high
+        rationale: It introduces a benchmark and reports model-vs-human accuracy gaps on long-term
+          spatiotemporal memory tasks without proposing a fix.
+        scope_condition: Month-level egocentric video (300+ hours, 20-120 days) multiple-choice QA across 14
+          temporal/spatial memory tasks, evaluated on open and closed MLLMs
+        classified_at: 2026-10-23
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7203660477
     score: 16
     signals:
@@ -647,6 +856,18 @@ candidates:
       multiple model families. Experimental results show that RUPA consistently outperforms existing
       UQ methods by providing more accurate uncertainty estimates, enabling earlier failure
       detection, and improving uncertainty-guided agent exe
+    verdicts:
+      - capability: tool-use
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: RUPA propagates uncertainty over a trajectory graph of reasoning, tool calls and
+          environment feedback, reportedly improving failure detection and uncertainty-guided agent
+          execution on tool-use benchmarks.
+        scope_condition: Six open-source LLM agents on tau-2, Terminal-Bench-2 and GAIA, trajectory-level
+          uncertainty estimation over tool-interaction graphs
+        classified_at: 2026-10-23
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7203692733
     score: 16
     signals:
@@ -691,6 +912,15 @@ candidates:
       lengths of 512.83 m and 506.37 m, compared to the straight-line optimum of 497.33 m,
       corresponding to path length reductions of 17.2% and 15.6% relative to CoT prompting and
       absolute path efficiencies of 97.1% and 98.1% in open-field and obst
+    verdicts:
+      - capability: planning
+        about_capability: false
+        direction: not_applicable
+        confidence: medium
+        rationale: The paper builds a closed-loop UAV navigation agent and reports path length/efficiency
+          outcomes rather than measuring the validity or optimality of plans the model produces.
+        classified_at: 2026-10-23
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7203474385
     score: 16
     signals:
@@ -730,6 +960,18 @@ candidates:
       composition. Third, failures are nearly independent, which is what makes the accumulation
       multiplicative; the residual coupling that does exist tracks shared output features rather
       than pairwise interference - a wrong sentence count "
+    verdicts:
+      - capability: procedure-following
+        about_capability: true
+        direction: measures
+        confidence: high
+        rationale: The paper introduces a benchmark characterizing how joint constraint satisfaction
+          collapses as constraint count grows, without proposing a fix.
+        supports_claim_id: verifiable-instructions-such-length-format-constraints-strong-models
+        scope_condition: 15 LLMs on procedurally generated benchmark with 36 verifiable constraint types,
+          k=1-12 simultaneous constraints
+        classified_at: 2026-10-23
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7203452646
     score: 16
     signals:
@@ -769,6 +1011,19 @@ candidates:
       findings provide compelling evidence that structured cross-episode memory is essential for
       enabling LLM agents to perform robust, long-term strategic execution in dynamic, autonomous
       settings.
+    verdicts:
+      - capability: long-horizon-execution
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper adds cross-episode episodic memory plus working memory with dynamic gating and
+          reports higher win rates and far fewer tokens over baselines in thousand-step strategic
+          tasks.
+        supports_claim_id: llm-agents-long-horizon-web-penetration-testing-holding-backbone-model
+        scope_condition: LLM agents in StarCraft II long-horizon strategic play against diverse opponent
+          styles and difficulty levels
+        classified_at: 2026-10-23
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7203603198
     score: 16
     signals:
@@ -814,6 +1069,28 @@ candidates:
       only about 100 labeled examples, far fewer than supervised or reinforcement fine-tuning
       requires. To evaluate this agent, we introduce MedClawBench, a de-leaked, doctor-grounded
       benchmark of 1,123 questions over self-built long neuros"
+    verdicts:
+      - capability: harness-self-improvement
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: The paper's subject is a reward-gated skill-distillation loop that mines the agent's own
+          low-scoring traces to grow an external skill library, with measured benchmark gains and no
+          weight updates.
+        supports_claim_id: distilling-lessons-from-failures-as-well-as-successes-beats-raw-trajectory-memory
+        scope_condition: Long-horizon surgical video QA with a frozen text orchestrator plus frozen VLM
+          sub-agents, ~100 labeled examples, MedClawBench
+        classified_at: 2026-10-23
+        model: claude-opus-5
+      - capability: long-horizon-execution
+        about_capability: false
+        direction: not_applicable
+        confidence: medium
+        rationale: The paper targets question answering over long surgical videos (long-input comprehension
+          with an agentic retrieval harness), not varying task length/step count and measuring
+          completion over a long execution horizon.
+        classified_at: 2026-10-23
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7203473713
     score: 15
     signals:
@@ -855,6 +1132,15 @@ candidates:
       uses a novel tri-agent feedback system comprising a Designer that determines circuit component
       values, a Critic that scrutinizes these values, and an Evaluator that minimizes circuit sizing
       iterations by arbitrating between the o
+    verdicts:
+      - capability: multi-model-coordination
+        about_capability: false
+        direction: not_applicable
+        confidence: medium
+        rationale: The paper applies a multi-agent LLM workflow to analog circuit design without measuring
+          the multi-agent combination against a single-model baseline as its subject.
+        classified_at: 2026-10-23
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7203494190
     score: 15
     signals:
@@ -893,6 +1179,17 @@ candidates:
       interchangeable agents, particularly as the action space grows, suggesting that whatever
       capability drives self-play gains in dyadic games does not transfer to larger multi-agent
       teams."
+    verdicts:
+      - capability: multi-model-coordination
+        about_capability: true
+        direction: measures
+        confidence: medium
+        rationale: It benchmarks whether independent same-model agents coordinate above the Nash baseline
+          without proposing or breaking a technique.
+        scope_condition: Thirteen LLMs in one-shot, no-communication matrix and team games, self-play
+          instances, evaluated against Nash equilibrium benchmark
+        classified_at: 2026-10-23
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7203639119
     score: 15
     signals:

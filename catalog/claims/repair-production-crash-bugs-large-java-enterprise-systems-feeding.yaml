@@ -1,0 +1,42 @@
+id: repair-production-crash-bugs-large-java-enterprise-systems-feeding
+ref: CLM-0629
+capability: debugging
+technique: rank-crash-clustered-suspicious-files-llm-repair-context
+statement: >-
+  For repair of production crash bugs in large Java enterprise systems,
+  feeding an LLM the source of the top-3 suspicious files plus a
+  representative stack trace localizes the developer-modified code in about
+  71% of responses and yields a semantically valid patch in about 52%, and
+  adding an explicit ranking of suspicious files and methods helps only when
+  the full stack trace is withheld (per-response repair 28% to 47% with
+  stack messages only) while slightly lowering performance when the stack
+  trace is already present.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Two closed-source Java Enterprise web systems (~2.1M LOC), 38 crash bugs with identified corrective commits, Claude-3.5-sonnet, zero-shot prompts, five samples per configuration, m"
+sources:
+  - source: arxiv-2609-04483
+    stance: supports
+    note: >-
+      Validated by: Manual two-rater grading (Cohen's kappa 0.88
+      localization, 0.51 repair) of 760 responses on 38 bugs against
+      developer corrective commits; ablation across four prompt
+      configurations and five LLMs on an 8-bug subset. No no-ranking,
+      no-clustering baseline on the full dataset; no test-based execution..
+      Measured on 38 bugs from one company, graded manually with no test
+      execution; repair-status inter-rater agreement was only moderate.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: On a comparable industrial
+  crash-bug set, supplying the ranked suspicious files gives no advantage
+  over random or purely stack-trace-order file selection, or adding the
+  ranking list raises repair accuracy as much with full stack traces as
+  without.
+submitted_by: agent:claude-opus-5@Russ-Miller

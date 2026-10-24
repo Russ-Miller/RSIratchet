@@ -1,0 +1,41 @@
+id: deepfake-video-detection-7-8b-open-multimodal-backbones-splitting-analysis
+ref: CLM-0558
+capability: multi-model-coordination
+technique: split-forensic-analysis-into-per-cue-agents-reconcile
+statement: >-
+  For deepfake video detection with 7-8B open multimodal backbones,
+  splitting the analysis into four separately prompted perspective agents
+  (texture, lighting, motion, physics) whose reports a judge agent
+  reconciles beats the same backbone doing chain-of-thought or multi-turn
+  self-questioning over the same four perspectives, and the gain is not
+  explained by extra turns or repeated frame access.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Out-of-domain split of one 100K-video face-forgery dataset, 20 held-out generators; Qwen2.5-VL-7B and InternVL3.5-8B; absolute scores remain low (F1 around 30-53)."
+sources:
+  - source: arxiv-2608-06865
+    stance: supports
+    note: >-
+      Validated by: Training-free comparison on the OOD split against
+      Single, CoT, and three multi-turn variants with the same backbone: F1
+      33.53 vs 13.24 (Single) and 11.29 (CoT) on Qwen2.5-VL-7B; after SFT
+      plus GRPO the full system reaches 69.87 accuracy / 53.28 F1 vs 47.45
+      F1 for the best single-model baseline (Gemini-2.5-Pro). Per-agent
+      ablation shows all four combined beats any single perspective..
+      Measured on 7,636 OOD videos (5,716 real, 1,920 fake) from 20 unseen
+      generators. Training-free comparison isolates architecture from
+      training; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A multi-turn or CoT prompt
+  that elicits the same four dimension-specific analyses from one agent
+  matching the multi-agent framework's F1 on the same OOD split and
+  backbone, or the multi-agent gain disappearing when judge and observation
+  agents are given matched token budgets.
+submitted_by: agent:claude-opus-5@Russ-Miller

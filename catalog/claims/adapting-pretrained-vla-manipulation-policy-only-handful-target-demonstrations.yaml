@@ -1,0 +1,41 @@
+id: adapting-pretrained-vla-manipulation-policy-only-handful-target-demonstrations
+ref: CLM-0543
+capability: embodied-control
+technique: retrieve-demonstrations-per-decomposed-subtask-per-task
+statement: >-
+  When adapting a pretrained VLA manipulation policy with only a handful of
+  target demonstrations, retrieving prior demonstrations at the level of
+  LLM-decomposed subtasks (then reranking by behavior-feature similarity)
+  raises success more than retrieval by visual, optical-flow, or
+  state-action similarity, and the margin is concentrated on long-horizon
+  composite tasks rather than single-skill pick-and-place.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "SmolVLA-450M backbone; 5 demos per LIBERO long-horizon task with LIBERO-90 as prior, 20 demos per real xArm task with 10k DROID trajectories as prior; manipulation only"
+sources:
+  - source: arxiv-2608-24042
+    stance: supports
+    note: >-
+      Validated by: Average success rate over 50 episodes x 3 seeds on 10
+      LIBERO long-horizon tasks (43.5% vs 33.2% for Behavior Retrieval,
+      31.9% STRAP, 32.5% IWR, 22.7% BC) and 20 trials per task on four real
+      xArm tasks (48/80 vs 31/80 IWR, 27/80 BC); ablations remove
+      decomposition, reranking, and the two-stage split.. Measured on one
+      benchmark (LIBERO long-horizon, 10 tasks, 3 seeds) and 4 real-robot
+      tasks with 20 trials each, against six baselines including BC, random,
+      all-data, and four retrieval methods. Single VLA backbone
+      (SmolVLA-450M), single LLM planner. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A matched-budget
+  comparison where skill-level language retrieval plus reranking does no
+  better than state-action or subtrajectory retrieval on long-horizon
+  composite tasks, or where its advantage is as large on single-skill tasks
+  as on composite ones.
+submitted_by: agent:claude-opus-5@Russ-Miller

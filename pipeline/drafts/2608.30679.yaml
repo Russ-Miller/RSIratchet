@@ -1,0 +1,43 @@
+arxiv_id: "2608.30679"
+title: "LCoT-GV: Graph Attention Networks for Verifying Long Reasoning Chains
+  in Large Language Models"
+url: https://doi.org/10.48550/arxiv.2608.30679
+drafted_at: 2026-10-18
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-step-reasoning
+statement: "When a long chain of thought is verified by classifying a graph of
+  its steps, the predictive signal comes almost entirely from the semantic
+  content of the steps, not the graph shape: replacing step embeddings with
+  purely structural metadata (child/parent counts, chain index, position)
+  drops accuracy to near chance on math, science and multiple-choice
+  reasoning, while remaining above chance only on code."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: 8,000 long chains of thought from three open reasoning models
+  (DeepSeek-R1 distills, QwQ-32B) over MATH, GPQA, LiveCodeBench-v5 and
+  MMLU-Pro; correctness of the final answer is the label.
+technique: ""
+proposed_technique: Build the reasoning graph with a local NLI model, then classify with a GAT
+technique_summary: Split a long chain of thought on transition keywords, link
+  steps with entailment and contradiction edges predicted by a local NLI model
+  instead of LLM calls, and train a graph attention network to predict whether
+  the chain's final answer is correct.
+technique_kind: process
+technique_validated_by: "Accuracy averaged over five runs against LCoT2Tree
+  and a length-based classifier on four benchmarks: average 77.03 for the
+  proposed method vs 74.68 for LCoT2Tree, with gains on LiveCodeBench and GPQA
+  and losses on MATH and MMLU-Pro."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A structure-only feature set (no step text embeddings) reaching
+  accuracy close to the embedding-based verifier on these same
+  chain-correctness datasets.
+evidence_note: "Measured ablation: metadata-only features scored roughly 53
+  average vs 75-78 for embedding features across three generating models, with
+  LiveCodeBench the exception (66-70). Single paper, one graph-construction
+  pipeline, chain-level rather than step-level labels; does not isolate
+  whether better graph construction would raise the structural signal."
+confidence: medium

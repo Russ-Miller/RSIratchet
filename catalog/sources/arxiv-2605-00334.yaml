@@ -28,3 +28,42 @@ notes: "Forwarded by Russ 2026-09-26: forwarded by Russ; contests the claim
   that open models trail commercial ones on agent work, and proposes routing
   routine calls to small models"
 ingested_at: 2026-09-26
+brief: >-
+  Small open-weight models handle the short, structured tool calls that make
+  up most agent traffic, and the frontier advantage is confined to
+  long-horizon planning under persistent constraints — where neither side is
+  reliable.
+
+
+  AgentFloor is a deterministic 30-task benchmark, 5 tasks per tier across 6
+  tiers (no-tool instruction following, single tool, 2-tool chain, branching,
+  multi-source synthesis, long-horizon planning), over 8 abstract tools and an
+  in-memory fixture database with no live APIs or filesystem. 16 open-weight
+  models from 0.27B to 32B served via Ollama plus GPT-5 were run at
+  temperature 0 with native tool calling only, 16,542 scored runs total.
+
+
+  Paired across 30 tasks (n = 270), gemma4:26b and GPT-5 are equivalent at a
+  pre-registered ±10 pp margin (Δ = +0.4 pp, 90% CI [−4.0, +5.1]), at about
+  15× cheaper per passed task on Mac self-hosting, 3× on cloud GPU, and 2.5×
+  faster. Open-weight is strictly higher on A0 (100% vs 80%, +20.0 pp) and
+  GPT-5 strictly higher on E (10% vs 0%, Δ = −10.2 pp).
+
+
+  Evidence uses pre-registered TOST, bootstrap CIs (10,000 resamples), Holm
+  correction, and a priority failure cascade. The authors state plainly that
+  per-tier samples (n = 45) cannot certify equivalence on B, C, or D despite
+  point estimates within 9 pp.
+
+
+  Ablations show no universal lever: explicit-submission gave +100 pp on 1
+  model on 1 task and was null elsewhere; a plan/execute/submit prompt
+  regressed every model tested (ministral-3:8b −33 pp). Tier-E failure mass
+  differs by model (GPT-5 F5 39%, F5b 24%; gemma4:26b F4 41%, F1 36%).
+
+
+  Boundaries: 1 frontier anchor, 5 tasks per tier, abstract tools only, no
+  human baseline. Use it as a routing prior, not a live-agent forecast.
+brief_generated_at: 2026-10-24
+brief_model: claude-opus-5
+brief_source: full-text
