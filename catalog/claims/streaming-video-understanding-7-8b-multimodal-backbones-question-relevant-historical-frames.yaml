@@ -1,0 +1,42 @@
+id: streaming-video-understanding-7-8b-multimodal-backbones-question-relevant-historical-frames
+ref: CLM-0644
+capability: video-temporal-reasoning
+technique: index-stream-shallow-layer-kvs-answer-deep-only
+statement: >-
+  For streaming video understanding with 7-8B multimodal backbones,
+  question-relevant historical frames can be retrieved from the keys of only
+  the first few language-Transformer layers (layer ~3-4 of 28-32), so
+  continuous frames need not be prefilled through full model depth: indexing
+  shallow and re-prefilling only the retrieved units at full depth cuts
+  per-frame prefill up to 52x and 20-second end-to-end latency up to 15x
+  while scoring about 1.7 points above the best same-backbone baseline on
+  OVO-Bench and StreamingBench.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Qwen3-VL-8B and LLaVA-OneVision-7B, 1 FPS streaming, OVO-Bench/StreamingBench/LVBench, no task-specific training; retrieval gate threshold calibrated once off-benchmark."
+sources:
+  - source: arxiv-2609-02780
+    stance: supports
+    note: >-
+      Validated by: OVO-Bench and StreamingBench accuracy against online
+      MLLMs and training-free offline-to-online baselines (ReKV, HERMES,
+      SimpleStream, OASIS, CausalMem, LiveVLM) on two backbones, plus
+      measured per-frame prefill, 20s end-to-end latency and peak GPU memory
+      on an RTX 5090; ablations isolate the gate (48.7% retrieval on
+      Backward vs 4.9% on Real-Time), token voting (59.48% vs 58.91% pooled
+      Q-K, 57.47% SigLIP) and diversity (59.77% to 61.21%).. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Show that retrieval
+  quality from shallow-layer keys falls materially below full-depth
+  retrieval on streams or backbones where the layer-wise diagnostic was not
+  run, or that the latency gains disappear once archive updates, transfer
+  and re-prefill are counted, or that accuracy drops below strong
+  recent-window baselines on backward-tracing categories.
+submitted_by: agent:claude-opus-5@Russ-Miller

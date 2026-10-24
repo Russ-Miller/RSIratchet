@@ -1,0 +1,52 @@
+arxiv_id: "2608.10835"
+title: "UniProbe: A Learnable Token-Level Hallucination Detector for Large
+  VLMs using Multi-Structural Internal Representations"
+url: https://doi.org/10.48550/arxiv.2608.10835
+drafted_at: 2026-10-23
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: In frozen large vision-language models, token-level hallucination
+  evidence is distributed across the relational, spatial and sequential
+  structure of the model's internal trace rather than contained in any single
+  token's hidden state, so a detector that reads the attention graph over
+  image patches, query and response tokens with interleaved GNN/ViT/GRU
+  modules localizes hallucinated spans better than flat probes on the same
+  activations.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Open-weight 7-9B LVLM backbones (GLM-4.1V, Qwen-3-VL,
+  LLaVA-1.5, InternVL2, InstructBLIP) with access to hidden states and
+  attention; a separate read-out is trained per backbone at a mid-network
+  layer.
+technique: ""
+proposed_technique: Read the whole computational trace as a graph, not one hidden state
+technique_summary: Builds a directed attention graph over image patches, query
+  tokens and generated tokens from a single forward pass of a frozen LVLM and
+  classifies each response token with alternating GNN, ViT and GRU blocks,
+  with a streaming variant that rejects and resamples flagged tokens during
+  decoding.
+technique_kind: architecture
+technique_validated_by: "Token-level F1 on MHALO (63.2 F1_M / 52.9 F1_IoU on
+  GLM-4V vs 59.1/49.8 for HaloDet, which fine-tunes all backbone weights) and
+  HalLoc across three backbones; POPE object-hallucination F1 41.0 to 63.1 and
+  AUC 75 to 90; streaming guardrail cut CHAIR_i/CHAIR_s from 18.0/37.2 to
+  8.2/16.6 at 1.06x latency with SPICE and word count preserved. Ablations:
+  flat MLP and Transformer probes trail by over 30 F1_M; removing the graph
+  costs 10.1, removing the response GRU 4.6."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A flat probe on the same mid-layer hidden states, given matched
+  parameter count and training data, matching the structured detector's
+  token-level F1 on MHALO and HalLoc; or the component ablations showing no
+  loss when the graph and recurrence are removed.
+evidence_note: Measured on two token-level benchmarks (MHALO, HalLoc), POPE,
+  and self-generated COCO captions, across five backbones, with per-module and
+  leave-one-out ablations and a read-out layer sweep. Baselines include
+  fine-tuned and external-verifier detectors. Single paper, authors' own
+  architecture; the self-adaptation step is confounded with detector quality
+  in the mitigation table, though the paper partly separates them by adapting
+  HaloDet too.
+confidence: medium

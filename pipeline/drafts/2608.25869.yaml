@@ -1,0 +1,45 @@
+arxiv_id: "2608.25869"
+title: "Anchoring Bias in LLM-as-a-Judge Systems: Prior Scores Compromise
+  Evaluation Independence"
+url: https://arxiv.org/abs/2608.25869
+drafted_at: 2026-10-20
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: critique
+statement: When an LLM judge is given a prior evaluation score as context
+  metadata on a revision, its rubric scores shift toward that uninformative
+  prior — seven of eight tested models (API and open-weight, 0-5 scale, 20
+  fixed texts) show a negative total shift, and on a categorical compliance
+  task the metadata blocks 48% of error corrections and flips about 10% of
+  previously correct judgments to the anchored wrong label.
+kind: observation
+backing_strength: single-paper
+scope_condition: Single-answer rubric grading on a 0-5 scale with anchors
+  drawn below the 4.0 acceptance threshold; 20 generated-and-screened texts
+  across four task categories; one 441-sample industry classification domain;
+  effect weakest on code review and absent in one model (Llama-3.1-8B).
+technique: ""
+proposed_technique: Strip prior-score metadata from judge prompts
+technique_summary: Remove revision, attempt-index and prior-score fields from
+  the judge's context so each evaluation sees only task, answer and rubric.
+technique_kind: prompting
+technique_validated_by: Compared C0 (no metadata) against C2 (anchored
+  metadata) over 185,271 valid evaluations with task-stratified bootstrap
+  intervals; Chain-of-Thought and an explicit disregard-metadata warning were
+  tested as alternatives and neither reduced the total effect on the numerical
+  pair, though the warning zeroed the paired accuracy effect on the
+  categorical task.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A design that includes prior-score metadata with a matched control
+  containing an equally salient irrelevant number, showing no difference in
+  mean judge score or in correction/induction rates against human labels.
+evidence_note: "Measured: 192,000 attempted calls, 185,271 valid, 8 models, 4
+  temperatures, 20 tasks, with task-stratified bootstrap rather than treating
+  decodings as replicates. Only one answer text per task, so cross-task
+  generalization is thin. The C2 template adds an attempt field as well as the
+  score, so the paper cannot attribute the shift to the number alone;
+  mitigation and token-probability results come from single model-task pairs."
+confidence: medium

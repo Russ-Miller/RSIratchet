@@ -1,0 +1,42 @@
+id: long-horizon-llm-agents-tool-use-terminal-benchmarks-token-level-confidence-predictive
+ref: CLM-0602
+capability: tool-use
+technique: propagate-uncertainty-over-trajectory-dependency-graph
+statement: >-
+  For long-horizon LLM agents on tool-use and terminal benchmarks,
+  token-level confidence (predictive entropy, sequence probability) barely
+  separates successful from failed trajectories, and the separable signal
+  lives in the dependency structure of the trajectory: scoring a trajectory
+  by propagating per-step uncertainty over a graph of reasoning, tool-call
+  and environment-feedback nodes raises failure-detection AUROC over both
+  local-confidence and sequence-based agent UQ baselines.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Six open-weight models (26B-230B) on tau-2, Terminal-Bench-2 and GAIA; requires access to token probabilities and the full execution trace."
+sources:
+  - source: arxiv-2608-16002
+    stance: supports
+    note: >-
+      Validated by: AUROC/AUPRC/best-F1 for trajectory failure prediction
+      against entropy, sequence probability, SAUP, Tracer and UProp on three
+      benchmarks and six models; average AUROC rose e.g. 0.608 to 0.656
+      (Qwen3.5-27B) and 0.694 to 0.718 (MiniMax-M2.7). Prefix-truncated
+      trajectories show earlier detection, and selecting the lowest-risk
+      sampled action raised task accuracy (Terminal-Bench-2 Qwen3.5-27B
+      0.105 random to 0.213). Ablations: removing graph modeling drops AUROC
+      to 0.678; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A trajectory-level
+  uncertainty score built from local step confidence aggregated without
+  dependency structure matching or beating relation-aware propagation on the
+  same benchmarks and models, or the random-graph ablation performing as
+  well as the typed graph. Automatic check flagged: figures not in the
+  source: 0.016, 048.
+submitted_by: agent:claude-opus-5@Russ-Miller

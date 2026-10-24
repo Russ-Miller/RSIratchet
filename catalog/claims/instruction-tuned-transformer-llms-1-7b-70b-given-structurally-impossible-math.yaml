@@ -1,0 +1,44 @@
+id: instruction-tuned-transformer-llms-1-7b-70b-given-structurally-impossible-math
+ref: CLM-0581
+capability: abstention-and-self-knowledge
+technique: read-impossibility-answerable-null-residual-subspace
+statement: >-
+  For instruction-tuned transformer LLMs (1.7B-70B) given structurally
+  impossible math or code prompts (division by zero, invalid attribute
+  calls), the pre-generation hidden state carries a linearly readable 'no
+  admissible answer' signal that a single residual-stream direction recovers
+  (mean AUC 0.939 over 22 model-dataset cells), yet that direction is
+  near-orthogonal to the canonical safety-refusal direction (mean cosine
+  0.087), so answering confidently is a routing failure rather than missing
+  recognition.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Structural, formally checkable impossibility in math and code prompts; text-only decoder-only open-weight transformers; does not hold as cleanly for epistemic unanswerability (SQuA"
+sources:
+  - source: arxiv-2608-29109
+    stance: supports
+    note: >-
+      Validated by: One-dimensional cosine probe on held-out
+      answerable/unanswerable splits, 5 seeds, 22 model-dataset cells: mean
+      AUC 0.939 in the answerable-null subspace vs 0.907 full residual
+      stream and 0.890 top-k answerable-PC subspace; generation-time
+      steering along the direction changed invalidity-aware behaviour
+      bidirectionally (+33 to +52pp gated flip over matched random
+      directions) while random directions did not.. Measured: 22 cells
+      across 11 instruct models for probe AUC and cosine geometry with
+      bootstrap CIs and a same-subspace control; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Showing that on the same
+  structural prompts the impossibility direction aligns closely with the
+  behavior-verified safety-refusal direction (cosine near 1), or that no
+  low-capacity linear probe separates answerable from impossible prompts
+  pre-generation above chance, or that steering along the direction does not
+  change abstention behaviour relative to matched random directions.
+submitted_by: agent:claude-opus-5@Russ-Miller

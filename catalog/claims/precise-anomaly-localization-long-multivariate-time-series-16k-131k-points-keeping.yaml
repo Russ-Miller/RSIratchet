@@ -1,0 +1,39 @@
+id: precise-anomaly-localization-long-multivariate-time-series-16k-131k-points-keeping
+ref: CLM-0626
+capability: long-context-degradation
+technique: query-time-series-through-code-context
+statement: >-
+  For precise anomaly localization in long multivariate time-series
+  (16k-131k points), keeping the signal outside the model context as a
+  variable the model queries through code over multiple turns recovers far
+  more localization accuracy than single-pass ingestion, where the recording
+  is serialized, subsampled or compressed into context once.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Synthetic benchmark with programmatically injected parametric anomalies plus ECG/sleep holdouts; frontier backbones (GPT-5.5) benefit most, 4B open backbones need RL post-training;"
+sources:
+  - source: arxiv-2608-03391
+    stance: supports
+    note: >-
+      Validated by: On AnomalyXL-Localize, IoU 0.682 vs at most 0.329 for
+      all single-pass LLM, TSLM and fine-tuned 32B Toto baselines;
+      classify-with-evidence 0.745 vs below 0.08; zero-shot ECG/sleep IoU
+      0.271 vs under 0.004 for every TSLM. Scalar-magnitude task did not
+      improve (0.440 to 0.480).. Measured on a self-introduced synthetic
+      benchmark (200 localize samples, 100 for multichannel tasks) plus
+      250+250 real clinical windows; baselines include three fine-tuned
+      TSLMs, a classical feature+GBT model and a 32B TSFM-VLM. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A single-pass model that
+  ingests the full uncompressed recording matching recursive code-querying
+  IoU on span-localization tasks at comparable length, or recursive querying
+  failing to beat single-pass on a non-synthetic long-context localization
+  set.
+submitted_by: agent:claude-opus-5@Russ-Miller
