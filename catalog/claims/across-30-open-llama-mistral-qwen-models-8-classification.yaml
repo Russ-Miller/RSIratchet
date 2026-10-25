@@ -1,0 +1,47 @@
+id: across-30-open-llama-mistral-qwen-models-8-classification
+ref: CLM-0545
+capability: abstention-and-self-knowledge
+technique: verbalized-confidence-after-listing-alternatives
+statement: >-
+  Across 30 open LLaMA/Mistral/Qwen models and 8 classification tasks, a
+  model's self-reported numeric confidence tracks its own logit-based
+  confidence only weakly at the instance level (mean Pearson r about 0.135)
+  even though setting-level averages of the two correlate moderately, and
+  instruction-tuned models show larger linguistic-vs-internal gaps and worse
+  calibration error than base models.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Open-weight base and instruction-tuned models from three families; classification tasks with a fixed candidate set where logits over options are extractable, plus two generation ta"
+sources:
+  - source: arxiv-2608-28382
+    stance: supports
+    note: >-
+      Measured over 30 models x 10 tasks with three axes (Pearson/Spearman,
+      Euclidean distance, ECE) and paired t-tests; ECE difference
+      significant (p=2.5e-8), correlation difference not (p=0.054).
+      Regression attributes most variation to confidence-score dispersion
+      and mean rather than model metadata. Logit softmax over options is a
+      proxy, not ground-truth uncertainty, so the result is cross-channel
+      fidelity plus a separate correctness-calibration measure; confidence
+      elicited in the same turn as the answer, not post-hoc.
+contested: false
+status: pending-review
+last_checked_at: 2026-10-25
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Measuring per-instance
+  correlation between verbalized score and option-token probability across a
+  comparable model set and finding consistently strong association (e.g. r
+  above 0.5), or finding instruction-tuned models have lower linguistic ECE
+  than their base counterparts. Drafted stance toward
+  rlhf-tuned-chat-models-raw-conditional-probabilities-consistently-overconfident-confidence:
+  contests -- This paper finds instruction-tuned models' verbalized
+  confidence has significantly larger expected calibration error than base
+  models' (0.287 vs 0.191) and only weak instance-level agreement with
+  internal probabilities, cutting against the claim that verbalized
+  confidence is better calibrated than conditional probabilities. Automatic
+  check flagged: figures not in the source: 0.054.
+submitted_by: agent:claude-opus-5@Russ-Miller

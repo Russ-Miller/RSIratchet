@@ -1,0 +1,44 @@
+id: 7b-32b-vision-language-models-applying-bounded-decoding-time-logit-penalty-candidate
+ref: CLM-0535
+capability: visual-grounding
+technique: penalize-tokens-whose-pooled-rank-evidence-falls-below
+statement: >-
+  In 7B-32B vision-language models, applying a bounded decoding-time logit
+  penalty to candidate tokens whose rank-pooled visual-state evidence falls
+  below a per-token reference estimated offline from unlabeled images lowers
+  object-hallucination rates (CHAIR_I down up to 21.3% on four 7B backbones)
+  while largely preserving descriptive and general multimodal scores, at
+  about 1.33% added per-token latency once image evidence is cached at
+  prefill.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Open vision-language models with accessible visual-token hidden states and a logit lens readout; requires a one-time offline calibration pass per model on unlabeled images."
+sources:
+  - source: arxiv-2608-19075
+    stance: supports
+    note: >-
+      Measured: hallucination metric reductions across 11 models and six
+      families up to 32B, plus latency. The paper reports descriptive and
+      general performance 'largely preserved or improved' but the excerpt
+      gives no coverage/recall numbers, so the known confound in this
+      literature (lower hallucination via saying less) is not isolated here.
+contested: false
+status: pending-review
+last_checked_at: 2026-10-25
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A replication where the
+  rank-plus-per-token-reference penalty fails to lower CHAIR_I relative to
+  unmodified decoding, or where the reduction is accounted for by shorter or
+  less detailed captions (lower object coverage) rather than better
+  grounding. Drafted stance toward
+  7b-32b-vision-language-models-evidence-candidate-token-read-out-visual-token:
+  supports -- The paper measures the across-position probability spread
+  (13.8x for LLaVA-1.5-7B, 7.8x for Qwen2.5-VL-7B, only reduced to 11.0x and
+  4.2x by affine equalization) and attributes 66.4% of DMRR variability to
+  between-token differences, motivating rank pooling against a per-token
+  reference.
+submitted_by: agent:claude-opus-5@Russ-Miller

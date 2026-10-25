@@ -1,0 +1,46 @@
+arxiv_id: "2608.26596"
+title: "Not Just Reason, Not Just Scan: Reinforcement Learning for Proactive
+  Scientific Error Verification over Academic Paper"
+url: https://doi.org/10.48550/arxiv.2608.26596
+drafted_at: 2026-10-20
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: error-detection
+statement: When training an 8B multimodal model with RL to find scientific
+  errors in whole papers without being told where to look, mixing in matched
+  easier variants of the same instances — where the error is asserted and the
+  evidence supplied — yields better performance on the evidence-absent task
+  itself than training only on that task at matched exposure.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Qwen3-VL-8B-Instruct, SFT then ~30 DAPO steps, on 12,900
+  paper-level error-detection samples built as matched Reason/Verify/Scan
+  chains over six error categories; not tested on other backbones or scales.
+technique: ""
+proposed_technique: Train evidence-absent verification through matched easier task variants
+technique_summary: Rewrite each annotated paper error into a chain of three
+  queries — error asserted with evidence given, candidate evidence only, and
+  neither — and train on all three stages jointly rather than only on the
+  hardest one.
+technique_kind: training
+technique_validated_by: Compared against Pure Scan training (Scan samples
+  only) at matched Scan exposure (step 10) and at longer training (step 20),
+  and against a curriculum that switches to Scan-only after 15 steps; the
+  staged setting scored higher on Scan composite reward (19.5 vs
+  16.8/16.9/16.5) and on completeness, alignment and precision components. All
+  metrics come from the paper's own reward definitions, scored by
+  Seed-1.6-Thinking as a fixed extractor.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Training the same backbone only on evidence-absent samples, at
+  equal or greater Scan exposure, matching or beating the staged mixture on
+  evidence-absent error detection.
+evidence_note: Measured on one backbone with one RL algorithm and short
+  training (10-30 steps); absolute scores are low (Scan composite under 20 for
+  the trained model, 24.3 for Gemini 3 Pro), and the grader is an LLM
+  extractor over the paper's own reference answers, so the comparison is
+  internally consistent but the metric is not externally validated. Transfer
+  to ScholScan moved from near-zero to still very low scores.
+confidence: low
