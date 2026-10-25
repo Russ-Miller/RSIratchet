@@ -1,0 +1,43 @@
+id: tool-using-llm-trading-agents-frozen-backbone-periodically-rewriting-system
+ref: CLM-0664
+capability: harness-self-improvement
+technique: rewrite-agent-s-tool-use-policy-prompt-realized
+statement: >-
+  For tool-using LLM trading agents with a frozen backbone, periodically
+  rewriting the system prompt from the agent's own decision traces and
+  realized portfolio returns changes tool-use behavior reliably —
+  code-interpreter calls rise from about 1 to 2.6-4.5 per day and
+  regime-relevant metrics (VaR, EMA, RSI, signal normalization) that the
+  fixed-prompt agent never computes start appearing — but the resulting
+  risk-adjusted performance beats the fixed-policy agent in only about half
+  the evaluated model-by-regime settings (best Sharpe and cumulative return
+  among LLM methods in 3 of 6).
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Daily-close simulated trading over 15 US blue-chip stocks plus cash, one-month windows after each model's knowledge cutoff, GPT-5-mini and Gemini-2.5-Flash, policy updated every 5 "
+sources:
+  - source: arxiv-2609-17632
+    stance: supports
+    note: >-
+      Validated by: Sharpe ratio, cumulative return, max drawdown, win rate
+      and volatility against rule-based baselines (SPY, B&H, MACD, KDJ&RSI,
+      ZMR, SMA), a static tool-calling agent, a tool-free evolving agent,
+      and a strategy-only evolving agent (ATLAS-style), across six market
+      regimes and a 50-day horizon; plus per-day maps of which analytic
+      metrics appear in code-interpreter calls.. Measured on six one-month
+      regimes plus one 50-day window, two backbones, three runs each
+      averaged, with rule-based and three ablation baselines. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-25
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A run where the
+  self-evolved policy shows the same analytic-metric usage and tool-call
+  distribution as the fixed prompt, or where fixed-policy agents match or
+  beat the evolved agent on Sharpe and cumulative return in a majority of
+  model-by-regime settings under the same seeds and universe.
+submitted_by: agent:claude-opus-5@Russ-Miller

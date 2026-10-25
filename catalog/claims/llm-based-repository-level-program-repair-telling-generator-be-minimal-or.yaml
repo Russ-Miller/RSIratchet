@@ -1,0 +1,41 @@
+id: llm-based-repository-level-program-repair-telling-generator-be-minimal-or
+ref: CLM-0600
+capability: cutting-to-the-chase
+technique: shrink-patch-after-generation-during
+statement: >-
+  In LLM-based repository-level program repair, telling the generator to be
+  minimal or constraining its output format does not shrink patches, because
+  verbosity comes from the capability-raising machinery itself (iterative
+  refinement, broad context); a separate post-generation refiner that
+  rewrites an already-plausible patch is what reduces size without losing
+  fixes.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Repository-level issue fixing measured on SWE-bench Verified; patch size measured relative to the developer patch across 28 leaderboard systems and four host agents."
+sources:
+  - source: arxiv-2608-13292
+    stance: supports
+    note: >-
+      Validated by: On SWE-bench Verified across four host systems
+      (Agentless, SWE-agent, Moatless, OpenHands), average total changes
+      relative to developer patches fell from +242.14% to +4.24% and net
+      changes from +348.24% to -39.75%, while resolved instances were
+      preserved or improved by up to +42; prompting Claude-4.5-Sonnet,
+      Atomizer untangling, AdaPatcher and PRepair all shrank patches only by
+      losing 29-217 resolved instances. Ablation: SFT alone over-compresses
+      (resolves 276 avg, below the untrained 293); DPO restores 332..
+      Measured. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-25
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A repair system whose
+  patches match developer patch size after only a minimality instruction or
+  output-format change, with resolution unchanged; or a post-generation
+  refiner that shrinks patches no more than a minimality prompt at matched
+  resolution.
+submitted_by: agent:claude-opus-5@Russ-Miller

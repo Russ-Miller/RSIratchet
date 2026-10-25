@@ -1,0 +1,37 @@
+id: rl-post-training-thinking-llms-long-context-reasoning-rewarding-n-gram-overlap
+ref: CLM-0643
+capability: long-context-degradation
+technique: reward-key-evidence-overlap-penalize-distractor-overlap
+statement: >-
+  In RL post-training of thinking LLMs for long-context reasoning, rewarding
+  n-gram overlap with annotated key evidence only helps when paired with a
+  penalty on overlap with distractor context; the grounding reward alone
+  raises copying, lengthens reasoning traces, and scores below accuracy-only
+  RL.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Qwen3.5 9B/27B/35B-A3B trained with GSPO on 3.2k evidence-annotated samples at 16k-32k context, evaluated on five held-out long-context benchmarks at 32k and 128k"
+sources:
+  - source: arxiv-2607-19345
+    stance: supports
+    note: >-
+      Validated by: Average score on Ruler, LongBench-v2, BrowseComp-LC,
+      GraphWalks and AA-LCR against accuracy-only GSPO and the base model:
+      +1.5 to +2.8 points at 32k and +2.1 to +4.6 at 128k across three model
+      scales; grounding-only ablation falls up to 5.1 (32k) and 8.3 (128k)
+      points below accuracy-only GSPO, and distractor-penalty-only (alpha=0)
+      also scores below baseline (72.0 vs 78.5); overlap rate and thinking
+      length measured on Ruler and LongBench-v2.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-25
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A run where adding only
+  the grounding reward (no distractor penalty) matches or exceeds full GEAR
+  and accuracy-only RL on held-out long-context benchmarks, with overlap
+  rate not increasing.
+submitted_by: agent:claude-opus-5@Russ-Miller

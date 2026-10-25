@@ -1,0 +1,45 @@
+arxiv_id: "2609.08832"
+title: "Closing the Consistency Gap: Self-Evolving Agents That Learn to Stay
+  on Course"
+url: https://doi.org/10.48550/arxiv.2609.08832
+drafted_at: 2026-10-22
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: harness-self-improvement
+statement: For ReAct agents on AppWorld, resampling each recorded inference
+  point offline (N=30, temperature 0.5) to find steps whose responses vary
+  across samples, then writing short natural-language guidelines targeting
+  those steps into retrievable episodic memory, raises the fraction of tasks
+  passing all five repeat runs by +16 points same-task and +13 points
+  similar-task with GPT-4.1 (+6 and +8.7 with GPT-OSS-120B) without lowering
+  mean per-run accuracy.
+kind: observation
+backing_strength: single-paper
+scope_condition: ReAct agent, AppWorld test_normal 168 tasks, GPT-4.1 and
+  GPT-OSS-120B on hosted endpoints; guidelines generated from a single
+  baseline trajectory per task, no validation gate before admission
+technique: ""
+proposed_technique: Target guidelines at flip-prone steps found by resampling
+technique_summary: An offline analyzer re-issues each recorded prompt N times
+  and scores response agreement per step; steps below a consistency threshold
+  are turned by an LLM into short guidelines stored in episodic memory and
+  retrieved into future runs of similar tasks.
+technique_kind: process
+technique_validated_by: Pass^5, Mean@5 and normalized consistency over five
+  runs per task on AppWorld test_normal (168 tasks, 336 similar-task
+  evaluations), against the same agent with no guidelines; trajectory
+  consistency also scored as a pass/fail predictor (AUROC 0.699 on 50
+  test_challenge tasks).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Guidelines derived from steps flagged by resampling raise Pass^5 no
+  more than guidelines derived from randomly chosen steps, or from
+  outcome-only trajectory extraction, at matched guideline count.
+evidence_note: Measured on one benchmark, one agent architecture, two models,
+  five runs per task; no ablation isolating the consistency-targeting signal
+  from ordinary trajectory-derived memory, and no matched-token-cost baseline
+  (resampling costs ~30x tokens). Authors note they cannot control
+  platform-side non-determinism between baseline and treated runs.
+confidence: medium

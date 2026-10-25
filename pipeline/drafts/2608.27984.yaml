@@ -1,0 +1,49 @@
+arxiv_id: "2608.27984"
+title: "When Evidence Shapes Collaboration: Knowledge-Conditioned Topology
+  Generation for Multi-Agent Systems"
+url: https://doi.org/10.48550/arxiv.2608.27984
+drafted_at: 2026-10-19
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: For multi-agent pipelines on knowledge-intensive QA with an 8B
+  backbone, deciding the collaboration topology after retrieval and
+  conditioning it on the retrieved evidence yields higher accuracy than
+  generating the topology from query semantics alone with the same retrieved
+  evidence available at execution.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Qwen-3-8B agents and topology generator, top-3 evidence from
+  a Wikipedia-derived provenance knowledge graph, topologies bounded to 6
+  nodes; gains concentrated on knowledge-intensive benchmarks and small on
+  arithmetic/code tasks.
+technique: ""
+proposed_technique: Generate the agent topology after retrieval, conditioned on the evidence
+technique_summary: Retrieve evidence first, then autoregressively generate the
+  multi-agent DAG (roles and edges) conditioned on the retrieved evidence and
+  its provenance, with a generator trained on execution-scored, cost-pruned
+  candidate topologies.
+technique_kind: process
+technique_validated_by: "Controlled GPQA comparison holding backbone and top-3
+  retrieved evidence fixed with the verifier disabled: no topology 39.22%,
+  query-conditioned G-Designer 45.34%, evidence-conditioned 50.00% (50.75%
+  with the KG verifier); also 78.68% vs 70.02% average over seven benchmarks
+  and over 50% fewer tokens than LLM-Debate on GPQA. Topology size grows from
+  2.02 to 2.66 nodes when retrieved evidence is conflicting or low-relevance
+  (100 hand-labelled StrategyQA cases)."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A controlled comparison on knowledge-intensive QA where, with
+  backbone and retrieved passages held fixed, an evidence-conditioned topology
+  generator performs no better than a query-conditioned one, or where the
+  reported gap is reproduced by the extra training on execution-scored
+  topologies rather than by conditioning on evidence.
+evidence_note: Measured on seven benchmarks with one backbone; the controlled
+  GPQA table isolates retrieval, topology conditioning, and verification, but
+  does not separate evidence conditioning from the curriculum training that
+  only K-GAT received, since G-Designer was not retrained under the same
+  execution-scored pipeline. Single paper, one authors' implementation of
+  baselines.
+confidence: low

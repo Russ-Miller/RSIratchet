@@ -1,0 +1,47 @@
+arxiv_id: "2608.24369"
+title: Do Recipes Have Personas? Characterizing and Generating Creator Style
+  in Attributed Procedural Graphs
+url: https://doi.org/10.48550/arxiv.2608.24369
+drafted_at: 2026-10-20
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: planning
+statement: When asked to generate a full procedural execution graph for an
+  unseen task (recipe) in a specific creator's style, few-shot LLMs assign
+  ingredients to steps better than a statistical two-stage pipeline but
+  predict the number of steps worse, and swapping in a larger LLM backbone
+  does not close that step-count gap.
+kind: observation
+backing_strength: single-paper
+scope_condition: Culinary procedural graphs extracted from video transcripts
+  (97 creators, >5,000 videos), evaluated by Ingredient F1 and normalized
+  step-count error; GPT-5.4, GPT-4.1-mini, Qwen3.6-27B tested.
+technique: ""
+proposed_technique: Generate the action skeleton from creator transition
+  priors, then assign ingredients
+technique_summary: Decode the step sequence with beam search over a creator's
+  learned bigram/positional action priors and a deterministically predicted
+  step count, then route ingredients to those steps by a learned
+  ingredient-action prior instead of an LLM.
+technique_kind: process
+technique_validated_by: Compared against zero-shot LLM, few-shot LLM,
+  autoregressive step-by-step, and N-gram baselines on Ingredient F1,
+  normalized edge F1 and step error over long- and short-form splits; the
+  two-stage model had the lowest step error (0.350 long, 0.332 short vs
+  0.373/0.351 few-shot) and lower IF1 (0.294/0.348 vs 0.344/0.385). A
+  persona-swap control (other creator's priors, same dish) cost 0.06 nEF1
+  (p<1e-54).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A few-shot LLM (or a larger backbone) that matches or beats the
+  structured two-stage pipeline on step-count error while keeping its
+  ingredient-assignment advantage on the same graphs.
+evidence_note: Measured on one dataset in one domain, single author, with a
+  persona-swap control that rules out generic culinary structure for the
+  two-stage result. Backbone ablation covers three models with no
+  matched-compute control; the step-error ordering across backbones is not
+  uniform (GPT-4.1-mini beats GPT-5.4 on short-video step error), so 'scale
+  does not fix it' rests on a small table.
+confidence: low
