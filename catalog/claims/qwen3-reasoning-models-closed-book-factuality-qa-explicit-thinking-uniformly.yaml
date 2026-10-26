@@ -1,0 +1,41 @@
+id: qwen3-reasoning-models-closed-book-factuality-qa-explicit-thinking-uniformly
+ref: CLM-0656
+capability: hallucination
+technique: score-thinking-rollouts-against-same-model-non-thinking
+statement: >-
+  For Qwen3 reasoning models on closed-book factuality QA, explicit thinking
+  is not uniformly helpful at the instance level \u2014 it flips roughly
+  5-8% of correct non-thinking answers to incorrect across 1.7B-32B while
+  correcting about 10-12% of incorrect ones \u2014 and putting non-thinking
+  rollouts into the same GRPO advantage group as thinking rollouts, so
+  thinking is scored against the model's own direct answer, raises average
+  accuracy over both fixed-mode RL and adaptive mode-selection baselines.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Qwen3-4B/8B trained on TriviaQA examples filtered for a large thinking/non-thinking gap; six short-answer factuality QA benchmarks; correctness judged by Qwen3-32B against ground t"
+sources:
+  - source: arxiv-2607-05861
+    stance: supports
+    note: >-
+      Validated by: Average accuracy over six factuality QA benchmarks
+      against Fixed Think, Fixed Think+RL, Fixed NoThink+RL, Adaptive
+      CLS/SFT/RL on the same curated data (Qwen3-4B 25.49% vs 23.31% for
+      Fixed Think+RL; Qwen3-8B 29.57% vs 27.92%), plus instance-level
+      transition ratios showing lower correct-to-incorrect flips, and math
+      benchmarks (AMC23/AIME24/AIME25 Mean@16) to check retained reasoning..
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Matched-compute GRPO on
+  all-thinking rollouts, or any single-mode RL with the same curated data,
+  reaching the same average factuality accuracy and the same reduction in
+  correct-to-incorrect transitions; or finding the correct-to-incorrect flip
+  rate is near zero in other reasoning model families. Automatic check
+  flagged: figures not in the source: 014.
+submitted_by: agent:claude-opus-5@Russ-Miller

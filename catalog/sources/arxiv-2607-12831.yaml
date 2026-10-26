@@ -1,0 +1,70 @@
+id: arxiv-2607-12831
+ref: SRC-0601
+kind: paper
+title: "Knowledgeless Language Models: Suppressing Parametric Recall for
+  Evidence-Grounded Language Modeling"
+authors:
+  - Roi Cohen
+  - Yvan Carré
+  - Nick Lechtenbörger
+  - Hendrik Droste
+  - Lucas Kerschke
+  - Russa Biswas
+year: 2026
+date: 2026-07-14
+arxiv_id: "2607.12831"
+url: https://arxiv.org/abs/2607.12831
+tags:
+  - ingested
+summary: Language models encode substantial factual knowledge in their
+  parameters, which can lead to unreliable behavior when this knowledge is
+  outdated, incomplete, or misaligned with the provided context. In this work,
+  we study whether modifying the pretraining signal can systematically shift
+  models away from parametric recall and toward evidence-grounded reasoning.
+  We introduce Knowledge--''Less'' Language Models (KLLMs), a fundamentally
+  different epistemic training paradigm for LLMs, which are pretrained on
+  corpora in which named entities are anonymized, thereby removing a primary
+  channel for entit
+notes: "Filed as a source on factual-recall from the classifier's judgement
+  that the paper is about it (degrades, high): Anonymizing named entities in
+  pretraining substantially reduces closed-book factual recall while improving
+  context-grounded performance, an intentional degradation of parametric
+  recall. No claim has been drafted from it yet."
+ingested_at: 2026-10-26
+brief: >-
+  Stripping named entities from pretraining data makes a model worse at
+  recalling facts and better at using evidence it is given. Anonymizing entity
+  mentions with type-indexed placeholders (PERSON184) and applying the same
+  masking at fine-tuning and inference leaves reading comprehension, retrieval
+  use, and commonsense reasoning intact or improved.
+
+
+  The authors pretrain matched pairs from scratch (SmolLM-135M/360M/1.7B,
+  LLaMA-1B/3B) on 2.5B, 10B, and 20B tokens, identical except for
+  anonymization, then evaluate on LAMA, SQuAD, NQ, FEVER, HaluBench,
+  CommonsenseQA, StrategyQA, PIQA, plus BM25, DPR-style, and tool-initiated
+  retrieval.
+
+
+  Closed-book LAMA drops from 33.8 to 3.7 at 20B tokens. With context, KLLM
+  gains hold everywhere: FEVER up to +7.8 F1, HaluBench +10.4 at 1.7B, PIQA
+  +5.7, and 20–25% relative gains under BM25 retrieval. When gold evidence is
+  absent, F1 is 62.7 vs 54.3. Calibration improves (ECE 0.076 vs 0.104 at
+  20B); precision on selective prediction rises +17.4 on average.
+
+
+  Evidence is measured under matched architecture, data, tokenizer, and
+  budget, with ablations against random masking, span corruption, and entity
+  shuffling, and the higher KLLM pretraining loss argues against an
+  optimization confound.
+
+
+  Scale is small: no model above 3B, no corpus above 20B tokens, every
+  benchmark fine-tuned, and closed-book ability is destroyed by design.
+
+
+  If you build RAG systems, this suggests the base model's memorized facts are
+  a liability worth removing at pretraining time.
+brief_generated_at: 2026-10-26
+brief_model: claude-opus-5
+brief_source: full-text

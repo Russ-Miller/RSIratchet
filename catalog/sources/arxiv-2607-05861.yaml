@@ -1,0 +1,67 @@
+id: arxiv-2607-05861
+ref: SRC-0586
+kind: paper
+title: Mitigating Factual Hallucination in Large Reasoning Models via
+  Mixed-Mode Advantage Regularization
+authors:
+  - Kaishen Wang
+  - Tong Zheng
+  - Xiao-Bing Cui
+  - Ruibo Chen
+  - Tianyi Xiong
+  - H Huang
+year: 2026
+date: 2026-07-07
+arxiv_id: "2607.05861"
+url: https://arxiv.org/abs/2607.05861
+tags:
+  - ingested
+summary: "Large reasoning models (LRMs) improve language model capabilities by
+  generating explicit thinking traces before final answers. In
+  factuality-oriented question answering (QA), such thinking often improves
+  overall performance by helping the model recover relevant knowledge and
+  refine its answers. However, we find that this benefit is not uniform at the
+  instance level: explicit thinking can also overturn correct non-thinking
+  answers and lead to factual drift. We refer to this failure mode as
+  \\emph{thinking-induced hallucination}. To explain this phenomenon, we
+  formulate explicit thinking in factu"
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, high): The paper identifies
+  thinking-induced hallucination and proposes MARGO, an RL
+  advantage-regularization method that reportedly improves factual reliability
+  over baselines. No claim has been drafted from it yet."
+ingested_at: 2026-10-26
+brief: >-
+  Explicit thinking traces flip correct direct answers into wrong ones on
+  factual questions at a consistent rate, and putting non-thinking rollouts
+  into the same RL advantage group suppresses that failure. On TriviaQA with
+  Qwen3, thinking rescues some wrong non-thinking answers but overturns
+  correct ones: 7.50% of examples at 8B, with the harmful transition ratio
+  ranging 5.38%-7.50% across 1.7B, 4B, 8B, 14B and 32B.
+
+
+  MARGO instantiates GRPO with mixed rollout groups, 6 thinking and 2
+  non-thinking rollouts per prompt, so a thinking trajectory is scored against
+  the same model's direct answer. Trained on TriviaQA examples filtered for a
+  thinking/non-thinking factuality gap, judged by Qwen3-32B, and evaluated on
+  SimpleQA, SimpleQA-Verified, TriviaQA, NQ_Open, PopQA and HotpotQA.
+
+
+  Average accuracy rises from 22.81% to 25.49% on Qwen3-4B and 27.59% to
+  29.57% on Qwen3-8B over fixed thinking, with best scores on all 6 datasets.
+  Fixed Think+RL on identical data reaches only 23.31% and 27.92%, isolating
+  the mixed-group effect rather than RL itself.
+
+
+  Evidence includes matched-data RL baselines, adaptive mode-selection
+  baselines, a random-data ablation (5,660 examples) that gives little gain,
+  and transition-ratio analysis showing reduced r1,0. Limits: 1 model family,
+  2 sizes, training data from TriviaQA only, and correctness scored by an LLM
+  judge. Math checks (AMC23, AIME24, AIME25, Mean@16) show +0.5% and +1.5%.
+
+
+  If you train factuality RL, consider using the model's own no-think answer
+  as the baseline.
+brief_generated_at: 2026-10-26
+brief_model: claude-opus-5
+brief_source: full-text

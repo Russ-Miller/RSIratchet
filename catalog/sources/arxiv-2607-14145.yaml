@@ -1,0 +1,73 @@
+id: arxiv-2607-14145
+ref: SRC-0605
+kind: paper
+title: "ToolAnchor: Anchoring Counterfactual Context to Boost Agentic Tool-use
+  Capability"
+authors:
+  - Weiting Liu
+  - Jieyi Bi
+  - Wanqi Zhou
+  - Jianfeng Feng
+  - Yining Ma
+  - Ai Han
+year: 2026
+date: 2026-07-14
+arxiv_id: "2607.14145"
+url: https://arxiv.org/abs/2607.14145
+tags:
+  - ingested
+summary: "Tool-augmented large language model agents excel at long-horizon
+  tasks, yet they are typically post-trained on fixed toolsets. When tasks
+  demand new tools, these agents struggle to incorporate them effectively, and
+  retraining from scratch is often impractical. We identify the core obstacle
+  in such toolset expansion problem as behavioral inertia: the tendency of
+  agents to fall back on familiar tools and established reasoning patterns
+  despite having access to new ones. We demonstrate that injecting
+  counterfactual anchor contexts at critical decision points can break this
+  inertia, recovering fail"
+notes: "Filed as a source on tool-use from the classifier's judgement that the
+  paper is about it (improves, high): The paper identifies behavioral inertia
+  toward familiar tools and proposes ToolAnchor, a counterfactual-context
+  post-training framework that improves tool selection/use under expanded
+  toolsets. No claim has been drafted from it yet."
+ingested_at: 2026-10-26
+brief: >-
+  An agent post-trained with RL on a fixed toolset keeps reaching for its old
+  tools when new ones are added, and overwriting a single thought-action pair
+  mid-trajectory is enough to recover some failed runs.
+  Tongyi-DeepResearch-30B-A3B, given 3 new visual tools (image descriptor,
+  bbox extractor, crop-and-image search), called the bbox extractor 0.37 times
+  per VDR-Bench instance against 1.43 for Gemini-2.5-Pro, while issuing 24.18
+  web searches to Gemini's 7.50.
+
+
+  ToolAnchor has teacher models (Gemini-2.5-Pro, GPT-5) pick an anchor round
+  in a failed rollout, propose an alternative decision using only prior
+  history, keep it only if the student then solves the task and a judge rules
+  the anchor was the cause, then trains via anchor-only SFT plus GRPO.
+
+
+  Resuming from teacher-revised context lifted success from 4.0% to 9.0% on
+  OpenSeeker and 11.0% to 23.0% on VDR-Bench. Final model: 28.8% VDR-Bench,
+  74.5% GAIA (base 70.9%), 45.0% BrowseComp (base 43.4%). 33.67% of candidates
+  passed task-level verification, 31.98% survived anchor-level.
+
+
+  Ablations isolate most of the pieces: unverified SFT, verified SFT alone,
+  and RL from scratch (70.3%, 41.5%, 21.6%) all underperform the full
+  pipeline, and criterion-based anchor choice beats
+  random/first-error/last-error on 200 instances. Verification used Pass@3
+  while reporting Pass@1; many baseline numbers are copied from prior papers
+  rather than rerun.
+
+
+  1 student model, 1 toolset expansion, visual tools only.
+  Vision-DeepResearch, trained from scratch on 15K multimodal instances, still
+  leads at 37.8%.
+
+
+  If you are grafting tools onto a converged agent, treat teacher guidance as
+  a hypothesis to verify, not a demonstration to imitate.
+brief_generated_at: 2026-10-26
+brief_model: claude-opus-5
+brief_source: full-text

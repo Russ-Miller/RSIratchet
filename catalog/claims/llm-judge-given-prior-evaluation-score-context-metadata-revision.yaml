@@ -1,0 +1,40 @@
+id: llm-judge-given-prior-evaluation-score-context-metadata-revision
+ref: CLM-0621
+capability: critique
+technique: strip-prior-score-metadata-judge-prompts
+statement: >-
+  When an LLM judge is given a prior evaluation score as context metadata on
+  a revision, its rubric scores shift toward that uninformative prior —
+  seven of eight tested models (API and open-weight, 0-5 scale, 20 fixed
+  texts) show a negative total shift, and on a categorical compliance task
+  the metadata blocks 48% of error corrections and flips about 10% of
+  previously correct judgments to the anchored wrong label.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Single-answer rubric grading on a 0-5 scale with anchors drawn below the 4.0 acceptance threshold; 20 generated-and-screened texts across four task categories; one 441-sample indus"
+sources:
+  - source: arxiv-2608-25869
+    stance: supports
+    note: >-
+      Validated by: Compared C0 (no metadata) against C2 (anchored metadata)
+      over 185,271 valid evaluations with task-stratified bootstrap
+      intervals; Chain-of-Thought and an explicit disregard-metadata warning
+      were tested as alternatives and neither reduced the total effect on
+      the numerical pair, though the warning zeroed the paired accuracy
+      effect on the categorical task.. Measured: 192,000 attempted calls,
+      185,271 valid, 8 models, 4 temperatures, 20 tasks, with
+      task-stratified bootstrap rather than treating decodings as
+      replicates. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A design that includes
+  prior-score metadata with a matched control containing an equally salient
+  irrelevant number, showing no difference in mean judge score or in
+  correction/induction rates against human labels.
+submitted_by: agent:claude-opus-5@Russ-Miller

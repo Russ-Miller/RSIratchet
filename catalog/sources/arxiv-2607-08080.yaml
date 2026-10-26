@@ -1,0 +1,70 @@
+id: arxiv-2607-08080
+ref: SRC-0591
+kind: paper
+title: "MASTE: A Multi-Agent Pipeline for Zero-Shot Aspect Sentiment Triplet
+  Extraction"
+authors:
+  - Ao Hong
+  - Lehang Wang
+  - Zhirun Yue
+  - M Wang
+  - Zihan Wang
+  - Houde Liu
+year: 2026
+date: 2026-07-09
+arxiv_id: "2607.08080"
+url: https://arxiv.org/abs/2607.08080
+tags:
+  - ingested
+summary: Aspect Sentiment Triplet Extraction (ASTE) requires jointly
+  identifying (aspect, opinion, sentiment) triples from a given review
+  sentence. While large language models (LLMs) achieve strong zero-shot
+  performance on many NLP benchmarks, their effectiveness on ASTE remains
+  limited, as single-pass generation forces the model to determine span
+  boundaries, opinion grouping, and sentiment polarity in a single decoding
+  step. Common remedies, such as few-shot in-context learning and
+  chain-of-thought prompting, offer only marginal improvements and rely
+  heavily on either in-domain demonstrations sampled
+notes: "Filed as a source on multi-model-coordination from the classifier's
+  judgement that the paper is about it (improves, medium): Decomposing ASTE
+  into a sequential pipeline of specialized agents substantially outperforms
+  single-model zero-shot and CoT baselines with the same backbone. No claim
+  has been drafted from it yet."
+ingested_at: 2026-10-26
+brief: >-
+  Splitting a structured extraction task into 4 sequentially conditioned LLM
+  calls beats letting 1 call commit to spans, pairings, and polarity at once,
+  and beats few-shot prompting without using any demonstrations.
+
+
+  MASTE runs Aspect, Opinion, Sentiment, and Consistency Check agents over a
+  shared frozen backbone, with each agent seeing the sentence plus upstream
+  structured output, plus deterministic verbatim-span filtering. Evaluated on
+  4 ASTE-Data-V2 benchmarks (14Res, 14Lap, 15Res, 16Res) under exact-match
+  P/R/F1.
+
+
+  With GPT-4o, F1 rises from 35.37 to 72.31 on 14Res, and MASTE gains 36.94,
+  36.05, 35.41, and 36.60 F1 over zero-shot across the 4 sets, and 12.76-15.51
+  over few-shot. Precision is highest on every dataset; recall on 14Lap stays
+  below Li-unified-R+PD.
+
+
+  Evidence includes an agent-level ablation (average F1 67.28 full, 62.47
+  without Consistency, 40.76 without Opinion+Consistency) and a cross-backbone
+  comparison on GPT-3.5-turbo, Claude Sonnet 4.6, Gemini-3-flash,
+  Deepseek-V3.2, and Seed 2.0 pro, with gains from 2.61 to 29.87. There is no
+  cost-matched baseline: MASTE uses 4 LLM calls per sentence versus 1 for
+  zero-shot and CoT.
+
+
+  All data is English review-domain; no multilingual, long-document, or
+  noisy-text tests, and errors trace to aspect recall and annotation
+  conventions (e.g. "no" labelled NEU in gold, NEG by MASTE).
+
+
+  If you do span-level extraction without labels, staged decomposition plus
+  set-level verification is worth the extra calls.
+brief_generated_at: 2026-10-26
+brief_model: claude-opus-5
+brief_source: full-text

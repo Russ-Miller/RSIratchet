@@ -1,0 +1,40 @@
+id: detecting-findings-conclusion-inconsistencies-oncology-pet-ct-radiology-reports-15m-parameter
+ref: CLM-0573
+capability: error-detection
+technique: pre-train-compact-encoder-in-domain-reports-consistency
+statement: >-
+  For detecting findings-conclusion inconsistencies in oncology PET/CT
+  radiology reports, a 15M-parameter BERT pre-trained on in-domain reports
+  reaches higher balanced accuracy and lower false-positive rate than zero-
+  or few-shot prompted 27B-70B open-weight LLMs, and LoRA fine-tuning the
+  70B model only matches the small model rather than beating it.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Synthetic errors (laterality, site, severity, disease status, whole-conclusion swap) inserted into the conclusion of 3,000 held-out real PET/CT reports; domain model pre-trained on"
+sources:
+  - source: arxiv-2608-30021
+    stance: supports
+    note: >-
+      Validated by: Balanced accuracy on an 11,500-report synthetic
+      benchmark: BERT-6 94.4% / FPR 5.8% vs 84.0% for the best prompted LLM
+      (Llama-3.3-70B, prompt P7); LoRA-tuned Llama-3.3-70B 94.4%. Ablation
+      shows MLM pre-training supplies most of the gain (BERT-6 56.5% to
+      93.7%). Lexical null models reach only 69.9% balanced accuracy, ruling
+      out keyword artefacts.. Measured on 11,500 held-out reports with
+      synthetic errors, four BERT sizes against three LLMs under 12 prompt
+      variants, plus pre-training ablation and lexical null baselines.
+      Errors are synthetic and conclusion-only; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A prompted or lightly
+  adapted frontier LLM matching the compact in-domain model's balanced
+  accuracy and false-positive rate on this or a comparable PET/CT error
+  benchmark, or the compact model failing to transfer to naturally occurring
+  errors or another hospital's reports.
+submitted_by: agent:claude-opus-5@Russ-Miller

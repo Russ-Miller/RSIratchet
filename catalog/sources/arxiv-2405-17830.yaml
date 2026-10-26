@@ -32,3 +32,40 @@ notes: "Filed as a source on fine-tuning-retention from the classifier's
   general skills alongside domain knowledge. No claim has been drafted from it
   yet."
 ingested_at: 2026-09-23
+brief: >-
+  Fixing catastrophic forgetting does not make a fine-tuned model use its
+  general skills on domain tasks. Models can retain instruction-following form
+  while failing to combine it with the domain knowledge they just learned, a
+  gap the authors name General Capabilities Integration (GCI).
+
+
+  The setup is legal-domain Chinese LLMs: train on Law Article QA, test on
+  reasoning and numerical calculation; train on Article QA, test on
+  ethics-attack and contaminated-query dialogues; train on legal information
+  extraction, test on event summary and machine reading comprehension.
+  Baselines include LoRA SFT, wise-ft at 4 mixing weights, L1/L2/KL
+  regularization, DAS, MixTraining and MixDA*. The proposed ALoRA adds a
+  multi-head attention module over LoRA plus a KL penalty.
+
+
+  6 baselines reach 100 on "Chain" (complete reasoning chain rate) while
+  BLEU_R stays low, so form is preserved and knowledge is not integrated. DAS
+  improves the training task but leaves test tasks near the untuned chat
+  model, and its ethics Score_E is 2, same as the general LLM. ALoRA reaches
+  Score_E 47.94 and a reasoning/calculation average of 20.73 on mixed data,
+  beating the best baseline by 0.87.
+
+
+  Evidence is measured, with an ablation separating attention, residual and
+  KL, and a rank-16 LoRA control showing extra parameters add only about 0.7.
+  Weaknesses: scoring for safety tasks uses GPT-4 as judge, several datasets
+  were GPT-4-generated with only 100 samples checked each, and margins over
+  strong baselines are under 1 point on several averages. Only the legal
+  domain is tested; ALoRA degrades on long verdict summarization.
+
+
+  Treat forgetting benchmarks as insufficient evidence that a domain-tuned
+  model still works.
+brief_generated_at: 2026-10-26
+brief_model: claude-opus-5
+brief_source: full-text

@@ -31,3 +31,42 @@ notes: "Filed as a source on planning from the classifier's judgement that the
   success rates, e.g. 14.9% over ReAct on spatial semantic reasoning tasks. No
   claim has been drafted from it yet."
 ingested_at: 2026-09-23
+brief: >-
+  A 1.5B model fine-tuned to emit parameterized skill calls plus 3-level
+  verification reasoning beats GPT-4-based planners on robot tasks that
+  require resolving dynamic semantics like "largest" or "leftmost". The gain
+  comes from separating perception from action so the model computes
+  parameters (e.g. bounding box areas) itself rather than filling fixed
+  templates.
+
+
+  LightPlanner-1.5B is Qwen2.5-1.5B-Instruct fully fine-tuned on
+  LightPlan-40k, 40,000 single-step decision samples derived from 60
+  hand-annotated tasks expanded to 6,000 by GPT-4. Evaluation ran on a real
+  UR3 arm with an Intel D435 camera, 30 tasks x 3 repetitions = 90 trials,
+  split into simple semantic mapping and dynamic semantic reasoning, 2-8 step
+  chains.
+
+
+  On dynamic semantic reasoning it hit 100.0 SR short-term, 79.5 vs 71.4 for
+  CoPAL (GPT-4) medium-term, and 66.1 vs 54.1 for CAPE long-term. On 10 unseen
+  8-step task categories: 62.6 SR vs 53.8 CoPAL and 42.0 ReAct-3B. Ablations
+  drop long-term SR to 58.6 without dynamic skill control, 60.3 without
+  hierarchical reasoning, 61.1 without memory.
+
+
+  Baselines were matched on data where possible: ReAct and MLDT were
+  fine-tuned on the same LightPlan-40k. The GPT-4 planners were prompt-only,
+  so the comparison mixes training data advantage with method. Only 90 trials,
+  1 robot, 1 model family, authors' own tasks and dataset.
+
+
+  The ablation isolates each component; the cross-model claim rests on GPT-4 +
+  LightPlanner reaching 75.8 SR long-term.
+
+
+  If you are building edge planners, treat parameter generation as the lever,
+  not model size.
+brief_generated_at: 2026-10-26
+brief_model: claude-opus-5
+brief_source: full-text

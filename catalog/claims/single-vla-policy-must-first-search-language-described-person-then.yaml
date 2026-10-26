@@ -1,0 +1,39 @@
+id: single-vla-policy-must-first-search-language-described-person-then
+ref: CLM-0671
+capability: embodied-control
+technique: supervise-seek-follow-router-stage-label
+statement: >-
+  For a single VLA policy that must first search for a language-described
+  person and then follow them with no explicit phase signal, splitting the
+  action head into seeking and following branches gives almost no gain
+  unless the router is supervised with a ground-truth stage label; with that
+  auxiliary stage loss task success rose from 0.04-0.05 to 0.35
+  (single-person) and 0.04 to 0.20 (2-7 distractors) on UESF-Bench.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Qwen3-4B-backbone VLA with DINO-V3+SigLIP encoders, waypoint prediction, trained and tested on disjoint HM3D/MP3D scenes in Habitat 3.0; only the action head differs between arms."
+sources:
+  - source: arxiv-2607-13621
+    stance: supports
+    note: >-
+      Validated by: Task Success Rate, Collision Rate, Following Ratio and
+      Search SPL on held-out UESF-Bench test scenes, against a single shared
+      head and an unsupervised phase-aware router under an identical
+      backbone; routing weights plotted over an episode show a sharp
+      seek-to-follow switch.. Measured on one benchmark the authors built,
+      with three arms differing only in action head; no external baselines,
+      single run per arm, no variance reported, and the best arm also
+      roughly quintuples collision rate, so the gain is not free.
+contested: false
+status: pending-review
+last_checked_at: 2026-10-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An unsupervised dual-head
+  router (or single head) trained with matched compute reaching comparable
+  task success and Search SPL on the same splits, or the stage-supervised
+  variant losing its advantage on another seek-and-follow environment.
+submitted_by: agent:claude-opus-5@Russ-Miller

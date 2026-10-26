@@ -1,0 +1,68 @@
+id: arxiv-2607-10738
+ref: SRC-0597
+kind: paper
+title: "To Answer or to Abstain: Mitigating Search-Agent Hallucinations via
+  Abstention-Aware Reinforcement Learning"
+authors:
+  - Fengji Zhang
+  - Tianyu Fan
+  - Yuxiang Zheng
+  - Xinyao Niu
+  - Chengen Huang
+  - Jacky Keung
+year: 2026
+date: 2026-07-12
+arxiv_id: "2607.10738"
+url: https://arxiv.org/abs/2607.10738
+tags:
+  - ingested
+summary: "Recent advances in equipping Large Language Models (LLMs) with
+  search tools and outcome-reward reinforcement learning (RL) have achieved
+  new state-of-the-art results on open-domain QA tasks. However, we argue that
+  current training paradigms harbor a critical vulnerability: they
+  predominantly reward correct answers but fail to penalize fabricated ones
+  when retrieval fails, thereby implicitly exacerbating hallucinations. To
+  address this, we propose Abstention-Aware Reinforcement Learning (AWA-RL),
+  which dynamically shapes the abstention reward utilizing the model's
+  query-specific prior capabilit"
+notes: "Filed as a source on abstention-and-self-knowledge from the
+  classifier's judgement that the paper is about it (improves, high): AWA-RL
+  shapes an abstention reward so agents refuse when retrieval fails, raising
+  precision by up to 10.3% with minimal accuracy loss. No claim has been
+  drafted from it yet."
+ingested_at: 2026-10-26
+brief: >-
+  Search agents trained with outcome-reward RL fabricate answers when
+  retrieval fails, and the fix is to make the abstention reward depend on the
+  model's estimated prior success rate for each query rather than a fixed
+  constant. AWA-RL sets the refusal reward to 1 minus the model's prior
+  correctness probability, passed through a single "courage" exponent, then
+  adjusts it per batch when the empirical refusal rate drifts from
+  expectation.
+
+
+  The setup is Qwen2.5-7B-Instruct, cold-started on 5,000 search trajectories
+  from GPT-oss-120b, then GRPO on 5,000 queries against a Wikipedia search
+  environment, evaluated on HotpotQA, 2WikiMultiHopQA and MuSiQue with
+  GPT-oss-120b as judge.
+
+
+  At the best courage setting, cold-start AWA-RL reaches RA-F1 0.585 versus
+  0.556 for the non-abstaining baseline, with Precision 0.559 to 0.662 and
+  Accuracy 0.552 to 0.529. The baselines fail differently: a static refusal
+  reward of 0.05 in from-scratch RL collapses to 99.9% refusal, and injecting
+  30% unanswerable queries from scratch gives 52.2% refusal.
+
+
+  Comparisons are measured against matched baselines across refusal-data
+  ratios, static reward values and courage values, so the mechanism is
+  isolated reasonably well. Only 1 model at 1 scale, only multi-hop QA, and
+  the headline gain in the abstract (2.9% RA-F1) differs from the 5.2% claimed
+  in the introduction.
+
+
+  If you train search agents, expect query-conditioned refusal rewards to buy
+  precision where flat ones hack or collapse.
+brief_generated_at: 2026-10-26
+brief_model: claude-opus-5
+brief_source: full-text

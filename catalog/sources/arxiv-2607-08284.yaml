@@ -1,0 +1,64 @@
+id: arxiv-2607-08284
+ref: SRC-0592
+kind: paper
+title: Understanding Axes of Difficulty For Long Context Tasks Via
+  PredicateLongBench
+authors:
+  - S Jain
+  - Ameya Velingker
+year: 2026
+date: 2026-07-09
+arxiv_id: "2607.08284"
+url: https://arxiv.org/abs/2607.08284
+tags:
+  - ingested
+summary: Large language models (LLMs) have demonstrated rapidly improving
+  long-context capabilities, prompting a wave of benchmarks designed to
+  evaluate them. However, existing long-context evaluations - from
+  Needle-in-a-Haystack (NIAH) tests to more recent multi-hop reasoning and
+  summarization tasks - predominantly measure average-case performance, and
+  many are either saturated or lack robustness. Notably absent is a systematic
+  way to probe how models perform as we scale up the difficulty of tasks along
+  various axes. We address this gap by proposing PredicateLongBench, a
+  benchmark that stress-tests lo
+notes: "Filed as a source on long-context-degradation from the classifier's
+  judgement that the paper is about it (measures, high): The paper introduces
+  a benchmark that stress-tests long-context reasoning along difficulty axes
+  and reports frontier models struggling, without proposing a fix. No claim
+  has been drafted from it yet."
+ingested_at: 2026-10-26
+brief: >-
+  Scattering near-miss decoys through a long context collapses frontier model
+  accuracy on an otherwise easy retrieval task, and clustering the same decoys
+  next to the target restores it almost entirely. The decoys themselves are
+  not the difficulty; their dispersal across context is.
+
+
+  PredicateLongBench asks models to find the longest contiguous run of words
+  satisfying predicates (string prefix/suffix/containment, or lexicographic
+  ordering) in lists of roughly 128K tokens synthetic, up to 365K from
+  LongBench v2 documents. 9 configurations across Opus 4.6, GPT-5.4, Gemini
+  3.1 Pro, MiniMax 2.7, GLM 5.1, Qwen 3.5 397B, 100 examples per variant (93
+  for open models on LongBench tasks), 16K max output tokens.
+
+
+  Opus 4.6 high goes from 97 on the synthetic lexicographic baseline to 1 with
+  8 near-sorted decoys, then back to 98 when those decoys are clustered. With
+  decoys present, no model exceeds 2 on the synthetic lex task. Holding token
+  count at 128K but shortening words so the list grows from 26K to 60K words
+  drops GPT-5.4 high from 92 to 10. Open-source models sit at single digits or
+  0 on everything except the unary baseline.
+
+
+  Effects are measured, with each variant perturbing 1 axis against its own
+  baseline, which isolates the axes well. The search-space result rests on 1
+  model. Failure analysis is partly anecdotal: 5 Opus queries at a 64K budget,
+  plus OSS reasoning traces. First-word accuracy on wrong answers is 0 across
+  all models, so failure is location, not reproduction.
+
+
+  If you treat context length as the main long-context variable, add
+  search-space size and decoy dispersal.
+brief_generated_at: 2026-10-26
+brief_model: claude-opus-5
+brief_source: full-text
