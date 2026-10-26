@@ -1,0 +1,46 @@
+arxiv_id: "2608.11474"
+title: Test-Time Hallucination Control in Large Vision-Language Models
+url: https://doi.org/10.48550/arxiv.2608.11474
+drafted_at: 2026-10-23
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: "In 7B-class LVLMs (LLaVA-1.5, MiniGPT-4, mPLUG-Owl2) that rescore
+  object tokens during decoding with a frozen CLIP image-text similarity, the
+  CLIP signal must be weighted by the model's own entropy over the object
+  candidates: a fixed mixing coefficient is sensitive to its value and gives
+  smaller hallucination reductions, and letting CLIP fully override the LVLM
+  logits degrades output."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Object hallucination in open-ended captioning; frozen CLIP
+  ViT-B/32 validator, object tokens picked from the top-k pool via WordNet;
+  does not apply to tasks without explicit object generation (binary probing)
+  or to attribute hallucination.
+technique: ""
+proposed_technique: Fuse CLIP object logits by LVLM entropy at decoding
+technique_summary: At each decoding step, pick object tokens among the top-k
+  candidates with WordNet, rescore them with CLIP similarity to the image,
+  rescale the scores into the LVLM logit range, and blend the two with a
+  weight equal to the LVLM's normalized entropy over those candidates.
+technique_kind: decoding
+technique_validated_by: CHAIR_S/CHAIR_I and BLEU on 500 MSCOCO images over
+  three seeds, OPOPE accuracy/precision/F1, and GPT-4V scores on LLaVA-Bench,
+  against greedy, beam, DoLa, OPERA, VCD, HALC, Woodpecker, LURE and Nullu;
+  reported CHAIR_S 14.27 vs 15.20 (Nullu) and 20.40 (greedy) on LLaVA-1.5,
+  with throughput 0.59 vs 0.72 items/s for greedy; ablations sweep the fixed
+  coefficient and the candidate-pool size (best at 10).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A sweep showing some fixed mixing coefficient matches or beats
+  entropy-adaptive weighting on CHAIR_S/CHAIR_I across these backbones, or
+  showing the entropy weight's gain disappears once coverage/informativeness
+  is held constant.
+evidence_note: Measured on three LVLMs and three benchmarks with seed variance
+  reported, plus a coefficient-sweep ablation on LLaVA-1.5 only. Margins over
+  the strongest baseline are under one CHAIR point. BLEU is reported but
+  object coverage is not, so the reduction cannot be separated from the model
+  mentioning fewer objects.
+confidence: low

@@ -1,0 +1,44 @@
+arxiv_id: "2609.02421"
+title: "UTP-Bench: Uncertainty-aware Travel Planning Benchmark"
+url: https://arxiv.org/abs/2609.02421
+drafted_at: 2026-10-22
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: planning
+statement: "For LLM-generated multi-day travel itineraries, high qualitative
+  coherence scores (spatial, persona, meal, ordering) coexist with near-zero
+  robustness to realistic disruption: across GPT-5, Qwen3, Mistral-7B and
+  Phi-4-mini, transport-delay buffer scores stay under 12% and buffer-adequacy
+  scores under ~41%, so coherence and static constraint satisfaction do not
+  indicate that a plan survives empirical transit delays or crowd peaks."
+kind: observation
+backing_strength: single-paper
+scope_condition: 1,000 3/5/7-day India travel queries with human gold
+  itineraries, empirical delay and crowd-density data, direct sole-planning
+  prompting that already describes the uncertainty distributions; four models
+  tested plus one agentic baseline.
+technique: ""
+proposed_technique: Score itineraries for buffer adequacy against empirical delay data
+technique_summary: Evaluate a generated plan by whether each activity gap and
+  transport segment allocates buffer inside a risk-profile-scaled range
+  derived from historical delay distributions and hourly crowd density, rather
+  than by binary constraint satisfaction.
+technique_kind: process
+technique_validated_by: Applied to four LLMs and an agentic baseline over
+  3/5/7-day plans; the metrics separate models that binary final-pass rate
+  collapses to near zero for, and expose model-specific patterns (Qwen3
+  degrading with horizon, Phi-4 strong crowd timing but weak buffering); no
+  human-agreement study of the metrics is reported.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A model (or prompting setup) that scores high on these qualitative
+  coherence metrics and also allocates buffers within the empirical
+  delay-derived ranges, or evidence that low BAS/TDAS plans in fact execute
+  without cascading failure under simulated delays.
+evidence_note: Measured on a new benchmark with the authors' own metrics, so
+  the headline gap is partly a property of the metric's acceptable-buffer
+  parameterisation; human annotators also degrade with horizon (91% to 63%),
+  and no execution simulation checks that low BAS/TDAS plans actually fail.
+confidence: medium

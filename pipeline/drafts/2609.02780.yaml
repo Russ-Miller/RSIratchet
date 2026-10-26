@@ -1,0 +1,53 @@
+arxiv_id: "2609.02780"
+title: "ShallowStream: Index Shallow then Answer Deep for Streaming Video
+  Understanding"
+url: https://doi.org/10.48550/arxiv.2609.02780
+drafted_at: 2026-10-22
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: video-temporal-reasoning
+statement: "For streaming video understanding with 7-8B multimodal backbones,
+  question-relevant historical frames can be retrieved from the keys of only
+  the first few language-Transformer layers (layer ~3-4 of 28-32), so
+  continuous frames need not be prefilled through full model depth: indexing
+  shallow and re-prefilling only the retrieved units at full depth cuts
+  per-frame prefill up to 52x and 20-second end-to-end latency up to 15x while
+  scoring about 1.7 points above the best same-backbone baseline on OVO-Bench
+  and StreamingBench."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Qwen3-VL-8B and LLaVA-OneVision-7B, 1 FPS streaming,
+  OVO-Bench/StreamingBench/LVBench, no task-specific training; retrieval gate
+  threshold calibrated once off-benchmark.
+technique: ""
+proposed_technique: Index the stream with shallow-layer KVs, answer deep only on retrieved units
+technique_summary: Streaming frames pass through only the shallow language
+  layers whose KVs form a full-history index; at query time a text-only logit
+  gate decides whether history is needed, cross-layer token voting plus
+  max-min diversity picks evidence units, and only those units plus recent
+  context are re-prefilled through all layers.
+technique_kind: architecture
+technique_validated_by: OVO-Bench and StreamingBench accuracy against online
+  MLLMs and training-free offline-to-online baselines (ReKV, HERMES,
+  SimpleStream, OASIS, CausalMem, LiveVLM) on two backbones, plus measured
+  per-frame prefill, 20s end-to-end latency and peak GPU memory on an RTX
+  5090; ablations isolate the gate (48.7% retrieval on Backward vs 4.9% on
+  Real-Time), token voting (59.48% vs 58.91% pooled Q-K, 57.47% SigLIP) and
+  diversity (59.77% to 61.21%).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Show that retrieval quality from shallow-layer keys falls
+  materially below full-depth retrieval on streams or backbones where the
+  layer-wise diagnostic was not run, or that the latency gains disappear once
+  archive updates, transfer and re-prefill are counted, or that accuracy drops
+  below strong recent-window baselines on backward-tracing categories.
+evidence_note: Measured on two backbones and two streaming benchmarks with
+  controlled reruns of several baselines, plus a layer-wise LVBench diagnostic
+  that isolates retrieval layer from answer depth. Gains are modest in
+  accuracy (~1.7 points average) and the headline speedups are 'up to' figures
+  on five long videos on one GPU; backward-tracing averages are not uniformly
+  best (LLaVA backward avg 49.0 vs 49.9 for HERMES), so the claim rests mainly
+  on the efficiency-accuracy frontier, not on dominance.
+confidence: medium

@@ -1,0 +1,46 @@
+id: 7b-class-lvlms-llava-1-5-minigpt-4-mplug-owl2-hallucination-directions-activation
+ref: CLM-0539
+capability: visual-grounding
+technique: weight-several-hallucination-subspaces-per-image-one-global
+statement: >-
+  In 7B-class LVLMs (LLaVA-1.5, MiniGPT-4, mPLUG-Owl2), hallucination
+  directions in activation space are not a single mode: clustering
+  hallucinated-minus-faithful hidden-state differences into several low-rank
+  subspaces and weighting them per test image lowers object-hallucination
+  rates slightly below a single global null-space projection, with the
+  margin small (CHAIR_I 5.30 to 4.92 on LLaVA-1.5) and inconsistent on
+  yes/no existence probing.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Training-free editing of mid-layer hidden states in three open LVLMs, evaluated on CHAIR and offline POPE over MSCOCO val; gains over the single-subspace baseline are under one poi"
+sources:
+  - source: arxiv-2608-09344
+    stance: supports
+    note: >-
+      Validated by: CHAIR_S/CHAIR_I/BLEU and offline-POPE
+      accuracy/precision/F on MSCOCO across three LVLMs, mean and standard
+      deviation over ten clustering runs, against greedy, beam, DoLa, OPERA,
+      VCD, Woodpecker, LURE, HALC and the single-subspace Nullu baseline;
+      ablations on cluster count, basis rank, and masking vs Gaussian noise
+      vs blur.. Measured on two benchmarks, three LVLMs, ten runs with
+      reported standard deviations. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A matched comparison in
+  which a single global subspace with the same total rank and the same
+  masked-image probe matches the per-instance mixture on CHAIR and POPE, or
+  in which randomly partitioned clusters work as well as the
+  difference-vector clustering. Drafted stance toward
+  training-free-inference-time-hallucination-interventions-7b-class-vision-language-models-increasing-intervention:
+  supports -- The basis-rank ablation shows CHAIR_S falling monotonically
+  from 16.2 to 11.3 as rank grows from 1 to 64 while BLEU falls from 15.6 to
+  12.7, which the authors read as loss of grounded content, matching the
+  claim that stronger intervention buys lower hallucination scores with
+  reduced informativeness.
+submitted_by: agent:claude-opus-5@Russ-Miller

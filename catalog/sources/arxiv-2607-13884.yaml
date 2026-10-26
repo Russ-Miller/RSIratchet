@@ -1,0 +1,70 @@
+id: arxiv-2607-13884
+ref: SRC-0604
+kind: paper
+title: "Experience Memory Graph: One-Shot Error Correction for Agents"
+authors:
+  - Wenjun Wang
+  - Y D Fang
+  - Fengrui Liu
+  - Zibo Liang
+  - Kai Zheng
+year: 2026
+date: 2026-07-15
+arxiv_id: "2607.13884"
+url: https://arxiv.org/abs/2607.13884
+tags:
+  - ingested
+summary: Large Language Model (LLM) agents have shown remarkable capabilities
+  in autonomous decision-making by generating sequential trajectories of
+  states, actions, and observations. However, in complex, long-horizon tasks,
+  these agents frequently suffer from compounding errors and struggle to
+  recover from failures. Existing self-correction mechanisms rely on
+  prompt-based reflection, which is inherently brittle, incurs heavy time and
+  API costs due to iterative trial-and-error loops, and produces task-specific
+  memory that may be hard to generalize to new scenarios. To address this, we
+  propose Experienc
+notes: "Filed as a source on self-repair from the classifier's judgement that
+  the paper is about it (improves, high): EMG replaces iterative prompt-based
+  reflection with retrieved graph-edit correction insights and reports higher
+  success rate and reward than reflection baselines in one-shot execution. No
+  claim has been drafted from it yet."
+ingested_at: 2026-10-26
+brief: >-
+  Offline graph matching between failed and expert trajectories yields error
+  corrections that beat iterative test-time self-reflection, in 1 execution
+  instead of 5.
+
+
+  Experience Memory Graph (EMG) converts exploration and expert trajectories
+  into directed action decision graphs where nodes are normalized actions and
+  edges carry preceding observations, then uses a Fused Gromov-Wasserstein
+  solver to extract common subgraphs (workflows) and edit paths (corrections).
+  These are distilled by an LLM into node insights, with edges holding
+  cross-task insights between similar queries. Tested on ALFWorld and
+  ScienceWorld (seen and unseen splits) with Qwen3-4B and DeepSeek-V4-Flash
+  against ReAct, Reflexion, ExpeL, CDMem, and MemP.
+
+
+  Average across 6 metrics: 40.69 vs 29.83 for the best baseline with
+  Qwen3-4B, and 61.92 vs 51.70 with DeepSeek-V4-Flash. On ALFWorld seen with
+  Qwen3-4B, iterative baselines span 27.14%-38.57% over 5 iterations while EMG
+  reaches 53.57% in 1. Matching costs 0.4892 s/pair (ALFWorld) and 2.8766
+  s/pair (ScienceWorld) offline.
+
+
+  Ablations isolate the 2 memory types: node insights alone lift DeepSeek
+  unseen ScienceWorld SR from 13.74% to 23.22%; edges add most for the small
+  model (9.48% to 16.11%). Iterative baselines were given 5 iterations, so the
+  comparison is not matched on token budget in EMG's favour.
+
+
+  EMG depends on pre-collected expert demonstrations from ETO; only 1,275 of
+  3,321 ALFWorld training tasks had pairs, and no demonstration-free setting
+  was tested. Only 2 embodied benchmarks and 2 models.
+
+
+  If you have expert trajectories, offline correction extraction may be
+  cheaper and better than reflection loops.
+brief_generated_at: 2026-10-26
+brief_model: claude-opus-5
+brief_source: full-text

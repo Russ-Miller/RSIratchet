@@ -1,0 +1,49 @@
+arxiv_id: "2608.28018"
+title: "Twin Worlds: Equivariance-Based Abstention for Evidence-Grounded Reasoning"
+url: https://doi.org/10.48550/arxiv.2608.28018
+drafted_at: 2026-10-19
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: abstention-and-self-knowledge
+statement: For entity-centric evidence-grounded QA and fact verification,
+  substituting named entities with type-matched synthetic names and checking
+  that the answer transforms correspondingly (back-maps to the original
+  answer) detects ungrounded answers that self-consistency and
+  evidence-sufficiency scores both miss, because synthetic names reduce the
+  parametric activation that keeps a memorised answer stable under
+  perturbation.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Tasks whose questions and evidence are organised around named
+  entities with reliable NER; not math or procedural reasoning; English only;
+  tested on three backbones (GPT-5.1, LLaMA-4-Scout, Mistral-Small-24B) and
+  four benchmarks.
+technique: ""
+proposed_technique: Abstain when answers fail to track entity substitutions
+technique_summary: Replace entities in the question and evidence with
+  type-matched synthetic names under a bijective mapping, re-ask, map the
+  answer back, and abstain when back-mapped answers disagree with the original
+  across sampled worlds.
+technique_kind: prompting
+technique_validated_by: Four benchmarks (HotpotQA, MIRAGE, FaithEval, FEVER) x
+  three backbones against seven abstention baselines on F1/Acc/Reliability
+  Score/Abstention Rate; on a 200-item hard subset where self-consistency
+  agreement >=0.8 and sufficiency score >=0.5, abstention rate 0.71 vs 0.09
+  and 0.11; ablation shows removing back-mapping costs 0.067-0.076 RS and
+  using real Wikipedia entities instead of synthetic ones costs 0.103-0.115
+  RS; human agreement 83.5%.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Equal or lower abstention than self-consistency/sufficiency on
+  unanswerable items those methods answer confidently, or no loss when
+  synthetic replacement entities are swapped for real ones of the same type,
+  would show the equivariance signal is not doing the attributed work.
+evidence_note: "Measured, not argued: full baseline table across 4 datasets x
+  3 backbones, plus ablations isolating back-mapping, typing, bijectivity and
+  synthetic-vs-real entities, plus a logit-lens activation analysis on one
+  model supporting the parametric-attenuation mechanism. Thresholds tuned on
+  held-out 500 instances. Single paper; FEVER and FaithEval gains are less
+  uniform than HotpotQA/MIRAGE."
+confidence: medium

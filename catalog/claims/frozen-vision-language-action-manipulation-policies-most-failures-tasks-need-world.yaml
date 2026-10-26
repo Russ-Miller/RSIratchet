@@ -1,0 +1,48 @@
+id: frozen-vision-language-action-manipulation-policies-most-failures-tasks-need-world
+ref: CLM-0592
+capability: embodied-control
+technique: orchestrate-frozen-vlas-verify-and-recover-loop
+statement: >-
+  For frozen vision-language-action manipulation policies, most failures on
+  tasks that need world knowledge, conditionals, multi-step decomposition,
+  memory or recovery are not motor failures: wrapping the same unchanged
+  weights in an inference-time orchestrator that decomposes the instruction
+  into short subgoals, routes each to a motor backend, verifies the outcome
+  from the gripper sensor and wrist image, and retries or escalates raises
+  success sharply (real-robot reasoning probes 4.6% to 96.9%; LIBERO-PRO
+  12.8% to 53.3%) while leaving already-easy pick-and-place roughly
+  unchanged.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Frozen pi-0.5 VLA plus a TAMP grasp planner on a Franka FR3 DROID tabletop setup (30 capability-probe tasks, 5 trials each) and LIBERO-PRO simulation; frontier VLM as orchestrator;"
+sources:
+  - source: arxiv-2607-21725
+    stance: supports
+    note: >-
+      Validated by: Binary task success against two direct-prompting
+      baselines holding weights fixed: on 30 real-robot tasks 97.3% vs 16.7%
+      for direct pi-0.5 and 48.7% for open-loop TiPToP; on LIBERO-PRO six
+      perturbation suites 53.3% mean vs 12.8% for frozen pi-0.5 and 18.2%
+      for CaP-Agent0; the loop effect reported to hold across seven
+      different reasoner models.. Measured, with weights, hardware, scenes
+      and backends held fixed so only the inference-time process varies — a
+      clean isolation. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A controlled run in
+  which the same orchestration loop, with verification and recovery intact,
+  gives little or no gain over direct prompting on reasoning-limited tasks,
+  or in which an ablation shows the gain comes from the TAMP backend's
+  grounding rather than from verification and recovery. Drafted stance
+  toward
+  vla-world-action-manipulation-policies-score-near-ceiling-standard-libero-recovery:
+  supports -- Both find that frozen policies fail at recovery and state
+  repair rather than at motion, and this paper shows an external
+  verify-and-recover loop closes much of that gap.
+submitted_by: agent:claude-opus-5@Russ-Miller

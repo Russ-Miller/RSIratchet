@@ -1,0 +1,42 @@
+id: rl-trained-multimodal-image-quality-models-applying-reasoning-reward-only-reasoning
+ref: CLM-0660
+capability: explanation-faithfulness
+technique: reward-reasoning-whether-editing-improves-image
+statement: >-
+  In RL-trained multimodal image-quality models, applying the reasoning
+  reward only to reasoning tokens and the human-rating reward only to rating
+  tokens keeps rating alignment at the level of rating-only training while
+  turning reasoning-guided edit quality gain positive, and it prevents the
+  collapse to a single universal edit that an unmasked shared reward
+  produces despite that variant's larger raw gain.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "4B-class MLLM actor (Qwen3.5-4B) trained with GRPO on KonIQ-10k, with a frozen diffusion editor and a frozen MLLM judge supplying the reasoning signal; faithfulness measured as jud"
+sources:
+  - source: arxiv-2608-18579
+    stance: supports
+    note: >-
+      Measured on one actor backbone and one training split, with the final
+      E5 comparison confounded by a difference in KL scope (the authors flag
+      this and defer the controlled comparison to an appendix). Faithfulness
+      is operationalized as judge-scored quality gain, which the paper
+      itself concedes conflates identifying the limiting factor with
+      proposing a good fix; semantic drift in edits is unmeasured.
+contested: false
+status: pending-review
+last_checked_at: 2026-10-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An ablation under matched
+  KL scope and compute where masked token-specific credit gives no higher
+  edit-induced quality gain than a shared reward at equal solution
+  diversity, or where the unmasked variant does not collapse to a universal
+  edit. Drafted stance toward
+  rl-trained-multimodal-image-quality-models-supervising-reasoning-rating-reward-alone:
+  supports -- Rating-only training here matched the best rating alignment
+  while producing edit gains worse than the untrained baseline, repeating
+  the finding that rating reward alone does not buy faithful reasoning.
+submitted_by: agent:claude-opus-5@Russ-Miller

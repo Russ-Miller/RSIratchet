@@ -1,0 +1,69 @@
+id: arxiv-2607-14181
+ref: SRC-0607
+kind: paper
+title: Quantize with Confidence? An Empirical Study of Quantization for Code
+  Generation
+authors:
+  - Saima Afrin
+  - Md. Zahidul Haque
+  - Antonio Mastropaolo
+year: 2026
+date: 2026-07-15
+arxiv_id: "2607.14181"
+url: https://arxiv.org/abs/2607.14181
+tags:
+  - ingested
+summary: The growing adoption of local inference frameworks such as Ollama has
+  made it increasingly common for developers to run large code models on
+  laptops and other resource-constrained hardware. In these settings,
+  post-training quantization is essential for reducing memory footprint and
+  enabling practical deployment, yet its impact on generated code remains
+  insufficiently understood. We empirically evaluate six state-of-the-art
+  quantization methods (GPTQ, AWQ, QuIP#, AQLM, BitsAndBytes, and GGUF) on two
+  representative large code model families, Qwen2.5-Coder and CodeLlama, using
+  the multilingual Mc
+notes: "Filed as a source on code-generation from the classifier's judgement
+  that the paper is about it (measures, medium): The paper empirically
+  benchmarks how different quantization methods affect code-generation
+  correctness and quality without proposing a new technique, though it does
+  document degradation for some methods. No claim has been drafted from it
+  yet."
+ingested_at: 2026-10-26
+brief: >-
+  4-bit post-training quantization mostly preserves code-generation
+  correctness, but which method you pick matters more than the bit width, and
+  the sensitivity to prompt complexity depends on the base model rather than
+  the technique.
+
+
+  6 weight-only PTQ methods (GPTQ, AWQ, QuIP#, AQLM, BitsAndBytes, GGUF) at
+  4-bit were applied to Qwen2.5-Coder-7B-Instruct and CodeLlama-7B-Instruct,
+  and evaluated on McEval, CoderEval and BigCodeBench in Python and Java, for
+  pass@1 and for SonarCloud maintainability, reliability, security and
+  complexity.
+
+
+  AQLM matched or beat FP16 repeatedly (BCB-Python CodeLlama 0.27 vs FP 0.23,
+  significant, OR = 0.62), while QuIP# degraded most (0.12 on BCB-Python; 0.08
+  vs FP 0.25 on McEval-Java). Security hotspots stayed at 0 everywhere; AWQ
+  raised Java code smells (328 vs 274; d = −0.346, d = −0.394), BitsAndBytes
+  gave the largest Python complexity effect (CoC d = −0.487). For CodeLlama, 5
+  of 6 techniques showed positive correlation between prompt entropy and
+  degradation (QuIP# r = +0.325); for Qwen almost none did.
+
+
+  Effects were measured against matched FP16 baselines with McNemar and
+  Wilcoxon tests, Holm–Bonferroni correction and Cliff's delta; a 10-run
+  Friedman check ruled out inference noise on 1 configuration, and the entropy
+  confound was rechecked within BigCodeBench alone.
+
+
+  Only 7B models, 2 families, temperature 0, WikiText-2 calibration, 1 static
+  analyzer, and small McEval subsets (42 Python, 53 Java tasks).
+
+
+  Treat quantization technique as a deployment choice with model-specific
+  consequences, not a neutral compression step.
+brief_generated_at: 2026-10-26
+brief_model: claude-opus-5
+brief_source: full-text

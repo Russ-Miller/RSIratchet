@@ -1,0 +1,66 @@
+id: arxiv-2607-06160
+ref: SRC-0587
+kind: paper
+title: "LongCrafter: Towards Diverse Long-Context Understanding via
+  Evidence-Graph-Guided Instruction Synthesis"
+authors:
+  - Chenhao Yuan
+  - Yinhao Xu
+  - S Xu
+  - Xizhi Yang
+  - Jiaxiang Liu
+  - Chenxi Zhou
+year: 2026
+date: 2026-07-07
+arxiv_id: "2607.06160"
+url: https://arxiv.org/abs/2607.06160
+tags:
+  - ingested
+summary: "Synthesizing long-context supervised fine-tuning (SFT) data is a
+  scalable way to enhance the long-context understanding of large language
+  models (LLMs), yet existing approaches share three limitations: narrow task
+  coverage, insufficient instruction difficulty, and a lack of faithfulness
+  supervision. We propose \\textbf{LongCrafter}, a structured synthesis
+  framework that couples a hierarchical task taxonomy with an
+  evidence-grounded pipeline. The taxonomy organizes long-context
+  understanding into local/shallow and global/deep levels and yields 32
+  fine-grained task types that serve as a global ge"
+notes: "Filed as a source on long-context-degradation from the classifier's
+  judgement that the paper is about it (improves, high): The paper reports
+  that fine-tuning on its synthesized data improves long-context benchmarks
+  and makes evidence location position-robust, mitigating lost-in-the-middle.
+  No claim has been drafted from it yet."
+ingested_at: 2026-10-26
+brief: >-
+  Building an explicit evidence graph before generating a question, rather
+  than after, is what makes synthetic long-context SFT data hard and faithful
+  enough to matter. LongCrafter pairs a hand-built taxonomy of 32 fine-grained
+  long-context task types with a 3-stage pipeline: task-aligned context
+  assembly, extraction of cross-paragraph evidence nodes and dependency edges,
+  then instruction and citation-by-step response generation, all run with
+  GLM-5 to produce 2,000 samples.
+
+
+  Trained with LoRA on Qwen2.5-7B and LLaMA-3.1-8B, the data reaches overall
+  averages of 45.15% and 45.71% across LongBench, LongBench v2 and LooGLE,
+  beating the second-best SFT baseline by +5.80 and +5.30 points and the
+  official post-trained models by +2.41 and +5.25. With gold evidence moved
+  among 20 candidate documents, retrieval accuracy stays near-perfect at
+  positions 1-20, while baselines fall to about 71% (LongFaith on LLaMA) and
+  40% (LongReward on Qwen).
+
+
+  Evidence is measured, with matched 2,000-sample budgets across 4 baselines,
+  2 backbones, and ablations: dropping the evidence graph costs 12.64 and
+  11.89 points; dropping citations costs 5.25 and 4.08. Weaker points: data
+  quality and difficulty are scored by GPT-5 as judge (human ICC 0.82/0.87,
+  Spearman 0.63/0.74), answer correctness is also GPT-5-judged, LooGLE uses
+  100 sampled examples per subtask, and only 7-8B models with LoRA were
+  tested.
+
+
+  If you synthesize long-context training data, order the pipeline so evidence
+  structure precedes question generation.
+brief_generated_at: 2026-10-26
+brief_model: claude-opus-5
+brief_source: full-text

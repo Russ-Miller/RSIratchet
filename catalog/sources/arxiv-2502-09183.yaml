@@ -31,3 +31,38 @@ notes: "Filed as a source on code-generation from the classifier's judgement
   multiple code generation benchmarks with less data. No claim has been
   drafted from it yet."
 ingested_at: 2026-09-23
+brief: >-
+  Fine-tuning a code model on its own samples plus a teacher's written
+  critique of them beats fine-tuning on the teacher's code directly, using
+  plain SFT loss and no preference learning. Adaptive Critique Refinement
+  (ACR) samples 7 responses at temperature 0.7, scores them with
+  Qwen2.5-32B-Instruct as judge plus a code executor, and replaces each
+  training example either with the winning self-generated answer or with a
+  2-turn (loser, critique, reference) sequence.
+
+
+  RefineCoder-DS-6.7B and RefineCoder-QW-7B were trained from
+  DSCoder-6.7B-Base and Qwen2.5-Coder-7B-Base on a contamination-checked 80K
+  Python set, then iterated 3 times, and evaluated on HumanEval(+), MBPP(+),
+  BigCodeBench, BigCodeBench-hard, LiveCodeBench and MultiPL-E.
+
+
+  Average pass@1 on the harder pair rose 2.7 and 3.1 points over Iter0, with
+  most of the gain (2.0 and 2.3) arriving at the first iteration;
+  basic-benchmark averages rose 2.7 and 4.5 points. MultiPL-E, out of
+  distribution for a Python-only dataset, gained 1.0 and 2.1 points.
+
+
+  Evidence includes per-iteration ablations of both ACR modules (removing the
+  2-turn critique data hurts more), a scoring-system check where best-scored
+  code beats worst by 15.8 and 8.6 on HumanEval+, and a TLI leakage analysis
+  showing 3 baseline datasets contaminate HumanEval(+)/MBPP(+), which explains
+  the remaining gap there. Only 2 base models at 1 size, 1 judge model, no
+  matched-compute baseline, and no test outside code.
+
+
+  If you distill code models, try critique-on-own-output before more teacher
+  data.
+brief_generated_at: 2026-10-26
+brief_model: claude-opus-5
+brief_source: full-text

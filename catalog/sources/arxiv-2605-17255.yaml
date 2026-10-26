@@ -6,15 +6,53 @@ year: 2026
 date: 2026-05-17
 arxiv_id: "2605.17255"
 url: https://arxiv.org/abs/2605.17255
-tags: [ingested]
-summary: >-
-  Formal theorem-proving benchmarks enable mechanically verifiable
+tags:
+  - ingested
+summary: Formal theorem-proving benchmarks enable mechanically verifiable
   evaluation of mathematical reasoning in large language models. However,
   existing benchmarks mainly focus on Olympiad-style problems and algebraic
-  domains, leaving computational and applied mathematics underrepresented.
-  We introduce CAM-Bench, a Lean 4 theorem-proving benchmark of 1,000 Lean
-  proof targets in computational and applied mathematics, with coverage
-  spanning optimization, numerical linear algebra, and numerical analysis.
-  These problems are adapted from textbook exercises and often depend on
-  locally introduced definition
+  domains, leaving computational and applied mathematics underrepresented. We
+  introduce CAM-Bench, a Lean 4 theorem-proving benchmark of 1,000 Lean proof
+  targets in computational and applied mathematics, with coverage spanning
+  optimization, numerical linear algebra, and numerical analysis. These
+  problems are adapted from textbook exercises and often depend on locally
+  introduced definition
 ingested_at: 2026-09-19
+brief: >-
+  Models can state applied-mathematics arguments informally and still fail to
+  verify them in Lean, and the gap is wide: informal pass@1 of 70.0%-83.8%
+  against verified Lean accuracy below 20% at pass@32.
+
+
+  CAM-Bench holds 1,000 Lean 4 proof targets drawn from 778 textbook exercises
+  in optimization, numerical linear algebra, and numerical analysis, built by
+  a dependency-recovery pipeline that reconstructs local definitions,
+  notation, and elementary results before formalizing. Scoring is file-level:
+  an instance counts only if every sorry is filled and the file compiles.
+
+
+  Among non-agentic pass@32 baselines, Deepseek-v4-pro reaches 19.67%,
+  Claude-sonnet-4.6 19.28%, Gemini-3.1-pro-preview 18.38%, GPT-5.4 11.70%,
+  Kimi-k2.6 2.25%. An agentic repair harness takes GPT-5.4 to 44.00%, at about
+  1.96M tokens per instance versus 0.26-0.70M for the baselines. On 200
+  randomly sampled instances with an 8-hour budget each, M2F solves 143/200
+  (71.5%) and Aristotle 125/200 (62.5%).
+
+
+  The pass@32 comparison is matched across models, and the external agents
+  share an instance set, budget, and strict validation script that rejects
+  sorry, admit, and axiom. Token cost is reported but not held equal, so the
+  agentic gain confounds method and compute. Informal accuracy is judged by
+  LLM, and construction relied on LLM-as-a-judge review (92.5% of Lean
+  declarations kept).
+
+
+  Failure labels are multi-label, not disjoint: long-horizon proof control
+  affects 71.5% of pass@32 failures, library grounding 72.6%.
+
+
+  Treat verified-Lean rates on applied math as a separate capability from
+  informal correctness.
+brief_generated_at: 2026-10-26
+brief_model: claude-opus-5
+brief_source: full-text

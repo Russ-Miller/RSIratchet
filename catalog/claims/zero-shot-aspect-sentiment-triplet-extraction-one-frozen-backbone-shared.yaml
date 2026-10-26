@@ -1,0 +1,39 @@
+id: zero-shot-aspect-sentiment-triplet-extraction-one-frozen-backbone-shared
+ref: CLM-0695
+capability: multi-model-coordination
+technique: sequentially-conditioned-agents-triplet-set-consistency-check
+statement: >-
+  For zero-shot aspect sentiment triplet extraction with one frozen backbone
+  shared across stages, splitting the task into sequentially conditioned
+  agents (aspect, then aspect-conditioned opinion, then sentiment, then a
+  triplet-set consistency check) raises exact-match F1 well above
+  single-pass zero-shot and chain-of-thought prompting on the same backbone,
+  and the gain comes mainly from precision rather than recall.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "English review-domain ASTE-Data-V2 benchmarks (14Res, 14Lap, 15Res, 16Res), training-free, four LLM calls per sentence; aspect recall remains the bottleneck and errors in the first"
+sources:
+  - source: arxiv-2607-08080
+    stance: supports
+    note: >-
+      Validated by: Precision/recall/F1 on four ASTE-Data-V2 datasets
+      against GPT-4o zero-shot, few-shot, CoT and CoT+few-shot with the same
+      backbone (e.g. 72.31 vs 35.37 F1 on 14Res; +12.8 to +15.5 F1 over
+      few-shot), plus ablations removing each agent and five additional
+      backbones.. Measured on four benchmarks with matched backbone
+      baselines, plus agent ablations (average F1 67.28 full vs 40.76 with
+      opinion+consistency removed) and five backbones all improving.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A replication where the
+  staged pipeline, given the same backbone and prompt budget, fails to beat
+  single-pass prompting on exact-match F1, or where its advantage comes from
+  recall rather than precision.
+submitted_by: agent:claude-opus-5@Russ-Miller
