@@ -6,15 +6,46 @@ year: 2026
 date: 2026-05-09
 arxiv_id: "2605.08765"
 url: https://arxiv.org/abs/2605.08765
-tags: [ingested]
-summary: >-
-  Unlearning in large language models (LLMs) aims to remove harmful training
-  data while preserving overall utility. However, we find that existing
-  methods often hallucinate, generate abnormal token sequences, or behave
-  inconsistently, raising safety and trust concerns. According to prior
+tags:
+  - ingested
+summary: "Unlearning in large language models (LLMs) aims to remove harmful
+  training data while preserving overall utility. However, we find that
+  existing methods often hallucinate, generate abnormal token sequences, or
+  behave inconsistently, raising safety and trust concerns. According to prior
   literature on LLM honesty, such behaviors are often associated with
   dishonesty. This motivates us to investigate the notion of honesty in the
   context of model unlearning. We propose a formal definition of unlearning
-  honesty, which includes: (1) preserving both utility and honesty on
-  retained knowledge, and (2) e
+  honesty, which includes: (1) preserving both utility and honesty on retained
+  knowledge, and (2) e"
 ingested_at: 2026-09-19
+brief: >-
+  Unlearned models do not know that they have forgotten: they hallucinate
+  replacement facts, emit repetitive rare tokens, or refuse once and then
+  answer the same question on a follow-up. The authors formalize this as
+  "honest unlearning" and measure it across 9 methods in 3 families
+  (rejection-based, feature-randomization, gradient-ascent) on Zephyr-7b-beta
+  and Llama3-8b unlearned on WMDP-Bio.
+
+
+  Their metrics separate refusal from genuine abstention: rejection rate (RR),
+  rejection after a second-round re-query (RR2R), choose-IDK rate (CIR) and a
+  control option with irrelevant text (COR). IDK fine-tuning gives high RR
+  while keeping high WMDP accuracy; stacked on RMU, second-turn consistency
+  drops to around 40%. Gradient-ascent methods pick the IDK option often but
+  pick the irrelevant option just as often, and under randomized option
+  positions both fall to near the 20% chance baseline (NPO: CIR 19.24%, COR
+  17.65%; SimNPO: CIR 20.77%, COR 19.87%), with collapsed first-token entropy.
+  Their method ReVa, aligning forget-set activations to a distilled refusal
+  direction, reaches RR 60.86 and RR2R 45.42 versus 63.41/26.17 for RMU+IDK
+  and 1.36/0.19 for RMU, in 5.91 min versus 210.66 for IDK+AP.
+
+
+  The position-shuffle control and COR isolate spurious abstention well;
+  ReVa's gain is reported on 1 benchmark, 2 models, by its authors, with no
+  relearning-attack test. MCQ abstention stays weak (CIR 7.18).
+
+
+  Treat refusal rates on unlearned models as unverified until re-asked.
+brief_generated_at: 2026-10-27
+brief_model: claude-opus-5
+brief_source: full-text

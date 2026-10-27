@@ -1,0 +1,44 @@
+arxiv_id: "2608.24302"
+title: "VideoHarness-RSI: Recursive Harness Self-Improvement for Long-Video
+  Understanding with Frozen Vision-Language Models"
+url: https://doi.org/10.48550/arxiv.2608.24302
+drafted_at: 2026-10-20
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: harness-self-improvement
+statement: For long-video QA with a frozen VLM and fixed answering interface,
+  an outer loop that proposes, executes and retains only
+  development-accuracy-improving rewrites of the executable
+  context-construction program can advance past a strong hand-crafted
+  keyframe-selection harness, and the gain survives a matched cumulative
+  visual-token control and direct reuse on other long-video benchmarks.
+kind: observation
+backing_strength: single-paper
+scope_condition: One frozen 8B VLM (Qwen3-VL-8B-Instruct), per-call cap of 40
+  frames, ten search iterations, LVBench development split for promotion; one
+  data seed, one proposer model, no search-variance estimate.
+technique: ""
+proposed_technique: Recursively search the video context-construction program
+technique_summary: An LLM proposer repeatedly rewrites the executable program
+  that selects, retrieves and packs video evidence into a frozen VLM's bounded
+  context, keeping only candidates that strictly improve development accuracy.
+technique_kind: process
+technique_validated_by: "LVBench held-out accuracy (882 questions never used
+  for promotion): AKS parent 46.6, searched CardinalityLedger 54.8, with
+  paired bootstrap CI and exact McNemar; a capacity-matched AKS-90 control at
+  similar cumulative visual tokens reached only 49.2; frozen transfer gave
+  67.5 vs 66.9 on Video-MME and 75.0 vs 72.0 on MLVU."
+stance_on_existing: supports
+related_claim_id: a-fixed-model-can-improve-its-own-harness-with-a-regression-gated-loop
+stance_reason: Shows the same propose-evaluate-retain harness loop raising
+  scores with weights frozen, here with a genuinely held-out split that was
+  excluded from promotion.
+falsifier: A replication with other seeds or VLMs where the searched harness
+  fails to beat the AKS parent on held-out questions, or where the entire gain
+  disappears once cumulative visual-token cost is matched.
+evidence_note: Measured on one benchmark for search plus two for transfer,
+  with a cost-matched control and paired significance tests; but a single
+  trajectory per initialization, one backbone, one seed, and a proprietary
+  proposer that may carry benchmark priors.
+confidence: medium

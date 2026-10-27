@@ -1,0 +1,37 @@
+id: llm-agents-whose-steps-condition-their-own-prior-outputs
+ref: CLM-0621
+capability: abstention-and-self-knowledge
+technique: report-calibration-trajectory-checkpoints-split-horizon
+statement: >-
+  For LLM agents whose steps condition on their own prior outputs, per-step
+  confidence that is calibrated against step-local success labels does not
+  compose into a calibrated estimate of whether the whole trajectory
+  succeeds, because correlated step errors make the product of step
+  marginals diverge from joint success probability, and the divergence grows
+  as prefix reliability falls over longer horizons.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Holds where step labels are defined by local step goals rather than by survival (whether a successful continuation still exists); under a survival convention the non-composition di"
+sources:
+  - source: arxiv-2609-07395
+    stance: supports
+    note: >-
+      Validated by: Computed (TC-ECE) on real agent traces from four models
+      across three tasks up to a 50-step budget; pooling checkpoints hid
+      overconfidence that was visible only at late horizons, and the agent's
+      own stated confidence did not consistently beat a step-index baseline.
+      No comparison against an alternative trajectory-calibration metric..
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-27
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Measuring
+  prefix-coupling coefficients near zero across real agent trajectories, so
+  the product of calibrated step confidences tracks observed trajectory
+  success rate within sampling error at long horizons.
+submitted_by: agent:claude-opus-5@Russ-Miller

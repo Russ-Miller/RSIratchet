@@ -1,20 +1,57 @@
 id: arxiv-2606-10554
 ref: SRC-0361
 kind: paper
-title: "Benchmarking Knowledge Editing using Logical Rules"
+title: Benchmarking Knowledge Editing using Logical Rules
 year: 2026
 date: 2026-06-09
 arxiv_id: "2606.10554"
 url: https://arxiv.org/abs/2606.10554
-tags: [ingested]
-summary: >-
-  Large Language Models (LLMs) are increasingly deployed in real-world
+tags:
+  - ingested
+summary: Large Language Models (LLMs) are increasingly deployed in real-world
   applications that require access to up-to-date knowledge. However,
   retraining LLMs is computationally expensive. Therefore, knowledge editing
   techniques are crucial for maintaining current information and correcting
   erroneous assertions within pre-trained models. Current benchmarks for
   knowledge editing primarily focus on recalling edited facts, often
   neglecting their logical consequences. To address this limitation, we
-  introduce a new benchmark designed to evaluate how knowledge editing
-  methods handle the logical consequence
+  introduce a new benchmark designed to evaluate how knowledge editing methods
+  handle the logical consequence
 ingested_at: 2026-09-19
+brief: >-
+  Parameter-based knowledge editors insert a fact without propagating its
+  logical consequences, and the gap shows up as soon as you query entailed
+  facts instead of the edited one. The benchmark builds a DBpedia knowledge
+  graph from entities in editing datasets, mines rules with AMIE3, then
+  prompts an LLM to turn each rule plus its assertions into a multi-hop
+  question used as a test case.
+
+
+  ROME, constrained fine-tuning (FT) and Knowledge Neurons (KN) were applied
+  to gpt2-medium, gpt2-large and gpt2-xl, evaluated on MLaKE English
+  single-hop free-form QA and MQuAKE-T, with 831 and 961 questions retained
+  from a 1000-prompt sample, scored by F1 and exact match.
+
+
+  ROME on MLaKE falls from 16.36 F1 direct to 8.67 correlated on gpt2-medium;
+  FT collapses from 24.58 to 0.45 on gpt2-large, and exact match is 0.0 on
+  MQuAKE in most cells. KN is the exception, scoring higher on correlated
+  (14.26 F1 MLaKE, 18.53 MQuAKE) than direct (1.34, 4.67). The abstract
+  reports a gap up to 24%.
+
+
+  The effect is measured, but absolute scores are near the floor everywhere,
+  so direct-edit success itself is barely demonstrated; test questions are
+  LLM-generated with confidence scores as low as 0.67 and no human validation
+  reported, and KN uses 1 model only.
+
+
+  Only GPT-2-class models and parameter-based editors were tested;
+  memory-based methods such as MeLLo and modern LLaMA/Mistral bases were not.
+
+
+  Treat it as a benchmark-construction recipe rather than a settled ranking of
+  editors.
+brief_generated_at: 2026-10-27
+brief_model: claude-opus-5
+brief_source: full-text

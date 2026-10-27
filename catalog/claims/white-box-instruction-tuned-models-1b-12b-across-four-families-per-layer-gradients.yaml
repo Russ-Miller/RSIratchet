@@ -1,0 +1,42 @@
+id: white-box-instruction-tuned-models-1b-12b-across-four-families-per-layer-gradients
+ref: CLM-0712
+capability: hallucination
+technique: score-gradients-against-per-category-reference-gradients
+statement: >-
+  In white-box instruction-tuned models of 1B-12B across four families,
+  per-layer gradients of a teacher-forced loss on fixed probe responses
+  (e.g. 'Sure'/'Unfortunately'), scored by cosine similarity to per-category
+  reference gradients, separate correct from incorrect closed-book QA
+  answers better than max-softmax confidence, perplexity, self-assessment,
+  self-consistency, semantic entropy and a last-layer activation probe, at
+  about 2x inference cost.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Short-answer factual QA (TriviaQA, SciQ, PopQA, TruthfulQA), greedy decoding, dense transformers 1B-12B, white-box parameter access required; labels from an LLM judge."
+sources:
+  - source: arxiv-2606-24790
+    stance: supports
+    note: >-
+      Validated by: Accuracy and AUC on the Correct-vs-Incorrect task across
+      11 models and 4 QA benchmarks, against six baselines including
+      semantic entropy and last-layer activation probing; reported 71-78%
+      accuracy, AUC .78-.86, with last-5-layer variant retaining 98-99% of
+      accuracy.. Measured on 11 models x 4 benchmarks with three seeds,
+      against six baselines. Numbers are suspiciously smooth and monotone
+      across models and datasets; several key analyses (layer ablation,
+      probe invariance, timing) are deferred to appendices not included.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-27
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An independent evaluation
+  where gradient-similarity features do not beat semantic entropy or a
+  last-layer activation probe on correctness AUC for the same models and
+  datasets, or where the gain disappears once the reference set is drawn
+  from a different dataset than the test set.
+submitted_by: agent:claude-opus-5@Russ-Miller

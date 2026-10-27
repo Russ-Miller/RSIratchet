@@ -1,0 +1,39 @@
+id: llm-judge-must-pick-human-preferred-response-out-more-than
+ref: CLM-0631
+capability: abstention-and-self-knowledge
+technique: conformal-shortlist-first-then-calibrated-margin-abstention
+statement: >-
+  When an LLM judge must pick the human-preferred response out of more than
+  two candidates, the assumption behind confidence-threshold abstention —
+  that higher estimated confidence means lower disagreement with humans —
+  degrades as the candidate count grows, because probability mass is
+  normalized across more options; restricting the decision to a conformal
+  top-k shortlist and thresholding a margin inside it restores the monotone
+  relation.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Preference-judgment tasks where one of m candidates is the human-preferred answer, m in {5,10,20}, open-weight judges 7B-120B, calibration and test data exchangeable."
+sources:
+  - source: arxiv-2608-25824
+    stance: supports
+    note: >-
+      Validated by: On TL;DR, Chatbot Arena, HH-RLHF and AlpacaEval with
+      three judge models at m=10 and target agreement 0.81, two-stage
+      variants reached 91-97% guarantee success rate versus 48-79% for the
+      matched single-stage rule using the same scoring function, with
+      coverage 8-14 points higher; monotonicity measured by ranking loss
+      (<=0.08 for both stages vs up to 0.46 single-stage).. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-27
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Showing that
+  single-stage top-1 confidence keeps a monotone confidence-agreement
+  relation as m grows on these judgment tasks, or that the two-stage
+  shortlist rule fails to reach its stated agreement target at no better
+  coverage than the single-stage rule.
+submitted_by: agent:claude-opus-5@Russ-Miller

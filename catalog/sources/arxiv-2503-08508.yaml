@@ -31,3 +31,41 @@ notes: "Filed as a source on planning from the classifier's judgement that the
   success rates, e.g. 14.9% over ReAct on spatial semantic reasoning tasks. No
   claim has been drafted from it yet."
 ingested_at: 2026-09-23
+brief: >-
+  A 1.5B parameter planner that emits parameterized skill function calls with
+  dynamically inferred arguments beats GPT-4-based planners on robot
+  manipulation tasks whose instructions contain relational semantics like
+  "largest" or "leftmost". The claim is that fixed skill templates, not model
+  size, are the binding constraint on lightweight LLM task planning.
+
+
+  LightPlanner-1.5B is Qwen2.5-1.5B-Instruct fully fine-tuned on
+  LightPlan-40k, 40,000 single-step decision samples derived from 60
+  hand-annotated tasks expanded to 6,000 with GPT-4, over 13 skill functions
+  and action chains of 2 to 13 steps. Evaluation used a real UR3 arm on 30
+  tasks, each repeated 3 times, 90 trials, split into simple semantic mapping
+  and dynamic semantic reasoning, short/medium/long-term.
+
+
+  On dynamic semantic reasoning it reached 100.0 SR short-term, 79.5 medium
+  (vs 71.4 for CoPAL/GPT-4) and 66.1 long-term (vs 54.1 for CAPE, 48.3 for
+  ReAct-1.5B). On unseen 8-step tasks it got 62.6 SR vs 53.8 for CoPAL and
+  42.0 for ReAct-3B.
+
+
+  Baselines were retrained on the same LightPlan-40k data, which isolates the
+  planning formulation from the training corpus, and an ablation attributes
+  7.5 SR to dynamic skill control, 5.8 to hierarchical reasoning, 5.0 plus 4
+  seconds to the memory module. But 90 trials is thin, 1 robot, 1 model
+  family, and GPT-4 baselines were prompted rather than tuned.
+
+
+  Nothing was tested in dynamic environments where objects move mid-task; the
+  authors flag this.
+
+
+  If you are writing skill APIs for an edge planner, make perception return
+  raw detections and let the model compute parameters.
+brief_generated_at: 2026-10-27
+brief_model: claude-opus-5
+brief_source: full-text

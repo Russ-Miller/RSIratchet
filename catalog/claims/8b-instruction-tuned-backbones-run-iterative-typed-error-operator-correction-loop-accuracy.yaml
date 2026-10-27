@@ -1,0 +1,39 @@
+id: 8b-instruction-tuned-backbones-run-iterative-typed-error-operator-correction-loop-accuracy
+ref: CLM-0549
+capability: self-repair
+technique: correct-reasoning-inverting-typed-error-operators
+statement: >-
+  For 8B instruction-tuned backbones run in an iterative
+  typed-error-operator correction loop, accuracy gains concentrate in the
+  first few iterations and then plateau rather than decline as the denoising
+  budget grows, so a small step budget captures nearly all the benefit.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Llama-3-8B-Instruct and Qwen3-8B with a LoRA corrector trained on typed executable error operators; math, commonsense and general reasoning benchmarks (GSM8K, MATH, CSQA, BBH); bud"
+sources:
+  - source: arxiv-2608-22090
+    stance: supports
+    note: >-
+      Measured on four benchmarks at five budget settings with a single
+      stated figure (no error bars reported for the budget sweep); the
+      plateau is argued to come from the three-source noise construction
+      approximating the backbone's own error distribution, which the design
+      does not isolate. Limited to 8B backbones and a fixed operator
+      library.
+contested: false
+status: pending-review
+last_checked_at: 2026-10-27
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Running the same loop to
+  larger K and finding accuracy continuing to rise substantially past the
+  first few steps, or declining systematically as self-produced states drift
+  from the training distribution. Drafted stance toward
+  8b-instruction-tuned-backbones-training-lora-corrector-diagnose-typed-executable:
+  supports -- Same method and backbone class; this paper reports the
+  per-iteration profile of the gain the existing claim records, with
+  operator-only and adjacent-state-only ablations both losing accuracy.
+submitted_by: agent:claude-opus-5@Russ-Miller
