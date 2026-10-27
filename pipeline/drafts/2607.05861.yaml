@@ -1,0 +1,53 @@
+arxiv_id: "2607.05861"
+title: Mitigating Factual Hallucination in Large Reasoning Models via
+  Mixed-Mode Advantage Regularization
+url: https://doi.org/10.48550/arxiv.2607.05861
+drafted_at: 2026-10-26
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: For Qwen3 reasoning models on closed-book factuality QA, explicit
+  thinking is not uniformly helpful at the instance level \u2014 it flips
+  roughly 5-8% of correct non-thinking answers to incorrect across 1.7B-32B
+  while correcting about 10-12% of incorrect ones \u2014 and putting
+  non-thinking rollouts into the same GRPO advantage group as thinking
+  rollouts, so thinking is scored against the model's own direct answer,
+  raises average accuracy over both fixed-mode RL and adaptive mode-selection
+  baselines.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Qwen3-4B/8B trained on TriviaQA examples filtered for a large
+  thinking/non-thinking gap; six short-answer factuality QA benchmarks;
+  correctness judged by Qwen3-32B against ground truth.
+technique: ""
+proposed_technique: Score thinking rollouts against same-model non-thinking rollouts
+technique_summary: Builds each GRPO rollout group from a mix of thinking and
+  non-thinking trajectories for the same question, so a thinking trajectory's
+  advantage drops whenever the model's own direct answer was more factually
+  correct.
+technique_kind: training
+technique_validated_by: Average accuracy over six factuality QA benchmarks
+  against Fixed Think, Fixed Think+RL, Fixed NoThink+RL, Adaptive CLS/SFT/RL
+  on the same curated data (Qwen3-4B 25.49% vs 23.31% for Fixed Think+RL;
+  Qwen3-8B 29.57% vs 27.92%), plus instance-level transition ratios showing
+  lower correct-to-incorrect flips, and math benchmarks (AMC23/AIME24/AIME25
+  Mean@16) to check retained reasoning.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Matched-compute GRPO on all-thinking rollouts, or any single-mode
+  RL with the same curated data, reaching the same average factuality accuracy
+  and the same reduction in correct-to-incorrect transitions; or finding the
+  correct-to-incorrect flip rate is near zero in other reasoning model
+  families.
+evidence_note: Measured on two model sizes and six short-answer QA benchmarks
+  with a strong set of same-data baselines including two fixed-mode RL arms,
+  plus a random-data ablation isolating the data filter. Gains are 2 points
+  average and partly driven by SimpleQA-Verified (4.10% to 10.00%).
+  Correctness is judged by a single LLM judge; no human verification reported.
+  Transition analysis is only on Qwen3-4B and three datasets. No
+  matched-compute control for the extra non-thinking rollouts.
+confidence: medium
+problems:
+  - "figures not in the source: 014"

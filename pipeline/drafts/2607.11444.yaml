@@ -1,0 +1,46 @@
+arxiv_id: "2607.11444"
+title: UMoE:Unlocking Every Expert in Domain-Specific Training
+url: https://doi.org/10.48550/arxiv.2607.11444
+drafted_at: 2026-10-26
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: domain-knowledge
+statement: When fine-tuning a pretrained Mixture-of-Experts LLM on a single
+  target domain, pruning the half of routed experts with lowest domain-aligned
+  saliency and regrowing the pool from the survivors with independent noise on
+  both parent and copy before standard SFT beats direct SFT at identical
+  parameter count and inference cost.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Pretrained sparse MoE backbones (Qwen3-30B-A3B,
+  Qwen3.5-35B-A3B) with full-parameter SFT on one domain's corpus; 50% pruning
+  ratio, calibration on 1024 samples of the same SFT data.
+technique: ""
+proposed_technique: Prune low-saliency experts and regrow the pool before domain SFT
+technique_summary: Score each MoE expert on target-domain calibration data,
+  drop the least salient half per layer, refill the freed slots by copying
+  survivors with independent Gaussian perturbation to both copies, then run
+  ordinary SFT.
+technique_kind: training
+technique_validated_by: "Against Direct SFT with identical data and
+  hyperparameters: +3.40 math average (avg@32 over six competition benchmarks)
+  on Qwen3-30B-A3B, +1.67 on Qwen3.5-35B-A3B, +6.0 pass@1 on SWE-bench
+  Verified, positive on all 12 benchmarks across five domains and all 15
+  data-scale comparisons; post-hoc pruning of the trained model costs 5.0
+  points for UMoE vs 0.12 for Direct SFT."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched comparison on other MoE backbones or domains where the
+  prune-and-regrow initialization matches or underperforms direct SFT at equal
+  data and compute, or where an equivalent random-expert-reinitialization
+  control gives the same gain.
+evidence_note: "Measured: two MoE architectures, five domains, 12 benchmarks,
+  paired against Direct SFT with identical data and hyperparameters; ablations
+  isolate pruning criterion and perturbation placement (one-sided noise falls
+  below Direct SFT). Not isolated: no control that perturbs experts without
+  domain-saliency-guided selection, so part of the gain could come from
+  perturbation-induced symmetry breaking alone; single lab, frozen recipe, one
+  epoch."
+confidence: medium

@@ -1,0 +1,46 @@
+arxiv_id: "2608.03391"
+title: "TimeRLM: Recursive Language Models Enable Precise Anomaly Localization
+  in Long-Context Time-Series"
+url: https://arxiv.org/abs/2608.03391
+drafted_at: 2026-10-24
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: long-context-degradation
+statement: For precise anomaly localization in long multivariate time-series
+  (16k-131k points), keeping the signal outside the model context as a
+  variable the model queries through code over multiple turns recovers far
+  more localization accuracy than single-pass ingestion, where the recording
+  is serialized, subsampled or compressed into context once.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Synthetic benchmark with programmatically injected parametric
+  anomalies plus ECG/sleep holdouts; frontier backbones (GPT-5.5) benefit
+  most, 4B open backbones need RL post-training; gains concentrated in tasks
+  scored by span overlap, not scalar-magnitude tasks.
+technique: ""
+proposed_technique: Query the time series through code, not in context
+technique_summary: Store the full recording as a variable in a sandboxed
+  Python REPL and let the model iteratively emit code (and optionally render
+  plots or spawn sub-agents) to inspect segments before committing a
+  structured answer.
+technique_kind: tooling
+technique_validated_by: On AnomalyXL-Localize, IoU 0.682 vs at most 0.329 for
+  all single-pass LLM, TSLM and fine-tuned 32B Toto baselines;
+  classify-with-evidence 0.745 vs below 0.08; zero-shot ECG/sleep IoU 0.271 vs
+  under 0.004 for every TSLM. Scalar-magnitude task did not improve (0.440 to
+  0.480).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A single-pass model that ingests the full uncompressed recording
+  matching recursive code-querying IoU on span-localization tasks at
+  comparable length, or recursive querying failing to beat single-pass on a
+  non-synthetic long-context localization set.
+evidence_note: Measured on a self-introduced synthetic benchmark (200 localize
+  samples, 100 for multichannel tasks) plus 250+250 real clinical windows;
+  baselines include three fine-tuned TSLMs, a classical feature+GBT model and
+  a 32B TSFM-VLM. Design does not isolate code access from extra inference
+  compute and turns, and the authors themselves note clean ablations
+  separating code access from post-training are still needed.
+confidence: medium

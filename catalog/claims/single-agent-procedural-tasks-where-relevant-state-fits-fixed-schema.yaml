@@ -1,0 +1,45 @@
+id: single-agent-procedural-tasks-where-relevant-state-fits-fixed-schema
+ref: CLM-0683
+capability: long-horizon-execution
+technique: replace-conversation-history-rewritten-execution-state
+statement: >-
+  For single-agent procedural tasks where the relevant state fits a fixed
+  schema known in advance, replacing the appended conversation transcript
+  with a structured execution state that the model rewrites each step —
+  discarding the reasoning trace once the state patch is validated — holds
+  accuracy flat as the horizon grows while history-appending runtimes
+  degrade, and the gain comes from the structure rather than the shorter
+  prompt.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Single-agent procedural execution with a per-domain schema authored in advance; fails where the schema must be discovered during execution, where an observation's relevance is reco"
+sources:
+  - source: arxiv-2608-26263
+    stance: supports
+    note: >-
+      Validated by: On a 500-shelf warehouse simulation with Gemini-3-Flash
+      over 5 seeds, accuracy at T=200 was 0.94 vs 0.74 (ReAct), 0.84
+      (summary memory) and 0.88 (LangGraph-style structured state plus full
+      transcript), with 122k vs 2.6-6.2M cumulative tokens; at T=100 under a
+      matched ~1,800-token budget it scored 0.94 vs 0.18 sliding window,
+      0.52 summary-capped and 0.22 LLMLingua. Also highest pass rate on
+      InterCode CTF (54.2% vs 46.4% best baseline) and both tau-Bench
+      domains.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-27
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A matched-budget
+  comparison on long-horizon tasks where a transcript-based or
+  compression-based runtime equals or beats the state-rewriting runtime on
+  accuracy, or where the structured-state gain disappears once prompt length
+  is held equal. Drafted stance toward
+  llm-agents-long-horizon-web-penetration-testing-holding-backbone-model:
+  supports -- Both find that moving global state out of the growing context
+  onto an explicit external structure raises success most on the
+  longest-horizon tasks.
+submitted_by: agent:claude-opus-5@Russ-Miller

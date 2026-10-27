@@ -1,59 +1,59 @@
 # Consolidated capability candidates. Suggestions, not capabilities.
-generated_at: 2026-09-29
-from_raw_proposals: 19
+generated_at: 2026-10-26
+from_raw_proposals: 24
 recommended:
-  - id: spatial-reasoning
-    label: "Inferring 3D geometry and spatial relations"
-    scope_note: "Covers depth, metric distance, size, pose, bearing and cross-view correspondence inferred from images or video; excludes object recognition and attribute grounding, which visual-grounding covers."
+  - id: multi-image-reasoning
+    label: "Reasoning jointly across several images"
+    scope_note: "Covers comparison, counting, instance matching and evidence aggregation over a set of distinct images; excludes single-image grounding and video frame sequences."
+    paper_count: 3
+    merged_from: [cross-image-comparison, multi-image-reasoning, visual-similarity-judgment]
+    note: "Three independent papers converge on the same gap, and it is clearly distinct from the existing visual-grounding and video-temporal-reasoning entries."
+  - id: machine-text-detection
+    label: "Telling AI-generated text from human text"
+    scope_note: "Covers judging whether a given text was model-produced across domains and generators; excludes watermarking schemes and general quality critique."
     paper_count: 2
-    merged_from: [spatial-reasoning-3d, metric-spatial-reasoning]
-    note: "Two independent proposals converge on the same well-defined gap that no existing entry covers, since visual-grounding is about tying answers to image content rather than metric geometry."
-  - id: confidentiality
-    label: "Keeping entrusted secrets secret"
-    scope_note: "Covers resisting extraction of system prompts, keys, and private data the model was told to withhold while still using that data for its task; excludes refusing harmful requests and training-data memorization."
+    merged_from: [machine-text-detection]
+    note: "Recurring, well-defined discriminative capability not covered by critique or fact-verification."
+  - id: targeted-unlearning
+    label: "Forgetting one thing without forgetting everything else"
+    scope_note: "Covers removal of specified knowledge or behavior from weights while unrelated capability survives; excludes refusal-based suppression and inference-time filtering."
     paper_count: 2
-    merged_from: [contextual-privacy, system-prompt-confidentiality]
-    note: "Distinct from jailbreak-robustness and prompt-injection — the failure is leaking what it holds, not doing what it was told — and two papers attack it from different angles."
-  - id: confidence-calibration
-    label: "Knowing how confident to be"
-    scope_note: "Covers whether verbalized or sampled confidence tracks actual correctness; excludes outright refusal, which abstention-and-self-knowledge covers, and raw accuracy."
+    merged_from: [machine-unlearning, targeted-unlearning]
+    note: "Two papers describe the same capability and it is complementary to fine-tuning-retention rather than covered by it."
+  - id: active-information-gathering
+    label: "Probing to reduce uncertainty before deciding"
+    scope_note: "Covers choosing informative experiments, queries or probes that reveal hidden dynamics and noticing when prior assumptions are stale; excludes executing a known procedure or planning with full information."
+    paper_count: 2
+    merged_from: [exploration-and-adaptation, experiment-design]
+    note: "Two papers point at the same underexplored skill, and the existing planning entry assumes full information."
+  - id: output-format-compliance
+    label: "Obeying output format and constraint specifications"
+    scope_note: "Covers satisfying and self-correcting explicit structural constraints (length, schema, required or forbidden features) stably across instruction phrasings; excludes content correctness."
     paper_count: 1
-    merged_from: [confidence-calibration]
-    note: "Graded calibration is a long-standing, heavily measured axis that abstention-and-self-knowledge only covers at the binary extreme."
-  - id: reasoning-length-efficiency
-    label: "Spending only as much reasoning as the problem needs"
-    scope_note: "Covers overthinking, adaptive chain-of-thought length, and whether compressed reasoning preserves accuracy; excludes general accuracy improvements and latency engineering."
+    merged_from: [output-format-compliance]
+    note: "Only one paper here, but constrained instruction-following is a distinct, heavily-measured capability with no existing index entry."
+  - id: social-bias
+    label: "Stereotyping and demographic bias in outputs"
+    scope_note: "Covers stereotype alignment and demographic preference in generated outputs, including amplification by input perturbations; excludes judge-position bias and cultural norm knowledge."
     paper_count: 1
-    merged_from: [reasoning-length-efficiency]
-    note: "Only one paper here, but overthinking in reasoning models is a fast-growing and cleanly measurable failure mode not touched by any existing entry."
-  - id: clarification-seeking
-    label: "Asking the right clarifying question"
-    scope_note: "Covers detecting underspecification, eliciting the missing information through interaction, and then using the answer; excludes flagging unanswerability without a follow-up."
-    paper_count: 1
-    merged_from: [clarification-seeking]
-    note: "A coherent interactive capability that abstention-and-self-knowledge stops short of, and increasingly central to agentic evaluation."
+    merged_from: [social-bias]
+    note: "Single paper, but a major standing gap only partially touched by cultural-competence and judge-position-bias."
 set_aside:
-  - id: negation-understanding
-    note: "Single paper and narrow linguistic phenomenon better treated as a probe inside logical-deduction-robustness and visual-grounding."
-  - id: time-series-reasoning
-    note: "Reads as a task domain sitting between forecasting and domain-knowledge rather than a distinct capability."
-  - id: opponent-modeling
-    note: "One-off framing whose evidence is confined to game benchmarks and overlaps planning, strategic-deception and multi-model-coordination."
-  - id: answer-action-consistency
-    note: "A single-paper measurement artifact of multimodal output formats rather than a capability a maintainer could track broadly."
-  - id: human-behavior-simulation
-    note: "Interesting but single-paper, and the evaluative core splits between forecasting and cultural-competence."
-  - id: algorithm-discovery
-    note: "Currently a single high-profile result and largely a scaffolded search technique on top of code-generation and harness-self-improvement."
-  - id: compression-behavior-retention
-    note: "A property of a model-modification pipeline, and close enough to fine-tuning-retention that a separate entry would fragment the index."
-  - id: code-translation
-    note: "A task domain within code-generation rather than a separate capability."
-  - id: semantic-parsing
-    note: "Legacy NLP task with one proposal, already adjacent to formal-query-synthesis and formal-math."
-  - id: persona-consistency
-    note: "Single paper and mostly a special case of procedure-following plus state-tracking over a dialogue."
-  - id: latent-reasoning
-    note: "An architectural technique and research direction, not a capability one can evaluate models on."
-  - id: code-intent-conformance
-    note: "Already covered by the combination of critique and error-detection applied to code."
+  - id: offensive-cyber-operations
+    note: "Single paper and largely a task domain combining tool-use, planning and secure-coding knowledge already in the index."
+  - id: code-artifact-specialization
+    note: "These are three different task domains stapled together, each one-off, and each already sits under code-generation, formal-math or harness-self-improvement."
+  - id: structured-data-reasoning
+    note: "The two proposals cover very different input types and are better read as instances of multi-step-reasoning on unusual formats."
+  - id: user-intent-inference
+    note: "One-off framing largely spanned by state-tracking, abstention-and-self-knowledge and self-repair."
+  - id: reasoning-budget-control
+    note: "The two proposals are about different kinds of cost and overlap cutting-to-the-chase and abstention-and-self-knowledge respectively."
+  - id: multimodal-robustness-and-fusion
+    note: "Two unrelated one-off findings forced together; each is better tracked under visual-grounding or audio-understanding."
+  - id: deep-research-reporting
+    note: "One paper, and it decomposes into retrieval-utilization plus long-horizon-execution already in the index."
+  - id: pedagogical-scaffolding
+    note: "Single-paper framing of a narrow application, mostly an instance of sycophancy resistance and goal-conflict-safety."
+  - id: self-vs-other-attribution-bias
+    note: "Interesting but a one-off result sitting between critique, self-repair and judge-position-bias."

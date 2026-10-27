@@ -1,0 +1,41 @@
+id: large-audio-language-models-asked-return-every-time-span
+ref: CLM-0614
+capability: audio-understanding
+technique: score-occurrence-count-separately-boundary-overlap
+statement: >-
+  When large audio language models are asked to return every time span
+  matching a natural-language query, they almost always report fewer
+  intervals than exist: across 21 systems on queries averaging about 4
+  ground-truth intervals, under-reporting rates run from 79% to 100% and no
+  system exceeds 13.2% exact count accuracy, even for the models with the
+  best overlap scores.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Free-form timestamp output, 1,750 human-verified query-recording pairs (7s to 20 min), 387 queries with two or more ground-truth intervals, no oracle count or explicit enumeration "
+sources:
+  - source: arxiv-2609-01542
+    stance: supports
+    note: >-
+      Validated by: Applied across 21 systems; it exposed that two weak
+      models' apparently higher one-to-many mIoU came from emitting single
+      long intervals that accrue intersection by accident, which mIoU alone
+      could not reveal.. Measured over 387 multi-interval queries with mean
+      4.02 ground-truth intervals; average predicted intervals ranged
+      0.18-3.67, most systems near one. Parsing failures count as zero
+      intervals, so some under-reporting is format failure rather than
+      enumeration failure, and the paper says the two cannot be fully
+      separated. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-27
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A model evaluated under
+  the same free-form protocol that emits roughly the correct number of
+  intervals on recurring-event queries (count accuracy well above 13%)
+  without an oracle count, or evidence that a plain 'enumerate all
+  occurrences' prompt removes the under-reporting.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,40 @@
+id: several-sampled-chains-thought-turned-into-causal-dags-answer
+ref: CLM-0682
+capability: explanation-faithfulness
+technique: decode-medoid-reasoning-graph-majority-answer
+statement: >-
+  When several sampled chains of thought are turned into causal DAGs and the
+  answer is taken from the most central (medoid) chain rather than by
+  majority vote over final answers, faithfulness of the selected reasoning
+  rises while nominal accuracy falls for small models (Llama 3.1 8B: -7.6 on
+  GSM8K, -9.0 on MedQA) and is preserved or slightly improved for more
+  capable ones (Phi-4, DeepSeek R1 Distill-Llama-70B), because majority
+  voting rewards correct answers reached through unsound intermediate steps.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Short-horizon benchmarks capped at 3-6 declarative reasoning steps (GSM8K, BoolQ, StrategyQA, MedQA, GPQA Diamond), 20 sampled chains per question at temperature 0.7, three open mo"
+sources:
+  - source: arxiv-2607-08017
+    stance: supports
+    note: >-
+      Validated by: Accuracy difference against self-consistency on five
+      datasets with McNemar's test, plus an audit of disagreement cases
+      labelled faithful or spurious by a human and an LLM judge (Cohen's
+      kappa 0.913): 79.5% faithful wins for the medoid rule vs 57.6% for
+      self-consistency (+21.9 pp, Wilcoxon p<0.05), and adversarial ablation
+      of the selected chain lowers faithfulness while leaving accuracy
+      mostly unchanged.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-27
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An audit on the same
+  disagreement sets showing medoid-selected chains are no more logically
+  sound than the majority-supported chains, or showing the accuracy drop in
+  small models falls on items whose majority-vote reasoning was in fact
+  sound.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,40 @@
+id: llava-v1-5-llava-next-text-to-image-attention-first-two-decoder-layers
+ref: CLM-0616
+capability: visual-grounding
+technique: subtract-query-invariant-attention-template-then-redistribute-sparsity
+statement: >-
+  In LLaVA-v1.5 and LLaVA-NeXT, the text-to-image attention in the first two
+  decoder layers carries a large query-invariant component, and subtracting
+  that text-marginalized attention template (scaled by visual-token feature
+  variance) then returning the removed mass only to text tokens whose
+  purified attention is sparse lowers object hallucination on POPE and CHAIR
+  and raises accuracy under negation-based gaslighting prompts.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Two 7B-class LLaVA models; intervention injected at the first two transformer layers with fixed hyperparameters; hallucination measured on POPE, CHAIR, GaslightingBench, MMMU, AI2D"
+sources:
+  - source: arxiv-2607-24017
+    stance: supports
+    note: >-
+      Validated by: POPE accuracy 76.69 to 85.20 and F1 79.72 to 85.42 over
+      regular decoding on LLaVA-v1.5; CHAIR_S 55.0 to 49.0, CHAIR_I 16.3 to
+      14.0; post-negation GaslightingBench accuracy 24.71 to 41.74
+      (LLaVA-v1.5) and 19.81 to 34.04 (LLaVA-NeXT) versus 40.95/30.58 for
+      GasEraser, with pre-negation accuracy preserved and latency 0.42 vs
+      1.05 s/it; ablations show text-side marginalization gives nearly all
+      the gain (41.74 vs 34.28 for image-side) and removing redistribution
+      drops post-negation to 33.91.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-27
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Applying the same
+  subtraction with an image-side or random template, or at later layers,
+  yields equal gains; or the measured hallucination drop is accompanied by
+  reduced object coverage/shorter captions so that grounding per mentioned
+  object is unchanged.
+submitted_by: agent:claude-opus-5@Russ-Miller

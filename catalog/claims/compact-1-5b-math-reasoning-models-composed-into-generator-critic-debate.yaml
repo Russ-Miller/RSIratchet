@@ -1,0 +1,40 @@
+id: compact-1-5b-math-reasoning-models-composed-into-generator-critic-debate
+ref: CLM-0573
+capability: multi-model-coordination
+technique: baseline-critic-s-advantage-generator-ensemble-accuracy
+statement: >-
+  For compact (1.5B) math-reasoning models composed into a generator-critic
+  debate, nearly all the measured accuracy comes from the debate structure
+  itself — rounds and ensemble size — rather than from the role-specialized
+  RL objective: removing the second round costs 5.2 points and shrinking to
+  one generator-critic pair costs 2.6, while removing the counterfactual
+  critic advantage costs only 0.8 points (p=0.095) and using identical
+  instead of independently trained checkpoints costs 0.6 (p=0.166).
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "DeepSeek-R1-Distill-Qwen-1.5B with LoRA adapters, three generators and three critics, two rounds, five math benchmarks, ten seeds; no baseline that spends the same inference tokens"
+sources:
+  - source: arxiv-2607-18006
+    stance: supports
+    note: >-
+      Validated by: Average accuracy over five math benchmarks (41.9 vs 39.9
+      base, p<0.001) and an ablation replacing the counterfactual term with
+      standard GRPO advantage (41.1, p=0.095); plus a critic improvement
+      rate of 19.6%, the highest of ten models placed in the critic role..
+      Measured with Welch t-tests on per-seed averages across five
+      benchmarks, ten seeds, one 1.5B backbone. The ablations isolate
+      rounds, agent count, checkpoint diversity and the advantage term
+      separately. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-27
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An ablation at higher
+  seed count, or on other compact backbones, showing the counterfactual
+  advantage contributes a significant accuracy gain comparable to or larger
+  than the round-count and ensemble-size effects.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,48 @@
+arxiv_id: "2607.23944"
+title: "DICA: Dual-Indicator Guided Contrastive Alignment in Multimodal Large
+  Language Models"
+url: https://doi.org/10.48550/arxiv.2607.23944
+drafted_at: 2026-10-25
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: In LLaVA-1.5 and Qwen-VL, hallucination during decoding is preceded
+  by two distinguishable internal signatures — a spike in the entropy of
+  attention over visual tokens, and a drop in the KL gap between
+  image-conditioned and text-only output distributions — and triggering a
+  different contrastive correction for each lowers object-hallucination rates
+  more than applying one uniform correction.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: 7B-class open multimodal models (LLaVA-1.5, Qwen-VL) on
+  object-existence QA (POPE), MME perception subsets and CHAIR captioning;
+  thresholds hand-tuned per model.
+technique: ""
+proposed_technique: Trigger a different correction for each hallucination indicator
+technique_summary: During decoding it monitors visual-attention entropy and
+  output-image correlation per layer and step, and when either crosses a
+  threshold applies the matching fix — hidden-state contrast against a
+  descriptive-prompt path for attention drift, or logit contrast against the
+  most divergent intermediate layer for weak visual reliance.
+technique_kind: decoding
+technique_validated_by: POPE accuracy/F1 across three sampling splits and
+  three source datasets against VCD, OPERA, M3ID, AvisC, MoD; CHAIR_s 41.8 /
+  CHAIR_i 11.5 on LLaVA-1.5 (best among baselines); MME total 661.5 / 648.3;
+  ablations removing each module drop scores, with the attention-entropy
+  module costing more; a transition table reports 37.4% of triggered wrong
+  answers repaired against 1.5% of correct answers broken.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Showing that a single uniform contrastive correction, applied
+  whenever either indicator fires, matches the per-mode routing on the same
+  benchmarks and models — or that the two indicators fire on the same decoding
+  steps rather than distinct ones.
+evidence_note: Measured on two backbones and three benchmarks against five
+  inference-time baselines, with module ablations and trigger-frequency
+  statistics. Thresholds are fixed hyperparameters tuned by the authors, so
+  part of the gain may not transfer. On Qwen-VL CHAIR, recall falls to 27.0
+  against 31-32 for baselines, so some hallucination reduction there comes
+  with less coverage; the design does not separate that from better grounding.
+confidence: low

@@ -1,0 +1,43 @@
+arxiv_id: "2608.26867"
+title: "BekchiAI: Measuring, Observing, and Controlling LLM Agents in One Click"
+url: https://doi.org/10.48550/arxiv.2608.26867
+drafted_at: 2026-10-18
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: evaluation-validity
+statement: "On a suite of verifier-checked tool-using ReAct task families
+  (arithmetic, SQL analytics, security judgment, URL grounding, dependency
+  planning, orchestration, tool policy), a single task-weighted aggregate
+  accuracy hides inverted per-family rankings: the model that ranks last
+  overall can lead both URL-grounding families while scoring lowest on
+  structured SQL and multi-step tool families, which spread the four tested
+  models by more than sixty points."
+kind: observation
+backing_strength: single-paper
+scope_condition: Four models (Qwen3.7-Max, gemma-4-31B-it, gemma4:26b,
+  gpt-oss-120b) on 2,057 committed single-rollout tasks; one task per rollout,
+  no multi-turn or long-horizon settings.
+technique: ""
+proposed_technique: Report per-family spread, not an aggregate agent score
+technique_summary: Split an agent benchmark into skill-isolated families with
+  verifier-computed gold (canonical SQL, exact DAG schedule, closed-form
+  lambda) and report per-family accuracy plus token cost from one instrumented
+  run instead of a blended score.
+technique_kind: process
+technique_validated_by: Four models scored on 13 families; overall scores
+  0.88/0.86/0.82/0.71 while gpt-oss-120b led ug_fetch (0.78) and ug_imposter
+  (0.89) yet scored 0.24 on sql_analytics and 0.25 on tool_error_recovery. No
+  human validation of the families' construct validity.
+stance_on_existing: supports
+related_claim_id: a-single-aggregate-benchmark-conceals-domain-trajectories-that-differ-in-shape
+stance_reason: Both find that one blended benchmark number conceals per-domain
+  differences that invert model ordering.
+falsifier: A larger model set in which per-family accuracies are near-monotone
+  in the aggregate score, so no model's ranking inverts between skill
+  families.
+evidence_note: Measured on one paper's own benchmark with only four models and
+  no external replication; family difficulty is not calibrated against other
+  suites, so part of the spread could be family-specific prompt or format
+  sensitivity rather than skill.
+confidence: low

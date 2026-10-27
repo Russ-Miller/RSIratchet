@@ -1,0 +1,53 @@
+arxiv_id: "2609.02387"
+title: "Semantics-Guided Automatic Tensorization for Multiobjective
+  Evolutionary Algorithms: A Multi-Agent Framework"
+url: https://doi.org/10.48550/arxiv.2609.02387
+drafted_at: 2026-10-22
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: For translating heterogeneous MOEA implementations from
+  MATLAB/PlatEMO into tensorized GPU code, a multi-agent pipeline that
+  reconstructs source semantics into a shared blueprint, generates several
+  strategy-biased candidates in parallel, and repairs them from execution
+  feedback converges more often than one-shot translation with the same LLM
+  backend, on all three backends tested.
+kind: observation
+backing_strength: single-paper
+scope_condition: 48 PlatEMO MOEAs, 240 conversion attempts per condition,
+  convergence defined as running within 60s and reaching IGD below 0.25 on
+  DTLZ2; the multi-agent condition spends six candidate generations plus
+  repair per attempt, so compute is not matched.
+technique: ""
+proposed_technique: Shared semantic blueprint, parallel restructuring
+  branches, repair from execution
+technique_summary: One agent reconstructs the source program's states,
+  operators and dependencies into a structured representation and a
+  target-side blueprint; several agents then generate alternative tensor
+  realizations under that blueprint, failures are repaired from runtime
+  diagnostics, and a selector ranks surviving candidates by optimization
+  outcome then speed.
+technique_kind: process
+technique_validated_by: "Convergence pass rate over 240 attempts per condition
+  against one-shot translation with the same backend: 78.75% vs 26.67% (Gemini
+  3 Flash), 65.42% vs 27.08% (DeepSeek V4 Pro), 59.58% vs 16.67% (DeepSeek V4
+  Flash); coverage 48/48 MOEAs with at least one converged implementation vs
+  45/48 for the best one-shot condition; downstream fidelity 88.2% of 1,904
+  MOEA-problem comparisons passing the IGD tolerance criterion."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A one-shot baseline given equal total generation and retry budget
+  (e.g. six independent samples plus execution-feedback repair, no semantic
+  blueprint or role split) reaching comparable convergence pass rates on the
+  same 48 MOEAs.
+evidence_note: "Measured on one benchmark of 48 MOEAs with five attempts per
+  source per condition and three matched backends, plus a 10-program external
+  transfer set. The design isolates backend choice but not compute: the agent
+  pipeline makes roughly six times the generation calls per attempt plus
+  repair iterations, so the gap conflates decomposition with extra sampling
+  and execution-guided retries. Candidate selection also uses an LLM
+  qualitative judgement of comparable IGD, which is not independently
+  validated."
+confidence: medium

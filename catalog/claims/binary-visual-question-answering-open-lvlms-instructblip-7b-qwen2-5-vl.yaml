@@ -1,0 +1,42 @@
+id: binary-visual-question-answering-open-lvlms-instructblip-7b-qwen2-5-vl
+ref: CLM-0568
+capability: hallucination
+technique: probe-consistency-four-axes-one-score
+statement: >-
+  For binary visual question answering with open LVLMs (InstructBLIP-7B,
+  Qwen2.5-VL, InternVL-4B), a hallucinated answer can be held with high
+  response consistency, so a single consistency/uncertainty score misses it;
+  separating consistency into four probe groups (image vs. text perturbation
+  crossed with affirmative vs. negated statement) and classifying on the
+  joint within- and between-group agreement pattern detects hallucination
+  better than any single-score black-box or white-box baseline.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Binary (yes/no) visually grounded questions with deterministic ground-truth labels on AMBER and PhD; three open LVLMs; requires a labelled training split per model to fit the class"
+sources:
+  - source: arxiv-2608-03817
+    stance: supports
+    note: >-
+      Validated by: AUC-ROC/AUC-PR against 7 white-box and 5 black-box
+      detectors on AMBER and PhD across three LVLMs, with the same
+      classifier pool and selection protocol for baselines; up to +18.72
+      AUC-ROC and +20.07 AUC-PR over the strongest black-box method;
+      ablations removing each group or feature type, and cross-dataset
+      transfer.. Measured on 2,000 sampled instances per dataset, 80/20
+      split, three open LVLMs, against twelve baselines under a shared
+      classifier-selection protocol. Ablations isolate each group and the
+      within/between feature split. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-27
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A single consistency
+  score (e.g. semantic-entropy over sampled responses) matching the
+  four-group pattern classifier's AUC on the same AMBER/PhD splits and
+  models, or the group ablations showing one group alone reaching
+  full-configuration performance.
+submitted_by: agent:claude-opus-5@Russ-Miller

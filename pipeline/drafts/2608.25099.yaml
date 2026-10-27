@@ -1,0 +1,46 @@
+arxiv_id: "2608.25099"
+title: A Control-Theoretic Approach for Resource-Aware Consensus in Multi-Agent AI
+url: https://doi.org/10.48550/arxiv.2608.25099
+drafted_at: 2026-10-20
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: "In a 5-agent LLM debate where agents iteratively revise a numeric
+  preference vector, switching from all-to-all to ring communication once
+  aggregate disagreement falls below a threshold reaches consensus using fewer
+  tokens than all-to-all throughout and in fewer rounds than ring-only, but it
+  does not dominate for every backbone: with Gemini 2.5-Flash all-to-all
+  throughout converged in fewer rounds than the adaptive policy."
+kind: observation
+backing_strength: single-paper
+scope_condition: Five role-conditioned agents on one software-architecture
+  planning prompt, 6-dimensional preference vectors, three backbones
+  (GPT-5.4-Mini, Gemini 2.5-Flash, Claude Opus-4.8), one run per
+  model-strategy cell, agents explicitly prompted to compromise each round.
+technique: ""
+proposed_technique: Switch from dense to sparse agent topology as disagreement falls
+technique_summary: The harness selects all-to-all inter-agent communication
+  while aggregate disagreement exceeds a threshold and a ring topology once it
+  falls below, with a token budget decremented each round and a guard that
+  halts on exhaustion.
+technique_kind: process
+technique_validated_by: Rounds-to-consensus and total input tokens for
+  adaptive vs complete-only vs ring-only, on one planning task with three LLM
+  backbones; adaptive used 41,727 tokens / 9 rounds for GPT vs 67,593 / 12
+  complete-only and 60,858 / 17 ring-only; Claude under complete-only
+  exhausted the 100,000-token budget. No repeated trials or statistical test.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Running the same three strategies over many tasks and seeds and
+  finding adaptive switching does not use fewer tokens than all-to-all or
+  fewer rounds than ring-only, or that it is dominated on both axes for most
+  backbones.
+evidence_note: Measured, but on a single prompt with one run per cell and no
+  variance reported; token counts were rescaled by hand-chosen constants per
+  model to fit a common budget, so cross-model cost comparison is not
+  meaningful. The theory assumes every topology is strictly contracting, which
+  the authors' own GPT complete-only log violates (disagreement rose at two
+  rounds).
+confidence: low

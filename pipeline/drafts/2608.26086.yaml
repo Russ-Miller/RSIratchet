@@ -1,0 +1,48 @@
+arxiv_id: "2608.26086"
+title: "TraceML: An Empirical Analysis of Human-Agent Planning in Machine
+  Learning Development"
+url: https://doi.org/10.48550/arxiv.2608.26086
+drafted_at: 2026-10-18
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: planning
+statement: In hours-long ML development runs on Kaggle-style competitions,
+  agent scaffolds each lock into one strategy policy — the single-loop CLI
+  agent pivots far less than humans (9% vs 25% of transitions) and the
+  evolutionary search agent far more (58%) with pivot gains cancelling out —
+  and neither reopens an approach it had abandoned, even though it recovers
+  scores after setbacks as well as top humans.
+kind: observation
+backing_strength: single-paper
+scope_condition: Two scaffolds (Codex CLI, MLEvolve) on a gpt-5.4-mini
+  backend, 12-hour budget, seven Kaggle competitions paired against 430 public
+  human notebook trajectories; humans are a reference distribution, not
+  budget-matched.
+technique: ""
+proposed_technique: Distil human planning practice into a re-injected planning prompt
+technique_summary: Adds a ~1000-token prompt block at run start and every 30
+  minutes that forbids mono-loop moves (single hold-out, repeated tweaks) and
+  prescribes human practices (K-fold from version one, early ensembling,
+  cached out-of-fold predictions, periodic self-checks).
+technique_kind: prompting
+technique_validated_by: "Across all 7 paired competitions at fixed backend,
+  tools, grader and 12h budget, varying only the prompt: 5 of 7 improved on
+  best held-out score, 2 within ~0.01 noise, none regressed; three named
+  behaviors moved onto the top-human value, while prohibitions overshot to
+  zero and already-saturated practices did not move; an injection-cadence-only
+  arm with the planning content stripped landed at or below baseline."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Process-level traces of other agent scaffolds showing pivot rates
+  near the human rate and regular returns to abandoned approaches, or showing
+  that the low return rate is an artifact of how agent versions were
+  extracted.
+evidence_note: Measured on 4,465 human and 207 agent trajectories with
+  LLM-distilled labelers (Qwen3-1.7B students) checked against an independent
+  annotator and a hand audit; returns counted once for Codex and never for
+  MLEvolve against a predicted dozens. Human observability differs (public
+  saves only, off-platform work invisible), which the authors probe with two
+  robustness checks but cannot fully rule out.
+confidence: medium
