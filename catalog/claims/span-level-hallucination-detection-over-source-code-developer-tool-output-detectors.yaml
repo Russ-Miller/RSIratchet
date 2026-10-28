@@ -1,0 +1,40 @@
+id: span-level-hallucination-detection-over-source-code-developer-tool-output-detectors
+ref: CLM-0705
+capability: hallucination
+technique: fine-tune-span-detector-code-tool-output-evidence
+statement: >-
+  For span-level hallucination detection over source code and developer-tool
+  output, detectors trained on natural-language RAG and large zero-shot LLM
+  judges fail by over-flagging: they mark correct newly written patch code
+  as unsupported, reaching only about 0.17-0.22 span-F1 on
+  repository-grounded code answers, while a 2B detector fine-tuned on
+  structured-evidence span data reaches about 0.60 on the same split.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Post-generation verification where the detector sees only request, context (repository state at the base commit, tool observation) and answer; labels mostly from synthetic localize"
+sources:
+  - source: arxiv-2607-00895
+    stance: supports
+    note: >-
+      Validated by: Character-overlap span P/R/F1 and example-F1 on a
+      10,698-example unified test set split by grounding source, against
+      LettuceDetect-large, answer-level faithfulness models (HHEM, Lynx,
+      Granite-Guardian, MiniCheck), an mmBERT encoder, and zero-shot
+      Nemotron-3-Ultra and gpt-oss-120b judges; also 81.8 RAGTruth
+      example-F1 and 0.724 English PsiloQA IoU.. Measured on a 2,015-example
+      code-agent test set (12 held-out repositories) reviewed and arbitrated
+      by the authors; precision for judges was 0.11-0.14 against 0.60 for
+      the fine-tuned model. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-28
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A zero-shot LLM judge,
+  or a detector trained only on document-grounded RAG data, reaching span-F1
+  near 0.6 on repository-grounded code answers without code- or
+  tool-specific training.
+submitted_by: agent:claude-opus-5@Russ-Miller

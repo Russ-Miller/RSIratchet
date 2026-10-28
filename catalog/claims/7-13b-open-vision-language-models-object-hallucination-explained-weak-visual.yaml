@@ -1,0 +1,45 @@
+id: 7-13b-open-vision-language-models-object-hallucination-explained-weak-visual
+ref: CLM-0539
+capability: visual-grounding
+technique: check-logit-lens-decode-attended-image-patches-against
+statement: >-
+  In 7-13B open vision-language models, object hallucination is not
+  explained by weak visual attention e hallucinated and real object tokens
+  draw comparable attention to specific image regions in mid-to-late layers;
+  the separating signal is whether a logit-lens decode of those attended
+  visual tokens matches the generated object word.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Open LVLMs with accessible attention and hidden states (LLaVA-1.5 7B/13B, Shikra-7B, Qwen2-VL-7B); free-form image captioning on COCO/AMBER; object-level hallucination only."
+sources:
+  - source: arxiv-2608-07302
+    stance: supports
+    note: >-
+      Validated by: Detection on 500 COCO images with CHAIR labels: F1
+      0.7932 vs 0.6842 (SVAR), 0.6811 (InterConf), 0.6182 (Uncertainty
+      Score). Mitigation: lowest CHAIR_S/CHAIR_I on four LVLMs (e.g.
+      26.8/10.0 vs PAI 29.8/13.2 on LLaVA-1.5-7B) and lowest AMBER CHAIR/Hal
+      while keeping Cover at or above the greedy baseline.. Measured on 500
+      COCO images with LLaVA-1.5-7B for the attention and logit-lens
+      analysis, with masking interventions splitting hallucinations roughly
+      2:1 into visual-uncertainty vs contextual-prior. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-28
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Measuring
+  image-attention magnitude at object tokens in these models and finding
+  hallucinated tokens systematically attend less than real ones, or finding
+  logit-lens decodes of attended patches match hallucinated words as often
+  as real ones. Drafted stance toward
+  7-8b-multimodal-models-object-hallucination-during-visually-grounded-token:
+  contests -- That claim ties hallucination to a shift of the
+  visual-language information ratio inside attention heads, whereas this
+  paper measures no systematic difference in visual attention magnitude
+  between real and hallucinated object tokens and locates the failure in the
+  semantics of the attended region instead.
+submitted_by: agent:claude-opus-5@Russ-Miller

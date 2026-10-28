@@ -1,0 +1,47 @@
+arxiv_id: "2608.07169"
+title: "Agent Memory Distillation: Empowering Small LLM Agents with
+  Hierarchical Teacher Memory"
+url: https://doi.org/10.48550/arxiv.2608.07169
+drafted_at: 2026-10-24
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: tool-use
+statement: For small (4-8B) student agents on multi-turn tool-use tasks,
+  transferring a stronger teacher's successful trajectories as flat task-level
+  memory barely helps and can hurt, while splitting the same trajectories into
+  a high-level workflow insight in prose plus concrete executable subtask
+  examples raises accuracy sharply, with the subtask examples carrying most of
+  the gain.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Text-based tool-use benchmarks with Python APIs or structured
+  function calls (AppWorld, BFCL V3, ToolSandbox); students 4B-8B; teacher
+  GPT-5-mini; memory built offline and frozen at inference.
+technique: ""
+proposed_technique: Distill teacher trajectories into workflow, subtask and function memory
+technique_summary: Builds three memory banks from a large teacher's successful
+  trajectories — a prose workflow insight, code-bearing subtask segments, and
+  per-function call examples — injecting the first two into the student's
+  system prompt and retrieving the third only when a tool call errors.
+technique_kind: retrieval
+technique_validated_by: Accuracy on AppWorld (168 tasks), BFCL V3 multi-turn
+  base (200), ToolSandbox base (129) against zero-shot and three memory
+  baselines (ReasoningBank, MemP, SASM), two runs averaged; gains
+  +27.2/+11.2/+3.4 points averaged over four students, with ablation showing
+  subtask memory adds e.g. +25.0 points over workflow alone for Qwen3-4B on
+  AppWorld, and student-generated memory near zero-shot.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A setup where flat task-level teacher memory gives small students
+  gains comparable to the hierarchical version, or where removing the
+  code-bearing subtask tier leaves accuracy unchanged.
+evidence_note: Measured on three benchmarks, four students, one main teacher,
+  two repetitions; incremental ablation isolates each memory tier and a
+  representation ablation (code vs prose per tier) separates granularity from
+  format. Gains are small on ToolSandbox (+0.77 to +5.42), so the headline
+  effect is driven by AppWorld. No matched-token-budget baseline, and memory
+  is built from the same task set used for evaluation, so reuse of
+  near-identical tasks may inflate transfer.
+confidence: medium

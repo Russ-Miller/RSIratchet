@@ -1,0 +1,38 @@
+id: instruction-tuned-models-qwen2-5-7b-32b-make-function-calls-non-english
+ref: CLM-0619
+capability: tool-use
+technique: score-argument-value-language-consistency-own-metric
+statement: >-
+  When instruction-tuned models (Qwen2.5 7B-32B) make function calls from
+  non-English user requests, they often select the right tool and argument
+  names but emit argument values in the wrong language, a failure that
+  exact-match or AST tool-calling metrics record as a generic invocation
+  error rather than a language mismatch.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen2.5-Instruct 7B/14B/32B on a rule-based translation of the Berkeley Function Calling benchmark into Spanish, French, Italian and Dutch; turn-level metrics; only turns relevant "
+sources:
+  - source: arxiv-2608-11715
+    stance: supports
+    note: >-
+      Validated by: Applied to base and post-trained Qwen2.5-14B on two
+      splits: base models score 91-95% on tool selection and argument
+      completion but only 46-52% on argument language consistency and 22-32%
+      on full function-call match, isolating language mismatch as the
+      dominant residual error; no human validation of the metric reported..
+      Measured on one benchmark family (translated BFC) with one model
+      family; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-28
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Showing that for these
+  models the drop from argument-completion accuracy to full-call accuracy on
+  non-English requests is driven by semantic or formatting errors rather
+  than argument-value language, or that argument-language errors are already
+  separable in standard AST/exact-match reporting.
+submitted_by: agent:claude-opus-5@Russ-Miller

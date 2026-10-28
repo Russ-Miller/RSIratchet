@@ -1,0 +1,41 @@
+id: 7b-class-vision-language-models-llava-1-5-minigpt-4-mplug-owl2-object-hallucination
+ref: CLM-0547
+capability: visual-grounding
+technique: attenuate-hidden-state-modes-hallucination-to-signal-ratio
+statement: >-
+  In 7B-class vision-language models (LLaVA-1.5, MiniGPT-4, mPLUG-Owl2),
+  object hallucination is carried by an anisotropic set of directions in
+  deep-layer hidden states, so attenuating each eigenmode in proportion to
+  its hallucination-to-truthful variance ratio — estimated once offline from
+  paired truthful/hallucinated captions and folded into the FFN output
+  projection — lowers CHAIR rates, while a mean-offset subtraction or
+  isotropic shrinkage of the same representations does not.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Deeper layers only (editing layers 4-12 barely helps); requires a calibration set of image-paired truthful and hallucinated captions; demonstrated on open 7B VLMs on CHAIR/POPE/MME"
+sources:
+  - source: arxiv-2608-08167
+    stance: supports
+    note: >-
+      Validated by: CHAIR_S/CHAIR_I on 500 MSCOCO images over three seeds
+      against greedy, beam search, DoLa, VCD, OPERA, MARINE, HALC and Nullu
+      (e.g. MiniGPT-4 CHAIR_S 21.20 greedy, 17.67 HALC, 16.87 ours), plus
+      POPE accuracy/F1 and MME Dolan-More profiles; ablations on MiniGPT-4
+      compare mean-distortion subtraction (CHAIR_S 22.0) and uniform
+      shrinkage (24.0) against the full filter (13.0) at matched layers..
+      Measured on three VLMs across CHAIR, POPE and MME with seed variance
+      reported, plus controlled ablations isolating anisotropy and layer
+      depth. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-28
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An isotropic or
+  mean-offset correction at the same deep layers matching the Wiener
+  filter's CHAIR reduction, or the Wiener filter's CHAIR gain disappearing
+  once caption length and object coverage are held constant.
+submitted_by: agent:claude-opus-5@Russ-Miller

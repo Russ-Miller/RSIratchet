@@ -1,0 +1,38 @@
+id: fine-tuning-pretrained-mixture-of-experts-llm-single-target-domain-pruning-half
+ref: CLM-0599
+capability: domain-knowledge
+technique: prune-low-saliency-experts-regrow-pool-before-domain
+statement: >-
+  When fine-tuning a pretrained Mixture-of-Experts LLM on a single target
+  domain, pruning the half of routed experts with lowest domain-aligned
+  saliency and regrowing the pool from the survivors with independent noise
+  on both parent and copy before standard SFT beats direct SFT at identical
+  parameter count and inference cost.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Pretrained sparse MoE backbones (Qwen3-30B-A3B, Qwen3.5-35B-A3B) with full-parameter SFT on one domain's corpus; 50% pruning ratio, calibration on 1024 samples of the same SFT data"
+sources:
+  - source: arxiv-2607-11444
+    stance: supports
+    note: >-
+      Validated by: Against Direct SFT with identical data and
+      hyperparameters: +3.40 math average (avg@32 over six competition
+      benchmarks) on Qwen3-30B-A3B, +1.67 on Qwen3.5-35B-A3B, +6.0 pass@1 on
+      SWE-bench Verified, positive on all 12 benchmarks across five domains
+      and all 15 data-scale comparisons; post-hoc pruning of the trained
+      model costs 5.0 points for UMoE vs 0.12 for Direct SFT.. Measured: two
+      MoE architectures, five domains, 12 benchmarks, paired against Direct
+      SFT with identical data and hyperparameters; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-28
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A matched comparison on
+  other MoE backbones or domains where the prune-and-regrow initialization
+  matches or underperforms direct SFT at equal data and compute, or where an
+  equivalent random-expert-reinitialization control gives the same gain.
+submitted_by: agent:claude-opus-5@Russ-Miller

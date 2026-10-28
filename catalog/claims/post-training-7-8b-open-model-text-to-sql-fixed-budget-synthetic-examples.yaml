@@ -1,0 +1,39 @@
+id: post-training-7-8b-open-model-text-to-sql-fixed-budget-synthetic-examples
+ref: CLM-0676
+capability: formal-query-synthesis
+technique: fill-sql-skeleton-coverage-gaps-don-t-just
+statement: >-
+  When post-training a 7-8B open model for text-to-SQL with a fixed budget
+  of synthetic examples drawn from a large external pool, selecting examples
+  whose schema-independent SQL skeletons are farthest from those already in
+  the seed set (greedy K-center) rather than sampling randomly from the same
+  pool yields a small in-domain gain and a larger cross-domain one (BIRD dev
+  64.9 vs 64.4, Spider Test 85.3 vs 83.4, Science Benchmark 53.9 vs 49.8).
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen2.5-Coder-7B-Instruct and Llama-3.1-8B-Instruct post-trained with GRPO plus failure-driven SFT; 3,000 BIRD seed examples plus 3,500 synthesized examples instantiated on BIRD da"
+sources:
+  - source: arxiv-2609-20842
+    stance: supports
+    note: >-
+      Validated by: Execution accuracy on BIRD dev, Spider test/dev, EHRSQL
+      and Science Benchmark against random augmentation from the same pool
+      at equal example count, plus skeleton n-gram coverage/recovery on BIRD
+      dev versus OmniSQL-style synthesis (100% vs 73.3% unigram recovery)..
+      Single ablation row per configuration, one backbone for the ablation,
+      no seeds or variance reported; the augmentation arm is confounded with
+      the surrounding failure-driven learning stages, though those are held
+      fixed. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-28
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Running the same pipeline
+  with randomly sampled pool examples at equal budget and matching or
+  exceeding coverage-guided selection on out-of-domain benchmarks, across
+  more than one seed and backbone.
+submitted_by: agent:claude-opus-5@Russ-Miller

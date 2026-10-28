@@ -1,0 +1,43 @@
+id: 4b-8b-llm-agents-trained-plain-group-based-rl-grpo-emit
+ref: CLM-0534
+capability: long-horizon-execution
+technique: distill-chunk-boundaries-trajectory-induced-programmatic-skills
+statement: >-
+  When 4B-8B LLM agents are trained with plain group-based RL (GRPO) to emit
+  variable-length action chunks in text environments, the policy degenerates
+  — collapsing to one action per round on one backbone and over-committing
+  to 5-6-action chunks with lower success on another — because a sparse
+  terminal reward carries no information about where chunk boundaries
+  belong; supplying boundary targets from subskills segmented out of
+  successful trajectories yields an intermediate 3-4-action regime with both
+  higher success and fewer decision rounds.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Text-grounded interactive environments (ALFWorld, ScienceWorld) with binary terminal rewards, Qwen3-4B and Llama-3.1-8B-Instruct, max chunk length 6; not tested in stochastic or sa"
+sources:
+  - source: arxiv-2609-02042
+    stance: supports
+    note: >-
+      Validated by: Success rate and average LLM decision rounds on ALFWorld
+      and ScienceWorld seen/unseen splits against zero-shot, ReAct,
+      Reflexion, RLOO, GRPO, GiGPO and a variable-length multi-action GRPO
+      under a matched rollout budget: ALFWorld 96.1/94.5 vs 89.1/83.6 for
+      GiGPO at 5.0/5.2 rounds; ScienceWorld 67.2/61.7 vs 35.9/34.4;
+      ablations removing skills (86.7/88.3) or chunk-aware advantage
+      (90.6/89.1) each lose part of the gain.. Measured on two benchmarks,
+      two backbones, seen and unseen splits, with a matched rollout budget
+      and component ablations; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-28
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Variable-length-chunk RL
+  with only a sparse terminal reward reaching comparable success and chunk
+  granularity to skill-boundary-supervised training on the same environments
+  and backbones, or the reported gain surviving when the skill-derived
+  boundaries are replaced with arbitrary fixed-length segmentation.
+submitted_by: agent:claude-opus-5@Russ-Miller

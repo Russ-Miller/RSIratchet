@@ -1,0 +1,38 @@
+id: injecting-post-cutoff-news-facts-into-8b-instruct-model-continual
+ref: CLM-0617
+capability: knowledge-updating
+technique: paraphrase-generate-qa-then-self-dpo-against-own
+statement: >-
+  When injecting post-cutoff news facts into an 8B instruct model by
+  continual training, the volume of generated question-answer pairs per
+  article drives accuracy more than the volume of paraphrases of the article
+  text, and a self-DPO stage contrasting the gold answer with the model's
+  own post-SFT answer is needed to suppress answers from the stale prior.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Llama-3.1-8B-Instruct, 128 Japanese entertainment news articles published after the knowledge cutoff, LoRA rank 128, accuracy judged by an LLM judge on generated QA."
+sources:
+  - source: arxiv-2606-28898
+    stance: supports
+    note: >-
+      Validated by: LLM-as-judge accuracy on held-out freshly generated QA
+      about the same articles: 0.02 before training, 0.54-0.68 with the full
+      pipeline, 0.82 at 10x QA volume, versus 0.26 after seven iterations of
+      SFT only; ablations removing CPT, SFT or DPO each drop final accuracy
+      to 0.15-0.46; Japanese MT-Bench++ falls from 4.42 to about 3.8-4.2..
+      Measured on one model, one language, one news genre, 128 articles, 100
+      sampled QA per evaluation point, so figures carry wide sampling error.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-28
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Matching the
+  paraphrase-volume increase against the QA-volume increase at equal token
+  budget yields equal or greater accuracy from paraphrases, or removing the
+  DPO stage while scaling SFT data reaches the same final accuracy.
+submitted_by: agent:claude-opus-5@Russ-Miller

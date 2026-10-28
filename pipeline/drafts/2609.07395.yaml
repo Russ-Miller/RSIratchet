@@ -1,0 +1,48 @@
+arxiv_id: "2609.07395"
+title: "Uncertainty Quantification for LLM Agents: A Taxonomy, an Evaluation
+  Protocol, and an Empirical Study"
+url: https://doi.org/10.48550/arxiv.2609.07395
+drafted_at: 2026-10-22
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: abstention-and-self-knowledge
+statement: For LLM agents whose steps condition on their own prior outputs,
+  per-step confidence that is calibrated against step-local success labels
+  does not compose into a calibrated estimate of whether the whole trajectory
+  succeeds, because correlated step errors make the product of step marginals
+  diverge from joint success probability, and the divergence grows as prefix
+  reliability falls over longer horizons.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Holds where step labels are defined by local step goals
+  rather than by survival (whether a successful continuation still exists);
+  under a survival convention the non-composition disappears but the label
+  becomes unobservable at execution time.
+technique: ""
+proposed_technique: Report calibration at trajectory checkpoints, split by horizon
+technique_summary: Score a reliability estimate against the independently
+  observed task outcome at each checkpoint index along a trajectory, reported
+  separately per horizon with group sizes, instead of pooling all checkpoints
+  or scoring only the final answer.
+technique_kind: process
+technique_validated_by: Computed (TC-ECE) on real agent traces from four
+  models across three tasks up to a 50-step budget; pooling checkpoints hid
+  overconfidence that was visible only at late horizons, and the agent's own
+  stated confidence did not consistently beat a step-index baseline. No
+  comparison against an alternative trajectory-calibration metric.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Measuring prefix-coupling coefficients near zero across real agent
+  trajectories, so the product of calibrated step confidences tracks observed
+  trajectory success rate within sampling error at long horizons.
+evidence_note: "Argued formally (two propositions, a two-step counterexample,
+  and a bound on the marginal-product error by measurable prefix-coupling
+  coefficients) plus limited measurement: positive step-error correlation in
+  only one of four chained-QA conditions with an interval that barely excludes
+  zero and no multiplicity correction, and a positive within-game coupling on
+  ALFWorld for two models with bootstrap intervals excluding zero. The bound
+  itself exceeds the trivial bound at T=20 once correlations reach about 0.13,
+  so it is informative mainly at short horizons."
+confidence: medium

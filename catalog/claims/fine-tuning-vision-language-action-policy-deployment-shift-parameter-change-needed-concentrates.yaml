@@ -1,0 +1,43 @@
+id: fine-tuning-vision-language-action-policy-deployment-shift-parameter-change-needed-concentrates
+ref: CLM-0600
+capability: embodied-control
+technique: allocate-lora-rank-per-network-region-pre-training
+statement: >-
+  When fine-tuning a vision-language-action policy for a deployment shift,
+  the parameter change needed concentrates in the functional region matching
+  the shift's modality — appearance in the vision encoder, rephrased
+  instructions in the language backbone, novel objects in the vision encoder
+  plus action head — so allocating LoRA rank per region by a pre-training
+  diagnostic beats uniform-rank LoRA at matched budget, with the advantage
+  largest at small budgets and absent when the shift's demand spreads across
+  regions rather than concentrating.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Five VLA architectures from 93M to 7B across autoregressive, diffusion and flow-matching decoders; LIBERO and CALVIN plus one xArm-7 embodiment; ~20 target demonstrations per task;"
+sources:
+  - source: arxiv-2609-18084
+    stance: supports
+    note: >-
+      Validated by: Diagnostic scores ranked regions against measured
+      region-isolated parameter displacement at median Spearman 0.91; at a
+      matched budget of roughly half uniform rank-32, the allocation beat
+      uniform-matched LoRA, DoRA, (IA)^3, AdaLoRA, LoRA-SP, random and
+      dominant-region-only allocation on all five architectures on LIBERO
+      and CALVIN (5 seeds, 50 rollouts/task), and on the xArm-7 language
+      shift reached 21/30 vs 22/30 for full fine-tuning at 0.04% of its
+      trainable parameters; random allocation at the same budget collapsed
+      to 42.8% vs 73.4%.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-28
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A VLA family where
+  region-isolated adaptation cost does not track the shifted modality, or
+  where diagnostic-driven variable-rank LoRA fails to beat uniform LoRA at
+  matched low budgets once random-allocation and checkpoint-selection
+  controls are held equal.
+submitted_by: agent:claude-opus-5@Russ-Miller

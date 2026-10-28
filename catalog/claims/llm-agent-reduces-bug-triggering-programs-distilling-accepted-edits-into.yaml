@@ -1,0 +1,43 @@
+id: llm-agent-reduces-bug-triggering-programs-distilling-accepted-edits-into
+ref: CLM-0626
+capability: harness-self-improvement
+technique: distill-accepted-agent-edits-into-verified-executable-passes
+statement: >-
+  When an LLM agent reduces bug-triggering programs, distilling its accepted
+  edits into executable, test-verified deterministic passes (rather than
+  natural-language reflections) yields a reducer that transfers to unseen
+  programs of the same language and cuts LLM calls, but only where the
+  corpus is homogeneous enough for patterns to recur.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Program reduction for compiler/interpreter bug triage, 90 benchmarks in C, Rust and JavaScript, DeepSeek-V4-Flash and two other backbones, Perses used as a syntactic prelude."
+sources:
+  - source: arxiv-2607-03766
+    stance: supports
+    note: >-
+      Validated by: Frozen after 30 training C programs and run alone on 30
+      held-out C programs: reduced them to 159 tokens on average, below
+      Vulcan (192) and LPR (160) and near C-Reduce (140), with no LLM calls;
+      versus a cold-start configuration on the same programs it used 33%
+      fewer API calls and 26% less cost at comparable size. Contribution to
+      total token reduction reached ~46% (C) and ~52% (JS) but only ~5%
+      (Rust).. Measured: 90 benchmarks, three shuffled orderings averaged,
+      held-out C split of 30 programs, baselines Perses/Vulcan/LPR/C-Reduce.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-28
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A frozen learned reducer
+  that, on held-out programs of the same language, reduces no better than
+  the syntactic prelude alone, or a cold-start agent that matches it on both
+  size and LLM call count. Drafted stance toward
+  distilling-lessons-from-failures-as-well-as-successes-beats-raw-trajectory-memory:
+  supports -- Both show an agent distilling reusable knowledge from its own
+  past attempts improves later runs with weights frozen, here with the
+  distillate made executable rather than textual.
+submitted_by: agent:claude-opus-5@Russ-Miller

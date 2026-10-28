@@ -1,0 +1,40 @@
+id: pretrained-single-frame-vla-manipulation-policies-near-saturated-libero-suites-compressing
+ref: CLM-0678
+capability: embodied-control
+technique: compress-history-into-fixed-size-dual-scale-memory
+statement: >-
+  For pretrained single-frame VLA manipulation policies on near-saturated
+  LIBERO suites, compressing history into fixed-size dual-scale memory hubs
+  (EMA workspace plus recency-biased short-window attention) yields only
+  small success gains over the single-frame variant (93.2% to 95.3% on
+  LIBERO-Long), yet the learned policy genuinely depends on temporal order,
+  since permuting the short-term frames at inference costs 7.3 points.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Stationary single-arm manipulation, LIBERO simulation plus a LeRobot real platform; baselines already above 94% on the ablated suite, so headroom is small."
+sources:
+  - source: arxiv-2606-31167
+    stance: supports
+    note: >-
+      Validated by: Success rate on four LIBERO suites (500 episodes each)
+      against Diffusion Policy, Octo, OpenVLA and OpenVLA-OFT; component
+      ablations on LIBERO-Long; linear probes for state/velocity MAE;
+      frame-shuffling perturbation; real-robot success over 30 runs per
+      task.. Measured, single paper, self-reported with baseline numbers
+      copied from other papers rather than re-run. Ablation deltas (0.8-2.1
+      points) are close to the reported standard deviations (~1%), so
+      component attribution is weak; the shuffling result is a larger effect
+      but tested only on one suite. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-28
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Removing both memory hubs
+  leaves LIBERO-Long success unchanged, or randomly permuting the short-term
+  history frames at inference leaves success unchanged — either would show
+  the hubs are not carrying order-dependent temporal information.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,38 @@
+id: training-8b-multimodal-model-rl-find-scientific-errors-whole
+ref: CLM-0717
+capability: error-detection
+technique: train-evidence-absent-verification-through-matched-easier-task
+statement: >-
+  When training an 8B multimodal model with RL to find scientific errors in
+  whole papers without being told where to look, mixing in matched easier
+  variants of the same instances — where the error is asserted and the
+  evidence supplied — yields better performance on the evidence-absent task
+  itself than training only on that task at matched exposure.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Qwen3-VL-8B-Instruct, SFT then ~30 DAPO steps, on 12,900 paper-level error-detection samples built as matched Reason/Verify/Scan chains over six error categories; not tested on oth"
+sources:
+  - source: arxiv-2608-26596
+    stance: supports
+    note: >-
+      Validated by: Compared against Pure Scan training (Scan samples only)
+      at matched Scan exposure (step 10) and at longer training (step 20),
+      and against a curriculum that switches to Scan-only after 15 steps;
+      the staged setting scored higher on Scan composite reward (19.5 vs
+      16.8/16.9/16.5) and on completeness, alignment and precision
+      components. All metrics come from the paper's own reward definitions,
+      scored by Seed-1.6-Thinking as a fixed extractor.. Measured on one
+      backbone with one RL algorithm and short training (10-30 steps);
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-28
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Training the same backbone
+  only on evidence-absent samples, at equal or greater Scan exposure,
+  matching or beating the staged mixture on evidence-absent error detection.
+submitted_by: agent:claude-opus-5@Russ-Miller

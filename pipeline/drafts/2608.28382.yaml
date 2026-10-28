@@ -1,0 +1,49 @@
+arxiv_id: "2608.28382"
+title: When Linguistic and Internal Confidence Diverge in Large Language Models
+url: https://doi.org/10.48550/arxiv.2608.28382
+drafted_at: 2026-10-22
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: abstention-and-self-knowledge
+statement: Across 30 open LLaMA/Mistral/Qwen models and 8 classification
+  tasks, a model's self-reported numeric confidence tracks its own logit-based
+  confidence only weakly at the instance level (mean Pearson r about 0.135)
+  even though setting-level averages of the two correlate moderately, and
+  instruction-tuned models show larger linguistic-vs-internal gaps and worse
+  calibration error than base models.
+kind: observation
+backing_strength: single-paper
+scope_condition: Open-weight base and instruction-tuned models from three
+  families; classification tasks with a fixed candidate set where logits over
+  options are extractable, plus two generation tasks using semantic entropy as
+  the proxy; confidence elicited as a 0-10 score in the same response as the
+  answer.
+technique: verbalized-confidence-after-listing-alternatives
+proposed_technique: ""
+technique_summary: ""
+technique_kind: ""
+technique_validated_by: ""
+stance_on_existing: contests
+related_claim_id: rlhf-tuned-chat-models-raw-conditional-probabilities-consistently-overconfident-confidence
+stance_reason: This paper finds instruction-tuned models' verbalized
+  confidence has significantly larger expected calibration error than base
+  models' (0.287 vs 0.191) and only weak instance-level agreement with
+  internal probabilities, cutting against the claim that verbalized confidence
+  is better calibrated than conditional probabilities.
+falsifier: Measuring per-instance correlation between verbalized score and
+  option-token probability across a comparable model set and finding
+  consistently strong association (e.g. r above 0.5), or finding
+  instruction-tuned models have lower linguistic ECE than their base
+  counterparts.
+evidence_note: Measured over 30 models x 10 tasks with three axes
+  (Pearson/Spearman, Euclidean distance, ECE) and paired t-tests; ECE
+  difference significant (p=2.5e-8), correlation difference not (p=0.054).
+  Regression attributes most variation to confidence-score dispersion and mean
+  rather than model metadata. Logit softmax over options is a proxy, not
+  ground-truth uncertainty, so the result is cross-channel fidelity plus a
+  separate correctness-calibration measure; confidence elicited in the same
+  turn as the answer, not post-hoc.
+confidence: medium
+problems:
+  - "figures not in the source: 0.054"
