@@ -1,0 +1,41 @@
+id: vlm-based-judging-camera-conditioned-world-model-videos-splitting-long-video-pair
+ref: CLM-0727
+capability: critique
+technique: judge-video-pairs-action-aligned-chunks-then-vote
+statement: >-
+  For VLM-based judging of camera-conditioned world-model videos, splitting
+  a long video pair into action-aligned chunks with structured visual
+  evidence (source image, frame-grid overview, per-action first/last-frame
+  panels) and voting chunk verdicts into video-level preferences agrees with
+  human preferences better than judging the whole video pair at once,
+  because short-lived action evidence is otherwise diluted by the full
+  context.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Pairwise preference judging of camera-trajectory-conditioned generated videos sharing source image, caption and trajectory; 9B VLM fine-tuned on distilled and audited chunk-level r"
+sources:
+  - source: arxiv-2609-03952
+    stance: supports
+    note: >-
+      Validated by: Three-way agreement (incl. Tie) with majority human
+      labels on 760 pairs: 77.63/81.32/73.03 on action/appearance/motion vs
+      GPT-5.5 at 74.21/79.87/69.47 and Gemini 3.1 Pro at 65.79/80.13/60.79;
+      ablations removing source image, frame grid or action panels each
+      lower average agreement by about 1.3-2.5 points; used as RL reward it
+      beat WorldCompass's split geometry+image rewards on action adherence
+      and HPSv3 in all six horizon settings.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-28
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A whole-video VLM judge
+  given the same frames and the same reasoning-augmented training data
+  matches or beats the chunked-and-voted judge on human agreement, or
+  removing the chunk decomposition while keeping the training data leaves
+  agreement unchanged. Automatic check flagged: figures not in the source:
+  7.25.
+submitted_by: agent:claude-opus-5@Russ-Miller

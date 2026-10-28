@@ -6,15 +6,54 @@ year: 2026
 date: 2026-05-09
 arxiv_id: "2605.08765"
 url: https://arxiv.org/abs/2605.08765
-tags: [ingested]
-summary: >-
-  Unlearning in large language models (LLMs) aims to remove harmful training
-  data while preserving overall utility. However, we find that existing
-  methods often hallucinate, generate abnormal token sequences, or behave
-  inconsistently, raising safety and trust concerns. According to prior
+tags:
+  - ingested
+summary: "Unlearning in large language models (LLMs) aims to remove harmful
+  training data while preserving overall utility. However, we find that
+  existing methods often hallucinate, generate abnormal token sequences, or
+  behave inconsistently, raising safety and trust concerns. According to prior
   literature on LLM honesty, such behaviors are often associated with
   dishonesty. This motivates us to investigate the notion of honesty in the
   context of model unlearning. We propose a formal definition of unlearning
-  honesty, which includes: (1) preserving both utility and honesty on
-  retained knowledge, and (2) e
+  honesty, which includes: (1) preserving both utility and honesty on retained
+  knowledge, and (2) e"
 ingested_at: 2026-09-19
+brief: >-
+  Unlearning methods that pass forgetting benchmarks still lie about what they
+  forgot: they hallucinate forgotten facts, emit repetitive junk tokens, or
+  refuse once and then answer on a follow-up question.
+
+
+  The authors define honest unlearning as self-knowledge plus self-expression
+  on both retain and forget sets, and build metrics for it: rejection rate
+  (RR), 2-round rejection consistency (QAMRC), RR2R, Choose-IDK Rate (CIR)
+  against a Choose Other Rate (COR) control, output variance (STD), agreement
+  rate (AR), and misleading-robustness (MRS). 9 methods across 3 families
+  (rejection-based, gradient-ascent, feature-randomize) were run on
+  Zephyr-7b-beta and Llama3-8b with WMDP-Bio, plus CSQA and BBH.
+
+
+  IDK fine-tuning masks rather than removes knowledge: it keeps high accuracy
+  on the same questions, and RMU+IDK's QAMRC falls to around 40%.
+  Gradient-ascent methods show high CIR only from position bias; with the
+  special option shuffled among A-E, selection falls to chance (NPO: CIR
+  19.24%, COR 17.65%; SimNPO: CIR 20.77%, COR 19.87%). Their proposed ReVa,
+  aligning forget-set activations to a distilled refusal direction, reaches RR
+  60.86 and RR2R 45.42 versus RMU+IDK's 63.41 and 26.17, with STD 2.24 and MRS
+  71.37, in 5.91 minutes versus 210.66 for IDK+AP.
+
+
+  The COR and randomized-position controls directly isolate fake abstention,
+  which is the strongest part of the evidence; ReVa itself is self-evaluated
+  on the authors' own metrics with no independent replication.
+
+
+  Only WMDP is used, no relearning or adversarial fine-tuning attacks are
+  tested, and ReVa's MCQ self-knowledge stays low (CIR 7.18).
+
+
+  If you treat low forget-set accuracy or high "I don't know" rates as
+  evidence of successful unlearning, both signals can be spurious.
+brief_generated_at: 2026-10-28
+brief_model: claude-opus-5
+brief_source: full-text

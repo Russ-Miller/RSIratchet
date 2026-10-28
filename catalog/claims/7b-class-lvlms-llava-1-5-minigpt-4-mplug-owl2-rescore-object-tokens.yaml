@@ -1,0 +1,40 @@
+id: 7b-class-lvlms-llava-1-5-minigpt-4-mplug-owl2-rescore-object-tokens
+ref: CLM-0546
+capability: visual-grounding
+technique: fuse-clip-object-logits-lvlm-entropy-decoding
+statement: >-
+  In 7B-class LVLMs (LLaVA-1.5, MiniGPT-4, mPLUG-Owl2) that rescore object
+  tokens during decoding with a frozen CLIP image-text similarity, the CLIP
+  signal must be weighted by the model's own entropy over the object
+  candidates: a fixed mixing coefficient is sensitive to its value and gives
+  smaller hallucination reductions, and letting CLIP fully override the LVLM
+  logits degrades output.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Object hallucination in open-ended captioning; frozen CLIP ViT-B/32 validator, object tokens picked from the top-k pool via WordNet; does not apply to tasks without explicit object"
+sources:
+  - source: arxiv-2608-11474
+    stance: supports
+    note: >-
+      Validated by: CHAIR_S/CHAIR_I and BLEU on 500 MSCOCO images over three
+      seeds, OPOPE accuracy/precision/F1, and GPT-4V scores on LLaVA-Bench,
+      against greedy, beam, DoLa, OPERA, VCD, HALC, Woodpecker, LURE and
+      Nullu; reported CHAIR_S 14.27 vs 15.20 (Nullu) and 20.40 (greedy) on
+      LLaVA-1.5, with throughput 0.59 vs 0.72 items/s for greedy; ablations
+      sweep the fixed coefficient and the candidate-pool size (best at 10)..
+      Measured on three LVLMs and three benchmarks with seed variance
+      reported, plus a coefficient-sweep ablation on LLaVA-1.5 only.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-28
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A sweep showing some fixed
+  mixing coefficient matches or beats entropy-adaptive weighting on
+  CHAIR_S/CHAIR_I across these backbones, or showing the entropy weight's
+  gain disappears once coverage/informativeness is held constant.
+submitted_by: agent:claude-opus-5@Russ-Miller

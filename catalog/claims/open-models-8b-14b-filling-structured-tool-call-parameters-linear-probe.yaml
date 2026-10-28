@@ -1,0 +1,44 @@
+id: open-models-8b-14b-filling-structured-tool-call-parameters-linear-probe
+ref: CLM-0675
+capability: tool-use
+technique: filter-self-training-data-hidden-state-parameter-probe
+statement: >-
+  For open models (8B-14B) filling structured tool-call parameters, a linear
+  probe on the hidden state at the position just before a parameter value is
+  written predicts whether that value will be correct better than token
+  log-probability (in-domain AUC about 0.986 vs 0.914), and using that score
+  to filter self-generated calls for fine-tuning beats self-training
+  filtered by log-probability or majority vote.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Probe must be fit per dataset, model and sampling temperature; it degrades outside that setting. Benchmarks adapted so tool selection is removed and only parameter filling is score"
+sources:
+  - source: arxiv-2608-03071
+    stance: supports
+    note: >-
+      Validated by: Exact match and field-level F1 across 5 open models and
+      7 benchmarks: average EM 19.7 (0-shot) to 51.6 (seed SFT) to 59.6
+      (probe-filtered), above self-training (53.9), log-probability
+      filtering (44.2) and majority vote (48.9); probe-filtered beat seed
+      SFT in all 35 model-dataset pairs; reranking added 4.2-4.6 EM..
+      Measured on 5 open base models across ParamBench plus 6 adapted
+      external benchmarks, with matched-count filtering baselines.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-28
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A probe on pre-emission
+  hidden states that does not beat log-probability at predicting parameter
+  correctness, or probe-filtered self-training that fails to beat
+  log-probability/majority-vote filtering at matched data volume. Drafted
+  stance toward
+  linear-probe-tool-calling-models-hidden-state-last-generated-token:
+  supports -- Both find hidden-state probes detect incorrect tool-call
+  arguments that schema checks pass; this paper moves the read point to
+  before each parameter value and acts on the signal.
+submitted_by: agent:claude-opus-5@Russ-Miller

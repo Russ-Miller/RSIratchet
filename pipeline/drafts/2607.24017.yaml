@@ -1,0 +1,51 @@
+arxiv_id: "2607.24017"
+title: Disentangling Semantic Attention from Structural Bias in the Attention
+  Manifold
+url: https://doi.org/10.48550/arxiv.2607.24017
+drafted_at: 2026-10-25
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: In LLaVA-v1.5 and LLaVA-NeXT, the text-to-image attention in the
+  first two decoder layers carries a large query-invariant component, and
+  subtracting that text-marginalized attention template (scaled by
+  visual-token feature variance) then returning the removed mass only to text
+  tokens whose purified attention is sparse lowers object hallucination on
+  POPE and CHAIR and raises accuracy under negation-based gaslighting prompts.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Two 7B-class LLaVA models; intervention injected at the first
+  two transformer layers with fixed hyperparameters; hallucination measured on
+  POPE, CHAIR, GaslightingBench, MMMU, AI2D, MMBench.
+technique: ""
+proposed_technique: Subtract the query-invariant attention template, then
+  redistribute by sparsity
+technique_summary: At the first few layers, estimate each head's
+  text-marginalized text-to-image attention as a structural-bias template,
+  subtract it scaled by visual-token feature-variance saliency, and restore
+  the removed probability mass in proportion to how sparse (confident) the
+  purified attention row is.
+technique_kind: decoding
+technique_validated_by: POPE accuracy 76.69 to 85.20 and F1 79.72 to 85.42
+  over regular decoding on LLaVA-v1.5; CHAIR_S 55.0 to 49.0, CHAIR_I 16.3 to
+  14.0; post-negation GaslightingBench accuracy 24.71 to 41.74 (LLaVA-v1.5)
+  and 19.81 to 34.04 (LLaVA-NeXT) versus 40.95/30.58 for GasEraser, with
+  pre-negation accuracy preserved and latency 0.42 vs 1.05 s/it; ablations
+  show text-side marginalization gives nearly all the gain (41.74 vs 34.28 for
+  image-side) and removing redistribution drops post-negation to 33.91.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Applying the same subtraction with an image-side or random
+  template, or at later layers, yields equal gains; or the measured
+  hallucination drop is accompanied by reduced object coverage/shorter
+  captions so that grounding per mentioned object is unchanged.
+evidence_note: "Measured on two open 7B-class models across POPE, CHAIR,
+  GaslightingBench plus three general benchmarks, with component ablations and
+  a marginalization-source ablation that isolates the text-side template. Not
+  isolated: whether lower CHAIR comes partly from mentioning fewer objects —
+  POPE recall is reported (85.72, down from 90.42 while precision rises 71.76
+  to 85.77), which hints at a coverage trade-off the paper does not address
+  for captioning."
+confidence: medium

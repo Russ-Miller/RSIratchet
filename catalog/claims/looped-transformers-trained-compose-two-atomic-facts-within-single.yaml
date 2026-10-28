@@ -1,0 +1,42 @@
+id: looped-transformers-trained-compose-two-atomic-facts-within-single
+ref: CLM-0652
+capability: multi-step-reasoning
+technique: carry-decoded-embedding-channel-alongside-hidden-states-across
+statement: >-
+  In looped transformers trained to compose two atomic facts within a single
+  forward pass, the remaining generalization failure is representational
+  rather than storage: the bridge entity is already decodable after the
+  first loop (LM-head probability ~1.0 on both ID and OOD splits) while its
+  hidden state is poorly aligned with that token's embedding (cosine
+  ~0.27-0.33), and mixing the decoded embedding into the bridge position
+  between loops lifts OOD accuracy from 8.3% to near 100%.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Small decoder-only transformers trained from scratch with K=2 loops on a symbolic two-graph knowledge-base task (500 entities per graph, 50 relations) and a synthetic natural-langu"
+sources:
+  - source: arxiv-2607-00341
+    stance: supports
+    note: >-
+      Validated by: Two-hop ID/OOD accuracy against a vanilla looped
+      transformer sharing the same base block and a FLOPs-matched non-looped
+      stack: near-perfect ID and OOD versus ~70% ID and <10% OOD for vanilla
+      loop and <20% ID / ~0% OOD non-looped; same pattern on two
+      synthetic-language formats and a three-hop extension; in 440M
+      pretraining on 20B tokens, average zero-shot score 50.5 vs 49.3
+      (vanilla loop) and 49.8 (PonderLM).. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-28
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Showing that
+  post-first-loop hidden states in vanilla looped transformers are already
+  well aligned with bridge embeddings on failing OOD cases, or that the
+  training-free embedding-injection intervention does not raise OOD two-hop
+  accuracy, or that DiscoLoop's gain over vanilla looping disappears under
+  matched training compute on these tasks. Automatic check flagged: figures
+  not in the source: 0.27, 33.
+submitted_by: agent:claude-opus-5@Russ-Miller

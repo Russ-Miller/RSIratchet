@@ -1,0 +1,43 @@
+arxiv_id: "2608.18884"
+title: Training-Free Inference-Time Self-Reflection and Cost-Bounded Early
+  Stopping for Large Language Models
+url: https://doi.org/10.48550/arxiv.2608.18884
+drafted_at: 2026-10-18
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: abstention-and-self-knowledge
+statement: In a training-free generate-critique-revise loop on a frozen
+  backbone, a self-reported numeric confidence tag is useless as a stopping
+  signal because the model declares high confidence on essentially every first
+  generation (every threshold from 0.6 to 0.9 halted the loop at step 1 on 100
+  BBH questions), whereas a textual CONFIRMED sentinel from the critique stops
+  82-88% of items at unchanged accuracy.
+kind: observation
+backing_strength: single-paper
+scope_condition: Pure-reasoning benchmarks (BBH, GSM8K, MATH), frozen API
+  backbones deepseek-v4-flash and Qwen2.5-72B, depth-3 loop, prompt-only
+  confidence elicitation.
+technique: stop-self-critique-loop-confirmed-sentinel
+proposed_technique: ""
+technique_summary: ""
+technique_kind: ""
+technique_validated_by: "Threshold sweep tau in {0.6,0.7,0.8,0.9} plus anchors
+  on 100 BBH questions: average steps 1.00 and 100% early stop at every
+  threshold, versus 2.06 steps and 83% early stop under the sentinel at
+  statistically indistinguishable accuracy; confusion matrix at n=500 shows
+  the sentinel agreeing with actual Step-1 correctness in 78% of cases (16%
+  false confirms, 6% needless revisions)."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A backbone on which prompted numeric confidence falls below the
+  threshold on a meaningful share of first generations, producing a selective
+  working point whose cost-accuracy trade-off beats the sentinel.
+evidence_note: Measured, single paper, one 100-question BBH sweep for the
+  threshold result plus a 500-item sentinel confusion matrix; the authors
+  themselves note ~7pp session-to-session variance in single-shot accuracy on
+  the same backbone and questions, so the accuracy comparisons are only read
+  within Wilson intervals. Confidence calibration tested only via prompted
+  tags, not log-probabilities.
+confidence: medium

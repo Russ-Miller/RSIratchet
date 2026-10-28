@@ -1,0 +1,45 @@
+arxiv_id: "2606.24597"
+title: "Qwen-AgentWorld: Language World Models for General Agents"
+url: https://doi.org/10.48550/arxiv.2606.24597
+drafted_at: 2026-10-27
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: state-tracking
+statement: For mixture-of-experts language models trained to predict the next
+  environment observation from interaction history and action, reinforcement
+  learning on a single domain (Terminal) raises simulation fidelity on
+  held-out domains it never trained on (SWE +11.5, Search +11.8, MCP +5.0
+  rubric points), with gains appearing within the first 10 RL steps, so
+  environment-simulation skill is not purely domain-specific.
+kind: observation
+backing_strength: single-paper
+scope_condition: One 35B-A3B Qwen checkpoint, four text-based domains, rubric
+  scores judged by an LLM against ground-truth observations; GUI domains not
+  tested in the transfer experiment.
+technique: ""
+proposed_technique: Train a language world model to predict next environment state
+technique_summary: Train a language model in three stages (continual
+  pre-training on environment trajectories, SFT on next-state-prediction
+  reasoning traces, RL with a five-dimensional rubric judge plus rule-based
+  verifier) so it simulates agentic environment observations given history and
+  action.
+technique_kind: training
+technique_validated_by: AgentWorldBench, 2,170 out-of-distribution turn-level
+  samples from frontier-agent trajectories on nine established benchmarks,
+  scored by a reference-grounded GPT-5.2 judge on five dimensions; the trained
+  397B model averaged 58.71 vs 54.74 for its untrained base and 58.25 for the
+  best frontier baseline, and the 35B model rose 47.73 to 56.39.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: RL on one domain's state-transition data leaves held-out domain
+  simulation scores flat or lower, or the measured transfer disappears when
+  the judge is replaced or when the held-out domains are checked with
+  rule-based verifiers instead of rubric scores.
+evidence_note: Measured on one base checkpoint, with evaluation every 10 RL
+  steps on four text domains; the SFT baseline is the only comparison, so
+  transfer is not separated from generic RL-induced format or long-context
+  gains, and all numbers come from an LLM rubric judge rather than execution
+  checks.
+confidence: low

@@ -1,0 +1,41 @@
+id: llava-1-5-qwen-vl-hallucination-during-decoding-preceded-two-distinguishable
+ref: CLM-0624
+capability: visual-grounding
+technique: trigger-different-correction-each-hallucination-indicator
+statement: >-
+  In LLaVA-1.5 and Qwen-VL, hallucination during decoding is preceded by two
+  distinguishable internal signatures — a spike in the entropy of attention
+  over visual tokens, and a drop in the KL gap between image-conditioned and
+  text-only output distributions — and triggering a different contrastive
+  correction for each lowers object-hallucination rates more than applying
+  one uniform correction.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "7B-class open multimodal models (LLaVA-1.5, Qwen-VL) on object-existence QA (POPE), MME perception subsets and CHAIR captioning; thresholds hand-tuned per model."
+sources:
+  - source: arxiv-2607-23944
+    stance: supports
+    note: >-
+      Validated by: POPE accuracy/F1 across three sampling splits and three
+      source datasets against VCD, OPERA, M3ID, AvisC, MoD; CHAIR_s 41.8 /
+      CHAIR_i 11.5 on LLaVA-1.5 (best among baselines); MME total 661.5 /
+      648.3; ablations removing each module drop scores, with the
+      attention-entropy module costing more; a transition table reports
+      37.4% of triggered wrong answers repaired against 1.5% of correct
+      answers broken.. Measured on two backbones and three benchmarks
+      against five inference-time baselines, with module ablations and
+      trigger-frequency statistics. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-28
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Showing that a single
+  uniform contrastive correction, applied whenever either indicator fires,
+  matches the per-mode routing on the same benchmarks and models — or that
+  the two indicators fire on the same decoding steps rather than distinct
+  ones.
+submitted_by: agent:claude-opus-5@Russ-Miller

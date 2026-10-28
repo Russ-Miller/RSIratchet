@@ -32,3 +32,37 @@ notes: "Filed as a source on fine-tuning-retention from the classifier's
   general skills alongside domain knowledge. No claim has been drafted from it
   yet."
 ingested_at: 2026-09-23
+brief: >-
+  Fixing catastrophic forgetting does not make a fine-tuned model actually use
+  its general skills on domain tasks. After legal fine-tuning, models still
+  produce complete reasoning chains and refuse malicious requests, but fail to
+  combine those abilities with the law-article knowledge they just absorbed.
+
+
+  The authors define General Capabilities Integration (GCI): train on domain
+  data, test on tasks needing both domain knowledge and a general skill. They
+  build 3 Chinese legal task groups: Article QA to Reasoning/Calculation,
+  Article QA to Ethic/Contamination, and Legal IE to Event Summary/MRC, with
+  GPT-4-assisted data construction. Baselines include LoRA SFT, wise-ft, L1/L2
+  and KL regularization, DAS, MixTraining, MixDA*. ALoRA adds a multi-head
+  attention module over LoRA so the adapter can read preceding tokens.
+
+
+  6 baselines hit 100 on reasoning chain completeness while BLEU_R stays low.
+  DAS raises training-task scores but leaves test tasks near the untuned chat
+  model, with Score_E of 2 for both. ALoRA's best averages are 19.50 and 20.73
+  on reasoning/calculation, 0.87 over baselines; on MRC it gains 1.81 BLEU and
+  2.68 ROUGE.
+
+
+  Ablations remove residual, KL, and attention, and raise LoRA rank from 8 to
+  16 to match parameters; removing attention costs nearly 10. Margins are
+  small and it loses on Legal IE and Event Summary, where long verdicts hurt.
+  1 domain, 1 language, GPT-4 as judge, no finance/health/education test.
+
+
+  Treat forgetting benchmarks as insufficient evidence that a domain model
+  retains usable general skills.
+brief_generated_at: 2026-10-28
+brief_model: claude-opus-5
+brief_source: full-text

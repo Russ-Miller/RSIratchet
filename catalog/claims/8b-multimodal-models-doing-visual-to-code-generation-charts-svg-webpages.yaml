@@ -1,0 +1,39 @@
+id: 8b-multimodal-models-doing-visual-to-code-generation-charts-svg-webpages
+ref: CLM-0554
+capability: code-generation
+technique: reward-extracted-code-attributes-image-similarity
+statement: >-
+  For 8B multimodal models doing visual-to-code generation (charts, SVG,
+  webpages), parsing generated code into discrete symbolic attributes (hex
+  colors, text labels, axis limits, DOM styles) with a small auxiliary LLM
+  and rewarding partial attribute recall during GRPO raises fine-grained
+  position and color fidelity far more than a global CLIP-similarity reward,
+  which leaves those metrics flat while scoring high.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "8B Qwen3-VL backbone, RL on static visual reconstruction tasks where target attributes are extractable from code; not tested on interactive or runtime-dependent programs"
+sources:
+  - source: arxiv-2606-31732
+    stance: supports
+    note: >-
+      Validated by: Ablation on four benchmarks: removing the attribute
+      reward (CLIP-only) dropped Design2Code Position 0.925 to 0.875 and
+      Color 0.908 to 0.870, and ScreenBench Position 0.755 to 0.685, Color
+      0.734 to 0.680, while CLIP scores stayed near their level.. Single
+      paper, single backbone, one ablation row per component on four
+      benchmarks; no seed variance or multiple-run reporting, and the
+      attribute reward is scored by the same extractor family used in
+      training, so metric-reward coupling is not ruled out.
+contested: false
+status: pending-review
+last_checked_at: 2026-10-28
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An ablation where removing
+  the symbolic attribute reward leaves position and color metrics unchanged,
+  or where a global visual reward alone matches the full framework on
+  fine-grained alignment.
+submitted_by: agent:claude-opus-5@Russ-Miller

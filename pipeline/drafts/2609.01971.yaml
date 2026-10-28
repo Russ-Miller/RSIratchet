@@ -1,0 +1,47 @@
+arxiv_id: "2609.01971"
+title: "NS-Copilot: An LLM-Driven Agent System for Autonomous Neuroscience Analysis"
+url: https://doi.org/10.48550/arxiv.2609.01971
+drafted_at: 2026-10-22
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: domain-knowledge
+statement: On EEG and spike neuroscience classification benchmarks, a
+  multi-agent LLM pipeline with planning, code generation and closed-loop
+  retry does not by itself beat a single-shot LLM coding agent; the measured
+  gain comes from making domain-specific pre-trained neural models addressable
+  through one interface and choosing among them per dataset.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Three public datasets (Alzheimer's EEG, Parkinson's EEG,
+  working-memory spikes), nine frozen pre-trained neuroscience models used as
+  feature extractors, GPT-5.2 agents, 8 seeds per task.
+technique: ""
+proposed_technique: Expose domain pre-trained models as one tool API and pick per dataset profile
+technique_summary: Wraps heterogeneous domain pre-trained models as stateless
+  feature-extraction endpoints with declarative input specs, and has a planner
+  rank candidates from the dataset's modality, channel count, sampling rate
+  and class balance before code is generated.
+technique_kind: tooling
+technique_validated_by: Primary metric (macro F1 or balanced accuracy) over 8
+  trials against general agents, scientific agents and two single-shot LLM
+  coding baselines; plus a 'Vanilla' arm (same architecture, pre-trained
+  models removed), whose initial round scored below Codex on AD (49.80 vs
+  51.01) and PD (64.52 vs 65.52), and a held-out fixed-model comparison on WM
+  (POYO-1 +6.82 pp over handcrafted features, better on 7 of 8 seeds).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An orchestration-only arm (no domain pre-trained models in the tool
+  registry) matching or beating single-shot LLM coding agents on the same
+  benchmarks and seeds, or the per-dataset selection giving no gain over
+  always using one fixed pre-trained model.
+evidence_note: Measured on three datasets, one session/cohort each, 8 seeds,
+  with an explicit model-free Vanilla ablation and a held-out fixed-model
+  comparison that switches off queue search and retry. The
+  per-dataset-selection benefit is argued from across-task variation in
+  pre-trained gain (+13.34 pp AD, +0.68 pp PD) rather than tested against a
+  fixed-best-model control. One benchmark (ds004504) was a downstream
+  benchmark for one included checkpoint. Single dataset per scenario, as the
+  authors note.
+confidence: medium

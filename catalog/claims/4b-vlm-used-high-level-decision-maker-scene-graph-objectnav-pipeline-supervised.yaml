@@ -1,0 +1,39 @@
+id: 4b-vlm-used-high-level-decision-maker-scene-graph-objectnav-pipeline-supervised
+ref: CLM-0537
+capability: embodied-control
+technique: distill-navigation-reasoning-then-rl-brevity-reward
+statement: >-
+  For a 4B VLM used as the high-level decision-maker in a scene-graph
+  ObjectNav pipeline, supervised distillation on a few hundred
+  frontier-model reasoning traces installs the navigation skill but leaves
+  outputs verbose, and a following closed-loop GRPO stage with an explicit
+  output-length reward cuts tokens per query by about 72% and per-episode
+  latency by about 72% while success rate does not fall (47% to 49% on a
+  100-episode HM3D OVON subset).
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen3.5-4B student in a modular scene-graph pipeline with a separate PointGoal planner, evaluated under a privileged high-level action space on HM3D OVON; latency measured on Jetso"
+sources:
+  - source: arxiv-2606-27871
+    stance: supports
+    note: >-
+      Validated by: Ablation table on a 100-episode HM3D OVON val_unseen
+      subset: base 21% SR, SFT-Claude 47% SR at 535 tokens/query, SFT+RL 49%
+      SR at 149 tokens/query; per-episode runtime on Jetson 305.2s to 86.0s,
+      and 52.5s with IQ4-XS quantization. Zero-shot prompt-based brevity
+      alternatives reported as either saving no tokens or degrading
+      navigation.. Measured, single paper, one backbone and one benchmark
+      subset of 100 episodes; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-28
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Running the same
+  brevity-rewarded RL stage on an SFT checkpoint and finding success rate
+  drops materially, or finding a prompt-only instruction that achieves
+  comparable token reduction at equal success rate.
+submitted_by: agent:claude-opus-5@Russ-Miller

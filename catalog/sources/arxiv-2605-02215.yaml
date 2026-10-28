@@ -6,15 +6,54 @@ year: 2026
 date: 2026-05-04
 arxiv_id: "2605.02215"
 url: https://arxiv.org/abs/2605.02215
-tags: [ingested]
-summary: >-
-  Recent Large Language Models (LLMs) have shown strong performance on
+tags:
+  - ingested
+summary: Recent Large Language Models (LLMs) have shown strong performance on
   automated program repair across standard benchmarks. However, these
   benchmarks evaluate models on a single canonical form of buggy code and do
   not reflect the syntactic variations commonly observed in real-world
-  software, leaving robustness largely unexamined. In this work, we
-  construct HEJ-Robust, a robustness benchmark built from HumanEval-Java-Bug
-  using eight semantics-preserving code transformations, resulting in 1,450
-  transformed instances. We evaluate five fine-tuned LLMs on this benchmark
-  and show that model performanc
+  software, leaving robustness largely unexamined. In this work, we construct
+  HEJ-Robust, a robustness benchmark built from HumanEval-Java-Bug using eight
+  semantics-preserving code transformations, resulting in 1,450 transformed
+  instances. We evaluate five fine-tuned LLMs on this benchmark and show that
+  model performanc
 ingested_at: 2026-09-19
+brief: >-
+  Renaming a single local variable in a buggy Java function cuts fine-tuned
+  repair models' Pass@10 roughly in half, while CodeBLEU barely moves.
+
+
+  HEJ-Robust applies 8 semantics-preserving transformations to
+  HumanEval-Java-Bug (164 Java programs with injected bugs, executable tests,
+  annotated buggy lines), yielding 1,450 transformed instances.
+  Transformations include local variable, method and parameter renaming, log
+  insertion, try-catch insertion, boolean exchange, loop exchange and
+  condition reordering. 5 fine-tuned models were evaluated: PLBART base/large
+  and CodeT5 small/base/large, 10 patches per bug, Pass@10.
+
+
+  Local variable renaming (100 bugs) dropped Pass@10 by 50.5%–57.31% across
+  all 5 models. Try-catch insertion (114 bugs) dropped 10.4%–42.87%; condition
+  reordering (603 bugs) 7.05%–13.69%; method renaming 3.11%–8.03%. Parameter
+  renaming produced small gains for plbart_base (4.65%) and plbart_large
+  (3.23%). CodeBLEU stayed near-constant throughout. Larger models often
+  degraded more than smaller ones.
+
+
+  Measured, not argued, with each transformed instance matched against its
+  original and buggy lines manually re-annotated (>10% independently verified
+  by a second author). Instances where the transformation touched the buggy
+  line were removed. Boolean exchange is reported but excluded from claims:
+  only 7 instances.
+
+
+  Only 2 model families, both fine-tuned seq2seq models, on function-level
+  synthetic bugs. Instruction-tuned and agent-based LLMs and project-level
+  bugs were not tested.
+
+
+  If you report APR robustness with CodeBLEU, stop; it misses functional
+  degradation entirely.
+brief_generated_at: 2026-10-28
+brief_model: claude-opus-5
+brief_source: full-text

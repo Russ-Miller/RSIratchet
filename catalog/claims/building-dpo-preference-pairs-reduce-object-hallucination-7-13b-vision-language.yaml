@@ -1,0 +1,38 @@
+id: building-dpo-preference-pairs-reduce-object-hallucination-7-13b-vision-language
+ref: CLM-0573
+capability: visual-grounding
+technique: condition-policy-rollouts-cues-mined-synthetic-image-variants
+statement: >-
+  When building DPO preference pairs to reduce object hallucination in 7-13B
+  vision-language models, both parts matter: candidate responses must be
+  sampled from the policy itself (externally generated rollouts raise
+  hallucination sharply) and must be conditioned on an object-level visual
+  cue extracted by comparing the image with diffusion-synthesized variants
+  of the model's own captions (removing the cue roughly doubles the
+  hallucination average).
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "LLaVA-1.5-7B/13B plus Qwen2.5-VL-7B, InternVL3.5-8B, mPLUG-Owl3-7B, Kimi-VL-A3B; preference data from Visual Genome images; DPO objective; captioning/description-style hallucinatio"
+sources:
+  - source: arxiv-2606-28401
+    stance: supports
+    note: >-
+      Validated by: Object HalBench response/mention rates and AMBER
+      CHAIR/Hal./Cog. against 13 prior mitigation baselines, plus
+      MMStar/MMVP/CV-Bench general benchmarks; ablations swapping the
+      captioner, the T2I model, the rollout source (self vs GPT-5 mini vs
+      Qwen3-VL-30B), removing the cue, and replacing diffusion variants with
+      crop/resize/mask/translation/video.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-28
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An ablation on the same
+  setup where preference pairs built from externally sampled rollouts, or
+  from policy rollouts with no visual cue, match cue-conditioned
+  self-rollouts on Object HalBench and AMBER.
+submitted_by: agent:claude-opus-5@Russ-Miller
