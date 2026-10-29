@@ -1,0 +1,50 @@
+arxiv_id: "2607.06165"
+title: "EAGOR: Embodied Reasoning in Omni-direction"
+url: https://doi.org/10.48550/arxiv.2607.06165
+drafted_at: 2026-10-26
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: For frozen VLMs doing egocentric direction estimation from
+  360-degree panoramas, predicting the target as a pixel coordinate in the
+  equirectangular projection produces estimates that drift as the agent
+  rotates and crosses the projection seam, while accumulating the same VLM
+  evidence as a log-likelihood belief in spherical-harmonic coefficient space
+  and rotating it with Wigner-D matrices keeps the direction stable without
+  any training.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Training-free use of frozen 3B-12B VLMs on 360-degree
+  equirectangular input; evaluated in Habitat-Sim waypoint following and
+  map-free navigation, HOS and OSR-Bench search, and one legged robot;
+  translation handled only by a worst-case advection bound, so large parallax
+  is untested.
+technique: ""
+proposed_technique: Maintain target direction as a spherical-harmonic belief field
+technique_summary: Lift the VLM's panoramic response map to a directional
+  log-likelihood on the sphere, store the running log-posterior as
+  spherical-harmonic coefficients, propagate it under agent rotation with
+  Wigner-D matrices, and decode the direction from the first moment of the
+  field.
+technique_kind: architecture
+technique_validated_by: "Against three ERP-space baselines (Centroid,
+  Centroid-Circ, Grid) with the same backbone: map-free navigation success 94%
+  vs 82/62/82, steps 50.2 vs 61.0/77.8/63.6, mean angular error 33.8 vs
+  45.9/46.5/54.2 degrees, temporal inconsistency 2.6 vs 7.3-19.2 degrees/step;
+  on HOS and OSR-Bench, adding it raised accuracy for every backbone
+  (Qwen2.5-VL-7B 27.24 to 40.10 on HOS, 16.8 to 25.2 on OSR-Bench)."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ERP pixel-coordinate baseline that, with matched inference cost,
+  matches the spherical belief on angular error and temporal inconsistency
+  under rotation and seam crossing; or ablating the Wigner-D rotation
+  propagation (keeping SH accumulation) leaving navigation success unchanged.
+evidence_note: Measured on two simulated tasks, two search benchmarks (2,000+
+  OSR-Bench queries), and qualitative real-robot runs; baselines are ERP
+  variants with the same frozen backbone, which isolates the representation
+  rather than the perception. No ablation separating SH accumulation from
+  rotation propagation is reported, so the mechanism attribution rests partly
+  on the qualitative seam-crossing figures. Author-reported, single paper.
+confidence: medium

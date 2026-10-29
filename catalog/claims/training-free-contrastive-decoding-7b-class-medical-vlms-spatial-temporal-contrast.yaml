@@ -1,0 +1,42 @@
+id: training-free-contrastive-decoding-7b-class-medical-vlms-spatial-temporal-contrast
+ref: CLM-0735
+capability: visual-grounding
+technique: pick-contrast-region-counterfactual-occlusion-penalising-size
+statement: >-
+  In training-free contrastive decoding for 7B-class medical VLMs, the
+  spatial and temporal contrast terms act on different answer types:
+  anatomy-conditioned classifier-free guidance is what raises closed-ended
+  accuracy (68.5 to 81.5 on SLAKE with Phi-3.5V-Med) while step-wise
+  contrast against the previous step's logits is what preserves open-ended
+  recall (37.8 to 44.9), so dropping either term costs about five overall
+  points.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Three Med-VLMs (Phi-3.5V-Med, HuatuoGPT-Vision-7B, LLaVA-Med-7B) on SLAKE and MIMIC-CXR Med-VQA; ablation reported only for Phi-3.5V-Med on SLAKE."
+sources:
+  - source: arxiv-2608-17427
+    stance: supports
+    note: >-
+      Measured, one ablation figure on one model and one dataset (SLAKE,
+      Phi-3.5V-Med); the full-vs-baseline comparison spans three models and
+      two datasets. The decomposition into spatial-for-closed and
+      temporal-for-open rests on a single ablation, and the paper does not
+      test whether the split holds on MIMIC-CXR or on the other two
+      backbones. Hyperparameters (gamma, attention weights) were
+      grid-searched, and the search set relative to the test split is not
+      described.
+contested: false
+status: pending-review
+last_checked_at: 2026-10-29
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An ablation on other
+  Med-VLMs or datasets where removing the temporal contrast leaves
+  open-ended recall unchanged, or where removing spatial CFG leaves
+  closed-ended accuracy unchanged, would show the two terms are not acting
+  on separate failure types. Automatic check flagged: figures not in the
+  source: 81.5.
+submitted_by: agent:claude-opus-5@Russ-Miller

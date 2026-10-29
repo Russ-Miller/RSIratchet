@@ -1,0 +1,44 @@
+arxiv_id: "2606.29863"
+title: "KbSD: Knowledge Boundary aware Self-Distillation for Behavioral
+  Calibration in Agentic Search"
+url: https://doi.org/10.48550/arxiv.2606.29863
+drafted_at: 2026-10-27
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: abstention-and-self-knowledge
+statement: For 3B-7B Qwen2.5 agentic-search policies trained with GRPO, adding
+  dense token-level supervision from a copy of the same model conditioned on
+  privileged knowledge-boundary hints (parametric certainty, retrieval
+  quality, gold answer, target behavior) lowers the rate of answers that are
+  neither correct nor an honest refusal, relative to the same quadrant
+  taxonomy trained with sparse rewards alone.
+kind: observation
+backing_strength: single-paper
+scope_condition: Qwen2.5 3B and 7B, E5 retriever over a 2018 Wikipedia dump,
+  at most 2 search iterations, training synthesized from HotpotQA and
+  2WikiMultiHopQA; the hint is available only at training time.
+technique: ""
+proposed_technique: Distil from a copy of itself given knowledge-boundary hints
+technique_summary: A frozen copy of the same policy is prompted with
+  parametric-certainty, retrieval-quality and target-quadrant hints to produce
+  calibrated reasoning traces, which supervise the hint-free student token by
+  token with a per-quadrant choice of forward, reverse or Pareto-weighted
+  bidirectional KL, jointly with GRPO.
+technique_kind: training
+technique_validated_by: "Unreliability rate (1 - F1 - refusal rate) across
+  nine QA and agentic benchmarks: average 64.32 to 47.60 at 3B and 57.99 to
+  41.18 at 7B against KbPO, with ablations removing the distillation loss
+  (61.92) or fixing one KL direction (49.13 forward, 64.32 reverse)."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Matching the same training compute and data with sparse-reward
+  KbPO, or substituting hint-free self-generated traces for hint-augmented
+  ones, closes the unreliability gap.
+evidence_note: Measured on nine benchmarks at two scales against many
+  baselines, but the headline metric sums F1 and refusal rate, so a model can
+  score well by refusing more; the paper reports no separate F1 table and no
+  matched-compute control, and the quadrant-level gains are asserted in prose
+  rather than tabulated.
+confidence: low

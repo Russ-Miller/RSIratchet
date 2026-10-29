@@ -1,0 +1,39 @@
+id: generating-java-bdd-glue-code-binds-natural-language-step-project
+ref: CLM-0620
+capability: code-generation
+technique: interpret-step-then-retrieve-bdd-project-context
+statement: >-
+  For generating Java BDD glue code that binds a natural-language step to
+  project code, a staged pipeline that first interprets the step's intent
+  within its scenario and then retrieves both similar existing glue code and
+  project-codebase context raises API F1 and CodeBLEU well above few-shot
+  prompting with in-project examples, and ablations show the
+  behavior-interpretation and project-code-retrieval stages each contribute.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "1,307 step-glue-code pairs from eight open-source Java BDD projects, all components run on GPT-5 mini; no execution-based oracle, so quality is measured by API overlap, similarity "
+sources:
+  - source: arxiv-2607-19703
+    stance: supports
+    note: >-
+      Validated by: API precision/recall/F1 against ground-truth glue code
+      (0.660 F1 vs 0.416 few-shot, 0.284 plain prompting),
+      CodeBLEU/METEOR/ROUGE-L (0.641/0.655/0.614 vs 0.446/0.433/0.396), and
+      a reference-aware LLM judge finding 46.1% directly usable; ablations
+      removing each stage.. Measured on 1,307 real pairs across eight
+      projects against two prompting baselines under matched model and
+      settings, with leakage controls. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-29
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Matching the pipeline's
+  API F1 and judged usability by simply putting the enclosing scenario plus
+  retrieved project files into a single prompt, with no separate
+  interpretation or retrieval agents, would show the staged decomposition is
+  not what produces the gain.
+submitted_by: agent:claude-opus-5@Russ-Miller

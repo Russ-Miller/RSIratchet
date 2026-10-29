@@ -1,0 +1,40 @@
+id: frozen-instruct-llms-vlms-deciding-whether-answer-directly-ask
+ref: CLM-0614
+capability: abstention-and-self-knowledge
+technique: read-control-decisions-off-hidden-states-output
+statement: >-
+  For frozen instruct LLMs and VLMs deciding whether to answer directly, ask
+  for clarification, call a tool, or abstain, a lightweight head reading the
+  hidden-state trace of the model's own completion picks the correct action
+  more often than the model's stated action does (on When2Call, F1 37.3 to
+  49.0 and accuracy 52.7 to 65.1 on Qwen-VL-2B), so the latent trajectory
+  carries resolution information the surface response does not express.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Heads trained on hidden-state traces from the same frozen backbone they are deployed on; shown on six 2B-4B backbones across Qwen3-VL, Qwen3.5 and Gemma on the When2Call benchmark,"
+sources:
+  - source: arxiv-2607-14277
+    stance: supports
+    note: >-
+      Validated by: When2Call F1/accuracy against the backbone's own native
+      action choice and against full-LLM When2Call SFT baselines; TriviaQA
+      task score, tool-call precision and missed-required web calls against
+      the backbone's native search behaviour; routed small-to-large
+      execution scored on AndroidWorld, CharXiv, MathVerse, MathVista,
+      ScreenSpot-Pro, SimpleVQA and MMLU-Pro with estimated paid API cost
+      against always-large and always-small baselines; prefix-time
+      ROC-AUC/AUPR/ECE ablations; compared against a prompted
+      self-abstention baseline and token-level confidence.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-29
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A head trained on hidden
+  states of the same frozen backbone matches or underperforms the backbone's
+  own stated resolution choice, or its advantage disappears once the
+  backbone is simply prompted to pick among the four actions explicitly.
+submitted_by: agent:claude-opus-5@Russ-Miller

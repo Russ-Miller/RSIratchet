@@ -1,0 +1,40 @@
+id: selective-prediction-thresholds-calibrated-once-over-whole-calibration-set
+ref: CLM-0710
+capability: abstention-and-self-knowledge
+technique: calibrate-one-abstention-threshold-per-node-group-hierarchy
+statement: >-
+  When selective prediction thresholds are calibrated once over a whole
+  calibration set, the resulting marginal risk guarantee does not hold per
+  subgroup: under a moderate shift toward harder inputs at test time, global
+  conformal risk control exceeded the per-group error budget in 32-47% of
+  bootstrap trials for 4-8B instruct models on multiple-choice QA, while
+  calibrating a separate threshold per difficulty group removed the
+  violations.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Multiple-choice QA (ARC Challenge) with selected-option NLL as the uncertainty score, three 4-8B instruct models, alpha=0.10, delta=0.05, 500 bootstrap trials; holds under both end"
+sources:
+  - source: arxiv-2607-24562
+    stance: supports
+    note: >-
+      Validated by: Measured on ARC Challenge over 500 bootstrap trials
+      against always-answer, fixed-threshold, global CRC and flat groupwise
+      CRC baselines: violation rate 0.000 and worst-group excess risk 0 for
+      Qwen3-4B and Llama-3.1-8B (vs 9-11% for global CRC), at a
+      participation cost of 22.0-37.1 percentage points; ablation shows
+      removing the difficulty level returns violations to 11%.. Measured on
+      two benchmarks and three 4-8B models, 500 bootstrap trials with 50/50
+      calibration/test resampling. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-29
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A setup where global
+  CRC's per-group violation rate stays at or below delta under comparable
+  group-composition shift, or where per-group thresholds give no reduction
+  in violations relative to a single global threshold.
+submitted_by: agent:claude-opus-5@Russ-Miller

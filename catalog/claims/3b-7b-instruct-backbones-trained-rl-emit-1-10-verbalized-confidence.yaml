@@ -1,0 +1,38 @@
+id: 3b-7b-instruct-backbones-trained-rl-emit-1-10-verbalized-confidence
+ref: CLM-0530
+capability: abstention-and-self-knowledge
+technique: add-reference-accuracy-reward-term-calibration-rl
+statement: >-
+  For 3B-7B instruct backbones trained with RL to emit a 1-10 verbalized
+  confidence on math, science and logic reasoning, adding to the correctness
+  reward both a threshold-based calibration term and a per-question
+  reference-accuracy term (derived from how many of 10 pre-training-time
+  samples the base model got right) lowers expected calibration error
+  without the accuracy loss that Brier-score-only calibration rewards incur,
+  while remaining less well calibrated than those Brier-only methods.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Two backbones (Qwen2.5VL-7B-Instruct, Llama-3.2-3B-Instruct), training on math/science/logic datasets, evaluated on AGIEval, MMLU, MMMU, MathVista, LogicVista plus an in-domain spl"
+sources:
+  - source: arxiv-2607-01612
+    stance: supports
+    note: >-
+      Validated by: Accuracy, AUROC and binned ECE on eight text and
+      multimodal benchmarks against Base, Self-Consistency, SFT+Ref, RLVR,
+      SaySelf and RLCR, averaged over three seeds; ablation removing only
+      the reference term (C3RL w/o Ref) showed consistently worse ECE at
+      similar accuracy.. Measured, three seeds, max reported standard
+      deviation about 1 point. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-29
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Running the same reward
+  with the reference-accuracy term removed, or replacing it with a
+  random-sign term of equal magnitude, yields the same or better ECE at
+  matched accuracy across these backbones and benchmarks.
+submitted_by: agent:claude-opus-5@Russ-Miller

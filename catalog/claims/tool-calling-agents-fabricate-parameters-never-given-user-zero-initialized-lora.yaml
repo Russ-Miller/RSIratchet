@@ -1,0 +1,46 @@
+id: tool-calling-agents-fabricate-parameters-never-given-user-zero-initialized-lora
+ref: CLM-0730
+capability: hallucination
+technique: lora-latent-critic-verbalizes-which-parameter-ungrounded
+statement: >-
+  For tool-calling agents that fabricate parameters never given by the user,
+  a zero-initialized LoRA adapter run concurrently with the frozen base
+  model and trained only to emit a localized verdict at an appended trigger
+  token detects these ungrounded parameters better than sampling-based
+  entropy methods, passive linear probes, and an equivalent-scale fine-tuned
+  external judge, and naming the specific hallucinated parameter back to the
+  agent recovers more of the task than a generic block.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Structured tool-calling with parameter-level grounding labels; Qwen3-4B and Llama-xLAM-2-8B; simulated-user trajectories plus ToolAlpaca out-of-distribution; detection quality is b"
+sources:
+  - source: arxiv-2608-10430
+    stance: supports
+    note: >-
+      Measured on two backbones with bootstrap intervals and human-verified
+      evaluation labels; training labels come from a simulated user's
+      programmatic mask (89% agreement with human check), evaluation sets
+      verified by a single annotator. Baselines are matched on data and LoRA
+      configuration for the judge, but probes and entropy methods were tuned
+      only on the binary ok-vs-ungrounded subset, so the comparison is not
+      fully like-for-like. The OOD advantage over the judge did not
+      replicate on xLAM, and absolute trajectory success stays low (~2%
+      OOD).
+contested: false
+status: pending-review
+last_checked_at: 2026-10-29
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A replication where the
+  concurrent LoRA critic fails to beat an equivalent-scale external judge
+  and a passive probe on ungrounded-parameter AUROC, or where injecting the
+  specific parameter name gives no better recovery rate than a generic
+  block. Drafted stance toward
+  agentic-tool-calls-where-parameter-fabricated-rather-than-grounded:
+  supports -- It reproduces the finding that entropy and SEP are near-chance
+  on fabricated tool parameters while hidden states carry a separable
+  grounding signal, and shows that signal can be read out and localized.
+submitted_by: agent:claude-opus-5@Russ-Miller

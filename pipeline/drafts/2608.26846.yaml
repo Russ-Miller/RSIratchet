@@ -1,0 +1,48 @@
+arxiv_id: "2608.26846"
+title: Evaluating Confidence-Gated Retrieval with Matched Trajectory Replay
+url: https://doi.org/10.48550/arxiv.2608.26846
+drafted_at: 2026-10-20
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: abstention-and-self-knowledge
+statement: In confidence-gated retrieval agents that commit, retrieve or defer
+  against a fixed numerical confidence threshold, applying a post-hoc
+  calibration map to the same confidence signal raises accuracy among
+  committed answers (15.8-41.0 points across three models on HotpotQA and
+  MuSiQue) purely by moving the controller to a more selective operating
+  point, so coverage falls and retrieval cost rises and overall accuracy can
+  go either way (up to +15 points on HotpotQA, down to -17 on MuSiQue).
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Multi-hop QA (HotpotQA, MuSiQue) with fixed
+  benchmark-grounded evidence plans, three retrieval depths, verbalized
+  confidence, isotonic calibration fitted on depth-zero states, thresholds
+  0.3/0.7; three models (Mistral Small 4, GPT-OSS-120B, Qwen3-235B).
+technique: ""
+proposed_technique: Replay matched trajectories to compare confidence-to-action maps
+technique_summary: Collect each question's answer and confidence at every
+  retrieval depth once, then replay the identical stored states through
+  controllers that differ only in the confidence score supplied, so action
+  differences are attributable to the score alone.
+technique_kind: process
+technique_validated_by: Used to compare raw vs isotonic-calibrated verbalized
+  confidence under an identical policy, budget and cost model on 2,457 test
+  episodes across three models and two datasets, reporting overall accuracy,
+  committed accuracy, coverage and mean retrieval actions jointly; no external
+  baseline protocol compared.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched-trajectory replay where calibration raises committed
+  accuracy while leaving coverage and retrieval cost essentially unchanged, or
+  where overall accuracy improves consistently across datasets, would show the
+  effect is not merely an operating-point shift.
+evidence_note: Measured on 1,852 HotpotQA and 605 MuSiQue episodes, three
+  models, deterministic temperature-zero single generations, LLM judge for
+  correctness with no human validation. The replay design isolates the score
+  change cleanly but uses benchmark-constructed evidence plans rather than a
+  live retriever, so external validity to deployed RAG is untested. Isotonic
+  regression is order-preserving, which supports the authors' reading that
+  ranking did not improve.
+confidence: medium

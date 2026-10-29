@@ -1,0 +1,46 @@
+arxiv_id: "2607.18006"
+title: "MADA-RL: Multi-Agent Debate-Aware Reinforcement Learning for
+  Parameter-Efficient Reasoning in Compact Models"
+url: https://doi.org/10.48550/arxiv.2607.18006
+drafted_at: 2026-10-26
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: "For compact (1.5B) math-reasoning models composed into a
+  generator-critic debate, nearly all the measured accuracy comes from the
+  debate structure itself — rounds and ensemble size — rather than from the
+  role-specialized RL objective: removing the second round costs 5.2 points
+  and shrinking to one generator-critic pair costs 2.6, while removing the
+  counterfactual critic advantage costs only 0.8 points (p=0.095) and using
+  identical instead of independently trained checkpoints costs 0.6 (p=0.166)."
+kind: observation
+backing_strength: single-paper
+scope_condition: DeepSeek-R1-Distill-Qwen-1.5B with LoRA adapters, three
+  generators and three critics, two rounds, five math benchmarks, ten seeds;
+  no baseline that spends the same inference tokens on a single model.
+technique: ""
+proposed_technique: Baseline the critic's advantage on generator ensemble accuracy
+technique_summary: Trains critic LoRA adapters with GRPO where the advantage
+  is the critic's reward minus twice the per-instance average accuracy of the
+  generator ensemble, so critics are rewarded for being right when generators
+  are wrong.
+technique_kind: training
+technique_validated_by: Average accuracy over five math benchmarks (41.9 vs
+  39.9 base, p<0.001) and an ablation replacing the counterfactual term with
+  standard GRPO advantage (41.1, p=0.095); plus a critic improvement rate of
+  19.6%, the highest of ten models placed in the critic role.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation at higher seed count, or on other compact backbones,
+  showing the counterfactual advantage contributes a significant accuracy gain
+  comparable to or larger than the round-count and ensemble-size effects.
+evidence_note: Measured with Welch t-tests on per-seed averages across five
+  benchmarks, ten seeds, one 1.5B backbone. The ablations isolate rounds,
+  agent count, checkpoint diversity and the advantage term separately.
+  Underpowered for the two small effects by the authors' own admission, and no
+  matched-inference-budget baseline (self-consistency, LLM-as-judge) is run,
+  so the debate gain itself is not separated from simply spending ~34k tokens
+  per question.
+confidence: medium

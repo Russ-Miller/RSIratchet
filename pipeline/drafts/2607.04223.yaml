@@ -1,0 +1,55 @@
+arxiv_id: "2607.04223"
+title: Detecting Hallucinations in Retrieval-Augmented Generation through
+  Grounding-Aware Sensitivity by Perturbation (GASP)
+url: https://doi.org/10.48550/arxiv.2607.04223
+drafted_at: 2026-10-28
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: For detecting which sentence of a RAG answer is unsupported,
+  re-scoring the fixed answer with the retrieved context removed and flagging
+  sentences whose likelihood barely changes ranks unsupported sentences above
+  grounded ones better than perplexity, length, chunk-level NLI and context
+  attribution, but stays below a full-context trained fact-checker and a
+  per-sentence LLM judge, and the advantage shrinks on short-answer QA where
+  the answer can come from parametric knowledge.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Three English benchmarks (RAGTruth, TofuEval-MeetingBank,
+  RAGBench), six instruction-tuned scorers 1.5B-14B, source-level train/test
+  splits, span-level AUC; strongest on summarization and data-to-text, weakest
+  on short-answer QA.
+technique: ""
+proposed_technique: Score each sentence by how much its likelihood drops when
+  the context is removed
+technique_summary: Re-scores a fixed answer under the full context, under no
+  context, and under each retrieved chunk removed, then flags sentences whose
+  per-sentence log-likelihood and predictive distribution barely change,
+  returning the chunk with the largest drop as a candidate supporting passage.
+technique_kind: decoding
+technique_validated_by: "Span-level AUC under a source-level 60/40 split with
+  2000-resample paired bootstrap: training-free two-pass gap 0.717-0.745 on
+  RAGTruth across six scorers vs 0.597-0.666 for perplexity and ~0.55 for
+  length; with perplexity+length features 0.773 RAGTruth, 0.711 TofuEval,
+  0.634 RAGBench, against chunk-NLI 0.721, ContextCite 0.736, AlignScore
+  0.791, MiniCheck full-context 0.831, LLM judge 0.853; sentence-level beat
+  answer-level scoring by +0.033 to +0.071 on all three benchmarks; returned
+  chunk judged fully or partly supporting in 82.5% of 120 human-graded
+  grounded sentences (Fleiss kappa 0.86)."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On a benchmark with human span-level grounding labels and a
+  source-level split, the context-removal likelihood gap scored per sentence
+  fails to beat perplexity, or fails to beat its own answer-level form, or
+  matches a full-context trained verifier such as MiniCheck on span AUC.
+evidence_note: "Measured, not argued: 600 RAGTruth responses (4,191
+  sentences), 884 TofuEval summaries, 598 RAGBench responses, six scorers
+  across four families, five verifier baselines on identical inputs,
+  source-level bootstrap intervals. Single author, single paper; English only;
+  absolute AUC moderate (0.63-0.77); RAGBench results carry a 23.4% truncation
+  caveat whose effect was not isolated. Feature ablation shows the two-pass
+  no-context gap carries most of the signal, so the mechanism claim is
+  supported internally."
+confidence: medium

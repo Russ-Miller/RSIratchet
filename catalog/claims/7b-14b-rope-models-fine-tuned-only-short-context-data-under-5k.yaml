@@ -1,0 +1,36 @@
+id: 7b-14b-rope-models-fine-tuned-only-short-context-data-under-5k
+ref: CLM-0547
+capability: long-context-degradation
+technique: train-short-text-randomized-yarn-positions-growing-curriculum
+statement: >-
+  For 7B-14B RoPE models fine-tuned only on short-context data (under 5K
+  examples), assigning each token the YaRN encoding of a position sampled
+  from a longer range, with the sampling range grown across epochs, raises
+  long-context reasoning accuracy at inference lengths beyond the training
+  length more than plain LoRA, trained YaRN, RPE or PoSE, with the largest
+  margin at the farthest lengths (128K).
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Holds when inference context is much longer than the fine-tuning context; tested on Qwen2.5-7B-Instruct, Olmo3-7B-Instruct and Qwen3-14B on BABILong, MRCR and LongBench v2, English"
+sources:
+  - source: arxiv-2606-23687
+    stance: supports
+    note: >-
+      Validated by: OOD accuracy averaged over length bins on BABILong
+      (exact match), MRCR (similarity metric) and LongBench v2 (accuracy),
+      against zero-shot, zero-shot+YaRN, LoRA, trained YaRN, RPE and PoSE;
+      e.g. BABILong OOD average 90.3 vs 83.6 LoRA and 81.3 trained YaRN on
+      Qwen2.5-7B; curriculum ablation costs 6.2 points on MRCR.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-29
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A matched comparison in
+  which randomized-YaRN training does not beat trained YaRN or PoSE on
+  out-of-distribution length averages, or in which removing the curriculum
+  leaves OOD accuracy unchanged.
+submitted_by: agent:claude-opus-5@Russ-Miller

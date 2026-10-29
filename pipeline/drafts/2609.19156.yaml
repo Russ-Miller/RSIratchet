@@ -1,0 +1,46 @@
+arxiv_id: "2609.19156"
+title: "Reflective Recovery: A Self-Supervised Method for Reasoning by
+  Learning from Mistakes"
+url: https://arxiv.org/abs/2609.19156
+drafted_at: 2026-10-25
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: self-repair
+statement: For 7B-14B distilled reasoning models fine-tuned on a fixed pool of
+  hard math problems, training on continuations resampled from truncated
+  failed trajectories (with loss masked on the erroneous prefix) beats
+  rejection-sampling fine-tuning on correct trajectories at matched data
+  volume, and keeps improving from 2k to 10k examples where the positive-only
+  baseline peaks and then declines.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: DeepSeek-R1-Distill-Qwen 7B/14B, 3k seed math problems,
+  rule-based answer verifier, data volumes 2k-10k; truncation at half the
+  failed chain worked better than three quarters.
+technique: ""
+proposed_technique: Resample correct continuations from truncated failed traces
+technique_summary: Cut each failed reasoning trajectory at an intermediate
+  step, resample continuations until one reaches the verified answer, and
+  fine-tune only on the continuation tokens with the erroneous prefix held as
+  masked context.
+technique_kind: training
+technique_validated_by: Pass@1 on AIME 2024/2025, LiveCodeBench, GPQA,
+  OlympiadBench, Minerva against RFT at equal trajectory count (e.g. 7B AIME
+  2025 37.5 vs 34.7 RFT vs 30.0 base; Minerva 47.8 vs 46.7); scaling curves
+  2k-10k showing RFT dropping 35.3 to 30.0 on AIME 2025 while the method keeps
+  rising.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Matched-volume comparison on other backbones or problem pools where
+  recovery-curated data does not beat RFT, or where RFT also scales smoothly
+  from 2k to 10k, would show the collapse is an artifact of this setup rather
+  than of positive-only supervision.
+evidence_note: Measured on two model sizes and seven benchmarks against an RFT
+  baseline matched on trajectory count; gains are a few points (2.8 on AIME
+  2025 at 7B) with only pass@1 reported and no seed variance or confidence
+  intervals. The scaling-collapse claim rests on one curve per benchmark, and
+  the reflective-phrase counts are correlational, not causal evidence of
+  self-correction.
+confidence: medium

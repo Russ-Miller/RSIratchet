@@ -1,0 +1,54 @@
+arxiv_id: "2608.07302"
+title: "Same Attention, Different Truths: Put Logit-Lens over Visual Attention
+  to Detect and Mitigate LVLM Object Hallucination"
+url: https://arxiv.org/abs/2608.07302
+drafted_at: 2026-10-24
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: >-
+  In 7-13B open vision-language models, object hallucination is not explained
+  by weak visual attention 
+
+  e hallucinated and real object tokens draw comparable attention to specific
+  image regions in mid-to-late layers; the separating signal is whether a
+  logit-lens decode of those attended visual tokens matches the generated
+  object word.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Open LVLMs with accessible attention and hidden states
+  (LLaVA-1.5 7B/13B, Shikra-7B, Qwen2-VL-7B); free-form image captioning on
+  COCO/AMBER; object-level hallucination only.
+technique: ""
+proposed_technique: Check logit-lens decode of attended image patches against the emitted word
+technique_summary: At each generated object token, average attention over
+  mid-to-late layers, decode the top-k attended image tokens through the
+  output head, and flag hallucination when no decoded token is semantically
+  similar to the emitted word; then either mask those patches or fuse their
+  visual logits into decoding.
+technique_kind: decoding
+technique_validated_by: "Detection on 500 COCO images with CHAIR labels: F1
+  0.7932 vs 0.6842 (SVAR), 0.6811 (InterConf), 0.6182 (Uncertainty Score).
+  Mitigation: lowest CHAIR_S/CHAIR_I on four LVLMs (e.g. 26.8/10.0 vs PAI
+  29.8/13.2 on LLaVA-1.5-7B) and lowest AMBER CHAIR/Hal while keeping Cover at
+  or above the greedy baseline."
+stance_on_existing: contests
+related_claim_id: 7-8b-multimodal-models-object-hallucination-during-visually-grounded-token
+stance_reason: That claim ties hallucination to a shift of the visual-language
+  information ratio inside attention heads, whereas this paper measures no
+  systematic difference in visual attention magnitude between real and
+  hallucinated object tokens and locates the failure in the semantics of the
+  attended region instead.
+falsifier: Measuring image-attention magnitude at object tokens in these
+  models and finding hallucinated tokens systematically attend less than real
+  ones, or finding logit-lens decodes of attended patches match hallucinated
+  words as often as real ones.
+evidence_note: Measured on 500 COCO images with LLaVA-1.5-7B for the attention
+  and logit-lens analysis, with masking interventions splitting hallucinations
+  roughly 2:1 into visual-uncertainty vs contextual-prior. Mitigation tested
+  on four models and two benchmarks against eight baselines. Coverage is
+  reported and does not drop, which addresses the usual say-less confound, but
+  the detection comparison is single-model and the attention-equality result
+  rests on one backbone.
+confidence: medium

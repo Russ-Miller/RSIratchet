@@ -1,0 +1,46 @@
+arxiv_id: "2608.30021"
+title: "Error Detection for PET/CT Radiology Reports: Domain-Specific vs Large
+  Language Models"
+url: https://doi.org/10.48550/arxiv.2608.30021
+drafted_at: 2026-10-22
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: error-detection
+statement: For detecting findings-conclusion inconsistencies in oncology
+  PET/CT radiology reports, a 15M-parameter BERT pre-trained on in-domain
+  reports reaches higher balanced accuracy and lower false-positive rate than
+  zero- or few-shot prompted 27B-70B open-weight LLMs, and LoRA fine-tuning
+  the 70B model only matches the small model rather than beating it.
+kind: observation
+backing_strength: single-paper
+scope_condition: Synthetic errors (laterality, site, severity, disease status,
+  whole-conclusion swap) inserted into the conclusion of 3,000 held-out real
+  PET/CT reports; domain model pre-trained on ~25k in-domain reports from the
+  same hospital.
+technique: ""
+proposed_technique: Pre-train a compact encoder on in-domain reports for consistency checking
+technique_summary: Train a small BERT from scratch on a hospital's own
+  radiology report corpus with masked language modelling plus a
+  findings-conclusion consistency objective, then fine-tune it to classify
+  synthetic reporting errors.
+technique_kind: training
+technique_validated_by: "Balanced accuracy on an 11,500-report synthetic
+  benchmark: BERT-6 94.4% / FPR 5.8% vs 84.0% for the best prompted LLM
+  (Llama-3.3-70B, prompt P7); LoRA-tuned Llama-3.3-70B 94.4%. Ablation shows
+  MLM pre-training supplies most of the gain (BERT-6 56.5% to 93.7%). Lexical
+  null models reach only 69.9% balanced accuracy, ruling out keyword
+  artefacts."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A prompted or lightly adapted frontier LLM matching the compact
+  in-domain model's balanced accuracy and false-positive rate on this or a
+  comparable PET/CT error benchmark, or the compact model failing to transfer
+  to naturally occurring errors or another hospital's reports.
+evidence_note: Measured on 11,500 held-out reports with synthetic errors, four
+  BERT sizes against three LLMs under 12 prompt variants, plus pre-training
+  ablation and lexical null baselines. Errors are synthetic and
+  conclusion-only; the only natural-error check is 7 reports, where the domain
+  model and Llama each caught 4. Single site, single modality.
+confidence: medium

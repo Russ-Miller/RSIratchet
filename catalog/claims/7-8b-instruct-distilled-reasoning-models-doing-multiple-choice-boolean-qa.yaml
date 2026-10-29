@@ -1,0 +1,41 @@
+id: 7-8b-instruct-distilled-reasoning-models-doing-multiple-choice-boolean-qa
+ref: CLM-0541
+capability: explanation-faithfulness
+technique: mask-answer-tokens-attending-instruction-tokens
+statement: >-
+  For 7-8B instruct and distilled reasoning models doing multiple-choice and
+  boolean QA, masking attention from answer tokens to instruction tokens at
+  inference raises perturbation-based CoT faithfulness (filler-token and
+  early-answering scores) far more than fine-tuning on counterfactual-CoT,
+  biased-instruction and empty-instruction data, which mainly moves the
+  causal-effect metrics instead.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Llama-3.1-8B, Qwen3-8B, DeepSeek-R1-Distill-Qwen-7B; ARC-Easy, ARC-Challenge, StrategyQA, LogiQA; LoRA fine-tuning; multiple-choice answer options kept visible under masking."
+sources:
+  - source: arxiv-2607-18820
+    stance: supports
+    note: >-
+      Validated by: Four faithfulness metrics (Filler Tokens, Early
+      Answering, CIE, CDE) and their geometric mean, against an untuned base
+      model and three fine-tuning baselines (DUc, FRODO, FoCus) on 500 test
+      questions per dataset; ablation separates the training-time and
+      inference-time halves; accuracy reported alongside.. Measured on 3
+      models x 4 datasets, 500 sampled test questions each; the ablation is
+      reported in full only for Llama-3.1-8B on the two ARC sets, where
+      ISE-only reaches G-mean 0.627/0.630 vs TCA-only 0.217/0.320 and full
+      CASE 0.646/0.650. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-29
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An ablation on further
+  models or datasets where the training-only variant matches or exceeds the
+  masking-only variant on filler-token and early-answering scores, or where
+  masking raises those scores without any real increase in answer dependence
+  on the chain (e.g. by degrading answers generally).
+submitted_by: agent:claude-opus-5@Russ-Miller

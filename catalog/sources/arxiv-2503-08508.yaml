@@ -31,3 +31,37 @@ notes: "Filed as a source on planning from the classifier's judgement that the
   success rates, e.g. 14.9% over ReAct on spatial semantic reasoning tasks. No
   claim has been drafted from it yet."
 ingested_at: 2026-09-23
+brief: >-
+  Letting a 1.5B model generate skill-function arguments itself, instead of
+  filling fixed skill templates, closes most of the gap to GPT-4 planners on
+  robot instructions whose meaning depends on the scene ("the largest block",
+  "the leftmost block").
+
+
+  LightPlanner fine-tunes Qwen2.5-1.5B-Instruct on LightPlan-40k, 40,000
+  single-step decision samples derived from 60 hand-annotated tasks expanded
+  to 6,000 by GPT-4, with 13 skill functions, hierarchical reasoning over
+  execution feedback/semantic parsing/parameter validity, and a memory module
+  replacing accumulated context. Evaluation is on a UR3 arm with wrist RGB-D,
+  30 tasks run 3 times each under varied lighting, chains of 2-8 steps.
+
+
+  On dynamic semantic reasoning tasks it reaches 100.0% SR short-term, 79.5%
+  medium (CoPAL/GPT-4: 71.4%) and 66.1% long-term (CAPE: 54.1%); on 10 unseen
+  8-step task categories 62.6% SR vs 53.8% for CoPAL and 42.0% for ReAct-3B.
+  Single-round latency stays within ±2 seconds and 3.9 GB VRAM on a Jetson
+  Xavier Orin at 10 words/s.
+
+
+  Baselines were retrained on the same dataset (ReAct-1.5B/3B, MLDT-7B), and
+  the ablation separates the 3 parts: removing dynamic skill control costs
+  7.5% SR, reasoning 5.8%, memory 5.0% plus 4 seconds. Trials are few (90),
+  the arena is 1 tabletop setup with 1 robot, and the authors note static
+  scenes only.
+
+
+  If you deploy planners on edge hardware, parameterized skill calls are the
+  lever worth copying.
+brief_generated_at: 2026-10-29
+brief_model: claude-opus-5
+brief_source: full-text

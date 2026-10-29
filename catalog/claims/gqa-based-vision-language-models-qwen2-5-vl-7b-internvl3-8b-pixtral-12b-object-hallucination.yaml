@@ -1,0 +1,39 @@
+id: gqa-based-vision-language-models-qwen2-5-vl-7b-internvl3-8b-pixtral-12b-object-hallucination
+ref: CLM-0621
+capability: visual-grounding
+technique: damp-dominant-query-key-product-modes-middle-layers
+statement: >-
+  In GQA-based vision-language models (Qwen2.5-VL-7B, InternVL3-8B,
+  Pixtral-12B), object hallucination in free-form captioning tracks the
+  dominant singular modes of the per-head query-key product in middle
+  layers, and specifically its symmetric (mutual content-similarity)
+  component: damping those modes lowers CHAIR_s while damping an equal
+  number of random modes, or the antisymmetric component, does not.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Grouped-query-attention VLMs, greedy decoding, long free-form COCO captions; effect sizes are small (average 4.0% relative CHAIR_s reduction) and absent on short-answer MCQ benchma"
+sources:
+  - source: arxiv-2606-20419
+    stance: supports
+    note: >-
+      Validated by: CHAIR_s/CHAIR_i on COCO 2014 val with paired-bootstrap
+      CIs, against the unedited baseline and a matched random-k mode control
+      at the same k; POPE, HallusionBench, MME and MMMU reported to check
+      capability retention; layer-locus, k and alpha sweeps on
+      Qwen2.5-VL-7B.. Measured on three models and six benchmarks, but the
+      headline effect is small (Qwen CHAIR_s 31.44 to 28.56; InternVL3 33.81
+      to 33.23; Pixtral 34.14 to 33.81) and the random control differences
+      are of similar order on two of three models; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-29
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Matched random-mode edits
+  at the same k and alpha reduce CHAIR_s as much as dominant-mode edits, or
+  antisymmetric-channel damping reduces hallucination comparably, on these
+  or further GQA VLMs.
+submitted_by: agent:claude-opus-5@Russ-Miller
