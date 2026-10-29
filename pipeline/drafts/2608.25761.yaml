@@ -1,0 +1,44 @@
+arxiv_id: "2608.25761"
+title: Beam Search, Self-Consistency, and the Limits of Inference-Time Scaling
+  for Grammar-Constrained Text-to-SQL in Small Language Models
+url: https://doi.org/10.48550/arxiv.2608.25761
+drafted_at: 2026-10-18
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: formal-query-synthesis
+statement: For grammar-constrained text-to-SQL decoding with small models
+  (Qwen2.5-Instruct 0.5B-7B on Spider), beam search is at least as accurate as
+  sample-and-vote at every matched compute budget of 1-8, and better in most,
+  reversing the usual unconstrained finding that sampling with voting beats
+  beam search.
+kind: observation
+backing_strength: single-paper
+scope_condition: One model family (Qwen2.5-Instruct, 4-bit), one benchmark
+  (Spider dev, n=1034), schema-aware CFG constraint, sample+vote at
+  temperature 0.7, single decoding run per configuration.
+technique: ""
+proposed_technique: Prefer beam search over sample-and-vote under grammar constraints
+technique_summary: When output is masked to a formal grammar, spend inference
+  budget on wider beams rather than on sampling several candidates and voting
+  on their execution results.
+technique_kind: decoding
+technique_validated_by: Execution accuracy on the full 1,034-example Spider
+  dev set at budgets 1, 2, 4, 8 for four model sizes; paired McNemar exact
+  tests on the 16 matched-budget cells — beam significantly better in 11,
+  significantly worse in 0, ties in 5.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On another model family, constraint type (JSON schema, tool-call
+  grammar), or benchmark, sample+vote at a matched budget beats beam search
+  under grammar-constrained decoding; or repeated seeds on Spider show beam's
+  advantage inside sampling noise.
+evidence_note: "Measured, not argued: one decoding run per cell, single seed
+  for sampling, paired McNemar on identical examples so the comparison is
+  properly paired. Confounded by the specific grammar, which the authors show
+  is incomplete (it breaks more predictions than it fixes at 3B and 7B), and
+  by a fixed temperature of 0.7 with no sweep. Authors note that on subsets of
+  the dev set the ordering reversed in favour of sample+vote, so the result
+  depends on full-set size."
+confidence: medium

@@ -1,0 +1,42 @@
+id: 7-8b-math-reasoning-models-learning-online-test-stream-no-labels
+ref: CLM-0542
+capability: harness-self-improvement
+technique: distill-each-solved-problem-into-retrievable-soft-prompt
+statement: >-
+  For 7-8B math-reasoning models learning online from a test stream with no
+  labels, storing past reasoning traces as text (raw ICL, self-reflected
+  strategy banks, KV reuse) gives inconsistent gains that help one dataset
+  and hurt another, while distilling each solved problem's test-time compute
+  into a tiny per-sample soft-prompt memory (~0.001% of parameters, 10 GRPO
+  steps on majority-vote rewards) that is retrieved and verifier-routed
+  against the zero-shot answer raises greedy pass@1 on MATH500, AMC23 and
+  AIME24 and transfers across datasets.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Llama-3.1-8B-Instruct and Qwen2.5-Math-7B on three math reasoning benchmarks; requires a process reward model as verifier and extra test-time compute per sample; no ground-truth la"
+sources:
+  - source: arxiv-2606-17803
+    stance: supports
+    note: >-
+      Validated by: Greedy pass@1 against zero-shot CoT, raw-trace ICL,
+      Reasoning Bank, LAG, and offline full-model GRPO/TTRL on MATH500,
+      AMC23, AIME24; e.g. Qwen AMC23 50 to 62.5, Llama MATH500 45 to 51.4,
+      while ICL baselines fell below zero-shot on several cells.. Measured
+      on two backbones and three benchmarks with multiple seeds on the small
+      sets; MATH500 training-free baselines for Qwen were incomplete, and
+      the compute-matched zero-shot-plus-verifier control is relegated to an
+      appendix, so part of the gain may come from the extra verified sample
+      rather than the memory itself.
+contested: false
+status: pending-review
+last_checked_at: 2026-10-29
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A controlled comparison
+  where text-trace memory with an equally strong verifier/router and matched
+  extra compute matches or beats the soft-prompt latent memories, or where
+  the latent memories fail to beat zero-shot on a new math stream.
+submitted_by: agent:claude-opus-5@Russ-Miller

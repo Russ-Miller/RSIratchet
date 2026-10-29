@@ -32,3 +32,42 @@ notes: "Filed as a source on fine-tuning-retention from the classifier's
   general skills alongside domain knowledge. No claim has been drafted from it
   yet."
 ingested_at: 2026-09-23
+brief: >-
+  Preventing catastrophic forgetting is not the same as being able to use a
+  general capability inside a domain task. Models fine-tuned on legal data
+  keep the surface form of general skills but fail to combine them with
+  injected domain knowledge.
+
+
+  The authors define General Capabilities Integration (GCI): train on one
+  legal task, test on tasks needing both that domain knowledge and a
+  pre-existing general skill. 3 task groups were built for Chinese law —
+  Article QA to Reasoning/Calculation, Article QA to Ethic/Contamination,
+  Legal IE to Event Summary/MRC — with data from CAIL, legal consulting sites,
+  court verdicts, and GPT-4 expansion of hand-written seeds. They also propose
+  ALoRA, a LoRA adapter with a multi-head attention module reading
+  previous-layer keys and values, plus a KL regularizer.
+
+
+  On Reasoning, 6 baselines reach 100 on "Chain" (complete reasoning chain
+  produced) while BLEU_R stays low — instruction-following is intact,
+  knowledge integration is not. DAS improves training-task scores but leaves
+  test tasks near the untuned chat model, and its Ethic Score_E is 2, same as
+  the general LLM. ALoRA reaches 47.94 Score_E and best averages of 19.50 and
+  20.73 on Reasoning/Calculation, beating the best baseline average by 0.87.
+
+
+  Evidence is measured against 10+ baselines including wise-ft, normalization,
+  MixTraining, DAS and MixDA*, with an ablation that matches parameters by
+  raising LoRA rank from 8 to 16 — that rank-matched control gains only about
+  0.7, so the attention module, not capacity, carries the effect. Margins are
+  small, scoring for Ethic and Contamination is GPT-4-generated, and only the
+  legal domain is tested; ALoRA also degrades on long-verdict Event Summary
+  when trained on domain data alone.
+
+
+  If you measure forgetting only on held-out general benchmarks, you are
+  likely overstating how usable those capabilities remain.
+brief_generated_at: 2026-10-29
+brief_model: claude-opus-5
+brief_source: full-text

@@ -1,0 +1,40 @@
+id: 8b-open-models-llama3-1-8b-qwen3-8b-supervised-fine-tuning-whether
+ref: CLM-0560
+capability: explanation-faithfulness
+technique: reward-agreement-between-factor-influence-factor-mention
+statement: >-
+  For 8B open models (Llama3.1-8B, Qwen3-8B), supervised fine-tuning on
+  whether an inserted prompt factor flipped the model's own decision teaches
+  detection without disclosure u2014 the fine-tuned model predicts influence
+  well yet still writes generic explanations omitting the factor u2014
+  whereas GRPO with a per-sample reward for agreement between influence and
+  mention raises influence-mention correlation (Phi-CCT) from near zero to
+  as high as 0.664 in-distribution and 0.691 on held-out datasets.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Two 8B models, single-word random insertions and appended user-bias hints, balanced influential/non-influential splits over e-SNLI, Social-IQA, ComVE, StrategyQA; influence labels "
+sources:
+  - source: arxiv-2607-21090
+    stance: supports
+    note: >-
+      Validated by: Dataset-level Phi-CCT correlation between influence and
+      mention on train, test and OOD splits, against the base model and an
+      SFT influence-detection baseline, with bootstrap CIs; reward gaming
+      checked via completion length and prompt-overlap ratio, which showed
+      shorter negatives but no parroting increase.. Measured on two 8B
+      models across four datasets (~2,000 examples per split, balanced),
+      with base and SFT baselines and bootstrap intervals. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-29
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An on-policy replication
+  that resamples influence labels each step showing no Phi-CCT gain over the
+  base model, or SFT on influence detection producing equal mention
+  alignment without RL. Automatic check flagged: figures not in the source:
+  014.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,42 @@
+arxiv_id: "2606.31732"
+title: "UniCoder: Unified Visual-to-Code Generation via Symbolic Rewards and
+  Reference-Guided Code Optimization"
+url: https://doi.org/10.48550/arxiv.2606.31732
+drafted_at: 2026-10-27
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: code-generation
+statement: For 8B multimodal models doing visual-to-code generation (charts,
+  SVG, webpages), parsing generated code into discrete symbolic attributes
+  (hex colors, text labels, axis limits, DOM styles) with a small auxiliary
+  LLM and rewarding partial attribute recall during GRPO raises fine-grained
+  position and color fidelity far more than a global CLIP-similarity reward,
+  which leaves those metrics flat while scoring high.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: 8B Qwen3-VL backbone, RL on static visual reconstruction
+  tasks where target attributes are extractable from code; not tested on
+  interactive or runtime-dependent programs
+technique: ""
+proposed_technique: Reward extracted code attributes, not image similarity
+technique_summary: During RL on visual-to-code tasks, a lightweight auxiliary
+  LLM parses both generated and reference code into discrete visual attributes
+  and the policy is rewarded by soft recall of those attributes alongside
+  execution and CLIP rewards.
+technique_kind: training
+technique_validated_by: "Ablation on four benchmarks: removing the attribute
+  reward (CLIP-only) dropped Design2Code Position 0.925 to 0.875 and Color
+  0.908 to 0.870, and ScreenBench Position 0.755 to 0.685, Color 0.734 to
+  0.680, while CLIP scores stayed near their level."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation where removing the symbolic attribute reward leaves
+  position and color metrics unchanged, or where a global visual reward alone
+  matches the full framework on fine-grained alignment.
+evidence_note: Single paper, single backbone, one ablation row per component
+  on four benchmarks; no seed variance or multiple-run reporting, and the
+  attribute reward is scored by the same extractor family used in training, so
+  metric-reward coupling is not ruled out.
+confidence: low

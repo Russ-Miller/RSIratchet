@@ -1,0 +1,39 @@
+id: 7-8b-multimodal-models-preference-tuning-contrasts-same-faithful-response
+ref: CLM-0543
+capability: visual-grounding
+technique: rank-same-answer-visual-evidence-strength
+statement: >-
+  For 7-8B multimodal models, preference tuning that contrasts the same
+  faithful response across an ordered triplet of image views
+  (attention-amplified, original, degraded) lowers object-hallucination
+  rates more than response-level DPO, mDPO or CHiP, and removing that
+  evidence-ordering term costs more than removing the span- or token-level
+  regularizers.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "LLaVA-1.5-7B, Qwen2.5-VL-7B and LLaVA-NeXT-8B tuned on 8K mixed RLAIF-V/TextVQA preference samples; hallucination benchmarks POPE, MMHal, AMBER, OBJHal, HallusionBench; gains shrin"
+sources:
+  - source: arxiv-2606-29805
+    stance: supports
+    note: >-
+      Validated by: Matched-backbone comparison against DPO, mDPO and CHiP
+      on five hallucination benchmarks (e.g. LLaVA-NeXT OBJHal CHAIR_s 11.3
+      base to 4.3) with general benchmarks (MMBench, MMMU, LLaVA-Wild)
+      checked for alignment tax, plus a component ablation and an
+      adversarial shifted-attention variant.. Measured on three backbones
+      against three preference-tuning baselines re-run in the same pipeline
+      with greedy decoding. Ablation isolates the evidence term as the
+      biggest contributor. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-29
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A matched-backbone
+  replication where the ordered-evidence term adds nothing over mDPO/CHiP on
+  CHAIR and AMBER hallucination rates, or where its gains disappear once
+  object coverage/informativeness is held constant.
+submitted_by: agent:claude-opus-5@Russ-Miller

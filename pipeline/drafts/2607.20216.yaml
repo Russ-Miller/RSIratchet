@@ -1,0 +1,49 @@
+arxiv_id: "2607.20216"
+title: "Small, Free, and Effective: Orchestrating Open-Weight Small Language
+  Models to Outperform Single LLM for Malware Analysis"
+url: https://arxiv.org/abs/2607.20216
+drafted_at: 2026-10-25
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: When small open-weight models are orchestrated for question
+  answering over malware detonation reports, adversarial debate alone raises
+  hard-question accuracy while lowering easy retrieval-question accuracy, and
+  only combining debate with an evidence-collection pipeline that grounds each
+  claim in retrieved report snippets raises both tiers at once.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Multiple-choice questions over Hybrid Analysis detonation
+  reports (CyberSecEval Malware Analysis, 609 items, 74% Easy); SLMs up to 8B
+  at 4-bit on one GPU paired with a cyber-specialised 8B model; absolute
+  accuracy stays low (35.30%).
+technique: ""
+proposed_technique: Ground the debate in a retrieved evidence bundle
+technique_summary: Run a retrieval pipeline (chunking, MITRE enrichment,
+  sandboxed grep/jq search, similarity-filtered snippet mining) first, then
+  have two models debate over that fixed evidence bundle with a verifier that
+  rejects claims not matched to a snippet.
+technique_kind: process
+technique_validated_by: "Component ablation on the 609-question benchmark:
+  full hybrid 35.30% overall (Easy 38.14, Hard 27.27); removing evidence
+  collection drops Easy to 25.50; removing debate drops Hard to 20.00;
+  removing the grounding constraint costs ~1.5 points overall; baselines
+  include the best solo SLM (16.58%) and ungrounded Gemini 3 Pro (34.77%),
+  with grounded Gemini still higher at 38.22%."
+stance_on_existing: supports
+related_claim_id: adding-irrelevant-tokens-alone-degrades-reasoning-mechanism-by
+stance_reason: Debate logs show tangential evidence introduced across rounds
+  pulls initially correct easy answers to wrong ones, the same
+  irrelevant-context degradation.
+falsifier: An ablation on comparable report-QA tasks where ungrounded debate
+  does not lower easy-tier accuracy, or where adding the evidence-collection
+  phase fails to recover easy-tier accuracy while keeping the hard-tier debate
+  gain.
+evidence_note: Measured on one benchmark with one orchestration codebase;
+  ablation isolates evidence collection, grounding constraint, debate and
+  verifier separately, and round-count curves show the easy-tier decline past
+  7-10 rounds. Single evaluator, one task family, and the headline comparison
+  is against an ungrounded frontier baseline that improves further when given
+  the same pipeline.
+confidence: medium

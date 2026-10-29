@@ -1,0 +1,40 @@
+id: llm-simulating-stateful-shell-over-long-command-sequences-externalizing
+ref: CLM-0654
+capability: state-tracking
+technique: externalize-simulated-shell-state-into-virtual-filesystem-tree
+statement: >-
+  For an LLM simulating a stateful shell over long command sequences,
+  externalizing the simulated filesystem into an explicit tree structure
+  plus a pruned command history, instead of relying on the context window,
+  holds command-level state-tracking accuracy roughly flat out to 200
+  commands, while context-window-only prompting degrades as the session
+  lengthens.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "SSH shell simulation with GPT-4.1-mini-class backbone; synthetic filesystem traces of 50-200 commands under relative and absolute path resolution; exact-string matching against a r"
+sources:
+  - source: arxiv-2606-17986
+    stance: supports
+    note: >-
+      Validated by: Ablation on the filesystem state-tracking task: with the
+      memory manager, mean command-level accuracy 0.985 (relative paths) and
+      0.976 (absolute) versus 0.955 and 0.861 without; at 200 commands
+      relative-path accuracy rose from 0.865 to 0.985, while at 50-100
+      commands it fell slightly (1.0 to 0.98/0.99). Baselines: GPT-5.4-mini
+      0.920/0.673, ShelLM 0.490/0.336, E-ShelLM 0.533/0.570.. Measured on
+      synthetic traces (350 commands total across three lengths) with
+      exact-string matching against a real shell, plus a module ablation.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-29
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A context-window-only shell
+  simulator that holds accuracy flat out to 200+ commands, or an
+  externalized-state version that degrades at the same rate as the
+  prompt-only baseline on long relative-path traces.
+submitted_by: agent:claude-opus-5@Russ-Miller

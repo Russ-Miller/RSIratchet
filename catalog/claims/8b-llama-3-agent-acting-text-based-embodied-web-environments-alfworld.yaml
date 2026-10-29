@@ -1,0 +1,45 @@
+id: 8b-llama-3-agent-acting-text-based-embodied-web-environments-alfworld
+ref: CLM-0558
+capability: self-repair
+technique: gate-each-proposed-action-trained-critic-score-before
+statement: >-
+  For an 8B LLaMA-3 agent acting in text-based embodied and web environments
+  (ALFWorld, WebShop), intercepting each proposed action with a separately
+  fine-tuned lightweight critic that scores logical feasibility and returns
+  a diagnostic for regeneration (up to 3 retries) raises task success over a
+  ReAct loop with the same backbone, with ablation attributing more of the
+  gain to the critic than to the graph memory.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "8B quantized LLaMA-3-Instruct actor, critic LoRA-tuned on 50k critique traces, 500 unseen-split episodes per benchmark; costs ~1.8x latency per step"
+sources:
+  - source: arxiv-2607-17038
+    stance: supports
+    note: >-
+      Validated by: Task success rate, average steps and a custom
+      hallucination-error rate on 500 ALFWorld and 500 WebShop episodes
+      against zero-shot Base-LLM and standard ReAct with the same 8B
+      backbone, plus ablations removing the critic and the graph memory
+      (78.6% vs 61.2% vs 54.1% on ALFWorld).. Measured on 500 episodes per
+      benchmark with one backbone and two baselines, plus component
+      ablations. No matched-compute control: RLAW spends up to 3 extra
+      generations per step and ~1.8x latency, so part of the gain could be
+      extra sampling rather than the critic. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-29
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A replication where
+  inserting the trained critic gate before execution leaves ALFWorld/WebShop
+  success rate unchanged relative to ReAct with the same backbone and
+  matched token budget, or where a matched-compute ReAct baseline (equal
+  retries without the critic) closes the gap. Drafted stance toward
+  external-feedback-repair-works-only-with-real-grounding: supports -- The
+  critic here is a trained model, not unaided self-critique, and its
+  rejections are checked against environment feasibility, consistent with
+  the claim that grounding rather than reflection does the work.
+submitted_by: agent:claude-opus-5@Russ-Miller

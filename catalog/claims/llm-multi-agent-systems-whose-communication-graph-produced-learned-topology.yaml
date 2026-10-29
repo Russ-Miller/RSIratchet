@@ -1,0 +1,43 @@
+id: llm-multi-agent-systems-whose-communication-graph-produced-learned-topology
+ref: CLM-0653
+capability: multi-model-coordination
+technique: rank-communication-edges-masking-effect-then-prune-budget
+statement: >-
+  In LLM multi-agent systems whose communication graph is produced by a
+  learned topology generator, the generated graph carries edges that are not
+  needed: scoring each edge by how much masking it changes the task outcome
+  and the semantic entropy of the final answer, then keeping a top-ranked
+  budgeted subgraph, cuts online tokens by about 20-25% while leaving
+  average accuracy equal or slightly higher, and a small distilled predictor
+  of those subgraphs transfers to generators and agent counts it was not
+  calibrated on.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen3-8B backbone, 5-6 agent systems, four topology generators (G-Designer, ARG-Designer, OFA-MAS, AgentPrune), six math/knowledge/code benchmarks; 40 calibration queries per datas"
+sources:
+  - source: arxiv-2608-12921
+    stance: supports
+    note: >-
+      Validated by: Accuracy and measured online token usage versus each
+      unpruned generator across 24 generator-dataset cells: tokens fell in
+      all 24 (10.6%-44.0%), accuracy rose in 16; ablations show removing the
+      causal masking signal costs about 4 accuracy points on MMLU and
+      HumanEval and most of the token saving, and removing semantic entropy
+      costs about 2-3 points.. Measured on six benchmarks with one backbone;
+      token savings are consistent across all 24 cells while accuracy
+      changes are mixed per dataset (GSM8K, MultiArith, SVAMP sometimes
+      drop). [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-29
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A replication where the
+  same budgeted subgraphs are compared against random edge masking at equal
+  retained-edge budget and show no accuracy or token advantage, or where the
+  distilled explainer applied to an unseen generator lowers accuracy
+  relative to the unpruned graph.
+submitted_by: agent:claude-opus-5@Russ-Miller

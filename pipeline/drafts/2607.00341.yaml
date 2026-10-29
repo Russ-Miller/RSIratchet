@@ -1,0 +1,53 @@
+arxiv_id: "2607.00341"
+title: "DiscoLoop: Looping Discrete Embeddings and Continuous Hidden States
+  for Multi-hop Reasoning"
+url: https://doi.org/10.48550/arxiv.2607.00341
+drafted_at: 2026-10-28
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-step-reasoning
+statement: "In looped transformers trained to compose two atomic facts within
+  a single forward pass, the remaining generalization failure is
+  representational rather than storage: the bridge entity is already decodable
+  after the first loop (LM-head probability ~1.0 on both ID and OOD splits)
+  while its hidden state is poorly aligned with that token's embedding (cosine
+  ~0.27-0.33), and mixing the decoded embedding into the bridge position
+  between loops lifts OOD accuracy from 8.3% to near 100%."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Small decoder-only transformers trained from scratch with K=2
+  loops on a symbolic two-graph knowledge-base task (500 entities per graph,
+  50 relations) and a synthetic natural-language version; OOD split withholds
+  all compositions over an entity-disjoint graph.
+technique: ""
+proposed_technique: Carry a decoded-embedding channel alongside hidden states across loops
+technique_summary: At each loop iteration, add to the residual stream a gated,
+  RMS-normalized soft decode-then-encode of the hidden state (tempered LM-head
+  probabilities times the tied embedding matrix), so the recurrence passes
+  both a continuous hidden state and an embedding-aligned discrete signal.
+technique_kind: architecture
+technique_validated_by: "Two-hop ID/OOD accuracy against a vanilla looped
+  transformer sharing the same base block and a FLOPs-matched non-looped
+  stack: near-perfect ID and OOD versus ~70% ID and <10% OOD for vanilla loop
+  and <20% ID / ~0% OOD non-looped; same pattern on two synthetic-language
+  formats and a three-hop extension; in 440M pretraining on 20B tokens,
+  average zero-shot score 50.5 vs 49.3 (vanilla loop) and 49.8 (PonderLM)."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Showing that post-first-loop hidden states in vanilla looped
+  transformers are already well aligned with bridge embeddings on failing OOD
+  cases, or that the training-free embedding-injection intervention does not
+  raise OOD two-hop accuracy, or that DiscoLoop's gain over vanilla looping
+  disappears under matched training compute on these tasks.
+evidence_note: "Measured on one controlled synthetic task family with one base
+  architecture: logit-lens probability and cosine similarity at the bridge
+  position, an alpha sweep for the training-free intervention, and training
+  curves for three architectures. The intervention is a clean causal test of
+  the representational hypothesis. Language-modeling transfer is a single 440M
+  run per arm on 20B tokens with no seed variance reported, and real-world
+  multi-hop reasoning is never measured directly."
+confidence: medium
+problems:
+  - "figures not in the source: 0.27, 33"

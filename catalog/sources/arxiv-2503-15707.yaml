@@ -30,3 +30,41 @@ notes: "Filed as a source on planning from the classifier's judgement that the
   maintaining efficiency, i.e., it improves the quality of produced plans. No
   claim has been drafted from it yet."
 ingested_at: 2026-09-23
+brief: >-
+  Splitting safety checking off into a second LLM that audits the task
+  planner's output cuts safety violations in multi-robot plans without
+  inflating step counts. The claim is that a single planner's context window
+  forces a trade-off between task history and safety rules, and that
+  decoupling the roles avoids it.
+
+
+  SAFER pairs a Task Planning LLM with a Safety Planning LLM, adds per-robot
+  Execution LLMs and a feedback module, and scores plans with an
+  LLM-as-a-Judge against 15 risk criteria. Evaluation uses 40 tasks from the
+  COHERENT heterogeneous multi-agent benchmark, 8 per scene across 5 scenes,
+  with 2 mono-type, 3 dual-type and 3 trio-type tasks, measuring average steps
+  and average safety violations.
+
+
+  SAFER with DeepSeek-r1 reduces average safety violations by 77.5%, and with
+  GPT-4o by 47%, relative to GPT-4o without SAFER. Average steps stay
+  comparable, for example 15.8 to 12.1 in scene 1, though DeepSeek-r1 needs
+  more steps in some scenes. Overhead is 2 extra API calls per step.
+
+
+  The effect is measured, but the baseline is 1 configuration, GPT-4o without
+  SAFER, with 2 planner models tested and no ablation separating the safety
+  LLM from the feedback module or the judge. Violations are counted by an LLM
+  judge, which the authors themselves assess for self-preference bias only
+  qualitatively.
+
+
+  The CBF control layer and the hardware run with 2 Kuka IIWA arms are
+  demonstrations, not comparisons: no quantitative real-robot baseline.
+
+
+  Treat the 77.5% as suggestive of role decomposition helping, not as a
+  validated safety guarantee.
+brief_generated_at: 2026-10-29
+brief_model: claude-opus-5
+brief_source: full-text

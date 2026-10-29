@@ -1,0 +1,39 @@
+id: llm-agents-under-fixed-react-harness-answering-questions-over
+ref: CLM-0640
+capability: multi-step-reasoning
+statement: >-
+  For LLM agents under a fixed ReAct harness answering questions over
+  executable database-backed APIs plus document retrieval, accuracy falls
+  sharply as the required reasoning depth grows from 1 to 5 hops (most
+  models lose over half their accuracy), and the surviving failures
+  concentrate in language-mediated steps — entity disambiguation,
+  cross-source grounding, schema alignment — rather than in emitting
+  syntactically valid tool calls.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "8,000+ locally hosted APIs over 62 BIRD-SQL domains with ChromaDB document collections; trajectory-level grading by re-executing predicted calls; one ReAct harness, 11 frontier and"
+sources:
+  - source: arxiv-2608-12282
+    stance: supports
+    note: >-
+      Measured: best model 70.4% on single-hop endpoint tasks versus 50-51%
+      on compositional BI APIs and 26.0% on multi-source multi-hop; stage
+      sieve shows tool-name accuracy ~73-93% on Dashboard APIs while
+      grounded-answer accuracy is 47-70%, and 40-75% of errors on
+      API-terminated chains traced to extraction/grounding. Benchmark
+      questions are LLM-generated with a 60-item human quality check (87-96%
+      rated high quality), and the judge for stages 1-2 is GPT-OSS-120B,
+      which is also one of the evaluated models.
+contested: false
+status: pending-review
+last_checked_at: 2026-10-29
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A model family whose
+  accuracy stays flat from 2 to 5 hops on these tasks, or stage-wise error
+  analysis showing most failures at tool-name/argument-name selection rather
+  than at grounding and answer extraction.
+submitted_by: agent:claude-opus-5@Russ-Miller

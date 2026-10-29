@@ -1,0 +1,48 @@
+arxiv_id: "2607.03162"
+title: "APeB: Benchmarking Personalization Ability of Large Language Model Agents"
+url: https://doi.org/10.48550/arxiv.2607.03162
+drafted_at: 2026-10-27
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: long-term-memory
+statement: When agents must pick a user's realized choice from candidates the
+  user actually viewed, given a vague early-stage query and 60 days of real
+  heterogeneous interaction history, current LLMs extract little usable
+  preference signal from that history — adding the history lifts Hit@1 only
+  about 7-9% over no history (and a 6-record history is nearly as good as 60),
+  while the same history lifts a trained personalized-search model by about
+  84%.
+kind: observation
+backing_strength: single-paper
+scope_condition: Personalized product search on 5,648 cases from one
+  content-commerce platform; vague 'intent' queries with hard candidate sets
+  (~14 items, ≥9 same-category products the user viewed); histories supplied
+  as postprocessed text summaries truncated to fit context.
+technique: ""
+proposed_technique: Rewrite the vague query from history before ranking
+technique_summary: A separate agent rewrites the user's underspecified query
+  using same-category records retrieved from their interaction history, and
+  the rewritten query is then passed to the ranking model in a single prompt.
+technique_kind: prompting
+technique_validated_by: Hit@1/Hit@5 on APeB intent queries across eight LLMs
+  versus single-prompt, ReAct and Deerflow baselines; gains are consistent but
+  small (e.g. Qwen3 24.9 to 26.3, GPT5.2Think 26.4 to 26.9), with rubric
+  scores showing improved query inference and recommendation quality.
+stance_on_existing: supports
+related_claim_id: preference-needed-answer-query-lies-different-concept-space-cues
+stance_reason: Both find that retrieval- and summarization-based
+  personalization over user history barely beats a no-history baseline when
+  the needed preference is not directly stated in the history.
+falsifier: A setup where the same histories and hard candidates are supplied
+  and an LLM workflow gains as much Hit@1 from history as the trained PPS
+  baseline does, without query rewriting.
+evidence_note: "Measured: history ablation (@0, @6 category-prior, @60
+  category-prior) on Hit@1 for UniSAR, Qwen3, GPT5.2 and R1, plus candidate
+  ablation showing random-negative Hit@1 of 81-96% collapsing to 22-26% on
+  hard candidates. Rubric analysis attributing the gap to history use is
+  LLM-as-judge with human verification. Single platform, English only, offline
+  static candidate sets; purchase as preference proxy is confounded by
+  exposure and availability, and the LLM arm is handicapped by context-driven
+  history truncation the trained model does not face."
+confidence: medium

@@ -1,0 +1,47 @@
+arxiv_id: "2608.08167"
+title: Wiener Representation Filtering for VLM Hallucination Suppression
+url: https://doi.org/10.48550/arxiv.2608.08167
+drafted_at: 2026-10-24
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: In 7B-class vision-language models (LLaVA-1.5, MiniGPT-4,
+  mPLUG-Owl2), object hallucination is carried by an anisotropic set of
+  directions in deep-layer hidden states, so attenuating each eigenmode in
+  proportion to its hallucination-to-truthful variance ratio — estimated once
+  offline from paired truthful/hallucinated captions and folded into the FFN
+  output projection — lowers CHAIR rates, while a mean-offset subtraction or
+  isotropic shrinkage of the same representations does not.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Deeper layers only (editing layers 4-12 barely helps);
+  requires a calibration set of image-paired truthful and hallucinated
+  captions; demonstrated on open 7B VLMs on CHAIR/POPE/MME.
+technique: ""
+proposed_technique: Attenuate hidden-state modes by hallucination-to-signal ratio
+technique_summary: Estimate truthful and hallucination-distortion covariances
+  from paired captions offline, build a closed-form Wiener gain per eigenmode
+  of the distortion covariance, and multiply it into the FFN output projection
+  of deep layers so inference cost is unchanged.
+technique_kind: architecture
+technique_validated_by: CHAIR_S/CHAIR_I on 500 MSCOCO images over three seeds
+  against greedy, beam search, DoLa, VCD, OPERA, MARINE, HALC and Nullu (e.g.
+  MiniGPT-4 CHAIR_S 21.20 greedy, 17.67 HALC, 16.87 ours), plus POPE
+  accuracy/F1 and MME Dolan-More profiles; ablations on MiniGPT-4 compare
+  mean-distortion subtraction (CHAIR_S 22.0) and uniform shrinkage (24.0)
+  against the full filter (13.0) at matched layers.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An isotropic or mean-offset correction at the same deep layers
+  matching the Wiener filter's CHAIR reduction, or the Wiener filter's CHAIR
+  gain disappearing once caption length and object coverage are held constant.
+evidence_note: Measured on three VLMs across CHAIR, POPE and MME with seed
+  variance reported, plus controlled ablations isolating anisotropy and layer
+  depth. The ablation table is single-model (MiniGPT-4) and its baseline
+  numbers differ from the main table. BLEU is reported but object coverage is
+  not, so the design does not fully rule out the usual
+  hallucination-versus-informativeness tradeoff; hyperparameters (layer range,
+  alpha) are tuned per model on a 100-image validation split.
+confidence: medium

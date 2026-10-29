@@ -1,0 +1,41 @@
+id: 3b-8b-video-multimodal-models-inserting-few-continuous-latent-thought
+ref: CLM-0532
+capability: video-temporal-reasoning
+technique: anchor-self-generated-latent-thoughts-video-question
+statement: >-
+  For 3B-8B video multimodal models, inserting a few continuous latent
+  thought steps that are cross-attention-conditioned on the video and
+  question features, trained only on video-question-answer triplets with
+  alignment and diversity losses, raises accuracy across general video
+  understanding and video reasoning benchmarks over both the untuned
+  backbone and explicit CoT-trained variants, which do not consistently beat
+  their own backbone.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen2.5-VL 3B/7B and Qwen3-VL 8B backbones, 16-64 input frames, 14 multiple-choice video benchmarks; latent step count must be small (best 6, degrades beyond)"
+sources:
+  - source: arxiv-2606-22870
+    stance: supports
+    note: >-
+      Validated by: Accuracy on 14 video benchmarks against the same
+      backbone, CoT-trained video models (Video-R1, Open-o3-Video,
+      OneThinker, VideoRFT) and latent-reasoning baselines (Monet, LVR,
+      Mull-Token) under matched frames and resolution; ablations removing
+      each loss term and each injected feature stream; latent-step sweep on
+      LongVideoBench.. Measured across 14 benchmarks at 16/32/64 frames with
+      backbone and baseline comparisons, plus loss and module ablations on a
+      single benchmark (LongVideoBench). Gains are small on long-video
+      understanding (sometimes negative, e.g. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-29
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Matched-compute replication
+  where the latent module gives no gain over SFT on the same QA triplets, or
+  where CoT-trained baselines run under the same frame budget and resolution
+  match or exceed it.
+submitted_by: agent:claude-opus-5@Russ-Miller

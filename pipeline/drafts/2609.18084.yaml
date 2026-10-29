@@ -1,0 +1,57 @@
+arxiv_id: "2609.18084"
+title: "Not All Layers Need Tuning: Diagnosing and Directing Adaptation in
+  Vision-Language-Action Models"
+url: https://doi.org/10.48550/arxiv.2609.18084
+drafted_at: 2026-10-22
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: When fine-tuning a vision-language-action policy for a deployment
+  shift, the parameter change needed concentrates in the functional region
+  matching the shift's modality — appearance in the vision encoder, rephrased
+  instructions in the language backbone, novel objects in the vision encoder
+  plus action head — so allocating LoRA rank per region by a pre-training
+  diagnostic beats uniform-rank LoRA at matched budget, with the advantage
+  largest at small budgets and absent when the shift's demand spreads across
+  regions rather than concentrating.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Five VLA architectures from 93M to 7B across autoregressive,
+  diffusion and flow-matching decoders; LIBERO and CALVIN plus one xArm-7
+  embodiment; ~20 target demonstrations per task; gains narrow as budget
+  approaches uniform rank-32 and vanish on a physical spatial-occlusion shift.
+technique: ""
+proposed_technique: Allocate LoRA rank per network region by a pre-training diagnostic
+technique_summary: From ten unlabeled target observations, score each
+  functional region of a VLA by combining CKA against a cached source
+  reference with reference-free gradient and MC-dropout sensitivity, then set
+  per-region LoRA rank proportional to the score and freeze low-scoring
+  regions before any fine-tuning.
+technique_kind: training
+technique_validated_by: Diagnostic scores ranked regions against measured
+  region-isolated parameter displacement at median Spearman 0.91; at a matched
+  budget of roughly half uniform rank-32, the allocation beat uniform-matched
+  LoRA, DoRA, (IA)^3, AdaLoRA, LoRA-SP, random and dominant-region-only
+  allocation on all five architectures on LIBERO and CALVIN (5 seeds, 50
+  rollouts/task), and on the xArm-7 language shift reached 21/30 vs 22/30 for
+  full fine-tuning at 0.04% of its trainable parameters; random allocation at
+  the same budget collapsed to 42.8% vs 73.4%.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A VLA family where region-isolated adaptation cost does not track
+  the shifted modality, or where diagnostic-driven variable-rank LoRA fails to
+  beat uniform LoRA at matched low budgets once random-allocation and
+  checkpoint-selection controls are held equal.
+evidence_note: "Measured on five architectures x five synthetic shifts x two
+  benchmarks (5 seeds, 50 rollouts/task) plus six physical shifts on one arm
+  with one architecture; baselines include matched-budget PEFT methods and a
+  random-allocation control that isolates placement from non-uniformity.
+  Weaknesses: the cost reference is parameter displacement under
+  region-isolated tuning, an operational proxy the authors concede can inflate
+  for high-capacity regions; physical n=30 margins over the strongest PEFT
+  baseline are not individually significant; shifts are author-constructed;
+  hardware results use a shared fixed-epoch checkpoint rather than per-method
+  early stopping."
+confidence: medium

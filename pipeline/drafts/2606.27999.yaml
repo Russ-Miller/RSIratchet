@@ -1,0 +1,42 @@
+arxiv_id: "2606.27999"
+title: "HumanMoveVQA: Can Video MLLMs reason about human movement in videos?"
+url: https://doi.org/10.48550/arxiv.2606.27999
+drafted_at: 2026-10-27
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: video-temporal-reasoning
+statement: On exocentric video questions about a person's global trajectory
+  and orientation in a first-frame-anchored world frame over 20-60 second
+  clips, current proprietary and open video MLLMs score close to random chance
+  (best zero-shot chance-normalized score about 16 on the EMDB split, versus
+  about 79 for humans), with the worst performance on counting motion events,
+  temporal ordering, and long-horizon displacement aggregation.
+kind: observation
+backing_strength: single-paper
+scope_condition: Multiple-choice QA generated deterministically from 3D SMPL-X
+  motion tracks over EMDB, RICH and EgoBody videos; single-person motion only;
+  no multi-person interaction.
+technique: ""
+proposed_technique: Supervise global motion reasoning with world-consistent 3D tracks
+technique_summary: Lift video to world-frame 3D human poses, discretize root
+  translation and orientation into spatial codes, and generate templated QA
+  pairs used as fine-tuning supervision.
+technique_kind: training
+technique_validated_by: Fine-tuning Qwen3-VL 8B on the generated data raised
+  the chance-normalized score on EMDB from 12.83 to 37.88, with gains of
+  +40.9pp on Numerical and +22.6pp on Trajectory Affordance; joint training
+  across all seven categories beat per-category specialists.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A frontier video MLLM scoring near the human reference on these
+  trajectory and orientation categories zero-shot, or showing that the low
+  scores come from noisy 3D reconstruction ground truth rather than model
+  inability.
+evidence_note: Measured on a 10,203-item benchmark across three source
+  datasets, with per-category random-chance normalization and a human subset
+  baseline; a text-only Gemini baseline scored 8.5, above GPT-4o, indicating
+  some language-prior leakage. Ground truth depends on automated monocular 3D
+  reconstruction, which the authors note may be noisy for subtle rotations.
+confidence: medium
