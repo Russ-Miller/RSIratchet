@@ -1,0 +1,45 @@
+arxiv_id: "2607.19345"
+title: "Copy Less, Ground More: Overcoming Repetitive Copying in Long-Context
+  Reasoning via Evidence-Aware Reinforcement Learning"
+url: https://arxiv.org/abs/2607.19345
+drafted_at: 2026-10-25
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: long-context-degradation
+statement: In RL post-training of thinking LLMs for long-context reasoning,
+  rewarding n-gram overlap with annotated key evidence only helps when paired
+  with a penalty on overlap with distractor context; the grounding reward
+  alone raises copying, lengthens reasoning traces, and scores below
+  accuracy-only RL.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Qwen3.5 9B/27B/35B-A3B trained with GSPO on 3.2k
+  evidence-annotated samples at 16k-32k context, evaluated on five held-out
+  long-context benchmarks at 32k and 128k
+technique: ""
+proposed_technique: Reward key-evidence overlap and penalize distractor overlap
+technique_summary: Adds to the binary accuracy reward an n-gram overlap bonus
+  against annotated support spans and a larger penalty for overlap with the
+  rest of the prompt, with evidence annotations produced by an automated
+  chunk-constrained QA generation pipeline.
+technique_kind: training
+technique_validated_by: "Average score on Ruler, LongBench-v2, BrowseComp-LC,
+  GraphWalks and AA-LCR against accuracy-only GSPO and the base model: +1.5 to
+  +2.8 points at 32k and +2.1 to +4.6 at 128k across three model scales;
+  grounding-only ablation falls up to 5.1 (32k) and 8.3 (128k) points below
+  accuracy-only GSPO, and distractor-penalty-only (alpha=0) also scores below
+  baseline (72.0 vs 78.5); overlap rate and thinking length measured on Ruler
+  and LongBench-v2."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A run where adding only the grounding reward (no distractor
+  penalty) matches or exceeds full GEAR and accuracy-only RL on held-out
+  long-context benchmarks, with overlap rate not increasing.
+evidence_note: Measured on three Qwen3.5 scales and five held-out benchmarks
+  against accuracy-only GSPO, plus coefficient and n-gram ablations on the 9B
+  model. One model family, one RL algorithm, ~100 optimizer steps; no
+  comparison against other long-context RL reward designs cited in related
+  work.
+confidence: medium

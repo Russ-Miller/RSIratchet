@@ -1,0 +1,47 @@
+arxiv_id: "2607.03766"
+title: Semantic-aware and Self-improving Program Reduction via Agentic Large
+  Language Models
+url: https://doi.org/10.48550/arxiv.2607.03766
+drafted_at: 2026-10-28
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: harness-self-improvement
+statement: When an LLM agent reduces bug-triggering programs, distilling its
+  accepted edits into executable, test-verified deterministic passes (rather
+  than natural-language reflections) yields a reducer that transfers to unseen
+  programs of the same language and cuts LLM calls, but only where the corpus
+  is homogeneous enough for patterns to recur.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Program reduction for compiler/interpreter bug triage, 90
+  benchmarks in C, Rust and JavaScript, DeepSeek-V4-Flash and two other
+  backbones, Perses used as a syntactic prelude.
+technique: ""
+proposed_technique: Distill accepted agent edits into verified executable passes
+technique_summary: A reflector agent reviews the reduction edits a property
+  checker accepted, generalizes recurring ones into match/rewrite passes in a
+  standalone Python 'learned reducer', and commits each only after it passes
+  tests including one drawn from a different program.
+technique_kind: process
+technique_validated_by: "Frozen after 30 training C programs and run alone on
+  30 held-out C programs: reduced them to 159 tokens on average, below Vulcan
+  (192) and LPR (160) and near C-Reduce (140), with no LLM calls; versus a
+  cold-start configuration on the same programs it used 33% fewer API calls
+  and 26% less cost at comparable size. Contribution to total token reduction
+  reached ~46% (C) and ~52% (JS) but only ~5% (Rust)."
+stance_on_existing: supports
+related_claim_id: distilling-lessons-from-failures-as-well-as-successes-beats-raw-trajectory-memory
+stance_reason: Both show an agent distilling reusable knowledge from its own
+  past attempts improves later runs with weights frozen, here with the
+  distillate made executable rather than textual.
+falsifier: A frozen learned reducer that, on held-out programs of the same
+  language, reduces no better than the syntactic prelude alone, or a
+  cold-start agent that matches it on both size and LLM call count.
+evidence_note: "Measured: 90 benchmarks, three shuffled orderings averaged,
+  held-out C split of 30 programs, baselines Perses/Vulcan/LPR/C-Reduce. The
+  held-out test isolates transfer for C only; Rust and JS had no train/test
+  split, and the weak Rust contribution is attributed to benchmark
+  heterogeneity without a controlled test of that explanation. Long-run pool
+  growth and strategy retirement are untested."
+confidence: medium

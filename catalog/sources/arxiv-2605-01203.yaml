@@ -6,15 +6,49 @@ year: 2026
 date: 2026-05-02
 arxiv_id: "2605.01203"
 url: https://arxiv.org/abs/2605.01203
-tags: [ingested]
-summary: >-
-  Currently, process reward models (PRMs) have exhibited remarkable
+tags:
+  - ingested
+summary: Currently, process reward models (PRMs) have exhibited remarkable
   potential for test-time scaling. Since large language models (LLMs)
-  regularly generate flawed intermediate reasoning steps when tackling a
-  broad spectrum of reasoning and decision-making tasks, PRMs are required
-  to possess capabilities for detecting process-level errors in real-world
+  regularly generate flawed intermediate reasoning steps when tackling a broad
+  spectrum of reasoning and decision-making tasks, PRMs are required to
+  possess capabilities for detecting process-level errors in real-world
   scenarios. However, existing benchmarks primarily focus on mathematical
   reasoning, thereby failing to comprehensively evaluate the error detection
-  ability of PRMs across diverse reasoning scenarios. To mitigate this gap,
-  we introduce GR-Ben, a proce
+  ability of PRMs across diverse reasoning scenarios. To mitigate this gap, we
+  introduce GR-Ben, a proce
 ingested_at: 2026-09-19
+brief: >-
+  Process reward models that look strong at catching bad math steps mostly
+  fail outside math, and general-purpose LLMs prompted to critique beat them
+  there.
+
+
+  LSR-Ben is a 3,595-instance benchmark of problem-solution pairs over 2
+  reasoning categories and 9 subdomains (physics, chemistry, biology, computer
+  science; deductive, inductive, abductive, analogical, mixed logical).
+  Solutions come from 11 open-source and 4 closed-source LLMs, were
+  re-segmented into steps by Qwen3-32B, then annotated by 3 humans each for
+  the first erroneous step plus an error type, with double cross-validation
+  and ~15% discard. 13 PRMs and 11 LLMs were scored by F1 over erroneous and
+  correct samples.
+
+
+  PRMs generally fall below 30 average F1 on LSR-Ben; Qwen2.5-Math-PRM-72B
+  scores 78.3 on ProcessBench but 37.4 average here. Gemini-3.8-flash reaches
+  63.8, DeepSeek-v3.2 55.4. PRMs miss errors (average FN 52.7%, FP 22.7%);
+  LLMs over-flag (FN 26.6%, FP 28.6%). Slow thinking helps: Qwen3-32B 36.7 to
+  45.4, GPT-5.5 50.1 to 58.9.
+
+
+  The math-versus-non-math gap is measured on matched metrics against
+  ProcessBench, but PRMs and LLMs differ in interface and compute, so the
+  comparison between them is not budget-matched; scalar-score PRMs needed a
+  tuned threshold. Only 2 non-math-trained PRMs existed to test.
+
+
+  If you rely on a PRM for test-time scaling outside math, verify it rather
+  than assume transfer.
+brief_generated_at: 2026-10-30
+brief_model: claude-opus-5
+brief_source: full-text

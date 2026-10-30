@@ -1,0 +1,40 @@
+id: black-box-jailbreak-defense-test-time-abstracting-each-successful-attack
+ref: CLM-0584
+capability: harness-self-improvement
+technique: store-jailbreak-failures-wrapper-level-rules-persistent-memory
+statement: >-
+  For black-box jailbreak defense at test time, abstracting each successful
+  attack into a rule that names the structural wrapper (nested role-play,
+  code obfuscation, flipped text) rather than the harmful topic lets one
+  rule induced from a single prompt cover the rest of that attack family, so
+  attack success falls to near zero after the first batch of ~20 streamed
+  prompts without any parameter updates.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Prompt-level black-box jailbreak families (DeepInception, CodeChameleon, ReNeLLM, FlipAttack) on 7-8B open models and a Gemini-class API model; single-turn, not agentic or multi-tu"
+sources:
+  - source: arxiv-2608-26008
+    stance: supports
+    note: >-
+      Validated by: ASR-gpt (external GPT-4o-mini judge, threshold 7) and
+      ASR-rej on AdvBench across four attack families and three models,
+      against no-defense, safety prompt, Self-Reminder and AutoDefense
+      baselines; MMLU/GSM8K utility stays within ~2 points; ablations
+      removing triggering, enforcement or reflection each raise ASR..
+      Measured on AdvBench (520 prompts) across four attack families and
+      three models with a cold-start online protocol, against four
+      baselines; ASR drops to roughly 0.1-3.5% from 5-58% undefended.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-30
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A held-out jailbreak
+  family whose wrapper differs in surface form but shares structure shows no
+  reduction in ASR from an induced rule, or per-round ASR fails to drop
+  after the first batch under a cold-start stream.
+submitted_by: agent:claude-opus-5@Russ-Miller

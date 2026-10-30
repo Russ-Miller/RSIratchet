@@ -1,0 +1,40 @@
+id: grpo-trained-multi-hop-search-agents-qwen2-5-7b-instruct-constant-reward-abstaining
+ref: CLM-0632
+capability: abstention-and-self-knowledge
+technique: set-abstention-reward-each-query-s-prior-success
+statement: >-
+  For GRPO-trained multi-hop search agents (Qwen2.5-7B-Instruct), a constant
+  reward for abstaining either collapses the policy into near-total refusal
+  when trained from scratch or trades precision against accuracy one-for-one
+  after a cold start, whereas setting each query's abstention reward from
+  the model's measured prior success rate on that query raises precision
+  (0.559 to 0.662) for a small accuracy loss (0.552 to 0.529).
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "7B instruct backbone, Wikipedia search environment, three multi-hop QA benchmarks (HotpotQA, 2WikiMultiHopQA, MuSiQue), GRPO with an LLM judge; untested at larger scale or on other"
+sources:
+  - source: arxiv-2607-10738
+    stance: supports
+    note: >-
+      Validated by: Averaged accuracy, refusal rate, precision and a
+      precision/accuracy harmonic mean (RA-F1) over three multi-hop QA
+      benchmarks, against non-abstaining RL, refusal-trajectory SFT mixing,
+      unanswerable-query mixing, and static refusal rewards; best RA-F1
+      0.585 vs 0.556 baseline.. Measured on one 7B backbone across three
+      benchmarks, with ablations over courage factor, static reward values
+      and data-mixing ratios; averaged metrics only in the main text, no
+      seed variance reported, and the sweet-spot gamma was selected on the
+      same evaluation.
+contested: false
+status: pending-review
+last_checked_at: 2026-10-30
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A static refusal reward
+  tuned per setting matching the query-conditioned reward's precision at
+  equal accuracy, or the prior-anchored reward failing to beat static
+  rewards on another backbone or benchmark set.
+submitted_by: agent:claude-opus-5@Russ-Miller

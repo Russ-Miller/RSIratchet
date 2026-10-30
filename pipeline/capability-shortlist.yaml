@@ -1,59 +1,49 @@
 # Consolidated capability candidates. Suggestions, not capabilities.
-generated_at: 2026-09-29
-from_raw_proposals: 19
+generated_at: 2026-10-29
+from_raw_proposals: 24
 recommended:
-  - id: spatial-reasoning
-    label: "Inferring 3D geometry and spatial relations"
-    scope_note: "Covers depth, metric distance, size, pose, bearing and cross-view correspondence inferred from images or video; excludes object recognition and attribute grounding, which visual-grounding covers."
+  - id: physical-spatial-reasoning
+    label: "Reasoning about space and physical dynamics"
+    scope_note: "Covers judging relative position, distance, angle and 3D layout from images or multi-view input, plus predicting how physical scenes evolve and inferring body motion from egocentric views; excludes object-presence questions and generic video event ordering."
+    paper_count: 4
+    merged_from: [spatial-reasoning, intuitive-physics, egocentric-body-motion-understanding]
+    note: "Recurring, well-defined weakness across several papers that no existing entry (visual-grounding, video-temporal-reasoning) covers."
+  - id: document-and-chart-understanding
+    label: "Reading structured documents, tables and charts"
+    scope_note: "Covers recovering layout, reading order, tables and chart values from document or plot images and reasoning over them; excludes natural-image captioning and plain OCR of free text."
+    paper_count: 3
+    merged_from: [document-structure-parsing, chart-understanding]
+    note: "Three papers converge on structured visual information extraction, a distinct and practically important capability."
+  - id: real-time-and-asynchronous-interaction
+    label: "Acting when the world moves during deliberation"
+    scope_note: "Covers agents and dialogue systems facing live turn-taking, interruptions, latency, and tool or subagent results that arrive late or out of order and invalidate work in progress; excludes ordinary turn-based or untimed multi-step execution."
+    paper_count: 3
+    merged_from: [real-time-interaction, real-time-dialogue-interaction, asynchronous-execution]
+    note: "Three independent framings of the same failure mode — timing and concurrency — which existing planning and long-horizon entries assume away."
+  - id: persona-fidelity
+    label: "Staying in an assigned persona or simulated person"
+    scope_note: "Covers holding a specified persona's traits across a dialogue and reproducing a specific individual's or group's out-of-sample judgments; excludes general instruction-following and population-level cultural representation."
     paper_count: 2
-    merged_from: [spatial-reasoning-3d, metric-spatial-reasoning]
-    note: "Two independent proposals converge on the same well-defined gap that no existing entry covers, since visual-grounding is about tying answers to image content rather than metric geometry."
-  - id: confidentiality
-    label: "Keeping entrusted secrets secret"
-    scope_note: "Covers resisting extraction of system prompts, keys, and private data the model was told to withhold while still using that data for its task; excludes refusing harmful requests and training-data memorization."
-    paper_count: 2
-    merged_from: [contextual-privacy, system-prompt-confidentiality]
-    note: "Distinct from jailbreak-robustness and prompt-injection — the failure is leaking what it holds, not doing what it was told — and two papers attack it from different angles."
-  - id: confidence-calibration
-    label: "Knowing how confident to be"
-    scope_note: "Covers whether verbalized or sampled confidence tracks actual correctness; excludes outright refusal, which abstention-and-self-knowledge covers, and raw accuracy."
+    merged_from: [persona-consistency, human-simulation-fidelity]
+    note: "Two papers on the same thing, and it underpins the growing use of models as simulated respondents."
+  - id: theory-of-mind
+    label: "Inferring others' beliefs and intentions"
+    scope_note: "Covers attributing beliefs, false beliefs and intentions to agents from text or video; excludes social-norm and cultural knowledge."
     paper_count: 1
-    merged_from: [confidence-calibration]
-    note: "Graded calibration is a long-standing, heavily measured axis that abstention-and-self-knowledge only covers at the binary extreme."
-  - id: reasoning-length-efficiency
-    label: "Spending only as much reasoning as the problem needs"
-    scope_note: "Covers overthinking, adaptive chain-of-thought length, and whether compressed reasoning preserves accuracy; excludes general accuracy improvements and latency engineering."
-    paper_count: 1
-    merged_from: [reasoning-length-efficiency]
-    note: "Only one paper here, but overthinking in reasoning models is a fast-growing and cleanly measurable failure mode not touched by any existing entry."
-  - id: clarification-seeking
-    label: "Asking the right clarifying question"
-    scope_note: "Covers detecting underspecification, eliciting the missing information through interaction, and then using the answer; excludes flagging unanswerability without a follow-up."
-    paper_count: 1
-    merged_from: [clarification-seeking]
-    note: "A coherent interactive capability that abstention-and-self-knowledge stops short of, and increasingly central to agentic evaluation."
+    merged_from: [theory-of-mind]
+    note: "Only one proposal here, but it is a long-standing, clearly bounded capability with a large external literature and no existing index entry."
 set_aside:
-  - id: negation-understanding
-    note: "Single paper and narrow linguistic phenomenon better treated as a probe inside logical-deduction-robustness and visual-grounding."
-  - id: time-series-reasoning
-    note: "Reads as a task domain sitting between forecasting and domain-knowledge rather than a distinct capability."
-  - id: opponent-modeling
-    note: "One-off framing whose evidence is confined to game benchmarks and overlaps planning, strategic-deception and multi-model-coordination."
-  - id: answer-action-consistency
-    note: "A single-paper measurement artifact of multimodal output formats rather than a capability a maintainer could track broadly."
-  - id: human-behavior-simulation
-    note: "Interesting but single-paper, and the evaluative core splits between forecasting and cultural-competence."
-  - id: algorithm-discovery
-    note: "Currently a single high-profile result and largely a scaffolded search technique on top of code-generation and harness-self-improvement."
-  - id: compression-behavior-retention
-    note: "A property of a model-modification pipeline, and close enough to fine-tuning-retention that a separate entry would fragment the index."
-  - id: code-translation
-    note: "A task domain within code-generation rather than a separate capability."
-  - id: semantic-parsing
-    note: "Legacy NLP task with one proposal, already adjacent to formal-query-synthesis and formal-math."
-  - id: persona-consistency
-    note: "Single paper and mostly a special case of procedure-following plus state-tracking over a dialogue."
-  - id: latent-reasoning
-    note: "An architectural technique and research direction, not a capability one can evaluate models on."
-  - id: code-intent-conformance
-    note: "Already covered by the combination of critique and error-detection applied to code."
+  - id: adaptive-compute-allocation
+    note: "Single paper, and the user-visible half of it is largely covered by cutting-to-the-chase."
+  - id: generation-diversity
+    note: "One-off framing so far; revisit if more papers treat diversity as a tracked capability rather than a sampling property."
+  - id: context-compression-fidelity
+    note: "Really a property of a technique, and the failure it measures is already captured by long-context-degradation and context-hygiene."
+  - id: weight-merging-retention
+    note: "A narrow variant of fine-tuning-retention, which already covers skill loss from weight-space edits."
+  - id: language-guided-segmentation
+    note: "Single paper and essentially the output-format variant of visual-grounding."
+  - id: visual-analogical-reasoning
+    note: "One paper, and sits close to multi-step-reasoning applied to a specific puzzle domain."
+  - id: niche-modality-and-task-proposals
+    note: "Each is a single-paper task domain or benchmark framing rather than a recurring capability; several are already implied by domain-knowledge, code-generation or retrieval-utilization."

@@ -1,0 +1,45 @@
+id: frozen-7-8b-multimodal-models-long-video-qa-under-fixed-frame
+ref: CLM-0621
+capability: video-temporal-reasoning
+technique: weight-frame-scores-query-temporal-granularity-then-budget
+statement: >-
+  For frozen 7-8B multimodal models on long-video QA under a fixed frame
+  budget, scoring candidate frames with a query-granularity-weighted mix of
+  static query-frame similarity and a graph-diffused temporal-context score,
+  then distributing the frame budget across clustered events rather than
+  taking the global top-K, raises accuracy over uniform sampling and static
+  query-guided selection, with the largest gains on the longest video
+  splits.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Training-free zero-shot multiple-choice LongVideoQA (LVBench, MLVU, LongVideoBench, Video-MME) with LLaVA-Video-7B, Qwen2-VL-7B, Qwen3-VL-8B; CLIP-L-14 encoder and GPT-4o as the pa"
+sources:
+  - source: arxiv-2607-24794
+    stance: supports
+    note: >-
+      Validated by: Accuracy on four LongVideoQA benchmarks with three
+      backbones against uniform sampling, AKS, Q-Frame, FlexSelect-Lite and
+      trained selectors (e.g. LLaVA-Video 42.2 to 54.5 on LVBench, 58.9 to
+      67.1 on LongVideoBench); component ablations removing entity
+      extraction, static alignment, temporal alignment and routing;
+      candidate-pool size and decay-constant sweeps; latency comparison..
+      Measured on four benchmarks and three backbones with per-component
+      ablations, but all comparisons come from the authors; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-30
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A matched-budget
+  comparison on the same backbones and benchmarks where the
+  granularity-weighted temporal score and event-wise budgeting score no
+  better than static top-K query-frame similarity, or where the long-video
+  advantage disappears. Drafted stance toward
+  long-video-qa-fixed-frame-budget-fed-frozen-multimodal-model: supports --
+  Both find that budget allocation accounting for coverage and temporal
+  context beats independent per-frame query-similarity ranking, with gains
+  growing on longer videos.
+submitted_by: agent:claude-opus-5@Russ-Miller

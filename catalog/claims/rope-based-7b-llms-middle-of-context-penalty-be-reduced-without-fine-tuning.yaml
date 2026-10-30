@@ -1,0 +1,39 @@
+id: rope-based-7b-llms-middle-of-context-penalty-be-reduced-without-fine-tuning
+ref: CLM-0724
+capability: long-context-degradation
+technique: scale-rope-positions-per-layer-searched-bezier-constrained
+statement: >-
+  In RoPE-based 7B LLMs, the middle-of-context penalty can be reduced
+  without fine-tuning by giving each layer its own RoPE position-scaling
+  factor, searched offline on a few hundred examples, which raises average
+  accuracy across evidence positions on multi-document QA and key-value
+  retrieval while adding no inference latency.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "RoPE-based 7B models (Vicuna-7B-v1.5, StableBeluga-7B, Qwen2.5-7B) on position-varied retrieval and QA tasks; scaling factors searched per model on 200 in-domain samples."
+sources:
+  - source: arxiv-2606-27705
+    stance: supports
+    note: >-
+      Validated by: Accuracy at evidence positions 0-100% on MDQA and
+      key-value retrieval against baseline, Positional Interpolation,
+      Attention Buckets, Ms-PoE and MoICE; best average gain 11.2 points
+      (Vicuna key-value, 80.9 to 92.1); transfer to ZeroSCROLLS/L-Eval; MMLU
+      and C-Eval within ~1 point of baseline; inference time 0.71s/sample
+      equal to baseline, vs 1.03 Ms-PoE and 1.72 MoICE.. Measured on three
+      7B RoPE models across two position-varied datasets (500 held-out
+      samples each) with five baselines, plus ZeroSCROLLS/L-Eval transfer
+      and MMLU/C-Eval retention. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-30
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A replication where
+  per-layer scaling factors searched this way give no average gain over a
+  single layer-agnostic scaling factor (Positional Interpolation), or where
+  the gain fails to transfer to tasks other than the search dataset.
+submitted_by: agent:claude-opus-5@Russ-Miller

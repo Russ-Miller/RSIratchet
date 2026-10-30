@@ -31,3 +31,36 @@ notes: "Filed as a source on code-generation from the classifier's judgement
   multiple code generation benchmarks with less data. No claim has been
   drafted from it yet."
 ingested_at: 2026-09-23
+brief: >-
+  Retraining a code model on its own best samples, plus a teacher's critique
+  of its failures, beats fine-tuning on teacher-written code responses
+  directly. The gains persist across 3 iterations rather than saturating after
+  1.
+
+
+  Adaptive Critique Refinement (ACR) samples 7 responses at temperature 0.7,
+  ranks them with Qwen2.5-32B-Instruct as judge plus a code executor, and
+  either replaces the teacher answer with the winning self-generated one or
+  builds a 2-turn item where the model's weak answer is critiqued against the
+  teacher's. Applied to DSCoder-6.7B-Base and Qwen2.5-Coder-7B-Base on an 80K
+  GPT-4o-built Python SFT set, evaluated on HumanEval(+), MBPP(+),
+  LiveCodeBench and BigCodeBench(-hard).
+
+
+  After 3 iterations, average pass@1 rises 2.7 and 3.1 on the harder pair, and
+  2.7 and 4.5 on the basic pair; most of the gain lands at iter0 to iter1 (2.0
+  and 2.3). MultiPL-E improves 1.0 and 2.1 despite Python-only training.
+
+
+  Ablations removing each module show drops, with the 2-turn critique data
+  mattering more. The scoring system is checked separately: best-scoring of 10
+  samples beats worst by 15.8 on HumanEval+ for the DS model, error rate 4.3.
+  Baselines are external models, not matched-data controls, so dataset quality
+  and method are partly confounded; the authors report TLI leakage scores for
+  4 baseline datasets to argue HumanEval(+) comparisons are unfair.
+
+
+  2 base models, 7B scale, code only; math and other reasoning untested.
+brief_generated_at: 2026-10-30
+brief_model: claude-opus-5
+brief_source: full-text

@@ -1,0 +1,67 @@
+id: arxiv-2606-05901
+ref: SRC-0592
+kind: paper
+title: Reducing Hallucinations in Complex Question Answering using Simple
+  Graph-based Retrieval-Augmented Generation (long version)
+authors:
+  - Christopher J. Wedge
+  - Joshua Stutter
+  - Danny Dixon
+  - Jacek Cała
+year: 2026
+date: 2026-06-04
+arxiv_id: "2606.05901"
+url: https://arxiv.org/abs/2606.05901
+tags:
+  - ingested
+summary: Large language models (LLMs) have fundamentally transformed the
+  landscape of Natural Language Processing (NLP), although they remain
+  susceptible to errors. Retrieval-augmented generation (RAG) systems have
+  emerged as a common deployment scenario seeking to both avoid the well known
+  risk of the LLM ``hallucinating'' information, and to enable reasoning and
+  question answering over proprietary information that the LLM did not have
+  access to during training without resorting to expensive model fine-tuning.
+  In this work, we explore the idea of using a lightweight graph structure
+  with a relatively s
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, high): The paper reports that adding
+  graph-based retrieval tools halves hallucinated answers and raises factual
+  precision/recall, i.e., a technique that reduces unsupported generation. No
+  claim has been drafted from it yet."
+ingested_at: 2026-10-30
+brief: >-
+  Adding handwritten graph-query tools on top of vector retrieval cuts
+  hallucinated answers on complex multi-hop questions roughly in half, while
+  the agent still mostly falls back on vector search unless prompted
+  otherwise.
+
+
+  The system is a single LangChain agent on GPT-5.4 (reasoning effort medium)
+  with 11 tools over a Neo4j store built from an August 2025 English Wikipedia
+  snapshot: 5,771,867 nodes and 22,088,251 relationships, schema limited to
+  articles, sections, paragraphs, chunks and links. Three configurations
+  (vector RAG, vector+graph RAG, zero-shot) were run 3 times each on 510
+  MoNaCo questions, judged by Llama-4-Maverick with Ragas.
+
+
+  Factual correctness precision rose from 0.15 to 0.36 and recall from 0.13 to
+  0.33; answer relevancy from 0.35 to 0.61. Fine-grained truthfulness was best
+  for vector+graph RAG at 63, versus 35 for vector RAG and 40.5 for zero-shot.
+  Zero-shot gave 174 fully correct answers but hallucinated on 301 of 510.
+  Total tokens rose from 41694 to 45695.
+
+
+  Evidence is measured with 3 repeats, but on 1 benchmark, 1 reasoning model,
+  no human validation of the judge, and no per-tool ablation; the prompt
+  differed between arms by design.
+
+
+  MoNaCo is Wikipedia-based, so zero-shot is inflated and proprietary-KB
+  generalisation is untested.
+
+
+  Treat lightweight document graphs as a cheap hallucination reducer, not a
+  correctness ceiling.
+brief_generated_at: 2026-10-30
+brief_model: claude-opus-5
+brief_source: full-text

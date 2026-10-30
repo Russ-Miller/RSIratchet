@@ -1,0 +1,44 @@
+arxiv_id: "2606.16047"
+title: "From Argument Components to Graphs: A Multi-Agent Debate with
+  Confidence Gating for Argument Relations"
+url: https://doi.org/10.48550/arxiv.2606.16047
+drafted_at: 2026-10-29
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: "When multi-agent debate is applied to pairwise argument relation
+  classification, its value depends on the initial prediction's uncertainty:
+  routing only low-confidence cases into debate yields a net gain, while
+  debating confident cases flips more correct predictions to wrong than the
+  reverse, so unconditional debate nets out near zero."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Gemini 2.5 Flash debaters with a Gemini 2.5 Pro judge on UKP
+  Argument Annotated Essays v2 (2,407 within-paragraph component pairs,
+  Support/Attack/None); single corpus, gold component boundaries, small
+  margins untested for significance.
+technique: ""
+proposed_technique: Gate multi-agent debate on the initial prediction's confidence
+technique_summary: A manager model estimates label probabilities first and the
+  Proponent-Opponent-Judge debate runs only when top-label confidence falls
+  below a threshold, otherwise the initial label is accepted.
+technique_kind: process
+technique_validated_by: "Macro F1 on the UKP v2 80-essay test split: gated
+  debate (tau=0.70, 14% of samples debated) 0.585 vs 0.578 for the strongest
+  single-agent baseline (Gemini 2.5 Pro reasoning), 0.561 for full debate,
+  0.562 manager-only; at tau=0.70 debate improved 84 and worsened 48
+  predictions, vs 249 improved and 236 worsened under full debate; 86% fewer
+  debate initializations."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On the same or another relation-classification corpus, debating
+  high-confidence cases improves accuracy as much as debating low-confidence
+  ones, or unconditional debate beats the best single-agent baseline.
+evidence_note: Measured on one corpus, one model family, one split; Attack
+  class has only 42 test instances so its F1 moves a lot per prediction, and
+  the 0.585 vs 0.578 margin is untested for significance. The
+  improvement/regression counts across threshold bands are the strongest part
+  of the evidence for the directional mechanism.
+confidence: medium

@@ -1,0 +1,40 @@
+id: 3b-8b-open-instruct-backbones-acting-text-based-interactive-environments-scienceworld
+ref: CLM-0534
+capability: multi-model-coordination
+technique: separate-adapters-sft-planner-rl-executor
+statement: >-
+  For 3B-8B open instruct backbones acting in text-based interactive
+  environments (ScienceWorld, ALFWorld, TextCraft), splitting the agent into
+  a sub-goal planner trained by supervised fine-tuning and an action
+  executor trained by offline-then-online RL, each on its own LoRA adapter,
+  scores higher at pass@1 than a hierarchical baseline that separates roles
+  by prompt while sharing one adapter, and the gain is largest on the
+  hardest, longest tasks.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Text interactive benchmarks with hierarchical sub-goal training data available; 1.5B-8B open backbones; single-rollout pass@1 scoring."
+sources:
+  - source: arxiv-2606-03698
+    stance: supports
+    note: >-
+      Validated by: Pass@1 on in-distribution and out-of-distribution splits
+      of ScienceWorld, ALFWorld and TextCraft across three backbones,
+      against ReAct, Reflexion, ADaPT, GRPO and Glider; ablations swapping
+      which system gets SFT versus RL, flat versus hierarchical, and shared
+      versus role-specific adapters.. Measured on three environments and
+      three backbones with pass@1 and ID/OOD splits, plus component
+      ablations on ScienceWorld with Llama-3.1 8B. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-30
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A matched-compute
+  comparison where a shared-adapter, prompt-separated hierarchical agent
+  trained with the same offline-to-online RL reaches the same or higher
+  pass@1 on these environments, or where swapping SFT and RL between the two
+  roles does not degrade performance.
+submitted_by: agent:claude-opus-5@Russ-Miller

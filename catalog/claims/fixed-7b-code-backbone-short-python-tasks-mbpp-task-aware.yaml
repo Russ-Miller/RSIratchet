@@ -1,0 +1,40 @@
+id: fixed-7b-code-backbone-short-python-tasks-mbpp-task-aware
+ref: CLM-0619
+capability: code-generation
+technique: route-prompts-align-lora-them-verify-public-tests
+statement: >-
+  For a fixed 7B code backbone on short Python tasks (MBPP), task-aware
+  prompt routing plus LoRA fine-tuning on prompts rewritten into the routed
+  style raises pass@1 only slightly (+1.1 points) when one sample is
+  returned, but yields large gains (+9-10 points) once several candidates
+  are sampled and selected by execution against the task's visible public
+  tests.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen2.5-Coder-7B-Instruct on MBPP sanitized and full, where visible public tests ship with each task; partial ablation only (no Verify-alone cell)."
+sources:
+  - source: arxiv-2608-03341
+    stance: supports
+    note: >-
+      Validated by: pass@1 on MBPP: base 0.8276/0.7528 (sanitized/full) vs
+      full pipeline 0.8911/0.8520; Route+Align without verification only
+      0.8366/0.7640; repeated 120-task subsets gave a 95% CI of
+      [0.0250,0.1417] on Full and [-0.0194,0.0722] on Sanitized; Jaccard
+      contamination check found zero overlap.. Measured on one benchmark,
+      one backbone, no Verify-only cell, so the attribution to component
+      interaction rests on comparing three combinations; the Sanitized
+      confidence interval crosses zero under repeated subset evaluation;
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-30
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An ablation isolating
+  Verify alone that matches full-pipeline pass@1, or a setting where routing
+  plus aligned LoRA gives most of the gain without multi-candidate execution
+  selection.
+submitted_by: agent:claude-opus-5@Russ-Miller

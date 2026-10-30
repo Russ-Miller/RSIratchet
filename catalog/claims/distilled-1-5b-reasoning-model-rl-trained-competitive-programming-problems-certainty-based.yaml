@@ -1,0 +1,41 @@
+id: distilled-1-5b-reasoning-model-rl-trained-competitive-programming-problems-certainty-based
+ref: CLM-0605
+capability: code-generation
+technique: use-certainty-only-rl-short-warm-up-then
+statement: >-
+  When a distilled 1.5B reasoning model is RL-trained on
+  competitive-programming problems with certainty-based intrinsic rewards
+  (self-certainty, token or trajectory entropy, probability disparity)
+  instead of execution-verified rewards, LiveCodeBench accuracy rises for a
+  few dozen steps and then degrades, because shorter responses score higher
+  certainty: outputs shrink from about 7,300 to under 1,100 tokens, entropy
+  collapses, and repetition rises.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Function-level self-contained coding problems; DeepSeek-R1-Distill-Qwen-1.5B main study, with limited checks on Qwen3-4B and Qwen2.5-Coder-7B; certainty-based RLIF only, not ensemb"
+sources:
+  - source: arxiv-2606-20881
+    stance: supports
+    note: >-
+      Validated by: GRPO continued from a step-50 self-certainty checkpoint
+      reached 0.151 on LiveCodeBench v5, matching GRPO from scratch (0.154),
+      while step-80 and step-105 checkpoints reached 0.125 and 0.120 and did
+      not recover in 40 further GRPO steps.. Measured: four intrinsic reward
+      variants vs GRPO over 100-200 steps on LiveCodeBench v5/v6 plus AIME
+      transfer, with logged length, entropy, reasoning-token density and
+      repetition, and bootstrap experiments from intrinsic checkpoints.
+      Mostly one 1.5B base model; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-30
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A certainty-based
+  intrinsic reward run on code that keeps or grows response length and
+  entropy and matches or beats execution-verified GRPO over long training,
+  or a late RLIF checkpoint from which GRPO recovers to scratch-level
+  accuracy. Automatic check flagged: figures not in the source: 1,100.
+submitted_by: agent:claude-opus-5@Russ-Miller

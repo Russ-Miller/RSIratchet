@@ -1,0 +1,49 @@
+arxiv_id: "2606.21083"
+title: "Coherence Under Commitment: Probing Generalization and Vacuous
+  Memorization in LLM Logical Reasoning"
+url: https://doi.org/10.48550/arxiv.2606.21083
+drafted_at: 2026-10-29
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: abstention-and-self-knowledge
+statement: When logical reasoning is evaluated by negation consistency — that
+  a model not affirm both a claim and its negation under the same premises —
+  the metric can be satisfied vacuously, because the violation is
+  algebraically max(0, p(\u03c6)+p(\u00ac\u03c6)-1) and any model that spreads
+  low probability over both outcomes scores zero violations regardless of
+  reasoning quality; measuring the commitment mass alongside it separates
+  abstention from coherence.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Dual-query (\u03c6, \u00ac\u03c6) entailment probing with
+  log-probability elicitation; shown on four 1B-3B open-weight models over 204
+  FOLIO examples and 304 LogiQA v2 examples.
+technique: ""
+proposed_technique: Report commitment mass next to negation consistency
+technique_summary: Pose each conclusion and its negation as separate YES/NO
+  queries, read normalized log-probabilities, and report the summed
+  probability mass on decisive outcomes (commitment) and coverage alongside
+  the negation-violation rate.
+technique_kind: process
+technique_validated_by: On FOLIO, Qwen2.5-3B had the lowest mean violation
+  (0.025) but committed on only 7.4% of examples, while TinyLlama-1.1B had
+  79.4% coverage and violations on 100%; coherence-only ranking placed the
+  abstainer first. Rank ordering held across eight (\u03c4,\u03b4) settings,
+  three elicitation formats (\u03c1=1.0), and LogiQA v2 (\u03c1=0.97). No
+  independent human or downstream-utility check of the ranking.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A model with near-zero negation violations that also commits on
+  most examples, or evidence that low-violation models on these probes are not
+  abstaining (coverage comparable to high-violation models), would show
+  violation rate is not driven by withheld commitment.
+evidence_note: Measured on four small (1B-3B) open-weight models, 204 FOLIO
+  items plus 304 LogiQA v2 items with rule-based negation, bootstrap CIs. The
+  core identity v=max(0,c-1) is algebraic, so the mechanism holds by
+  construction for this metric family; the empirical part only shows that real
+  small models occupy both ends of the frontier. No frontier-scale models
+  tested, and accuracy on committed items is sparse (16 examples for the
+  abstainer).
+confidence: medium

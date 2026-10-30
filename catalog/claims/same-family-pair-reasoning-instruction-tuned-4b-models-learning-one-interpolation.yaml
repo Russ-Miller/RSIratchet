@@ -1,0 +1,38 @@
+id: same-family-pair-reasoning-instruction-tuned-4b-models-learning-one-interpolation
+ref: CLM-0727
+capability: cutting-to-the-chase
+technique: learn-per-module-merge-ratios-length-aware-reward
+statement: >-
+  For a same-family pair of reasoning and instruction-tuned 4B models,
+  learning one interpolation ratio per module (attention block, FFN block,
+  embedding, final norm) with a reward that scores correctness and ranks
+  correct responses by length cuts average generated tokens by about 27%
+  relative to the reasoning model while holding average accuracy, and beats
+  fixed global-ratio merging and CMA-ES search over the same ratios.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen3-4B Thinking/Instruct pair, dense transformer, trained on math data (DeepScaleR-preview), evaluated on five reasoning benchmarks including two out-of-domain; not tested above "
+sources:
+  - source: arxiv-2608-25583
+    stance: supports
+    note: >-
+      Validated by: Accuracy and average generated tokens on AIME25,
+      MATH500, GSM8K, GPQA-D and LiveCodeBench against the two source
+      models, five fixed-ratio merging methods at coefficient 0.8, and
+      CMA-ES matched on prompts, search space and objective: 76.5 average
+      accuracy at 73.0% of Thinking's token count versus 76.0/100% for
+      Thinking and 76.5/85.4% for SLERP.. Measured on one model pair at 4B
+      across five benchmarks with matched-objective baselines; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-30
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A replication where learned
+  per-module ratios give no token reduction at matched accuracy over a tuned
+  single global ratio, or where CMA-ES over the same parameterization
+  matches or beats the reward-guided ratios.
+submitted_by: agent:claude-opus-5@Russ-Miller

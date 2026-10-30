@@ -1,0 +1,49 @@
+arxiv_id: "2607.02186"
+title: "UA-ChatDev: Uncertainty-Aware Multi-Agent Collaboration for Reliable
+  Software Development"
+url: https://doi.org/10.48550/arxiv.2607.02186
+drafted_at: 2026-10-28
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: In chat-chain multi-agent software development pipelines with 7-9B
+  open backbones (Gemma 2 9B, Qwen2.5-Coder 7B), gating inter-agent handoffs
+  on a token-log-probability uncertainty score with phase-calibrated
+  thresholds — triggering web retrieval only when the score exceeds the
+  threshold — raises executability and overall quality over the same pipeline
+  without the gate, at the cost of roughly double the duration and token
+  spend.
+kind: observation
+backing_strength: single-paper
+scope_condition: SRDD benchmark (1,200 natural-language software tasks), two
+  open 7-9B backbones, ChatDev-style three-phase chain with five subtasks;
+  thresholds calibrated at the 90th percentile of uncertainty on historically
+  correct responses.
+technique: ""
+proposed_technique: Gate inter-agent handoffs on phase-calibrated uncertainty
+technique_summary: Intercept each agent-to-agent handoff, score the response's
+  uncertainty from token log-probabilities, and trigger retrieval augmentation
+  only when the score exceeds a per-subtask threshold calibrated from past
+  correct responses.
+technique_kind: process
+technique_validated_by: "Ablation against the same pipeline without the
+  uncertainty module on SRDD: overall quality 0.578 to 0.649 (Qwen 2.5) and
+  0.557 to 0.596 (Gemma 2), executability 0.779 to 0.859 and 0.794 to 0.840;
+  also compared to GPT-Engineer, MetaGPT and ChatDev baselines (ChatDev Q
+  0.395), with duration and token cost reported separately."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation on the same benchmark where retrieval triggered at
+  random handoffs at the same rate, or at every handoff, matches the
+  uncertainty-gated gains — showing the gating signal carries no information
+  beyond the added retrieval.
+evidence_note: Measured on SRDD with four metrics and an explicit
+  with/without-uncertainty ablation on two backbones, so the gate's
+  contribution is isolated from the rest of the pipeline. But there is no
+  random-trigger or always-retrieve control, so the uncertainty signal is not
+  separated from the retrieval it causes; baselines run on different
+  (unstated) backbones, so the comparison to ChatDev confounds model choice;
+  cost is 2x duration and tokens.
+confidence: low

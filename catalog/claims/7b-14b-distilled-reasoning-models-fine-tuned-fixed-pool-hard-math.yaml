@@ -1,0 +1,40 @@
+id: 7b-14b-distilled-reasoning-models-fine-tuned-fixed-pool-hard-math
+ref: CLM-0551
+capability: self-repair
+technique: resample-correct-continuations-truncated-failed-traces
+statement: >-
+  For 7B-14B distilled reasoning models fine-tuned on a fixed pool of hard
+  math problems, training on continuations resampled from truncated failed
+  trajectories (with loss masked on the erroneous prefix) beats
+  rejection-sampling fine-tuning on correct trajectories at matched data
+  volume, and keeps improving from 2k to 10k examples where the
+  positive-only baseline peaks and then declines.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "DeepSeek-R1-Distill-Qwen 7B/14B, 3k seed math problems, rule-based answer verifier, data volumes 2k-10k; truncation at half the failed chain worked better than three quarters."
+sources:
+  - source: arxiv-2609-19156
+    stance: supports
+    note: >-
+      Validated by: Pass@1 on AIME 2024/2025, LiveCodeBench, GPQA,
+      OlympiadBench, Minerva against RFT at equal trajectory count (e.g. 7B
+      AIME 2025 37.5 vs 34.7 RFT vs 30.0 base; Minerva 47.8 vs 46.7);
+      scaling curves 2k-10k showing RFT dropping 35.3 to 30.0 on AIME 2025
+      while the method keeps rising.. Measured on two model sizes and seven
+      benchmarks against an RFT baseline matched on trajectory count; gains
+      are a few points (2.8 on AIME 2025 at 7B) with only pass@1 reported
+      and no seed variance or confidence intervals. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-30
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Matched-volume
+  comparison on other backbones or problem pools where recovery-curated data
+  does not beat RFT, or where RFT also scales smoothly from 2k to 10k, would
+  show the collapse is an artifact of this setup rather than of
+  positive-only supervision.
+submitted_by: agent:claude-opus-5@Russ-Miller

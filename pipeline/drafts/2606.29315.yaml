@@ -1,0 +1,51 @@
+arxiv_id: "2606.29315"
+title: Hierarchical Experimentalist Agents
+url: https://doi.org/10.48550/arxiv.2606.29315
+drafted_at: 2026-10-27
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: harness-self-improvement
+statement: On interactive physics tasks where a frozen LLM scores near zero
+  zero-shot, distilling its own successful and failed experiment trajectories
+  into a capped bank of named strategy skills and mistake records, and
+  re-injecting the bank on later episodes, raises held-out success far above a
+  ReAct loop with the same tools (catapult 11% to 82.7%, pass-the-parcel 20%
+  to 96% with Claude Sonnet 4.6) while cutting interaction turns roughly in
+  half.
+kind: observation
+backing_strength: single-paper
+scope_condition: Tasks exposing programmatic experimentation APIs (scene
+  inspection, intervention, partial simulation) where zero-shot success is ~0;
+  skills built on training seeds, frozen, evaluated on disjoint seeds; three
+  runs per cell.
+technique: ""
+proposed_technique: Distill experiment trajectories into a capped skill-plus-mistake bank
+technique_summary: An evolver LLM contrasts high- and low-reward trajectories
+  after each round and maintains a bounded external bank of strategy skills
+  and recurring-mistake records, retrieved into the frozen actor's context for
+  later episodes.
+technique_kind: process
+technique_validated_by: Held-out solve rate and mean turns per seed against
+  zero-shot, ReAct, Reflexion, Episodic RAG, MemRL and budget-matched GRPO,
+  across eight Interphyre levels plus four reasoning tasks, four games and
+  DiscoverPhysics; frozen-bank controls swapped in wrong-level skills of
+  comparable length (two_body 50.0% to 9.3%) and dropped the two
+  highest-reward skills (down_to_earth 76.7% to 65.3%) versus no change for
+  the two lowest.
+stance_on_existing: supports
+related_claim_id: distilling-lessons-from-failures-as-well-as-successes-beats-raw-trajectory-memory
+stance_reason: HExA likewise beats raw-trajectory episodic memory (catapult
+  82.7% vs 62.9% Episodic RAG, 49% MemRL) and draws skills from failed as well
+  as successful trajectories.
+falsifier: A matched-token-budget comparison in which ReAct given the same
+  number of extra tool calls, or episodic retrieval of raw trajectories,
+  reaches the same held-out solve rate; or the wrong-level-skill control
+  performing as well as the task-specific bank.
+evidence_note: Measured on a benchmark the authors built, with three runs and
+  standard deviations, multiple backbones and several ablations isolating bank
+  content and ranking. Total token cost is reported as lower than memory
+  baselines, but the headline comparison is not matched on interaction turns
+  with ReAct, and the controlled baseline for 'more text in context' is a
+  length-matched wrong-level bank rather than a tuned prompt.
+confidence: medium

@@ -1,0 +1,46 @@
+arxiv_id: "2606.24790"
+title: "Grad Detect: Gradient-Based Hallucination Detection in LLMs"
+url: https://doi.org/10.48550/arxiv.2606.24790
+drafted_at: 2026-10-27
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: In white-box instruction-tuned models of 1B-12B across four
+  families, per-layer gradients of a teacher-forced loss on fixed probe
+  responses (e.g. 'Sure'/'Unfortunately'), scored by cosine similarity to
+  per-category reference gradients, separate correct from incorrect
+  closed-book QA answers better than max-softmax confidence, perplexity,
+  self-assessment, self-consistency, semantic entropy and a last-layer
+  activation probe, at about 2x inference cost.
+kind: observation
+backing_strength: single-paper
+scope_condition: Short-answer factual QA (TriviaQA, SciQ, PopQA, TruthfulQA),
+  greedy decoding, dense transformers 1B-12B, white-box parameter access
+  required; labels from an LLM judge.
+technique: ""
+proposed_technique: Score gradients against per-category reference gradients
+technique_summary: For each query, run one forward-backward pass on a fixed
+  probe response, compare each layer's MLP down-projection gradient to
+  averaged per-category reference gradients by cosine similarity, and classify
+  the resulting layer-by-category matrix with a small transformer encoder.
+technique_kind: tooling
+technique_validated_by: Accuracy and AUC on the Correct-vs-Incorrect task
+  across 11 models and 4 QA benchmarks, against six baselines including
+  semantic entropy and last-layer activation probing; reported 71-78%
+  accuracy, AUC .78-.86, with last-5-layer variant retaining 98-99% of
+  accuracy.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An independent evaluation where gradient-similarity features do not
+  beat semantic entropy or a last-layer activation probe on correctness AUC
+  for the same models and datasets, or where the gain disappears once the
+  reference set is drawn from a different dataset than the test set.
+evidence_note: Measured on 11 models x 4 benchmarks with three seeds, against
+  six baselines. Numbers are suspiciously smooth and monotone across models
+  and datasets; several key analyses (layer ablation, probe invariance,
+  timing) are deferred to appendices not included. Reference gradients are
+  built from labeled in-distribution samples of the same dataset, so
+  cross-dataset generalization of the detector is not isolated.
+confidence: low

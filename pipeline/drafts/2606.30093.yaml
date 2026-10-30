@@ -1,0 +1,44 @@
+arxiv_id: "2606.30093"
+title: Efficient Retrieval-Augmented Generation via Token Co-occurrence Graphs
+url: https://doi.org/10.48550/arxiv.2606.30093
+drafted_at: 2026-10-28
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-step-reasoning
+statement: For multi-hop QA over a fixed document corpus, building the
+  retrieval graph from token co-occurrence statistics rather than
+  LLM-extracted entities and relations raises gold-evidence recall and
+  downstream EM/F1 over dense and LLM-built-graph RAG baselines while cutting
+  indexing time by orders of magnitude, with the gain depending on PPR-based
+  expansion plus neural reranking rather than on the graph alone.
+kind: observation
+backing_strength: single-paper
+scope_condition: Three English multi-hop QA benchmarks (HotpotQA,
+  2WikiMultiHopQA, MuSiQue), 1,000 subsampled queries each, gemma3:27b
+  generator, 2 retrieval hops, top-5 chunks in context.
+technique: ""
+proposed_technique: Build the RAG graph from token co-occurrence, not LLM extraction
+technique_summary: Links corpus tokens by sliding-window co-occurrence into a
+  weighted graph, expands query seed tokens with Personalized PageRank, scores
+  candidate chunks by PPR-weighted BM25, then reranks by embedding similarity
+  and iterates using named entities from the top chunk.
+technique_kind: retrieval
+technique_validated_by: Recall@2/@5 and EM/F1 against NaiveRAG, HippoRAG2,
+  LightRAG, GraphRAG, RAPTOR, KGP, ToG on three benchmarks, plus indexing
+  time, end-to-end latency and context token count; ablations removing BM25
+  (marginal), replacing PPR with degree centrality (large drop), and removing
+  reranking (large drop).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A replication where a token co-occurrence graph fails to beat
+  LLM-extracted-KG GraphRAG on multi-hop recall under matched generators and
+  chunking, or where the gain disappears once the reranker is also added to
+  the baselines.
+evidence_note: Measured on three benchmarks with a shared prompt and hardware;
+  margins over the strongest baseline are modest on MuSiQue (HippoRAG2 scores
+  slightly higher EM) and the baselines were not given the same reranking
+  stage, so part of the gain may be the reranker rather than the graph
+  construction. Single paper, one generator model, code not yet released.
+confidence: low

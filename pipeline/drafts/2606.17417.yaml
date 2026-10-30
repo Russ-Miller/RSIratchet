@@ -1,0 +1,44 @@
+arxiv_id: "2606.17417"
+title: A Closer Look at Failure Modes in Temporal Understanding of Large
+  Audio-Language Models
+url: https://doi.org/10.48550/arxiv.2606.17417
+drafted_at: 2026-10-29
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: audio-understanding
+statement: In open-weight large audio-language models answering temporal
+  questions about onset, offset and duration, multiplicatively rescaling
+  (sharpening or smoothing) the attention distribution over audio tokens
+  corrects more initially wrong answers than simply adding attention mass to
+  audio tokens, so audio-text modality imbalance alone does not account for
+  temporal reasoning failures.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Two fully open 7-8B LALMs (Audio-Flamingo-3, DeSTA-2.5-Audio)
+  on 1,657 four-way multiple-choice questions built from TACOS real-world
+  clips; interventions applied training-free to pre-softmax logits from the
+  final prompt and keyword tokens. Which direction helps is model-dependent
+  (sharpening for one, smoothing for the other).
+technique: ""
+proposed_technique: Rescale audio-token attention at one bottleneck layer
+technique_summary: At inference, multiply the pre-softmax attention logits
+  from the final prompt token and task keyword tokens to audio tokens by a
+  per-model coefficient, applied at a single layer chosen by a layer sweep.
+technique_kind: decoding
+technique_validated_by: "Fix rate on initially incorrect items (scaling ~20%
+  vs ~10-16% for best upweighting) and accuracy on the three tasks: all-layer
+  intervention dropped accuracy below baseline, while single-layer scaling
+  raised average accuracy from 55.9% to 59.1%."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On the same or similar temporal audio tasks, attention upweighting
+  matching or exceeding scaling fix rates across models, or a model where only
+  total audio attention mass predicts correction.
+evidence_note: Measured on 1,657 constructed questions, two models, three
+  tasks, with a silence-ablation check that answers need audio. Only two
+  models, one dataset source, one intervention family; the gain from
+  layer-targeted scaling is small (3.2 points averaged) and the paper concedes
+  other mechanisms (weak audio encoder representations) are not ruled out.
+confidence: low

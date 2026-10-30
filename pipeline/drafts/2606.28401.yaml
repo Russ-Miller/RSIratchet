@@ -1,0 +1,50 @@
+arxiv_id: "2606.28401"
+title: Vision-driven Preference Synthesis for Mitigating Hallucinations in VLMs
+url: https://doi.org/10.48550/arxiv.2606.28401
+drafted_at: 2026-10-28
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: "When building DPO preference pairs to reduce object hallucination
+  in 7-13B vision-language models, both parts matter: candidate responses must
+  be sampled from the policy itself (externally generated rollouts raise
+  hallucination sharply) and must be conditioned on an object-level visual cue
+  extracted by comparing the image with diffusion-synthesized variants of the
+  model's own captions (removing the cue roughly doubles the hallucination
+  average)."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: LLaVA-1.5-7B/13B plus Qwen2.5-VL-7B, InternVL3.5-8B,
+  mPLUG-Owl3-7B, Kimi-VL-A3B; preference data from Visual Genome images; DPO
+  objective; captioning/description-style hallucination benchmarks (Object
+  HalBench, AMBER).
+technique: ""
+proposed_technique: Condition policy rollouts on cues mined from synthetic image variants
+technique_summary: Caption the image with the policy itself, generate image
+  variants from those captions with a text-to-image diffusion model, aggregate
+  the object-level content recurring across original-variant comparisons into
+  a visual cue, then sample the policy's own rollouts conditioned on that cue
+  and have a judge pick the most and least grounded as a DPO pair.
+technique_kind: training
+technique_validated_by: Object HalBench response/mention rates and AMBER
+  CHAIR/Hal./Cog. against 13 prior mitigation baselines, plus
+  MMStar/MMVP/CV-Bench general benchmarks; ablations swapping the captioner,
+  the T2I model, the rollout source (self vs GPT-5 mini vs Qwen3-VL-30B),
+  removing the cue, and replacing diffusion variants with
+  crop/resize/mask/translation/video.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation on the same setup where preference pairs built from
+  externally sampled rollouts, or from policy rollouts with no visual cue,
+  match cue-conditioned self-rollouts on Object HalBench and AMBER.
+evidence_note: "Measured on two LLaVA-1.5 sizes against many baselines, with
+  the two load-bearing components ablated separately: removing the cue moves
+  the hallucination average from 3.72 to 7.14, and replacing self-rollouts
+  with external VLM rollouts moves it to 11.22-16.00. Generalization shown as
+  vanilla-vs-ViPSy only on four other backbones, with no competing-method
+  baselines there. Judge agreement across three judges was 95.8-98.4%.
+  Benchmarks are mostly captioning-style, and the paper does not report object
+  coverage, so part of the hallucination drop could come from saying less."
+confidence: medium

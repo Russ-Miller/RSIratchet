@@ -32,3 +32,39 @@ notes: "Filed as a source on fine-tuning-retention from the classifier's
   general skills alongside domain knowledge. No claim has been drafted from it
   yet."
 ingested_at: 2026-09-23
+brief: >-
+  Fixing catastrophic forgetting does not make a domain-tuned model able to
+  use its general skills on domain tasks. A model can keep producing complete
+  reasoning chains after legal fine-tuning while still failing to bring
+  law-article knowledge into them, which the authors call General Capabilities
+  Integration (GCI) as distinct from CF.
+
+
+  The setup is Chinese legal LLMs fine-tuned on Article QA or Legal IE, then
+  tested on 3 held-out task groups built for this purpose: reasoning plus
+  numerical calculation, safe dialogue (Ethic, Contamination), and legal event
+  Summary/MRC, with GPT-4 used both to expand seed data and to score safety.
+  Baselines include LoRA SFT, wise-ft at 4 mixing weights, L1/L2/KL
+  regularization, DAS, MixTraining and MixDA*. ALoRA adds a multi-head
+  attention module over LoRA so the adapter reads preceding tokens.
+
+
+  6 baselines reach 100 on reasoning "Chain" while BLEU_R stays low. DAS
+  raises training-task scores but leaves test tasks near the untuned chat
+  model (Score_E of 2, same as general LLM). ALoRA's best average beats
+  baselines by 0.87 on reasoning/calculation and by 1.81 BLEU / 2.68 ROUGE on
+  MRC.
+
+
+  Ablations isolate the attention module (removing it costs nearly 10) and
+  control parameter count by raising LoRA rank 8 to 16, which gains only about
+  0.7. Gains are small relative to that control, and ALoRA degrades on
+  long-verdict Event Summary when trained on domain data alone.
+
+
+  Only the legal domain and 1 base model in the main tables; finance,
+  healthcare, education untested. Worth reading if you assume forgetting
+  mitigation is sufficient for domain deployment.
+brief_generated_at: 2026-10-30
+brief_model: claude-opus-5
+brief_source: full-text

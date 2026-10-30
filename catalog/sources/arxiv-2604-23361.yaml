@@ -1,20 +1,52 @@
 id: arxiv-2604-23361
 ref: SRC-0353
 kind: paper
-title: "An Empirical Evaluation of Locally Deployed LLMs for Bug Detection in Python Code"
+title: An Empirical Evaluation of Locally Deployed LLMs for Bug Detection in
+  Python Code
 year: 2026
 date: 2026-04-25
 arxiv_id: "2604.23361"
 url: https://arxiv.org/abs/2604.23361
-tags: [ingested]
-summary: >-
-  Large language models (LLMs) have demonstrated strong performance on a
-  wide range of software engineering tasks, including code generation and
+tags:
+  - ingested
+summary: Large language models (LLMs) have demonstrated strong performance on
+  a wide range of software engineering tasks, including code generation and
   analysis. However, most prior work relies on cloud-based models or
-  specialized hardware, limiting practical applicability in
-  privacy-sensitive or resource-constrained environments. In this paper, we
-  present a systematic empirical evaluation of two locally deployed LLMs,
-  LLaMA 3.2 and Mistral, for real-world Python bug detection using the
-  BugsInPy benchmark. We evaluate 349 bugs across 17 projects using a
-  zero-shot prompting approach at the function leve
+  specialized hardware, limiting practical applicability in privacy-sensitive
+  or resource-constrained environments. In this paper, we present a systematic
+  empirical evaluation of two locally deployed LLMs, LLaMA 3.2 and Mistral,
+  for real-world Python bug detection using the BugsInPy benchmark. We
+  evaluate 349 bugs across 17 projects using a zero-shot prompting approach at
+  the function leve
 ingested_at: 2026-09-19
+brief: >-
+  Small quantized models running on a laptop identify roughly 43-45% of real
+  Python bugs when told a bug exists and shown the enclosing function, but
+  they far more often flag that something is wrong than name the fix.
+
+
+  LLaMA 3.2 (8B) and Mistral (7B), both 4-bit quantized under Ollama on an M1
+  Pro MacBook with 16GB, were given a zero-shot prompt over 349 BugsInPy bugs
+  from 17 projects (pandas, keras, scrapy, matplotlib, others), 69.7% of the
+  501-bug dataset. Grading was keyword-based: correct if the response contains
+  a token introduced by the fix, partial if it only names a problem.
+
+
+  Mistral scored 44.4% (155 correct, 161 partial, 33 wrong), LLaMA 3.2 43.3%
+  (151/171/27). McNemar's test on paired predictions gives p = 0.68, so the
+  gap is not distinguishable. Accuracy by project ranges 0% (tqdm, LLaMA) to
+  100% (PySnooper). By bug type, Null/None Check reaches about 60%, Type
+  Conversion 0%, Other/Complex 21.7% and 16.7%.
+
+
+  The grading is heuristic and self-acknowledged as a lower bound; validation
+  was a manual check of 50 responses by the author, with agreement reported
+  only qualitatively. The baseline is random keyword matching, stated as below
+  5%, not measured. 2 models, 1 language, 1 dataset, and the prompt guarantees
+  a bug exists, which removes false-positive pressure.
+
+
+  Treat local models as region-narrowing assistants, not localizers.
+brief_generated_at: 2026-10-30
+brief_model: claude-opus-5
+brief_source: full-text

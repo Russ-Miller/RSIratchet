@@ -1,0 +1,39 @@
+id: rl-fine-tuning-lora-adapter-frozen-large-vla-policy-openvla
+ref: CLM-0719
+capability: embodied-control
+technique: regularize-vla-rl-toward-frozen-sft-policy-then
+statement: >-
+  When RL fine-tuning a LoRA adapter on a frozen large VLA policy (OpenVLA)
+  with sparse progress rewards, adding a decaying KL penalty toward the
+  frozen SFT policy inside the PPO objective reaches the 2M-step plain-PPO
+  level of in-distribution and out-of-distribution success at about 1M
+  environment steps, whereas simply initializing PPO from the same SFT
+  adapter adapts more slowly and stays below it, especially on action-shift
+  OOD.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "LoRA adaptation of a frozen OpenVLA backbone in the RL4VLA simulated benchmark, sparse difference-based progress reward, 80-step horizon, one or two training seeds per configuratio"
+sources:
+  - source: arxiv-2607-19399
+    stance: supports
+    note: >-
+      Validated by: In-distribution (64 episodes) and out-of-distribution
+      (960 episodes over 15 shifted environments) success rates: RefKL at 1M
+      steps 0.93 IND / 0.77 OOD vs plain PPO at 1M 0.75/0.64 and plain PPO
+      at 2M 0.92/0.77; SFT-init PPO 0.87/0.69; DataBC 0.91/0.74; beta
+      ablation shows stronger initial guidance is better and no-curriculum
+      is worse (0.86/0.75).. Measured on one benchmark and one model family,
+      with a single reward formulation; some configurations run from one
+      seed and the authors state variance is not well estimated. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-30
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: On the same benchmark with
+  more seeds, or on another VLA architecture, KL-to-reference PPO fails to
+  match 2M-step PPO at half the budget, or SFT-initialized PPO matches it.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,41 @@
+id: repository-level-code-generation-domain-specific-language-thinly-represented-pretraining-solidity
+ref: CLM-0718
+capability: code-generation
+technique: fine-tune-domain-spec-code-pairs-instead-prompting
+statement: >-
+  For repository-level code generation in a domain-specific language thinly
+  represented in pretraining (Solidity smart contracts, 7B code models),
+  prompting-based adaptation gives only partial gains — structured
+  chain-of-thought lifts the weakest model most and in-context learning
+  saturates past about two examples, with retrieval-augmented generation
+  best among non-parametric methods — while supervised fine-tuning on domain
+  spec-code pairs gives the largest improvement in semantic correctness.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "7B-class open code LLMs (Qwen2.5-Coder, DeepSeek-Coder, CodeLlama) generating whole repository-level Solidity contracts from natural-language specifications; scored by BLEU and a S"
+sources:
+  - source: arxiv-2606-19988
+    stance: supports
+    note: >-
+      Validated by: BLEU and SolidityScore (a Solidity-encoder embedding F1
+      with domain-weighted tokens) on a 547-sample held-out split of a
+      5,470-contract benchmark, compared against zero-shot, structured CoT,
+      ICL and RAG with the same backbones; compilation success reported only
+      as an auxiliary signal.. Measured across three 7B code models and five
+      adaptation paradigms on a new 5,470-contract benchmark with an 8:1:1
+      split. Zero-shot and SCoT numbers are in the text (e.g. CodeLlama BLEU
+      7.99 to 17.59); [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-30
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A matched-budget
+  comparison on repository-level Solidity generation in which
+  retrieval-augmented or in-context prompting equals or beats domain
+  supervised fine-tuning on semantic-correctness and compilation measures,
+  or in which ICL keeps improving well beyond two examples.
+submitted_by: agent:claude-opus-5@Russ-Miller
