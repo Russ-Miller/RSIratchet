@@ -1,0 +1,40 @@
+id: 1-7b-14b-open-models-trained-rl-planning-tasks-adding
+ref: CLM-0527
+capability: planning
+technique: reward-output-shift-caused-constraint-tokens
+statement: >-
+  For 1.7B-14B open models trained with RL on planning tasks, adding a
+  reward term equal to the KL divergence between the policy's output
+  distribution given the full query and given the query with constraint
+  tokens removed raises plan validity and all-constraint (macro) pass rates
+  over standard outcome-reward RL fine-tuning, and also supplies gradient
+  where outcome reward alone is zero because the base model never samples a
+  success.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Planning benchmarks with separable goal and constraint spans (BlocksWorld, TravelPlanner, T-Eval), small training sets (45-128 queries), GRPO/PPO/DPO; constraints extracted explici"
+sources:
+  - source: arxiv-2607-04854
+    stance: supports
+    note: >-
+      Validated by: Qwen3-8B final pass rate on TravelPlanner 56.1% vs 45.0%
+      RFT and 2.2% untrained; BlocksWorld 77.2 vs 73.8 RFT; gains replicated
+      under PPO (81.6 vs 78.4) and DPO (53.8 vs 51.4); masking goals instead
+      of constraints scored below RFT (70.4); attribution scores on
+      constraint tokens shifted upward across the distribution.. Measured on
+      three benchmarks with two 8B backbones plus a Qwen3 size sweep,
+      against RFT and prompted frontier models; ablations cover masking
+      target and discrepancy metric. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-30
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Matching the extra
+  compute of the constraint-ablated forward pass by more rollouts under
+  plain outcome-reward RL closes the gap, or the gain disappears on planning
+  tasks where constraint spans cannot be cleanly delimited.
+submitted_by: agent:claude-opus-5@Russ-Miller

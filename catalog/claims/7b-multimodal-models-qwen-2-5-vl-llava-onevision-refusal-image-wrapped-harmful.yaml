@@ -1,0 +1,42 @@
+id: 7b-multimodal-models-qwen-2-5-vl-llava-onevision-refusal-image-wrapped-harmful
+ref: CLM-0559
+capability: jailbreak-robustness
+technique: prune-visual-tokens-farthest-text-features-mid-layers
+statement: >-
+  In 7B multimodal models (Qwen-2.5-VL, LLaVA-OneVision), refusal of
+  image-wrapped harmful requests depends on which visual tokens are dropped
+  and at which layer: pruning the visual tokens farthest from the late text
+  tokens' attention at intermediate layers (~13-18 of 28) raises
+  refuse-to-answer and harmless-output rates, while existing
+  efficiency-motivated pruning (FastV, PDrop, average pooling, VTW) leaves
+  safety unchanged or lowers it, and pruning the closest tokens degrades it
+  sharply.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Two 7B open MLLMs, structure-based jailbreak benchmarks (SafeBench, HADES, MM-SafetyBench) plus transferred PGD image attacks; pruning layer and ratio chosen by grid search on a va"
+sources:
+  - source: arxiv-2607-22716
+    stance: supports
+    note: >-
+      Validated by: Average refuse-to-answer rate on three jailbreak
+      benchmarks rose from 20.38% to 33.67% and harmless-output rate from
+      39.97% to 50.09% on Qwen-2.5-VL, above four prior
+      visual-token-compression baselines; HallusionBench accuracy 59.73% to
+      60.48%; MME perception/cognition slightly above vanilla, OCRBench
+      lower (861 to 753); ablations against pruning smallest-distance and
+      random tokens.. Measured on seven benchmarks with two 7B backbones and
+      four compression baselines; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-30
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Showing that
+  redundancy-based pruning at the same layer and ratio gives the same
+  refusal gains, or that the distance-ranked pruning gives no gain on other
+  backbones or attack families once the layer is fixed without
+  validation-set search.
+submitted_by: agent:claude-opus-5@Russ-Miller

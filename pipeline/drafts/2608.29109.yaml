@@ -1,0 +1,54 @@
+arxiv_id: "2608.29109"
+title: "Recognition-Refusal Misalignment in LLMs: Why Models Answer
+  Structurally Unanswerable Questions"
+url: https://doi.org/10.48550/arxiv.2608.29109
+drafted_at: 2026-10-20
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: abstention-and-self-knowledge
+statement: For instruction-tuned transformer LLMs (1.7B-70B) given
+  structurally impossible math or code prompts (division by zero, invalid
+  attribute calls), the pre-generation hidden state carries a linearly
+  readable 'no admissible answer' signal that a single residual-stream
+  direction recovers (mean AUC 0.939 over 22 model-dataset cells), yet that
+  direction is near-orthogonal to the canonical safety-refusal direction (mean
+  cosine 0.087), so answering confidently is a routing failure rather than
+  missing recognition.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Structural, formally checkable impossibility in math and code
+  prompts; text-only decoder-only open-weight transformers; does not hold as
+  cleanly for epistemic unanswerability (SQuAD 2.0-style) or false-premise
+  questions, which the paper treats as boundary tests.
+technique: ""
+proposed_technique: Read impossibility from the answerable-null residual subspace
+technique_summary: Fit PCA on hidden states of answerable prompts, project all
+  states out of that subspace, and score the mean-difference direction between
+  answerable and impossible prompts by cosine to detect pre-generation
+  impossibility.
+technique_kind: architecture
+technique_validated_by: "One-dimensional cosine probe on held-out
+  answerable/unanswerable splits, 5 seeds, 22 model-dataset cells: mean AUC
+  0.939 in the answerable-null subspace vs 0.907 full residual stream and
+  0.890 top-k answerable-PC subspace; generation-time steering along the
+  direction changed invalidity-aware behaviour bidirectionally (+33 to +52pp
+  gated flip over matched random directions) while random directions did not."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Showing that on the same structural prompts the impossibility
+  direction aligns closely with the behavior-verified safety-refusal direction
+  (cosine near 1), or that no low-capacity linear probe separates answerable
+  from impossible prompts pre-generation above chance, or that steering along
+  the direction does not change abstention behaviour relative to matched
+  random directions.
+evidence_note: "Measured: 22 cells across 11 instruct models for probe AUC and
+  cosine geometry with bootstrap CIs and a same-subspace control; causal
+  steering tested on only 4 anchor models x 3 datasets, with 10 of 24 slots
+  anchor-quality and behaviour labels LLM-assisted rather than fully
+  human-adjudicated. Base/instruct pairs (6) indicate the geometry predates
+  instruction tuning. Design does not rule out other unmeasured abstention
+  directions, and the steering effect varies with each model's tolerance for
+  residual perturbation, a confound the authors flag as post hoc."
+confidence: medium

@@ -1,0 +1,44 @@
+id: agents-must-pick-user-s-realized-choice-candidates-user
+ref: CLM-0576
+capability: long-term-memory
+technique: rewrite-vague-query-history-before-ranking
+statement: >-
+  When agents must pick a user's realized choice from candidates the user
+  actually viewed, given a vague early-stage query and 60 days of real
+  heterogeneous interaction history, current LLMs extract little usable
+  preference signal from that history — adding the history lifts Hit@1 only
+  about 7-9% over no history (and a 6-record history is nearly as good as
+  60), while the same history lifts a trained personalized-search model by
+  about 84%.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Personalized product search on 5,648 cases from one content-commerce platform; vague 'intent' queries with hard candidate sets (~14 items, ≥9 same-category products the user viewed"
+sources:
+  - source: arxiv-2607-03162
+    stance: supports
+    note: >-
+      Validated by: Hit@1/Hit@5 on APeB intent queries across eight LLMs
+      versus single-prompt, ReAct and Deerflow baselines; gains are
+      consistent but small (e.g. Qwen3 24.9 to 26.3, GPT5.2Think 26.4 to
+      26.9), with rubric scores showing improved query inference and
+      recommendation quality.. Measured: history ablation (@0, @6
+      category-prior, @60 category-prior) on Hit@1 for UniSAR, Qwen3, GPT5.2
+      and R1, plus candidate ablation showing random-negative Hit@1 of
+      81-96% collapsing to 22-26% on hard candidates. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-30
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A setup where the same
+  histories and hard candidates are supplied and an LLM workflow gains as
+  much Hit@1 from history as the trained PPS baseline does, without query
+  rewriting. Drafted stance toward
+  preference-needed-answer-query-lies-different-concept-space-cues: supports
+  -- Both find that retrieval- and summarization-based personalization over
+  user history barely beats a no-history baseline when the needed preference
+  is not directly stated in the history.
+submitted_by: agent:claude-opus-5@Russ-Miller

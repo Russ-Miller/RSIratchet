@@ -1,0 +1,43 @@
+id: llm-data-preparation-pipelines-specialist-domains-math-finance-law-medicine
+ref: CLM-0658
+capability: harness-self-improvement
+technique: evolve-data-generation-pipeline-pilot-sets-before-scaling
+statement: >-
+  For LLM data-preparation pipelines in specialist domains (math, finance,
+  law, medicine), diagnosing a small pilot set of generated samples against
+  domain-selected quality criteria and rewriting the individual pipeline
+  components (chunking, instruction builder, response generator) before
+  full-scale generation yields training data with higher downstream
+  fine-tuning utility than post-hoc filtering or one-shot agent/skill
+  generators using the same backbone — but the gain is non-monotonic in
+  rounds, peaking at two and degrading after.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "GPT-5.6 Sol as the coding-agent backbone; two RSI rounds; downstream SFT of Qwen2.5-7B and Llama-3.1-8B on domain data mixed with Dolly-15k; four domains with 53-154 source documen"
+sources:
+  - source: arxiv-2608-29966
+    stance: supports
+    note: >-
+      Validated by: Downstream benchmark averages after SFT on the produced
+      data, versus DataFlow filtering pipelines, direct LLM generators,
+      agent generators and skill generators including same-backbone
+      controls: +3.3 Math, +1.3 Finance, +1.4 Law, +2.2 Medical over the
+      strongest competitor on Qwen2.5-7B, and +3.8/+6.2/+7.9/+5.9 over the
+      same-backbone skill generator; round sweep shows Math 25.6 to 28.4 to
+      28.8 then 26.1.. Measured on DataPrep-Bench across four domains with
+      two downstream base models and same-backbone agent/skill controls,
+      which isolates framework from backbone. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-30
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A matched comparison in
+  which post-hoc filtering of a larger candidate pool, or the same backbone
+  given equal compute without pipeline evolution, produces data with equal
+  or better downstream domain scores; or rounds beyond two improving
+  monotonically.
+submitted_by: agent:claude-opus-5@Russ-Miller

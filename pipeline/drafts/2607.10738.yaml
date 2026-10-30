@@ -1,0 +1,43 @@
+arxiv_id: "2607.10738"
+title: "To Answer or to Abstain: Mitigating Search-Agent Hallucinations via
+  Abstention-Aware Reinforcement Learning"
+url: https://doi.org/10.48550/arxiv.2607.10738
+drafted_at: 2026-10-26
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: abstention-and-self-knowledge
+statement: For GRPO-trained multi-hop search agents (Qwen2.5-7B-Instruct), a
+  constant reward for abstaining either collapses the policy into near-total
+  refusal when trained from scratch or trades precision against accuracy
+  one-for-one after a cold start, whereas setting each query's abstention
+  reward from the model's measured prior success rate on that query raises
+  precision (0.559 to 0.662) for a small accuracy loss (0.552 to 0.529).
+kind: mechanism
+backing_strength: single-paper
+scope_condition: 7B instruct backbone, Wikipedia search environment, three
+  multi-hop QA benchmarks (HotpotQA, 2WikiMultiHopQA, MuSiQue), GRPO with an
+  LLM judge; untested at larger scale or on other task types.
+technique: ""
+proposed_technique: Set the abstention reward from each query's prior success rate
+technique_summary: Before RL, estimate the abstain-free checkpoint's per-query
+  success probability, set the refusal reward to one minus that probability
+  raised to a tunable 'courage' exponent, and adjust it each batch by the gap
+  between observed and expected refusal rate.
+technique_kind: training
+technique_validated_by: Averaged accuracy, refusal rate, precision and a
+  precision/accuracy harmonic mean (RA-F1) over three multi-hop QA benchmarks,
+  against non-abstaining RL, refusal-trajectory SFT mixing, unanswerable-query
+  mixing, and static refusal rewards; best RA-F1 0.585 vs 0.556 baseline.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A static refusal reward tuned per setting matching the
+  query-conditioned reward's precision at equal accuracy, or the
+  prior-anchored reward failing to beat static rewards on another backbone or
+  benchmark set.
+evidence_note: Measured on one 7B backbone across three benchmarks, with
+  ablations over courage factor, static reward values and data-mixing ratios;
+  averaged metrics only in the main text, no seed variance reported, and the
+  sweet-spot gamma was selected on the same evaluation.
+confidence: medium

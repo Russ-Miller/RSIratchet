@@ -1,0 +1,49 @@
+arxiv_id: "2606.18043"
+title: Uncertainty Quantification for Flow-Based Vision-Language-Action Models
+url: https://doi.org/10.48550/arxiv.2606.18043
+drafted_at: 2026-10-29
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: For flow-matching vision-language-action and world-action
+  manipulation policies, epistemic uncertainty estimated from disagreement
+  between the velocity fields of a two-member fine-tuned ensemble ranks tasks
+  by success rate and flags imminent rollout failures better than
+  observation-space OOD detectors, action-distance, or action-entropy scores.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Flow-matching action heads (OT Gaussian paths) on pretrained
+  backbones; ensembles formed by re-fine-tuning one base policy; LIBERO-Long,
+  LIBERO-Plus, Push-T and three real FR3 tasks; thresholds conformally
+  calibrated from successful rollouts only.
+technique: ""
+proposed_technique: Score uncertainty by velocity-field disagreement across a small ensemble
+technique_summary: Integrate the flow ODE with each ensemble member and
+  accumulate the time-weighted squared difference between members' velocity
+  fields as an epistemic uncertainty score, used both to detect failures at
+  runtime and to pick which tasks and initial states to collect demonstrations
+  for.
+technique_kind: decoding
+technique_validated_by: Negative Spearman correlation between per-task
+  uncertainty and success rate on LIBERO-Long (0.71/0.53/0.44 for
+  SmolVLA/X-VLA/FastWAM vs 0.62/0.48/0.27 for best baseline GU); failure
+  detection balanced accuracy 0.72 average vs 0.64 for logpZO; active
+  fine-tuning Last-3 SR +1.9 to +5.1 pp over strongest baseline, real-world
+  average success 47% vs 39% at a fixed 150-demonstration budget; three seeds.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On other flow-based policies, velocity-field disagreement
+  correlates with per-task success no better than action-space L2 disagreement
+  or observation-space OOD likelihood, and ensemble-guided demonstration
+  selection matches random selection at equal budget.
+evidence_note: Measured on three simulated benchmarks plus three real FR3
+  tasks across three policy sizes (550M-6B), with six UQ baselines for
+  calibration and four for failure detection, three seeds. Gains are
+  consistent in direction but modest in size and the derivation's bound is an
+  upper bound on epistemic uncertainty, not the quantity itself. Uncertainty
+  at the initial observation is used as a task-difficulty proxy, which the
+  authors flag as a limitation. Real-world failure detection used only 10
+  calibration rollouts per task.
+confidence: medium

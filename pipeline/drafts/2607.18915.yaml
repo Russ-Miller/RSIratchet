@@ -1,0 +1,44 @@
+arxiv_id: "2607.18915"
+title: "Reasoning Error from Known Fact: Step-Level Self-Consistency Group
+  Relative Policy Optimization for LLM"
+url: https://doi.org/10.48550/arxiv.2607.18915
+drafted_at: 2026-10-25
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: "In 4B-class reasoning models (Qwen3-4B-Instruct and -Thinking)
+  that make a factual error mid-reasoning-trace, most of those errors are not
+  knowledge gaps: when the erroneous step is rewritten as a standalone
+  question the model answers it correctly, and such context-sensitive cases
+  account for roughly 70% of hallucinated samples, with the knowledge-gap
+  share shrinking as the model gets stronger."
+kind: observation
+backing_strength: single-paper
+scope_condition: 2,500 BOBA samples, two 4B Qwen3 models, hallucination
+  localization and classification done by a larger reference model
+  (Qwen3-235B-A22B)
+technique: ""
+proposed_technique: Reward step-level self-consistency across GRPO rollouts
+technique_summary: Inside GRPO, each reasoning step is scored by NLI-style
+  agreement with the other rollouts in the same group (weighted by whether
+  those rollouts got the final answer right), and that score rescales the
+  rollout-level advantage per step.
+technique_kind: training
+technique_validated_by: Average over four math and three hallucination
+  benchmarks against Vanilla, GRPO, FSPO and SEED-GRPO on three backbones;
+  +1.80/+1.01/+1.50 points over the GRPO baseline, and the measured share of
+  context-sensitive hallucinations fell from 22.76% to 16.90% on
+  Qwen3-4B-Instruct.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Re-running the isolation test with human annotators or a different
+  reference judge, and finding that most mid-trace factual errors persist when
+  the fact is asked standalone, would show the category is small rather than
+  dominant.
+evidence_note: Measured, but the error localization, the error-type label, and
+  the standalone rewrite are all produced by one reference LLM with no human
+  validation, so the 70% figure depends on that judge; single dataset and one
+  model family at 4B.
+confidence: low

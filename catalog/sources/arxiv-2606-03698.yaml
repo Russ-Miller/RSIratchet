@@ -1,0 +1,69 @@
+id: arxiv-2606-03698
+ref: SRC-0590
+kind: paper
+title: "Multi$^2$: Hierarchical Multi-Agent Decision-Making with LLM-Based
+  Agents in Interactive Environments"
+authors:
+  - Sangeun Park
+  - Minhae Kwon
+year: 2026
+date: 2026-06-02
+arxiv_id: "2606.03698"
+url: https://arxiv.org/abs/2606.03698
+tags:
+  - ingested
+summary: A central goal of large language model (LLM) research is to build
+  agentic systems that can plan, act, and adapt through sustained interaction
+  with dynamic environments. While recent LLM-based agents exhibit impressive
+  contextual reasoning, their long-horizon decision-making remains fragile,
+  often suffering from objective drift, where goals and plans drift over
+  extended interactions. We introduce Multi$^2$, a hierarchical multi-agent
+  decision-making framework that explicitly decomposes agent behavior into
+  complementary roles. A high-level agent (System 1) focuses on context-aware
+  sub-goal gener
+notes: "Filed as a source on long-horizon-execution from the classifier's
+  judgement that the paper is about it (improves, medium): The paper proposes
+  a hierarchical multi-agent framework that mitigates objective drift and
+  raises long-horizon task performance over agentic baselines. No claim has
+  been drafted from it yet."
+ingested_at: 2026-10-30
+brief: >-
+  Splitting an agent into a fine-tuned planner and a separately RL-trained
+  executor, each with its own LoRA adapter, beats hierarchical agents that
+  separate roles by prompting alone. The executor, not just the planner, has
+  to be trained against environment feedback.
+
+
+  Multi^2 trains System 1 (sub-goal generation) with SFT and System 2 (atomic
+  actions) with offline RL plus KL-regularized online refinement, on Qwen-2.5
+  3B, Mistral 7B v0.3, and Llama-3.1 8B, evaluated pass@1 on ScienceWorld,
+  ALFWorld, and TextCraft with in-distribution and out-of-distribution
+  task-template splits.
+
+
+  On ScienceWorld ID it reaches 60.68 / 69.97 / 67.61 across the 3 backbones
+  vs 54.69 / 58.33 / 60.48 for Glider and 20.82 / 23.25 / 23.23 for ReAct.
+  TextCraft success goes 28.50 / 44.50 / 35.60 vs Glider's 18.50 / 28.50 /
+  9.50. Glider wins 1 cell: ScienceWorld OOD with Llama-3.1 8B, 34.36 vs
+  30.68.
+
+
+  Ablations isolate the pieces: swapping the training paradigms (RL for the
+  planner, SFT for the executor) is worst; a shared adapter and a flat single
+  model both lower the median; removing the policy-anchored advantage term or
+  the online KL term widens the low-end failure tail. These are all on
+  ScienceWorld ID, mostly with 1 backbone.
+
+
+  Token efficiency is reported as a normalized performance/tokens ratio
+  against ReAct, not as raw counts. Scaling Qwen-2.5 from 1.5B to 7B barely
+  moves ID performance but monotonically improves OOD. No matched-compute
+  baseline is reported, and Reflexion is scored pass@6 against everyone else's
+  pass@1.
+
+
+  If you build hierarchical agents, the finding argues for separate parameters
+  per role rather than prompt-level role labels.
+brief_generated_at: 2026-10-30
+brief_model: claude-opus-5
+brief_source: full-text

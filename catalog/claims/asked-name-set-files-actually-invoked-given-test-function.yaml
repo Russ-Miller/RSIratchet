@@ -1,0 +1,38 @@
+id: asked-name-set-files-actually-invoked-given-test-function
+ref: CLM-0579
+capability: repository-navigation
+statement: >-
+  When asked to name the set of files actually invoked by a given test
+  function in a Python repository, current LLMs show high precision but low
+  recall — above 80% precision and under 40% recall for the larger models —
+  and the recall shortfall persists even when the context contains only
+  ground-truth files, indicating they catch directly imported dependencies
+  and miss multi-hop ones.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Seven open- and closed-source LLMs (Qwen-2.5-14B family, DeepSeek-R1 and distill, Qwen3-235B, GPT-4.1-Mini, Gemini-2.5-Flash) on 169 call-chain instances from 14 Python scientific "
+sources:
+  - source: arxiv-2607-25996
+    stance: supports
+    note: >-
+      Measured: precision/recall/F1/EM over 169 instances, n=5 samples,
+      three context conditions (25% signal, 50% signal, oracle). Best oracle
+      F1 was 0.663 (Gemini-2.5-Flash) with recall 0.558; exact match stayed
+      under 22% for every model. Error analysis of 100 failed samples
+      attributes most remaining failures to wrong answers rather than
+      format, including under oracle context. No human baseline; single
+      language (Python); ground truth depends on the authors' tracer being
+      correct.
+contested: false
+status: pending-review
+last_checked_at: 2026-10-30
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A model that reaches
+  high recall (say above 70%) on the same file-pool call-chain task under
+  noisy context, or evidence that the low recall is an output-format/parsing
+  artifact rather than missed dependencies.
+submitted_by: agent:claude-opus-5@Russ-Miller

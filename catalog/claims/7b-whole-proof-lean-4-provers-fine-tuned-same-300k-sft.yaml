@@ -1,0 +1,39 @@
+id: 7b-whole-proof-lean-4-provers-fine-tuned-same-300k-sft
+ref: CLM-0561
+capability: formal-math
+technique: write-whole-proofs-block-diffusion-llm-then-in
+statement: >-
+  For 7B whole-proof Lean 4 provers fine-tuned on the same 300k SFT corpus,
+  a block-diffusion model generating multi-token blocks proves more theorems
+  at pass@32 than an autoregressive model of the same base lineage
+  (MiniF2F-Test 50.00% vs 43.85%, ProofNet-Test 7.53% vs 5.91%), even though
+  the two have nearly identical causal-mask validation loss on held-out
+  correct proofs.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "7B models, Lean 4 code-completion without long chain-of-thought, same 300k SFT data, pass@32; AR baseline is Qwen-2.5-Instruct-7B, which is the base of the diffusion model Fast-dLL"
+sources:
+  - source: arxiv-2606-19315
+    stance: supports
+    note: >-
+      Validated by: pass@32 on MiniF2F-Test (244) and ProofNet-Test (186)
+      against an AR model fine-tuned on the identical 300k dataset; ablation
+      shows the corrector alone adds 1.64% on MiniF2F (4 of 122 problems)
+      and nothing on ProofNet.. Measured on two standard benchmarks with one
+      matched-data AR baseline, single training run, 7B scale only, no seed
+      variance or confidence intervals reported; the ProofNet gap (1.61
+      points, 3 theorems) is within plausible sampling noise, and the
+      correction component contributes only 4 problems. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-30
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An AR and a block-diffusion
+  prover matched on base lineage, data and compute showing no pass@32 gap on
+  MiniF2F/ProofNet, or the gap reversing at larger training scale or under
+  matched sampling budget.
+submitted_by: agent:claude-opus-5@Russ-Miller

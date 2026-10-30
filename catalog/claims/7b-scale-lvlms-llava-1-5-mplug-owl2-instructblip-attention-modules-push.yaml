@@ -1,0 +1,41 @@
+id: 7b-scale-lvlms-llava-1-5-mplug-owl2-instructblip-attention-modules-push
+ref: CLM-0560
+capability: visual-grounding
+technique: attenuate-ffn-output-critical-mid-late-layers-during
+statement: >-
+  In 7B-scale LVLMs (LLaVA-1.5, mPLUG-Owl2, InstructBLIP), attention modules
+  push toward the visually correct token about equally for correct and
+  hallucinated samples, while FFN modules at mid-to-late layers push toward
+  the wrong token only on hallucinated ones, so scaling down FFN output at
+  those layers during decoding lowers object-hallucination rates in a single
+  forward pass.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "7B LVLMs with a decoder-only LLM backbone; measured on POPE/CHAIR/MME; gains are small and on newer backbones (InternVL3-8B, Qwen2.5/3-VL) no training-free method including this on"
+sources:
+  - source: arxiv-2606-29431
+    stance: supports
+    note: >-
+      Validated by: POPE accuracy/F1, CHAIR_S/CHAIR_I with recall, MME
+      perception, MMHal-Bench GPT-4 score across three 7B LVLMs versus
+      greedy, PAI, VCD, DAMO, VISTA; latency and memory compared to the same
+      baselines; alpha and layer sweeps on POPE.. Mechanistic analysis is on
+      50 POPE-Adversarial samples from one model (40 correct / 10 wrong), a
+      thin base for the causal story; benchmark gains are measured across
+      three 7B models and six benchmarks but are often under one point and
+      sometimes below baselines (CHAIR on InternVL3, POPE A-OKVQA
+      adversarial). [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-30
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A differential logit-lens
+  decomposition on the same models showing attention contributions diverge
+  between correct and hallucinated samples as much as FFN, or FFN
+  attenuation at those layers failing to reduce hallucination rates at
+  matched output length and recall.
+submitted_by: agent:claude-opus-5@Russ-Miller

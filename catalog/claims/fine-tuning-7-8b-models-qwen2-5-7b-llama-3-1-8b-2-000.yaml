@@ -1,0 +1,42 @@
+id: fine-tuning-7-8b-models-qwen2-5-7b-llama-3-1-8b-2-000
+ref: CLM-0616
+capability: long-context-degradation
+technique: synthesize-long-context-sft-data-evidence-graph-built
+statement: >-
+  Fine-tuning 7-8B models (Qwen2.5-7B, LLaMA-3.1-8B) on 2,000 long-context
+  SFT samples whose instructions are generated from an explicit evidence
+  graph and whose responses cite verbatim evidence spans step by step keeps
+  gold-evidence retrieval near ceiling at every position among 20 candidate
+  documents, while models trained on comparable-size baseline long-context
+  SFT sets degrade as the gold document moves later (to about 71% and 40%
+  respectively).
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "7-8B open base models, LoRA, 2,000 training samples; retrieval probe with gold document at positions 1-20 among 20 candidates; benchmarks LongBench, LongBench v2, LooGLE with GPT-5"
+sources:
+  - source: arxiv-2607-06160
+    stance: supports
+    note: >-
+      Validated by: Average over LongBench, LongBench v2 and LooGLE: 45.15
+      (Qwen2.5-7B) and 45.71 (LLaMA-3.1-8B), +5.80/+5.30 over the best of
+      four SFT baselines at matched 2,000 samples and above the official
+      post-trained models; ablations drop 12.64/11.89 points without the
+      evidence graph and 5.25/4.08 without citations; position probe shows
+      flat retrieval accuracy across positions 1-20.. Measured on two
+      backbones, three benchmarks, four SFT baselines at matched 2,000
+      samples, plus component and data-distribution ablations and an
+      attention-mass analysis. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-30
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Training the same
+  backbones on the same 2,000-sample budget from another synthesis pipeline
+  (or on LongCrafter data with the evidence-graph stage removed) yields
+  equally flat position curves and equal benchmark averages, showing the
+  graph/citation design is not what produces the position robustness.
+submitted_by: agent:claude-opus-5@Russ-Miller

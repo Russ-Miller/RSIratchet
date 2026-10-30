@@ -1,0 +1,43 @@
+id: 7-8b-backbone-retrieval-augmented-qa-over-fixed-retrieved-document-pool-selecting
+ref: CLM-0544
+capability: hallucination
+technique: select-answer-stable-across-paraphrased-queries
+statement: >-
+  In 7-8B-backbone retrieval-augmented QA over a fixed retrieved document
+  pool, selecting the answer whose Yes/No validity confidence is high and
+  low-variance across several meaning-preserving paraphrases of the question
+  (each reranking the same pool) picks correct answers more often than
+  majority voting, perplexity, generation probability, single-query
+  Yes-probability or LLM-as-judge over the same candidate pool, with the
+  margin largest on multi-hop questions.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Qwen3-8B reasoner with a separate Mistral-7B/Llama-3.1-8B evaluator, four paraphrases, BGE reranker, open-domain QA (TriviaQA, PopQA, MuSiQue, HotpotQA); gains do not hold on Hotpo"
+sources:
+  - source: arxiv-2606-13438
+    stance: supports
+    note: >-
+      Validated by: EM/F1 on four open-domain QA sets against standard RAG,
+      Self-Certainty, Speculative RAG, DMQR-RAG and SPARC-RAG at matched
+      retrieval budget and top-k, plus a fixed-candidate-pool comparison of
+      five alternative selection rules and component ablations; +4.76 pp EM
+      over DMQR-RAG on TriviaQA, +9.12 pp on MuSiQue, second place on
+      HotpotQA.. Measured on four benchmarks (1,000-2,000 queries each),
+      main table averaged over 5 seeds; selection-strategy comparison holds
+      the candidate pool fixed, which isolates the selection rule.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-30
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: On the same candidate pool,
+  cross-query variance-penalized scoring fails to beat single-query
+  Yes-probability or majority voting, or the advantage disappears once
+  paraphrase count and evaluator are matched to baselines, or the gain is
+  traced to the evidence-extraction protocol alone rather than the
+  cross-query selection.
+submitted_by: agent:claude-opus-5@Russ-Miller

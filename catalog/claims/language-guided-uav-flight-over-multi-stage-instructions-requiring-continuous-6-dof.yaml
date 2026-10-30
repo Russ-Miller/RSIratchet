@@ -1,0 +1,40 @@
+id: language-guided-uav-flight-over-multi-stage-instructions-requiring-continuous-6-dof
+ref: CLM-0644
+capability: long-horizon-execution
+technique: decouple-slow-pilot-reasoning-vlm-fast-action-model
+statement: >-
+  For language-guided UAV flight over multi-stage instructions requiring
+  continuous 6-DoF control, running a low-frequency streaming video VLM that
+  emits textual flight-state-and-next-subgoal reasoning, and conditioning a
+  separate high-frequency diffusion action model on that reasoning's hidden
+  states, completes more subtasks than end-to-end VLA or discrete-action VLN
+  baselines adapted to the same task.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Simulated urban/industrial/rural UAV environments with expert-pilot demonstration trajectories; models fine-tuned on the paper's own dataset; closed-loop evaluation only, no real f"
+sources:
+  - source: arxiv-2606-06836
+    stance: supports
+    note: >-
+      Validated by: Closed-loop success rate and stage success rate on two
+      task splits: Long-horizon Flow SR 59.0% / SSR 78.97% vs MemoryVLA
+      18.5/38.69 and OpenVLA-UAV 10.5/30.87; Fine-grained VLN SR 13.5% /
+      IASR 11.0% vs NaVid 13.0/5.0 and CMA+LAG 6.5/4.5. The reasoning VLM
+      scores 64.2% state / 68.1% action accuracy against 25.8/39.1 for
+      Gemini-3-flash.. Measured on the authors' own benchmark against
+      baselines they reconfigured from other domains, so baseline adaptation
+      quality is uncontrolled. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-30
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An end-to-end VLA trained
+  on the same trajectories and reasoning-free, or a synchronous single-model
+  variant at matched compute, matching the stage success rate; or ablating
+  the pilot-reasoning supervision while keeping the two-rate architecture
+  and losing nothing.
+submitted_by: agent:claude-opus-5@Russ-Miller

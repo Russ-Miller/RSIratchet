@@ -1,0 +1,46 @@
+arxiv_id: "2607.21085"
+title: "Geo3R: Mitigating Spatial Reasoning Hallucination in Multimodal Large
+  Language Models"
+url: https://doi.org/10.48550/arxiv.2607.21085
+drafted_at: 2026-10-25
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: For multimodal models answering spatial-relation questions from a
+  single image, decoding- and attention-level hallucination mitigations do not
+  help, because the errors come from missing 3D structure rather than
+  visual-textual misalignment; supplying externally estimated geometry (metric
+  depth, gravity-aligned extents, object orientation) as structured text
+  raises accuracy, and the size of the gain tracks the base model's ability to
+  integrate structured input.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Single-image multiple-choice spatial reasoning benchmarks
+  (3DSRBench, ViewSpatial-Bench, CV-Bench 3D subset), 18 tasks; geometry
+  supplied by off-the-shelf estimators whose accuracy bounds the result.
+technique: ""
+proposed_technique: Supply estimated 3D geometry as structured cards to the MLLM
+technique_summary: Ground the question's objects, run monocular depth, camera
+  calibration and orientation estimators to build camera, gravity-aligned
+  world and object-local coordinates, and hand the MLLM task-agnostic 'cards'
+  of measurements plus discrete summaries before it answers.
+technique_kind: tooling
+technique_validated_by: "Accuracy over 18 tasks / 17,493 samples against the
+  unaugmented backbone, four hallucination-mitigation baselines on LLaVA-1.5,
+  a tool-augmented baseline (APC-VLM), and five spatially fine-tuned models:
+  +7.06 points on Gemini-3-Flash, +10.90 on Qwen3-VL-8B, +2.87 on LLaVA-1.5,
+  while the mitigation baselines moved within about 0.7 points and APC-VLM
+  lost 7.92; removing both cards returned accuracy near baseline."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An attention- or decoding-level mitigation that yields comparable
+  gains on these same orientation and viewpoint tasks, or geometry cards that
+  fail to improve a capable backbone on them.
+evidence_note: Measured across three benchmarks and three backbones with a
+  component ablation isolating each card; the mitigation-baseline comparison
+  is run only on LLaVA-1.5 because of implementation support, so the
+  'ineffective' half rests on one weak model. All tasks are multiple-choice;
+  'hallucination' is inferred from accuracy rather than measured directly.
+confidence: medium

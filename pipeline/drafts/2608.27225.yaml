@@ -1,0 +1,49 @@
+arxiv_id: "2608.27225"
+title: "STEP: State-Aware Task Estimation and Planning with Multi-Modal LLMs
+  for Human-Robot Collaboration"
+url: https://doi.org/10.48550/arxiv.2608.27225
+drafted_at: 2026-10-18
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: planning
+statement: For multi-step assembly task planning from an action history and a
+  workstation image, prompting a multimodal LLM to emit a structured (JSON)
+  state representation and propagate it through each predicted action — then
+  truncating the plan at the predicted state closest to the inferred goal —
+  raises action executability and lowers final-state error relative to
+  predicting actions alone, at the cost of shorter plans (lower overlap with
+  recorded human action sequences) and roughly eight times the latency.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Simulated two-arm block-assembly dataset (495 instances, 8
+  target structures), GPT-4o family models prompted in-context; no environment
+  interaction or ground-truth initial state; benefit depends on correct task
+  estimation, so it disappears on a small model (GPT-4o mini) with low
+  task-estimation accuracy.
+technique: ""
+proposed_technique: Propagate a structured state and truncate at closest-to-goal
+technique_summary: Prompts a multimodal LLM to estimate the workstation state
+  as a JSON object, propagate it forward through each predicted action,
+  compute a numeric distance to the inferred goal state, and cut the action
+  plan at the state with the lowest distance, repeating over rollouts.
+technique_kind: prompting
+technique_validated_by: "Compared against an AntGPT-style
+  task-estimation-plus-action-prediction baseline with no state information on
+  the same inputs: +32.8% action executability and -14.8% final-state error,
+  at 30/50/70/90% task-completion splits; replicated across five OpenAI models
+  on a 45-instance subset (STEP better on 4 of 5); LCS was lower than baseline
+  and runtime rose from ~18s to ~148s."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A comparison on the same or similar assembly planning data where
+  adding structured state estimation and goal-distance truncation does not
+  improve executability or final-state error over action-only prediction, once
+  task-estimation accuracy is matched.
+evidence_note: Measured on one simulated block-assembly dataset against a
+  single reimplemented baseline; ablations isolate rollout count, task
+  correctness and state error, but the benchmark is one task family with
+  hand-crafted state rules, and the gain is entangled with the truncation
+  heuristic rather than state propagation alone.
+confidence: medium

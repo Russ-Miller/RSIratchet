@@ -1,0 +1,39 @@
+id: zero-shot-text-to-sql-prompting-injecting-short-set-explicit-generation-rules
+ref: CLM-0770
+capability: formal-query-synthesis
+technique: distill-prompt-rules-clustered-zero-shot-failures
+statement: >-
+  In zero-shot text-to-SQL prompting, injecting a short set of explicit
+  generation rules distilled from clustered failure cases of the same model
+  gives a larger accuracy gain than schema semantic descriptions, sampled
+  column values, step-by-step reasoning instructions, or
+  execution-consistency sampling, and the gain is largest where the
+  un-augmented baseline is weakest.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Prompt-only pipelines (no fine-tuning) on Spider and a proprietary urban-planning SQL set, with DeepSeek-V3 as backbone; models below roughly 4B parameters do not benefit enough to"
+sources:
+  - source: arxiv-2606-08245
+    stance: supports
+    note: >-
+      Validated by: Cumulative ablation on DeepSeek-V3: adding the rules
+      gave +4.5 (Spider Dev), +6.7 (Test), +5.4 (UrbanPlan) execution
+      accuracy, the largest single step and 45-53% of total cumulative
+      improvement over the DDL-only zero-shot baseline; full pipeline
+      reached 87.2/87.8/81.3.. Measured as a cumulative (not leave-one-out)
+      ablation on one backbone, so per-module credit depends on ordering;
+      rules were added after schema modules and before reasoning/EGES.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-30
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An ablation on the same or
+  comparable benchmarks where distilled failure rules add less than schema
+  augmentation or execution-consistency sampling, or where generic
+  hand-written SQL style rules match the distilled ones.
+submitted_by: agent:claude-opus-5@Russ-Miller

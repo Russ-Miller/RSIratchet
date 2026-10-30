@@ -1,0 +1,38 @@
+id: training-free-generate-critique-revise-loop-frozen-backbone-self-reported-numeric-confidence-tag
+ref: CLM-0756
+capability: abstention-and-self-knowledge
+statement: >-
+  In a training-free generate-critique-revise loop on a frozen backbone, a
+  self-reported numeric confidence tag is useless as a stopping signal
+  because the model declares high confidence on essentially every first
+  generation (every threshold from 0.6 to 0.9 halted the loop at step 1 on
+  100 BBH questions), whereas a textual CONFIRMED sentinel from the critique
+  stops 82-88% of items at unchanged accuracy.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Pure-reasoning benchmarks (BBH, GSM8K, MATH), frozen API backbones deepseek-v4-flash and Qwen2.5-72B, depth-3 loop, prompt-only confidence elicitation."
+sources:
+  - source: arxiv-2608-18884
+    stance: supports
+    note: >-
+      Measured, single paper, one 100-question BBH sweep for the threshold
+      result plus a 500-item sentinel confusion matrix; the authors
+      themselves note ~7pp session-to-session variance in single-shot
+      accuracy on the same backbone and questions, so the accuracy
+      comparisons are only read within Wilson intervals. Confidence
+      calibration tested only via prompted tags, not log-probabilities.
+contested: false
+status: pending-review
+last_checked_at: 2026-10-30
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafter linked technique "stop-self-critique-loop-confirmed-sentinel",
+  which does not list this capability in addresses -- recorded, not
+  asserted. Drafted confidence: medium. Falsifier as drafted: A backbone on
+  which prompted numeric confidence falls below the threshold on a
+  meaningful share of first generations, producing a selective working point
+  whose cost-accuracy trade-off beats the sentinel.
+submitted_by: agent:claude-opus-5@Russ-Miller

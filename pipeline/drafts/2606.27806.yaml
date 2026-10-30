@@ -1,0 +1,48 @@
+arxiv_id: "2606.27806"
+title: "Agent vs. Parametric World Models: Hybrid Planning for Reliable
+  Language Agents"
+url: https://doi.org/10.48550/arxiv.2606.27806
+drafted_at: 2026-10-28
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: state-tracking
+statement: For LLM agents planning over graph-structured environments,
+  cross-checking the agent's imagined next state against a separately trained
+  lightweight parametric transition model and revising only when the two
+  disagree lowers the rate of incorrectly predicted node statuses, with a
+  modest increase in token use.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Graph-structured planning benchmarks with discrete node
+  statuses and a parametric world model trained on oracle transitions; most
+  numbers come from a calibrated behavioral simulator, with live GPT-4o-mini
+  runs on a subset.
+technique: ""
+proposed_technique: Cross-check imagined state against a learned transition model
+technique_summary: A small learned world model predicts the next graph state
+  for each candidate action; the agent plans over that skeleton, and when its
+  own imagined transition disagrees (low Jaccard overlap on changed nodes) it
+  is prompted to revise the state or pick a lower-risk action before
+  execution.
+technique_kind: process
+technique_validated_by: On four graph planning benchmarks (8 seeds, mostly
+  simulated), success 83.8% vs 66.8% for Agent-Replan and 76.6% for the
+  strongest hybrid baseline, hallucinated-state rate 7.9% vs 20.5%; live
+  GPT-4o-mini runs show HSR 17.6% to 3.5% at ~20% more tokens with success
+  already at 100%. Ablations show removing either the correction gate or the
+  risk gate loses several points.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An agent given the same parametric skeleton and consistency check
+  shows no reduction in incorrect state predictions relative to the same agent
+  without it, in live (non-simulated) runs on environments where the
+  transition model was not trained on oracle transitions.
+evidence_note: Measured, but the main table is produced by a behavioral
+  simulator calibrated to GPT-4o-mini rather than live model runs; live
+  validation covers four benchmarks where success is already saturated at
+  100%, so only the hallucination reduction is independently supported there.
+  Backbone comparison across four LLMs is explicitly calibration-based
+  estimate, not measurement.
+confidence: low

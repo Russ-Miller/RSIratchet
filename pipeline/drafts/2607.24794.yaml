@@ -1,0 +1,51 @@
+arxiv_id: "2607.24794"
+title: "Reasoning with Memory: A Temporal Granularity-Adaptive Framework for
+  Training-Free Long Video Understanding"
+url: https://doi.org/10.48550/arxiv.2607.24794
+drafted_at: 2026-10-28
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: video-temporal-reasoning
+statement: For frozen 7-8B multimodal models on long-video QA under a fixed
+  frame budget, scoring candidate frames with a query-granularity-weighted mix
+  of static query-frame similarity and a graph-diffused temporal-context
+  score, then distributing the frame budget across clustered events rather
+  than taking the global top-K, raises accuracy over uniform sampling and
+  static query-guided selection, with the largest gains on the longest video
+  splits.
+kind: observation
+backing_strength: single-paper
+scope_condition: Training-free zero-shot multiple-choice LongVideoQA (LVBench,
+  MLVU, LongVideoBench, Video-MME) with LLaVA-Video-7B, Qwen2-VL-7B,
+  Qwen3-VL-8B; CLIP-L-14 encoder and GPT-4o as the parsing LLM; 1 fps initial
+  sampling, candidate pool of 150.
+technique: ""
+proposed_technique: Weight frame scores by query temporal granularity, then budget per event
+technique_summary: An LLM scores the question's temporal granularity and
+  extracts visual entities; frames are ranked by a granularity-weighted blend
+  of static CLIP similarity and a random-walk score over a temporal-semantic
+  frame graph, and the fixed frame budget is allocated across temporally
+  coherent event clusters instead of taken as a global top-K.
+technique_kind: retrieval
+technique_validated_by: Accuracy on four LongVideoQA benchmarks with three
+  backbones against uniform sampling, AKS, Q-Frame, FlexSelect-Lite and
+  trained selectors (e.g. LLaVA-Video 42.2 to 54.5 on LVBench, 58.9 to 67.1 on
+  LongVideoBench); component ablations removing entity extraction, static
+  alignment, temporal alignment and routing; candidate-pool size and
+  decay-constant sweeps; latency comparison.
+stance_on_existing: supports
+related_claim_id: long-video-qa-fixed-frame-budget-fed-frozen-multimodal-model
+stance_reason: Both find that budget allocation accounting for coverage and
+  temporal context beats independent per-frame query-similarity ranking, with
+  gains growing on longer videos.
+falsifier: A matched-budget comparison on the same backbones and benchmarks
+  where the granularity-weighted temporal score and event-wise budgeting score
+  no better than static top-K query-frame similarity, or where the long-video
+  advantage disappears.
+evidence_note: Measured on four benchmarks and three backbones with
+  per-component ablations, but all comparisons come from the authors;
+  baselines are reported numbers rather than reruns, the pipeline depends on
+  an external GPT-4o call that baselines do not use, and no compute-matched
+  baseline isolates that extra call's contribution.
+confidence: medium

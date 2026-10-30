@@ -1,0 +1,48 @@
+arxiv_id: "2607.02577"
+title: "Benchmarking the Benchmarks: A Validity Audit of Tool-Calling Evaluation"
+url: https://doi.org/10.48550/arxiv.2607.02577
+drafted_at: 2026-10-27
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: evaluation-validity
+statement: "On tool-calling agent benchmarks, the official pass/fail label
+  disagrees with expert trace-level judgment in a substantial minority of
+  tasks (18.5% over 496 audited tasks spanning BFCL v4, tau2-Bench Retail,
+  MCP-Atlas and LiveMCPBench), and benchmarks that score with a stochastic LLM
+  judge that regenerates its own rubric are the least reliable: 23 identical
+  reruns of LiveMCPBench on one model spanned 57.9%-76.8%, a spread larger
+  than typical leaderboard margins."
+kind: observation
+backing_strength: single-paper
+scope_condition: Four tool-calling benchmark families audited with one or two
+  agent models each; expert adjudication by three annotators with
+  disagreements resolved; LiveMCPBench variance confounds agent sampling with
+  evaluator sampling.
+technique: ""
+proposed_technique: Gate task success on deterministic state predicates, judge only quality
+technique_summary: Score each turn against sandbox state predicates that must
+  all pass, and call an LLM judge only for qualitative criteria such as
+  communication and policy adherence, with no power to override a failed gate.
+technique_kind: process
+technique_validated_by: On 70 tasks across six models (420 model-task
+  evaluations), the evaluator's verdicts agreed with expert trace-level
+  judgment 95.5% of the time, above the audited benchmarks' 69.0-90.0%, with
+  all 19 disagreements being benchmark-stricter-than-human and no false
+  passes; measured on a different task distribution than the audited
+  benchmarks, so not a controlled comparison.
+stance_on_existing: supports
+related_claim_id: multi-turn-tool-calling-benchmarks-score-whether-final-environment-state-matches
+stance_reason: The audit finds the same class of defect, including a
+  tau2-Bench Retail task passed because the database was unchanged while the
+  agent never invoked the required return tool.
+falsifier: An independent audit of these same benchmarks finding
+  evaluator-human agreement near ceiling, or repeated identical LiveMCPBench
+  runs showing score spread of a point or two once agent sampling is held
+  fixed.
+evidence_note: "Measured: 496 traces adjudicated by three experts (89
+  annotator-hours), per-benchmark error rates 9.8-30.5%; 23 full reruns for
+  the variance figure. Only one or two agent models per benchmark, and the
+  rerun variance is not decomposed into agent-sampling versus judge-sampling
+  contributions."
+confidence: medium

@@ -1,0 +1,43 @@
+id: calculation-intensive-financial-query-answering-fixed-deposit-interest-payouts-premature
+ref: CLM-0587
+capability: multi-model-coordination
+technique: keep-arithmetic-out-llm-loop-entirely
+statement: >-
+  For calculation-intensive financial query answering (fixed deposit
+  interest, payouts, premature withdrawal), splitting the task into LLM
+  agents for routing, parameter extraction, planning and response writing
+  while delegating every arithmetic and rate-lookup step to deterministic
+  Python engines lets a 17B open backbone exceed frontier models prompted
+  with the same formulas and rate cards.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "126 expert-written fixed-deposit queries in one domain; baselines run single-prompt through consumer chat interfaces; grading partly manual with a tolerance of 1 INR; gains do not "
+sources:
+  - source: arxiv-2608-26114
+    stance: supports
+    note: >-
+      Validated by: Accuracy on 101 calculation-intensive queries: 95.54%
+      with a Llama-Scout-17B backbone versus 83.66% Claude Sonnet 4.6,
+      70.30% Gemini 3, 45.05% GPT-5.3, all given complete formulas and rate
+      cards; 89.60% with a 70B and 68.81% with an 8B backbone; module
+      ablations drop accuracy to 48% (rolling-year) and 76.7% (rate
+      lookup).. Measured on one curated 126-query fixed-deposit benchmark
+      from a single institution's rate card, with 21 queries used for prompt
+      tuning. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-30
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A frontier model prompted
+  with the same formulas and rate tables matching or beating the
+  deterministic pipeline on the same calculation-intensive queries, or the
+  pipeline's advantage disappearing once baselines are given a code
+  interpreter and the same structured rate tables. Drafted stance toward
+  program-aided-computation-moves-errors-to-translation: supports --
+  Residual errors in the deterministic pipeline are extraction and routing
+  errors, i.e. the translation from query to parameters, not the arithmetic.
+submitted_by: agent:claude-opus-5@Russ-Miller

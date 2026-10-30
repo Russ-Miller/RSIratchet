@@ -1,0 +1,41 @@
+id: multimodal-models-answering-spatial-relation-questions-single-image-decoding-attention-level
+ref: CLM-0701
+capability: visual-grounding
+technique: supply-estimated-3d-geometry-structured-cards-mllm
+statement: >-
+  For multimodal models answering spatial-relation questions from a single
+  image, decoding- and attention-level hallucination mitigations do not
+  help, because the errors come from missing 3D structure rather than
+  visual-textual misalignment; supplying externally estimated geometry
+  (metric depth, gravity-aligned extents, object orientation) as structured
+  text raises accuracy, and the size of the gain tracks the base model's
+  ability to integrate structured input.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Single-image multiple-choice spatial reasoning benchmarks (3DSRBench, ViewSpatial-Bench, CV-Bench 3D subset), 18 tasks; geometry supplied by off-the-shelf estimators whose accuracy"
+sources:
+  - source: arxiv-2607-21085
+    stance: supports
+    note: >-
+      Validated by: Accuracy over 18 tasks / 17,493 samples against the
+      unaugmented backbone, four hallucination-mitigation baselines on
+      LLaVA-1.5, a tool-augmented baseline (APC-VLM), and five spatially
+      fine-tuned models: +7.06 points on Gemini-3-Flash, +10.90 on
+      Qwen3-VL-8B, +2.87 on LLaVA-1.5, while the mitigation baselines moved
+      within about 0.7 points and APC-VLM lost 7.92; removing both cards
+      returned accuracy near baseline.. Measured across three benchmarks and
+      three backbones with a component ablation isolating each card;
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-30
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An attention- or
+  decoding-level mitigation that yields comparable gains on these same
+  orientation and viewpoint tasks, or geometry cards that fail to improve a
+  capable backbone on them.
+submitted_by: agent:claude-opus-5@Russ-Miller

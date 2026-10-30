@@ -1,0 +1,51 @@
+arxiv_id: "2607.01830"
+title: "Many Voices, One Reward: Multi-Role Rubric Generation for LLM Judging
+  and Reward Modeling"
+url: https://doi.org/10.48550/arxiv.2607.01830
+drafted_at: 2026-10-28
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: critique
+statement: For rubric-based LLM judging without references or training,
+  eliciting criteria from a small fixed set of complementary evaluator roles
+  (user, domain expert, educator, AI researcher, linguist) and pooling them
+  raises pairwise preference agreement over single-evaluator rubric
+  generation, and the gain is not explained by criterion count — repeating
+  single-voice generation five times and deduplicating stays well below the
+  multi-role rubric.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Instruct models from 3B to 120B used as both rubric generator
+  and per-criterion yes/no judge; binary criteria with self-assigned 1-3
+  weights; exact-match deduplication only; open-ended preference benchmarks
+  (RewardBench-2, JudgeBench, PPE).
+technique: ""
+proposed_technique: Elicit rubric criteria from several evaluator roles, then pool
+technique_summary: Prompt the same model once per fixed evaluative role to
+  emit compact weighted binary criteria, concatenate them with exact-duplicate
+  removal, and score a response as the weighted fraction of criteria judged
+  satisfied.
+technique_kind: prompting
+technique_validated_by: Accuracy on RewardBench-2, JudgeBench and PPE against
+  single-voice rubric generation with and without sample responses and against
+  Chasing the Tail, across five backbones (reported gains 3.1-16.4 points over
+  the strongest baseline); a repeated-single-voice control with the same
+  post-processing stayed 7.3 and 10.0 points below on RewardBench-2 and
+  JudgeBench; also used as the GRPO reward, improving BiGGen Bench by 1.7 and
+  HealthBench-Hard by 3.4 over the best single-voice reward.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A repeated single-voice rubric generator matched on number of
+  retained criteria closing the gap with multi-role elicitation on the same
+  benchmarks and backbones, or leave-one-role-out variants showing the gain
+  traces to one role rather than to the aggregation.
+evidence_note: Measured on three preference benchmarks across five backbones
+  with three rubric-generation baselines, plus a count-matched
+  repeated-single-voice control and single-role and leave-one-role-out
+  ablations; the count control is run only on Qwen2.5-3B, criterion counts are
+  not reported as exactly matched, and all judging uses the same model that
+  wrote the rubric, so judge-rubric coupling is not isolated. RLVR evidence is
+  a single 3B policy on 2000 WildChat prompts.
+confidence: medium

@@ -1,0 +1,51 @@
+arxiv_id: "2607.08403"
+title: Game Theory Driven Multi-Agent Framework Mitigates Language Model
+  Hallucination
+url: https://doi.org/10.48550/arxiv.2607.08403
+drafted_at: 2026-10-26
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: For a 7B lightweight model specialized to chemistry, pipelining
+  domain continued pre-training, fine-tuning on multi-agent-synthesized
+  chain-of-thought and QA data grounded in supplied source literature, and a
+  final judge-scored adaptive training stage cuts the LLM-judged hallucination
+  rate by about 79% relative to the base model, and the ablation reports the
+  final adaptive stage is needed to undo the catastrophic forgetting
+  introduced by full-parameter fine-tuning.
+kind: observation
+backing_strength: single-paper
+scope_condition: One 7B backbone (Qwen2.5-7B-Instruct lineage) in chemistry;
+  hallucination measured on a 471-question LLM-as-judge benchmark (Gemini 3.1
+  Pro, with human expert judgement overriding on disagreement).
+technique: ""
+proposed_technique: Synthesize training data with role-split generator,
+  student and supervisor agents
+technique_summary: Decompose data synthesis into short subtasks, each handled
+  by two or three role-constrained LLM agents (e.g. Teacher, Student,
+  Supervisor) that generate, evaluate and correct over multiple rounds with
+  full source literature supplied as background, and feed the resulting CoT/QA
+  corpus into supervised fine-tuning.
+technique_kind: training
+technique_validated_by: Hallucination score on the 471-question ChemJudge
+  benchmark (79.46% reduction vs base model, better than GPT-4o mini),
+  accuracy on ThChem 1.0/2.0 (79.45%/62.08%) and ChemBench (49.82%), plus a
+  reported 20-40% F1 gain of the multi-agent synthesis over a single LLM on
+  SQuAD 2.0; no baseline of equal-size single-model-synthesized chemistry data
+  is reported.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Training the same 7B backbone on an equal-volume chemistry CoT/QA
+  corpus synthesized by a single prompted LLM, under the same pre-training and
+  adaptive stages, yields a comparable hallucination reduction — showing the
+  role-split multi-agent synthesis contributed little.
+evidence_note: Measured on one model, one domain, one 471-question judge
+  benchmark with expert verification of deductions. The headline comparison is
+  against the untrained base model, not against a matched single-agent
+  synthesis pipeline, so the contribution of the game-theoretic multi-agent
+  structure specifically is not isolated; the SQuAD F1 comparison is the only
+  direct single-LLM control and is on a different task. Ablation table is in
+  unavailable supplementary material.
+confidence: low

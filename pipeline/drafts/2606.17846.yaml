@@ -1,0 +1,49 @@
+arxiv_id: "2606.17846"
+title: "Qwen-RobotManip Technical Report: Alignment Unlocks Scale for Robotic
+  Manipulation Foundation Models"
+url: https://doi.org/10.48550/arxiv.2606.17846
+drafted_at: 2026-10-29
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: For vision-language-action manipulation policies trained on pooled
+  multi-embodiment data, making the same physical motion numerically
+  consistent across sources — a canonical state-action vector with
+  per-dimension masking for absent degrees of freedom, end-effector actions
+  expressed as camera-frame deltas, and camera geometry injected into the
+  action head's attention — is what lets added data from other embodiments
+  help rather than interfere.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Cross-embodiment VLA pretraining on heterogeneous open-source
+  robot and egocentric-human corpora; requires calibrated camera intrinsics
+  and extrinsics at both training and inference time.
+technique: ""
+proposed_technique: Align motions numerically before scaling embodiment data
+technique_summary: Encodes every embodiment's proprioception and actions into
+  one masked 80-dimensional canonical vector, expresses end-effector actions
+  as deltas in a reference camera frame, and feeds camera pose into the action
+  expert's cross-attention so visually similar motions are numerically close
+  across robots.
+technique_kind: architecture
+technique_validated_by: Reported out-of-distribution manipulation benchmarks
+  (RoboCasa365, LIBERO-Plus, EBench, RoboTwin-Clean2Rand, plus new RoboTwin-IF
+  and RoboTwin-XE) against prior VLA models including pi-0.5 and GR00T-N1.7,
+  1st place on RoboChallenge Table30-v1, and real-robot trials on AgileX
+  ALOHA, Franka, UR and ARX; the source text reports no ablation isolating the
+  representation components from the data scale.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation holding the ~38,100-hour corpus and backbone fixed
+  while replacing camera-frame delta actions and the masked canonical vector
+  with per-dataset base-frame actions and embodiment tokens, showing equal or
+  better out-of-distribution and cross-embodiment transfer.
+evidence_note: Argued as the paper's organizing principle and supported by
+  end-to-end benchmark wins, but the given text reports no component ablation,
+  so representation alignment is confounded with the 38,100-hour corpus, the
+  human-to-robot synthesis pipeline, the five-stage curation, and
+  vision-language co-training. All numbers are from a single technical report
+  with self-authored benchmarks (RoboTwin-IF, RoboTwin-XE).
+confidence: low
