@@ -1,0 +1,42 @@
+arxiv_id: "2606.09317"
+title: A Comparative Study of Pre-trained Speech Encoders and Training
+  Objectives for Large-Scale Indic Spoken Language Identification
+url: https://arxiv.org/abs/2606.09317
+drafted_at: 2026-10-30
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: audio-understanding
+statement: For spoken language identification over 42 Indic languages with a
+  pre-trained speech encoder plus linear head, training the classifier as a
+  hierarchical softmax over a family/sub-family/language tree beats flat
+  cross-entropy and cross-entropy plus supervised contrastive loss on both
+  in-domain and out-of-domain corpora, with the largest gains out of domain.
+kind: observation
+backing_strength: single-paper
+scope_condition: Encoder-classifier LID with Whisper-medium or a Vaani
+  FastConformer encoder, trained on a balanced 10h-per-language Vaani subset,
+  evaluated on Vaani-Test, FLEURS and Kathbath by macro accuracy.
+technique: ""
+proposed_technique: Train language ID through a linguistic-family hierarchical softmax
+technique_summary: Replace the flat 42-way softmax head with a
+  root-family-subfamily-language tree where each internal node has its own
+  linear classifier and the language score is the product of branch
+  probabilities.
+technique_kind: training
+technique_validated_by: "Macro accuracy on three benchmarks against CE and
+  CE+SupCon baselines on the same encoders: Whisper 74.2/73.8/75.8 vs CE
+  71.8/72.7/68.3; FastConformer 67.7/91.4/90.0 vs CE 67.6/89.9/87.4."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A replication on other language sets or encoders where hierarchical
+  softmax matches or trails flat cross-entropy on out-of-domain macro
+  accuracy.
+evidence_note: Measured on one training corpus (Vaani, 42 languages) with two
+  encoders and three objectives; gains over CE are small in-domain for
+  FastConformer (+0.1) and larger out-of-domain (+1.5 to +7.5). No seed
+  variance or confidence intervals reported, and the tree was hand-specified.
+confidence: low
+problems:
+  - "figures not in the source: 0.1, 1.5"

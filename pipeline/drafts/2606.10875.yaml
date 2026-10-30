@@ -1,0 +1,53 @@
+arxiv_id: "2606.10875"
+title: Pushing the Limits of LLM Tool Calling via Experiential Knowledge
+  Integration and Activation
+url: https://arxiv.org/abs/2606.10875
+drafted_at: 2026-10-30
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: tool-use
+statement: For multi-turn tool-calling agents retrieving past experience at
+  inference, concrete instance-level knowledge (ground-truth execution
+  trajectories, or short summaries of them) raises tool-call accuracy more
+  than abstracted intent-level knowledge (clustered intent scripts or textual
+  strategy descriptions), because intent-level retrieval requires the model to
+  first infer the intent correctly and adds an error step, and stacking all
+  knowledge types together does not beat the best single type.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Qwen3-8B and Qwen3-32B on BFCL-V3 multi-turn scenarios (Base,
+  Miss Func, Miss Param, Long Context) with a small knowledge base built from
+  a 100-sample training split and top-k embedding retrieval; text-only tool
+  use.
+technique: distilled-experience-memory
+proposed_technique: Retrieve past trajectories, not abstracted intent scripts
+technique_summary: Index training-set user queries against their ground-truth
+  tool-execution trajectories and prepend the top-k retrieved trajectories to
+  the user turn, rather than retrieving clustered intent-level usage scripts.
+technique_kind: retrieval
+technique_validated_by: Compared four knowledge forms (scenario trajectory,
+  experience summary, script-style intent clustering, textual-style intent
+  clustering, and all combined) on BFCL-V3 accuracy with Qwen3-8B/32B;
+  instance-level forms gave the largest gains, the two instance forms were
+  comparable to each other, and the 'All' combination did not add further
+  gain.
+stance_on_existing: supports
+related_claim_id: distilled-experience-memory
+stance_reason: It shows distilled lessons help, but finds the concrete
+  trajectory level carries the gain and the most abstract intent level does
+  not.
+falsifier: A controlled comparison on multi-turn tool benchmarks where
+  intent-level clustered scripts match or beat retrieved concrete trajectories
+  at equal retrieval budget, or where combining both reliably beats
+  trajectories alone.
+evidence_note: Measured on one benchmark family (BFCL-V3) with two models of
+  one family, a small knowledge base built from 100 training samples; the
+  paper's own limitations note that knowledge-base scaling is untested. Gains
+  reported as bar-chart comparisons rather than per-type numbers in the text,
+  so magnitudes are not verifiable from the source. Contradicts its own
+  framing slightly, since the medical-style 'principles-first' finding in
+  other work points the other way.
+confidence: low
+problems:
+  - related_claim_id "distilled-experience-memory" does not exist

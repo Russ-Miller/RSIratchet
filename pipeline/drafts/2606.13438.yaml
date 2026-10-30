@@ -1,0 +1,51 @@
+arxiv_id: "2606.13438"
+title: "CQC-RAG: Robust Retrieval-Augmented Generation via Cross-Query Consistency"
+url: https://doi.org/10.48550/arxiv.2606.13438
+drafted_at: 2026-10-30
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: In 7-8B-backbone retrieval-augmented QA over a fixed retrieved
+  document pool, selecting the answer whose Yes/No validity confidence is high
+  and low-variance across several meaning-preserving paraphrases of the
+  question (each reranking the same pool) picks correct answers more often
+  than majority voting, perplexity, generation probability, single-query
+  Yes-probability or LLM-as-judge over the same candidate pool, with the
+  margin largest on multi-hop questions.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Qwen3-8B reasoner with a separate Mistral-7B/Llama-3.1-8B
+  evaluator, four paraphrases, BGE reranker, open-domain QA (TriviaQA, PopQA,
+  MuSiQue, HotpotQA); gains do not hold on HotpotQA, where retrieval depends
+  on title matching that paraphrasing does not vary.
+technique: ""
+proposed_technique: Select the answer stable across paraphrased queries
+technique_summary: Rewrite the question into semantically equivalent but
+  syntactically varied queries, rerank one shared document pool per query to
+  get different contexts, extract answer-evidence pairs, and pick the answer
+  whose evaluator Yes-probability has high mean and low variance across all
+  query views.
+technique_kind: prompting
+technique_validated_by: EM/F1 on four open-domain QA sets against standard
+  RAG, Self-Certainty, Speculative RAG, DMQR-RAG and SPARC-RAG at matched
+  retrieval budget and top-k, plus a fixed-candidate-pool comparison of five
+  alternative selection rules and component ablations; +4.76 pp EM over
+  DMQR-RAG on TriviaQA, +9.12 pp on MuSiQue, second place on HotpotQA.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On the same candidate pool, cross-query variance-penalized scoring
+  fails to beat single-query Yes-probability or majority voting, or the
+  advantage disappears once paraphrase count and evaluator are matched to
+  baselines, or the gain is traced to the evidence-extraction protocol alone
+  rather than the cross-query selection.
+evidence_note: Measured on four benchmarks (1,000-2,000 queries each), main
+  table averaged over 5 seeds; selection-strategy comparison holds the
+  candidate pool fixed, which isolates the selection rule. But the ablation
+  shows the evidence-grounded extract-then-answer protocol is by far the
+  biggest component (-15.9 pp EM on TriviaQA when removed) while removing
+  cross-query evaluation costs only 0.8-1.5 pp EM, so most of the headline
+  gain is not from the consistency signal. Single backbone pair, no human
+  verification of selected answers.
+confidence: low

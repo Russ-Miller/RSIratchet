@@ -1,0 +1,51 @@
+arxiv_id: "2606.03131"
+title: "HARVE: Hacking-Aware Reward-Head Vector Editing for Robust Reward Models"
+url: https://doi.org/10.48550/arxiv.2606.03131
+drafted_at: 2026-10-30
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: reward-hacking
+statement: In open-weight scalar reward models (0.6B-20B), sensitivity to
+  reward-hacking cues sits in a multi-directional residual-stream subspace
+  rather than a single style or category feature, so subtracting the
+  reward-head vector's projection onto a subspace spanned by several
+  per-category hacking directions raises gold-preference rates on targeted
+  hacking patterns more than removing either the shared style direction or the
+  style-orthogonal residual alone.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Scalar reward models with accessible reward-head vector and
+  hidden states; hacking directions estimated from a small set of matched
+  gold-hacked pairs on which the base model was fooled; intervention strength
+  tuned per model on a dev split.
+technique: ""
+proposed_technique: Subtract the hacking subspace from the reward head
+technique_summary: Estimate per-category hacking directions as the mean
+  gold-to-hacked hidden-state shift over pairs the reward model got wrong,
+  orthonormalize them by SVD, and subtract the reward-head vector's projection
+  onto that subspace without any gradient updates.
+technique_kind: training
+technique_validated_by: Gold-preference rate on a held-out split of
+  RewardHackBench (967 pairs, 13 subcategories) and on RM-Bench Hard, across
+  eight reward models, against the unedited model and two data-augmented
+  fine-tuning baselines (3:1 and 5:1 mixtures); reported +21.1 points on
+  target subcategories over base and +13.7 over the stronger fine-tune, +2.4
+  on RM-Bench; component ablation compares style-only, style-orthogonal-only,
+  and joint removal (+16.67 pp joint vs -0.81 and +5.32 mean).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Removing only the shared style direction, or only the
+  style-orthogonal residual, matches or exceeds joint subspace removal on
+  target-subcategory gold-preference rate across these models; or editing
+  gives no gain over fine-tuning once the edit strength is not tuned per
+  model.
+evidence_note: "Measured on eight open scalar reward models across a new
+  1,203-pair benchmark plus RM-Bench Hard, with fine-tuning baselines and a
+  decomposition ablation. Weaknesses: target subcategories are chosen as the
+  lowest-performing ones per model and alpha is tuned per model, so some of
+  the target-subcategory gain is selection; non-target and RM-Bench results
+  are mixed in places (InternLM2-1.8B loses on RM-Bench safety, GRM loses on
+  math); no test of downstream RLHF effects."
+confidence: medium

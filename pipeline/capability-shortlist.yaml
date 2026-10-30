@@ -1,49 +1,59 @@
 # Consolidated capability candidates. Suggestions, not capabilities.
-generated_at: 2026-10-29
-from_raw_proposals: 24
+generated_at: 2026-10-30
+from_raw_proposals: 21
 recommended:
-  - id: physical-spatial-reasoning
-    label: "Reasoning about space and physical dynamics"
-    scope_note: "Covers judging relative position, distance, angle and 3D layout from images or multi-view input, plus predicting how physical scenes evolve and inferring body motion from egocentric views; excludes object-presence questions and generic video event ordering."
-    paper_count: 4
-    merged_from: [spatial-reasoning, intuitive-physics, egocentric-body-motion-understanding]
-    note: "Recurring, well-defined weakness across several papers that no existing entry (visual-grounding, video-temporal-reasoning) covers."
-  - id: document-and-chart-understanding
-    label: "Reading structured documents, tables and charts"
-    scope_note: "Covers recovering layout, reading order, tables and chart values from document or plot images and reasoning over them; excludes natural-image captioning and plain OCR of free text."
-    paper_count: 3
-    merged_from: [document-structure-parsing, chart-understanding]
-    note: "Three papers converge on structured visual information extraction, a distinct and practically important capability."
-  - id: real-time-and-asynchronous-interaction
-    label: "Acting when the world moves during deliberation"
-    scope_note: "Covers agents and dialogue systems facing live turn-taking, interruptions, latency, and tool or subagent results that arrive late or out of order and invalidate work in progress; excludes ordinary turn-based or untimed multi-step execution."
-    paper_count: 3
-    merged_from: [real-time-interaction, real-time-dialogue-interaction, asynchronous-execution]
-    note: "Three independent framings of the same failure mode — timing and concurrency — which existing planning and long-horizon entries assume away."
-  - id: persona-fidelity
-    label: "Staying in an assigned persona or simulated person"
-    scope_note: "Covers holding a specified persona's traits across a dialogue and reproducing a specific individual's or group's out-of-sample judgments; excludes general instruction-following and population-level cultural representation."
+  - id: spatial-reasoning
+    label: "Reasoning about space and physical layout"
+    scope_note: "Covers relative position, distance, reference frames, free space and geometric relations inferred from images, scenes or spatial audio; excludes merely naming or locating an object mentioned in the prompt."
     paper_count: 2
-    merged_from: [persona-consistency, human-simulation-fidelity]
-    note: "Two papers on the same thing, and it underpins the growing use of models as simulated respondents."
-  - id: theory-of-mind
-    label: "Inferring others' beliefs and intentions"
-    scope_note: "Covers attributing beliefs, false beliefs and intentions to agents from text or video; excludes social-norm and cultural knowledge."
+    merged_from: [spatial-reasoning, spatial-audio-reasoning]
+    note: "A well-attested, recurring weakness that visual-grounding does not cover, since it is about relations rather than pointing at an object."
+  - id: synthetic-media-detection
+    label: "Telling AI-generated media from real"
+    scope_note: "Covers judging whether an image, video or audio clip is machine-generated and naming the artifacts that reveal it; excludes general VQA about authentic content."
+    paper_count: 2
+    merged_from: [synthetic-media-detection]
+    note: "Multiple papers, a clean pass/fail capability, and nothing in the index touches it."
+  - id: text-in-image-reading
+    label: "Reading text embedded in images"
+    scope_note: "Covers detecting and transcribing (or translating) text rendered inside photos, diagrams, maps and documents across scripts; excludes object-level description of the image."
     paper_count: 1
-    merged_from: [theory-of-mind]
-    note: "Only one proposal here, but it is a long-standing, clearly bounded capability with a large external literature and no existing index entry."
+    merged_from: [text-in-image-reading]
+    note: "OCR-in-the-wild is a distinct, heavily measured failure mode that visual-grounding does not capture, despite only one proposal here."
+  - id: offensive-security
+    label: "Finding and exploiting vulnerabilities"
+    scope_note: "Covers agentic penetration testing, CTF exploitation and vulnerability discovery against live systems; excludes writing secure code or spotting bugs in supplied source."
+    paper_count: 1
+    merged_from: [offensive-security]
+    note: "A coherent and safety-relevant agentic capability that is the mirror image of secure-coding rather than a duplicate of it."
+  - id: demographic-fairness
+    label: "Treating demographic groups evenly"
+    scope_note: "Covers performance or behavior shifts tied to sensitive attributes and their intersections on otherwise identical tasks; excludes culture-specific norm knowledge and judge-ordering artifacts."
+    paper_count: 1
+    merged_from: [demographic-fairness]
+    note: "The index has multilingual-disparity and cultural-competence but no slot for group-level disparity, which is a persistent measured axis."
 set_aside:
-  - id: adaptive-compute-allocation
-    note: "Single paper, and the user-visible half of it is largely covered by cutting-to-the-chase."
-  - id: generation-diversity
-    note: "One-off framing so far; revisit if more papers treat diversity as a tracked capability rather than a sampling property."
-  - id: context-compression-fidelity
-    note: "Really a property of a technique, and the failure it measures is already captured by long-context-degradation and context-hygiene."
-  - id: weight-merging-retention
-    note: "A narrow variant of fine-tuning-retention, which already covers skill loss from weight-space edits."
-  - id: language-guided-segmentation
-    note: "Single paper and essentially the output-format variant of visual-grounding."
-  - id: visual-analogical-reasoning
-    note: "One paper, and sits close to multi-step-reasoning applied to a specific puzzle domain."
-  - id: niche-modality-and-task-proposals
-    note: "Each is a single-paper task domain or benchmark framing rather than a recurring capability; several are already implied by domain-knowledge, code-generation or retrieval-utilization."
+  - id: visual-counting
+    note: "Too narrow a task; it sits inside visual-grounding and arithmetic rather than naming a separate capability."
+  - id: training-pipeline-robustness
+    note: "These are properties of training and deployment pipelines, and fine-tuning-retention already covers the post-training-degradation question the index cares about."
+  - id: alignment-tamper-resistance
+    note: "One paper and really an interpretability attack technique; the behavioral question is already split across jailbreak-robustness and fine-tuning-retention."
+  - id: speech-and-length-output-control
+    note: "Format-constraint compliance and TTS controllability are generation-side knobs rather than capabilities the index tracks."
+  - id: code-summarization
+    note: "A task domain largely implied by repository-navigation and code-generation competence."
+  - id: iterative-requirement-adaptation
+    note: "Mostly a restatement of multi-turn instruction following already spanned by state-tracking, procedure-following and context-hygiene."
+  - id: proactive-assistance
+    note: "A single-paper product framing without an established measurement tradition yet."
+  - id: side-effect-awareness
+    note: "Interesting but one-off, and currently reads as a facet of tool-use and planning."
+  - id: generative-3d-world-building
+    note: "A narrow application area combining code-generation and spatial reasoning rather than a capability of its own."
+  - id: graph-structured-reasoning
+    note: "A specific input format; the underlying skill is already multi-step-reasoning over structured context."
+  - id: word-sense-disambiguation
+    note: "A classic NLP subtask that modern models largely pass; too fine-grained for a curated index."
+  - id: cross-modal-integration
+    note: "Appealing but currently one paper, and it overlaps the existing per-modality entries without a clear separate failure signature."

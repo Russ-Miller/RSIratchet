@@ -1,0 +1,50 @@
+arxiv_id: "2606.07100"
+title: "LARA: Latent Action Representation Alignment for
+  Vision-Language-Action Models"
+url: https://doi.org/10.48550/arxiv.2606.07100
+drafted_at: 2026-10-30
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: For diffusion/flow-matching VLA policies supervised by latent
+  action models learned from unlabeled video, aligning the policy's deep DiT
+  features with the LAM's continuous latent action while updating both jointly
+  beats using the same LAM frozen as a fixed supervision target, and the
+  refinement runs both ways — the jointly trained LAM yields better
+  pseudo-labels for downstream VLA learning.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Diffusion/flow-based VLA with a DiT action head and a ViT
+  encoder-decoder LAM; alignment must be injected in deep layers near the
+  action head, and the best depth is architecture-dependent (L-2 for
+  GR00T-N1.6, final layer for pi0.5).
+technique: ""
+proposed_technique: Align VLA diffusion features with an online, jointly trained LAM
+technique_summary: Adds a cosine-similarity loss between the VLA diffusion
+  transformer's deep intermediate features and the latent action model's
+  pre-quantization latent, and backpropagates into both models instead of
+  freezing the LAM.
+technique_kind: training
+technique_validated_by: "Manipulation success rate on LIBERO, SIMPLER-ENV,
+  GR1-Sim-24(30) and a 50-demo real Unitree G1 benchmark: ~10% average gain
+  over a DiT-only baseline pretrained on the same OXE data, ~5% as
+  post-training on GR00T-N1.6 and pi0.5, and 42.8 to 49.5 average SIMPLER
+  success when the refined LAM's tokens replace a vanilla LAM's as Moto-GPT
+  pseudo-labels; an ablation on LIBERO-Long compares joint optimization
+  against a frozen LAM at the same alignment depth."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched comparison in which aligning to a frozen LAM equals or
+  beats joint optimization, or where the jointly trained LAM's latent tokens
+  do not improve a downstream LAM-supervised VLA over a reconstruction-only
+  LAM.
+evidence_note: Measured across three simulators and one real robot with two
+  settings (OXE-constrained and unconstrained), but the headline ~10% gain
+  compares LARA-full against the authors' own DiT-only baseline rather than
+  against an equal-compute alternative use of the LAM; the joint-vs-frozen
+  ablation is on a single benchmark subset (LIBERO-Long) and the
+  reciprocal-refinement result rests on one Moto-GPT testbed. Attention-map
+  evidence for 'action-centric' latents is qualitative.
+confidence: medium

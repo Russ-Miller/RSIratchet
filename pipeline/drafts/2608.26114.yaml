@@ -1,0 +1,49 @@
+arxiv_id: "2608.26114"
+title: "CIFQA: A Deterministic Tool-Grounded Multi-Agent LLM Framework for
+  Financial Query Answering"
+url: https://doi.org/10.48550/arxiv.2608.26114
+drafted_at: 2026-10-30
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: For calculation-intensive financial query answering (fixed deposit
+  interest, payouts, premature withdrawal), splitting the task into LLM agents
+  for routing, parameter extraction, planning and response writing while
+  delegating every arithmetic and rate-lookup step to deterministic Python
+  engines lets a 17B open backbone exceed frontier models prompted with the
+  same formulas and rate cards.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: 126 expert-written fixed-deposit queries in one domain;
+  baselines run single-prompt through consumer chat interfaces; grading partly
+  manual with a tolerance of 1 INR; gains do not extend to
+  policy-interpretation or rate-trend-analysis queries, where the pipeline
+  scores below Claude.
+technique: ""
+proposed_technique: Keep arithmetic out of the LLM loop entirely
+technique_summary: LLM agents only route, extract parameters, plan and phrase,
+  while deterministic Python engines do all rate lookup, calendar/day-count,
+  compounding and rule application.
+technique_kind: tooling
+technique_validated_by: "Accuracy on 101 calculation-intensive queries: 95.54%
+  with a Llama-Scout-17B backbone versus 83.66% Claude Sonnet 4.6, 70.30%
+  Gemini 3, 45.05% GPT-5.3, all given complete formulas and rate cards; 89.60%
+  with a 70B and 68.81% with an 8B backbone; module ablations drop accuracy to
+  48% (rolling-year) and 76.7% (rate lookup)."
+stance_on_existing: supports
+related_claim_id: program-aided-computation-moves-errors-to-translation
+stance_reason: Residual errors in the deterministic pipeline are extraction
+  and routing errors, i.e. the translation from query to parameters, not the
+  arithmetic.
+falsifier: A frontier model prompted with the same formulas and rate tables
+  matching or beating the deterministic pipeline on the same
+  calculation-intensive queries, or the pipeline's advantage disappearing once
+  baselines are given a code interpreter and the same structured rate tables.
+evidence_note: "Measured on one curated 126-query fixed-deposit benchmark from
+  a single institution's rate card, with 21 queries used for prompt tuning.
+  Baseline comparison is not matched on scaffolding: baselines are
+  single-prompt, the system is a five-stage pipeline, so the result does not
+  separate multi-agent decomposition from tool grounding. Ablations do isolate
+  individual deterministic modules."
+confidence: low
