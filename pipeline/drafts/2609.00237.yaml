@@ -1,0 +1,43 @@
+arxiv_id: "2609.00237"
+title: "Learning What to Retain: Gated-Memory Routing for Efficient
+  Collaboration in Multi-Agent LLM Systems"
+url: https://doi.org/10.48550/arxiv.2609.00237
+drafted_at: 2026-10-18
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: In multi-agent LLM pipelines over reasoning and code tasks with a
+  pool of 3B-32B open-weight backbones, conditioning each per-step routing
+  decision on a learned filtered memory rather than the full accumulated
+  trajectory leaves accuracy about the same while cutting inference cost by
+  roughly 40-50%, so most of the accumulated history is cost without accuracy
+  value.
+kind: observation
+backing_strength: single-paper
+scope_condition: Closed-domain verifiable tasks (MATH, GSM-Hard, MBPP,
+  HumanEval, MMLU-Pro), router trained with group-relative policy gradients,
+  frozen 3B-32B open-weight backbones, max depth 6; no open-ended generation.
+technique: ""
+proposed_technique: Route multi-agent steps over a gated execution memory
+technique_summary: A jointly trained router picks each step's role and
+  backbone from a memory kept compact by learned write and retrieval gates,
+  and halts when the memory holds enough evidence.
+technique_kind: process
+technique_validated_by: Accuracy and token cost on five benchmarks against
+  query-only routing (MASRouter), full-history routing (Puppeteer), fixed
+  topologies (MacNet), AFlow; best average accuracy, +2.44 points over
+  strongest baseline, -31.9% HumanEval cost; leave-one-out ablation of each
+  module; three seeds reported in appendix.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A comparison in which full-history routing is meaningfully more
+  accurate than gated-memory routing at matched depth, or in which gated
+  memory's cost saving disappears once prompt lengths are measured properly.
+evidence_note: Direct three-paradigm comparison on two benchmarks (GSM-Hard
+  70.27 vs 70.55; HumanEval 89.06 vs 89.84) with cost ~40-50% lower; own
+  implementation of the full-history arm, cost measured in tokens with
+  parameter-count price proxy; accuracy differences are small and within
+  plausible noise, and only two benchmarks carry this comparison.
+confidence: medium

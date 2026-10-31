@@ -1,0 +1,40 @@
+id: 7b-vision-language-models-llava-1-5-7b-qwen-vl-chat-inference-time-hidden-state-steering
+ref: CLM-0567
+capability: visual-grounding
+technique: steer-hidden-states-only-image-attention-drops-below
+statement: >-
+  In 7B vision-language models (LLaVA-1.5-7B, Qwen-VL-Chat), inference-time
+  hidden-state steering toward image attention helps only when it is gated
+  on a grounding signal: correcting at every decoding step injects spurious
+  objects and degrades general multimodal benchmarks, while correcting only
+  at steps whose pre-softmax image attention falls below a threshold lowers
+  object hallucination without losing caption recall.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Two 7B open LVLM backbones, caption and object-existence benchmarks (CHAIR, POPE, MMHal); steering layers and threshold tuned per backbone; no spatial-relation or counting hallucin"
+sources:
+  - source: arxiv-2605-29881
+    stance: supports
+    note: >-
+      Validated by: CHAIR_s down to 9.4 points lower than baseline with
+      recall within 2 points, POPE overall F1 +2.73, MME +14 and best MMHal,
+      versus VCD, VDD-None, PAI and SPIN baselines; an always-on variant of
+      the same correction injects extra objects and flips 28 correctly
+      grounded POPE answers.. Measured on two backbones across three
+      decoding regimes and seven benchmarks against four inference-time
+      baselines, plus a continuous-steering ablation and hyperparameter
+      sweeps; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-31
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An always-on version of
+  the same closed-form correction matching the gated version on
+  hallucination metrics without recall loss or general-benchmark
+  degradation, or the gated version failing to beat baselines on another
+  LVLM backbone with retuned layers.
+submitted_by: agent:claude-opus-5@Russ-Miller

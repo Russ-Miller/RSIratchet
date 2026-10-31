@@ -1,0 +1,44 @@
+arxiv_id: "2608.13463"
+title: MLLM-Routed Heterogeneous Ensembles for Robust Cross-Dataset Image
+  Classification
+url: https://doi.org/10.48550/arxiv.2608.13463
+drafted_at: 2026-10-23
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: When routing each image to one of several domain-specialist vision
+  backbones trained on a shared label space, a prompted MLLM router
+  (Gemma-4-12B) reaches nearly the accuracy of a trained neural-network router
+  and beats majority-vote fusion, because routing only needs coarse domain
+  identification, which a general multimodal model already does zero-shot.
+kind: observation
+backing_strength: single-paper
+scope_condition: Four visually disjoint datasets (CIFAR10, FER2013, EuroSAT,
+  OrganAMNIST) with a unified 38-class head; domains differ sharply enough
+  that a ResNet-18 router hits 99.5% domain accuracy.
+technique: ""
+proposed_technique: Route images to expert backbones with a prompted MLLM
+technique_summary: An MLLM is prompted with the image plus
+  blur/brightness/contrast/noise statistics and outputs one of five domain
+  labels, dispatching the image to the matching fine-tuned vision expert, with
+  an UNSURE option falling back to the best balanced expert.
+technique_kind: process
+technique_validated_by: "Unified-dataset top-1 accuracy: ARMDIL 90.78% vs best
+  single backbone (balanced DINOv3) 89.61%, majority vote 90.47%, trained
+  NN-Router 91.18%, oracle router 91.04%; per-domain routing accuracy
+  78.2-99.8%."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On domain sets where visual categories are less separable, or with
+  more experts, a prompted MLLM router falls well short of a trained router
+  and of majority-vote fusion.
+evidence_note: Measured on one four-dataset unified benchmark with one MLLM
+  (quantized Gemma-4-12B). Margins are small (0.31 points over majority vote,
+  -0.40 behind the NN-router) with no confidence intervals or repeated runs,
+  and the whole ensemble sits within ~1.2 points of a single balanced DINOv3.
+  Routing accuracy is weakest on EuroSAT (78.2%), buffered by the UNSURE
+  fallback. Claimed adaptability and interpretability advantages are argued,
+  not measured.
+confidence: low

@@ -1,0 +1,49 @@
+arxiv_id: "2608.24042"
+title: Hierarchical Skill Retrieval for Data-Efficient Adaptation of
+  Vision-Language-Action Models
+url: https://doi.org/10.48550/arxiv.2608.24042
+drafted_at: 2026-10-20
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: When adapting a pretrained VLA manipulation policy with only a
+  handful of target demonstrations, retrieving prior demonstrations at the
+  level of LLM-decomposed subtasks (then reranking by behavior-feature
+  similarity) raises success more than retrieval by visual, optical-flow, or
+  state-action similarity, and the margin is concentrated on long-horizon
+  composite tasks rather than single-skill pick-and-place.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: SmolVLA-450M backbone; 5 demos per LIBERO long-horizon task
+  with LIBERO-90 as prior, 20 demos per real xArm task with 10k DROID
+  trajectories as prior; manipulation only
+technique: ""
+proposed_technique: Retrieve demonstrations per decomposed subtask, not per task
+technique_summary: Cluster the prior dataset into skills, have an LLM
+  decompose the target task into subtasks scored by semantic plausibility and
+  per-skill held-out BC loss, retrieve episodes by subtask language
+  similarity, rerank frames by VAE behavior-feature closeness to target data,
+  then pretrain on retrieved data and finetune on target data.
+technique_kind: training
+technique_validated_by: Average success rate over 50 episodes x 3 seeds on 10
+  LIBERO long-horizon tasks (43.5% vs 33.2% for Behavior Retrieval, 31.9%
+  STRAP, 32.5% IWR, 22.7% BC) and 20 trials per task on four real xArm tasks
+  (48/80 vs 31/80 IWR, 27/80 BC); ablations remove decomposition, reranking,
+  and the two-stage split.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched-budget comparison where skill-level language retrieval
+  plus reranking does no better than state-action or subtrajectory retrieval
+  on long-horizon composite tasks, or where its advantage is as large on
+  single-skill tasks as on composite ones.
+evidence_note: Measured on one benchmark (LIBERO long-horizon, 10 tasks, 3
+  seeds) and 4 real-robot tasks with 20 trials each, against six baselines
+  including BC, random, all-data, and four retrieval methods. Single VLA
+  backbone (SmolVLA-450M), single LLM planner. Ablations isolate
+  decomposition, reranking and two-stage training separately, and a
+  BR+two-stage arm separates retrieval quality from the training schedule.
+  Real-robot sample sizes are small (20 trials) and no variance is reported
+  there.
+confidence: medium

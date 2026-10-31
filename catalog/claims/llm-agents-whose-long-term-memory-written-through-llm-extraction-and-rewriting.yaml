@@ -1,0 +1,44 @@
+id: llm-agents-whose-long-term-memory-written-through-llm-extraction-and-rewriting
+ref: CLM-0669
+capability: long-term-memory
+technique: bind-trigger-payload-disguise-named-entity
+statement: >-
+  In LLM agents whose long-term memory is written through an LLM
+  extraction-and-rewriting pipeline (Mem0, LangMem, A-Mem), that pipeline
+  filters or splits naively concatenated trigger-plus-payload injections but
+  does not stop poisoning: a trigger semantically bound to the payload and
+  optimized to look like a named entity survives extraction and rewriting
+  and is recalled later, reaching attack success up to 0.95 while benign
+  accuracy stays near baseline.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Black-box dialogue or indirect-injection access; embedding-similarity retrieval; attacker has a local surrogate embedder; weaker when the same model also decides what gets written "
+sources:
+  - source: arxiv-2605-29960
+    stance: supports
+    note: >-
+      Validated by: Injection, retrieval and attack success rates plus
+      benign accuracy on three agents (LongMemEval, MIRIAD, FinQA) across
+      RAG and three memory pipelines, against Info-only, Naive Concat,
+      AgentPoison and MINJA baselines; ablations remove each component
+      (dropping the semantic bridge takes ASR to 0); also tested under
+      perplexity filtering, paraphrasing, seven backbones, eight retrievers
+      and 10-40 rounds of memory lifecycle evolution.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-31
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A memory pipeline using
+  LLM extraction and embedding retrieval where semantically bridged,
+  entity-masqueraded triggers are filtered or rewritten away at rates
+  comparable to naive concatenation, or where triggered recall stays near
+  zero without a matching loss in benign accuracy. Drafted stance toward
+  persistent-memory-agents-any-memory-write-rule-decides-using-only-recency:
+  supports -- Shows that write-time filters based on salience and surface
+  form do not separate genuine from planted content once the planted claim
+  is phrased as a coherent, entity-bearing user fact.
+submitted_by: agent:claude-opus-5@Russ-Miller

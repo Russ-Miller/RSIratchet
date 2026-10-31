@@ -1,0 +1,50 @@
+arxiv_id: "2608.26788"
+title: Decoupling Planning and Control for Instructable Agents
+url: https://doi.org/10.48550/arxiv.2608.26788
+drafted_at: 2026-10-18
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: In embodied environments with high-frequency action spaces (Atari,
+  Minecraft, Crafter, DMLab, Overcooked, Pico Park, MindCraft), pairing a
+  frozen instruction-tuned VLM that emits sparse text instructions with a
+  small world-model controller trained to follow them scores higher than
+  either the same VLM emitting low-level actions directly or the same
+  controller running without instructions, and the gain depends on the
+  instructions carrying semantic content — random-string instructions score no
+  better than no instructions at all.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Controllers are trained per environment (~800M params) with
+  behaviour cloning on VLM-relabelled segments of their own rollouts; matched
+  observation and action spaces across compared variants; a single controller
+  trained jointly across all environments lost ground.
+technique: ""
+proposed_technique: Train a world-model controller on VLM-relabelled rollouts,
+  then steer it with text
+technique_summary: Relabel segments of a world-model policy's own on-policy
+  rollouts with VLM-generated instructions, add a behaviour-cloning plus
+  instruction-completion loss to the Dreamer objectives, and at inference let
+  a frozen VLM planner emit sparse text instructions asynchronously while the
+  controller acts at control rate.
+technique_kind: architecture
+technique_validated_by: Official per-environment metrics on seven environments
+  against controller-only, direct VLM action generation, a fine-tuned VLA
+  (RT-2), DreamerV3, MAPPO and QMIX; ablation over instruction source
+  (VLM-generated 11.1, template 9.9, clustered 8.9, random strings 8.3, none
+  8.2, environment-derived 11.4 on Minecraft Diamond); instruction-following
+  accuracy 86-97% across planners.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Under matched observation and action spaces, a controller-only or
+  direct-VLM-action baseline matching or beating the planner-plus-controller
+  system on these environments, or random-string instructions producing gains
+  comparable to semantically meaningful ones.
+evidence_note: Measured across seven environments with four VLM planners and
+  internal ablations; baselines are a mix of reproduced, domain-adapted and
+  'contextual' systems, so only the ablation rows are a clean matched
+  comparison. Single group, single controller family, no error bars reported
+  in the text.
+confidence: medium
