@@ -1,0 +1,69 @@
+id: arxiv-2605-24137
+ref: SRC-0905
+kind: paper
+title: Empirical Analysis and Detection of Hallucinations in LLM-Generated Bug
+  Report Summaries
+authors:
+  - Hinduja Nirujan
+  - Shreyas Patil
+  - Abdallah Ayoub
+  - Ahmad Abdel Latif
+  - Gouri Ginde
+year: 2026
+date: 2026-05-22
+arxiv_id: "2605.24137"
+url: https://arxiv.org/abs/2605.24137
+tags:
+  - ingested
+summary: Large Language Models (LLMs) are increasingly used to generate
+  summaries of software bug reports, including sections such as
+  Steps-to-Reproduce (S2R), Actual Behavior (AB), and Expected Behavior (EB).
+  However, these models frequently produce hallucinations that can be
+  convincing but unsupported by the source report. This can mislead developers
+  and reduce trust in automated maintenance tools. Existing hallucination
+  detection approaches typically evaluate outputs at the full-response level
+  and do not consider the structure of technical documents. An initial
+  exploratory study on 80 structured bug
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (measures, medium): The paper empirically
+  characterizes unsupported content in bug report summaries and builds a
+  section-aware detection benchmark/detector, which measures and detects
+  rather than changing generation behavior. No claim has been drafted from it
+  yet."
+ingested_at: 2026-11-01
+brief: >-
+  Omission, not fabrication, is the dominant hallucination mode in
+  LLM-generated bug report summaries, and it is also the mode detectors miss.
+  In an exploratory check on 80 Mozilla bug reports summarized by Llama 3.2,
+  47.9% of summaries contained missing information while only 12.3% contained
+  fabricated content, with 3 annotators at Cohen's Kappa = 0.85.
+
+
+  The authors built a benchmark from the BugsRepo structured subset (10,304
+  reports), converted structured reports to narrative form with Mistral-7B,
+  filtered with a modified PARENT metric (threshold 0.50 retained 7,768
+  reports, 75.39%), and injected controlled add/remove/reorder hallucinations
+  into Steps-to-Reproduce, Actual Behavior and Expected Behavior. A multitask
+  LoRA detector jointly predicts report-level hallucination, affected section,
+  and type.
+
+
+  Fine-tuned Ministral-3B reached 0.898 report accuracy, 0.846 section
+  micro-F1 and 0.836 type macro-F1, against prompting baselines that topped
+  out at 0.683 report accuracy. Scale did not help: Mistral-7B and LLaMA-8B
+  scored slightly lower. Removal hallucinations stayed hard, F1 0.525 with
+  recall 0.383, and 73 of 163 errors (44.8%) were missed implicit or omitted
+  information.
+
+
+  Hallucinations are synthetic, so detection numbers are on injected
+  perturbations, not organic model errors; prompting comparisons are present
+  but fine-tuning gets the data advantage. 1 dataset, 1 bug tracker, no
+  real-world annotated test set.
+
+
+  If you are building a faithfulness guardrail for technical summaries, budget
+  your effort on detecting what was dropped.
+brief_generated_at: 2026-11-01
+brief_model: claude-opus-5
+brief_source: full-text

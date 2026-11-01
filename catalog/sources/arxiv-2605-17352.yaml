@@ -1,0 +1,74 @@
+id: arxiv-2605-17352
+ref: SRC-0893
+kind: paper
+title: "AMATA: Adaptive Multi-Agent Trajectory Alignment for
+  Knowledge-Intensive Question Answering"
+authors:
+  - Taolin Zhang
+  - Dongyang Li
+  - Chen Chen
+  - Qizhou Chen
+  - Jiuheng Wan
+  - Xiaofeng He
+year: 2026
+date: 2026-05-17
+arxiv_id: "2605.17352"
+url: https://arxiv.org/abs/2605.17352
+tags:
+  - ingested
+summary: Despite substantial advances in large language models (LLMs),
+  generating factually consistent responses for knowledge-intensive question
+  answering remains challenging. These difficulties are primarily due to
+  hallucinations and the limitations of LLMs in bridging long-tail knowledge
+  gaps. To address this, we propose AMATA, an Adaptive Multi-Agent Trajectory
+  Alignment framework that dynamically integrates external knowledge to
+  improve response interpretability and factual grounding. Our architecture
+  leverages six specialized agents that collaboratively perform structured
+  actions for complex ques
+notes: "Filed as a source on multi-model-coordination from the classifier's
+  judgement that the paper is about it (improves, medium): The paper proposes
+  a multi-agent trajectory preference alignment framework that reportedly
+  outperforms single-model and knowledge-augmented baselines, attributing
+  gains to inter-agent preference and dependency learning. No claim has been
+  drafted from it yet."
+ingested_at: 2026-11-01
+brief: >-
+  Letting a multi-agent QA system learn which agents matter per question,
+  rather than running every agent, improves accuracy and cuts tokens at the
+  same time. AMATA scores each of 6 agents (Intent Reconstructor, Knowledge
+  Retriever, Filter, Locator, Response Generator, Answer Verifier) as a
+  preference prefix during supervised fine-tuning, then applies a
+  dependency-aware DPO that ranks whole trajectories by how well tightly
+  coupled agents co-fire.
+
+
+  Evaluation covers 5 knowledge-intensive benchmarks (HealthQA, ARC-C, PopQA,
+  SQuAD 1.1, ASQA) on 7B backbones, against vanilla QA, retrieval-augmented
+  systems (Self-RAG, RA-DIT, REPLUG), and trajectory systems (MMAgent, SMART,
+  SPA-RL, GiGPO).
+
+
+  AMATA 7B averages 60.57 versus 56.55 for the strongest baseline GiGPO, with
+  gains concentrated on long-tail sets (PopQA 47.39 vs 43.52, SQuAD1 34.61 vs
+  29.97). Reported improvements are +4.02% average and roughly 70% lower token
+  overhead than RL baselines; +4.87% over SMART at comparable token cost.
+
+
+  The causal story is supported by training and inference ablations: removing
+  the inter-agent loss costs the most (HealthQA 75.83 to 70.86), and dropping
+  the Filter or Verifier agent each costs several points. DA-DPO is compared
+  against plain DPO and full-order DPO at matched sample counts. All results
+  are self-reported, single-paper, and some baselines were re-implemented.
+
+
+  Boundaries: 1 model size (7B), M = N = 10 and Top-K 5 fixed, and short
+  trajectories only. Figure 6 shows the advantage reverses as trajectory
+  length grows, where RL methods catch up; GUI-style tasks above 50 steps were
+  not tested.
+
+
+  If you build retrieval agent pipelines, adaptive agent gating is worth
+  trying before more rollouts.
+brief_generated_at: 2026-11-01
+brief_model: claude-opus-5
+brief_source: full-text

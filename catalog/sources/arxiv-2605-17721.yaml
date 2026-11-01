@@ -1,0 +1,65 @@
+id: arxiv-2605-17721
+ref: SRC-0894
+kind: paper
+title: "EXG: Self-Evolving Agents with Experience Graphs"
+authors:
+  - Yuxin Jin
+  - Zhang, Siyuan
+  - Hanchen Wang
+  - Lu Qin
+  - Ying Zhang
+  - Wenjie Zhang
+year: 2026
+date: 2026-05-18
+arxiv_id: "2605.17721"
+url: https://arxiv.org/abs/2605.17721
+tags:
+  - ingested
+summary: Large language model (LLM)-based agents have demonstrated strong
+  capabilities in complex reasoning and problem solving through multi-step
+  interactions, yet most deployed agents remain behaviorally static, with
+  knowledge acquired during execution rarely translating into systematic
+  improvement over time. In response, a growing line of work on self-evolving
+  agents explores how agents can improve through experience during deployment,
+  but most existing approaches either rely on ad hoc reflection limited to
+  single-task correction or adopt unstructured memory that accumulates
+  fragmented experience wi
+notes: "Filed as a source on harness-self-improvement from the classifier's
+  judgement that the paper is about it (improves, medium): EXG structures
+  accumulated successes and failures into an experience graph reused across
+  tasks, reportedly improving solution quality and efficiency over reflection
+  and unstructured-memory baselines. No claim has been drafted from it yet."
+ingested_at: 2026-11-01
+brief: >-
+  Organizing an agent's past attempts as a typed graph of cases, rather than
+  per-task reflection text, raises first-attempt success and cuts LLM calls at
+  the same time. The largest single contributor is explicit error-repair links
+  between a failed and a later successful attempt on the same task.
+
+
+  EXG abstracts each attempt into a case node (input, output, correctness,
+  error signature), links cases via task anchors, similarity edges, and
+  fixed_by correction edges, then retrieves and reranks cases into at most 5
+  prompt hints. Tested on HumanEval, EvalPlus, MuSiQue and HotpotQA with Qwen3
+  models (1.7B, 8B, 14B, Coder-Flash, Plus, Max), 2 attempts per task, against
+  Reflexion, SE-Agent and ExpeL.
+
+
+  On HumanEval with Qwen3-1.7B, pass@1 rises from 0.207 (Reflexion) to 0.537;
+  EXG averages 1.20 LLM calls per task vs 1.83 for Reflexion and 2.21 for
+  SE-Agent, and LLM latency of 3,259 ms vs 4,689 ms. Retrieval overhead is
+  18–22 ms. Offline with a frozen graph, EXG-Reflexion trails ExpeL on
+  HumanEval test pass@1 (0.879 vs 0.909).
+
+
+  The call-count comparison is matched by design, and ablations isolate
+  components: removing correction edges hurts most, anchors least. Only 1
+  model family, short-horizon tasks, 2-attempt budget, and offline gains are
+  flat to negative.
+
+
+  Useful if you are choosing between reflection loops and structured external
+  memory under a call budget.
+brief_generated_at: 2026-11-01
+brief_model: claude-opus-5
+brief_source: full-text

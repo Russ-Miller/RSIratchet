@@ -1,0 +1,70 @@
+id: arxiv-2605-18226
+ref: SRC-0895
+kind: paper
+title: Context Memorization for Efficient Long Context Generation
+authors:
+  - Yasuyuki Okoshi
+  - Hao Mark Chen
+  - Guorong Lu
+  - Hongxiang Fan
+  - Masato Motomura
+  - Daichi Fujiki
+year: 2026
+date: 2026-05-18
+arxiv_id: "2605.18226"
+url: https://arxiv.org/abs/2605.18226
+tags:
+  - ingested
+summary: "Modern large language model (LLM) applications increasingly rely on
+  long conditioning prefixes to control model behavior at inference time.
+  While prefix-augmented inference is effective, it incurs two structural
+  limitations: i) the prefix's influence fades as generation proceeds, and ii)
+  attention computation over the prefix scales linearly with its length.
+  Existing approaches either keep the prefix in attention while compressing
+  it, or internalize it into model parameters through gradient-based training.
+  The former still attends to the prefix at inference, while the latter is
+  training-intensi"
+notes: "Filed as a source on long-context-degradation from the classifier's
+  judgement that the paper is about it (improves, medium): The paper proposes
+  externalizing long prefixes into a lookup-based attention-state memory that
+  counters fading prefix influence and raises accuracy over in-context
+  learning and full-attention RAG at lower cost. No claim has been drafted
+  from it yet."
+ingested_at: 2026-11-01
+brief: >-
+  A long fixed prefix can be replaced at inference time by a lookup table of
+  precomputed attention outputs, built with forward passes only, so the model
+  never attends to the prefix and still matches or beats full attention on
+  some tasks.
+
+
+  Attention-state memory (ASM) stores per-layer entries of (attention output,
+  softmax denominator) keyed by clustered query vectors, then merges the
+  retrieved entry into self-attention using the online-softmax identity.
+  Evaluated on LLaMA 3.1-8B over 7 ManyICLBench tasks and the NBA bench of
+  RuleArena (~20K-token rulebook), with entry counts of 1K-16K.
+
+
+  On ICL, ASM matches or beats in-context learning on average from 1K to 8K
+  entries and cuts attention latency 1.36x at 8K, with 1.8x at 16K entries for
+  the optimized lookup. On the NBA bench it reaches 25.5 vs 24.1 for the
+  20K-token full-rulebook baseline at 4K entries, i.e. 20% of the memory
+  footprint. KVzip, a training-free KV compression baseline, underperforms
+  both.
+
+
+  Effects are measured, with a matched per-layer memory budget against KVzip
+  and ICL, plus ablations on chunked construction (78.5 at 4K x 4 chunks vs
+  79.0 for single 16K pass) and hierarchical lookup.
+
+
+  Only 1 model in the main results, and gains vanish on reasoning tasks where
+  ICL itself does not scale; accuracy is non-monotonic in entry count and
+  crosses over at 16K when training data is too small to fill the codebook.
+
+
+  If you serve a fixed reused prefix, this is a training-free alternative to
+  prefix caching worth benchmarking.
+brief_generated_at: 2026-11-01
+brief_model: claude-opus-5
+brief_source: full-text

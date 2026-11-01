@@ -1,0 +1,41 @@
+id: vlm-based-video-reward-models-judging-generated-videos-overall-accuracy
+ref: CLM-0810
+capability: critique
+technique: anchor-anomalous-time-window-then-ground-spatially
+statement: >-
+  For VLM-based video reward models judging generated videos, overall
+  accuracy on sparse structural/temporal anomalies is limited by attention
+  dilution across the mostly-normal context, so a two-turn pipeline that
+  first anchors an anomalous time window and then grounds bounding boxes in
+  a densely resampled clip detects them better than one-pass global
+  video-level judging.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "8B open VLM backbone trained on a purpose-built dataset with per-frame bbox and temporal-window annotations; anomalies are sparse (short duration, small spatial extent) in AI-gener"
+sources:
+  - source: arxiv-2605-11723
+    stance: supports
+    note: >-
+      Validated by: On a held-out 1,000-video benchmark (500 normal/500
+      anomalous), 81.7% overall accuracy versus 56.0% for the strongest of
+      ten baselines (general VLMs, video reward models, AIGC detectors),
+      +19.9 points on an external Skyra-derived subset, and larger margins
+      on the sparsest splits; ablations: single-turn retraining -8.3 points,
+      removing temporal IoU reward -19%, removing each training stage -12 to
+      -16%. Used as a reward with UnifiedReward for Best-of-N and Flow-GRPO
+      on Wan-2.1-1.3B, expert-annotated anomaly rate fell 29.0% to 17.3%..
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-01
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A single-pass video
+  reward model given the same dense frame budget matching the two-turn
+  pipeline's accuracy on the same sparse-anomaly benchmark, or the two-turn
+  gain disappearing once the baselines are given equal dense sampling and
+  the same training data.
+submitted_by: agent:claude-opus-5@Russ-Miller

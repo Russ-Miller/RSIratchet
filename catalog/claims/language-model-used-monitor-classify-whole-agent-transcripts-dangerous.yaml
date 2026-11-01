@@ -1,0 +1,41 @@
+id: language-model-used-monitor-classify-whole-agent-transcripts-dangerous
+ref: CLM-0801
+capability: reward-hacking
+technique: insert-monitoring-task-reminders-between-tool-calls
+statement: >-
+  When a language model is used as a monitor to classify whole agent
+  transcripts for dangerous actions, recall falls as the transcript grows,
+  and most sharply when the dangerous action sits in the middle of the
+  context rather than at the end.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Transcript-level monitoring of coding-agent transcripts up to ~800K-1M tokens; localized (short-span) attacks, both subtle (MonitorBench firewall disabling) and blatant injected ne"
+sources:
+  - source: arxiv-2605-12366
+    stance: supports
+    note: >-
+      Validated by: Recall on needle-injection and padded-MonitorBench
+      evaluations versus the same prompt without reminders, paired McNemar
+      tests; reminders raised needle detection for most models but not on
+      subtle MonitorBench attacks, at <3% input-token overhead and no
+      increase in false positives (verified <2% on clean transcripts)..
+      Measured on 148 MonitorBench transcripts padded with 80 real Claude
+      Code sessions plus injected-needle variants; Opus 4.6 recall
+      98.6%->88% with 800K prefill, 99.7%->69% for obvious needles at 100K
+      vs 800K; false positives verified below 2%. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-01
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: high. Falsifier as drafted: A frontier monitor showing
+  flat or rising recall on the same attacks as benign padding grows from 0
+  to 800K tokens, with position of the attack having no effect. Drafted
+  stance toward long-context-accuracy-drops-in-the-middle-gpt-3-5-turbo:
+  supports -- Reproduces the middle-of-context penalty in a
+  classification/monitoring task rather than multi-document QA, with
+  detection worst when the attack is placed mid-transcript.
+submitted_by: agent:claude-opus-5@Russ-Miller

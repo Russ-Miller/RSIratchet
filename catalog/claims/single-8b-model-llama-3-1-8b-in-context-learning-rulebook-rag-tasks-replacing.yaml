@@ -1,0 +1,41 @@
+id: single-8b-model-llama-3-1-8b-in-context-learning-rulebook-rag-tasks-replacing
+ref: CLM-0806
+capability: long-context-degradation
+technique: externalize-prefix-into-lookup-attention-states
+statement: >-
+  For a single 8B model (LLaMA-3.1-8B) on in-context-learning and
+  rulebook-RAG tasks, replacing attention over a long fixed prefix with a
+  K-entry lookup of precomputed prefix attention states matches or beats
+  full-prefix attention at 1K-8K entries, but the benefit only appears on
+  tasks where in-context learning itself gains from longer prefixes, and
+  accuracy is non-monotonic in K.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "One 8B instruction-tuned model; 32K-token ICL prefixes from ManyICLBench and a 20K-token RuleArena NBA rulebook; memory built offline from each task's training split, so enough cal"
+sources:
+  - source: arxiv-2605-18226
+    stance: supports
+    note: >-
+      Validated by: Accuracy on five ManyICLBench classification tasks and
+      two reasoning tasks versus in-context learning and KVzip at matched
+      per-layer memory budgets, plus exact-match on RuleArena NBA (25.5% at
+      4K entries vs 24.1% for full 20K rulebook ICL and 21.2% zero-shot),
+      and per-token attention latency over 512 generated tokens (1.36x
+      faster at 8K entries).. Measured on one model and two benchmark
+      families; reasoning tasks (math_counting, gpqa_cot) show ASM tracking
+      ICL within a few points and no reliable gain, and the NBA result peaks
+      at 4K and falls at 8K and 16K. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-01
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: On the same tasks and
+  model, a matched-footprint KV-cache or prompt-compression baseline
+  equalling the lookup memory's accuracy, or the lookup memory exceeding
+  full-prefix attention on reasoning tasks where ICL gains nothing from
+  longer prefixes.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,64 @@
+id: arxiv-2605-11723
+ref: SRC-0883
+kind: paper
+title: "CaC: Advancing Video Reward Models via Hierarchical Spatiotemporal
+  Concentrating"
+authors:
+  - Jiyuan Wang
+  - Huan Ouyang
+  - Jiuzhou Lin
+  - Chunyu Lin
+  - Dewen Fan
+  - Boheng Zhang
+year: 2026
+date: 2026-05-12
+arxiv_id: "2605.11723"
+url: https://arxiv.org/abs/2605.11723
+tags:
+  - ingested
+summary: In this paper, we propose Concentrate and Concentrate (CaC), a
+  coarse-to-fine anomaly reward model based on Vision-Language Models. During
+  inference, it first conducts a global temporal scan to anchor anomalous time
+  windows, then performs fine-grained spatial grounding within the localized
+  interval, and finally derives robust judgments via structured spatiotemporal
+  Chain-of-Thought reasoning. To equip the model with these capabilities, we
+  construct the first large-scale generated video anomaly dataset with
+  per-frame bounding-box annotations, temporal anomaly windows, and
+  fine-grained attributi
+notes: "Filed as a source on critique from the classifier's judgement that the
+  paper is about it (improves, low): The paper proposes a training pipeline
+  that raises the reward model's judgment accuracy on fine-grained anomaly
+  benchmarks by 25.7% and, used as a reward signal, reduces generated-video
+  anomalies by 11.7% while improving quality. No claim has been drafted from
+  it yet."
+ingested_at: 2026-11-01
+brief: >-
+  Video reward models that score global quality and text alignment largely
+  miss the sparse, localized anomalies that now dominate generation failures;
+  a two-turn temporal-then-spatial localization pipeline closes much of that
+  gap. CaC is built on Qwen3-VL-8B and trained in 3 stages: single-frame
+  warmup with LoRA (rank = 32), multi-frame SFT at 4 fps global and 8 fps clip
+  sampling, then two-turn GRPO (G = 8, 250 steps) with format, status, and
+  temporal/spatial/attribution IoU rewards. Training data comes from ~25K
+  generated videos (Kling, Sora, Wan) annotated by 50 experts, filtered to
+  21,396 and 15,374 anomalous CoT samples.
+
+
+  On CaC-Bench-Main (500 normal + 500 anomalous), CaC reaches 0.817 accuracy
+  against 0.560 for the best baseline, a 25.7-point gain; Skyra-RL hits 0.982
+  anomalous recall with 0.018 normal recall, showing baseline bias rather than
+  skill. On a Skyra-derived external subset the gain is 19.9 points. Used with
+  UnifiedReward for Flow-GRPO on Wan-2.1-1.3B, expert anomaly rate falls from
+  0.290 to 0.173.
+
+
+  Evidence is measured, with a 10-row ablation isolating each stage and
+  reward: removing temporal IoU costs 19%, single-turn retraining costs 8.3%.
+  Benchmarks and dataset are authored by the same team, so the headline gap
+  partly reflects task definition; 1 base model, 1 generator for alignment.
+
+
+  If you build video RL, treat anomaly detection as a separate reward head.
+brief_generated_at: 2026-11-01
+brief_model: claude-opus-5
+brief_source: full-text

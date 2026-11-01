@@ -1,0 +1,63 @@
+id: arxiv-2605-12366
+ref: SRC-0884
+kind: paper
+title: "Classifier Context Rot: Monitor Performance Degrades with Context Length"
+authors:
+  - Martin, Sam
+  - Fabien Roger
+year: 2026
+date: 2026-05-12
+arxiv_id: "2605.12366"
+url: https://arxiv.org/abs/2605.12366
+tags:
+  - ingested
+summary: Monitoring coding agents for dangerous behavior using language models
+  requires classifying transcripts that often exceed 500K tokens, but prior
+  agent monitoring benchmarks rarely contain transcripts longer than 100K
+  tokens. We show that when used as classifiers, current frontier models fail
+  to notice dangerous actions more often in longer transcripts. In particular,
+  on a dataset that requires identifying when a coding agent takes a subtly
+  dangerous action, Opus 4.6, GPT 5.4, and Gemini 3.1 miss these actions
+  $2\times$ to $30\times$ more often when they occur after 800K tokens of
+  benign activit
+notes: "Filed as a source on reward-hacking from the classifier's judgement
+  that the paper is about it (measures, medium): The paper benchmarks LLM
+  monitors' ability to catch dangerous agent actions and characterizes a
+  long-context blind spot without proposing a training change or reporting a
+  model regression. No claim has been drafted from it yet."
+ingested_at: 2026-11-01
+brief: >-
+  Language models used as transcript monitors miss dangerous agent actions far
+  more often when the same action sits inside a long transcript, so monitor
+  evaluations run on short transcripts overstate real recall.
+
+
+  Opus 4.6, GPT 5.4 Thinking, and Gemini 3.1 Pro were given coding-agent
+  transcripts and asked to flag malicious actions. Two constructions: 148
+  MonitorBench transcripts (5k–16k tokens, agent covertly disables a firewall)
+  padded with benign Claude Code sessions, and blatant data-exfiltration
+  "needles" injected into 80 real Claude Code transcripts spanning 5k–1M
+  tokens.
+
+
+  All 3 models missed attacks 2x to 30x more often after 800K tokens of benign
+  context. Opus 4.6 with thinking fell from 98.6% to 88% recall on padded
+  MonitorBench, and from 99.7% at 100K to 69% at 800K on the needle task.
+  Non-thinking Opus dropped to 5% detection with 500K before and 100K after.
+  Detection is worst mid-transcript. Reminders inserted between tool calls
+  (<3% token overhead) helped on needles but not on subtle MonitorBench
+  attacks; incremental monitoring and more reasoning also helped. Fine-tuning
+  GPT-4.1 improved in-distribution needle AUC but failed to transfer, and
+  combining proxy datasets fell below baseline.
+
+
+  Measured, with Wilson intervals, McNemar tests, and paired comparisons;
+  false positives verified below 2%. The authors note recall gains could
+  partly reflect calibration shifts, and only localized single-step attacks
+  were tested.
+
+
+  Treat short-transcript monitor benchmarks as upper bounds.
+brief_generated_at: 2026-11-01
+brief_model: claude-opus-5
+brief_source: full-text

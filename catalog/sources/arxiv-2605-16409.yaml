@@ -1,0 +1,64 @@
+id: arxiv-2605-16409
+ref: SRC-0892
+kind: paper
+title: Multilingual OCR-Aware Fine-Tuning and Prompt-Guided Chain-of-Thought
+  Reasoning for Multimodal Large Language Models
+authors:
+  - Qinwu Xu
+  - Yifan Jiang
+  - Ren H
+year: 2026
+date: 2026-05-13
+arxiv_id: "2605.16409"
+url: https://arxiv.org/abs/2605.16409
+tags:
+  - ingested
+summary: Optical character recognition (OCR) and multilingual scene-text
+  understanding remain challenging for multimodal large language models
+  (MLLMs), particularly in real-world images containing small or degraded
+  text, cluttered layouts, occlusion, handwriting, and complex typography. We
+  present an OCR-aware multilingual post-training framework that improves
+  visual-text grounding in a general-purpose MLLM without requiring an
+  external OCR engine, OCR-extracted text, or text bounding boxes at inference
+  time. The framework combines large-scale multilingual OCR supervision,
+  approximately 5M additional m
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, medium): The paper reports that
+  OCR-aware supervised fine-tuning cuts the hallucination rate on scene-text
+  reading from 18.3% to 5.5%, i.e., fewer fabricated text outputs. No claim
+  has been drafted from it yet."
+ingested_at: 2026-11-01
+brief: >-
+  Adding about 5M multilingual OCR samples to post-training cuts a general
+  MLLM's tendency to invent text that is not in the image, with most of the
+  effect coming from fine-tuning rather than prompting.
+
+
+  The setup is an AnyMAL-style MLLM with a LLaMA-3 70B backbone, frozen
+  MetaCLIP ViT and Perceiver resampler, adapted with LoRA (r = 256, α = 512)
+  on roughly 5M OCR-oriented samples in English, Spanish, French, Italian and
+  German, built from about 1M source examples plus synthetic rendering and
+  in-situ text replacement (SAM 2 masks, inpainting, style-matched rendering).
+  No OCR engine, extracted text, or boxes at inference.
+
+
+  On about 3,000 held-out image-question-answer samples, completeness rises
+  71.3 to 84.6, hallucination falls 18.3% to 5.5%, BLEU-1 rises 52.3 to 80.2;
+  hallucination under blur drops 24.8% to 6.6% and under rotation 21.4% to
+  5.8%. Public gains are small: DocVQA 81.5 to 82.3, TextVQA 80.5 to 82.0,
+  VQAv2 flat at 81.4; CoT adds only 82.5 and 82.2.
+
+
+  The SFT-versus-CoT split is ablated within 1 model, but the headline numbers
+  come from an internal benchmark with an LLM-based hallucination judge and no
+  matched-data control separating OCR supervision from extra training volume.
+  Only 5 European languages at scale; Qwen2.5-VL-7B still leads on DocVQA and
+  MMBench.
+
+
+  Treat this as evidence that OCR grounding is a data problem, not an
+  architecture problem, with most of the measured gain living on the authors'
+  own benchmark.
+brief_generated_at: 2026-11-01
+brief_model: claude-opus-5
+brief_source: full-text
