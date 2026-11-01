@@ -1,0 +1,43 @@
+arxiv_id: "2606.15598"
+title: Integrating Reasoning and Generalization in Text-to-SQL via
+  Self-Enhanced Fine-Tuning
+url: https://doi.org/10.48550/arxiv.2606.15598
+drafted_at: 2026-10-30
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: formal-query-synthesis
+statement: For 7-8B open models doing text-to-SQL with BM25-retrieved few-shot
+  exemplars, a single retrieved exemplar is worse than no exemplar at all,
+  because lexical similarity to the question does not imply similar SQL logic
+  and the model copies the retrieved query's structure; accuracy peaks around
+  three exemplars and falls again as more are added.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Llama-3.1-8B and Qwen2.5-7B class models on Spider and BIRD,
+  exemplars retrieved by BM25 lexical similarity over question text; k swept
+  from 0 upward.
+technique: ""
+proposed_technique: Retrieve several SQL exemplars, never exactly one
+technique_summary: Use a moderate number (around three) of BM25-retrieved
+  question-SQL exemplars in the prompt rather than one, so no single
+  lexically-similar-but-logically-different query dominates the structure the
+  model copies.
+technique_kind: retrieval
+technique_validated_by: Execution accuracy on Spider and BIRD swept over k;
+  best at k=3, with k=1 below k=0, and a manual inspection of 100 k=1 cases
+  finding roughly 70% had an exemplar lexically similar but with different SQL
+  logic.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Sweeping k on the same benchmarks and backbones with lexical
+  retrieval and finding k=1 at or above k=0, or finding the k=1 drop persists
+  when exemplars are selected for logical-structure similarity instead of
+  lexical similarity.
+evidence_note: Measured as execution accuracy across k on two benchmarks with
+  one base model, plus a 100-sample manual inspection attributing the k=1 drop
+  to logic mismatch. The attribution rests on that inspection rather than on a
+  controlled comparison against logic-matched exemplars, so the mechanism is
+  argued more than isolated.
+confidence: medium

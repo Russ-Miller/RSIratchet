@@ -1,0 +1,48 @@
+arxiv_id: "2605.30002"
+title: "KairosAgent: Agentic Time Series Forecasting with Fused Semantic Reasoning"
+url: https://doi.org/10.48550/arxiv.2605.30002
+drafted_at: 2026-10-31
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: forecasting
+statement: For cross-domain time series forecasting, having an LLM emit only a
+  qualitative description of the expected future shape — never point values —
+  after calling statistical analysis tools, and fusing that text into a time
+  series foundation model's decoder via gated cross-attention, lowers error
+  against the same unimodal forecaster and against zero-shot TSFM baselines,
+  while rewarding each reasoning turn by its marginal forecast improvement
+  beats a single end-of-trajectory reward.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Tested with a 4B reasoner on one TSFM backbone (Kairos), on
+  Time-MMD and Time-IMM multimodal benchmarks held out from training;
+  generality to other TSFM backbones not validated.
+technique: ""
+proposed_technique: Have the LLM describe future shape, not numbers, and fuse
+  it into a forecaster
+technique_summary: An LLM calls statistical tools over the history and outputs
+  a non-numeric morphology description, which is encoded and gate-fused into a
+  time series foundation model's decoder, with the reasoner refined by RL that
+  credits each turn by its marginal reduction in forecast loss.
+technique_kind: architecture
+technique_validated_by: MSE/MAE on Time-MMD (best in 6 of 8 domains against
+  zero-shot TSFMs and full-shot supervised multimodal and unimodal models) and
+  MAE/MASE on Time-IMM; ablations drop the morphology text (MASE worsens on
+  four datasets) and swap turn-level for outcome-level RL, where outcome-level
+  RL scored below SFT-only on all three reasoning domains and turn-level above
+  both.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Fusing the morphology text gives no error reduction over the same
+  fine-tuned unimodal forecaster once the forecaster is fine-tuned on matched
+  numerical data, or outcome-level RL matches turn-level RL on forecast error
+  under matched compute.
+evidence_note: Measured on two public multimodal benchmarks with held-out
+  target datasets and homologous subsets excluded; baselines include zero-shot
+  TSFMs and full-shot supervised models. Ablations isolate the text prior and
+  the credit-assignment scheme separately, but only one TSFM backbone and one
+  reasoner size are used in the headline result, and reasoning accuracy is
+  scored by an LLM judge.
+confidence: medium

@@ -1,0 +1,42 @@
+id: vision-language-models-post-trained-visual-search-single-step-intrinsic-abilities-degrade
+ref: CLM-0783
+capability: fine-tuning-retention
+technique: accept-base-model-tokens-only-if-post-trained
+statement: >-
+  In vision-language models post-trained for visual search, single-step
+  intrinsic abilities degrade (grounding by about 49% and spatial
+  understanding by about 11% at a fixed reasoning turn), and pairing the
+  post-trained model at decoding time with its own pre-post-training base —
+  accepting the base's proposed tokens only when they are consistent with
+  the post-trained model's own distribution — recovers accuracy on
+  visual-search and general VQA benchmarks, while injecting the base's
+  output as a textual prompt does not and often scores below the
+  post-trained model alone.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Intrinsic-extension visual-search LVLMs (Pixel Reasoner, DeepEyes, Mini-o3) built on Qwen2.5-VL; high-resolution visual search and general VQA; prophet is the same base model famil"
+sources:
+  - source: arxiv-2605-28741
+    stance: supports
+    note: >-
+      Validated by: Accuracy on 12 splits of 4 visual-search benchmarks
+      (VisualProbe-test, V* Bench, HR-Bench 4K/8K) against the unmodified
+      post-trained baselines (gains +0.5 to +4.4 points) and on
+      MME-RealWorld, ScienceQA, OCRBench, CVBench; ablated against a naive
+      prompting interface (46.2 vs 50.5 on VisualProbe hard), against
+      removing each of the two prophet modes, and across thresholds
+      0.2-0.35; acceptance rate 74-81%, speedup 1.03-1.07x.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-31
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Measuring the same
+  single-step capabilities before and after visual-search post-training and
+  finding no degradation, or finding that the token-acceptance interface
+  gives no gain over feeding the base model's output as a prompt prefix on
+  these benchmarks.
+submitted_by: agent:claude-opus-5@Russ-Miller

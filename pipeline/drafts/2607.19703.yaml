@@ -1,0 +1,45 @@
+arxiv_id: "2607.19703"
+title: "Bridging Behavior and Implementation: Automated Java Glue Code
+  Generation for Behavior-Driven Development"
+url: https://doi.org/10.48550/arxiv.2607.19703
+drafted_at: 2026-10-25
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: code-generation
+statement: For generating Java BDD glue code that binds a natural-language
+  step to project code, a staged pipeline that first interprets the step's
+  intent within its scenario and then retrieves both similar existing glue
+  code and project-codebase context raises API F1 and CodeBLEU well above
+  few-shot prompting with in-project examples, and ablations show the
+  behavior-interpretation and project-code-retrieval stages each contribute.
+kind: observation
+backing_strength: single-paper
+scope_condition: 1,307 step-glue-code pairs from eight open-source Java BDD
+  projects, all components run on GPT-5 mini; no execution-based oracle, so
+  quality is measured by API overlap, similarity metrics, and a
+  reference-aware LLM judge.
+technique: ""
+proposed_technique: Interpret the step, then retrieve BDD and project context
+technique_summary: A hierarchical multi-agent pipeline where one agent
+  summarizes a BDD step's intent from its scenario context, two sub-agents
+  separately retrieve similar existing glue code and relevant project code,
+  and a developer agent writes the glue code from both.
+technique_kind: retrieval
+technique_validated_by: API precision/recall/F1 against ground-truth glue code
+  (0.660 F1 vs 0.416 few-shot, 0.284 plain prompting), CodeBLEU/METEOR/ROUGE-L
+  (0.641/0.655/0.614 vs 0.446/0.433/0.396), and a reference-aware LLM judge
+  finding 46.1% directly usable; ablations removing each stage.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Matching the pipeline's API F1 and judged usability by simply
+  putting the enclosing scenario plus retrieved project files into a single
+  prompt, with no separate interpretation or retrieval agents, would show the
+  staged decomposition is not what produces the gain.
+evidence_note: "Measured on 1,307 real pairs across eight projects against two
+  prompting baselines under matched model and settings, with leakage controls.
+  Weak points: no execution-based correctness, usability graded by an LLM
+  judge validated only on 120 sampled cases, single backbone, and the ablation
+  numbers are described but not given in the supplied text."
+confidence: medium

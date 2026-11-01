@@ -1,0 +1,48 @@
+arxiv_id: "2607.22716"
+title: Visual Token Compression Enhances Robustness of MLLMs
+url: https://arxiv.org/abs/2607.22716
+drafted_at: 2026-10-25
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: jailbreak-robustness
+statement: "In 7B multimodal models (Qwen-2.5-VL, LLaVA-OneVision), refusal of
+  image-wrapped harmful requests depends on which visual tokens are dropped
+  and at which layer: pruning the visual tokens farthest from the late text
+  tokens' attention at intermediate layers (~13-18 of 28) raises
+  refuse-to-answer and harmless-output rates, while existing
+  efficiency-motivated pruning (FastV, PDrop, average pooling, VTW) leaves
+  safety unchanged or lowers it, and pruning the closest tokens degrades it
+  sharply."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Two 7B open MLLMs, structure-based jailbreak benchmarks
+  (SafeBench, HADES, MM-SafetyBench) plus transferred PGD image attacks;
+  pruning layer and ratio chosen by grid search on a validation split, though
+  a single fixed layer 14 also helped.
+technique: ""
+proposed_technique: Prune visual tokens farthest from text features at mid layers
+technique_summary: At a selected intermediate LLM layer, score each visual
+  token by its minimum negative attention to the last 50% of text tokens and
+  drop the top r% most distant ones as out-of-distribution, training-free.
+technique_kind: decoding
+technique_validated_by: Average refuse-to-answer rate on three jailbreak
+  benchmarks rose from 20.38% to 33.67% and harmless-output rate from 39.97%
+  to 50.09% on Qwen-2.5-VL, above four prior visual-token-compression
+  baselines; HallusionBench accuracy 59.73% to 60.48%; MME
+  perception/cognition slightly above vanilla, OCRBench lower (861 to 753);
+  ablations against pruning smallest-distance and random tokens.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Showing that redundancy-based pruning at the same layer and ratio
+  gives the same refusal gains, or that the distance-ranked pruning gives no
+  gain on other backbones or attack families once the layer is fixed without
+  validation-set search.
+evidence_note: Measured on seven benchmarks with two 7B backbones and four
+  compression baselines; hallucination gains are backbone-dependent (OOD-VTP
+  did not beat vanilla on HallusionBench for LLaVA-OneVision). Refusal
+  measured partly by keyword matching, and the headline layer/ratio come from
+  a per-benchmark grid search, so the best-layer numbers are an upper bound
+  rather than clean held-out generalisation.
+confidence: medium
