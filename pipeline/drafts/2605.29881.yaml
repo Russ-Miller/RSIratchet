@@ -1,0 +1,45 @@
+arxiv_id: "2605.29881"
+title: Mitigating Hallucination in Vision-Language Models through
+  Barrier-Regulated Adaptive Closed-form Steering
+url: https://doi.org/10.48550/arxiv.2605.29881
+drafted_at: 2026-10-31
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: "In 7B vision-language models (LLaVA-1.5-7B, Qwen-VL-Chat),
+  inference-time hidden-state steering toward image attention helps only when
+  it is gated on a grounding signal: correcting at every decoding step injects
+  spurious objects and degrades general multimodal benchmarks, while
+  correcting only at steps whose pre-softmax image attention falls below a
+  threshold lowers object hallucination without losing caption recall."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Two 7B open LVLM backbones, caption and object-existence
+  benchmarks (CHAIR, POPE, MMHal); steering layers and threshold tuned per
+  backbone; no spatial-relation or counting hallucinations addressed.
+technique: ""
+proposed_technique: Steer hidden states only when image attention drops below a threshold
+technique_summary: Reads mean pre-softmax image attention at selected
+  mid-to-late layers each decoding step and, only when it falls below a
+  threshold, adds the closed-form minimum-norm residual-stream edit that lifts
+  it back, before the Q/K/V projections.
+technique_kind: decoding
+technique_validated_by: CHAIR_s down to 9.4 points lower than baseline with
+  recall within 2 points, POPE overall F1 +2.73, MME +14 and best MMHal,
+  versus VCD, VDD-None, PAI and SPIN baselines; an always-on variant of the
+  same correction injects extra objects and flips 28 correctly grounded POPE
+  answers.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An always-on version of the same closed-form correction matching
+  the gated version on hallucination metrics without recall loss or
+  general-benchmark degradation, or the gated version failing to beat
+  baselines on another LVLM backbone with retuned layers.
+evidence_note: Measured on two backbones across three decoding regimes and
+  seven benchmarks against four inference-time baselines, plus a
+  continuous-steering ablation and hyperparameter sweeps; hyperparameters were
+  selected on POPE-Adversarial, which is also reported, and the
+  recall-preservation argument rests on a 500-image CHAIR sample.
+confidence: medium

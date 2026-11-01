@@ -1,0 +1,40 @@
+id: predicting-whether-generated-code-functionally-correct-without-executing-sampling-based
+ref: CLM-0727
+capability: code-generation
+technique: cluster-code-samples-llm-judged-functional-equivalence
+statement: >-
+  For predicting whether generated code is functionally correct without
+  executing it, sampling-based uncertainty methods that cluster samples by
+  NLI-judged semantic equivalence fail because the NLI model lumps
+  functionally different programs into one cluster, so replacing the NLI
+  step with an LLM judgement of functional equivalence recovers most of the
+  discriminative signal.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Single-turn function-level code generation in Python, Java and SQL, five closed API models (GPT-4o/mini, Gemini-2.5 Pro/Flash/Flash-Lite), 10 samples at temperature 1.0; untested o"
+sources:
+  - source: arxiv-2605-28500
+    stance: supports
+    note: >-
+      Validated by: AUROC for ranking functionally correct over incorrect
+      code on LiveCodeBench (1,055 Python), MultiPL-E Java (386),
+      LiveSQLBench (270), against NLI-based semantic entropy and sets,
+      token-probability scores, embedding and CodeBLEU similarity, P(True)
+      and verbalized confidence; functional methods top AUROC in 11 of 15
+      model-benchmark cells, NLI clustering near chance (0.47-0.58) versus
+      functional entropy up to 0.86 Python and 0.84 SQL; cluster purity
+      against execution exceeded 93%.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-31
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Showing NLI-based
+  clustering of code samples produces multiple non-degenerate clusters and
+  matches LLM functional-equivalence clustering on AUROC, or that the
+  functional-equivalence gain persists when the judge is replaced by a
+  random equivalence oracle.
+submitted_by: agent:claude-opus-5@Russ-Miller
