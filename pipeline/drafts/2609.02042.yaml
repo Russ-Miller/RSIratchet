@@ -1,0 +1,53 @@
+arxiv_id: "2609.02042"
+title: "Act More, Decide Less: Skill-Guided Adaptive Action Chunking for
+  Long-Horizon LLM Agents"
+url: https://doi.org/10.48550/arxiv.2609.02042
+drafted_at: 2026-10-22
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: long-horizon-execution
+statement: When 4B-8B LLM agents are trained with plain group-based RL (GRPO)
+  to emit variable-length action chunks in text environments, the policy
+  degenerates — collapsing to one action per round on one backbone and
+  over-committing to 5-6-action chunks with lower success on another — because
+  a sparse terminal reward carries no information about where chunk boundaries
+  belong; supplying boundary targets from subskills segmented out of
+  successful trajectories yields an intermediate 3-4-action regime with both
+  higher success and fewer decision rounds.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Text-grounded interactive environments (ALFWorld,
+  ScienceWorld) with binary terminal rewards, Qwen3-4B and
+  Llama-3.1-8B-Instruct, max chunk length 6; not tested in stochastic or
+  safety-critical settings where replanning after each action matters.
+technique: ""
+proposed_technique: Distill chunk boundaries from trajectory-induced programmatic skills
+technique_summary: Induce two-level programmatic skills (composite skills made
+  of ordered subskill calls) from successful trajectories, expand each
+  subskill call into an action chunk whose boundary becomes an off-policy
+  supervision target, and train the primitive-chunk policy with hybrid
+  on-/off-policy optimization and chunk-aware advantages so it emits
+  variable-length chunks at deployment with no skill library.
+technique_kind: training
+technique_validated_by: "Success rate and average LLM decision rounds on
+  ALFWorld and ScienceWorld seen/unseen splits against zero-shot, ReAct,
+  Reflexion, RLOO, GRPO, GiGPO and a variable-length multi-action GRPO under a
+  matched rollout budget: ALFWorld 96.1/94.5 vs 89.1/83.6 for GiGPO at 5.0/5.2
+  rounds; ScienceWorld 67.2/61.7 vs 35.9/34.4; ablations removing skills
+  (86.7/88.3) or chunk-aware advantage (90.6/89.1) each lose part of the
+  gain."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Variable-length-chunk RL with only a sparse terminal reward
+  reaching comparable success and chunk granularity to
+  skill-boundary-supervised training on the same environments and backbones,
+  or the reported gain surviving when the skill-derived boundaries are
+  replaced with arbitrary fixed-length segmentation.
+evidence_note: Measured on two benchmarks, two backbones, seen and unseen
+  splits, with a matched rollout budget and component ablations; the
+  degeneracy direction differs by backbone (collapse vs over-commitment),
+  which the paper reports but does not explain, and all environments are
+  text-based with deterministic dynamics.
+confidence: medium

@@ -1,0 +1,53 @@
+arxiv_id: "2608.10430"
+title: "Actionable Hallucination Detection: Translating Latent Uncertainty
+  into Agentic Critique"
+url: https://doi.org/10.48550/arxiv.2608.10430
+drafted_at: 2026-10-19
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: For tool-calling agents that fabricate parameters never given by
+  the user, a zero-initialized LoRA adapter run concurrently with the frozen
+  base model and trained only to emit a localized verdict at an appended
+  trigger token detects these ungrounded parameters better than sampling-based
+  entropy methods, passive linear probes, and an equivalent-scale fine-tuned
+  external judge, and naming the specific hallucinated parameter back to the
+  agent recovers more of the task than a generic block.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Structured tool-calling with parameter-level grounding
+  labels; Qwen3-4B and Llama-xLAM-2-8B; simulated-user trajectories plus
+  ToolAlpaca out-of-distribution; detection quality is bounded by whether the
+  base model internally registers the specification gap, and the advantage
+  over an external judge under distribution shift held on Qwen but not on the
+  xLAM backbone.
+technique: lora-latent-critic-verbalizes-which-parameter-ungrounded
+proposed_technique: ""
+technique_summary: ""
+technique_kind: ""
+technique_validated_by: Detection AUROC/F1/AUPRC against token entropy,
+  semantic entropy, SEP, a linear probe on base hidden states, and a
+  LoRA-matched external judge, on human-verified ID (N=303) and OOD (N=522)
+  sets; 0.966 ID AUROC and >80% exact parameter-match localization on
+  Qwen3-4B; closed-loop ReAct parameter precision/recall/F1 and false-block
+  rate against generic blocking (ID F1 61.2 vs 51.3, false blocks 2.9% vs
+  9.4%); activation patching and layer-wise probes for the mechanism.
+stance_on_existing: supports
+related_claim_id: agentic-tool-calls-where-parameter-fabricated-rather-than-grounded
+stance_reason: It reproduces the finding that entropy and SEP are near-chance
+  on fabricated tool parameters while hidden states carry a separable
+  grounding signal, and shows that signal can be read out and localized.
+falsifier: A replication where the concurrent LoRA critic fails to beat an
+  equivalent-scale external judge and a passive probe on ungrounded-parameter
+  AUROC, or where injecting the specific parameter name gives no better
+  recovery rate than a generic block.
+evidence_note: Measured on two backbones with bootstrap intervals and
+  human-verified evaluation labels; training labels come from a simulated
+  user's programmatic mask (89% agreement with human check), evaluation sets
+  verified by a single annotator. Baselines are matched on data and LoRA
+  configuration for the judge, but probes and entropy methods were tuned only
+  on the binary ok-vs-ungrounded subset, so the comparison is not fully
+  like-for-like. The OOD advantage over the judge did not replicate on xLAM,
+  and absolute trajectory success stays low (~2% OOD).
+confidence: medium

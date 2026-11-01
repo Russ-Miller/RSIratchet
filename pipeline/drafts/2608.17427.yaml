@@ -1,0 +1,49 @@
+arxiv_id: "2608.17427"
+title: Counterfactual Anatomy-guided Spatial-Temporal Decoding for
+  Annotation-Free Hallucination Mitigation in Medical VLMs
+url: https://doi.org/10.48550/arxiv.2608.17427
+drafted_at: 2026-10-18
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: "In training-free contrastive decoding for 7B-class medical VLMs,
+  the spatial and temporal contrast terms act on different answer types:
+  anatomy-conditioned classifier-free guidance is what raises closed-ended
+  accuracy (68.5 to 81.5 on SLAKE with Phi-3.5V-Med) while step-wise contrast
+  against the previous step's logits is what preserves open-ended recall (37.8
+  to 44.9), so dropping either term costs about five overall points."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Three Med-VLMs (Phi-3.5V-Med, HuatuoGPT-Vision-7B,
+  LLaVA-Med-7B) on SLAKE and MIMIC-CXR Med-VQA; ablation reported only for
+  Phi-3.5V-Med on SLAKE.
+technique: pick-contrast-region-counterfactual-occlusion-penalising-size
+proposed_technique: Pair region-guided CFG with a previous-step logit penalty
+technique_summary: At each decoding step, amplify tokens that depend on an
+  automatically selected compact anatomical region via classifier-free
+  guidance, then subtract a weighted copy of the previous step's guided logits
+  to suppress tokens carried by language momentum.
+technique_kind: decoding
+technique_validated_by: "Component ablation on SLAKE with Phi-3.5V-Med: full
+  method 59.25 overall, spatial-only 53.66, temporal-only 53.91; closed
+  accuracy 81.49 vs 68.51 without spatial CFG, open recall 44.90 vs 37.83
+  without temporal contrast. Compared against standard decoding, VCD, DoLA,
+  OPERA and the ground-truth-ROI method ARCD."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation on other Med-VLMs or datasets where removing the
+  temporal contrast leaves open-ended recall unchanged, or where removing
+  spatial CFG leaves closed-ended accuracy unchanged, would show the two terms
+  are not acting on separate failure types.
+evidence_note: Measured, one ablation figure on one model and one dataset
+  (SLAKE, Phi-3.5V-Med); the full-vs-baseline comparison spans three models
+  and two datasets. The decomposition into spatial-for-closed and
+  temporal-for-open rests on a single ablation, and the paper does not test
+  whether the split holds on MIMIC-CXR or on the other two backbones.
+  Hyperparameters (gamma, attention weights) were grid-searched, and the
+  search set relative to the test split is not described.
+confidence: low
+problems:
+  - "figures not in the source: 81.5"

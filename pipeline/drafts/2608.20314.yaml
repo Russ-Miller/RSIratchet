@@ -1,0 +1,46 @@
+arxiv_id: "2608.20314"
+title: "MidTool: Mid-training Data Synthesis for Agentic Tool Use"
+url: https://doi.org/10.48550/arxiv.2608.20314
+drafted_at: 2026-10-19
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: tool-use
+statement: "For 4B-8B open base models mid-trained for tool use,
+  grounding-oriented supervision (documentation/code turned into QA) and
+  execution-oriented supervision (executable trajectories from real APIs and
+  MCP skills) help different things, and only the combination improves
+  everything: trajectories alone give the bigger function-calling gain while
+  grounding alone transfers better to interactive and unseen-tool benchmarks,
+  and each branch alone scores below no mid-training on MCP-Universe."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Qwen3-4B-Base with a fixed downstream SFT recipe on a 100K
+  tool-use subset; evaluated on BFCLv3, tau2-Bench and MCP-Universe;
+  20.3B-token mid-training budget.
+technique: ""
+proposed_technique: Mid-train tool use on both grounded docs and executable trajectories
+technique_summary: Builds a mid-training corpus that pairs filtered
+  web/PDF/code sources augmented into tool-affordance QA with validated
+  multi-turn trajectories synthesized from real API and MCP schemas, and
+  trains the base model on the mixture before ordinary SFT/RL.
+technique_kind: training
+technique_validated_by: "Additive ablation at 4B with the SFT recipe held
+  fixed: no mid-training 39.73% BFCLv3 overall, 8.54% tau2 Pass@1, 13.20 MCP
+  score; raw processed sources only 42.30/7.30/12.20; +native trajectories
+  only 47.59/4.23/6.80; +context-grounded only 44.66/8.99/8.46; full mixture
+  50.25/12.23/18.66. Matched-budget Dolmino-20BT baseline reached 43.10 BFCLv3
+  but 5.41 MCP score."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation at matched token budget where one branch alone matches
+  or beats the combined mixture across function-calling, interactive and
+  unseen-tool benchmarks, or where neither branch shows the reported
+  asymmetry.
+evidence_note: Measured in a single additive ablation at one model scale (4B)
+  with one fixed SFT recipe; branches are compared as alternatives on top of
+  filtered raw sources, so the token budget is not exactly matched across
+  branch arms and no seed variance is reported. The 8B results support the
+  overall mixture but do not repeat the branch ablation.
+confidence: medium

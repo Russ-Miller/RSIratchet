@@ -1,0 +1,49 @@
+arxiv_id: "2606.28182"
+title: "LLawCo: Learning Laws of Cooperation for Modeling Embodied Multi-Agent
+  Behavior"
+url: https://doi.org/10.48550/arxiv.2606.28182
+drafted_at: 2026-10-28
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: For two-agent embodied cooperation with open 8B-70B backbones,
+  extracting high-level cooperation laws from the agents' own failed episodes,
+  filtering successful traces for law-alignment, and fine-tuning on
+  law-grounded reasoning raises success rates over communicative agent
+  frameworks (RoCo, CoELA, CommPARTNR) without any stronger teacher model —
+  but on the weakest backbone every communicative framework, including this
+  one, still scores below a non-communicative ReAct planner.
+kind: observation
+backing_strength: single-paper
+scope_condition: Two-agent embodied benchmarks (PARTNR-Dialog, TDW-MAT) with
+  LLaMA-3.1-8B/70B, Gemma-3-12B, Qwen-3-14B; two-agent setting only, no larger
+  teams tested.
+technique: ""
+proposed_technique: Distil cooperation laws from failures into the chain of thought
+technique_summary: Agents summarize recurring failure patterns into about five
+  natural-language behavioral laws, keep only successful law-aligned traces,
+  generate law-referencing reasoning for each action, and fine-tune the
+  backbone on those traces, with the laws also supplied at inference.
+technique_kind: training
+technique_validated_by: "Success rate and percentage-complete on PARTNR-Dialog
+  (1,000 validation episodes) and TDW-MAT against ReAct, RoCo, CoELA and
+  CommPARTNR with the same backbones: average +4.5% success on PARTNR-Dialog
+  and +6.8% on TDW-MAT over the strongest communicative baseline; ablations
+  removing SFT (-5% success), removing laws, and removing trace filtering each
+  lose ground, and an inference-only RAG variant does not close the SFT gap.
+  On LLaMA-3.1-8B it beats all communicative baselines (0.57) but trails ReAct
+  (0.62). Three seeds give success 0.74/0.72/0.74."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Running the same pipeline on other backbones or embodied benchmarks
+  and finding the law-guided fine-tune no better than the communicative
+  baselines at matched training data, or finding that fine-tuning on
+  unfiltered successful traces without any law grounding gives the same gain.
+evidence_note: Measured on two benchmarks, four backbones, with pipeline
+  ablations and three seeds. Does not isolate the laws from the act of
+  fine-tuning on filtered successful traces beyond one 'w/o Laws' variant
+  (0.67 vs 0.74), and all comparisons are within-paper reimplementations of
+  the baselines.
+confidence: medium

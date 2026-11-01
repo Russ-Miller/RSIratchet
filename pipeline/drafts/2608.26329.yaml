@@ -1,0 +1,49 @@
+arxiv_id: "2608.26329"
+title: "Neuro-symbolic PRM: Enhancing Scientific Reasoning via Structured
+  Traces and Symbolic Verification"
+url: https://doi.org/10.48550/arxiv.2608.26329
+drafted_at: 2026-10-20
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: error-detection
+statement: For step-level verification of structured quantitative STEM
+  reasoning, training a 7B process reward model only on hard negatives that
+  are constructed to pass a deterministic symbolic verifier (swapped formula
+  or unit-matched variable, with values recomputed so the math balances), and
+  running the verifier as a hard filter before the PRM scores candidates,
+  detects flawed steps better than monolithic PRMs that must judge arithmetic
+  and logic together.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Problems expressible as sequences of deterministic
+  calculations or algebraic manipulations with units; verifier coverage
+  limited to the schema's ~120 primitives; excludes qualitative or open-ended
+  reasoning, and the paper notes weaker gains in geometric/spatial domains.
+technique: ""
+proposed_technique: Train the step verifier only on symbolically-valid wrong steps
+technique_summary: Generate hard negatives by swapping the logical principle
+  or a unit-matched operand and recomputing values with a solver so they pass
+  a deterministic unit/arithmetic verifier, train the PRM on those pairs, and
+  at inference prune with the verifier before invoking the PRM.
+technique_kind: training
+technique_validated_by: ProcessBench average F1 74.2 for verifier+CSP-PRM vs
+  73.5 for Qwen2.5-Math-PRM-7B and 68.8 for the same CSP-PRM without the
+  verifier; PRMBench soundness/sensitivity gains; Best-of-8 downstream average
+  51.5 vs 49.4 best baseline; perturbation ablation with identical positives
+  gave 75.4 joint vs 71.2 logic-only and 70.9 operand-only.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A PRM trained on ordinary mixed negatives, with the same
+  verifier-first pruning at inference and matched compute, matching or beating
+  the constraint-preserving-hard-negative PRM on step-level F1.
+evidence_note: Measured on ProcessBench, PRMBench, Best-of-8 decoding and
+  science benchmarks with one 7B backbone; verifier and CSP data are ablated
+  separately and the two perturbation policies are isolated with identical
+  positives. Baselines are mostly numbers copied from prior papers rather than
+  re-run, and the positive/negative labels come from a GPT-5.2 oracle, so
+  detection quality is partly bounded by that oracle. Some reported numbers in
+  the text disagree with the tables (e.g. OlympiadBench 62.1 to 69.8 vs 62.6
+  to 68.9), which lowers confidence in the exact magnitudes.
+confidence: low

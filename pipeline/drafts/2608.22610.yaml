@@ -1,0 +1,54 @@
+arxiv_id: "2608.22610"
+title: Coalition-Aware Skill Reliability for Self-Evolving Agents
+url: https://doi.org/10.48550/arxiv.2608.22610
+drafted_at: 2026-10-18
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: harness-self-improvement
+statement: For self-evolving LLM agents that admit a new skill into a
+  persistent skill bank whenever aggregate outcome reward rises, the accepted
+  skills are collectively net-negative and the gate cannot do better in
+  principle, because the bank-level gain is one scalar that leaves every
+  incumbent skill's contribution unconstrained; scoring sampled coalition
+  knockouts at the gate, and masking transferred skills whose removal improves
+  retrieval quality on unlabeled target queries, recovers the missing
+  composition and domain dependence.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Skill-based self-evolving memory agents (MemSkill with a
+  Llama-3.3-70B skill-extraction policy) on LoCoMo, LongMemEval, HotpotQA-50
+  and ALFWorld; three seeds; skills are textual memory-operation artifacts,
+  not weights.
+technique: gate-skills-sampled-coalition-knockouts-then-mask-after
+proposed_technique: ""
+technique_summary: ""
+technique_kind: ""
+technique_validated_by: "Held-K ablation: the six skills the outcome gate
+  admitted were worth -1.38 points on average versus the epoch-12 bank (-3.50
+  LoCoMo, -3.13 HP-50, +2.48 LongMemEval). Coalition gating accepted 1 of 12
+  candidates vs 6 of 12 for the baseline and raised average LLM-Judge from
+  54.13 to 55.52 on conversational benchmarks and success rate from 77.05 to
+  79.66 on ALFWorld. Label-free masking improved all six trained banks on
+  HP-50, by 7.17 points on baseline banks versus 3.59 on coalition-gated ones.
+  Retrieval-quality mask score correlated with the label-based skill ranking
+  at rho=+0.76 against -0.18 for a selection-policy-entropy signal."
+stance_on_existing: supports
+related_claim_id: self-evolving-agents-accumulate-reusable-skills-bank-admit-new-skill
+stance_reason: The K-controlled ablation measures that every skill the
+  aggregate-reward gate admitted was individually accepted yet the set was
+  collectively net-negative, and a non-identifiability theorem gives the
+  reason.
+falsifier: A matched-protocol run where the outcome-only gate's admitted
+  skills are collectively positive when held-K-controlled, or where
+  coalition-knockout gating and target-side retrieval masking fail to beat the
+  outcome gate across banks and seeds.
+evidence_note: Measured on one base agent framework and four benchmarks, three
+  seeds, with a matched protocol differing only in the gate. The net-negative
+  figure rests on 12 candidate proposals and a 50-item HotpotQA subset with a
+  20-query unlabeled probe, so the magnitudes are thin; the
+  non-identifiability argument is analytic and does not depend on sample size.
+  The design does not separate the benefit of rejecting more skills from the
+  benefit of coalition-aware ranking per se, since the coalition gate simply
+  accepts far fewer candidates.
+confidence: medium

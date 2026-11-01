@@ -1,0 +1,50 @@
+arxiv_id: "2608.29345"
+title: "BIRD-History: A Benchmark for History-Driven Text-to-SQL with
+  Fine-Grained Knowledge Annotations"
+url: https://doi.org/10.48550/arxiv.2608.29345
+drafted_at: 2026-10-18
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: formal-query-synthesis
+statement: On text-to-SQL questions that are underspecified with respect to
+  the schema, retrieving clause-level fragments (conditions, joins,
+  calculations, groupings, output specs) from a database's own past successful
+  SQL queries and prepending them to existing few-shot pipelines raises
+  execution accuracy across four different pipelines, but the gain saturates
+  and can reverse once too many candidates are retrieved, because high recall
+  with low precision lets the generator pick a plausible-but-wrong pattern.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Questions whose missing knowledge (join paths, value
+  conventions, formulas) is recoverable from a per-database pool of clean,
+  successful historical queries; retrieval restricted to the same database;
+  Qwen3 as the underlying LLM.
+technique: ""
+proposed_technique: Retrieve clause-level knowledge from a database's SQL query log
+technique_summary: Parse past SQL into five categories of clause-level
+  fragments, describe each in natural language, retrieve by query- and
+  component-level embedding similarity, then LLM-rerank before prepending to
+  an existing few-shot text-to-SQL prompt.
+technique_kind: retrieval
+technique_validated_by: "Execution accuracy on BIRD-History (1,393 tasks, 11
+  databases) against each pipeline's own retriever: DAIL-SQL 40.78 to 51.33,
+  OpenSearch-SQL 59.15 to 60.95, N-rep 54.49 to 57.79, CodeS-7B 12.92 to
+  18.95; retrieval F1 49.77 vs 28.69-34.88 for baseline retrievers; shot-count
+  sweep shows EX peaking at 4 shots (61.31) with precision falling from 57.95
+  to 35.53 as recall rises to 83.07."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Showing that on a comparable history-grounded benchmark,
+  clause-level log retrieval gives no execution-accuracy gain over the
+  pipelines' own question-similarity retrievers, or that accuracy keeps rising
+  monotonically with retrieved-fragment count so the precision penalty does
+  not exist.
+evidence_note: Measured on one LLM-generated, human-validated benchmark built
+  from BIRD dev queries as the history pool, with four pipelines and ablations
+  on shots and similarity threshold. Gains are large on one pipeline (+10.55)
+  and small on the best pipeline (+1.80), so the effect size depends heavily
+  on the base retriever. The reversal claim rests on the shot and threshold
+  sweeps plus one case study, on a single pipeline.
+confidence: medium

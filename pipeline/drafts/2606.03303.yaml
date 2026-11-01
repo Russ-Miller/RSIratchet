@@ -1,0 +1,44 @@
+arxiv_id: "2606.03303"
+title: "LEAP: Supercharging LLMs for Formal Mathematics with Agentic Frameworks"
+url: https://doi.org/10.48550/arxiv.2606.03303
+drafted_at: 2026-10-30
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: formal-math
+statement: On Lean formalization of IMO-level problems, compiler-feedback
+  revision loops raise a general-purpose LLM's solve rate (Gemini 3.1 Pro, 20%
+  pass@128 one-shot to 36.6% pass@1 with up to 20 revisions) while leaving a
+  specialized 32B Lean prover no better or worse (10% to 6.6%), so the ability
+  to read compiler errors and revise across steps is separate from one-shot
+  formal proof synthesis skill.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Lean 4 statements of IMO-style problems (Lean-IMO-Bench Basic
+  set, 30 problems); one general frontier model and one specialized open
+  prover compared.
+technique: stage-proof-explore-gate-decompose-dependency-re-verify
+proposed_technique: Blueprint DAG proving with an LLM decomposition reviewer
+technique_summary: A general LLM drafts an informal blueprint, turns it into a
+  sorry-gated Lean sketch, and commits verified subgoals into a shared AND-OR
+  DAG so lemmas are reused across branches, with an LLM reviewer rejecting
+  decompositions that do not simplify the parent goal.
+technique_kind: process
+technique_validated_by: "Solved 12/12 Putnam 2025 problems where direct
+  pass@128 generation by the same model and by Goedel-Prover-V2-32B solved 0,
+  and 83.3%/56.7% on Lean-IMO-Bench Basic/Advanced versus 76.7%/20.0% for
+  Aristotle; ablations: tree instead of DAG drops to 73.3%/40.0%, removing the
+  reviewer makes Putnam A5 unsolvable in eight rollouts."
+stance_on_existing: supports
+related_claim_id: research-level-theorem-proving-tasks-drawn-recent-focs-stoc-soda-papers
+stance_reason: Both find that staged decomposition with dependency structure
+  and verifier feedback lifts a frontier model far above direct prompting on
+  hard proof tasks.
+falsifier: A specialized prover model that gains as much or more than a
+  general LLM from the same number of compiler-feedback revision rounds on the
+  same benchmark.
+evidence_note: Measured on 30 Basic-set problems, two models, one-shot
+  pass@128 versus pass@1 with 20 revisions; the budgets are not
+  compute-matched and only one model of each class was tested, so the
+  general/specialized contrast rests on n=1 per class.
+confidence: medium
