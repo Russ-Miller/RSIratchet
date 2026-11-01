@@ -1,0 +1,49 @@
+arxiv_id: "2606.02628"
+title: Hallucination Is Linearly Decodable from Mid-Layer Hidden States in
+  Quantized LLMs
+url: https://doi.org/10.48550/arxiv.2606.02628
+drafted_at: 2026-10-31
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: In 7B-8B instruction-tuned chat models under 4-bit NF4
+  quantization, a linear probe on a single mid-network layer's last-token
+  hidden state separates benchmark-supplied truthful from hallucinated answers
+  at 0.904-1.000 AUROC, and an MLP probe adds at most 0.01 AUROC, so the
+  truthfulness signal in these representations is approximately linear and
+  survives quantization.
+kind: observation
+backing_strength: single-paper
+scope_condition: Three 7B-8B instruct models (Llama-3.1-8B, Mistral-7B,
+  Qwen2.5-7B) in 4-bit NF4; four English paired-label benchmarks of 400 items
+  each where the candidate answer is supplied by the benchmark, not generated;
+  probes trained and tested within the same dataset.
+technique: ""
+proposed_technique: Probe a fixed mid-network layer for truthfulness
+technique_summary: Train a single affine logistic head on the last-token
+  hidden state of one mid-network transformer block to classify a supplied
+  answer as truthful or hallucinated from one forward pass.
+technique_kind: tooling
+technique_validated_by: Best-block AUROC per model-dataset cell against INSIDE
+  EigenScore (K=10), exact-match and embedding self-consistency (K=5), and
+  attention entropy; probes exceeded the best sampling detector by at least
+  0.367 AUROC in all 12 cells, with 3 seeds (std <= 0.025) and classifier-free
+  centroid/spread geometry as corroboration.
+stance_on_existing: supports
+related_claim_id: open-weight-7-8b-instruct-models-supervised-detector-built-how-hidden
+stance_reason: Both find a decodable factuality signal in mid-layer hidden
+  states of 7-8B instruct models, though this paper finds a single layer
+  suffices and is approximately linear.
+falsifier: Linear probes on mid-network hidden states of comparable models
+  falling far below MLP probes, or failing to reach high AUROC under the same
+  paired-label protocol, or quantized probes scoring well below a
+  full-precision baseline.
+evidence_note: Measured across 12 model-dataset cells, 400 items each, 3
+  seeds, with layer-wise trajectories and geometric separation ratios. No
+  full-precision baseline is run, so 'survives quantization' is inferred by
+  comparison to prior published numbers. Probes are trained and tested on the
+  same dataset, so transfer is untested; the paired-label protocol gives
+  probes the candidate answer that sampling baselines never see, so the
+  cross-family comparison is not a fair contest and the paper says so.
+confidence: medium
