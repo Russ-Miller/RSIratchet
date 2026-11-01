@@ -1,0 +1,43 @@
+arxiv_id: "2606.08245"
+title: "ZAS-SQL: Distilling Rules from Failures for Zero-Shot Text-to-SQL"
+url: https://doi.org/10.48550/arxiv.2606.08245
+drafted_at: 2026-10-30
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: formal-query-synthesis
+statement: In zero-shot text-to-SQL prompting, injecting a short set of
+  explicit generation rules distilled from clustered failure cases of the same
+  model gives a larger accuracy gain than schema semantic descriptions,
+  sampled column values, step-by-step reasoning instructions, or
+  execution-consistency sampling, and the gain is largest where the
+  un-augmented baseline is weakest.
+kind: observation
+backing_strength: single-paper
+scope_condition: Prompt-only pipelines (no fine-tuning) on Spider and a
+  proprietary urban-planning SQL set, with DeepSeek-V3 as backbone; models
+  below roughly 4B parameters do not benefit enough to reach the same band.
+technique: ""
+proposed_technique: Distill prompt rules from clustered zero-shot failures
+technique_summary: Collect the model's own zero-shot failure cases, extract
+  per-case error reports, aggregate them into a small set of global error
+  patterns, and abstract those into a handful of explicit SQL generation rules
+  placed in the prompt.
+technique_kind: prompting
+technique_validated_by: "Cumulative ablation on DeepSeek-V3: adding the rules
+  gave +4.5 (Spider Dev), +6.7 (Test), +5.4 (UrbanPlan) execution accuracy,
+  the largest single step and 45-53% of total cumulative improvement over the
+  DDL-only zero-shot baseline; full pipeline reached 87.2/87.8/81.3."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation on the same or comparable benchmarks where distilled
+  failure rules add less than schema augmentation or execution-consistency
+  sampling, or where generic hand-written SQL style rules match the distilled
+  ones.
+evidence_note: Measured as a cumulative (not leave-one-out) ablation on one
+  backbone, so per-module credit depends on ordering; rules were added after
+  schema modules and before reasoning/EGES. No comparison against generic
+  non-distilled rules, so the 'distilled from failures' part is not isolated
+  from 'rules at all'. UrbanPlan is proprietary and unreleasable.
+confidence: low

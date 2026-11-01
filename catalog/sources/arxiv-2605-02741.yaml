@@ -19,26 +19,44 @@ summary: "The promise of Large Language Models in automated software
   fundamental Reasoning-Complexity Trade-off: as models become more capable,
   they generate increasingly bloated and coup"
 ingested_at: 2026-09-19
-brief: "Stronger coding models write more bloated code, not cleaner code, and
-  detailed prompting does not fix it. On 90 randomly sampled CodeContest
-  problems, solutions from Gemini 2.5 Pro, Llama 3.3 70b, deepseek-coder-v2
-  16b, and Qwen3-Coder 30b/480b were scanned with the PyExamine static
-  analyzer and compared to 1 randomly sampled human submission per problem.
-  Qwen-Coder-480b produced 11 Long Method instances zero-shot against 1 for
-  the human baseline; the human baseline alone showed Temporal Field smells (4
-  instances), absent in all model output. Few-shot prompts with coding
-  standards and boilerplate made it worse: Long Method rose from 11 to 13 for
-  Qwen-480b and 5 to 8 for Gemini. In a second experiment, MetaGPT (Qwen-Coder
-  480B) built repositories for 5 application scenarios across 4 escalating
-  requirement stages. Defects shifted to Too Many Branches, High Response for
-  a Class, Scattered Functionality, and Unstable Dependency. Total lines of
-  code correlated with architectural smells at ρ = 0.94, p < 0.001;
-  requirement specificity had no effect (p > 0.8). Evidence is measured but
-  thin: raw counts, not densities, 1 human submission per problem, no
-  iterative debug loop, 1 agent framework, 20 repositories, and the authors
-  themselves flag Feature Envy and Potential Shotgun Surgery as false
-  positives in algorithmic code. Treat maintainability as a separate axis from
-  pass rates when evaluating code agents."
-brief_generated_at: 2026-10-23
+brief: >-
+  Stronger coding models write structurally worse code, not better. On
+  single-file algorithmic tasks the more capable models produce more method
+  bloat, and in multi-file agent builds the amount of code generated predicts
+  architectural decay almost perfectly.
+
+
+  Two experiments. First, 90 randomly sampled CodeContest problems solved in
+  Python by deepseek-coder-v2(16b), Llama3(70b), Qwen Coder(30b), Qwen
+  Coder(480b) and Gemini 2.5 Pro, under zero-shot and structured few-shot
+  prompts, with 1 human submission per problem as control, all scanned by the
+  PyExamine static analyser. Second, MetaGPT backed by Qwen-Coder 480B
+  generating full repositories for 5 application scenarios, each at 4
+  increasing specification stages.
+
+
+  Qwen-Coder-480b produced 11 Long Method instances zero-shot versus 1 for the
+  human baseline; Temporal Field appeared only in human code (4 instances).
+  Few-shot prompting did not help: Long Method rose from 11 to 13 for
+  Qwen-480b and 5 to 8 for Gemini. In the repositories, Total Lines of Code
+  correlated with architectural smells at ρ=0.94 (p<0.001), file count at
+  ρ=0.72 (p<0.001), while prompt stage had no effect (p>0.8).
+
+
+  Evidence is measured, but thin: 1 static analyser whose Feature Envy and
+  Potential Shotgun Surgery flags the authors themselves judged
+  false-positive-prone, raw counts rather than per-solution densities, no
+  significance test in Experiment I, and 20 repositories total in Experiment
+  II. No iterative debug loop was run, so these are first-pass habits only.
+
+
+  Boundaries: 1 agent framework (MetaGPT), 1 language (Python), 1 backing
+  model for Experiment II, and smells as proxy for maintainability rather than
+  measured maintenance cost.
+
+
+  If you treat pass rates as a quality signal for generated repositories, this
+  suggests they tell you nothing about structure.
+brief_generated_at: 2026-10-31
 brief_model: claude-opus-5
 brief_source: full-text

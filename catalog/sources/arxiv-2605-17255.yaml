@@ -19,34 +19,40 @@ summary: Formal theorem-proving benchmarks enable mechanically verifiable
   introduced definition
 ingested_at: 2026-09-19
 brief: >-
-  Models that state an applied-math argument correctly in prose usually still
-  cannot get it past Lean's kernel, and the gap is large. CAM-Bench is a Lean
-  4 benchmark of 1,000 proof targets derived from 778 textbook exercises in
-  optimization, numerical linear algebra, and numerical analysis, built by a
-  dependency-recovery pipeline that reconstructs local definitions, notation,
-  and elementary results so each exercise becomes a self-contained target.
-  Scoring is file-level: every sorry must be filled and the file must verify.
+  Models that get the mathematics right in prose still mostly fail to produce
+  a Lean proof of the same claim, and the gap is widest in applied mathematics
+  where the needed lemmas are not in Mathlib.
+
+
+  CAM-Bench is a Lean 4 benchmark of 1,000 proof targets derived from 778
+  textbook exercises in optimization, numerical linear algebra, and numerical
+  analysis, built by a dependency-recovery pipeline that reconstructs local
+  definitions, notation, and assumptions before formalizing each exercise.
+  Success is file-level: all sorry blocks filled and the file verifies.
 
 
   Under pass@32, Deepseek-v4-pro reaches 19.67%, Claude-sonnet-4.6 19.28%,
   Gemini-3.1-pro-preview 18.38%, GPT-5.4 11.70%, Kimi-k2.6 2.25%, while pass@1
-  informal accuracy sits at 70.0%–83.8%. An agentic repair harness with
-  compiler feedback and Lean MCP tools lifts GPT-5.4 to 44.00%, at 1.96M
-  tokens per instance versus 0.26–0.70M for non-agentic runs. On 200 randomly
-  sampled instances with an 8-hour budget each, M2F solves 143/200 (71.5%) and
-  Aristotle 125/200 (62.5%).
+  informal accuracy for the same models runs 70.0%-83.8%. An agentic repair
+  harness lifts GPT-5.4 to 44.00% at about 1.96M tokens per instance versus
+  0.26-0.70M for non-agentic runs. On 200 sampled instances with an 8-hour
+  budget each, M2F solves 143/200 (71.5%) and Aristotle 125/200 (62.5%).
 
 
-  The agentic comparison is matched on instance set, time budget, and
-  validation script, but the GPT-5.4 agentic gain is not matched on token
-  budget, so compute and execution feedback are confounded. Construction
-  quality rests on LLM-as-a-judge review logs: 26.5% accepted initially, 54.3%
-  usable after repair, 92.5% of Lean declarations judged usable.
+  The informal-formal gap is measured, and the agentic comparison holds the
+  instance set, time budget, and validation script fixed; the GPT-5.4 agentic
+  gain is not matched on token budget, and the informal accuracy is itself
+  LLM-judged. Construction relies on LLM review: 92.5% of candidate Lean
+  declarations were judged usable by an LLM judge, not human-verified.
 
 
-  Failure labels are multi-label, not disjoint: long-horizon decomposition and
-  Mathlib grounding dominate. Treat verified pass rates on Olympiad benchmarks
-  as a poor predictor of applied formalization.
-brief_generated_at: 2026-10-23
+  Error labels are multi-label, so the 72.6%, 50.8%, and 71.5% attribution
+  figures for pass@32 failures are not disjoint shares. Nothing here speaks to
+  pure algebra or competition problems.
+
+
+  If you track formal proving progress, treat applied mathematics as a
+  separate, far-from-saturated axis.
+brief_generated_at: 2026-10-31
 brief_model: claude-opus-5
 brief_source: full-text

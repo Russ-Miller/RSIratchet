@@ -1,0 +1,50 @@
+arxiv_id: "2605.27906"
+title: "Reasoning Matters: Mitigate Hallucination in Multimodal Large
+  Reasoning Models via Reasoning-Conditioned Preference Optimization"
+url: https://doi.org/10.48550/arxiv.2605.27906
+drafted_at: 2026-10-31
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: In 7B multimodal reasoning models, response-level DPO over
+  concatenated chain-of-thought plus answer behaves close to answer-only
+  optimization — the preference gap grows faster on the answer span and
+  residual hallucination stays concentrated in the reasoning chain — so adding
+  a term that holds the preferred answer fixed and contrasts its likelihood
+  under a grounded versus a corrupted CoT lowers object-hallucination rates
+  further.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Four 7B open multimodal reasoning models (R1-Onevision,
+  MM-Eureka, ThinkLite-VL, OpenVLThinker) trained on 10K SFT plus 5K DPO
+  samples from RLAIF-V; hallucination measured mostly by object-level metrics
+  (CHAIR, POPE) and GPT-4-assisted captioning.
+technique: ""
+proposed_technique: Contrast the same answer under good and corrupted reasoning
+technique_summary: Adds a DPO term that fixes the preferred answer and
+  contrasts its conditional likelihood under an MCTS-searched grounded CoT
+  versus a CoT with its most image-attending tokens pruned, trained alongside
+  standard response-level DPO.
+technique_kind: training
+technique_validated_by: CHAIR_S on Object HalBench fell from 36.7 to 21.7
+  (R1-Onevision) and 34.0 to 21.3 (MM-Eureka) versus vanilla, beating VCD,
+  SID, RLAIF-V and OPA-DPO on all four models; POPE F1 best in all three
+  splits; ablation shows removing the reasoning-conditioned loss is the
+  largest single loss, with lambda=0.1 and 20% pruning optimal.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Matching the reasoning-conditioned term's hallucination reduction
+  with response-level DPO alone at equal data and compute, or showing the
+  answer-span loss ratio does not outpace the CoT span during response-level
+  DPO, or showing the gain comes from the MCTS-selected positives rather than
+  the conditional contrast.
+evidence_note: Measured on four 7B models across object-hallucination
+  benchmarks with decoding and training baselines, plus training-dynamics and
+  segment-level CHAIR decomposition supporting the answer-bias mechanism.
+  Gains are largest on object-level caption metrics;
+  coverage-versus-hallucination trade-off is only indirectly addressed via
+  1&2-gram and words-per-image. No matched-compute control for the extra MCTS
+  search budget.
+confidence: medium

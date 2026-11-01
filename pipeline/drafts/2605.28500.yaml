@@ -1,0 +1,48 @@
+arxiv_id: "2605.28500"
+title: "Functional Entropy: Predicting Functional Correctness in LLM-Generated
+  Code with Uncertainty Quantification"
+url: https://doi.org/10.48550/arxiv.2605.28500
+drafted_at: 2026-10-31
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: code-generation
+statement: For predicting whether generated code is functionally correct
+  without executing it, sampling-based uncertainty methods that cluster
+  samples by NLI-judged semantic equivalence fail because the NLI model lumps
+  functionally different programs into one cluster, so replacing the NLI step
+  with an LLM judgement of functional equivalence recovers most of the
+  discriminative signal.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Single-turn function-level code generation in Python, Java
+  and SQL, five closed API models (GPT-4o/mini, Gemini-2.5
+  Pro/Flash/Flash-Lite), 10 samples at temperature 1.0; untested on
+  open-weight models, multi-file projects or agentic settings.
+technique: ""
+proposed_technique: Cluster code samples by LLM-judged functional equivalence
+technique_summary: Replaces the NLI entailment step in semantic-entropy-style
+  uncertainty scoring with an LLM asked whether two code snippets produce the
+  same output for all valid inputs, then scores confidence from the resulting
+  cluster distribution.
+technique_kind: process
+technique_validated_by: AUROC for ranking functionally correct over incorrect
+  code on LiveCodeBench (1,055 Python), MultiPL-E Java (386), LiveSQLBench
+  (270), against NLI-based semantic entropy and sets, token-probability
+  scores, embedding and CodeBLEU similarity, P(True) and verbalized
+  confidence; functional methods top AUROC in 11 of 15 model-benchmark cells,
+  NLI clustering near chance (0.47-0.58) versus functional entropy up to 0.86
+  Python and 0.84 SQL; cluster purity against execution exceeded 93%.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Showing NLI-based clustering of code samples produces multiple
+  non-degenerate clusters and matches LLM functional-equivalence clustering on
+  AUROC, or that the functional-equivalence gain persists when the judge is
+  replaced by a random equivalence oracle.
+evidence_note: Measured across 1,711 problems, 5 models, 3 languages with
+  execution-based correctness labels; the NLI cluster-collapse diagnosis is
+  supported by reported cluster distributions and by the contrast with
+  non-contradiction probability, which keeps a usable continuous signal. All
+  models are closed API models from two providers; SQL set is small (270).
+confidence: medium

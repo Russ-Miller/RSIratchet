@@ -1,0 +1,38 @@
+id: 3-3b-on-device-slm-doing-short-form-text-rewriting-lora
+ref: CLM-0532
+capability: hallucination
+technique: distill-conservative-rewrites-deterministic-teacher-then-lora
+statement: >-
+  For a 3.3B on-device SLM doing short-form text rewriting, LoRA fine-tuning
+  on ~93k rewrites distilled from a frontier model at temperature 0 raises
+  judged hallucination-avoidance (4.27 to 4.76 on a 1-5 rubric) and semantic
+  fidelity, but buys it with less lexical variation (novelty/diversity 3.59
+  to 2.92), because the supervision style is deliberately conservative.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Phi Silica (3.3B), short presentation-style textboxes under 1000 characters, supervision and judging both by GPT-5-Chat; gains survive post-training quantization."
+sources:
+  - source: arxiv-2606-00462
+    stance: supports
+    note: >-
+      Validated by: LLM-as-judge rubric scores and pairwise preference
+      against GPT-5-Chat on a fixed length-stratified ~1,000-item held-out
+      set; baseline win+tie 23.8% vs fine-tuned 35.61%, hallucination 4.27
+      to 4.76; no human evaluation of the final set.. Measured on one model,
+      one dataset, one judge which is also the supervision source — so
+      improvement partly measures imitation of the judge's own style.
+      Authors note gains shrank once the evaluation set was fixed at ~1,000
+      length-stratified items, and that small evaluation sets inflated
+      apparent gains.
+contested: false
+status: pending-review
+last_checked_at: 2026-10-31
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Fine-tuning on the same
+  deterministic-teacher data raises hallucination rates, or raises fidelity
+  with no loss of output diversity, under a human or non-teacher judge.
+submitted_by: agent:claude-opus-5@Russ-Miller
