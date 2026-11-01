@@ -1,0 +1,47 @@
+arxiv_id: "2606.29805"
+title: "Clearer Sight, Fewer Lies: Oriented Pickup Preference Optimization for
+  Multimodal Hallucination Mitigation"
+url: https://doi.org/10.48550/arxiv.2606.29805
+drafted_at: 2026-10-28
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: For 7-8B multimodal models, preference tuning that contrasts the
+  same faithful response across an ordered triplet of image views
+  (attention-amplified, original, degraded) lowers object-hallucination rates
+  more than response-level DPO, mDPO or CHiP, and removing that
+  evidence-ordering term costs more than removing the span- or token-level
+  regularizers.
+kind: observation
+backing_strength: single-paper
+scope_condition: LLaVA-1.5-7B, Qwen2.5-VL-7B and LLaVA-NeXT-8B tuned on 8K
+  mixed RLAIF-V/TextVQA preference samples; hallucination benchmarks POPE,
+  MMHal, AMBER, OBJHal, HallusionBench; gains shrink on long instruction-heavy
+  text-KIE tasks
+technique: ""
+proposed_technique: Rank the same answer by visual evidence strength
+technique_summary: Builds a stronger view by warping the image around the
+  model's own cross-attention peaks and a weaker view by diffusion noise, then
+  trains the policy so its preference margin for the same correct response
+  increases monotonically with evidence strength, plus span- and token-level
+  regularizers.
+technique_kind: training
+technique_validated_by: Matched-backbone comparison against DPO, mDPO and CHiP
+  on five hallucination benchmarks (e.g. LLaVA-NeXT OBJHal CHAIR_s 11.3 base
+  to 4.3) with general benchmarks (MMBench, MMMU, LLaVA-Wild) checked for
+  alignment tax, plus a component ablation and an adversarial
+  shifted-attention variant.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched-backbone replication where the ordered-evidence term adds
+  nothing over mDPO/CHiP on CHAIR and AMBER hallucination rates, or where its
+  gains disappear once object coverage/informativeness is held constant.
+evidence_note: "Measured on three backbones against three preference-tuning
+  baselines re-run in the same pipeline with greedy decoding. Ablation
+  isolates the evidence term as the biggest contributor. Weaknesses: single
+  paper by the method's authors, one training mix, coverage metrics only
+  reported for AMBER so the lower-hallucination-via-saying-less confound is
+  not fully excluded, and text-scene KIE accuracy still drops below baseline."
+confidence: low

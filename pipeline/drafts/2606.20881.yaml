@@ -1,0 +1,45 @@
+arxiv_id: "2606.20881"
+title: When Do Intrinsic Rewards Work for Code Reasoning? A Comprehensive Study
+url: https://doi.org/10.48550/arxiv.2606.20881
+drafted_at: 2026-10-29
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: code-generation
+statement: "When a distilled 1.5B reasoning model is RL-trained on
+  competitive-programming problems with certainty-based intrinsic rewards
+  (self-certainty, token or trajectory entropy, probability disparity) instead
+  of execution-verified rewards, LiveCodeBench accuracy rises for a few dozen
+  steps and then degrades, because shorter responses score higher certainty:
+  outputs shrink from about 7,300 to under 1,100 tokens, entropy collapses,
+  and repetition rises."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Function-level self-contained coding problems;
+  DeepSeek-R1-Distill-Qwen-1.5B main study, with limited checks on Qwen3-4B
+  and Qwen2.5-Coder-7B; certainty-based RLIF only, not ensemble/majority-vote
+  methods.
+technique: ""
+proposed_technique: Use certainty-only RL as a short warm-up, then switch to verified rewards
+technique_summary: Train with intrinsic certainty rewards only in early steps
+  and hand off to execution-verified GRPO before length and entropy collapse.
+technique_kind: training
+technique_validated_by: GRPO continued from a step-50 self-certainty
+  checkpoint reached 0.151 on LiveCodeBench v5, matching GRPO from scratch
+  (0.154), while step-80 and step-105 checkpoints reached 0.125 and 0.120 and
+  did not recover in 40 further GRPO steps.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A certainty-based intrinsic reward run on code that keeps or grows
+  response length and entropy and matches or beats execution-verified GRPO
+  over long training, or a late RLIF checkpoint from which GRPO recovers to
+  scratch-level accuracy.
+evidence_note: "Measured: four intrinsic reward variants vs GRPO over 100-200
+  steps on LiveCodeBench v5/v6 plus AIME transfer, with logged length,
+  entropy, reasoning-token density and repetition, and bootstrap experiments
+  from intrinsic checkpoints. Mostly one 1.5B base model; larger-model results
+  only in appendix, so scale generality is weakly isolated."
+confidence: medium
+problems:
+  - "figures not in the source: 1,100"

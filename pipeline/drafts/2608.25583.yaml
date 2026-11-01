@@ -1,0 +1,49 @@
+arxiv_id: "2608.25583"
+title: "GRIP: Granular Reward-Guided Parameter Interpolation for Efficient
+  Reasoning"
+url: https://doi.org/10.48550/arxiv.2608.25583
+drafted_at: 2026-10-23
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: cutting-to-the-chase
+statement: For a same-family pair of reasoning and instruction-tuned 4B
+  models, learning one interpolation ratio per module (attention block, FFN
+  block, embedding, final norm) with a reward that scores correctness and
+  ranks correct responses by length cuts average generated tokens by about 27%
+  relative to the reasoning model while holding average accuracy, and beats
+  fixed global-ratio merging and CMA-ES search over the same ratios.
+kind: observation
+backing_strength: single-paper
+scope_condition: Qwen3-4B Thinking/Instruct pair, dense transformer, trained
+  on math data (DeepScaleR-preview), evaluated on five reasoning benchmarks
+  including two out-of-domain; not tested above 4B, on MoE, or across model
+  families.
+technique: ""
+proposed_technique: Learn per-module merge ratios with a length-aware reward
+technique_summary: Freeze a reasoning model and an instruction model of
+  identical architecture, assign one sigmoid-bounded interpolation ratio per
+  module, and update only those scalars with GRPO-style rollouts rewarded for
+  correct and comparatively short answers.
+technique_kind: training
+technique_validated_by: "Accuracy and average generated tokens on AIME25,
+  MATH500, GSM8K, GPQA-D and LiveCodeBench against the two source models, five
+  fixed-ratio merging methods at coefficient 0.8, and CMA-ES matched on
+  prompts, search space and objective: 76.5 average accuracy at 73.0% of
+  Thinking's token count versus 76.0/100% for Thinking and 76.5/85.4% for
+  SLERP."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A replication where learned per-module ratios give no token
+  reduction at matched accuracy over a tuned single global ratio, or where
+  CMA-ES over the same parameterization matches or beats the reward-guided
+  ratios.
+evidence_note: Measured on one model pair at 4B across five benchmarks with
+  matched-objective baselines; accuracy gains are within benchmark noise on
+  several sets (MATH500 and LCB drop) and the average is driven by AIME25
+  (+6.7 on a 30-problem set), so the accuracy claim is weaker than the length
+  claim. Sweeps additionally show FFN ratios drive most of both length and
+  accuracy while attention sweeps are nearly flat, supporting the per-module
+  design, but no seed variance is reported.
+confidence: low

@@ -1,0 +1,48 @@
+arxiv_id: "2607.01612"
+title: "Scaling with Confidence: Calibrating Confidence of LLMs for Adaptive
+  Test Time Scaling"
+url: https://doi.org/10.48550/arxiv.2607.01612
+drafted_at: 2026-10-28
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: abstention-and-self-knowledge
+statement: For 3B-7B instruct backbones trained with RL to emit a 1-10
+  verbalized confidence on math, science and logic reasoning, adding to the
+  correctness reward both a threshold-based calibration term and a
+  per-question reference-accuracy term (derived from how many of 10
+  pre-training-time samples the base model got right) lowers expected
+  calibration error without the accuracy loss that Brier-score-only
+  calibration rewards incur, while remaining less well calibrated than those
+  Brier-only methods.
+kind: observation
+backing_strength: single-paper
+scope_condition: Two backbones (Qwen2.5VL-7B-Instruct, Llama-3.2-3B-Instruct),
+  training on math/science/logic datasets, evaluated on AGIEval, MMLU, MMMU,
+  MathVista, LogicVista plus an in-domain split; confidence elicited as an
+  integer 1-10.
+technique: ""
+proposed_technique: Add a reference-accuracy reward term to calibration RL
+technique_summary: Alongside correctness and a threshold-based calibration
+  reward, reward the policy for getting right a question the base model
+  previously missed in all 10 samples and penalize it for getting wrong a
+  question the base model previously got right in all 10.
+technique_kind: training
+technique_validated_by: Accuracy, AUROC and binned ECE on eight text and
+  multimodal benchmarks against Base, Self-Consistency, SFT+Ref, RLVR, SaySelf
+  and RLCR, averaged over three seeds; ablation removing only the reference
+  term (C3RL w/o Ref) showed consistently worse ECE at similar accuracy.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Running the same reward with the reference-accuracy term removed,
+  or replacing it with a random-sign term of equal magnitude, yields the same
+  or better ECE at matched accuracy across these backbones and benchmarks.
+evidence_note: Measured, three seeds, max reported standard deviation about 1
+  point. The reference-term ablation isolates its contribution, but the
+  threshold-calibration and reference terms are not separated from each other
+  against a matched-compute RLVR baseline, and the paper itself notes
+  calibration stays worse than SaySelf, which trades away large amounts of
+  accuracy. Gains are modest (e.g. average text ECE 0.107 vs RLCR 0.163) and
+  vary by benchmark.
+confidence: medium

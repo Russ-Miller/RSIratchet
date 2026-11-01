@@ -1,0 +1,45 @@
+arxiv_id: "2606.06836"
+title: "Think Like a Pilot: Fine-Grained Long-Horizon UAV Navigation"
+url: https://doi.org/10.48550/arxiv.2606.06836
+drafted_at: 2026-10-30
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: long-horizon-execution
+statement: For language-guided UAV flight over multi-stage instructions
+  requiring continuous 6-DoF control, running a low-frequency streaming video
+  VLM that emits textual flight-state-and-next-subgoal reasoning, and
+  conditioning a separate high-frequency diffusion action model on that
+  reasoning's hidden states, completes more subtasks than end-to-end VLA or
+  discrete-action VLN baselines adapted to the same task.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Simulated urban/industrial/rural UAV environments with
+  expert-pilot demonstration trajectories; models fine-tuned on the paper's
+  own dataset; closed-loop evaluation only, no real flight.
+technique: ""
+proposed_technique: Decouple slow pilot-reasoning VLM from fast action model
+technique_summary: A low-frequency streaming video-language model writes text
+  summarizing the current flight stage and the next subgoal, and its hidden
+  states condition a high-frequency diffusion action model trained with
+  simulated staleness in those features.
+technique_kind: architecture
+technique_validated_by: "Closed-loop success rate and stage success rate on
+  two task splits: Long-horizon Flow SR 59.0% / SSR 78.97% vs MemoryVLA
+  18.5/38.69 and OpenVLA-UAV 10.5/30.87; Fine-grained VLN SR 13.5% / IASR
+  11.0% vs NaVid 13.0/5.0 and CMA+LAG 6.5/4.5. The reasoning VLM scores 64.2%
+  state / 68.1% action accuracy against 25.8/39.1 for Gemini-3-flash."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An end-to-end VLA trained on the same trajectories and
+  reasoning-free, or a synchronous single-model variant at matched compute,
+  matching the stage success rate; or ablating the pilot-reasoning supervision
+  while keeping the two-rate architecture and losing nothing.
+evidence_note: Measured on the authors' own benchmark against baselines they
+  reconfigured from other domains, so baseline adaptation quality is
+  uncontrolled. Fine-grained VLN gains over NaVid are small on SR (13.0 to
+  13.5) and only the stricter adherence metric separates them clearly. No
+  ablation reported isolating the asynchronous architecture from the Pilot
+  Reasoning supervision or from the larger training set.
+confidence: low

@@ -1,0 +1,66 @@
+id: arxiv-2605-28500
+ref: SRC-0591
+kind: paper
+title: "Functional Entropy: Predicting Functional Correctness in LLM-Generated
+  Code with Uncertainty Quantification"
+authors:
+  - Dylan Bouchard
+  - Mohit Chauhan
+  - Zeya Ahmad
+  - Ho-Kyeong Ra
+year: 2026
+date: 2026-05-27
+arxiv_id: "2605.28500"
+url: https://arxiv.org/abs/2605.28500
+tags:
+  - ingested
+summary: Large language models have shown impressive capabilities in code
+  generation, yet they often produce functionally incorrect code. Uncertainty
+  quantification (UQ) methods have emerged as a promising approach for
+  detecting hallucinations in natural language generation, but their
+  effectiveness for code generation tasks remains underexplored. We
+  systematically evaluate how UQ techniques transfer to code generation across
+  three programming languages, five LLMs, and over 1,700 problems. We find
+  that some token-probability-based methods generalize effectively without
+  modification, while sampling-based
+notes: "Filed as a source on code-generation from the classifier's judgement
+  that the paper is about it (measures, medium): The paper benchmarks how
+  uncertainty-quantification methods transfer to code generation and proposes
+  a better correctness predictor, characterizing rather than improving or
+  degrading code-generation ability itself. No claim has been drafted from it
+  yet."
+ingested_at: 2026-10-31
+brief: >-
+  NLI-based semantic entropy, the standard uncertainty method for text,
+  collapses on code: the entailment model cannot tell functionally different
+  programs apart, so nearly all samples land in 1 cluster and the score sits
+  near chance. Replacing the NLI judge with an LLM asked whether 2 snippets
+  are functionally equivalent recovers the signal.
+
+
+  The suite covers 12 scorers (token-probability, sampling-consistency,
+  reflexive) on 5 closed API models (GPT-4o, GPT-4o-mini,
+  Gemini-2.5-Pro/Flash/Flash-Lite) over 1,711 problems: LiveCodeBench (1,055
+  Python), MultiPL-E (386 Java), LiveSQLBench (270 SQLite), with m = 10
+  samples at T = 1.0 and Gemini-2.5-Flash as equivalence judge.
+
+
+  Functional equivalence methods take top AUROC in 11 out of 15
+  model-benchmark pairs, reaching 0.87 on Python and 0.842 on SQL. NLI
+  counterparts sit at 0.50-0.53 on Python, 0.48-0.56 on Java, 0.47-0.58 on
+  SQL. Minimum token negentropy is the best single-generation option, top
+  within-family in 12 of 15 pairs.
+
+
+  The NLI-vs-functional comparison is a matched substitution of 1 component,
+  so attribution is clean; judge-swap, permutation, and m ablations are
+  reported, and cluster purity exceeds 93% against execution.
+
+
+  No open-weight models, 2 providers, 1 temperature, single-turn tasks only,
+  and SQL conclusions rest on 270 problems. If you filter generated code
+  without running it, sample 5 and cluster by LLM-judged equivalence rather
+  than by entailment.
+brief_generated_at: 2026-10-31
+brief_model: claude-opus-5
+brief_source: full-text

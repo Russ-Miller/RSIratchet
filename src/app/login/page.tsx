@@ -11,7 +11,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
     <div className="max-w-sm space-y-4">
       <h1 className="text-2xl font-semibold">Sign in</h1>
       <p className="text-sm text-neutral-500">
-        The pages past Adages are the maintainer&rsquo;s working views. Everything else on the
+        The pages past Heuristics are the maintainer&rsquo;s working views. Everything else on the
         site is open.
       </p>
       {error && (

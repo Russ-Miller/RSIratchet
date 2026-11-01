@@ -1,0 +1,38 @@
+id: postels-law
+ref: ADG-0021
+label: Postel's law
+aliases: ["Robustness principle"]
+statement: Be conservative in what you send, be liberal in what you accept.
+origin: >-
+  Jon Postel, 1980, in the TCP specification (RFC 761). About protocol
+  implementations tolerating each other's deviations so the network keeps
+  working.
+transfer: >-
+  For an agent, "what you accept" is every document, tool result and web page
+  that enters the context, and a model is liberal by construction: it reads
+  instructions in anything. That is the prompt-injection surface. The law
+  should break for agents for the same reason it has been criticised in
+  protocol design — liberal acceptance is a security hole once the sender can
+  be hostile — but more sharply, because a model cannot distinguish data from
+  instruction the way a parser can. The defence the catalog records is the
+  inverse of the law: be conservative in what you accept, and restrict what
+  the agent may do after accepting it.
+evidence:
+  - claim: prompt-injection-defenses-report-near-zero-attack-success-short-context-benchmarks
+    verdict: breaks
+    note: >-
+      Liberal acceptance of long documents lets a large share of injected
+      instructions through, even past defences tuned on short inputs.
+  - claim: tool-using-agents-restricting-capabilities-harness-level-after-untrusted-content
+    verdict: breaks
+    note: >-
+      The working defence is to become conservative after untrusted content
+      arrives — the opposite of the law's second clause.
+  - claim: tool-using-agents-enforcing-injection-defense-deterministic-provenance-check-sensitive
+    verdict: breaks
+    note: >-
+      Sensitive parameters are accepted only from trusted provenance; the
+      harness is deliberately illiberal about what it accepts.
+status: active
+provenance: borrowed
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,40 @@
+id: 7-8b-instruct-backbones-tool-calling-benchmarks-encoding-each-tool-own
+ref: CLM-0548
+capability: tool-use
+technique: give-each-tool-own-lora-module-soft-mix
+statement: >-
+  For 7-8B instruct backbones on tool-calling benchmarks, encoding each tool
+  as its own small LoRA module and loading a gating-weighted mixture of the
+  candidate modules at inference beats putting tool documents and
+  tuned-count usage examples in the context, while collapsing the same
+  knowledge into one shared LoRA for all tools scores far below both.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Llama3.1-8B-Instruct and Qwen2.5-7B-Instruct on Stable ToolBench and BFCL-V2; every tool must be parameterized during training, so unseen or newly added tools are not supported."
+sources:
+  - source: arxiv-2605-29561
+    stance: supports
+    note: >-
+      Validated by: Average pass rate on Stable ToolBench (69.57 vs 65.67
+      for Context+Docs&Examples on Llama3.1-8B; 75.95 vs 66.96 on
+      Qwen2.5-7B) and AST accuracy on BFCL, against context-based, globally
+      parameterized, ToolLLaMA, and three retrieval-selector baselines; plus
+      FLOPs accounting showing ~92% less inference compute. Ablations
+      compare soft weights against top-1, averaging, and an oracle
+      selector.. Measured on two open backbones and two benchmarks with
+      seven baselines and an ablation set, averaged over three runs.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-31
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Running the same
+  three-stage pipeline against a tuned in-context docs-plus-examples
+  baseline on these or comparable benchmarks and finding no accuracy
+  advantage, or finding that a single shared LoRA trained on the same traces
+  matches the per-tool modules.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,52 @@
+arxiv_id: "2607.06160"
+title: "LongCrafter: Towards Diverse Long-Context Understanding via
+  Evidence-Graph-Guided Instruction Synthesis"
+url: https://doi.org/10.48550/arxiv.2607.06160
+drafted_at: 2026-10-26
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: long-context-degradation
+statement: Fine-tuning 7-8B models (Qwen2.5-7B, LLaMA-3.1-8B) on 2,000
+  long-context SFT samples whose instructions are generated from an explicit
+  evidence graph and whose responses cite verbatim evidence spans step by step
+  keeps gold-evidence retrieval near ceiling at every position among 20
+  candidate documents, while models trained on comparable-size baseline
+  long-context SFT sets degrade as the gold document moves later (to about 71%
+  and 40% respectively).
+kind: observation
+backing_strength: single-paper
+scope_condition: 7-8B open base models, LoRA, 2,000 training samples;
+  retrieval probe with gold document at positions 1-20 among 20 candidates;
+  benchmarks LongBench, LongBench v2, LooGLE with GPT-5 as answer judge.
+technique: ""
+proposed_technique: Synthesize long-context SFT data from an evidence graph
+  built before the question
+technique_summary: Match documents to one of 32 fine-grained long-context task
+  types, extract candidate evidence spans and their cross-paragraph dependency
+  edges into a minimal sufficient graph, then generate the instruction from
+  that graph and a response that cites each span verbatim per reasoning step.
+technique_kind: training
+technique_validated_by: "Average over LongBench, LongBench v2 and LooGLE:
+  45.15 (Qwen2.5-7B) and 45.71 (LLaMA-3.1-8B), +5.80/+5.30 over the best of
+  four SFT baselines at matched 2,000 samples and above the official
+  post-trained models; ablations drop 12.64/11.89 points without the evidence
+  graph and 5.25/4.08 without citations; position probe shows flat retrieval
+  accuracy across positions 1-20."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Training the same backbones on the same 2,000-sample budget from
+  another synthesis pipeline (or on LongCrafter data with the evidence-graph
+  stage removed) yields equally flat position curves and equal benchmark
+  averages, showing the graph/citation design is not what produces the
+  position robustness.
+evidence_note: "Measured on two backbones, three benchmarks, four SFT
+  baselines at matched 2,000 samples, plus component and data-distribution
+  ablations and an attention-mass analysis. Weaknesses: the retrieval probe
+  uses only 20 candidate documents and five positions; difficulty and
+  response-quality scores come from LLM judges (GPT-5) validated against 500
+  human-rated instances; the pipeline's synthesizer (GLM-5) is stronger than
+  the trained models, so some gain may be distillation rather than the graph
+  structure."
+confidence: medium
