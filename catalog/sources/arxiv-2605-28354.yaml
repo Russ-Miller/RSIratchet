@@ -1,0 +1,65 @@
+id: arxiv-2605-28354
+ref: SRC-0590
+kind: paper
+title: "Plan Before Search: Search Agents Need Plan"
+authors:
+  - Zhipeng Qian
+  - Zihan Liang
+  - Yufei Ma
+  - Chen, Ben
+  - Huangyu Dai
+  - Jiayi Ji
+year: 2026
+date: 2026-05-27
+arxiv_id: "2605.28354"
+url: https://arxiv.org/abs/2605.28354
+tags:
+  - ingested
+summary: "Training large language models as retrieval-augmented reasoning
+  agents typically combines reinforcement learning with an SFT cold start
+  distilled from a stronger model. However, this paradigm overlooks two
+  fundamental factors: the dependency structure among sub-skills, and the
+  possibility that distillation is not the only route to capability
+  acquisition. We study this through Plan, a structured agentic behavior for
+  multi-hop retrieval that decomposes a question into ordered sub-questions
+  before any retrieval is performed, so that each search step can be anchored
+  to a pre-designed sub-question"
+notes: "Filed as a source on multi-step-reasoning from the classifier's
+  judgement that the paper is about it (improves, medium): The paper proposes
+  decomposing questions into ordered sub-questions before retrieval plus a
+  self-bootstrapping activation pipeline, reporting consistent gains on
+  multi-hop QA benchmarks. No claim has been drafted from it yet."
+ingested_at: 2026-10-31
+brief: >-
+  Cold-start data from a 3B seed model beats distillation from a 72B model
+  when teaching search agents to plan, and whether RL on planning works at all
+  depends on the starting checkpoint rather than the reward. PL-Search makes
+  the model emit a <plan> block of ordered sub-questions before any retrieval,
+  then anchors each think/search/refine step to one sub-question, trained with
+  GRPO under a plan-alignment reward thresholded at 0.25 to stop verbatim
+  copying.
+
+
+  On 7 QA benchmarks with a Wikipedia retriever, PL-Search-3B-Base reaches
+  0.430 average EM vs 0.405 for the strongest baseline, with multi-hop gains
+  of 0.045 over AutoRefine-Base. Across 12 configurations (Qwen2.5, Llama3.2,
+  Qwen3, 3B-14B) multi-hop EM improves in all 12, averaging 0.053; single-hop
+  is flat. Removing the plan reward costs 0.017-0.025 multi-hop EM.
+  Self-bootstrapped SFT beats 72B distillation by 1.4 EM points on 3 targets
+  at matched 4,500 filtered trajectories, and distillation-initialized RL
+  collapsed repeatedly on 2 of them.
+
+
+  The failure analysis is measured: entropy traces show prior collapse at 0.06
+  for the 3B-Instruct model, explosion past 2.5 for Qwen3-4B-Base, and
+  collapse when plan is trained before refine, with the order ablation run on
+  the one model where R-to-P succeeds. Post-SFT entropy lands in 0.12-0.28
+  across 8 runs.
+
+
+  Only multi-hop QA with static retrieval was tested; tool use and live web
+  are open. If you build search agents, try a same-size seed model before
+  paying for a bigger teacher.
+brief_generated_at: 2026-10-31
+brief_model: claude-opus-5
+brief_source: full-text

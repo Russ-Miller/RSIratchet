@@ -1,0 +1,67 @@
+id: arxiv-2605-27906
+ref: SRC-0589
+kind: paper
+title: "Reasoning Matters: Mitigate Hallucination in Multimodal Large
+  Reasoning Models via Reasoning-Conditioned Preference Optimization"
+authors:
+  - Jiawei Kong
+  - hao fang
+  - Shunxiang Liao
+  - Jinyu Li
+  - Bin Chen
+  - Hao Wu
+year: 2026
+date: 2026-05-27
+arxiv_id: "2605.27906"
+url: https://arxiv.org/abs/2605.27906
+tags:
+  - ingested
+summary: Multimodal Large Reasoning Models introduce the reasoning paradigm,
+  demonstrating strong capabilities on complex vision-language tasks. However,
+  they still suffer from severe hallucinations. Existing training-based
+  methods typically mitigate hallucinations through response-level direct
+  preference optimization (DPO), where the Chain-of-Thought (CoT) and the
+  final answer are treated as a monolithic output and optimized jointly. We
+  reveal that this formulation performs similarly to answer-only optimization,
+  suggesting that it primarily learns answer-level preference, while leaving
+  CoT-level super
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, medium): The paper proposes RC-DPO, a
+  preference optimization method reported to reduce hallucinations and improve
+  grounding of reasoning chains across models and benchmarks. No claim has
+  been drafted from it yet."
+ingested_at: 2026-10-31
+brief: >-
+  Response-level DPO on multimodal reasoning models mostly learns answer-level
+  preference, leaving the chain-of-thought barely supervised, and the CoT is
+  where most residual hallucination lives.
+
+
+  The authors decompose OPA-DPO training into CoT and answer spans, show the
+  policy-reference gap grows faster on the answer segment, and build an
+  answer-only variant that shares the same CoT; its CHAIR_S lands close to
+  full OPA-DPO. Segment-level CHAIR also shows CoT hallucination stays above
+  answer hallucination, and answers are hallucination-free when the CoT is
+  clean. Their fix, RC-DPO, adds a term contrasting the likelihood of the same
+  preferred answer under a MCTS-searched grounded CoT versus one corrupted by
+  pruning the 20% most image-attending tokens.
+
+
+  Across 4 MLRMs (R1-Onevision-7B, MM-Eureka-7B, ThinkLite-VL-7B,
+  OpenVLThinker-7B) and 9 benchmarks, CHAIR_S drops from 36.7 to 21.7 on
+  R1-Onevision and 34.0 to 21.3 on MM-Eureka; POPE F1 beats OPA-DPO by 2.32%,
+  1.20% and 1.31%.
+
+
+  The diagnostic comparison is clean, since the answer-only variant holds the
+  CoT fixed, and component ablations isolate L_RC as the largest contributor.
+  But all models are 7B, training data is RLAIF-V only, hallucination metrics
+  are mostly object-centric, and the open-ended GPT-4 evaluation is reported
+  only as radar area without figures.
+
+
+  If you align reasoning models with DPO, the CoT likely needs its own
+  preference term.
+brief_generated_at: 2026-10-31
+brief_model: claude-opus-5
+brief_source: full-text

@@ -1,0 +1,63 @@
+id: arxiv-2605-27685
+ref: SRC-0587
+kind: paper
+title: "Decoupled Intelligence: A Multi-Agent LLM Framework for Controllable
+  Traffic Scenario Generation in SUMO"
+authors:
+  - Shuyang Li
+  - Ruimin Ke
+year: 2026
+date: 2026-05-26
+arxiv_id: "2605.27685"
+url: https://arxiv.org/abs/2605.27685
+tags:
+  - ingested
+summary: The integration of Large Language Models (LLMs) with microscopic
+  traffic simulation offers a promising path toward autonomous urban planning
+  and intelligent transportation analysis. However, existing monolithic agent
+  architectures often struggle with the complexity of end-to-end simulation
+  workflows, leading to reasoning failures, parameter inconsistency, and a
+  lack of systematic state management. This paper proposes a novel multi-agent
+  collaborative framework designed to automate the entire lifecycle of traffic
+  simulation in SUMO (Simulation of Urban Mobility). Our approach decouples
+  the simu
+notes: "Filed as a source on multi-model-coordination from the classifier's
+  judgement that the paper is about it (improves, medium): The paper compares
+  a role-decoupled multi-agent orchestration framework against single-agent
+  baselines and reports higher task success and parameter accuracy,
+  attributing gains to role decomposition and state handover. No claim has
+  been drafted from it yet."
+ingested_at: 2026-10-31
+brief: >-
+  Splitting a SUMO simulation pipeline across specialized agents with an
+  explicit artifact store beats a single ReAct agent on the hardest tasks, but
+  costs success on the easiest ones. Decoupling helps where state handover
+  matters, not uniformly.
+
+
+  The framework assigns Planner, Network Builder, Network Modifier, Demand
+  Engineer, Simulation Runner, and KPI Analyst roles, coordinated by an
+  MCP-based Orchestrator that tracks .net.xml/.rou.xml/.sumocfg artifacts.
+  Backbone is Qwen3-30B-Coder on SUMO 1.21.0, tested on 30 hand-built tasks
+  split into L1 basic, L2 origin-destination demand, and L3 structural network
+  edits before demand generation.
+
+
+  On L3 the monolithic baseline reaches 70.0% success versus 90.0% for the
+  multi-agent system, with tokens dropping 11404.7 to 6028.7 and
+  Time-to-Insight 41.4s to 8.3s. On L1 the multi-agent system is worse: 90.0%
+  versus 100.0%. A separate repair-loop ablation moves L2 and L3 success from
+  30.0% to 50.0% with 1 repair, flat at 2 repairs, while L1 dips 90.0% to
+  80.0% as the Analyst misreads zero-vehicle warnings as failures.
+
+
+  Evidence is a measured role ablation against 1 baseline, but on 1 model, 1
+  benchmark the authors wrote, 10 tasks per level, no independent replication,
+  and no matched-token baseline. L2 shows no success-rate gap at all.
+
+
+  Treat the gain as specific to long-horizon tasks with file-state
+  dependencies.
+brief_generated_at: 2026-10-31
+brief_model: claude-opus-5
+brief_source: full-text

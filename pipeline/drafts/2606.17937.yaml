@@ -1,0 +1,48 @@
+arxiv_id: "2606.17937"
+title: "ThinkingVLA: Interleaved Vision and Language Reasoning for Robotic
+  Manipulation"
+url: https://doi.org/10.48550/arxiv.2606.17937
+drafted_at: 2026-10-29
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: "For manipulation VLAs that generate a future image as an
+  intermediate, adding an explicit inverse-dynamics reasoning step conditioned
+  on that predicted image contributes more than the forward subgoal reasoning,
+  and the gap widens with task horizon: on real ALOHA tasks removing the
+  inverse CoT cost 15 points overall (long-horizon tasks 70->45% and 90->60%)
+  versus 6 points for removing the forward CoT, and visual prediction alone or
+  subtask text alone sat 25-40 points below the full chain on long-horizon
+  tasks."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Autoregressive unified text-image VLA
+  (Mixture-of-Transformers, PaliGemma thinking expert plus 300M flow-matching
+  action expert), five real ALOHA bimanual tasks with 50 demos and 20 trials
+  each; simulation results on RoboTwin 2.0 show the same horizon trend.
+technique: ""
+proposed_technique: Interleave forward CoT, predicted image, then inverse CoT before acting
+technique_summary: In one autoregressive sequence the model writes a textual
+  subgoal, generates the next-state image, then writes inverse-dynamics
+  reasoning grounded on that image, and the action head attends to the whole
+  chain.
+technique_kind: architecture
+technique_validated_by: Success rate on 20 RoboTwin 2.0 tasks (77.9% Easy /
+  29.3% Hard average, best on Horizon=2 and 3) against pi-0, XVLA, UP-VLA and
+  BagelVLA, plus five real ALOHA tasks against pi-0, pi-0.5 and UP-VLA, with
+  component ablations removing each reasoning stage.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation on the same or comparable VLA stack in which removing
+  the image-grounded inverse reasoning step costs no more than removing
+  forward subgoal text, or in which the full interleaved chain gives no
+  advantage over visual prediction alone on long-horizon tasks.
+evidence_note: "Measured: 20 simulated tasks at 100 evaluations each and 5
+  real tasks at 20 trials each, with a five-way component ablation. Real-world
+  n=20 per task makes 5-15 point differences loosely resolved, and the horizon
+  grouping has only 5 tasks per long-horizon bin. The ablation does isolate
+  each reasoning stage within a fixed architecture, but all results come from
+  one lab and one model stack; no error bars reported."
+confidence: medium
