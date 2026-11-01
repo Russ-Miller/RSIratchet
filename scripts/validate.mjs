@@ -5,7 +5,7 @@ import addFormats from "ajv-formats";
 import { execFileSync } from "node:child_process";
 import { loadCatalog, loadSchema, KINDS } from "./catalog-lib.mjs";
 
-const SCHEMA_FOR = { capabilities: "capability", sources: "source", techniques: "technique", models: "model", claims: "claim", adages: "adage" };
+const SCHEMA_FOR = { capabilities: "capability", sources: "source", techniques: "technique", models: "model", claims: "claim", heuristics: "heuristic" };
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 const ajv = new Ajv2020({ allErrors: true, strict: true });
@@ -87,8 +87,8 @@ for (const c of cat.claims) if (c.data.conditions && !c.data.technique) problem(
 const groupIds = new Set((cat.taxonomy.groups ?? []).map((g) => g.id));
 for (const c of cat.capabilities) if (c.data.group && !groupIds.has(c.data.group)) problem(c.file, `unknown group "${c.data.group}"`);
 
-// adage evidence must point at claims that exist
-for (const a of cat.adages) {
+// heuristic evidence must point at claims that exist
+for (const a of cat.heuristics) {
   for (const e of a.data.evidence ?? []) checkRef(a.file, ids.claims, e.claim, "claim");
   for (const s of a.data.sources ?? []) checkRef(a.file, ids.sources, s, "source");
 }

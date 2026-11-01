@@ -19,37 +19,35 @@ summary: Large Language Models (LLMs) are increasingly deployed in real-world
   handle the logical consequence
 ingested_at: 2026-09-19
 brief: >-
-  Parameter-based knowledge editing inserts a fact but does not propagate it
-  to what the fact entails. Editing a model's claim about an entity leaves
-  answers to logically dependent questions unchanged or degraded.
+  Parameter-editing methods insert a fact into a model but do not propagate it
+  to the facts the edit logically entails. The gap between direct-edit recall
+  and entailed-knowledge recall reaches up to 24%.
 
 
-  The benchmark builds a DBpedia knowledge graph from entities extracted from
-  edit prompts with spaCy and SPARQL, mines Horn rules with AMIE3, then
-  prompts an LLM to turn each rule plus its assertions into a multi-hop QA
-  pair. Edits came from MLaKE (English single-hop free-form subset) and
-  MQuAKE-T (1,825 instances), with ROME, constrained FT and KN applied to
-  gpt2-medium, gpt2-large and gpt2-xl; scoring is F1 and Exact Match.
+  The benchmark builds a DBpedia knowledge graph from entities extracted with
+  spaCy out of existing edit datasets, mines rules with AMIE3, then prompts an
+  LLM to turn each rule plus its assertions into a multi-hop QA pair. Edits
+  are applied with ROME, constrained fine-tuning (FT), and Knowledge Neurons
+  (KN) on GPT2-medium, GPT2-large and GPT2-xl, scored by F1 and Exact Match on
+  MLaKE (English single-hop free-form subset) and MQuAKE-T (1,825 instances).
 
 
   From 1000 sampled prompts, 831 MLaKE and 961 MQuAKE questions survived
   entity linking. ROME on MLaKE drops from 16.36 F1 direct to 8.67 correlated
-  for gpt2-medium; FT collapses further, 24.58 to 0.45 F1 on gpt2-large. KN
-  runs the other way: 1.34 direct vs 14.26 correlated F1 on MLaKE, 4.67 vs
-  18.53 on MQuAKE.
+  for GPT2-medium; FT collapses further, from 24.58 to 0.45 F1 on GPT2-large.
+  KN reverses the pattern on GPT2-xl: 1.34 direct vs 14.26 correlated F1 on
+  MLaKE, 4.67 vs 18.53 on MQuAKE.
 
 
-  The gap is measured, with direct and correlated evaluation matched per edit,
-  but the absolute numbers are low everywhere, so much of the drop may reflect
-  GPT-2's base inability to answer rule-generated multi-hop questions rather
-  than the edit. No baseline unedited model is reported, QA pairs are
-  LLM-generated with confidence scores as low as 0.67, and some mined rules in
-  Table 1 are spurious.
+  The effect is measured, but absolute scores are so low (EM often 0.0) that
+  the direct-edit baseline itself is barely functional, which makes the gap
+  hard to attribute. Only GPT2-class models, only parameter-based editors, no
+  memory-based methods like MeLLo, no validation of the LLM-generated QA pairs
+  beyond a confidence score.
 
 
-  Only GPT-2 models and 3 parameter-based methods were tested; LLaMA, Mistral
-  and memory-based methods like MeLLo were not. Treat the KN result as
-  unexplained rather than a recommendation.
-brief_generated_at: 2026-10-20
+  Treat edit-success numbers from existing KE papers as uninformative about
+  entailed consequences.
+brief_generated_at: 2026-10-19
 brief_model: claude-opus-5
 brief_source: full-text

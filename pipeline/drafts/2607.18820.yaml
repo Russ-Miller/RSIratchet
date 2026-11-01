@@ -1,0 +1,50 @@
+arxiv_id: "2607.18820"
+title: "CASE: Causal Alignment and Structural Enforcement for Improving
+  Chain-of-Thought Faithfulness"
+url: https://arxiv.org/abs/2607.18820
+drafted_at: 2026-10-25
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: explanation-faithfulness
+statement: For 7-8B instruct and distilled reasoning models doing
+  multiple-choice and boolean QA, masking attention from answer tokens to
+  instruction tokens at inference raises perturbation-based CoT faithfulness
+  (filler-token and early-answering scores) far more than fine-tuning on
+  counterfactual-CoT, biased-instruction and empty-instruction data, which
+  mainly moves the causal-effect metrics instead.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Llama-3.1-8B, Qwen3-8B, DeepSeek-R1-Distill-Qwen-7B;
+  ARC-Easy, ARC-Challenge, StrategyQA, LogiQA; LoRA fine-tuning;
+  multiple-choice answer options kept visible under masking.
+technique: ""
+proposed_technique: Mask answer tokens from attending to instruction tokens
+technique_summary: At inference, set pre-softmax attention logits from
+  answer-token positions to instruction-token positions to minus infinity in
+  every layer and head, so the answer can only be read off the generated chain
+  of thought, paired with fine-tuning on counterfactual-CoT,
+  biased-instruction and empty-instruction data.
+technique_kind: decoding
+technique_validated_by: Four faithfulness metrics (Filler Tokens, Early
+  Answering, CIE, CDE) and their geometric mean, against an untuned base model
+  and three fine-tuning baselines (DUc, FRODO, FoCus) on 500 test questions
+  per dataset; ablation separates the training-time and inference-time halves;
+  accuracy reported alongside.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation on further models or datasets where the training-only
+  variant matches or exceeds the masking-only variant on filler-token and
+  early-answering scores, or where masking raises those scores without any
+  real increase in answer dependence on the chain (e.g. by degrading answers
+  generally).
+evidence_note: Measured on 3 models x 4 datasets, 500 sampled test questions
+  each; the ablation is reported in full only for Llama-3.1-8B on the two ARC
+  sets, where ISE-only reaches G-mean 0.627/0.630 vs TCA-only 0.217/0.320 and
+  full CASE 0.646/0.650. Remaining ablations are in an appendix not shown.
+  Masking slightly lowers accuracy in one ARC-Challenge cell. The metrics are
+  the paper's own aggregation, and filler-token/early-answering are by
+  construction sensitive to exactly what masking enforces, so some circularity
+  is possible.
+confidence: medium

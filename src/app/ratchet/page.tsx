@@ -152,7 +152,7 @@ function WhyFailures() {
       <p>
         So the catalog is built around the missing half. Every efficacy claim states the condition
         under which it fails; a claim with evidence on both sides is filed as contested, not
-        averaged; adages are tested for where they break; and a technique with nothing measured is
+        averaged; heuristics are tested for where they break; and a technique with nothing measured is
         listed as a research brief, not omitted. The catalog is honest about its own limit: its
         sources are mostly published papers, so it inherits the same tilt. The counterweights are
         failures filed from use — a person&rsquo;s own observations, and later, failures reported

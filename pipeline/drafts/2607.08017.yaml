@@ -1,0 +1,47 @@
+arxiv_id: "2607.08017"
+title: Can We Trust LLM's Logic? Quantifying Uncertainty, Coherence, and
+  Robustness via a Graph-Based Framework
+url: https://doi.org/10.48550/arxiv.2607.08017
+drafted_at: 2026-10-26
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: explanation-faithfulness
+statement: "When several sampled chains of thought are turned into causal DAGs
+  and the answer is taken from the most central (medoid) chain rather than by
+  majority vote over final answers, faithfulness of the selected reasoning
+  rises while nominal accuracy falls for small models (Llama 3.1 8B: -7.6 on
+  GSM8K, -9.0 on MedQA) and is preserved or slightly improved for more capable
+  ones (Phi-4, DeepSeek R1 Distill-Llama-70B), because majority voting rewards
+  correct answers reached through unsound intermediate steps."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Short-horizon benchmarks capped at 3-6 declarative reasoning
+  steps (GSM8K, BoolQ, StrategyQA, MedQA, GPQA Diamond), 20 sampled chains per
+  question at temperature 0.7, three open models from 8B to 70B.
+technique: ""
+proposed_technique: Decode from the medoid reasoning graph, not the majority answer
+technique_summary: Sampled chains of thought are decomposed into atomic-fact
+  causal DAGs, pairwise semantic-structural graph edit distances are computed,
+  and the answer is read off the structurally central and peer-supported chain
+  instead of by voting on final answers.
+technique_kind: decoding
+technique_validated_by: "Accuracy difference against self-consistency on five
+  datasets with McNemar's test, plus an audit of disagreement cases labelled
+  faithful or spurious by a human and an LLM judge (Cohen's kappa 0.913):
+  79.5% faithful wins for the medoid rule vs 57.6% for self-consistency (+21.9
+  pp, Wilcoxon p<0.05), and adversarial ablation of the selected chain lowers
+  faithfulness while leaving accuracy mostly unchanged."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An audit on the same disagreement sets showing medoid-selected
+  chains are no more logically sound than the majority-supported chains, or
+  showing the accuracy drop in small models falls on items whose majority-vote
+  reasoning was in fact sound.
+evidence_note: Measured on five datasets and three models with significance
+  tests, but the faithfulness label rests on an Early-Answering proxy and on
+  judge annotations of sampled disagreement cases only; cells are small (e.g.
+  GPQA SC-only wins entirely spurious) and the authors note the effect weakens
+  on the most capable model.
+confidence: medium

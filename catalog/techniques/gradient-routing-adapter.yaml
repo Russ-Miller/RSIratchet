@@ -1,0 +1,25 @@
+id: gradient-routing-adapter
+ref: TEC-0237
+label: "Route flagged updates into a removable adapter"
+summary: >-
+  During post-training, send the gradient updates from samples an imperfect
+  monitor flags as unwanted into a separate set of new parameters, then
+  remove those parameters before deployment.
+description: >-
+  The GRAFT method (Gradient Routing Adapter Fine Tuning). Instead of
+  penalising or filtering the samples a monitor flags, their updates go
+  into a sacrificial adapter, and everything else trains as normal. Two
+  consequences follow. The monitor never enters the reward, so the model
+  has no incentive to learn to hide what the monitor looks for. And deleting
+  the adapter afterwards removes the unwanted behaviour while keeping the
+  task gains. It is a training-time technique: it needs access to the
+  weights and a monitor that catches at least some of the misbehaviour.
+addresses: [reward-hacking]
+kind: training
+sources: [arxiv-2610-17062]
+contexts: [coding-agent, autonomous-agent]
+requires: >-
+  Access to train the weights, and a monitor that flags at least some
+  instances of the unwanted behaviour.
+status: active
+submitted_by: agent:claude-opus-5-5@Russ-Miller

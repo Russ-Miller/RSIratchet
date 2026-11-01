@@ -31,32 +31,35 @@ notes: "Filed as a source on planning from the classifier's judgement that the
   claim has been drafted from it yet."
 ingested_at: 2026-09-23
 brief: >-
-  Splitting task planning and safety checking across 2 LLMs cuts the number of
-  hazardous steps in robot plans more than prompting 1 planner to do both, and
-  the gain tracks with how strong the reasoning model is. SAFER pairs a Task
-  Planning LLM with a Safety Planning LLM that audits and revises each plan,
-  adds per-robot execution LLMs and a feedback loop, and scores final plans
-  with an LLM-as-a-Judge against 15 risk criteria. Control Barrier Functions
-  enforce joint and workspace constraints at the controller level.
+  Splitting task planning from safety checking across 2 LLMs cuts the number
+  of safety violations an LLM planner writes into multi-robot plans, without
+  inflating step counts much. The usual picture, that a single LLM asked to
+  plan will trade off hazard checks against task efficiency when its context
+  is crowded, is supported here.
 
 
-  Evaluation uses 40 tasks from the COHERENT multi-agent benchmark, 8 per
-  scene across 5 scenes, split 2 mono-type, 3 dual-type, 3 trio-type. Average
-  safety violations drop 47% with GPT-4o and 77.5% with DeepSeek-r1 relative
-  to GPT-4o without SAFER; average steps stay comparable, with DeepSeek-r1
-  taking more steps. Overhead is 2 extra API calls per step.
+  SAFER pairs a Task Planning LLM with a Safety Planning LLM that audits and
+  refines each plan, adds per-robot Execution LLMs and a feedback loop, and
+  scores final plans with LLM-as-a-Judge against 15 risk criteria. Evaluation
+  uses 40 tasks from the COHERENT heterogeneous multi-agent benchmark, 8 per
+  scene across 5 scenes, split 2 mono-type, 3 dual-type, 3 trio-type, with
+  GPT-4o and DeepSeek-r1.
 
 
-  The effect is measured but the metric is the paper's own LLM judge, so the
-  outcome variable and the method share a model family. There is no
-  matched-token-budget single-LLM baseline, no human annotation of violations,
-  and only 2 planner models. The hardware demonstration is 1 task with 2 Kuka
-  arms and 1 tracked human, reported as a successful run rather than a
-  statistic.
+  Average safety violations fall from 32.6 to 17.6 in scene S1 for GPT-4o and
+  to 5.8 with DeepSeek-r1; the paper reports 47% reduction in ASV for GPT-4o
+  and 77.5% for the stronger reasoner. Average steps change little (15.8 to
+  12.1 for S-4o, 20.5 for S-r1). Overhead is 2 extra API calls per step.
 
 
-  Treat the violation reductions as suggestive of role decomposition helping,
-  not as calibrated safety measurement.
-brief_generated_at: 2026-10-20
+  The violation metric is produced by an LLM judge, so the headline effect is
+  measured by the same class of model being evaluated, with no human-annotated
+  ground truth and no matched-token baseline. 2 models, 1 benchmark, 40 tasks.
+  Control Barrier Functions and the hardware run with 2 Kuka IIWA 7 DoF arms
+  are a demonstration, not an ablation.
+
+
+  Treat the magnitude as soft and the architecture as the usable part.
+brief_generated_at: 2026-10-31
 brief_model: claude-opus-5
 brief_source: full-text

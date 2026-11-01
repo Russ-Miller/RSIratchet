@@ -1,0 +1,52 @@
+arxiv_id: "2608.05703"
+title: "StreamArena: Toward Continuous, Interactive, and Long-Horizon Agentic
+  Streaming Video Understanding"
+url: https://doi.org/10.48550/arxiv.2608.05703
+drafted_at: 2026-10-24
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: video-temporal-reasoning
+statement: "On hour-scale (mean 88.8 min) open-ended streaming video QA with
+  causal access, every streaming memory design degrades as the
+  evidence-to-query gap grows, and they fail in different ways: recent-window
+  systems cannot recover distant events (AURA 25.4% within 5 minutes falling
+  to 10.5% beyond 30 minutes), text-summary systems keep temporal coverage but
+  discard visual evidence, and model-internal compression loses fine-grained
+  detail (StreamForest 14.4%, ThinkStream 7.5% on retrospection), while human
+  accuracy without rewatching is 63.4%."
+kind: observation
+backing_strength: single-paper
+scope_condition: 243 YouTube videos of 60-134 minutes, 3,646 manually
+  validated open-ended QA pairs, LLM-judge binary factual-core scoring,
+  baselines run through their released interfaces which reconstruct a causal
+  prefix rather than holding persistent state
+technique: ""
+proposed_technique: Split streaming video into a latency frontend and an
+  asynchronous memory backend
+technique_summary: Frontend workers handle dispatch and proactive monitoring
+  while backend workers asynchronously build a hierarchical event and entity
+  memory with retained key frames, and route recall and external search on
+  demand.
+technique_kind: architecture
+technique_validated_by: On StreamArena it ranked first among streaming systems
+  on all four capabilities, improving 53.7-228.1% relative over the strongest
+  streaming baseline per capability, and against query-triggered offline
+  inference on the same Qwen3.5-397B-A17B backbone it cut pooled
+  query-to-answer latency 66.2% (81.4s to 27.5s) while retaining 89.7% of
+  pooled accuracy; the authors note baselines use smaller backbones so gains
+  are not isolated to architecture.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A streaming system whose retrospection accuracy stays flat across
+  evidence-to-query gaps from 5 to over 30 minutes on this or a comparable
+  hour-scale open-ended benchmark, with no cost in visual-detail or proactive
+  tasks.
+evidence_note: Measured on one new benchmark by its authors, with a
+  per-stratum breakdown across four gap ranges and a human reference under
+  both rewatch and streaming conditions. Baselines run with heterogeneous
+  backbone sizes and native inference interfaces, so the degradation pattern
+  is attributed to memory design by design type rather than by controlled
+  ablation.
+confidence: medium

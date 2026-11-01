@@ -1,0 +1,44 @@
+id: multi-step-simulation-authoring-pipeline-sumo-scenario-generation-split-into-specialized
+ref: CLM-0711
+capability: multi-model-coordination
+technique: pass-simulation-files-through-orchestrator-artifact-store-chat
+statement: >-
+  When a multi-step simulation-authoring pipeline (SUMO scenario generation)
+  is split into specialized Planner-Worker agents with file artifacts passed
+  through an external state store, the gain over a single ReAct agent
+  appears only on the tasks that require ordered structural dependencies,
+  while on simpler tasks the decomposed system matches or falls below the
+  single agent.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "One 30-task SUMO benchmark (10 tasks per complexity level) with a Qwen3-30B-Coder backbone; success defined as producing a runnable .sumocfg."
+sources:
+  - source: arxiv-2605-27685
+    stance: supports
+    note: >-
+      Validated by: Success rate, average tokens, and wall-clock
+      Time-to-Insight on 30 SUMO tasks against a monolithic ReAct agent with
+      the same tools: L3 success 90.0% vs 70.0%, L1 90.0% vs 100.0%, L2
+      100.0% vs 100.0%, tokens roughly halved at every level, L3 TTI 8.3s vs
+      41.4s.. Measured, but thin: 10 tasks per level, one backbone, one
+      baseline, no repeated-run variance or confidence intervals, and the L1
+      gap (90 vs 100) is a single task. Design does not separate the
+      artifact store from role decomposition, since both were changed
+      together.
+contested: false
+status: pending-review
+last_checked_at: 2026-10-31
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A replication on a
+  comparable task suite where the decoupled framework beats the monolithic
+  baseline on basic tasks as well, or where the L3 advantage disappears
+  under a matched token budget. Drafted stance toward
+  splitting-task-across-several-agents-helps-long-horizon-tasks-whose:
+  supports -- Decomposition helped only on the structurally dependent L3
+  tasks and slightly hurt on basic L1 tasks with the same tools and
+  backbone.
+submitted_by: agent:claude-opus-5@Russ-Miller

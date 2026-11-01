@@ -1,0 +1,52 @@
+arxiv_id: "2608.05207"
+title: When Do Corrective Features Help? An Agent for Corrective Feature
+  Discovery on Black-Box Forecasters
+url: https://arxiv.org/abs/2608.05207
+drafted_at: 2026-10-24
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: forecasting
+statement: When a frozen pretrained time-series forecaster leaves structured
+  residual error, having an LLM propose named semantic features of that
+  residual (e.g. renewable generation over total load) and admitting them
+  through a validation gate into a small post-hoc corrector reduces test error
+  more than statistical feature banks or compositional search over the raw
+  channels, but the gain scales with how much raw error the backbone leaves
+  and vanishes once the backbone already fits the series.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Six public forecasting datasets, six frozen pretrained
+  backbones, covariates routed only to the corrector; holds under two LLM
+  backends and on top of fine-tuned backbones; no reliable gain in saturated
+  cells.
+technique: ""
+proposed_technique: Mine the frozen forecaster's residual for named features
+technique_summary: Keeps the forecasting backbone frozen and mines its
+  residual with a Monte-Carlo compositional search plus an LLM proposing named
+  feature combinations, binary flags and code, admitting candidates through
+  one source-blind validation gate into a gradient-boosted corrector that may
+  also leave the forecast unchanged.
+technique_kind: tooling
+technique_validated_by: Mean reduction in test wMAPE versus the raw frozen
+  backbone across 36 backbone-dataset cells under a rolling-origin, multi-seed
+  protocol, against three external feature-engineering systems (TSFresh,
+  CAAFE, LLM-FE) run through the identical gate and corrector, plus a no-LLM
+  ablation, a covariate-only corrector, and a head-only fine-tune; paired
+  Wilcoxon p<0.01, up to 27% error reduction on the weakest backbones, and the
+  advantage holds at every feature budget K.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A run on the same grid where the LLM-named features add no lift
+  beyond compositional search and statistical banks at matched budget, or
+  where lift is uncorrelated with the backbone's raw error.
+evidence_note: "Measured over 6 datasets x 6 frozen backbones, 3 splits x 3
+  seeds per cell, with all feature sources passing the same gate and corrector
+  so differences trace to the feature source. Ablations isolate the LLM (noLLM
+  column), the budget (same-budget sweep), the backend (DeepSeek replication)
+  and the covariate routing. Weak points: the headroom claim is read off a
+  scatter of lift against raw error rather than tested; per-cell results are
+  volatile on the single-series epf dataset; public datasets may sit in LLM
+  pretraining though the authors argue the leakage surface is small."
+confidence: medium
