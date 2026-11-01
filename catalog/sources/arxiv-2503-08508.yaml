@@ -32,36 +32,39 @@ notes: "Filed as a source on planning from the classifier's judgement that the
   claim has been drafted from it yet."
 ingested_at: 2026-09-23
 brief: >-
-  Letting a 1.5B model generate skill-function arguments itself, instead of
-  filling fixed skill templates, closes most of the gap to GPT-4 planners on
-  robot instructions whose meaning depends on the scene ("the largest block",
-  "the leftmost block").
+  A 1.5B model fine-tuned to emit parameterized skill calls plus explicit
+  three-level verification beats GPT-4-based planners on robot task planning
+  that requires resolving relational semantics like "largest" or "leftmost".
 
 
-  LightPlanner fine-tunes Qwen2.5-1.5B-Instruct on LightPlan-40k, 40,000
-  single-step decision samples derived from 60 hand-annotated tasks expanded
-  to 6,000 by GPT-4, with 13 skill functions, hierarchical reasoning over
-  execution feedback/semantic parsing/parameter validity, and a memory module
-  replacing accumulated context. Evaluation is on a UR3 arm with wrist RGB-D,
-  30 tasks run 3 times each under varied lighting, chains of 2-8 steps.
+  LightPlanner replaces fixed skill templates with function calls whose
+  parameters (e.g. bounding boxes) the LLM computes itself, adds reasoning
+  over execution feedback, goal consistency, and parameter validity before
+  each step, and stores history in a memory module instead of growing context.
+  Qwen2.5-1.5B-Instruct was fine-tuned on LightPlan-40k (40,000 decision
+  samples, tasks of 2 to 13 steps, expanded by GPT-4 from 60 hand-annotated
+  tasks) and evaluated on a UR3 arm across 30 tasks run 3 times each, 90
+  trials.
 
 
-  On dynamic semantic reasoning tasks it reaches 100.0% SR short-term, 79.5%
-  medium (CoPAL/GPT-4: 71.4%) and 66.1% long-term (CAPE: 54.1%); on 10 unseen
-  8-step task categories 62.6% SR vs 53.8% for CoPAL and 42.0% for ReAct-3B.
-  Single-round latency stays within ±2 seconds and 3.9 GB VRAM on a Jetson
-  Xavier Orin at 10 words/s.
+  On dynamic semantic reasoning tasks it reached 100.0 short-term success,
+  79.5% medium-term (vs 71.4% CoPAL/GPT-4) and 66.1% long-term (vs 54.1%
+  CAPE). On 10 unseen 8-step task categories: 62.6% SR vs 53.8% CoPAL and
+  42.0% ReAct-3B. Latency varies by ±2 seconds and VRAM stays near 3.9 GB; it
+  runs on Jetson Xavier Orin at 10 words/s.
 
 
-  Baselines were retrained on the same dataset (ReAct-1.5B/3B, MLDT-7B), and
-  the ablation separates the 3 parts: removing dynamic skill control costs
-  7.5% SR, reasoning 5.8%, memory 5.0% plus 4 seconds. Trials are few (90),
-  the arena is 1 tabletop setup with 1 robot, and the authors note static
-  scenes only.
+  Baselines ReAct and MLDT were retrained on the same dataset, which isolates
+  the planner design from the data. Ablations drop SR by 7.5% (dynamic skill
+  control), 5.8% (hierarchical reasoning) and 5.0% (memory). But GPT-4
+  baselines were prompted, not trained, so the dataset advantage is not
+  matched for them; evaluation is 1 robot, 1 lab, 1 model family, static
+  scenes only, and the authors flag unpredictably changing environments as
+  untested.
 
 
-  If you deploy planners on edge hardware, parameterized skill calls are the
-  lever worth copying.
-brief_generated_at: 2026-10-29
+  If you assumed small models fail at planning because of capacity, this
+  points instead at action-space design.
+brief_generated_at: 2026-10-31
 brief_model: claude-opus-5
 brief_source: full-text

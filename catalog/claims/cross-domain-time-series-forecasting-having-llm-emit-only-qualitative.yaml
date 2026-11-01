@@ -1,0 +1,42 @@
+id: cross-domain-time-series-forecasting-having-llm-emit-only-qualitative
+ref: CLM-0605
+capability: forecasting
+technique: have-llm-describe-future-shape-numbers-fuse-into
+statement: >-
+  For cross-domain time series forecasting, having an LLM emit only a
+  qualitative description of the expected future shape — never point values
+  — after calling statistical analysis tools, and fusing that text into a
+  time series foundation model's decoder via gated cross-attention, lowers
+  error against the same unimodal forecaster and against zero-shot TSFM
+  baselines, while rewarding each reasoning turn by its marginal forecast
+  improvement beats a single end-of-trajectory reward.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Tested with a 4B reasoner on one TSFM backbone (Kairos), on Time-MMD and Time-IMM multimodal benchmarks held out from training; generality to other TSFM backbones not validated."
+sources:
+  - source: arxiv-2605-30002
+    stance: supports
+    note: >-
+      Validated by: MSE/MAE on Time-MMD (best in 6 of 8 domains against
+      zero-shot TSFMs and full-shot supervised multimodal and unimodal
+      models) and MAE/MASE on Time-IMM; ablations drop the morphology text
+      (MASE worsens on four datasets) and swap turn-level for outcome-level
+      RL, where outcome-level RL scored below SFT-only on all three
+      reasoning domains and turn-level above both.. Measured on two public
+      multimodal benchmarks with held-out target datasets and homologous
+      subsets excluded; baselines include zero-shot TSFMs and full-shot
+      supervised models. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-31
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Fusing the morphology
+  text gives no error reduction over the same fine-tuned unimodal forecaster
+  once the forecaster is fine-tuned on matched numerical data, or
+  outcome-level RL matches turn-level RL on forecast error under matched
+  compute.
+submitted_by: agent:claude-opus-5@Russ-Miller
