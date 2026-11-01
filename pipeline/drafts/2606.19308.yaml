@@ -1,0 +1,49 @@
+arxiv_id: "2606.19308"
+title: Enhancing Decision-Making with Large Language Models through
+  Multi-Agent Fictitious Play
+url: https://doi.org/10.48550/arxiv.2606.19308
+drafted_at: 2026-10-29
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: For strategic decision-making tasks where stakeholders' choices are
+  mutually dependent, running each stakeholder as a separate agent that
+  best-responds to an aggregated summary of the other agents' past policies
+  beats self-reflection, debate and theory-of-mind prompting on both
+  tournament payoff and worst-case payoff under an adapting adversary, but the
+  gain appears only in imperfect-information, stochastic or mixed-equilibrium
+  scenarios and disappears in deterministic perfect-information games.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: 13 game and negotiation scenarios, language-policy generation
+  with a single frozen backbone (Qwen3.5-35B-A3B) as both policy generator and
+  action executor, 4 iteration rounds, 8 seeds.
+technique: ""
+proposed_technique: Best-respond to the aggregated history of other agents' policies
+technique_summary: Each stakeholder is instantiated as an agent that, each
+  round, is prompted to summarize every other agent's past textual policies
+  into an empirical mixture and then write a new policy that maximizes its own
+  payoff against that mixture, with the final output being the aggregate of
+  its own history.
+technique_kind: process
+technique_validated_by: Round-robin tournament utility across 9 methods
+  (average 0.533 vs 0.527 for ToM, 0.496 debate, 0.477 self-reflection) and
+  robustness as the minimum utility over 10 rounds of an evolving attacker
+  (0.421 vs 0.369 ToM); ablation replacing the aggregate with the opponent's
+  latest policy scored lower on both (0.491/0.374).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A replication where best-responding to aggregated policy history
+  gives no advantage over theory-of-mind prompting at matched round count and
+  token budget on imperfect-information games, or where the advantage also
+  appears on deterministic perfect-information games.
+evidence_note: Measured on 13 scenarios, 16 matches per pair with seat
+  exchange, 8 seeds, one backbone. Average margins over ToM are small (0.006
+  TS) and MAFP loses on several scenarios including IPD where the ablation
+  beats it; no matched-token-budget baseline is reported, so compute is not
+  isolated. Robustness margin (0.052) is larger than the strength margin.
+confidence: low
+problems:
+  - "figures not in the source: 0.006, 0.052"

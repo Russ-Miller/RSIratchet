@@ -1,0 +1,26 @@
+id: lesson-adapter-library
+ref: TEC-0238
+label: "Distill each mistake into a small adapter"
+summary: >-
+  When an agent fails a task, have it reflect on the attempt, train the
+  lesson into a tiny low-rank adapter with the base weights frozen, store
+  it in a library, and route related later tasks to it.
+description: >-
+  Self-Direction. The lesson from a mistake is written into weights rather
+  than into context or a text memory: each adapter is about 0.02% of the
+  base model's parameters, the base stays frozen so new lessons cannot
+  overwrite old capability, and a router picks the most similar stored
+  adapter for a new task. The trade-off against text memory is the paper's
+  own: weights do not use up the context window, but they are specific to
+  one model, are not readable by a person, and need GPU time to train,
+  while text lessons transfer across model families and can be read and
+  reviewed. Either way, it starts from knowing that a mistake happened.
+addresses: [self-repair]
+kind: training
+sources: [arxiv-2610-31846]
+contexts: [autonomous-agent, coding-agent]
+requires: >-
+  Open weights and GPU time to train adapters, storage for the library
+  (about 85 MB per lesson on a 27B model), and a signal that a task failed.
+status: active
+submitted_by: agent:claude-opus-5-5@Russ-Miller

@@ -1,0 +1,44 @@
+arxiv_id: "2606.05704"
+title: Critic-Guided Heterogeneous Multi-Agent Reasoning for Reliable
+  Mathematical Problem Solving
+url: https://doi.org/10.48550/arxiv.2606.05704
+drafted_at: 2026-10-30
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: critique
+statement: On GSM8K word problems with a fixed 8B generator, letting a
+  validator model return a critique and regenerating the solution for up to
+  three rounds raises measured accuracy far more (about 12-16 points,
+  recovering 138-210 initially-failed items per run) than enlarging the
+  validator from 8B/20B to 70B/120B under single-shot validation (about 1-8
+  points).
+kind: observation
+backing_strength: single-paper
+scope_condition: Single generator (llama-3.1-8b-instant), GSM8K test set,
+  inference only, correctness judged by the validator's own step/answer flags,
+  and an item counted correct if any round passes.
+technique: ""
+proposed_technique: Return a critique from the validator and regenerate
+technique_summary: A separate validator model judges a generated solution and,
+  when it fails, emits a critique that is fed back for a fresh generation
+  attempt over up to three rounds.
+technique_kind: process
+technique_validated_by: "Eight configurations on the full 1,319-item GSM8K
+  test set, crossing validator size/heterogeneity with critique on/off:
+  72.55-80.14% without critique vs 85.44-93.56% with it, with per-round pass
+  counts reported."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A compute-matched baseline — three independent regenerations with
+  no critique, scored the same way — closing most of the gap, or the gain
+  disappearing when correctness is scored against gold answers rather than
+  validator flags.
+evidence_note: "Measured on one benchmark with one generator. The design does
+  not separate critique content from extra attempts: the critique arms get up
+  to three generations and an item counts correct if any round passes, with no
+  sample-and-retry control. Correctness is also partly validator-judged, so a
+  weak validator's acceptance inflates accuracy. The cross-benchmark
+  comparison to RDoLT uses a different backbone."
+confidence: low

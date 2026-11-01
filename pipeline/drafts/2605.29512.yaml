@@ -1,0 +1,51 @@
+arxiv_id: "2605.29512"
+title: "MINDGAMES: A Live Arena for Evaluating Social and Strategic Reasoning
+  in Multi-Agent LLMs"
+url: https://doi.org/10.48550/arxiv.2605.29512
+drafted_at: 2026-10-31
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: evaluation-validity
+statement: "In live multi-agent game arenas where invalid actions are frequent
+  and can terminate a game, leaderboard rank partly measures an agent's
+  robustness to opponents' rule-violations rather than its strategic skill,
+  and this confound is environment-dependent: in Secret Mafia fewer than 1% of
+  top models' games were error-free and the top agent witnessed opponent
+  errors in 129 of 130 games while causing errors in 4, whereas Iterated
+  Prisoner's Dilemma recorded zero errors across 1,012 games."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Text-based multi-agent game arenas with TrueSkill-style
+  pairwise rating, where the environment enforces action syntax and invalid
+  actions are either auto-corrected or fatal; measured on four games in one
+  NeurIPS 2025 competition cycle (29,571 games, 944 agents).
+technique: ""
+proposed_technique: Flag arena rankings by error rate and termination depth
+technique_summary: Compute, per environment, the share of games containing at
+  least one invalid action and the median termination depth as a fraction of
+  expected game length, and read leaderboard position as robustness to
+  opponent failure rather than strategic skill when error rate exceeds ~30%
+  and median termination depth falls below half of expected length.
+technique_kind: process
+technique_validated_by: Argued and shown to reproduce the paper's own validity
+  ordering across its four environments (IPD and Colonel Blotto clean;
+  Codenames mixed at 38.6% error; Secret Mafia confounded at 50.3% error with
+  terminations under 3 turns against an 8-12 turn expectation); not validated
+  against an external ground-truth skill measure.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Showing that in a high-error environment, agent rankings are
+  unchanged when games containing opponent rule-violations are excluded, or
+  that ranking correlates with strategic skill measured independently (e.g.
+  against a fixed error-free reference pool) despite high error rates.
+evidence_note: "Measured on competition logs: per-environment game-level error
+  rates (Secret Mafia 50.3%, Codenames 38.6%, Colonel Blotto 8.5%, IPD 0%),
+  per-model caused/witnessed/forfeit counts for top-3 agents, and
+  TrueSkill-versus-cumulative-reward divergence where Efficient-division Mafia
+  agents gained TrueSkill at near-zero reward. The design shows the confound
+  exists but does not quantify how much of rank is explained by it, and the
+  thresholds (30% error, half expected depth) are proposed from this one
+  cycle, not fitted or externally validated."
+confidence: medium
