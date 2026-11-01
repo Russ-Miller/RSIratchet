@@ -19,40 +19,40 @@ summary: "Unlearning in large language models (LLMs) aims to remove harmful
   knowledge, and (2) e"
 ingested_at: 2026-09-19
 brief: >-
-  Unlearned models do not know that they have forgotten: they hallucinate
-  replacement facts, emit repetitive rare tokens, or refuse once and then
-  answer the same question on a follow-up turn. Honesty, split into
-  self-knowledge and self-expression, is proposed as a separate axis from
-  forgetting and robustness, with metrics for rejection rate (RR), 2-turn
-  rejection consistency (QAMRC, and RR2R = RR x QAMRC), a Choose-IDK Rate with
-  a Choose-Other-Rate control, and retain-set agreement and
-  misleading-robustness scores.
+  Unlearned models rarely admit they no longer know something: they
+  hallucinate the forgotten fact, emit repetitive rare tokens, or refuse once
+  and then answer when asked again. Honesty, split into self-knowledge and
+  self-expression, is proposed as a separate axis from forgetting and
+  robustness.
 
 
-  9 methods across 3 families (rejection-based, gradient-ascent,
-  feature-randomize) were run on Zephyr-7b-beta and Llama3-8b with WMDP-Bio as
-  the forget set, plus CSQA, BBH and MMLU for retention.
+  The evaluation covers 9 unlearning methods in 3 families (rejection-based
+  like IDK+AP, gradient-ascent like NPO/SimNPO, feature-randomize like
+  RMU/BLUR/ME+GD) on Zephyr-7b-beta and Llama3-8b, unlearning WMDP-Bio, with
+  retain-side checks on MMLU, CSQA and BBH. Metrics include rejection rate
+  (RR), 2-turn refusal consistency (QAMRC, and RR2R = RR x QAMRC), and a
+  Choose-IDK vs Choose-Other control for multiple choice.
 
 
-  All 9 fail at least one criterion. RMU rejects only 1.36% of forget-set
-  questions and 0.19% after 2 rounds. IDK fine-tuning on top of RMU lifts RR
-  to 63.41 but QAMRC falls to around 40%, giving RR2R 26.17. Gradient-ascent
-  methods' high IDK-option rates collapse to chance when the option is
-  shuffled (NPO: CIR 19.24%, COR 17.65%), matching a sharp drop in first-token
-  entropy. ReVa, which aligns forget-set residual activations to a refusal
-  direction distilled from 20 prompts, gives RR 60.86, RR2R 45.42, STD 2.24,
-  AR 91.00, MRS 71.37, in 5.91 minutes versus 210.66 for IDK+AP.
+  IDK tuning gives high RR while WMDP accuracy stays high, i.e. masked
+  knowledge; RMU+IDK drops to QAMRC around 40%. Gradient-ascent methods score
+  high CIR but equally high COR, and under randomized option positions both
+  fall to near the 20% chance baseline (NPO: CIR 19.24%, COR 17.65%; SimNPO:
+  CIR 20.77%, COR 19.87%), with collapsed first-token entropy. ReVa, aligning
+  forget-set residual activations to a distilled refusal direction, reaches RR
+  60.86 and RR2R 45.42 versus RMU 1.36/0.19 and RMU+IDK 63.41/26.17, with AR
+  91.00, MRS 71.37, and 5.91 min training against 210.66 for IDK+AP.
 
 
-  The position-shuffling control and the COR option isolate spurious
-  abstention well; ReVa itself is compared across methods but without
-  matched-training-cost baselines, and the layer choice (18/25) was selected
-  on the same benchmark. Only WMDP-Bio, 2 models, no relearning or adversarial
-  fine-tuning attacks, and multiple-choice CIR stays low (7.18).
+  The spurious-IDK claim is isolated by the position-randomization and
+  content-swap controls, which is the strongest part of the design; ReVa's
+  gains come from a single-configuration sweep (layers 18/25, 20 refusal
+  prompts) with no matched-compute baseline. Only WMDP, no relearning or
+  adversarial fine-tuning tests, and multiple-choice CIR stays low at 7.18.
 
 
-  If you treat a low forget-set accuracy as success, this suggests checking
-  whether the model will say so out loud, twice.
-brief_generated_at: 2026-10-26
+  If you treat refusal rate as evidence of successful forgetting, this gives
+  you two cheap controls that show it usually is not.
+brief_generated_at: 2026-10-31
 brief_model: claude-opus-5
 brief_source: full-text

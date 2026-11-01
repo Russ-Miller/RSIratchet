@@ -31,36 +31,35 @@ notes: "Filed as a source on planning from the classifier's judgement that the
   claim has been drafted from it yet."
 ingested_at: 2026-09-23
 brief: >-
-  Splitting task planning from safety checking across 2 LLMs cuts safety
-  violations in multi-robot plans more than asking 1 model to do both, because
-  the safety rules never have to compete for the planner's context window.
-  Left unprompted, the planners default to short, fast plans that omit
-  preconditions and create spatial conflicts.
+  Splitting task planning from safety checking across 2 LLMs cuts the number
+  of safety violations an LLM planner writes into multi-robot plans, without
+  inflating step counts much. The usual picture, that a single LLM asked to
+  plan will trade off hazard checks against task efficiency when its context
+  is crowded, is supported here.
 
 
   SAFER pairs a Task Planning LLM with a Safety Planning LLM that audits and
-  revises each sequence, adds per-robot Execution LLMs and a feedback loop,
-  and scores final plans with an LLM-as-a-Judge against 15 risk criteria.
-  Evaluation used 40 tasks from the COHERENT heterogeneous multi-agent
-  benchmark, 8 per scene across 5 scenes (2 mono-type, 3 dual-type, 3
-  trio-type), with GPT-4o and DeepSeek-r1.
+  refines each plan, adds per-robot Execution LLMs and a feedback loop, and
+  scores final plans with LLM-as-a-Judge against 15 risk criteria. Evaluation
+  uses 40 tasks from the COHERENT heterogeneous multi-agent benchmark, 8 per
+  scene across 5 scenes, split 2 mono-type, 3 dual-type, 3 trio-type, with
+  GPT-4o and DeepSeek-r1.
 
 
-  Average safety violations fell 77.5% with DeepSeek-r1 and 47% with GPT-4o
-  versus the GPT-4o non-safety baseline, with average steps often lower too;
-  overhead is 2 extra API calls per step.
+  Average safety violations fall from 32.6 to 17.6 in scene S1 for GPT-4o and
+  to 5.8 with DeepSeek-r1; the paper reports 47% reduction in ASV for GPT-4o
+  and 77.5% for the stronger reasoner. Average steps change little (15.8 to
+  12.1 for S-4o, 20.5 for S-r1). Overhead is 2 extra API calls per step.
 
 
-  The comparison is against 1 baseline, GPT-4o without SAFER, with no ablation
-  separating the Safety LLM from the feedback module or the execution checks,
-  and the violation metric is produced by an LLM judge rather than an external
-  oracle. The hardware demonstration is 1 successful run with 2 Kuka arms and
-  1 human, not a measured success rate, and CBFs were not evaluated
-  separately.
+  The violation metric is produced by an LLM judge, so the headline effect is
+  measured by the same class of model being evaluated, with no human-annotated
+  ground truth and no matched-token baseline. 2 models, 1 benchmark, 40 tasks.
+  Control Barrier Functions and the hardware run with 2 Kuka IIWA 7 DoF arms
+  are a demonstration, not an ablation.
 
 
-  Treat the violation reductions as directional evidence that role separation
-  helps, not as a calibrated safety guarantee.
-brief_generated_at: 2026-10-26
+  Treat the magnitude as soft and the architecture as the usable part.
+brief_generated_at: 2026-10-31
 brief_model: claude-opus-5
 brief_source: full-text

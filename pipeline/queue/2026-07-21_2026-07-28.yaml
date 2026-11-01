@@ -1668,6 +1668,18 @@ candidates:
       MLLMs also face limitations in spatial and relational reasoning, fine-grained visual
       understanding, instruction diversity, and generalization across heterogeneous task formats.
       Based on these findings, we outline future directions toward reliable ev
+    verdicts:
+      - capability: domain-knowledge
+        about_capability: true
+        direction: measures
+        confidence: high
+        rationale: The paper is a survey/diagnostic evaluation comparing domain-specific remote sensing
+          MLLMs with general-purpose ones, characterizing capability boundaries without proposing a
+          new technique.
+        scope_condition: Multimodal LLMs on remote sensing image scene understanding tasks (grounding,
+          high-res VQA), comparing RS-specialized vs general CV-MLLMs
+        classified_at: 2026-10-26
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7171750071
     score: 16
     signals:
@@ -1713,6 +1725,15 @@ candidates:
       hierarchical chains they preserve, often revealing shortcut behavior that raw target-task
       accuracy alone would obscure. Finally, we demonstrate that training models with
       chain-of-thought (CoT) supervision over our hierarchi"
+    verdicts:
+      - capability: procedure-following
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper benchmarks spatial reasoning in MLLMs via hierarchical sub-task decomposition,
+          not adherence to an unfamiliar multi-step procedure or constraint set.
+        classified_at: 2026-10-26
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7171268836
     score: 16
     signals:
@@ -1755,6 +1776,18 @@ candidates:
       evaluations of a broad spectrum of state-of-the-art proprietary, open-source, and specialized
       spatial MLLMs reveal that, despite their strong general video understanding capabilities,
       current models still face substantial bottlenecks in com
+    verdicts:
+      - capability: video-temporal-reasoning
+        about_capability: true
+        direction: measures
+        confidence: high
+        rationale: The paper introduces a benchmark and evaluates existing models' temporal/dynamic
+          reasoning without proposing a fix.
+        scope_condition: Video QA benchmark (1,340 QA pairs, 15 subtasks) on motion perception, spatial
+          relations, outcome prediction, physical dynamics, evaluated on proprietary, open-source,
+          and spatial MLLMs
+        classified_at: 2026-10-26
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7171268792
     score: 15
     signals:
@@ -1794,6 +1827,19 @@ candidates:
       data, produces query plans, generates code based on them, and finally uses an optimizer to
       iteratively achieve a correct and efficient implementation; (2) use visual inspection and
       analysis to gain qualitative insights into why GenDB produces "
+    verdicts:
+      - capability: code-generation
+        about_capability: true
+        direction: improves
+        confidence: low
+        rationale: The paper demonstrates a system where LLM agents generate and iteratively refine
+          query-processing code to reach correct and efficient implementations, i.e., a technique
+          for producing working code in a domain.
+        scope_condition: LLM-agent generation of instance-optimized query execution code for
+          repetitive/templated SQL workloads, offline generation with fuzz testing and iterative
+          optimization
+        classified_at: 2026-10-26
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7171902834
     score: 15
     signals:
@@ -1836,6 +1882,29 @@ candidates:
       path to decoupling general model capabilities from domain-specific knowledge at the parameter
       level, thereby equipping LLMs with new specialized capabilities without compromising their
       general capabilities.
+    verdicts:
+      - capability: fine-tuning-retention
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: MemSFT keeps backbone frozen and fuses an external memory via a router, reportedly
+          improving domain performance with negligible general-benchmark degradation unlike full
+          SFT.
+        supports_claim_id: 1-5b-8b-base-models-given-domain-sft-expert-math
+        scope_condition: Qwen3-8B to Qwen3-235B-A22B domain adaptation (biology, geoscience, law) with a
+          frozen backbone plus trained external parametric memory and token-level router fusion
+        classified_at: 2026-10-26
+        model: claude-opus-5
+      - capability: domain-knowledge
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: MemSFT reportedly raises domain-specific performance over the general backbone while
+          avoiding the catastrophic forgetting of full SFT.
+        scope_condition: Qwen3-8B to Qwen3-235B-A22B adapted to biology, geoscience, and law via a
+          plug-and-play parametric memory distilled from a retriever
+        classified_at: 2026-10-26
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7170162330
     score: 15
     signals:
@@ -1876,6 +1945,18 @@ candidates:
       hypernetwork-based injection exhibits broadly predictive power law scaling along all
       architecture axes; and (ii) hypernetworks are capable of reliable OOD generalization at
       increasing scales, suggesting that hypernetwork pro"
+    verdicts:
+      - capability: knowledge-updating
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes hypernetwork-based train-time knowledge injection and shows it scales
+          predictably with reliable OOD generalization on multi-hop questions about injected facts.
+        scope_condition: Hypernetwork-generated LoRA adapters for train-time fact injection, evaluated on
+          MegaWikiQA multi-hop QA from Wikidata5M, across hypernetwork depth/width and target model
+          size
+        classified_at: 2026-10-26
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7171749636
     score: 15
     signals:
@@ -1919,6 +2000,24 @@ candidates:
       framework and a self-reflective verification mechanism integrated for structured stance
       modeling and faithful flip attribution. Specifically, ToS decomposes the reasoning process
       into specialized cognitive personas to formulate target propositions, r"
+    verdicts:
+      - capability: procedure-following
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper benchmarks multimodal conversational stance flipping detection, not models'
+          ability to follow unfamiliar multi-step procedures.
+        classified_at: 2026-10-26
+        model: claude-opus-5
+      - capability: forecasting
+        about_capability: false
+        direction: not_applicable
+        confidence: medium
+        rationale: The paper benchmarks multimodal conversational stance detection and attribution of stance
+          reversals within existing dialogues, not calibrated prediction of real-world future
+          events.
+        classified_at: 2026-10-26
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7171268747
     score: 15
     signals:
@@ -1959,6 +2058,23 @@ candidates:
       standardized value change dump (VCD) format. The open-source framework supports extending to
       new question categories and importing new waveform sources, enabling researchers to rapidly
       prototype temporal reasoning experiments.
+    verdicts:
+      - capability: video-temporal-reasoning
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper benchmarks text-based LLM temporal reasoning over digital hardware waveform
+          dumps, not reasoning across video frames.
+        classified_at: 2026-10-26
+        model: claude-opus-5
+      - capability: code-generation
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The benchmark evaluates temporal reasoning over digital waveform data in QA form,
+          explicitly distinguishing itself from HDL code-generation benchmarks.
+        classified_at: 2026-10-26
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7171750044
     score: 15
     signals:
@@ -2001,6 +2117,18 @@ candidates:
       quantitative OCR performance and transcription fidelity in real-world archival settings, and
       highlight the need for evaluation frameworks that go beyond character-level accuracy to
       capture the semantic reliability of generated transcriptions.
+    verdicts:
+      - capability: hallucination
+        about_capability: true
+        direction: measures
+        confidence: medium
+        rationale: The paper benchmarks and qualitatively characterizes spurious content generation and
+          fluent semantic substitutions (including invented named entities) in VLM OCR outputs that
+          CER/WER hide, without proposing a mitigation.
+        scope_condition: VLM-based OCR transcription of degraded historical archival documents (Berrutti,
+          Uruguayan dictatorship-era microfilm scans)
+        classified_at: 2026-10-26
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7171749450
     score: 14
     signals:
@@ -2041,6 +2169,17 @@ candidates:
       samples. Moreover, when applied to a backbone trained only with tool-free chain-of-thought
       supervision, CADER achieves competitive performance against specialized tool-augmented
       frameworks, suggesting a practical inference-time route f"
+    verdicts:
+      - capability: video-temporal-reasoning
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: CADER adds confidence-gated temporal cropping and relevance-guided resampling that
+          improves long-video reasoning accuracy while skipping tool use on easy cases.
+        scope_condition: Training-free inference framework on long-video QA benchmarks with VLM backbones;
+          confidence-gated two-stage tool-augmented temporal evidence localization
+        classified_at: 2026-10-26
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7171903038
     score: 14
     signals:
@@ -2081,6 +2220,15 @@ candidates:
       five-dimensional profiles. CogArena provides a workflow joining behavioral signatures,
       covariance, matched interventions, and out-of-family prediction before cognitive labels are
       attached to model scores.
+    verdicts:
+      - capability: harness-self-improvement
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper benchmarks cognitive ability structure with human-designed scaffolds, not a
+          system editing its own harness from failure traces.
+        classified_at: 2026-10-26
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7171570132
     score: 14
     signals:
@@ -2124,6 +2272,15 @@ candidates:
       average attack success rates by up to $18.2$ percentage points. They also transfer to GPT-5,
       Claude-Haiku-4.5, and Gemini-3-Flash, suggesting that some scenario-level refusal
       vulnerabilities are shared across model families. Moreover, t
+    verdicts:
+      - capability: prompt-injection
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper is about jailbreaking via scenario wrapping and refusal mechanisms, not about
+          instructions embedded in retrieved data or tool outputs.
+        classified_at: 2026-10-26
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7170149659
     score: 26
     signals:

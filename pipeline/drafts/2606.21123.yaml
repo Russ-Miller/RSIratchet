@@ -1,0 +1,47 @@
+arxiv_id: "2606.21123"
+title: "A Multi-Agent Audit Framework for High-Stakes Reasoning: Evaluation
+  and Interpretability in Clinical Mental Health Screening"
+url: https://doi.org/10.48550/arxiv.2606.21123
+drafted_at: 2026-10-29
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: For zero-shot PHQ-8 depression severity regression from DAIC-WOZ
+  transcripts with locally deployed 7-8B-class open models, decomposing the
+  task into perception, retrieval-grounding, chain-of-thought reasoning and a
+  final audit stage lowers mean absolute error only slightly over single-agent
+  prompting (5.35 to 5.02 for Qwen2.5) while the larger reported changes are
+  in self-assessed interpretability and hallucination rates.
+kind: observation
+backing_strength: single-paper
+scope_condition: 184 DAIC-WOZ sessions, 37 held-out test sessions, text
+  transcripts only, no fine-tuning, three LLaMA-3.1/Qwen2.5/DeepSeek-R1
+  backbones, temperature 0.2
+technique: ""
+proposed_technique: Perception-knowledge-reasoning-audit agent chain for clinical scoring
+technique_summary: Splits a clinical severity prediction into a
+  symptom-extraction agent, a RAG agent retrieving DSM-5-style criteria, a
+  chain-of-thought reasoning agent, and an audit agent that cross-checks the
+  rationale against the original transcript before the score is emitted.
+technique_kind: process
+technique_validated_by: MAE on 37 held-out DAIC-WOZ test sessions over three
+  seeds against single-agent and CoT prompting (5.42/5.18/5.02 for Qwen2.5),
+  with ablations removing each agent (+0.17 to +0.29 MAE); interpretability
+  and hallucination figures come from the authors' own rubric with no stated
+  annotator protocol.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A single-agent prompt with the same retrieved psychiatric criteria
+  in context reaching MAE at or below 5.02 on the same test split, or the
+  multi-agent gain vanishing on a larger held-out set.
+evidence_note: Measured on only 37 test sessions across three runs; the MAE
+  gap (0.33 on a 0-24 scale) is small relative to the task's intrinsic error
+  and the test set is tiny. Interpretability, hallucination and failure-type
+  tables are scored by the authors' own unspecified protocol with no
+  inter-rater agreement, so those larger numbers are weakly evidenced. The
+  design does not separate the audit stage from the added retrieval context.
+confidence: low
+problems:
+  - "figures not in the source: 0.33"

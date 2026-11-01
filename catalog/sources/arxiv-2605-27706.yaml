@@ -1,0 +1,67 @@
+id: arxiv-2605-27706
+ref: SRC-0588
+kind: paper
+title: Chain-based Adaptive Reconfiguration Over Lattices for Hallucination
+  Reduction
+authors:
+  - Joan Vendrell Gallart
+  - Solmaz Kia
+  - Russell W. Bent
+  - Michael Grosskopf
+year: 2026
+date: 2026-05-26
+arxiv_id: "2605.27706"
+url: https://arxiv.org/abs/2605.27706
+tags:
+  - ingested
+summary: We introduce CAROL (Chain-based Adaptive Reconfiguration Over
+  Lattices), a probabilistic framework for test-time hallucination reduction
+  in large language models. Rather than relying on token-level uncertainty,
+  CAROL defines a semantic uncertainty measure based on the consistency
+  between generated responses and a trusted context, inducing a
+  string-submodular objective over a lattice of textual sequences. This
+  formulation enables hallucination mitigation to be cast as a Markov chain
+  accept-reject process with provable convergence and near-optimality
+  guarantees, allowing the model to iteratively
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, high): CAROL proposes a test-time
+  semantic-consistency refinement procedure reported to significantly reduce
+  hallucinations versus likelihood-based and RAG baselines. No claim has been
+  drafted from it yet."
+ingested_at: 2026-10-31
+brief: >-
+  Treating hallucination as a sequence-level deviation from a trusted axiom
+  set, rather than as token-level uncertainty, gives an accept-reject
+  refinement loop that beats retrieval augmentation on accuracy and API cost
+  while raising latency. CAROL scores each generated l-gram by exemplar
+  clustering of the trusted context around it, turning semantic alignment into
+  a string-submodular mutual information objective over a vocabulary lattice,
+  with a path-coupling mixing-time bound below O(n log n) and a (1 - e^-1)
+  coverage guarantee for the greedy clustering.
+
+
+  Detection was tested on FEVER against token-level entropy and HalluciNot;
+  mitigation on TruthfulQA, HaluEval and HotPotQA with GPT-5-nano and
+  Llama-3.1-8B in a 3-agent URSA pipeline on 1 RTX 2080 Ti.
+
+
+  The semantic entropy metric reaches 0.5954 accuracy versus 0.4898 for token
+  entropy and 0.3348 for HalluciNot, at 3.835 % GPU usage versus 24.75 %.
+  CAROL raises HotPotQA accuracy from 0.865 to 0.978 (GPT-5-nano) and cuts
+  cost from 0.1107 to 0.0319, but latency rises from 1.518 s to 2.858 s. The
+  authors claim up to 40 % hallucination reduction relative to RAG.
+
+
+  Effects are measured, but the RAG baseline reports no hallucination rate at
+  all, so the headline reduction has no matched comparison; there is no
+  equal-token-budget control, and sample counts are not given. HalluciNot's
+  0.9411 specificity suggests the accuracy comparison hinges on class balance.
+  Everything depends on the quality of the supplied axiom set, which was not
+  varied.
+
+
+  Treat the detection metric as cheap and usable; treat the mitigation numbers
+  as suggestive rather than settled.
+brief_generated_at: 2026-10-31
+brief_model: claude-opus-5
+brief_source: full-text
