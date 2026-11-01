@@ -1,0 +1,45 @@
+arxiv_id: "2606.03698"
+title: "Multi$^2$: Hierarchical Multi-Agent Decision-Making with LLM-Based
+  Agents in Interactive Environments"
+url: https://doi.org/10.48550/arxiv.2606.03698
+drafted_at: 2026-10-30
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: For 3B-8B open instruct backbones acting in text-based interactive
+  environments (ScienceWorld, ALFWorld, TextCraft), splitting the agent into a
+  sub-goal planner trained by supervised fine-tuning and an action executor
+  trained by offline-then-online RL, each on its own LoRA adapter, scores
+  higher at pass@1 than a hierarchical baseline that separates roles by prompt
+  while sharing one adapter, and the gain is largest on the hardest, longest
+  tasks.
+kind: observation
+backing_strength: single-paper
+scope_condition: Text interactive benchmarks with hierarchical sub-goal
+  training data available; 1.5B-8B open backbones; single-rollout pass@1
+  scoring.
+technique: ""
+proposed_technique: "Separate adapters: SFT the planner, RL the executor"
+technique_summary: Train a high-level sub-goal generator by supervised
+  fine-tuning and a low-level atomic-action executor by offline-to-online RL,
+  on the same backbone but with distinct LoRA adapters activated per role.
+technique_kind: training
+technique_validated_by: Pass@1 on in-distribution and out-of-distribution
+  splits of ScienceWorld, ALFWorld and TextCraft across three backbones,
+  against ReAct, Reflexion, ADaPT, GRPO and Glider; ablations swapping which
+  system gets SFT versus RL, flat versus hierarchical, and shared versus
+  role-specific adapters.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched-compute comparison where a shared-adapter,
+  prompt-separated hierarchical agent trained with the same offline-to-online
+  RL reaches the same or higher pass@1 on these environments, or where
+  swapping SFT and RL between the two roles does not degrade performance.
+evidence_note: Measured on three environments and three backbones with pass@1
+  and ID/OOD splits, plus component ablations on ScienceWorld with Llama-3.1
+  8B. Baselines include both prompt-based and fine-tuned hierarchical methods,
+  but training data and compute are not matched across baselines, and the
+  ablations are run on one benchmark only.
+confidence: medium

@@ -1,0 +1,49 @@
+arxiv_id: "2606.08572"
+title: "OmniCap-IF: Benchmarking and Improving Instruction Following Abilities
+  for Omni-Video Captioning"
+url: https://doi.org/10.48550/arxiv.2606.08572
+drafted_at: 2026-10-30
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: procedure-following
+statement: For omni-modal (audio-visual) video captioning, holding content
+  constraints fixed while making the required output format more rigid — plain
+  text, then styled markdown/lists, then strict JSON or forced-keyword syntax
+  — lowers the share of content constraints the model satisfies, so stricter
+  output formatting costs cross-modal reasoning accuracy.
+kind: observation
+backing_strength: single-paper
+scope_condition: 14 omni-modal models on 30-90 second audio-visual clips; the
+  tradeoff experiment used 1,200 curated samples across five models, with
+  content constraints scored by an LLM judge answering preset factual
+  questions.
+technique: ""
+proposed_technique: Apply format constraints last, after content is composed
+technique_summary: Generate content against decomposed subsets of content
+  constraints first, aggregate the results, and only then reformat the
+  aggregate to satisfy the structural constraints.
+technique_kind: prompting
+technique_validated_by: On 500 sampled training triplets, checklist-based
+  evaluation preferred the decomposed-and-aggregated responses to single-pass
+  direct generation in 96.3% of cases; fine-tuning on the resulting 54K set
+  lifted Qwen2.5-Omni-7B format CSR from 62.97 to 90.39 and content CSR from
+  41.27 to 59.43.
+stance_on_existing: supports
+related_claim_id: scientific-tasks-where-domain-specific-constraint-general-presentation-constraint-letter
+stance_reason: Both find that format/presentation constraints and content
+  constraints interact rather than being satisfied independently, though this
+  paper reports format being easier and content degrading under format
+  pressure.
+falsifier: A controlled run holding content constraints fixed across loose,
+  styled and syntactic format levels in which content satisfaction rate stays
+  flat or rises as format rigidity increases, across several omni-modal
+  models.
+evidence_note: Measured on 1,200 curated samples across five models with
+  content constraints held constant and format level varied in three steps;
+  the paper reports a continuous drop in content CSR but gives the result as a
+  figure, not as numbers in the text. Content scoring depends on an LLM judge
+  (94.7% agreement with human annotation for GPT-5-mini), so judge bias is
+  reduced but not eliminated. Only a single trend direction is reported, with
+  no per-model spread stated.
+confidence: medium

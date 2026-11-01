@@ -1,0 +1,47 @@
+arxiv_id: "2606.19315"
+title: "Diffusion-Proof: Recipe for Formal Theorem Proving Beyond
+  Auto-Regressive Generation"
+url: https://doi.org/10.48550/arxiv.2606.19315
+drafted_at: 2026-10-29
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: formal-math
+statement: For 7B whole-proof Lean 4 provers fine-tuned on the same 300k SFT
+  corpus, a block-diffusion model generating multi-token blocks proves more
+  theorems at pass@32 than an autoregressive model of the same base lineage
+  (MiniF2F-Test 50.00% vs 43.85%, ProofNet-Test 7.53% vs 5.91%), even though
+  the two have nearly identical causal-mask validation loss on held-out
+  correct proofs.
+kind: observation
+backing_strength: single-paper
+scope_condition: 7B models, Lean 4 code-completion without long
+  chain-of-thought, same 300k SFT data, pass@32; AR baseline is
+  Qwen-2.5-Instruct-7B, which is the base of the diffusion model
+  Fast-dLLM-V2-7B.
+technique: ""
+proposed_technique: Write whole proofs with a block-diffusion LLM, then in-fill failed subgoals
+technique_summary: Fine-tunes a block-diffusion LLM to write whole Lean 4
+  proofs, then re-masks the failing subgoal's proof body and refills it with a
+  512-token diffusion block so the correction sees both prefix and suffix
+  context.
+technique_kind: architecture
+technique_validated_by: pass@32 on MiniF2F-Test (244) and ProofNet-Test (186)
+  against an AR model fine-tuned on the identical 300k dataset; ablation shows
+  the corrector alone adds 1.64% on MiniF2F (4 of 122 problems) and nothing on
+  ProofNet.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An AR and a block-diffusion prover matched on base lineage, data
+  and compute showing no pass@32 gap on MiniF2F/ProofNet, or the gap reversing
+  at larger training scale or under matched sampling budget.
+evidence_note: Measured on two standard benchmarks with one matched-data AR
+  baseline, single training run, 7B scale only, no seed variance or confidence
+  intervals reported; the ProofNet gap (1.61 points, 3 theorems) is within
+  plausible sampling noise, and the correction component contributes only 4
+  problems. The validation-loss comparison (Pearson 0.9846 between SFT models)
+  argues the gap is not explained by token-level fit, but the causal
+  attribution to long-range coherence is argued from case studies, not
+  isolated.
+confidence: low

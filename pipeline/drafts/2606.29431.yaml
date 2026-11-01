@@ -1,0 +1,45 @@
+arxiv_id: "2606.29431"
+title: "FADE: Mitigating Hallucinations by Reducing Language-Prior Dominance
+  in Large Vision-Language Models"
+url: https://doi.org/10.48550/arxiv.2606.29431
+drafted_at: 2026-10-28
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: In 7B-scale LVLMs (LLaVA-1.5, mPLUG-Owl2, InstructBLIP), attention
+  modules push toward the visually correct token about equally for correct and
+  hallucinated samples, while FFN modules at mid-to-late layers push toward
+  the wrong token only on hallucinated ones, so scaling down FFN output at
+  those layers during decoding lowers object-hallucination rates in a single
+  forward pass.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: 7B LVLMs with a decoder-only LLM backbone; measured on
+  POPE/CHAIR/MME; gains are small and on newer backbones (InternVL3-8B,
+  Qwen2.5/3-VL) no training-free method including this one beats greedy
+  decoding on open-ended captioning.
+technique: ""
+proposed_technique: Attenuate FFN output at critical mid-late layers during decoding
+technique_summary: Multiply the FFN output by (1-alpha) at a small set of
+  mid-to-late decoder layers at inference, leaving attention untouched, to
+  suppress language priors while keeping aggregated visual evidence.
+technique_kind: decoding
+technique_validated_by: POPE accuracy/F1, CHAIR_S/CHAIR_I with recall, MME
+  perception, MMHal-Bench GPT-4 score across three 7B LVLMs versus greedy,
+  PAI, VCD, DAMO, VISTA; latency and memory compared to the same baselines;
+  alpha and layer sweeps on POPE.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A differential logit-lens decomposition on the same models showing
+  attention contributions diverge between correct and hallucinated samples as
+  much as FFN, or FFN attenuation at those layers failing to reduce
+  hallucination rates at matched output length and recall.
+evidence_note: Mechanistic analysis is on 50 POPE-Adversarial samples from one
+  model (40 correct / 10 wrong), a thin base for the causal story; benchmark
+  gains are measured across three 7B models and six benchmarks but are often
+  under one point and sometimes below baselines (CHAIR on InternVL3, POPE
+  A-OKVQA adversarial). Hyperparameters are tuned per task, which the design
+  does not isolate from the effect.
+confidence: low

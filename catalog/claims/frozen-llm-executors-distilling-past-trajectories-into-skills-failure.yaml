@@ -1,0 +1,46 @@
+id: frozen-llm-executors-distilling-past-trajectories-into-skills-failure
+ref: CLM-0638
+capability: harness-self-improvement
+technique: train-retrieval-controller-without-experience-score-gaps
+statement: >-
+  For frozen LLM executors, distilling past trajectories into skills and
+  failure lessons in a linked experience store and training a small
+  retrieval controller on a reward that compares scores with and without the
+  retrieved experience raises task scores over memory baselines that rank
+  experiences by semantic similarity alone, with larger relative gains for
+  the weaker executor and for multi-step agentic environments than for
+  single-turn static tasks.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Executor weights frozen; 10 static benchmarks (QA, math, code) with Llama-3.2-3B/3.1-8B and two agentic environments (ALFWorld, AppWorld) with Qwen3-32B and Gemini-3.1-Flash-Lite; "
+sources:
+  - source: arxiv-2605-30712
+    stance: supports
+    note: >-
+      Validated by: Weighted average scores against No-Memory, six
+      retrieval-centric memory baselines and three LLM-centric retrieval
+      baselines: +12.1% and +4.5% relative over the strongest static
+      baseline (MemRL) for the small and large executors, +21.4% and +12.7%
+      over S3 on agentic tasks, with 12.7-21.6% fewer environment steps than
+      the lowest-step baseline; four ablations (similarity filtering, flat
+      pool, no diffusion, no utility ranking) all score below the full
+      method.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-31
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A matched-compute
+  comparison in which ranking experiences purely by semantic similarity,
+  given the same distilled skill/lesson units and the same retrieval budget,
+  matches the utility-trained copilot's scores across these benchmarks; or
+  the reported advantage disappearing for weaker executors or agentic
+  settings. Drafted stance toward
+  distilling-lessons-from-failures-as-well-as-successes-beats-raw-trajectory-memory:
+  supports -- ExpHarness likewise distills both successes and failures into
+  reusable units and beats memories retrieved by surface similarity, with
+  the executor unchanged.
+submitted_by: agent:claude-opus-5@Russ-Miller

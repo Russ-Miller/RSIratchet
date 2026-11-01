@@ -19,36 +19,41 @@ summary: Recent Large Language Models (LLMs) have shown strong performance on
   model performanc
 ingested_at: 2026-09-19
 brief: >-
-  Fine-tuned program repair models lose half their functional accuracy when a
-  single local variable is renamed, even though the code means exactly the
-  same thing. HEJ-Robust applies 8 semantics-preserving transformations to the
-  164 Java programs of HumanEval-Java-Bug (renaming of local variables,
-  methods, parameters; log insertion; try-catch insertion; boolean exchange;
-  loop exchange; condition reordering), yielding 1,450 transformed,
-  test-executable instances with manually re-annotated buggy-line locations.
+  Fine-tuned program-repair models lose half their fixes when you rename a
+  single local variable, even though the code's semantics are unchanged.
+  Identifier patterns, not reasoning about the bug, appear to carry much of
+  the measured repair ability.
 
 
-  Five APR models released by Jiang et al. (PLBART base/large, CodeT5
-  small/base/large) were evaluated at Pass@10 with 10 patches per bug. Local
-  variable renaming cut Pass@10 by 50.5% to 57.31% across all 5 models;
-  try-catch insertion cut it by 10.4% to 42.87%; parameter renaming and log
-  insertion moved results only a few percent, sometimes upward. CodeBLEU
-  stayed near-flat throughout, so it does not detect the degradation.
+  HEJ-Robust applies 8 semantics-preserving transformations to the 164 Java
+  programs of HumanEval-Java-Bug, yielding 1,450 transformed instances with
+  re-annotated buggy-line locations, executable tests, and human patches. The
+  5 evaluated models are PLBART base/large and CodeT5 small/base/large, all
+  fine-tuned and released by Jiang et al., run unmodified at 10 candidate
+  patches per bug and scored with Pass@10.
 
 
-  The effect is measured against each model's own score on the matching
-  untransformed subset, which isolates the transformation. The authors exclude
-  boolean exchange from claims because only 7 instances applied and 1
-  prediction shifts the rate by over 12 points.
+  Local variable renaming (100 bugs) cuts Pass@10 by 50.5% to 57.31%.
+  Try-catch insertion drops codet5_small 42.87% and codet5_large 30.68%;
+  condition reordering, loop exchange, method renaming and log insertion cause
+  smaller drops. CodeBLEU barely moves anywhere, so it does not track
+  functional degradation. Larger models often degrade more than smaller ones.
 
 
-  Boundaries: 2 fine-tuned model families only, no instruction-tuned or
-  agent-based LLMs, function-level isolated programs with no inter-file
-  dependencies, and 1 identifier renamed per program.
+  The effect is measured, with each transformation compared against the same
+  models on the untransformed instances, which isolates syntax as the cause.
+  Boolean exchange is correctly set aside at 7 instances. Weaknesses: 2 model
+  families only, 1 identifier renamed per program, varying instance counts per
+  transformation.
 
 
-  If you report APR gains using similarity metrics, switch to execution-based
-  Pass@k and test renamed variants.
-brief_generated_at: 2026-10-27
+  No instruction-tuned, agent-based, or zero-shot models were tested, and all
+  bugs are isolated functions rather than project-level code with inter-file
+  dependencies.
+
+
+  If you cite Pass@k on canonical APR benchmarks as evidence of repair skill,
+  treat those numbers as an upper bound.
+brief_generated_at: 2026-10-31
 brief_model: claude-opus-5
 brief_source: full-text
