@@ -1,4 +1,4 @@
-import { getCapabilities, getClaims, getSources, getTechniques, getAdages } from "@/lib/catalog";
+import { getCapabilities, getClaims, getSources, getTechniques, getHeuristics } from "@/lib/catalog";
 
 // llms.txt: a plain-text front door for agents. Says what the site is, where
 // the machine-readable index lives, and how the records relate.
@@ -23,7 +23,7 @@ Content: CC BY 4.0. Code: MIT. Source: https://github.com/Russ-Miller/RSIratchet
 - Claims (${getClaims().length}): scoped statements with sources for and against; status pending-review means visible but not vouched for. https://rsiratchet.com/claims
 - Techniques (${getTechniques().length}): fixes that address a capability; standing comes from claims about them. https://rsiratchet.com/techniques
 - Sources (${getSources().length}): papers, posts, vendor docs, observations. https://rsiratchet.com/sources
-- Adages (${getAdages().length}): rules of thumb with evidence for holds / narrows / breaks. https://rsiratchet.com/adages
+- Heuristics (${getHeuristics().length}): decision rules, borrowed or distilled from this catalog's own claims, with evidence for holds / narrows / breaks. https://rsiratchet.com/heuristics
 - Open questions: contested claims and untested techniques. https://rsiratchet.com/open-questions
 
 ## How to contribute

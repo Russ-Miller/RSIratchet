@@ -20,35 +20,35 @@ summary: Large language models (LLMs) have demonstrated strong performance on
   the function leve
 ingested_at: 2026-09-19
 brief: >-
-  Small quantized models running on a laptop identify roughly 2 in 5 real
-  Python bugs when told in advance that a bug exists, but mostly flag the
-  region rather than the fix.
+  Small open-weight models running offline on a laptop find real Python bugs
+  about 43-45% of the time when told in advance that a bug exists, but mostly
+  cannot say what the fix is.
 
 
-  LLaMA 3.2 (8B) and Mistral (7B), both 4-bit quantized via Ollama on an M1
-  Pro with 16GB, were given single buggy functions from BugsInPy with a
-  zero-shot prompt asking them to find and fix the bug. 349 of 501 bugs
-  (69.7%) across 17 projects were processed after extraction failures.
+  LLaMA 3.2 (8B) and Mistral (7B), both 4-bit quantized under Ollama on an M1
+  Pro with 16GB, were given zero-shot prompts containing a single extracted
+  function from 349 BugsInPy bugs across 17 projects (pandas, keras, scrapy,
+  matplotlib and others), out of 501 total bugs, 69.7% processed.
 
 
-  Mistral scored 44.4% accuracy, LLaMA 3.2 43.3%; McNemar's exact test on 349
-  paired predictions gives p = 0.68, so the gap is not significant. Nearly
-  half of outputs were "partial" (problem noted, no fix). Accuracy by bug type
-  ranged from 59.5%–60.8% on Null/None checks to 21.7%/16.7% on Other/Complex
-  and 0% on Type Conversion (4 cases). Per-project accuracy spanned 0% (tqdm)
-  to 100% (PySnooper, 2 bugs).
+  LLaMA 3.2 scored 43.3% (151 correct, 171 partial, 27 wrong), Mistral 44.4%
+  (155/161/33); McNemar's exact test over the paired predictions gives p =
+  0.68, so the gap is not distinguishable. Accuracy by project ranges from 0%
+  (tqdm, LLaMA) to 100% (PySnooper). By bug type: Null/None Check 59.5%/60.8%,
+  Return Value 51.3% both, Other/Complex 21.7%/16.7%, Type Conversion 0% both.
 
 
-  Correctness is scored by keyword matching against tokens introduced by the
-  fix, validated only against a manual sample of 50 responses. There is no
-  cloud-model comparison and no few-shot or full-file condition; the only
-  baseline is a stated random-keyword figure below 5%. Small per-project and
-  per-category counts make much of the variation unstable.
+  Correctness is scored by keyword overlap with the fix lines, validated only
+  against a manual check of 50 responses; the authors call it a lower bound.
+  The prompt asserts a bug is present, removing the false-positive problem
+  that dominates real use.
 
 
-  The prompt guarantees a bug exists, so these numbers do not speak to
-  screening clean code. Treat local models as region-narrowing assistants, not
-  fix generators.
-brief_generated_at: 2026-10-19
+  No cloud model was run as a comparison, and 2 models on 1 dataset in 1
+  language is the whole scope.
+
+
+  Treat these as suspicious-region highlighters, not fix generators.
+brief_generated_at: 2026-10-31
 brief_model: claude-opus-5
 brief_source: full-text

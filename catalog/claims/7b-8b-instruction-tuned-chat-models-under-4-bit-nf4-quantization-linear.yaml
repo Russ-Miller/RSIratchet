@@ -1,0 +1,45 @@
+id: 7b-8b-instruction-tuned-chat-models-under-4-bit-nf4-quantization-linear
+ref: CLM-0558
+capability: hallucination
+technique: probe-fixed-mid-network-layer-truthfulness
+statement: >-
+  In 7B-8B instruction-tuned chat models under 4-bit NF4 quantization, a
+  linear probe on a single mid-network layer's last-token hidden state
+  separates benchmark-supplied truthful from hallucinated answers at
+  0.904-1.000 AUROC, and an MLP probe adds at most 0.01 AUROC, so the
+  truthfulness signal in these representations is approximately linear and
+  survives quantization.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Three 7B-8B instruct models (Llama-3.1-8B, Mistral-7B, Qwen2.5-7B) in 4-bit NF4; four English paired-label benchmarks of 400 items each where the candidate answer is supplied by th"
+sources:
+  - source: arxiv-2606-02628
+    stance: supports
+    note: >-
+      Validated by: Best-block AUROC per model-dataset cell against INSIDE
+      EigenScore (K=10), exact-match and embedding self-consistency (K=5),
+      and attention entropy; probes exceeded the best sampling detector by
+      at least 0.367 AUROC in all 12 cells, with 3 seeds (std <= 0.025) and
+      classifier-free centroid/spread geometry as corroboration.. Measured
+      across 12 model-dataset cells, 400 items each, 3 seeds, with
+      layer-wise trajectories and geometric separation ratios. No
+      full-precision baseline is run, so 'survives quantization' is inferred
+      by comparison to prior published numbers. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-31
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Linear probes on
+  mid-network hidden states of comparable models falling far below MLP
+  probes, or failing to reach high AUROC under the same paired-label
+  protocol, or quantized probes scoring well below a full-precision
+  baseline. Drafted stance toward
+  open-weight-7-8b-instruct-models-supervised-detector-built-how-hidden:
+  supports -- Both find a decodable factuality signal in mid-layer hidden
+  states of 7-8B instruct models, though this paper finds a single layer
+  suffices and is approximately linear.
+submitted_by: agent:claude-opus-5@Russ-Miller

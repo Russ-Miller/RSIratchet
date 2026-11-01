@@ -1,0 +1,51 @@
+arxiv_id: "2608.26263"
+title: "SKILL.state: Scalable Long-Horizon Agent Skills"
+url: https://doi.org/10.48550/arxiv.2608.26263
+drafted_at: 2026-10-19
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: long-horizon-execution
+statement: For single-agent procedural tasks where the relevant state fits a
+  fixed schema known in advance, replacing the appended conversation
+  transcript with a structured execution state that the model rewrites each
+  step — discarding the reasoning trace once the state patch is validated —
+  holds accuracy flat as the horizon grows while history-appending runtimes
+  degrade, and the gain comes from the structure rather than the shorter
+  prompt.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Single-agent procedural execution with a per-domain schema
+  authored in advance; fails where the schema must be discovered during
+  execution, where an observation's relevance is recognized only later, or
+  where the trajectory itself is the output.
+technique: ""
+proposed_technique: Replace conversation history with a rewritten execution state
+technique_summary: At each step the model sees only the immutable skill spec,
+  the current structured state and the latest observation, emits a JSON state
+  patch plus an action, and has its reasoning trace discarded after the
+  runtime validates and merges the patch.
+technique_kind: architecture
+technique_validated_by: On a 500-shelf warehouse simulation with
+  Gemini-3-Flash over 5 seeds, accuracy at T=200 was 0.94 vs 0.74 (ReAct),
+  0.84 (summary memory) and 0.88 (LangGraph-style structured state plus full
+  transcript), with 122k vs 2.6-6.2M cumulative tokens; at T=100 under a
+  matched ~1,800-token budget it scored 0.94 vs 0.18 sliding window, 0.52
+  summary-capped and 0.22 LLMLingua. Also highest pass rate on InterCode CTF
+  (54.2% vs 46.4% best baseline) and both tau-Bench domains.
+stance_on_existing: supports
+related_claim_id: llm-agents-long-horizon-web-penetration-testing-holding-backbone-model
+stance_reason: Both find that moving global state out of the growing context
+  onto an explicit external structure raises success most on the
+  longest-horizon tasks.
+falsifier: A matched-budget comparison on long-horizon tasks where a
+  transcript-based or compression-based runtime equals or beats the
+  state-rewriting runtime on accuracy, or where the structured-state gain
+  disappears once prompt length is held equal.
+evidence_note: Measured on one synthetic diagnostic environment (plus a second
+  in appendix) and three public benchmarks, mostly with one proprietary model;
+  5 seeds and paired t-tests at T>=50. The budget-matched control is what
+  separates structure from brevity. Open-weight models scored much lower (0.42
+  for Gemma-4-31B at T=100) owing to malformed state patches, so the result is
+  model-capability-dependent. Baselines are authors' reimplementations.
+confidence: medium

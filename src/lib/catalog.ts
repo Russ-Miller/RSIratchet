@@ -100,14 +100,20 @@ export interface NearestMiss { source?: string; title?: string; url?: string; wh
  *  means nobody has looked -- a different state from a documented dead end,
  *  and the whole point of the distinction. */
 export interface EvidenceSearch { searched_on: string; note: string; nearest_miss?: NearestMiss[] }
-export type AdageVerdict = "holds" | "breaks" | "narrows";
-export interface AdageEvidence { claim: string; verdict: AdageVerdict; note: string }
-export interface Adage {
-  /** Stable id, e.g. CLM-0191. Never changes; cite this. */
+export type HeuristicVerdict = "holds" | "breaks" | "narrows";
+export interface HeuristicEvidence { claim: string; verdict: HeuristicVerdict; note: string }
+export type HeuristicProvenance = "borrowed" | "distilled";
+export interface Heuristic {
+  /** Stable id, e.g. ADG-0012. Never changes; cite this. The ADG prefix predates
+   *  the heuristic rename and stays, same as CLM/TEC/SRC are opaque prefixes
+   *  already decoupled from their display word. */
   ref: string;
   id: string; label: string; aliases?: string[]; statement: string; origin: string; transfer: string;
+  /** borrowed: imported from outside, its own origin and author. distilled:
+   *  synthesized bottom-up from this catalog's own claims, no eponym. */
+  provenance: HeuristicProvenance;
   sources?: string[];
-  evidence?: AdageEvidence[];
+  evidence?: HeuristicEvidence[];
   evidence_search?: { searched_on: string; note: string; nearest_miss?: string[] };
   status: "active" | "retired"; submitted_by: string; notes?: string;
 }
@@ -146,7 +152,7 @@ export interface Taxonomy { groups: TaxonomyEntry[]; contexts: TaxonomyEntry[] }
 export interface Catalog {
   taxonomy: Taxonomy;
   capabilities: Capability[]; claims: Claim[]; sources: Source[]; techniques: Technique[]; models: Model[];
-  adages: Adage[];
+  heuristics: Heuristic[];
 }
 
 const CATALOG_DIR = path.join(process.cwd(), "catalog");
@@ -171,7 +177,7 @@ export function loadCatalog(): Catalog {
     sources: readDir<Source>("sources"),
     techniques: readDir<Technique>("techniques"),
     models: readDir<Model>("models"),
-    adages: readDir<Adage>("adages"),
+    heuristics: readDir<Heuristic>("heuristics"),
   };
   return cache;
 }
@@ -236,9 +242,9 @@ export const getTechniques = () =>
   [...loadCatalog().techniques].sort((a, b) => a.label.localeCompare(b.label));
 export const getTechnique = (id: string) => loadCatalog().techniques.find((t) => t.id === id);
 /** Resolve a stable ref (CAP-0034, CLM-0191, …) to its record and section path. */
-export function byRef(ref: string): { kind: "capabilities" | "claims" | "techniques" | "sources" | "adages" | "models"; id: string } | undefined {
+export function byRef(ref: string): { kind: "capabilities" | "claims" | "techniques" | "sources" | "heuristics" | "models"; id: string } | undefined {
   const cat = loadCatalog();
-  const kinds = ["capabilities", "claims", "techniques", "sources", "adages", "models"] as const;
+  const kinds = ["capabilities", "claims", "techniques", "sources", "heuristics", "models"] as const;
   for (const kind of kinds) {
     const hit = (cat[kind] as { ref?: string; id: string }[]).find((r) => r.ref === ref);
     if (hit) return { kind, id: hit.id };
@@ -246,8 +252,8 @@ export function byRef(ref: string): { kind: "capabilities" | "claims" | "techniq
   return undefined;
 }
 
-export const getAdages = () => [...loadCatalog().adages].sort((a, b) => a.label.localeCompare(b.label));
-export const getAdage = (id: string) => loadCatalog().adages.find((a) => a.id === id);
+export const getHeuristics = () => [...loadCatalog().heuristics].sort((a, b) => a.label.localeCompare(b.label));
+export const getHeuristic = (id: string) => loadCatalog().heuristics.find((a) => a.id === id);
 export const getModel = (id: string) => loadCatalog().models.find((m) => m.id === id);
 export const getTagLabel = (id: string) => {
   const t = loadCatalog().taxonomy;
@@ -437,12 +443,12 @@ export function capabilityTags(c: Capability): string {
 }
 
 /**
- * Where an adage stands against models, from reviewed claims only, same rule
- * as technique standing: unreviewed evidence is shown on the page but moves
- * nothing. "untested" is the research brief; "breaks" and "mixed" are where
- * the catalog says something no essay on the adage says.
+ * Where a heuristic stands against models, from reviewed claims only, same
+ * rule as technique standing: unreviewed evidence is shown on the page but
+ * moves nothing. "untested" is the research brief; "breaks" and "mixed" are
+ * where the catalog says something no essay on the heuristic says.
  */
-export type AdageStanding = "untested" | "holds" | "narrowed" | "breaks" | "mixed";
+export type HeuristicStanding = "untested" | "holds" | "narrowed" | "breaks" | "mixed";
 export type RatchetRole = "gate" | "loop" | "persistence";
 export const RATCHET_ROLE_LABEL: Record<RatchetRole, string> = { gate: "gate", loop: "loop", persistence: "persistence" };
 export const RATCHET_ROLE_HINT: Record<RatchetRole, string> = {
@@ -452,10 +458,10 @@ export const RATCHET_ROLE_HINT: Record<RatchetRole, string> = {
 };
 export const ratchetTechniques = () => getTechniques().filter((t) => t.ratchet_role);
 
-export const ADAGE_STANDING_LABEL: Record<AdageStanding, string> = {
+export const HEURISTIC_STANDING_LABEL: Record<HeuristicStanding, string> = {
   untested: "Untested", holds: "Holds", narrowed: "Holds, narrowed", breaks: "Breaks", mixed: "Mixed",
 };
-export function adageStanding(a: Adage): AdageStanding {
+export function heuristicStanding(a: Heuristic): HeuristicStanding {
   const reviewed = new Set(reviewedClaims().map((c) => c.id));
   const v = (a.evidence ?? []).filter((e) => reviewed.has(e.claim)).map((e) => e.verdict);
   if (!v.length) return "untested";
@@ -465,15 +471,15 @@ export function adageStanding(a: Adage): AdageStanding {
   if (narrows) return "narrowed";
   return "holds";
 }
-export function adageTags(a: Adage): string {
-  const tags: string[] = [adageStanding(a)];
+export function heuristicTags(a: Heuristic): string {
+  const tags: string[] = [heuristicStanding(a), a.provenance];
   if ((a.evidence ?? []).some((e) => e.verdict === "breaks")) tags.push("any-break");
   return tags.join(" ");
 }
-/** Adages a claim serves as evidence for, with the verdict it carries. */
-export function adagesForClaim(claimId: string): { adage: Adage; verdict: AdageVerdict }[] {
-  const out: { adage: Adage; verdict: AdageVerdict }[] = [];
-  for (const a of loadCatalog().adages) for (const e of a.evidence ?? []) if (e.claim === claimId) out.push({ adage: a, verdict: e.verdict });
+/** Heuristics a claim serves as evidence for, with the verdict it carries. */
+export function heuristicsForClaim(claimId: string): { heuristic: Heuristic; verdict: HeuristicVerdict }[] {
+  const out: { heuristic: Heuristic; verdict: HeuristicVerdict }[] = [];
+  for (const a of loadCatalog().heuristics) for (const e of a.evidence ?? []) if (e.claim === claimId) out.push({ heuristic: a, verdict: e.verdict });
   return out;
 }
 

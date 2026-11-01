@@ -32,34 +32,41 @@ notes: "Filed as a source on code-generation from the classifier's judgement
   drafted from it yet."
 ingested_at: 2026-09-23
 brief: >-
-  Replacing a teacher's code answers with the model's own best sample, plus a
-  critique of the model's answer when the teacher's is better, beats plain
-  distillation on the same instruction set. Adaptive Critique Refinement (ACR)
-  rewrites an SFT dataset each round: sample 7 responses at temperature 0.7,
-  score them with Qwen2.5-32B-Instruct as judge plus a code executor,
-  pairwise-compare the best self-sample against the teacher response, and
-  either keep the self-sample as single-turn data or build 2-turn critique
-  data.
+  Replacing teacher-distilled code answers with a model's own samples plus a
+  teacher critique of those samples improves one-shot code generation more
+  than imitating the teacher directly, and the gains compound over iterations.
 
 
-  Starting from an 80K GPT-4o-built Python set, DSCoder-6.7B-Base and
-  Qwen2.5-Coder-7B-Base were fine-tuned from scratch for 3 iterations. Average
-  pass@1 on LiveCodeBench and BigCodeBench-hard rose 2.7 and 3.1 points; on
-  HumanEval(+)/MBPP(+)/BigCodeBench, 2.7 and 4.5 points. Most of the gain
-  lands at iter0 to iter1 (2.0 and 2.3). MultiPL-E, out of distribution,
-  improved 1.0 and 2.1.
+  Adaptive Critique Refinement (ACR) samples 7 responses at temperature 0.7,
+  scores them with Qwen2.5-32B-Instruct as judge plus a code executor, and
+  either replaces the original teacher answer with the winning self-generated
+  one or builds 2-turn data where the model's loser is critiqued against the
+  teacher answer. Base models were DSCoder-6.7B and Qwen2.5-Coder-7B,
+  retrained from scratch each round on an 80K GPT-4o-built Python set, over 3
+  iterations.
 
 
-  Evidence includes an ablation removing each critiquing module (both hurt,
-  the 2nd-turn critique more), and a leakage check: baselines using
-  Magic-Evol-Instruct, Evol-CodeAlpaca-v1 and Code-FeedBack show high TLI on
-  HumanEval(+)/MBPP(+), which is offered as why RefineCoder trails them there.
-  The judge itself was only validated by best-vs-worst sample gaps (76.2 vs
-  60.4 on HumanEval+) with 3.1-5.8 error rates.
+  Average pass@1 rose 2.7 and 3.1 points on LiveCodeBench plus
+  BigCodeBench-hard, and 2.7 and 4.5 points on
+  HumanEval(+)/MBPP(+)/BigCodeBench, with the largest single jump from Iter0
+  to Iter1 (2.0 and 2.3). MultiPL-E averages gained 1.0 and 2.1 despite
+  Python-only training.
 
 
-  Limits: 2 base models near 7B, Python-only training, 3 iterations, no math
-  or other reasoning domains, and no matched-compute distillation baseline.
-brief_generated_at: 2026-10-19
+  Ablating either the single-turn or the 2-turn critique module lowered
+  performance at every iteration, with the 2-turn critique mattering more; the
+  scoring system was checked separately (best-vs-worst of 10 samples, error
+  rates 3.1-5.8). Baselines are not matched on data or teacher, and 2 of them
+  train on datasets the authors show leak into HumanEval(+)/MBPP(+), which
+  complicates the comparison.
+
+
+  Math and other reasoning domains were not tested, and ACR still needs a
+  supplied instruction set.
+
+
+  If you fine-tune code models, self-sampling with critique is a cheaper
+  alternative to more distillation.
+brief_generated_at: 2026-10-31
 brief_model: claude-opus-5
 brief_source: full-text

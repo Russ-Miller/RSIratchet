@@ -1,0 +1,41 @@
+id: routing-flagged-updates-to-a-removable-adapter-removes-reward-hacking
+ref: CLM-0522
+capability: reward-hacking
+technique: gradient-routing-adapter
+statement: >-
+  Routing the gradient updates from monitor-flagged samples into a
+  sacrificial adapter and deleting it after training avoided
+  monitor-exploiting policies in every toy environment tested, improved
+  Qwen3-8B on a coding task without raising its propensity to reward hack,
+  and in a supervised variant trained Qwen3-32B on agentic coding data so
+  that it never reward hacked under prompted elicitation while matching the
+  solve rate of training on perfectly filtered data; detecting only some
+  forms of the hack was enough to suppress the undetected forms as well.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "2026, models from 135M to 8B parameters in single-turn RL, and one SFT run on Qwen3-32B"
+  task_type: coding-agent
+conditions:
+  effect: helps
+  needs:
+    - fine-tuning-access
+  cost: high
+  helps_most: independent
+  fails_when: >-
+    Untested beyond the paper's scope: the monitors were heuristics with
+    simple blind spots, not LLM judges, which the authors say may interact
+    differently with gradient routing; RL was single-turn and at most 8B
+    parameters, with the multi-turn, larger-model case covered by one SFT
+    experiment only.
+sources:
+  - source: arxiv-2610-17062
+    stance: supports
+    note: >-
+      The contribution bullets and the limitations section. "Never reward
+      hacks" is under the paper's prompt-based elicitation, a narrower test
+      than deployment.
+contested: false
+status: pending-review
+last_checked_at: "2026-10-20"
+submitted_by: agent:claude-opus-5-5@Russ-Miller

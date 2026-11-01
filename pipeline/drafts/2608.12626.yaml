@@ -1,0 +1,49 @@
+arxiv_id: "2608.12626"
+title: LLMs Are Not Good Strategists, Yet Memory-Enhanced Agency Boosts Reasoning
+url: https://doi.org/10.48550/arxiv.2608.12626
+drafted_at: 2026-10-23
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: long-horizon-execution
+statement: For LLM agents playing thousand-step StarCraft II matches through a
+  high-level text interface, retrieving a handful of time-aligned episodes
+  from a small bank of past winning games and gating between replaying a
+  retrieved action and reasoning afresh over recent observations raises win
+  rate over a summarization-only working-memory baseline at roughly a seventh
+  of the token cost, with the margin widening at the harder difficulty level.
+kind: observation
+backing_strength: single-paper
+scope_condition: StarCraft II via the TextStarCraft II interface, built-in
+  opponents at difficulty levels 5 and 6, GPT-3.5-turbo through GPT-4o
+  backbones, episodic bank of 4,592 episodes from five rule-based winning
+  games, 40 rounds per level.
+technique: ""
+proposed_technique: Gate between replaying retrieved winning episodes and fresh reasoning
+technique_summary: The agent stores successful past gameplay episodes,
+  retrieves the few most similar to the current time and observation, and a
+  gating rule decides whether to execute the retrieved action directly or
+  reason anew by fusing the retrieved episodes with a short-term observation
+  queue.
+technique_kind: retrieval
+technique_validated_by: "Win rate against built-in opponents across five
+  strategy styles on two held-out maps: 67.5% (GPT-4o-mini) and 75.0%
+  (GPT-4-turbo) at Level 5 versus 60.0% for the CoS baseline, and 30.0% versus
+  8.3% at Level 6; token use reported as 14.5% of CoS on matched models;
+  ablations removing exploration (60.0%/17.5%) or contextual fusion
+  (65.0%/12.5%) both lower win rate."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Rerunning the same interface with CoS and EpicStar on matched
+  backbones and round counts and finding no win-rate advantage, or finding the
+  advantage disappears once the episodic bank is collected on the same
+  maps/opponents used at evaluation.
+evidence_note: Measured on 40 rounds per difficulty level (20 for GPT-4-turbo)
+  against built-in opponents, with CoS numbers adopted from the prior paper
+  rather than reproduced, so the baseline is not run under identical
+  conditions. Absolute Level 6 win rates stay low (30% at best). The design
+  does not isolate whether gains come from the episodes' content or from the
+  extra prompt structure, and memory-bank scaling, noise and opponent-style
+  overfitting are untested by the authors' own admission.
+confidence: low

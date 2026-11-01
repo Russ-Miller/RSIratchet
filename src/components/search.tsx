@@ -10,7 +10,7 @@ const KIND: Record<SearchRecord["k"], { label: string; plural: string; section: 
   m: { label: "claim", plural: "claims", section: "/claims", href: (id) => `/claims/${id}` },
   t: { label: "technique", plural: "techniques", section: "/techniques", href: (id) => `/techniques/${id}` },
   s: { label: "source", plural: "sources", section: "/sources", href: (id) => `/sources/${id}` },
-  a: { label: "adage", plural: "adages", section: "/adages", href: (id) => `/adages/${id}` },
+  a: { label: "heuristic", plural: "heuristics", section: "/heuristics", href: (id) => `/heuristics/${id}` },
 };
 
 const EXAMPLES = ["hallucination", "self-correction", "prompt injection", "long context", "agent harness", "sycophancy"];

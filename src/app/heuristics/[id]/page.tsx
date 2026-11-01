@@ -1,0 +1,132 @@
+import Link from "next/link";
+import { RefTag } from "@/components/ref-tag";
+import { Breadcrumbs } from "@/components/breadcrumbs";
+import { notFound } from "next/navigation";
+import { HEURISTIC_STANDING_LABEL, heuristicStanding, getHeuristic, getHeuristics, getCapability, getClaim, getSource, type HeuristicVerdict } from "@/lib/catalog";
+import { ContestedBadge, ReviewBadge } from "@/components/badges";
+import { HeuristicChallengeLink } from "@/components/challenge";
+
+export function generateStaticParams() {
+  return getHeuristics().map((a) => ({ id: a.id }));
+}
+
+export async function generateMetadata({ params }: PageProps<"/heuristics/[id]">) {
+  const { id } = await params;
+  return { title: getHeuristic(id)?.label ?? "Heuristic" };
+}
+
+const VERDICT: Record<HeuristicVerdict, { heading: string; lede: string }> = {
+  breaks: { heading: "Where it breaks", lede: "Claims showing the heuristic failing for models." },
+  narrows: { heading: "Where it holds only under a condition", lede: "Claims that keep the heuristic but bound it." },
+  holds: { heading: "Where it holds", lede: "Claims showing the heuristic applying to models." },
+};
+
+export default async function HeuristicPage({ params }: PageProps<"/heuristics/[id]">) {
+  const { id } = await params;
+  const a = getHeuristic(id);
+  if (!a) notFound();
+  const standing = heuristicStanding(a);
+  const ev = a.evidence ?? [];
+  // Breaks first: they carry the information.
+  const order: HeuristicVerdict[] = ["breaks", "narrows", "holds"];
+
+  return (
+    <article className="space-y-6">
+      <Breadcrumbs trail={[
+        { href: "/", label: "Home" },
+        { href: "/heuristics", label: "Heuristics" },
+        { label: "This heuristic" },
+      ]} />
+      <header className="space-y-2">
+        <div className="text-sm text-neutral-500"><code className="font-mono">{a.id}</code> <RefTag refId={a.ref} title={a.label} />{a.status === "retired" ? " · retired" : ""}{a.provenance === "distilled" ? " · distilled here" : ""}</div>
+        <h1 className="text-3xl font-semibold tracking-tight">{a.label}</h1>
+        <p className="text-lg text-neutral-700 dark:text-neutral-300">&ldquo;{a.statement}&rdquo;</p>
+        {a.aliases?.length ? <p className="text-sm text-neutral-500">Also: {a.aliases.join(" · ")}</p> : null}
+      </header>
+
+      <section className="text-sm">
+        <h2 className="mb-1 font-semibold">Origin</h2>
+        <p className="text-neutral-700 dark:text-neutral-300">{a.origin}</p>
+        {a.sources?.length ? (
+          <p className="mt-1 text-xs text-neutral-500">
+            Stated in: {a.sources.map((id, i) => (
+              <span key={id}>{i > 0 && " · "}<Link href={`/sources/${id}`} className="hover:underline">{getSource(id)?.title ?? id}</Link></span>
+            ))}
+          </p>
+        ) : null}
+      </section>
+
+      <section className="text-sm">
+        <h2 className="mb-1 font-semibold">Why it should, or should not, apply to models</h2>
+        <p className="text-neutral-700 dark:text-neutral-300">{a.transfer}</p>
+      </section>
+
+      <section className="text-sm">
+        <h2 className="mb-1 font-semibold">Standing: {HEURISTIC_STANDING_LABEL[standing]}</h2>
+        <p className="text-xs text-neutral-500">
+          Standing counts claims a person has reviewed. Claims reviewed by AI alone are listed and marked, and do not move it.
+        </p>
+      </section>
+
+      {ev.length === 0 && (
+        <section className="rounded border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-200">
+          <p className="font-semibold">No evidence filed either way.</p>
+          {a.evidence_search ? (
+            <p className="mt-1">
+              Searched {a.evidence_search.searched_on}: {a.evidence_search.note}
+              {a.evidence_search.nearest_miss?.length ? <> Nearest misses: {a.evidence_search.nearest_miss.join("; ")}.</> : null}
+            </p>
+          ) : (
+            <p className="mt-1">Nobody has looked yet. A measured case in either direction would be the first.</p>
+          )}
+        </section>
+      )}
+
+      {order.map((v) => {
+        const items = ev.filter((e) => e.verdict === v);
+        if (!items.length) return null;
+        return (
+          <section key={v}>
+            <h2 className="font-semibold">{VERDICT[v].heading}</h2>
+            <p className="mb-2 text-xs text-neutral-500">{VERDICT[v].lede}</p>
+            <ul className="space-y-3 text-sm">
+              {items.map((e) => {
+                const c = getClaim(e.claim);
+                if (!c) return null;
+                const cap = getCapability(c.capability);
+                return (
+                  <li key={e.claim}>
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      <Link href={`/claims/${c.id}`} className="hover:underline">{c.statement}</Link>
+                    </div>
+                    <div className="mt-0.5 flex flex-wrap items-center gap-1.5 text-xs text-neutral-500">
+                      <span>{cap?.label ?? c.capability}</span>
+                      {c.contested && <ContestedBadge />}
+                      <ReviewBadge claim={c} />
+                    </div>
+                    <p className="mt-1 text-neutral-600 dark:text-neutral-400">{e.note}</p>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        );
+      })}
+
+      <div className="border-t border-neutral-200 pt-4 dark:border-neutral-800">
+        <HeuristicChallengeLink heuristic={a} />
+        <p className="mt-2 max-w-2xl text-xs text-neutral-500">
+          A break is worth more than a hold. If you have seen this fail for a model, with the setup
+          written down, that is the most useful thing you can add here.
+        </p>
+      </div>
+
+      {a.notes && (
+        <section className="text-sm">
+          <h2 className="mb-1 font-semibold">Notes</h2>
+          <p className="text-neutral-700 dark:text-neutral-300">{a.notes}</p>
+        </section>
+      )}
+    </article>
+  );
+}
