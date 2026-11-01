@@ -1,0 +1,57 @@
+arxiv_id: "2608.09344"
+title: "Beyond Global Editing: Per-Instance Disentangled Subspaces for
+  Training-Free Hallucination Mitigation in LVLMs"
+url: https://doi.org/10.48550/arxiv.2608.09344
+drafted_at: 2026-10-24
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: "In 7B-class LVLMs (LLaVA-1.5, MiniGPT-4, mPLUG-Owl2),
+  hallucination directions in activation space are not a single mode:
+  clustering hallucinated-minus-faithful hidden-state differences into several
+  low-rank subspaces and weighting them per test image lowers
+  object-hallucination rates slightly below a single global null-space
+  projection, with the margin small (CHAIR_I 5.30 to 4.92 on LLaVA-1.5) and
+  inconsistent on yes/no existence probing."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Training-free editing of mid-layer hidden states in three
+  open LVLMs, evaluated on CHAIR and offline POPE over MSCOCO val; gains over
+  the single-subspace baseline are under one point and on POPE only mPLUG-Owl2
+  improves on F-score.
+technique: ""
+proposed_technique: Weight several hallucination subspaces per image, not one global one
+technique_summary: Offline, cluster hallucinated-vs-faithful hidden-state
+  difference vectors and take an SVD basis per cluster; at test time probe the
+  model with the image and a 70%-masked copy, score each subspace by the
+  projection of the hidden-state difference, and subtract the softmax-weighted
+  mixture of those subspace projectors from the hidden states.
+technique_kind: decoding
+technique_validated_by: CHAIR_S/CHAIR_I/BLEU and offline-POPE
+  accuracy/precision/F on MSCOCO across three LVLMs, mean and standard
+  deviation over ten clustering runs, against greedy, beam, DoLa, OPERA, VCD,
+  Woodpecker, LURE, HALC and the single-subspace Nullu baseline; ablations on
+  cluster count, basis rank, and masking vs Gaussian noise vs blur.
+stance_on_existing: supports
+related_claim_id: training-free-inference-time-hallucination-interventions-7b-class-vision-language-models-increasing-intervention
+stance_reason: The basis-rank ablation shows CHAIR_S falling monotonically
+  from 16.2 to 11.3 as rank grows from 1 to 64 while BLEU falls from 15.6 to
+  12.7, which the authors read as loss of grounded content, matching the claim
+  that stronger intervention buys lower hallucination scores with reduced
+  informativeness.
+falsifier: A matched comparison in which a single global subspace with the
+  same total rank and the same masked-image probe matches the per-instance
+  mixture on CHAIR and POPE, or in which randomly partitioned clusters work as
+  well as the difference-vector clustering.
+evidence_note: Measured on two benchmarks, three LVLMs, ten runs with reported
+  standard deviations. The margin over the single-subspace baseline is within
+  or near one standard deviation on several cells, and on LLaVA-1.5 and
+  MiniGPT-4 POPE it does not beat the baseline on F-score or precision. No
+  ablation isolates the per-instance weighting from the added masked-image
+  forward pass or from random cluster assignment, so the claimed mechanism
+  (distinct hallucination modes) is argued more than isolated. Per-model
+  hyperparameters were tuned, and the paper's own numbers are internally
+  inconsistent (text says 7 clusters for LLaVA, implementation says 6; F-score
+  91.60 vs 91.68).
+confidence: low

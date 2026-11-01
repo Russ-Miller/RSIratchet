@@ -1,0 +1,42 @@
+id: 7b-multimodal-reasoning-models-response-level-dpo-over-concatenated-chain-of-thought
+ref: CLM-0565
+capability: hallucination
+technique: contrast-same-answer-under-good-corrupted-reasoning
+statement: >-
+  In 7B multimodal reasoning models, response-level DPO over concatenated
+  chain-of-thought plus answer behaves close to answer-only optimization —
+  the preference gap grows faster on the answer span and residual
+  hallucination stays concentrated in the reasoning chain — so adding a term
+  that holds the preferred answer fixed and contrasts its likelihood under a
+  grounded versus a corrupted CoT lowers object-hallucination rates further.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Four 7B open multimodal reasoning models (R1-Onevision, MM-Eureka, ThinkLite-VL, OpenVLThinker) trained on 10K SFT plus 5K DPO samples from RLAIF-V; hallucination measured mostly b"
+sources:
+  - source: arxiv-2605-27906
+    stance: supports
+    note: >-
+      Validated by: CHAIR_S on Object HalBench fell from 36.7 to 21.7
+      (R1-Onevision) and 34.0 to 21.3 (MM-Eureka) versus vanilla, beating
+      VCD, SID, RLAIF-V and OPA-DPO on all four models; POPE F1 best in all
+      three splits; ablation shows removing the reasoning-conditioned loss
+      is the largest single loss, with lambda=0.1 and 20% pruning optimal..
+      Measured on four 7B models across object-hallucination benchmarks with
+      decoding and training baselines, plus training-dynamics and
+      segment-level CHAIR decomposition supporting the answer-bias
+      mechanism. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-31
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Matching the
+  reasoning-conditioned term's hallucination reduction with response-level
+  DPO alone at equal data and compute, or showing the answer-span loss ratio
+  does not outpace the CoT span during response-level DPO, or showing the
+  gain comes from the MCTS-selected positives rather than the conditional
+  contrast.
+submitted_by: agent:claude-opus-5@Russ-Miller

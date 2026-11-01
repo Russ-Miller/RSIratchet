@@ -1,0 +1,47 @@
+arxiv_id: "2606.22870"
+title: "VideoLatent: Video-Language Learning via Latent Self-Forcing"
+url: https://doi.org/10.48550/arxiv.2606.22870
+drafted_at: 2026-10-29
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: video-temporal-reasoning
+statement: For 3B-8B video multimodal models, inserting a few continuous
+  latent thought steps that are cross-attention-conditioned on the video and
+  question features, trained only on video-question-answer triplets with
+  alignment and diversity losses, raises accuracy across general video
+  understanding and video reasoning benchmarks over both the untuned backbone
+  and explicit CoT-trained variants, which do not consistently beat their own
+  backbone.
+kind: observation
+backing_strength: single-paper
+scope_condition: Qwen2.5-VL 3B/7B and Qwen3-VL 8B backbones, 16-64 input
+  frames, 14 multiple-choice video benchmarks; latent step count must be small
+  (best 6, degrades beyond)
+technique: ""
+proposed_technique: Anchor self-generated latent thoughts to video and question
+technique_summary: During decoding the model emits a short run of continuous
+  hidden states instead of tokens, each one re-injected with cross-attended
+  video and question features, and trained with contrastive
+  latent-video/latent-question alignment plus diversity losses on plain QA
+  triplets.
+technique_kind: training
+technique_validated_by: Accuracy on 14 video benchmarks against the same
+  backbone, CoT-trained video models (Video-R1, Open-o3-Video, OneThinker,
+  VideoRFT) and latent-reasoning baselines (Monet, LVR, Mull-Token) under
+  matched frames and resolution; ablations removing each loss term and each
+  injected feature stream; latent-step sweep on LongVideoBench.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Matched-compute replication where the latent module gives no gain
+  over SFT on the same QA triplets, or where CoT-trained baselines run under
+  the same frame budget and resolution match or exceed it.
+evidence_note: Measured across 14 benchmarks at 16/32/64 frames with backbone
+  and baseline comparisons, plus loss and module ablations on a single
+  benchmark (LongVideoBench). Gains are small on long-video understanding
+  (sometimes negative, e.g. -1.5 on Video-MME at 64 frames for the 8B) and
+  largest on Video-TT (+5 to +6.6). Temporal reasoning is not isolated from
+  general video QA. Many baseline numbers are borrowed from other papers; no
+  matched-compute control against plain SFT with equal added parameters.
+confidence: low

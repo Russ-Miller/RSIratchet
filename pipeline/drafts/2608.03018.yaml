@@ -1,0 +1,47 @@
+arxiv_id: "2608.03018"
+title: "UrbanAgent: A Tool-Augmented Agent for Cross-System Urban Tasks"
+url: https://arxiv.org/abs/2608.03018
+drafted_at: 2026-10-24
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: tool-use
+statement: On cross-system urban tasks where several services must be chained
+  under matched tools and budgets, the task-success gap between orchestration
+  strategies is not explained by required-tool coverage, call ordering, or
+  asking for missing inputs — those are near-saturated across strategies — but
+  by whether the agent goes beyond the minimal toolchain to refine coarse
+  results and verify each candidate against the stated constraints before
+  answering.
+kind: observation
+backing_strength: single-paper
+scope_condition: 250-query UrbanEval benchmark over MCP urban services; main
+  controlled setting GPT-5-mini, replicated in rank only across
+  Gemini-2.5-flash, DeepSeek-V4-flash, Qwen3-235B-A22B; LLM judge (Qwen3-Max)
+  scores success, clarification and augmentation.
+technique: ""
+proposed_technique: Augment and constraint-check each candidate before committing an answer
+technique_summary: After an incremental reason-act-observe loop, the agent
+  refines coarse matches, retries failed or geo-inconsistent calls, and a
+  synthesis step checks the draft against task constraints and admits no fact
+  absent from logged observations.
+technique_kind: process
+technique_validated_by: "Task success rate on UrbanEval: 0.71 overall vs 0.61
+  for the best baselines (native tool-calling, AutoGen); 64.0% vs 53.5% on the
+  200 executable queries; incomplete-task failures 20 vs 31-45; valid
+  proactive augmentation rate 0.96 vs 0.84; cost about 3x tokens per success."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A controlled comparison on the same benchmark showing that
+  per-strategy differences in tool coverage, dependency ordering, or
+  clarification rate predict the success gap, or that adding candidate
+  verification and augmentation to a baseline leaves success unchanged.
+evidence_note: Measured on 250 queries, four backbones, four orchestration
+  baselines with matched tools, schemas, temperature and budget. The
+  components are not ablated individually (the paper says so), so attribution
+  to augmentation and completeness rests on process-metric decomposition and
+  failure-class counts rather than on removing one component at a time.
+  Success, clarification and augmentation are LLM-judged; services vary over
+  time.
+confidence: medium

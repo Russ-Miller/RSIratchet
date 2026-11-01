@@ -1,0 +1,51 @@
+arxiv_id: "2606.19988"
+title: "Repository-Level Solidity Code Generation with Large Language Models:
+  From Prompting to Fine-Tuning"
+url: https://doi.org/10.48550/arxiv.2606.19988
+drafted_at: 2026-10-29
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: code-generation
+statement: For repository-level code generation in a domain-specific language
+  thinly represented in pretraining (Solidity smart contracts, 7B code
+  models), prompting-based adaptation gives only partial gains — structured
+  chain-of-thought lifts the weakest model most and in-context learning
+  saturates past about two examples, with retrieval-augmented generation best
+  among non-parametric methods — while supervised fine-tuning on domain
+  spec-code pairs gives the largest improvement in semantic correctness.
+kind: observation
+backing_strength: single-paper
+scope_condition: 7B-class open code LLMs (Qwen2.5-Coder, DeepSeek-Coder,
+  CodeLlama) generating whole repository-level Solidity contracts from
+  natural-language specifications; scored by BLEU and a Solidity-adapted
+  embedding metric rather than execution, since dependency and
+  compiler-version reconstruction makes compilation unreliable.
+technique: ""
+proposed_technique: Fine-tune on domain spec-code pairs instead of prompting for DSLs
+technique_summary: LoRA supervised fine-tuning of a 7B code model on thousands
+  of repository-level natural-language-specification-to-Solidity-contract
+  pairs curated from OpenZeppelin, Synthetix and verified Etherscan contracts.
+technique_kind: training
+technique_validated_by: BLEU and SolidityScore (a Solidity-encoder embedding
+  F1 with domain-weighted tokens) on a 547-sample held-out split of a
+  5,470-contract benchmark, compared against zero-shot, structured CoT, ICL
+  and RAG with the same backbones; compilation success reported only as an
+  auxiliary signal.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched-budget comparison on repository-level Solidity generation
+  in which retrieval-augmented or in-context prompting equals or beats domain
+  supervised fine-tuning on semantic-correctness and compilation measures, or
+  in which ICL keeps improving well beyond two examples.
+evidence_note: Measured across three 7B code models and five adaptation
+  paradigms on a new 5,470-contract benchmark with an 8:1:1 split. Zero-shot
+  and SCoT numbers are in the text (e.g. CodeLlama BLEU 7.99 to 17.59); the
+  RAG/ICL/SFT numbers backing the ordering are asserted in the abstract and
+  answer boxes but the supporting tables are not in the excerpt. Evaluation is
+  similarity-to-reference, not functional correctness, so 'semantic
+  correctness' is a proxy; the SolidityScore metric is introduced by the same
+  authors, so metric and conclusion are not independent. Qualitative security
+  claims rest on manual inspection of only 5 sampled instances.
+confidence: medium

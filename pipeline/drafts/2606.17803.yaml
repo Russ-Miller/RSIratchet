@@ -1,0 +1,45 @@
+arxiv_id: "2606.17803"
+title: Continual Self-Improvement with Lightweight Experiential Latent Memories
+url: https://doi.org/10.48550/arxiv.2606.17803
+drafted_at: 2026-10-29
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: harness-self-improvement
+statement: For 7-8B math-reasoning models learning online from a test stream
+  with no labels, storing past reasoning traces as text (raw ICL,
+  self-reflected strategy banks, KV reuse) gives inconsistent gains that help
+  one dataset and hurt another, while distilling each solved problem's
+  test-time compute into a tiny per-sample soft-prompt memory (~0.001% of
+  parameters, 10 GRPO steps on majority-vote rewards) that is retrieved and
+  verifier-routed against the zero-shot answer raises greedy pass@1 on
+  MATH500, AMC23 and AIME24 and transfers across datasets.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Llama-3.1-8B-Instruct and Qwen2.5-Math-7B on three math
+  reasoning benchmarks; requires a process reward model as verifier and extra
+  test-time compute per sample; no ground-truth labels.
+technique: ""
+proposed_technique: Distill each solved problem into a retrievable soft-prompt memory
+technique_summary: After answering each streamed problem, train a 20-token
+  soft prompt for a few GRPO steps using majority-vote self-rewards, store it
+  keyed by input embedding, and on future inputs retrieve the nearest memory
+  and let a verifier pick between the memory-augmented and zero-shot answers.
+technique_kind: training
+technique_validated_by: Greedy pass@1 against zero-shot CoT, raw-trace ICL,
+  Reasoning Bank, LAG, and offline full-model GRPO/TTRL on MATH500, AMC23,
+  AIME24; e.g. Qwen AMC23 50 to 62.5, Llama MATH500 45 to 51.4, while ICL
+  baselines fell below zero-shot on several cells.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A controlled comparison where text-trace memory with an equally
+  strong verifier/router and matched extra compute matches or beats the
+  soft-prompt latent memories, or where the latent memories fail to beat
+  zero-shot on a new math stream.
+evidence_note: Measured on two backbones and three benchmarks with multiple
+  seeds on the small sets; MATH500 training-free baselines for Qwen were
+  incomplete, and the compute-matched zero-shot-plus-verifier control is
+  relegated to an appendix, so part of the gain may come from the extra
+  verified sample rather than the memory itself.
+confidence: medium

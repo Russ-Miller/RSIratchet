@@ -1,0 +1,43 @@
+arxiv_id: "2605.27685"
+title: "Decoupled Intelligence: A Multi-Agent LLM Framework for Controllable
+  Traffic Scenario Generation in SUMO"
+url: https://doi.org/10.48550/arxiv.2605.27685
+drafted_at: 2026-10-31
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: When a multi-step simulation-authoring pipeline (SUMO scenario
+  generation) is split into specialized Planner-Worker agents with file
+  artifacts passed through an external state store, the gain over a single
+  ReAct agent appears only on the tasks that require ordered structural
+  dependencies, while on simpler tasks the decomposed system matches or falls
+  below the single agent.
+kind: observation
+backing_strength: single-paper
+scope_condition: One 30-task SUMO benchmark (10 tasks per complexity level)
+  with a Qwen3-30B-Coder backbone; success defined as producing a runnable
+  .sumocfg.
+technique: ""
+proposed_technique: Pass simulation files through an orchestrator artifact store, not chat memory
+technique_summary: A Planner decomposes the objective into role-assigned
+  steps, and an orchestrator holds generated network/route/config files as
+  tracked artifacts that downstream agents reference, instead of relying on
+  conversational history for file paths.
+technique_kind: process
+technique_validated_by: "Success rate, average tokens, and wall-clock
+  Time-to-Insight on 30 SUMO tasks against a monolithic ReAct agent with the
+  same tools: L3 success 90.0% vs 70.0%, L1 90.0% vs 100.0%, L2 100.0% vs
+  100.0%, tokens roughly halved at every level, L3 TTI 8.3s vs 41.4s."
+stance_on_existing: supports
+related_claim_id: splitting-task-across-several-agents-helps-long-horizon-tasks-whose
+stance_reason: Decomposition helped only on the structurally dependent L3
+  tasks and slightly hurt on basic L1 tasks with the same tools and backbone.
+falsifier: A replication on a comparable task suite where the decoupled
+  framework beats the monolithic baseline on basic tasks as well, or where the
+  L3 advantage disappears under a matched token budget.
+evidence_note: "Measured, but thin: 10 tasks per level, one backbone, one
+  baseline, no repeated-run variance or confidence intervals, and the L1 gap
+  (90 vs 100) is a single task. Design does not separate the artifact store
+  from role decomposition, since both were changed together."
+confidence: low

@@ -29,39 +29,43 @@ notes: "Forwarded by Russ 2026-09-26: forwarded by Russ; contests the claim
   routine calls to small models"
 ingested_at: 2026-09-26
 brief: >-
-  Small open-weight models handle short, structured tool calls as reliably as
-  a frontier model, and the gap is concentrated almost entirely in
-  long-horizon planning under persistent constraints.
+  Small open-weight models handle short, structured tool-calling as well as a
+  frontier model, and the gap is confined to long-horizon planning under
+  persistent constraints, where neither side works.
 
 
-  AgentFloor is a deterministic 30-task benchmark, 5 tasks per tier, across 6
-  tiers (no-tool instruction following, single tool, 2-tool chain, branching,
-  multi-source synthesis, long-horizon planning) over 8 abstract tools and an
-  in-memory fixture database. 16 open-weight models from 0.27B to 32B served
-  via Ollama plus GPT-5, 16,542 scored runs, temperature 0, native
-  tool-calling only.
+  AgentFloor is a deterministic 30-task benchmark, 5 tasks per tier across 6
+  tiers (no-tool instruction following, single tool call, 2-tool chaining,
+  branching, multi-source synthesis, long-horizon planning), using 8 abstract
+  tools over an in-memory fixture database with no live APIs. 16 open-weight
+  models from 0.27B to 32B served via Ollama were compared to GPT-5 across
+  16,542 scored runs, native tool calling only, temperature 0.
 
 
-  Paired over 270 observations, gemma4:26b matched GPT-5 at a pre-registered
-  ±10 pp margin (Δ = +0.4 pp, 90% CI [−4.0, +5.1]), at about 15x cheaper on
-  Mac self-hosting, 3x on cloud GPU, 2.5x faster per passed task. It beat
-  GPT-5 on no-tool tasks (100% vs 80%, Δ = +20.0 pp) and was equivalent on
-  single-tool. On long-horizon planning GPT-5 led 10% vs 0%. No open-weight
-  model cleared even a 60% reliability bar on tiers C, D or E.
+  Paired across 30 tasks (n = 270), gemma4:26b and GPT-5 are equivalent at a
+  pre-registered ±10 pp margin (Δ = +0.4 pp, 90% CI [−4.0, +5.1]), at about
+  15x lower cost on Mac self-hosting, 3x on cloud GPU, and 2.5x faster per
+  passed task. Open-weight is strictly higher on the no-tool tier (100% vs
+  80%, Δ = +20.0 pp) and strictly lower on tier E (0% vs 10.2%, Δ = −10.2 pp).
 
 
-  Effects are measured with paired bootstrap TOST, pre-registered margins,
-  Holm correction, and a failure cascade; tier-level comparisons on B, C, D
-  are underpowered at n = 45 and stay descriptive. Only 1 frontier anchor, no
-  human baseline, abstract tools rather than live APIs.
+  The comparison is pre-registered, bootstrapped, and failure-mode-coded;
+  tier-E failures differ in kind (GPT-5: F5 39%, F5b 24%; gemma4:26b: F4 41%,
+  F1 36%). Per-tier B/C/D verdicts are descriptive only, underpowered at n =
+  45.
 
 
-  Ablations found no universal lever: explicit-submission gave +100 pp on 1
-  model on 1 task and was null elsewhere, and a plan/execute/submit prompt
-  regressed every model tested (ministral-3:8b −33 pp).
+  Ablations found no universal fix: a plan/execute/submit prompt regressed all
+  4 models tested (ministral-3:8b −33 pp), while an explicit-submission
+  instruction gave +100 pp on 1 model on 1 task.
 
 
-  Use this as a routing prior, not an open-environment capability estimate.
-brief_generated_at: 2026-10-21
+  Only 1 frontier model, 5 tasks per tier, no human baseline, abstract tools
+  rather than live APIs.
+
+
+  Treat routing as tier-dependent: sub-5B models for routine calls, frontier
+  only for sustained constraint tracking.
+brief_generated_at: 2026-10-31
 brief_model: claude-opus-5
 brief_source: full-text

@@ -1,0 +1,45 @@
+arxiv_id: "2605.27706"
+title: Chain-based Adaptive Reconfiguration Over Lattices for Hallucination
+  Reduction
+url: https://doi.org/10.48550/arxiv.2605.27706
+drafted_at: 2026-10-31
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: In black-box RAG pipelines, accepting or rejecting each generated
+  semantic unit by whether it raises a clustering-based mutual information
+  score against a trusted context set — rather than appending the whole
+  retrieved context to the prompt — raises answer accuracy and lowers API cost
+  on TruthfulQA, HaluEval and HotPotQA, at the price of higher latency from
+  the clustering step.
+kind: observation
+backing_strength: single-paper
+scope_condition: Tested with GPT-5-nano and Llama-3.1-8B inside a three-agent
+  framework on three QA benchmarks; depends on the trusted context set
+  actually covering the answer, since the method only reallocates generation
+  within that context's semantic support.
+technique: ""
+proposed_technique: Accept or reject each generated unit by semantic gain against trusted axioms
+technique_summary: Treat the LLM as a proposal distribution over sequence
+  units and accept each unit with probability tied to its marginal
+  mutual-information gain from clustering a trusted context set around it,
+  re-prompting after rejection.
+technique_kind: decoding
+technique_validated_by: Accuracy, hallucination rate, latency and dollar cost
+  versus a standard RAG pipeline on TruthfulQA, HaluEval and HotPotQA with two
+  backbones; accuracy rose (e.g. 0.356 to 0.556 on TruthfulQA with GPT-5-nano)
+  and cost fell, while latency rose.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched-compute comparison in which standard RAG with the same
+  retrieved context reaches equal or better accuracy at equal cost, or in
+  which the accept-reject gain disappears once the RAG baseline is given the
+  same number of generation rounds.
+evidence_note: Measured on three QA benchmarks with two models, but the RAG
+  baseline has no reported hallucination rate, 'accuracy' is an
+  epsilon-neighborhood match to ground truth whose threshold is not given, and
+  there is no ablation separating the accept-reject rule from the extra
+  generation rounds it buys.
+confidence: low

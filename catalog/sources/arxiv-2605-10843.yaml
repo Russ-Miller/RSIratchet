@@ -20,41 +20,34 @@ summary: Large language models increasingly mediate decisions that turn on
   Steerin
 ingested_at: 2026-09-19
 brief: >-
-  Disagreement among demographic personas, not their consensus, carries the
-  usable signal for steering a model toward a country's moral preferences at
-  inference time. DISCA instantiates each country as a panel of 4
-  World-Values-Survey-grounded persona agents, converts the spread of their
-  decision-token logit gaps into a bounded, loss-averse correction, and
-  shrinks that correction when 2 independent half-budget passes disagree. No
-  weight updates, no per-country reward models, only decision-token
-  log-probabilities.
+  Disagreement between demographic personas, not their consensus, is the
+  useful signal for steering a frozen model toward a country's moral
+  preferences at inference time. DISCA instantiates each country as 4
+  World-Values-Survey-grounded persona agents (3 age cohorts plus a country
+  aggregate), reads the decision-token logit gap from each, and converts
+  within-panel variance into a bounded, loss-averse correction that shrinks
+  toward zero when 2 independent half-budget passes disagree.
 
 
-  Evaluation is on MultiTP trolley scenarios against human AMCE vectors,
-  macro-averaged over 20 countries and 7 open-weight backbones from 5 model
-  families (2B-70B), with misalignment measured as l2 distance.
+  On MultiTP, the multilingual Moral Machine trolley benchmark, across 20
+  countries and 7 open-weight backbones (2B-70B, 5 families), macro
+  misalignment drops 10-24% on the 6 backbones at or above 3.8B, 3.4% on the
+  2B Gemma, and 2-7% on open-ended scenarios. Phi-4 (14B) with DISCA reaches
+  0.346 MIS, below vanilla Llama-3.3-70B. On the Phi-4 grid DISCA beats every
+  training-free baseline (PRISM prompt 0.384, MC-Dropout 0.403, activation
+  steering 0.430, vanilla 0.454) and 2 oracle baselines that fit a per-country
+  scalar on human AMCEs (0.506, 0.513).
 
 
-  Misalignment drops 10-24% on the 6 backbones at or above 3.8B, 3.4% on the
-  2B model, and 2-7% on open-ended scenarios. Phi-4 (14B) with DISCA reaches
-  0.346 MIS, below vanilla Llama-3.3-70B. On the Phi-4 grid it beats
-  PRISM-style prompting (0.384), MC-Dropout (0.403), activation steering
-  (0.430), a fixed logit offset (0.439) and vanilla (0.454), and also beats 2
-  oracle baselines that fit a per-country scalar on human AMCEs.
+  Evidence is measured, with a 4-way ablation on 3 backbones isolating the
+  persona panel as the dominant component (removing it hurts 16-18 of 20
+  countries), 3 seeds, and matched compute for the dual pass. Self-run, no
+  independent replication; latency is about 4x vanilla.
 
 
-  The effect is measured, with a 4-way ablation across 3 backbones: removing
-  personas costs the most (+.047 to +.061 MIS, hurting 16-18 of 20 countries),
-  the gate and PT-IS add less. 3 seeds, per-cell std median 0.008.
-
-
-  It does not transfer to BLEnD factual cultural QA, several 30B+ models
-  degrade, latency is roughly 4x vanilla, and alignment is to a survey
-  statistic rather than judged legitimacy.
-
-
-  If you serve many countries through an API that returns logprobs, persona
-  variance is a cheaper steering handle than fine-tuning.
-brief_generated_at: 2026-10-21
+  It does not transfer to factual cultural QA on BLEnD, needs logprob access,
+  and some 30B+ models degrade. Treat panel variance as a reliability
+  statistic, not noise to average out.
+brief_generated_at: 2026-10-31
 brief_model: claude-opus-5
 brief_source: full-text
