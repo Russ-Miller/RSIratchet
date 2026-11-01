@@ -1,0 +1,45 @@
+arxiv_id: "2606.28898"
+title: "PASTA: A Paraphrasing And Self-Training Approach for Knowledge
+  Updating in LLMs"
+url: https://doi.org/10.48550/arxiv.2606.28898
+drafted_at: 2026-10-28
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: knowledge-updating
+statement: When injecting post-cutoff news facts into an 8B instruct model by
+  continual training, the volume of generated question-answer pairs per
+  article drives accuracy more than the volume of paraphrases of the article
+  text, and a self-DPO stage contrasting the gold answer with the model's own
+  post-SFT answer is needed to suppress answers from the stale prior.
+kind: observation
+backing_strength: single-paper
+scope_condition: Llama-3.1-8B-Instruct, 128 Japanese entertainment news
+  articles published after the knowledge cutoff, LoRA rank 128, accuracy
+  judged by an LLM judge on generated QA.
+technique: ""
+proposed_technique: Paraphrase, generate QA, then self-DPO against own answers
+technique_summary: Expand each new article into many paraphrases for continual
+  pre-training and many QA pairs for SFT, then run DPO with the gold answer as
+  chosen and the model's own post-SFT answer as rejected, iterating with
+  freshly generated QA.
+technique_kind: training
+technique_validated_by: "LLM-as-judge accuracy on held-out freshly generated
+  QA about the same articles: 0.02 before training, 0.54-0.68 with the full
+  pipeline, 0.82 at 10x QA volume, versus 0.26 after seven iterations of SFT
+  only; ablations removing CPT, SFT or DPO each drop final accuracy to
+  0.15-0.46; Japanese MT-Bench++ falls from 4.42 to about 3.8-4.2."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Matching the paraphrase-volume increase against the QA-volume
+  increase at equal token budget yields equal or greater accuracy from
+  paraphrases, or removing the DPO stage while scaling SFT data reaches the
+  same final accuracy.
+evidence_note: Measured on one model, one language, one news genre, 128
+  articles, 100 sampled QA per evaluation point, so figures carry wide
+  sampling error. The paper states compute was not equalized across arms, so
+  the QA-vs-paraphrase comparison (1/10 reduction of each) and the SFT-only
+  baseline are not budget-matched. General-capability loss is reported as
+  minimal but the benchmark score does decline.
+confidence: low

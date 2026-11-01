@@ -1,0 +1,49 @@
+id: distilling-each-mistake-into-an-adapter-makes-repairs-last
+ref: CLM-0524
+capability: self-repair
+technique: lesson-adapter-library
+statement: >-
+  For open-weight Qwen agents on open-ended research (GAIA), tool-use
+  workflows (Claw-Eval) and terminal tasks (Terminal-Bench 2.1), turning
+  each failed task's reflected lesson into a small adapter kept in a
+  routable library raised overall success by 8.9 to 17.0 percentage points
+  (Terminal-Bench 2.1 from 51.7% to 65.5%) and made corrections last: the
+  share of Claw-Eval tasks solved in all three of three runs rose from
+  51.6% to 64.6%, where in-context reflection is forgotten between
+  sessions — though the gains include re-attempts of tasks the agent had
+  already failed and learned from, with failures signalled by the
+  benchmark's grader.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "2026, Qwen-family open-weight agents including Qwen3.6-27B"
+  task_type: autonomous-agent
+conditions:
+  effect: helps
+  needs:
+    - fine-tuning-access
+    - external-signal
+  cost: high
+  helps_most: independent
+  fails_when: >-
+    There is no reliable signal that a mistake happened: the method starts
+    from a detected failure, which the paper takes from a grader,
+    self-evaluation or a user. And the adapters are specific to one model,
+    so the library does not carry over when the model is replaced.
+sources:
+  - source: arxiv-2610-31846
+    stance: supports
+    note: >-
+      Headline gains from the abstract; the Terminal-Bench and pass-at-three
+      figures from the results; the detection and model-specificity limits
+      from the limitations paragraph. The repeated-encounter design measures
+      whether a repair sticks, not whether it generalises; the transfer
+      claim covers that.
+contested: false
+status: pending-review
+last_checked_at: "2026-10-29"
+notes: >-
+  The ratchet written into weights. Pairs with the ReasoningBank claim,
+  which writes lessons into retrievable text: same loop, different medium,
+  and the paper states the trade-off itself.
+submitted_by: agent:claude-opus-5-5@Russ-Miller

@@ -1,0 +1,52 @@
+arxiv_id: "2606.02282"
+title: "POIROT: Interrogating Agents for Failure Detection in Multi-Agent Systems"
+url: https://doi.org/10.48550/arxiv.2606.02282
+drafted_at: 2026-10-31
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: For fault attribution in LLM multi-agent systems, having the
+  system's own agents self-assess, interrogate each other, then vote privately
+  into a structural hazard space with distance-weighted aggregation beats a
+  single external LLM judge given the full log, with the advantage growing as
+  problem complexity rises and the aggregate beating the best individual agent
+  in every configuration — but the gain depends on backbone reasoning
+  capacity, being significant for strong reasoning models and absent for the
+  open-weight 20B/120B models tested.
+kind: observation
+backing_strength: single-paper
+scope_condition: Three benchmarks (Who&When, a 3-agent clinical exoskeleton
+  system, a 12-agent trading pipeline) with injected faults and known ground
+  truth; four backbones (Gemini 2.5 Pro, DeepSeek V3.2 Reasoner, GPT-OSS
+  20B/120B); attribution scored as a binary vector over structural components.
+technique: ""
+proposed_technique: Interrogate the system's own agents, then vote privately
+technique_summary: Each agent in the multi-agent system writes a
+  self-assessment, exchanges reports with peers through structured
+  interrogation, then privately emits a binary accusation vector over a hazard
+  space of agents, software, hardware and human actors, aggregated with
+  weights set by Hamming distance between an agent's own position and its
+  accusation.
+technique_kind: process
+technique_validated_by: "Fault-attribution accuracy against injected
+  ground-truth fault vectors versus a single external LLM evaluator given the
+  full context in one pass: gains of +6.7 to +25.6 pp overall on CORTEX, +9.8
+  to +41.7 pp on TradingAgents, and a logistic regression showing the
+  POIROT-by-complexity-quartile interaction OR = 1.60, p = 0.008 on Who&When;
+  the best single agent's vote fell 14.3-21.3 pp below the aggregate."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A replication where the interrogation-plus-private-vote protocol
+  does not beat a single-LLM evaluator at matched token budget, or where the
+  complexity interaction disappears once per-agent compute is equalised, would
+  show the gain comes from extra inference rather than from distributed
+  epistemic access.
+evidence_note: Measured on three benchmarks with injected faults and four
+  backbones; the baseline is a single all-at-once LLM evaluator, not a
+  compute-matched one, so the protocol's many extra LLM calls (up to 8 per
+  agent) are not controlled for. Multi-fault accuracy drops to at best 28.8%,
+  and one backbone (GPT-OSS 120B) loses 1.3 pp overall. Human-expert
+  validation of attribution labels is absent.
+confidence: low

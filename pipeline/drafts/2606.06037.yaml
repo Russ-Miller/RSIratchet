@@ -1,0 +1,56 @@
+arxiv_id: "2606.06037"
+title: "SpeechJBB: Probing Safety Alignment and Comprehension in Large Audio
+  Language Models under Code-Switched Speech"
+url: https://doi.org/10.48550/arxiv.2606.06037
+drafted_at: 2026-10-30
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: jailbreak-robustness
+statement: For large audio language models given spoken harmful requests,
+  jailbreak success rises in a consistent order — non-English/non-English
+  code-switched speech above English/non-English code-switched above
+  monolingual (mean JSR 20.9% vs 17.0% vs 16.4% over nine models and five
+  European languages) — and this is not attributable to multilingual
+  misunderstanding, since models with near-ceiling spoken ASR, SLU and
+  reasoning scores (e.g. Voxtral at 72.9% Speech-MGSM) are among the most
+  jailbroken (48.3% mean JSR).
+kind: observation
+backing_strength: single-paper
+scope_condition: Nine open and proprietary LALMs; clean TTS-synthesized speech
+  (XTTS) from translated JailbreakBench prompts in English, German, Spanish,
+  French, Italian plus ten code-switched pairs; GPT-4.1 as judge validated at
+  85% agreement with two native annotators; no accents, noise or spontaneous
+  speech.
+technique: ""
+proposed_technique: Insert phonologically plausible pseudo-words around safety-critical terms
+technique_summary: Spoken obfuscation that inserts meaningless but
+  phonologically plausible pseudo-words around harmful keywords at controlled
+  density (10/30/50% of utterance length) while leaving every original word in
+  place.
+technique_kind: prompting
+technique_validated_by: Mean jailbreak success rose monotonically from 18.4%
+  (no insertion) to 20.3/22.5/24.6% at 10/30/50% insertion across nine models
+  and 15 language settings (Friedman chi2(3)=12.07, p=0.007), while models
+  attributed harmful meaning to the inserted tokens in only 3.7-16.8% of
+  cases.
+stance_on_existing: supports
+related_claim_id: across-ten-languages-six-models-harmbench-advbench-unsafe-response-rates
+stance_reason: It extends the finding that safety measured in English does not
+  transfer to other languages into the spoken and code-switched setting, with
+  the worst case being pairs containing no English at all.
+falsifier: A replication across these or newer LALMs in which monolingual
+  non-English or code-switched speech yields jailbreak rates no higher than
+  English monolingual speech, or in which the elevated jailbreak rate
+  disappears once spoken comprehension (ASR/SLU/reasoning) is controlled for.
+evidence_note: "Measured: nine LALMs, 100 harmful plus 100 matched benign
+  JailbreakBench prompts, 5 languages and 10 code-switched pairs, judged by
+  GPT-4.1 with human validation (85% agreement, kappa 0.775;
+  Refusal/Jailbroken confusion only 0.6%). Wilcoxon on refusal drop under X-Y,
+  p=0.012, consistent in 8 of 9 models. The comprehension control rests on the
+  design that a Jailbroken verdict requires on-topic harmful content and on
+  benign compliance falling (70.9% to 55.7%) while JSR rises; it does not
+  isolate per-item comprehension. Speech is clean TTS, so acoustic confounds
+  of real speech are untested, and SALMoNN runs counter to the pseudo-word
+  trend."
+confidence: medium

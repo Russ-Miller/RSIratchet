@@ -1,0 +1,49 @@
+arxiv_id: "2607.21090"
+title: Training Large Language Models for Self-Explanation Faithfulness
+url: https://arxiv.org/abs/2607.21090
+drafted_at: 2026-10-25
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: explanation-faithfulness
+statement: "For 8B open models (Llama3.1-8B, Qwen3-8B), supervised fine-tuning
+  on whether an inserted prompt factor flipped the model's own decision
+  teaches detection without disclosure \ru2014 the fine-tuned model predicts
+  influence well yet still writes generic explanations omitting the factor
+  \ru2014 whereas GRPO with a per-sample reward for agreement between
+  influence and mention raises influence-mention correlation (Phi-CCT) from
+  near zero to as high as 0.664 in-distribution and 0.691 on held-out
+  datasets."
+kind: observation
+backing_strength: single-paper
+scope_condition: Two 8B models, single-word random insertions and appended
+  user-bias hints, balanced influential/non-influential splits over e-SNLI,
+  Social-IQA, ComVE, StrategyQA; influence labels computed once from the
+  frozen pre-training model, so some gain may come from decisions drifting
+  toward stale labels.
+technique: ""
+proposed_technique: Reward agreement between factor influence and factor mention
+technique_summary: Train with GRPO using a per-sample binary reward that fires
+  when the explanation mentions an inserted prompt factor if and only if that
+  factor flipped the model's decision between the factual and counterfactual
+  prompt.
+technique_kind: training
+technique_validated_by: Dataset-level Phi-CCT correlation between influence
+  and mention on train, test and OOD splits, against the base model and an SFT
+  influence-detection baseline, with bootstrap CIs; reward gaming checked via
+  completion length and prompt-overlap ratio, which showed shorter negatives
+  but no parroting increase.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An on-policy replication that resamples influence labels each step
+  showing no Phi-CCT gain over the base model, or SFT on influence detection
+  producing equal mention alignment without RL.
+evidence_note: Measured on two 8B models across four datasets (~2,000 examples
+  per split, balanced), with base and SFT baselines and bootstrap intervals.
+  The design does not separate improved disclosure from decision drift toward
+  the frozen influence labels, which the authors flag; no task-performance or
+  plausibility measurement.
+confidence: medium
+problems:
+  - "figures not in the source: 014"

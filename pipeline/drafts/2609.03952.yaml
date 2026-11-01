@@ -1,0 +1,51 @@
+arxiv_id: "2609.03952"
+title: "WorldReward: Reward Modeling for Camera-Conditioned World Models"
+url: https://doi.org/10.48550/arxiv.2609.03952
+drafted_at: 2026-10-22
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: critique
+statement: For VLM-based judging of camera-conditioned world-model videos,
+  splitting a long video pair into action-aligned chunks with structured
+  visual evidence (source image, frame-grid overview, per-action
+  first/last-frame panels) and voting chunk verdicts into video-level
+  preferences agrees with human preferences better than judging the whole
+  video pair at once, because short-lived action evidence is otherwise diluted
+  by the full context.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Pairwise preference judging of camera-trajectory-conditioned
+  generated videos sharing source image, caption and trajectory; 9B VLM
+  fine-tuned on distilled and audited chunk-level reasoning; 760-pair
+  human-annotated benchmark.
+technique: ""
+proposed_technique: Judge video pairs in action-aligned chunks, then vote
+technique_summary: Decompose a paired video comparison into chunks of four
+  consecutive actions, judge each chunk's action consistency and visual
+  quality from a six-image structured evidence panel, and aggregate chunk
+  verdicts by voting into video-level preferences.
+technique_kind: prompting
+technique_validated_by: "Three-way agreement (incl. Tie) with majority human
+  labels on 760 pairs: 77.63/81.32/73.03 on action/appearance/motion vs
+  GPT-5.5 at 74.21/79.87/69.47 and Gemini 3.1 Pro at 65.79/80.13/60.79;
+  ablations removing source image, frame grid or action panels each lower
+  average agreement by about 1.3-2.5 points; used as RL reward it beat
+  WorldCompass's split geometry+image rewards on action adherence and HPSv3 in
+  all six horizon settings."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A whole-video VLM judge given the same frames and the same
+  reasoning-augmented training data matches or beats the chunked-and-voted
+  judge on human agreement, or removing the chunk decomposition while keeping
+  the training data leaves agreement unchanged.
+evidence_note: Measured on one benchmark the authors built, with their own
+  trained 9B model against proprietary judges and quality/geometry baselines;
+  ablations isolate each evidence component but not chunking versus
+  whole-video judging under identical supervision — and the ablation that
+  matters most (annotation refinement, +7.25 average) suggests data quality,
+  not chunking, carries most of the margin over direct VLM judging.
+confidence: low
+problems:
+  - "figures not in the source: 7.25"

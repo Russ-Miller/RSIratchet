@@ -1,0 +1,45 @@
+arxiv_id: "2605.29561"
+title: "ParaTool: Shifting Tool Representations from Context to Parameters"
+url: https://doi.org/10.48550/arxiv.2605.29561
+drafted_at: 2026-10-31
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: tool-use
+statement: For 7-8B instruct backbones on tool-calling benchmarks, encoding
+  each tool as its own small LoRA module and loading a gating-weighted mixture
+  of the candidate modules at inference beats putting tool documents and
+  tuned-count usage examples in the context, while collapsing the same
+  knowledge into one shared LoRA for all tools scores far below both.
+kind: observation
+backing_strength: single-paper
+scope_condition: Llama3.1-8B-Instruct and Qwen2.5-7B-Instruct on Stable
+  ToolBench and BFCL-V2; every tool must be parameterized during training, so
+  unseen or newly added tools are not supported.
+technique: ""
+proposed_technique: Give each tool its own LoRA module and soft-mix them
+technique_summary: Pre-trains one low-rank FFN adapter per tool from its
+  documentation and traces, trains an MLP gating network to weight candidate
+  tools from the context, then jointly fine-tunes the adapters under those
+  weights so tool calls need no in-context docs or examples.
+technique_kind: training
+technique_validated_by: Average pass rate on Stable ToolBench (69.57 vs 65.67
+  for Context+Docs&Examples on Llama3.1-8B; 75.95 vs 66.96 on Qwen2.5-7B) and
+  AST accuracy on BFCL, against context-based, globally parameterized,
+  ToolLLaMA, and three retrieval-selector baselines; plus FLOPs accounting
+  showing ~92% less inference compute. Ablations compare soft weights against
+  top-1, averaging, and an oracle selector.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Running the same three-stage pipeline against a tuned in-context
+  docs-plus-examples baseline on these or comparable benchmarks and finding no
+  accuracy advantage, or finding that a single shared LoRA trained on the same
+  traces matches the per-tool modules.
+evidence_note: Measured on two open backbones and two benchmarks with seven
+  baselines and an ablation set, averaged over three runs. Does not isolate
+  how much of the gain comes from the per-tool parameterization versus the
+  extra GPT-4o-generated training traces, which the context baselines received
+  as examples but not as gradient updates. Pass/win rates on Stable ToolBench
+  are LLM-judged by GPT-4o.
+confidence: medium

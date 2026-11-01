@@ -1,0 +1,56 @@
+arxiv_id: "2607.25196"
+title: "Rethinking CD: A Reproducibility Study and Extension on the
+  Ineffectiveness of Contrastive Decoding at Mitigating Object Hallucinations
+  in MLLMs"
+url: https://doi.org/10.48550/arxiv.2607.25196
+drafted_at: 2026-10-25
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: "In 7-8B multimodal models (LLaVA-1.5, Qwen2.5-VL, InternVL3),
+  contrastive decoding's reported object-hallucination gains do not come from
+  its contrastive term: the expert-minus-amateur logit shift is uninformative
+  about whether the named object is present (output-layer AUC 0.523 for VCD;
+  hallucination status explains under 3% of its variance at every layer), the
+  gain in free-form captioning comes from the adaptive plausibility constraint
+  narrowing sampling toward greedy decoding, and plain greedy decoding beats
+  every contrastive method on CHAIR."
+kind: mechanism
+backing_strength: replicated
+scope_condition: Mechanistic layer-wise analysis on one model (LLaVA-v1.5-7B)
+  on POPE-COCO; generative results across three 7-8B models on CHAIR/MS COCO
+  and LLaVA-Bench; three CD variants (VCD, SID, ICD).
+technique: ""
+proposed_technique: Validate decoding interventions against greedy and noise controls
+technique_summary: Before accepting an inference-time hallucination fix,
+  compare it against plain greedy decoding, against the plausibility
+  constraint applied alone without any contrastive term, and against a
+  structureless Gaussian perturbation matched to the method's own logit-shift
+  statistics.
+technique_kind: decoding
+technique_validated_by: On CHAIR (MS COCO), greedy decoding scored best on all
+  three models (e.g. LLaVA-1.5-7B CHAIR-S 50.0 vs VCD 57.2, SID 51.8, sampling
+  57.4); APC-only sampling reached 53.4 without any contrast; Gaussian proxies
+  matched or beat VCD (51.4 vs 57.2 CHAIR-S) averaged over three seeds; on
+  POPE a single constant shift reached 86.86% accuracy versus 85.49% greedy,
+  above all three CD methods.
+stance_on_existing: contests
+related_claim_id: training-free-inference-time-hallucination-mitigation-7b-vision-language-models-reported-gains
+stance_reason: That claim attributes CD-era hallucination gains to reduced
+  informativeness; this paper locates the gains instead in the plausibility
+  constraint collapsing sampling toward greedy decoding and shows the
+  contrastive term carries no grounding signal at all.
+falsifier: Show on the same models and benchmarks that a contrastive method
+  beats matched greedy decoding, APC-only sampling, and a magnitude-matched
+  Gaussian perturbation, or that the expert-amateur shift separates present
+  from absent objects with AUC well above chance and substantial explained
+  variance.
+evidence_note: "Measured: logit-lens margins and linear presence probes per
+  layer on POPE-COCO (|H|=257-261, |T|=3453) for one model; selectivity AUC
+  with CIs; oracle-shift and constant-shift sensitivity controls; CHAIR and
+  LLaVA-Bench across three models with Gaussian proxies over three seeds.
+  Mechanistic part is single-model and discriminative-only, so the layer-wise
+  claim is not isolated for generation; LLaVA-Bench uses a single LLM judge
+  and CHAIR covers only 80 COCO categories."
+confidence: medium
