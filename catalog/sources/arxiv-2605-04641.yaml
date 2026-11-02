@@ -1,0 +1,66 @@
+id: arxiv-2605-04641
+ref: SRC-0890
+kind: paper
+title: "CAST: Mitigating Object Hallucination in Large Vision-Language Models
+  via Caption-Guided Visual Attention Steering"
+authors:
+  - Qiming Li
+  - Zekai Ye
+  - Xiaocheng Feng
+  - Zhong, Weihong
+  - Libo Qin
+  - Ruihan Chen
+year: 2026
+date: 2026-05-06
+arxiv_id: "2605.04641"
+url: https://arxiv.org/abs/2605.04641
+tags:
+  - ingested
+summary: Although Large Vision-Language Models (LVLMs) have demonstrated
+  remarkable performance on downstream tasks, they frequently produce contents
+  that deviate from visual information, leading to object hallucination. To
+  tackle this, recent works mostly depend on expensive manual annotations and
+  training cost, or decoding strategies which significantly increase inference
+  time. In this work, we observe that LVLMs' attention to visual information
+  is significantly enhanced when answering caption queries compared to
+  non-caption queries. Inspired by this phenomenon, we propose Caption-guided
+  Visual Atten
+notes: "Filed as a source on visual-grounding from the classifier's judgement
+  that the paper is about it (improves, high): The paper proposes a
+  training-free attention steering method that reduces object hallucination by
+  ~6% on average across models and benchmarks. No claim has been drafted from
+  it yet."
+ingested_at: 2026-11-02
+brief: >-
+  Vision-language models attend much more to image tokens when asked to
+  caption an image than when asked other visual questions, and copying that
+  attention state into non-caption queries reduces object hallucination
+  without training.
+
+
+  CAST probes the 32x32 attention heads of LLaVA-1.5-7b (and Qwen-VL-Chat,
+  LLaVA-NeXT) with an SVM per head on 1,000 task-diverse VQA samples from
+  LLaVA's pretraining data, selects the Top-K heads that best discriminate
+  caption from non-caption queries, and adds a precomputed mean output shift
+  vector to those heads at inference.
+
+
+  On POPE, accuracy rises +5.64% and F1 +5.50% on average, beating VCD, OPERA,
+  PAI and VTI. CHAIR hallucination metrics drop 6.43 points on average;
+  MMHal-Bench score +0.16 with VH rate -2.95%. Latency is near-unchanged (TTFT
+  102.2 ms vs 99.8 ms baseline) where VCD and PAI cost 1.6x/2.7x.
+
+
+  Evidence is measured, with 4 training-free baselines, ablations over
+  steering intensity and head count, and an on-the-fly variant that
+  underperforms the precomputed vectors at 80% more latency. Attribution rests
+  on the head-probing analysis: 65.92% of heads and 30 of 32 layers show
+  increased visual attention under caption queries.
+
+
+  Tested only on 3 open 7b-class LVLMs and object-hallucination benchmarks; no
+  closed models, no reasoning tasks. If you serve an open LVLM, this is a
+  cheap intervention worth trying before decoding-based fixes.
+brief_generated_at: 2026-11-02
+brief_model: claude-opus-5
+brief_source: full-text

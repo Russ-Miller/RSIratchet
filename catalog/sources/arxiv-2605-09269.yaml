@@ -1,0 +1,65 @@
+id: arxiv-2605-09269
+ref: SRC-0905
+kind: paper
+title: "DeltaRubric: Generative Multimodal Reward Modeling via Joint Planning
+  and Verification"
+authors:
+  - Rui Liu
+  - Dian Yu
+  - Zhenwen Liang
+  - Yucheng Shi
+  - Tong Zheng
+  - Runpeng Dai
+year: 2026
+date: 2026-05-10
+arxiv_id: "2605.09269"
+url: https://arxiv.org/abs/2605.09269
+tags:
+  - ingested
+summary: Aligning Multimodal Large Language Models (MLLMs) requires reliable
+  reward models, yet existing single-step evaluators can suffer from lazy
+  judging, exploiting language priors over fine-grained visual verification.
+  While rubric-based evaluation mitigates these biases in text-only settings,
+  extending it to multimodal tasks is bottlenecked by the complexity of visual
+  reasoning. The critical differences between responses often depend on
+  instance-specific visual details. Robust evaluation requires dynamically
+  synthesizing rubrics that isolate spatial and factual discrepancies. To
+  address this, we
+notes: "Filed as a source on critique from the classifier's judgement that the
+  paper is about it (improves, high): Self-generated instance-specific
+  verification checklists optimized via RL raise judge accuracy on multimodal
+  preference benchmarks by 18-22 points over the base model and no-rubric
+  baselines. No claim has been drafted from it yet."
+ingested_at: 2026-11-02
+brief: >-
+  Forcing a multimodal judge to first write an instance-specific disagreement
+  checklist, then execute it against the image, beats letting it produce a
+  rationale and verdict in one pass. The gain is largest exactly where
+  single-step judging is weakest: reasoning and visually dependent subsets.
+
+
+  DeltaRubric trains one shared MLLM to play both Disagreement Planner and
+  Checklist Verifier, optimized jointly with GRPO on 30K RLAIF-V preference
+  pairs (decontaminated), using Qwen3-VL 4B and 8B Instruct. The Planner is
+  rewarded only when its checklist flips a no-rubric baseline verdict from
+  wrong to right.
+
+
+  On VL-RewardBench overall accuracy rises +22.6 (4B) and +18.8 (8B) over
+  base, and +4.3 and +8.1 over an RL-finetuned no-rubric baseline. 8B
+  Reasoning goes 43.2 to 72.6. On Multimodal RewardBench the 8B goes 67.7 to
+  73.2, with VQA 71.4 to 84.9. Text-only RewardBench improves 81.4 to 84.6.
+
+
+  Evidence is measured against a matched RL-finetuned no-rubric baseline and a
+  static generic rubric (75.3 vs 80.1 overall at 8B), plus ablations on frozen
+  vs trained Planner, absolute vs relative Planner reward, image-free
+  planning, and DAPO. 2 model sizes, 1 family, 1 training corpus; no
+  inference-cost-matched comparison despite the 2-pass pipeline, and no
+  downstream RLHF test of the reward model.
+
+
+  If you build multimodal judges, the checklist step is worth its extra pass.
+brief_generated_at: 2026-11-02
+brief_model: claude-opus-5
+brief_source: full-text

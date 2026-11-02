@@ -1,0 +1,69 @@
+id: arxiv-2605-07288
+ref: SRC-0896
+kind: paper
+title: "Sword: Style-Robust World Models as Simulators via Dynamic Latent
+  Bootstrapping for VLA Policy Post-Training"
+authors:
+  - Jiaxuan Gao
+  - Yongjian Guo
+  - Zhong Guan
+  - Wen Huang
+  - Wanlun Ma
+  - Xi Xiao
+year: 2026
+date: 2026-05-08
+arxiv_id: "2605.07288"
+url: https://arxiv.org/abs/2605.07288
+tags:
+  - ingested
+summary: The integration of Vision-Language-Action (VLA) models with World
+  Models has gained increasing attention. One representative approach treats
+  learned World Models as generative simulators, enabling policy optimization
+  entirely within "imagination." However, when deployed as simulators for
+  specific environments such as the LIBERO benchmark, existing World Models
+  often suffer from poor generalization and long-horizon error accumulation.
+  During closed-loop rollouts, these models are highly sensitive to
+  initial-state perturbations; minor changes in color, illumination, and other
+  visual factors can
+notes: "Filed as a source on state-tracking from the classifier's judgement
+  that the paper is about it (improves, medium): The paper proposes style
+  augmentation and dynamic latent bootstrapping to reduce long-horizon error
+  accumulation and hallucination in closed-loop world-model rollouts,
+  reporting improved fidelity and robustness over the WoVR baseline. No claim
+  has been drafted from it yet."
+ingested_at: 2026-11-02
+brief: >-
+  World models used as RL simulators for robot policies fail mainly on two
+  axes you can fix with training-side changes: they overfit to the exact
+  textures of the training environment, and teacher forcing leaves them unable
+  to condition on their own predictions. Sword attacks both, with style
+  augmentation and with self-conditioned training in latent space.
+
+
+  The setup is LIBERO-Spatial, 1,600 rollout episodes of 512 frames each
+  (1,500 train, 100 eval), a Wan 2.2 TI2V DiT backbone taking 4 context frames
+  and predicting 8, and a comparison against WoVR on the same data and step
+  count. Style perturbations (lighting, saturation, arm color, background) are
+  generated with Cosmos-Transfer 2.5 under depth and segmentation guidance,
+  and held out of training for the LIBERO-Mixed eval set.
+
+
+  On raw LIBERO, FVD drops 61.26 to 35.61. On the mixed raw+OOD set the gap
+  widens: FID 119.62 to 32.59, FVD 198.84 to 111.19. GRPO post-training of
+  OpenVLA-OFT inside the simulator reaches 61.72% success at step 172 versus
+  53.12% for WoVR.
+
+
+  Evidence is measured, with a DLB ablation (FVD 110.71 to 86.84 on mixed) and
+  an 8-cell full-factorial cache study isolating the read schedule as the
+  dominant factor. But there is 1 baseline, 1 benchmark suite, 1 backbone, and
+  the OOD shifts are produced by the same pipeline used for augmentation, so
+  generalization is partly tested against its own generator. Policy gains are
+  reported at single steps, not averaged over seeds.
+
+
+  Treat this as evidence that simulator fidelity, not policy algorithm, is the
+  binding constraint in imagination-based VLA post-training.
+brief_generated_at: 2026-11-02
+brief_model: claude-opus-5
+brief_source: full-text

@@ -1,0 +1,68 @@
+id: arxiv-2605-05953
+ref: SRC-0893
+kind: paper
+title: "Hallucination as an Anomaly: Dynamic Intervention via Probabilistic
+  Circuits"
+authors:
+  - Erik Nielsen
+  - Elia Cunegatti
+  - Marcus Vukojevic
+  - Giovanni Iacca
+year: 2026
+date: 2026-05-07
+arxiv_id: "2605.05953"
+url: https://arxiv.org/abs/2605.05953
+tags:
+  - ingested
+summary: "One of the most critical challenges in Large Language Models is
+  their tendency to hallucinate, i.e., produce factually incorrect responses.
+  Existing approaches show promising results in terms of hallucination
+  correction, but still suffer from a main limitation: they apply corrections
+  indiscriminately to every token, corrupting also the originally correct
+  generations. To overcome this drawback, we propose PCNET, a Probabilistic
+  Circuit trained as a tractable density estimator over the LLM residual
+  stream. The method detects hallucinations as geometric anomalies on the
+  factual manifold, which is"
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, high): Proposes PCNET/PC-LDCD, which
+  detects hallucinated hidden states with high AUROC and selectively applies
+  contrastive decoding to improve truthfulness metrics without corrupting
+  correct generations. No claim has been drafted from it yet."
+ingested_at: 2026-11-02
+brief: >-
+  Applying hallucination-correction steering at every token destroys
+  generations that were already correct, so the useful move is to gate the
+  correction on a detector. Un-gated intervention corrupted between 26% and
+  90% of factual generations depending on the model.
+
+
+  PCNet is a Probabilistic Circuit trained as a density estimator over a 128-d
+  MLP projection of the final-layer residual stream, scoring each decoding
+  step by exact negative log-likelihood. It gates PC-LDCD, a top-k lookahead
+  in token space penalized by that density. Tested on 4 LLMs (Llama-3.2-1B,
+  Qwen3-4B, Mistral-7B-v0.3, Llama-3.1-8B) across CoQA, SQuAD v2.0, TriviaQA,
+  TruthfulQA.
+
+
+  Detection AUROC averages 0.88-0.92 per model, beating Token NLL, SEP,
+  HaloScope and AutoFact; TruthfulQA stays hardest (0.66-0.81). Gating cut
+  mean corruption to 53.7% and raised preservation to 79.3%. PC-LDCD led
+  True+Info on 3 of 4 models (Qwen3-4B 0.78, Mistral-7B 0.72) and led MC2/MC3
+  throughout, but not MC1, where DoLa reached 0.76.
+
+
+  Evidence is measured over 3 seeds against 5 correction baselines in both
+  gated and un-gated form, plus ablations on calibration size (50-1000) and
+  projection dimension (32-512), and a RAG comparison. Gating was applied to
+  every baseline, which isolates the gate from the decoder.
+
+
+  Limits: models up to 8B only, a labeled calibration set is required, and RAG
+  still wins TriviaQA EM (0.465 vs 0.290).
+
+
+  If you steer activations for truthfulness, measure what it costs you on the
+  already-correct cases.
+brief_generated_at: 2026-11-02
+brief_model: claude-opus-5
+brief_source: full-text

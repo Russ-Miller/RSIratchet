@@ -1,0 +1,68 @@
+id: arxiv-2604-25276
+ref: SRC-0883
+kind: paper
+title: "OmniVTG: A Large-Scale Dataset and Training Paradigm for Open-World
+  Video Temporal Grounding"
+authors:
+  - Minghang Zheng
+  - Zihao Yin
+  - Yi Yang
+  - Yuxin Peng
+  - Yang Liu
+year: 2026
+date: 2026-04-28
+arxiv_id: "2604.25276"
+url: https://arxiv.org/abs/2604.25276
+tags:
+  - ingested
+summary: Video Temporal Grounding (VTG), the task of localizing video segments
+  from text queries, struggles in open-world settings due to limited dataset
+  scale and semantic diversity, causing performance gaps between common and
+  rare concepts. To overcome these limitations, we introduce OmniVTG, a new
+  large-scale dataset for open-world VTG, coupled with a Self-Correction
+  Chain-of-Thought (CoT) training paradigm designed to enhance the grounding
+  capabilities of Multimodal Large Language Models (MLLMs). Our OmniVTG is
+  constructed via a novel Semantic Coverage Iterative Expansion pipeline,
+  which first iden
+notes: "Filed as a source on video-temporal-reasoning from the classifier's
+  judgement that the paper is about it (improves, high): The paper proposes a
+  new large-scale grounding dataset and a self-correction CoT training
+  paradigm that improves MLLM temporal localization, especially for rare
+  concepts. No claim has been drafted from it yet."
+ingested_at: 2026-11-02
+brief: >-
+  Multimodal LLMs produce more accurate timestamps when asked to dense-caption
+  a video than when asked to ground a query directly, and that gap can be
+  exploited twice: once to auto-annotate training data, once to make the model
+  critique its own predictions.
+
+
+  OmniVTG is a video temporal grounding dataset of 2124 hours, 46,176 videos
+  and 359,221 query-timestamp pairs, built by finding vocabulary gaps in
+  existing datasets, translating rare words into event-centric search keywords
+  with Gemini-2.5-Pro, then prompting the same model for timestamped dense
+  captions. Training is 3 stages on Qwen2.5-VL-7B: multi-task SFT (grounding,
+  captioning, query-clip matching, event status), self-correction CoT
+  finetuning that predicts a coarse span then narrows it, and GRPO.
+
+
+  On 10,871 manually corrected videos, 93.82% of automatic timestamps had IoU
+  above 0.5 with human correction. Zero-shot R1@0.5 reaches 63.2 on
+  Charades-STA, 39.8 on ActivityNet, 67.0 on QVHighlights, 37.6 on TVGBench,
+  above Time-R1 (60.8 / 39.0 / 66.2 / 29.4). On the OmniVTG rare-concept
+  subset the model holds 62.4 against 63.3 on the full set, while Time-R1
+  drops 33.9 to 29.4.
+
+
+  Ablations isolate the stages: SFT alone gives 25.6 on ActivityNet, +CoT
+  32.5, +CoT+RL 39.8, and SFT+RL without CoT falls to 37.2. Data scaling is
+  measured at 10%, 50%, 100% (41.9 / 58.7 / 62.3).
+
+
+  Only 1 model family and 1 size were tested, the test set shares its
+  distribution with training, and the annotation quality check uses the same
+  pipeline's own humans. Treat caption-then-ground as a usable trick for both
+  labels and inference.
+brief_generated_at: 2026-11-02
+brief_model: claude-opus-5
+brief_source: full-text

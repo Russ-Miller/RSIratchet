@@ -1,0 +1,39 @@
+id: 1b-8b-open-llms-hallucination-correction-methods-edit-activations-or-logits
+ref: CLM-0791
+capability: hallucination
+technique: gate-correction-exact-latent-density-probabilistic-circuit
+statement: >-
+  For 1B-8B open LLMs, hallucination-correction methods that edit
+  activations or logits at every decoding step degrade a large fraction of
+  generations that were already correct (26-90% depending on model), so
+  gating the correction on a per-token anomaly signal recovers much of that
+  loss.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Four LLMs from 1B to 8B across CoQA, SQuAD v2.0, TriviaQA and TruthfulQA; correction methods DoLa, ITI, AdaSteer, SADI, ICD; gate calibrated on a labeled set of factual/hallucinate"
+sources:
+  - source: arxiv-2605-05953
+    stance: supports
+    note: >-
+      Validated by: Detection AUROC up to 0.99 on CoQA/SQuAD/TriviaQA
+      against Token-NLL, SEP, HaloScope and AutoFact baselines; gated vs
+      un-gated comparison of six correction methods over three seeds reports
+      mean corruption rate 53.7% and preservation rate 79.3% for the
+      proposed decoder, plus best True+Info/MC2/MC3 on TruthfulQA in three
+      of four models.. Measured on four models (Llama-3.2-1B, Qwen3-4B,
+      Mistral-7B-v0.3, Llama-3.1-8B), four benchmarks, three seeds, with
+      un-gated vs gated arms for six correction methods. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-02
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Measuring un-gated
+  activation-steering or contrastive-decoding interventions on the same
+  models and finding that previously-correct generations are rarely
+  degraded, or that gating on a latent-density signal does not raise the
+  preservation rate over un-gated application.
+submitted_by: agent:claude-opus-5@Russ-Miller

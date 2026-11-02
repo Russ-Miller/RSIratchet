@@ -1,0 +1,69 @@
+id: arxiv-2605-08245
+ref: SRC-0900
+kind: paper
+title: "When Language Overwrites Vision: Over-Alignment and Geometric
+  Debiasing in Vision-Language Models"
+authors:
+  - Harshvardhan Saini
+  - Samyak Jha
+  - Yiming Tang
+  - Dianbo Liu
+year: 2026
+date: 2026-05-07
+arxiv_id: "2605.08245"
+url: https://arxiv.org/abs/2605.08245
+tags:
+  - ingested
+summary: "Vision-Language Models (VLMs) increasingly power high-stakes
+  applications, from medical imaging to autonomous systems, yet they routinely
+  hallucinate, confidently describing content not present in the input. We
+  investigate the root causes of these failure modes with a mechanistic
+  analysis focusing on the decoder-based VLMs. We trace these failure modes to
+  a geometric over-alignment: to bridge the modality gap required by attention
+  mechanisms, decoder-based VLMs over-align visual embeddings with the text
+  manifold, injecting a statistical linguistic bias that systematically
+  overshadows fine-grai"
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, medium): The paper diagnoses
+  linguistic over-alignment as a geometric cause of ungrounded description and
+  proposes training-free and fine-tuning projections that reduce hallucination
+  across multiple benchmarks. No claim has been drafted from it yet."
+ingested_at: 2026-11-02
+brief: >-
+  Object hallucination in decoder-based VLMs traces to a linear,
+  dataset-agnostic textual subspace sitting in the top principal components of
+  vision embeddings; projecting it out reduces hallucination without
+  retraining.
+
+
+  The text manifold is defined by PCA over pretraining captions. Layer-wise
+  alignment scores, a Ridge linear probe over 80 MS-COCO categories
+  (image-level mAP), and logit-lens decoding at layers 26-28 are used to show
+  that top PCs act as a modality anchor masking visual detail. Debiasing is
+  applied either post-hoc at inference or inside the fine-tuning forward pass
+  (projector only, LLM frozen, 2 epochs), on LLaVA-1.5-7B and Qwen2.5-VL-7B.
+
+
+  On Qwen2.5-VL-7B, AMBER CHAIR falls 5.14 to 4.23, HAL 28.62 to 25.07,
+  CHAIR_i 10.40 to 8.20, POPE rises 87.3 to 88.4, MME 2328.1 to 2355.2. On
+  LLaVA-1.5-7B, AMBER CHAIR 9.20 to 6.74 and HAL 38.80 to 29.87. Fine-tuning
+  raises VRSBench CLAIR from 72.30 to 74.70 (Qwen) and TextCaps from 60.30 to
+  63.80 (LLaVA) over standard SFT.
+
+
+  Measured, with 4 training-free decoding baselines (VCD, SID, VISTA, DMAS)
+  and an SFT comparison at matched data and budget, so the gain is
+  attributable to the projection. Ablations vary K and intervention layer, but
+  only on 1 benchmark and 1 model.
+
+
+  Boundaries: 2 7B models, decoder architectures only, linear-subspace
+  assumption likely weaker out of distribution, and Recall drops on LLaVA
+  (77.90 to 75.11).
+
+
+  If you are mitigating hallucination by decoding tricks, a single projection
+  may get you the same effect for free.
+brief_generated_at: 2026-11-02
+brief_model: claude-opus-5
+brief_source: full-text

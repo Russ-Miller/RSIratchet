@@ -1,0 +1,37 @@
+id: 7b-class-lvlms-where-decoding-time-attention-recalibration-amplifies-consensus-visual
+ref: CLM-0796
+capability: visual-grounding
+technique: amplify-consensus-attention-regions-only-never-subtract-background
+statement: >-
+  In 7B-class LVLMs where decoding-time attention recalibration amplifies
+  consensus visual regions, additionally subtracting logits from
+  non-consensus background regions makes object hallucination worse rather
+  than better, and worse as the penalty grows, while raising fluency-style
+  F1.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "LLaVA-1.5-7B open-ended captioning on CHAIR; intervention applied to pre-softmax attention logits in middle decoder layers (5-18)."
+sources:
+  - source: arxiv-2605-24957
+    stance: supports
+    note: >-
+      Validated by: CHAIR on 500 MSCOCO images with LLaVA-1.5-7B:
+      additive-only gave C_S 20.4 / C_I 4.9 / F1 76.4 vs greedy 53.0 / 15.6
+      / 76.7; add-subtract variants gave C_S 31.6, 36.2, 41.4 at beta 0.5,
+      1.0, 2.0 with F1 rising to 78.4.. Single ablation table on one model
+      and one benchmark, three penalty values, no seeds or confidence
+      intervals; the monotone worsening with beta supports the causal
+      reading but the mechanism (loss of contextual background grounding) is
+      argued rather than directly tested.
+contested: false
+status: pending-review
+last_checked_at: 2026-11-02
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An add-subtract variant
+  with a tuned background penalty that lowers CHAIR C_S/C_I below the
+  additive-only version at matched F1, on the same backbone and layers.
+submitted_by: agent:claude-opus-5@Russ-Miller

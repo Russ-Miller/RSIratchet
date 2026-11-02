@@ -1,0 +1,39 @@
+id: 7b-class-lvlms-llava-1-5-7b-qwen-vl-chat-llava-next-visual-attention-higher
+ref: CLM-0795
+capability: visual-grounding
+technique: steer-caption-sensitive-attention-heads-caption-minus-noncaption
+statement: >-
+  In 7B-class LVLMs (LLaVA-1.5-7B, Qwen-VL-Chat, LLaVA-NeXT), visual
+  attention is higher under caption queries than under non-caption queries
+  at mid-layer attention heads, and adding the precomputed
+  caption-minus-non-caption attention-output shift vector to the top-K of
+  those heads at inference lowers object-hallucination rates on POPE, CHAIR
+  and MMHal-Bench without the inference-latency cost of contrastive
+  decoding.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "7B-class open LVLMs; shift vectors and head selection estimated offline from 1,000 VQA samples with paired caption/non-caption queries; requires tuning steering strength and head c"
+sources:
+  - source: arxiv-2605-04641
+    stance: supports
+    note: >-
+      Validated by: POPE accuracy/F1 (+5.64/+5.50 avg over regular), CHAIR
+      CS/CI down 6.43 points avg, MMHal-Bench score +0.16 and hallucination
+      rate -2.95%, against VCD, OPERA, PAI and VTI baselines; MME held or
+      improved; latency TTFT/TPOT ~1.0x base vs 1.6-2.7x for VCD/PAI.
+      Measured on five benchmarks and three to five LVLMs with four
+      training-free baselines. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-02
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Measuring visual
+  attention under matched caption and non-caption queries and finding no
+  mid-layer enhancement, or applying the shift vectors to the probed heads
+  and finding hallucination rates unchanged relative to random-head steering
+  of equal magnitude.
+submitted_by: agent:claude-opus-5@Russ-Miller

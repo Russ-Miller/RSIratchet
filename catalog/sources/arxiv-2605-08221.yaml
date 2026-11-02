@@ -1,0 +1,71 @@
+id: arxiv-2605-08221
+ref: SRC-0899
+kind: paper
+title: "NoisyCoconut: Counterfactual Consensus via Latent Space Reasoning"
+authors:
+  - Michael Jerge
+  - David Evans
+year: 2026
+date: 2026-05-06
+arxiv_id: "2605.08221"
+url: https://arxiv.org/abs/2605.08221
+tags:
+  - ingested
+summary: This paper presents NoisyCoconut, a novel inference-time method that
+  enhances large language model (LLM) reliability by manipulating internal
+  representations. Unlike fine-tuning methods that require extensive
+  retraining, NoisyCoconut operates directly on model representations during
+  inference and requires no retraining. Rather than training models to reason
+  in latent space, we inject controlled noise into latent trajectories to
+  generate diverse reasoning paths. Agreement among these paths provides a
+  confidence signal, enabling models to abstain when uncertain. We demonstrate
+  that this approach
+notes: "Filed as a source on abstention-and-self-knowledge from the
+  classifier's judgement that the paper is about it (improves, high): The
+  paper proposes an inference-time confidence signal from agreement among
+  noise-perturbed latent reasoning paths that lets models abstain when
+  uncertain, cutting error rates from 40-70% to under 15%. No claim has been
+  drafted from it yet."
+ingested_at: 2026-11-02
+brief: >-
+  Perturbing a model's hidden states with Gaussian noise, running 5 latent
+  reasoning paths, and abstaining unless they agree turns disagreement into a
+  usable confidence signal without any retraining. This extends
+  self-consistency from token sampling into latent space, where the
+  Coconut-style feedback of the last hidden state into the next input
+  embedding is applied at inference only.
+
+
+  NoisyCoconut was tested on 5 open-weight models (Qwen2.5-7B-Instruct,
+  Llama-3.1-8B-Instruct, Mixtral-8B-Instruct-v0.1, gpt-oss-20B,
+  DeepSeek-R1-Distill-Qwen-7B) across GSM8K, GSM-Symbolic and MMLU, with 1000
+  randomly sampled questions per benchmark, K = 5 paths, noise scale sigma_0 =
+  0.2, and up to 8 latent steps.
+
+
+  Error rates fall from 40% to 70% at low agreement to below 15% at unanimity.
+  On GSM8K no baseline exceeds 75% accuracy, yet all models exceed 90% at 5/5
+  agreement, with coverage from 31.1% (Llama-3.1-8B) to 53.2% (gpt-oss-20B);
+  DeepSeek-Qwen goes from 62.0% to 95.2% at 31.4% coverage.
+
+
+  The effect is measured against greedy single-path decoding, with a noise
+  sweep over sigma in [0, 50] showing sigmoid degradation (R^2 >= 0.94). There
+  is no matched-compute baseline against 5x token-space self-consistency, so
+  the latent route is not shown to beat ordinary resampling at equal cost.
+  Hyperparameter ablations are component-wise only and do not capture
+  interactions.
+
+
+  Scope is limited to exact-match answers on math and multiple-choice;
+  open-ended generation is untested, weights must be accessible, and
+  gpt-oss-20B needed first-layer rather than final-layer feedback to avoid
+  degenerate output.
+
+
+  If you need abstention on open-weight models, treat latent-path agreement as
+  a candidate signal, but benchmark it against plain self-consistency
+  yourself.
+brief_generated_at: 2026-11-02
+brief_model: claude-opus-5
+brief_source: full-text

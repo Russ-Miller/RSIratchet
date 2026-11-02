@@ -1,0 +1,63 @@
+id: arxiv-2605-03465
+ref: SRC-0888
+kind: paper
+title: "FINER-SQL: Boosting Small Language Models for Text-to-SQL"
+authors:
+  - Thanh Dat Hoang
+  - Thanh Trung Huynh
+  - Matthias Weidlich
+  - Thành Tâm Nguyên
+  - Tong Chen
+  - Hongzhi Yin
+year: 2026
+date: 2026-05-05
+arxiv_id: "2605.03465"
+url: https://arxiv.org/abs/2605.03465
+tags:
+  - ingested
+summary: Large language models have driven major advances in Text-to-SQL
+  generation. However, they suffer from high computational cost, long latency,
+  and data privacy concerns, which make them impractical for many real-world
+  applications. A natural alternative is to use small language models (SLMs),
+  which enable efficient and private on-premise deployment. Yet, SLMs often
+  struggle with weak reasoning and poor instruction following. Conventional
+  reinforcement learning methods based on sparse binary rewards (0/1) provide
+  little learning signal when the generated SQLs are incorrect, leading to
+  unstable or
+notes: "Filed as a source on formal-query-synthesis from the classifier's
+  judgement that the paper is about it (improves, high): The paper proposes
+  fine-grained reward RL that raises SQL execution accuracy of small models to
+  levels matching much larger LLMs. No claim has been drafted from it yet."
+ingested_at: 2026-11-02
+brief: >-
+  Dense, partial-credit rewards make reinforcement learning work on small
+  text-to-SQL models where binary execution rewards give almost no signal.
+  FINER-SQL distills reasoning traces from 4 teachers (DeepSeek-R1,
+  GPT-oss-120B, Qwen-2.5-72B-Instruct, GPT-4o) into Qwen2.5-Coder
+  0.5B/1.5B/3B, then trains with GRPO using 4 rewards: format, execution, a
+  memory reward scoring cosine similarity of the reasoning trace against
+  verified traces retrieved from other databases, and an atomic reward scoring
+  Jaccard overlap of AST-level SQL operations.
+
+
+  On BIRD Dev the 3B model reaches 67.73% execution accuracy, above
+  Reasoning-SQL 14B (65.31) and CodeS-15B (58.47), near SQL-R1 14B (67.10) and
+  Alpha-SQL 14B (68.70), at 5.57s per sample and ~10GB VRAM versus 1802.00s
+  for Alpha-SQL 14B. Spider Dev reaches 85.0. GRPO lifted the 0.5B model from
+  42.9% to 49.3% EX over 2000 steps and the 3B from 63.4% to 67.7%.
+
+
+  Effects are measured, with per-reward ablations, memory retrieval-scope
+  sweeps (Cross-DB beats Same-only), shaping-function sweeps, and
+  candidate/temperature curves. Baselines are taken from published numbers,
+  not rerun; comparisons are not matched on inference compute, and all
+  policies come from 1 model family.
+
+
+  Results rely on 30-candidate sampling plus majority voting and GRAST-SQL
+  schema filtering, so single-shot accuracy is lower; methods trained on large
+  synthetic corpora were excluded. If you deploy text-to-SQL on-premise, a 3B
+  model may now suffice.
+brief_generated_at: 2026-11-02
+brief_model: claude-opus-5
+brief_source: full-text

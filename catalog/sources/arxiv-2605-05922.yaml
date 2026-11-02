@@ -1,0 +1,73 @@
+id: arxiv-2605-05922
+ref: SRC-0892
+kind: paper
+title: "Think, then Score: Decoupled Reasoning and Scoring for Video Reward
+  Modeling"
+authors:
+  - Yuan Wang
+  - Ouxiang Li
+  - Yulong Xu
+  - Liao, Borui
+  - Jiajun Liang
+  - Jinghan Li
+year: 2026
+date: 2026-05-07
+arxiv_id: "2605.05922"
+url: https://arxiv.org/abs/2605.05922
+tags:
+  - ingested
+summary: "Recent advances in generative video models are increasingly driven
+  by post-training and test-time scaling, both of which critically depend on
+  the quality of video reward models (RMs). An ideal reward model should
+  predict accurate rewards that align with human preferences across diverse
+  scenarios. However, existing paradigms face a fundamental dilemma:
+  \\textit{Discriminative RMs} regress rewards directly on features extracted
+  by multimodal large language models (MLLMs) without explicit reasoning,
+  making them prone to shortcut learning and heavily reliant on massive data
+  scaling for generalizati"
+notes: "Filed as a source on critique from the classifier's judgement that the
+  paper is about it (improves, medium): The paper proposes a decoupled
+  think-then-score reward model architecture claimed to better align predicted
+  rewards with human preferences than discriminative or coupled generative
+  RMs. No claim has been drafted from it yet."
+ingested_at: 2026-11-02
+brief: >-
+  Separating chain-of-thought reasoning from reward prediction gives a video
+  reward model both the generalization of CoT and the training stability of
+  regression, which neither generative nor discriminative reward models get
+  alone.
+
+
+  DeScore builds on Qwen3-VL-8B: the MLLM writes a CoT, then a learnable query
+  token plus a regression head emits a scalar reward. Training runs in 2
+  stages, a discriminative cold start with Bradley-Terry loss and random CoT
+  masking, then RL where GRPO shapes the reasoning while an auxiliary BT loss
+  calibrates the score. Data is 22K human-annotated preference pairs over T2V
+  outputs; evaluation covers an in-domain set of 1,469 pairs, GenAI (1.9k
+  pairs) and VideoGen-Bench (26.5k pairs).
+
+
+  DeScore reaches 0.734 in-domain, 0.765 Acc w/o Tie on GenAI and 0.768 on
+  VideoGen-Bench, against 0.722 for the best discriminative baseline
+  VideoAlign and 0.582 for the best generative baseline, with 76% less
+  training data.
+
+
+  Ablations isolate each piece: adding CoT lifts in-domain from 0.588 to
+  0.615, random masking to 0.656; dropping the auxiliary BT loss in RL drops
+  VideoGen-Bench from 0.768 to 0.648. Attention visualization supports the
+  masking rationale.
+
+
+  All results come from 1 backbone and 1 preference dataset built by the
+  authors, with no independent replication and no inference-cost comparison
+  against the single-chain generative baselines, which the extra forward pass
+  adds to. Post-training gains on VBench are reported for Wan-2.1-1.3B under 2
+  frameworks.
+
+
+  If you train reward models, the lesson is that the score should not be a
+  token in the reasoning chain.
+brief_generated_at: 2026-11-02
+brief_model: claude-opus-5
+brief_source: full-text

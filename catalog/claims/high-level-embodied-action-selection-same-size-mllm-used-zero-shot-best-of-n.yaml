@@ -1,0 +1,39 @@
+id: high-level-embodied-action-selection-same-size-mllm-used-zero-shot-best-of-n
+ref: CLM-0811
+capability: error-detection
+technique: train-action-verifier-llm-synthesized-failure-trajectories
+statement: >-
+  For high-level embodied action selection, a same-size MLLM used zero-shot
+  as a Best-of-N verifier does not improve over the policy's own greedy
+  chain-of-thought action, while the same model fine-tuned on
+  LLM-synthesized failure trajectories does, so the gain comes from verifier
+  training rather than from sampling several candidates.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "3-4B Qwen2.5-VL and Gemma-3 backbones acting as both policy and verifier on high-level semantic actions in LangR (Habitat 2.0) and EB-ALFRED; oracle low-level controller; N=16 cand"
+sources:
+  - source: arxiv-2605-12620
+    stance: supports
+    note: >-
+      Validated by: Success rate against a greedy CoT policy and a zero-shot
+      verifier of the same backbone: LangR 65 -> 64 (zero-shot) -> 71
+      (fine-tuned); EB-ALFRED 44 -> 44 -> 49 on Qwen-3B and 48 -> 48 -> 51
+      on Gemma-4B; also raised zero-shot Qwen2.5-VL-72B from 30 to 38;
+      scaling curve compared against self-consistency at matched LLM calls..
+      Measured on two benchmarks (8 LangR tasks x100 instructions, 6
+      EB-ALFRED tasks x50), three runs for verifier conditions, two backbone
+      families, plus transfer to three larger zero-shot policies.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-02
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A zero-shot MLLM
+  verifier matching the fine-tuned verifier's Best-of-N gain on the same
+  benchmarks, or the fine-tuned verifier's gain disappearing once candidate
+  sampling is matched against self-consistency at equal compute.
+submitted_by: agent:claude-opus-5@Russ-Miller
