@@ -33,11 +33,16 @@ export function ListSearch({ noun = "rows", placeholder }: { noun?: string; plac
   // DOM order as the server sent it, captured once, so the meaning pass can undo its reordering.
   const originalRef = useRef<HTMLElement[] | null>(null);
   const originalNextRef = useRef<(Node | null)[]>([]);
+  const originalParentRef = useRef<(HTMLElement | null)[]>([]);
 
   useEffect(() => {
     // Rows live outside this component, so reach for them from the document.
     const rows = Array.from(document.querySelectorAll<HTMLElement>("[data-search]"));
-    if (!originalRef.current) { originalRef.current = rows.slice(); originalNextRef.current = rows.map((r) => r.nextSibling); }
+    if (!originalRef.current) {
+      originalRef.current = rows.slice();
+      originalNextRef.current = rows.map((r) => r.nextSibling);
+      originalParentRef.current = rows.map((r) => r.parentElement);
+    }
     const original = originalRef.current;
     const originalNext = originalNextRef.current;
     const terms = q.toLowerCase().split(/\s+/).filter(Boolean);
@@ -47,10 +52,10 @@ export function ListSearch({ noun = "rows", placeholder }: { noun?: string; plac
     // the search (group headers) keep their place too. Re-appending every
     // row would push them all below the last header.
     const restoreOrder = () => {
-      const parent = original[0]?.parentElement;
-      if (!parent) return;
       if (original.every((r, i) => r.nextSibling === originalNext[i])) return;
-      for (let i = original.length - 1; i >= 0; i--) parent.insertBefore(original[i], originalNext[i]);
+      for (let i = original.length - 1; i >= 0; i--) {
+        originalParentRef.current[i]?.insertBefore(original[i], originalNext[i]);
+      }
     };
 
     // The filter pills carry static totals. While a query is active, rewrite
@@ -111,11 +116,11 @@ export function ListSearch({ noun = "rows", placeholder }: { noun?: string; plac
           const scored = rows.map((r) => ({ r, s: (() => { const v = unpackAttr(r.dataset.vec); return v ? cosine(qv, v) : -1; })() }));
           const cut = matchCutoff(scored.map((x) => x.s));
           const extra = scored.filter((x) => x.s >= cut && !kw.has(x.r)).sort((a, b) => b.s - a.s);
-          const parent = rows[0]?.parentElement;
           for (const x of extra) {
             x.r.setAttribute("data-hit", "1");
             x.r.setAttribute("data-via", "meaning");
-            parent?.appendChild(x.r);
+            // Keep papers and commentary in their respective lists.
+            x.r.parentElement?.appendChild(x.r);
           }
           setStatus("");
           report();

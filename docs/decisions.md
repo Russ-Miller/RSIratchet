@@ -1815,6 +1815,23 @@ verdict from ReasoningBank itself. Nothing was retired. The naming
 complaint was real; the content underneath it was not thin.
 
 
+## 2026-10-20 — Content rights and freshness
+
+Russ authorized replacing blanket CC BY licensing for future original content
+to support paid early access to freshly learned heuristics, techniques, claims,
+and applicability/failure annotations. LICENSE-CONTENT governs new protectable
+material; MIT still governs code, and existing CC BY grants remain valid. The
+pre-transition snapshot is cf33e049c16ba272b7be9b5fb00b223ce85cf6fd.
+Third-party papers and underlying facts or methods are not owned by the service.
+Public content permits internal application, including commercial harnesses;
+redistribution of protected new content requires permission. No release window
+is set. Contribution rights require explicit intake agreement; credits require
+separate program terms. This is a licensing change only: paid access, export
+filtering, contributor assent, and credit accounting are not implemented. Fresh
+restricted content must not be committed to a public repository or included in
+public pages, index.json, feeds, downloads, or MCP responses.
+
+
 ## 2026-10-20 — Heuristics lead the service
 
 Russ confirmed the project has moved beyond personal research: agents should
@@ -1887,3 +1904,19 @@ agreement, or paper counts. Existing implementation and spending permissions do
 not change; the source of truth and roadmap describe planned gates.
 
 
+## 2026-11-01 — Reconcile the heuristic-first UI
+
+Russ requested an archaeology-led reconciliation of changes made across Codex
+and Claude sessions. The October 20 report and subsequent discovery decisions
+support one direction: useful heuristics first, inspectable evidence beneath,
+failures retained, and candidate promotion distinct from accepting research.
+The surviving local files already implement much of that direction; attribution
+of every uncommitted edit to a particular assistant is not established.
+
+Research now has an overview and shared section navigation. The learning-loop
+collection retains `/ratchet`; it no longer stands in for the whole library.
+Evidence indexes share the paper/green palette, heading hierarchy, filter states,
+and scrollable tables. Home shows useful principles before the applicability
+note; the note and candidate status remain visible. Sources use shared-bank
+language. These changes preserve the existing content, licensing decisions,
+discovery workflow, and present-versus-planned MCP distinction.

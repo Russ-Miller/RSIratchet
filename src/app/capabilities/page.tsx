@@ -1,3 +1,4 @@
+import { EvidenceNav } from "@/components/evidence-nav";
 import Link from "next/link";
 import { ListSearch } from "@/components/list-search";
 import { ModelStrip } from "@/components/model-strip";
@@ -28,20 +29,16 @@ export default function CapabilitiesPage() {
   ];
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-semibold">Capabilities</h1>
-      <p className="max-w-3xl text-sm text-neutral-500">
-        A capability is a topic: one thing a model has to be able to do, such as arithmetic,
-        following a procedure, or fixing its own mistakes. It is a heading, not a finding, and it
-        carries no score. What is known about it lives in the claims filed under it, each with its
-        sources; the techniques listed on it are fixes that address it, and whether a fix works is
-        itself a claim. A capability with no claims yet is a gap to fill, not an error. Some are
-        marked proposed: added from the map or by the ingestion pipeline without anyone deciding
-        it belongs. Those are here to be argued with.
-      </p>
+      <header className="library-heading">
+        <p className="eyebrow">Evidence library</p>
+        <h1>Capabilities</h1>
+      <p className="max-w-3xl text-sm text-neutral-500">Explore the abilities and recurring limitations behind the heuristics. Each topic connects research findings with techniques that may help.</p>
+      </header>
+      <EvidenceNav current="/capabilities" />
       <ModelStrip compact />
       <ListSearch noun="capabilities" />
       <FilterBar options={options}>
-      <div className="overflow-x-auto" data-list>
+      <div className="table-scroll" role="region" aria-label="Capabilities table" tabIndex={0} data-list>
       <table className="w-full text-sm">
         <thead className="text-left text-neutral-500">
           <tr>

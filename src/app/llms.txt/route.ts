@@ -7,9 +7,10 @@ export const dynamic = "force-static";
 export function GET() {
   const text = `# RSI Ratchet
 
-> A catalog of what language models are good and bad at, organized by capability, where the unit is a claim ("X holds under condition Y") with the papers for and against attached, a falsifier, and a way for any reader or agent to add support or contest it. Techniques take their standing from claims. A claim that broke is kept as the most valuable entry, not removed.
+> A shared reasoning bank for agents. Start with heuristics, then inspect the claims, techniques, capabilities, and sources behind them. The current collection tests borrowed principles against research; candidate distilled rules are proposals, not validated guidance. The local MCP server provides reads; automated result submission is planned.
 
-Content: CC BY 4.0. Code: MIT. Source: https://github.com/Russ-Miller/RSIratchet
+Content: RSI Ratchet Content Terms; legacy CC BY 4.0 grants preserved. Public content permits internal use, including by commercial agents; redistribution of protected new content requires permission. Third-party rights and underlying facts and methods are unaffected. Terms: https://github.com/Russ-Miller/RSIratchet/blob/main/LICENSE-CONTENT
+Code: MIT. Source: https://github.com/Russ-Miller/RSIratchet
 
 ## Machine-readable
 

@@ -16,13 +16,9 @@ export function useIsAdmin(): boolean {
 }
 
 const SECTIONS = [
-  { href: "/capabilities", label: "Capabilities" },
-  { href: "/claims", label: "Claims" },
-  { href: "/techniques", label: "Techniques" },
   { href: "/heuristics", label: "Heuristics" },
-  { href: "/ratchet", label: "The ratchet" },
-  { href: "/about", label: "About" },
-  // Everything from here on is gated by src/proxy.ts and hidden unless signed in.
+  { href: "/research", label: "Research" },
+  { href: "/about", label: "How it works" },
   { href: "/open-questions", label: "Open questions", admin: true },
   { href: "/queue", label: "Queue", admin: true },
   { href: "/drafts", label: "Drafts", admin: true },
@@ -35,17 +31,14 @@ export function NavLinks() {
     <>
       {SECTIONS.filter((s) => !s.admin || admin).map(({ href, label }) => {
         // Detail routes (/claims/some-id) keep their section marked active.
-        const active = pathname === href || pathname.startsWith(`${href}/`);
+        const active = pathname === href || pathname.startsWith(`${href}/`) ||
+          (href === "/research" && ["/ratchet", "/claims", "/techniques", "/capabilities", "/sources"].some((section) => pathname === section || pathname.startsWith(`${section}/`)));
         return (
           <Link
             key={href}
             href={href}
             aria-current={active ? "page" : undefined}
-            className={
-              active
-                ? "font-medium text-neutral-900 underline decoration-2 underline-offset-8 dark:text-neutral-100"
-                : "text-neutral-600 hover:text-neutral-900 hover:underline hover:underline-offset-8 dark:text-neutral-400 dark:hover:text-neutral-100"
-            }
+            className="nav-link"
           >
             {label}
           </Link>

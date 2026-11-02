@@ -1,3 +1,4 @@
+import { EvidenceNav } from "@/components/evidence-nav";
 import Link from "next/link";
 import { ListSearch } from "@/components/list-search";
 import { vecAttr } from "@/lib/embeddings";
@@ -10,9 +11,11 @@ export default function SourcesPage() {
   const sources = sourcesByRecency();
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-semibold">Sources</h1>
+      <header className="library-heading">
+        <p className="eyebrow">Evidence library</p>
+        <h1>Sources</h1>
       <p className="text-sm text-neutral-500">
-        Papers and my own observations, same schema either way. Sorted by when each was ingested into
+        Papers and recorded observations behind the findings. Sorted by when each was added to
         the catalog, most recent first. <strong className="font-medium text-neutral-600 dark:text-neutral-400">Activity</strong> is
         how much the wider field has cited the source in the last 12 months &mdash; hover for exact
         counts; a paper can stay well-cited overall while recent activity has moved past it.{" "}
@@ -20,7 +23,10 @@ export default function SourcesPage() {
         the other direction: which claims <em>in this catalog</em> draw on the source, and whether
         they lean on it as support or as a counterpoint.
       </p>
+      </header>
+      <EvidenceNav current="/sources" />
       <ListSearch noun="sources" />
+      <div className="table-scroll" role="region" aria-label="Sources table" tabIndex={0}>
       <table className="w-full text-sm">
         <thead className="text-left text-neutral-500">
           <tr>
@@ -64,6 +70,7 @@ export default function SourcesPage() {
           })}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }
