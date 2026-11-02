@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "source": "arxiv-2603-28052",
+  "fingerprint": "ec7b4c84b7fb69cf538a2739789318592befcd8f3509ade7ad2f0b25c05f4800",
+  "attempted_at": "2026-10-22T23:29:02.019Z",
+  "status": "candidates",
+  "reason": "Selected sections support a raw-trace-access ablation and show retrieval-policy differences between models. The terminal benchmark was also used for search, so those scores are not untouched final evaluation.",
+  "candidates": [
+    {
+      "title": "Keep raw traces inspectable during harness search",
+      "rule": "When a coding-agent proposer searches classification harnesses, let it inspect prior code, scores, and raw execution traces on demand; compare this with giving it scores or fixed summaries alone.",
+      "basis": "author-tested",
+      "passage": "Access to raw execution traces is the key ingredient for enabling harness search.",
+      "location": "Section 4.1, Table 3",
+      "finding": "In the classification interface ablation, full-trace access produced median accuracy 50.0 versus 34.6 for scores-only and 34.9 for scores plus summaries. The intervention is the proposer interface, not a claim that every raw trace should be injected into every task prompt.",
+      "models": [
+        "Claude Code proposer using Opus-4.6",
+        "GPT-OSS-120B classification backend"
+      ],
+      "workloads": [
+        "Online text classification; USPTO, Symptom2Disease and LawBench"
+      ],
+      "conditions": "The proposer can selectively inspect a filesystem history of candidate code, scores and executions. The ablation is reported in classification; results from other domains do not isolate this component.",
+      "limitations": "One paper and one strong proposer configuration. Raw traces may contain sensitive material and still need access controls. The separately reported TerminalBench-2 experiment searches and evaluates on the same tasks; it is not evidence of blind generalization.",
+      "validation_test": "Hold the proposer, evaluation budget and classification tasks fixed. Compare scores-only, scores-plus-summaries and selectively accessible raw traces, then evaluate the selected harness on a separate task set.",
+      "overlaps_heuristics": [
+        "hashimotos-rule"
+      ]
+    },
+    {
+      "title": "Check retrieval-policy gains separately for each model",
+      "rule": "When choosing a math-retrieval harness, compare candidate retrieval policies on each intended model instead of assuming the policy with the best cross-model average wins on every model.",
+      "basis": "inferred",
+      "passage": "the regressions observed with dense retrieval and random few-shot prompting across several models.",
+      "location": "Section 4.2, Table 6",
+      "finding": "Table 6 reports both gains and regressions from fixed retrieval choices. The learned policy has the best average, but BM25 scores 46.6 versus its 46.3 for Gemini-3-Flash. The recommendation to select per deployment is inferred from those differences; that selection procedure is not itself tested.",
+      "models": [
+        "GPT-5.4-nano",
+        "GPT-5.4-mini",
+        "Gemini-3.1-Flash-Lite",
+        "Gemini-3-Flash",
+        "GPT-OSS-20B"
+      ],
+      "workloads": [
+        "200 held-out IMO-level problems drawn from IMO-AnswerBench, IMO-ProofBench and ArXivMath"
+      ],
+      "conditions": "The corpus is decontaminated; one policy was selected using GPT-OSS-20B on a separate search set. Accuracy averages three samples per problem.",
+      "limitations": "The 0.3-point single-model difference is not evidence of a statistically reliable winner. These results do not show that transfer always fails: the learned policy improves over no retrieval for all five models.",
+      "validation_test": "Compare no retrieval, BM25 and the proposed policy at the same resource budget on representative tasks for each target model. Choose using development tasks and confirm with a final held-out test.",
+      "overlaps_heuristics": []
+    }
+  ],
+  "model": "Codex session",
+  "review_method": "codex-session",
+  "review_scope": "Focused reading of abstract/introduction and selected main-text results, ablations and limitations; intervening sections, references and appendices were not comprehensively reviewed.",
+  "review_segments": [
+    {
+      "start": 0,
+      "end": 6000
+    },
+    {
+      "start": 19081,
+      "end": 37081
+    }
+  ],
+  "text_url": "https://arxiv.org/html/2603.28052v1",
+  "text_sha256": "93fd68e4668fcaf2fbd722257caa98860ce89f5c6a672ec6648e8b7372b67065",
+  "retrieved_at": "2026-10-22T23:25:29.381Z",
+  "supplied_chars": 24002,
+  "total_chars": 82859,
+  "truncated": true
+}

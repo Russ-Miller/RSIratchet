@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "source": "arxiv-2201-11903",
+  "fingerprint": "025662b316cf73540a3a41c10dc97265c5e393abdb487abb178673c47cbd8b94",
+  "attempted_at": "2026-10-22T23:19:31.989Z",
+  "candidates": [
+    {
+      "title": "Add step-by-step exemplars only for ~100B+ models on multi-step tasks",
+      "rule": "When prompting a model of roughly 100B parameters or more on multi-step arithmetic, commonsense or symbolic tasks, include a handful of exemplars whose answers show intermediate reasoning steps in natural language; for models below ~10B, or for one-step problems where accuracy is already high, keep standard input–output exemplars.",
+      "basis": "author-tested",
+      "passage": "chain-of-thought prompting does not positively impact performance for small models, and only yields performance gains when used with models of ∼ 100B parameters.",
+      "location": "Section 3.2 Results (arithmetic reasoning)",
+      "finding": "Eight hand-written chain-of-thought exemplars raised GSM8K accuracy from 17.9% to 56.9% for PaLM 540B and 15.6% to 46.9% for GPT-3 175B, with similar gains on SVAMP, MAWPS, StrategyQA, Sports and symbolic tasks. Smaller models (LaMDA 420M–8B, GPT 350M–6.7B, PaLM 8B) were hurt or unchanged. Gains were near zero or negative on one-step subsets (SingleOp) and minimal on CSQA; GPT-3 lost accuracy on AQuA and CSQA.",
+      "models": [
+        "PaLM 8B/62B/540B",
+        "LaMDA 420M–137B",
+        "GPT-3 text-ada/babbage/curie/davinci-002",
+        "Codex code-davinci-002",
+        "UL2 20B"
+      ],
+      "workloads": [
+        "GSM8K",
+        "SVAMP",
+        "ASDiv",
+        "AQuA",
+        "MAWPS",
+        "CSQA",
+        "StrategyQA",
+        "BIG-bench Date/Sports",
+        "SayCan",
+        "last-letter concatenation",
+        "coin flip"
+      ],
+      "conditions": "Few-shot prompting of off-the-shelf models with greedy decoding, 8 manually written exemplars (4 for AQuA); no finetuning; 1024-token input limit.",
+      "limitations": "Single paper, 2022-era models; results vary by annotator (coin flip 71.4%–99.6%) and do not transfer uniformly across models (GPT-3 on CSQA/StrategyQA). Longer outputs cost more tokens. Modern instruction-tuned or reasoning-trained models may already do this by default.",
+      "validation_test": "On your task, compare standard few-shot prompts with the same exemplars augmented by intermediate steps, holding exemplar count and decoding fixed; measure accuracy and output tokens, and repeat with at least two different annotators' step styles and two model sizes.",
+      "overlaps_heuristics": []
+    },
+    {
+      "title": "Execute arithmetic from generated reasoning with an external calculator",
+      "rule": "When a model emits intermediate equations in its reasoning for math word problems, re-evaluate those equations with an external calculator (e.g. Python eval), propagating results across chained equations, instead of trusting the model's own arithmetic.",
+      "basis": "author-tested",
+      "passage": "we see that adding a calculator significantly boosts performance of chain-of-thought prompting on most tasks.",
+      "location": "Appendix B, text preceding Table 1",
+      "finding": "Post-hoc evaluation of the equations inside generated chains of thought raised GSM8K from 14.3% to 17.8% (LaMDA 137B), 46.9% to 49.6% (GPT-3 175B), 56.9% to 58.6% (PaLM 540B), and MAWPS from 19.1% to 42.7% for UL2 20B. Error analysis found 8% of wrong chains were correct apart from arithmetic slips. The calculator did not help AQuA and slightly hurt ASDiv for GPT-3 and PaLM.",
+      "models": [
+        "LaMDA 137B",
+        "GPT-3 text-davinci-002",
+        "Codex code-davinci-002",
+        "PaLM 540B",
+        "UL2 20B"
+      ],
+      "workloads": [
+        "GSM8K",
+        "SVAMP",
+        "ASDiv",
+        "AQuA",
+        "MAWPS"
+      ],
+      "conditions": "Applied post hoc to equations appearing in generated chains of thought; string matching used to propagate results between equations.",
+      "limitations": "Gains are largest for weaker models and shrink for strong ones; it slightly reduced ASDiv accuracy in some settings. Requires parseable equations and a safe execution path; string-matching propagation is brittle. Single paper, pre-tool-use models.",
+      "validation_test": "Run your math workload with reasoning prompts, parse emitted equations, recompute them with a sandboxed evaluator, and compare end-task accuracy and parse-failure rate against the unmodified outputs.",
+      "overlaps_heuristics": []
+    }
+  ],
+  "status": "candidates",
+  "reason": "The paper provides tested prompting interventions with explicit ablations and scale conditions, supporting two narrowly scoped rules: use few-shot chain-of-thought exemplars only for large models on multi-step tasks, and attach an external calculator to parse/execute the equations in generated chains of thought. A third possible rule (avoid filler-token 'variable compute' prompts) is supported by a negative ablation but overlaps the first; I include it as a distinct avoidance rule only if materially useful — here I keep two plus the filler-token null result folded into the first candidate's findings.",
+  "model": "claude-opus-5",
+  "text_url": "https://arxiv.org/html/2201.11903v6",
+  "text_sha256": "38d3894ab8103e92d42ac2939be98d6d21df18634599ced4ce20bcb5cc7d1f97",
+  "retrieved_at": "2026-10-22T23:19:31.989Z",
+  "supplied_chars": 120000,
+  "total_chars": 131233,
+  "truncated": true,
+  "input_tokens": 49925,
+  "output_tokens": 2384
+}

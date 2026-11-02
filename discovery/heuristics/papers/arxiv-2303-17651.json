@@ -1,0 +1,93 @@
+{
+  "version": 1,
+  "source": "arxiv-2303-17651",
+  "fingerprint": "bf9485335616ec7d81fdea05ed6949a3f00a608f28d02a43da657c1c04b16201",
+  "attempted_at": "2026-10-22T23:20:28.221Z",
+  "candidates": [
+    {
+      "title": "Make self-feedback specific and actionable, not generic",
+      "rule": "When prompting a model to critique its own output before revision, require the feedback to name the concrete offending span and a concrete fix; do not settle for generic 'improve this' critiques or feedback-free re-generation.",
+      "basis": "author-tested",
+      "passage": "Prompting to generate generic feedback (or having the model generate no feedback at all) leads to reduced scores, indicating the importance of the feedback step",
+      "location": "Table 2 caption, Section 4 Analysis",
+      "finding": "Ablation with ChatGPT (code optimization, sentiment reversal) and GPT-3.5 (acronyms): specific feedback 27.5/43.2/56.4 vs generic 26.0/31.2/54.0 vs no feedback 24.8/0/48.0. Gap is small for code optimization and large for sentiment reversal, which collapsed without feedback.",
+      "models": [
+        "GPT-3.5 (text-davinci-003)",
+        "ChatGPT (gpt-3.5-turbo)",
+        "GPT-4"
+      ],
+      "workloads": [
+        "Code optimization (PIE)",
+        "Sentiment reversal (Yelp-style reviews)",
+        "Acronym generation"
+      ],
+      "conditions": "Few-shot prompts for generate/feedback/refine; up to 4 iterations; temperature 0.7; closed OpenAI models.",
+      "limitations": "Single paper, author-run ablation on three tasks only; some metrics are GPT-4 preference judgements correlated 68-82% with human preference; effect size varies greatly by task; no matched token/cost budget reported.",
+      "validation_test": "On your own task, run three arms with identical budgets: no feedback re-generation, generic feedback, and span-plus-fix feedback; score with a blind human or held-out automatic metric and compare.",
+      "overlaps_heuristics": [
+        "no-one-should-judge-their-own-cause",
+        "boyds-law-of-iteration"
+      ]
+    },
+    {
+      "title": "Skip self-critique loops when the model cannot detect its own errors",
+      "rule": "Do not deploy self-feedback refinement on tasks where the model cannot reliably tell a correct output from an incorrect one (e.g. chain-of-thought arithmetic); either add an external correctness signal to gate refinement, or spend the budget elsewhere.",
+      "basis": "author-tested",
+      "passage": "The modest performance gains in Math Reasoning can be traced back to the inability to accurately identify whether there is any error.",
+      "location": "Section 3.3 Results",
+      "finding": "On GSM8K, Self-Refine gave 0 / +0.2 / +0.2 points over base for GPT-3.5, ChatGPT and GPT-4; ChatGPT feedback said 'everything looks good' for 94% of instances. With oracle correctness gating, gains rose to +4.8 (GPT-3.5), +1.4 (ChatGPT), +0.7 (GPT-4).",
+      "models": [
+        "GPT-3.5 (text-davinci-003)",
+        "ChatGPT (gpt-3.5-turbo)",
+        "GPT-4"
+      ],
+      "workloads": [
+        "GSM8K math reasoning (Python-program solutions)"
+      ],
+      "conditions": "Few-shot PaL-style prompts; up to 4 feedback-refine iterations; oracle variant uses ground-truth correctness to decide whether to refine.",
+      "limitations": "Single benchmark and model family; the oracle condition is unavailable in deployment; 'error detectability' is not measured directly, only inferred from the feedback text and gains.",
+      "validation_test": "Measure your model's accuracy at labelling its own outputs correct/incorrect on a labelled sample; only enable the refine loop if that detection accuracy is well above chance, and compare loop gains with and without an external checker.",
+      "overlaps_heuristics": [
+        "no-one-should-judge-their-own-cause",
+        "good-regulator-theorem"
+      ]
+    },
+    {
+      "title": "Prefer feedback-guided revision over sampling more candidates",
+      "rule": "When improving open-ended generations with a fixed small number of extra calls, spend them on feedback-then-revise iterations of one draft rather than on drawing k independent samples; concentrate gains in the first one or two iterations.",
+      "basis": "author-tested",
+      "passage": "Despite the increased difficulty of the 1 vs. k setting, the outputs of Self-Refine are still preferred by humans over all k initial outputs.",
+      "location": "Section 4, 'Can we just generate multiple outputs instead of refining?'",
+      "finding": "ChatGPT with k=4 independent samples lost to refined outputs in human 1-vs-k preference on sentiment reversal and acronym generation (Figure 9). Iteration curves show most of the gain in the first iteration with diminishing returns by y3 (e.g. code optimization 22.0 to 27.0 to 27.9 to 28.8).",
+      "models": [
+        "ChatGPT (gpt-3.5-turbo)",
+        "GPT-3.5",
+        "GPT-4"
+      ],
+      "workloads": [
+        "Sentiment reversal",
+        "Acronym generation",
+        "Code optimization",
+        "Constrained generation (CommonGen-Hard)"
+      ],
+      "conditions": "Few-shot prompts; up to 4 iterations; preference judged by authors and by GPT-4 proxy.",
+      "limitations": "Comparison is preference-based and partly judged by the paper's authors; token cost of refinement vs k samples is not matched or reported; results are on OpenAI models and English data; multi-aspect tasks like acronyms showed non-monotonic quality across iterations requiring score-based selection.",
+      "validation_test": "Run best-of-k sampling and k-1 refine iterations at equal token spend on your task, then blind-rate outputs pairwise; also log per-iteration gains to pick a cutoff.",
+      "overlaps_heuristics": [
+        "boyds-law-of-iteration",
+        "practice-makes-perfect"
+      ]
+    }
+  ],
+  "status": "candidates",
+  "reason": "The paper tests iterative self-feedback refinement across 7 tasks with GPT-3.5/ChatGPT/GPT-4, plus ablations on feedback specificity, iteration count, sampling baseline, and weaker models. These support scoped rules about when self-refinement helps and what feedback format to use. Math reasoning null result and Vicuna-13B failure support negative-scoped rules.",
+  "model": "claude-opus-5",
+  "text_url": "https://arxiv.org/html/2303.17651v2",
+  "text_sha256": "a71add231347bac5938c76c3975e5bdaa540e5abb01908834818fb7cec8b9a43",
+  "retrieved_at": "2026-10-22T23:20:28.221Z",
+  "supplied_chars": 120000,
+  "total_chars": 129105,
+  "truncated": true,
+  "input_tokens": 49363,
+  "output_tokens": 2070
+}

@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "source": "arxiv-2305-18654",
+  "fingerprint": "b38c511ab32911e43378e4ae4cfb9336b726309f12e73866b040761693ad6f65",
+  "attempted_at": "2026-10-22T23:21:08.879Z",
+  "candidates": [
+    {
+      "title": "Don't expect scratchpad/CoT fine-tuning to extend compositional depth beyond training",
+      "rule": "When deploying an LLM on exact multi-step algorithmic tasks (e.g., multi-digit multiplication, constraint puzzles, DP), do not rely on scratchpad prompting or scratchpad fine-tuning to generalize beyond the computation-graph depth/width seen in training; instead cap problem size at trained complexity or delegate to a tool/solver.",
+      "basis": "author-tested",
+      "passage": "GPT3 achieves near-perfect performance on in-distribution, but fails entirely in generalizing to OOD cases—in particular, wider or deeper computation graphs.",
+      "location": "Section 3.1, 'Limits of transformers with explicit scratchpad training'",
+      "finding": "Fine-tuning GPT3 (text-davinci-003) on question-scratchpad pairs gave near-perfect in-domain accuracy but near-zero accuracy on larger problem sizes; few-shot scratchpad prompting with GPT4 helped over zero-shot but decayed to zero as complexity grew.",
+      "models": [
+        "GPT-3 (text-davinci-003)",
+        "GPT-3.5-turbo",
+        "GPT-4 (2023)",
+        "LLaMA",
+        "FlanT5",
+        "GPT2-XL trained from scratch"
+      ],
+      "workloads": [
+        "multi-digit multiplication (up to 5x5 digits)",
+        "Einstein's logic grid puzzles (K x M)",
+        "maximum weighted non-adjacent subsequence dynamic programming (length 2-10)"
+      ],
+      "conditions": "Fine-tuning on ~1.8M multiplication, ~142K DP, ~41K puzzle pairs; 500 test examples per task; nucleus p=0.7, temperature 1; evaluation Jan-May 2023; exact-match grading.",
+      "limitations": "Only 2023-era OpenAI models and small open models; exact-match scoring of synthetic algorithmic tasks; one scratchpad linearization chosen among variants; no tool use or external planner baseline compared; results may not transfer to current reasoning-trained models.",
+      "validation_test": "On a current model, fine-tune or few-shot prompt with scratchpads on k-by-k multiplication up to a fixed size, then measure exact accuracy on strictly larger sizes versus a calculator-tool baseline at matched cost.",
+      "overlaps_heuristics": []
+    },
+    {
+      "title": "Avoid extended post-overfitting training to buy OOD compositional generalization",
+      "rule": "For compositional arithmetic fine-tuning, do not budget large amounts of extra training past the in-domain accuracy plateau in hopes of grokking-driven OOD generalization; stop at the plateau and spend the budget on decomposition or tooling instead.",
+      "basis": "author-tested",
+      "passage": "Figure 4 shows no improvement in generalization for OOD cases beyond the overfitting point, even after extensive training periods.",
+      "location": "Section 3.1, 'Limits of transformers with grokking'",
+      "finding": "GPT3 was fine-tuned for 420K steps (question-answer, ~60 epochs, $50,000) and 30K steps (question-scratchpad, 40 epochs, $40,000) on multiplication; no OOD gain appeared beyond overfitting.",
+      "models": [
+        "GPT-3 (text-davinci-003)"
+      ],
+      "workloads": [
+        "multi-digit multiplication"
+      ],
+      "conditions": "Single task (multiplication) only, due to budget; OpenAI fine-tuning API, 2023; OOD defined as larger digit sizes than trained.",
+      "limitations": "One task, one model, one training recipe; authors note they could not push data size or epochs further and speculate grokking might need different task difficulty or representations; no learning-rate or architecture sweep.",
+      "validation_test": "Replicate on an open model: train on k-digit multiplication to the in-domain plateau, then continue for 10x more steps, tracking OOD accuracy at each checkpoint to see if any delayed generalization occurs.",
+      "overlaps_heuristics": [
+        "practice-makes-perfect"
+      ]
+    }
+  ],
+  "status": "candidates",
+  "reason": "The paper tests scratchpad prompting/fine-tuning, exhaustive task-specific fine-tuning, and extended (grokking) training on three compositional tasks, reporting null results for out-of-distribution generalization. These support narrowly scoped rules about not relying on scratchpads/fine-tuning for compositional depth, and about decomposing work into few-step chunks. Theoretical error-propagation results are analytic, not empirical, so are framed as inferred.",
+  "model": "claude-opus-5",
+  "text_url": "https://arxiv.org/html/2305.18654v3",
+  "text_sha256": "4b82ef7b32d3439f072419ead6c7eee0bdb48d3b825bce02bd4ad1cf2ab9ab71",
+  "retrieved_at": "2026-10-22T23:21:08.879Z",
+  "supplied_chars": 114294,
+  "total_chars": 114294,
+  "truncated": false,
+  "input_tokens": 50813,
+  "output_tokens": 2137
+}

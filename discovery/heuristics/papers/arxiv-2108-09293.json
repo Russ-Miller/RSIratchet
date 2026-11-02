@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "source": "arxiv-2108-09293",
+  "fingerprint": "904e1b92fc9228a54c0ddb065e5e9b22404b01ffab240b7b20ab0e47c5284eb4",
+  "attempted_at": "2026-10-22T23:18:55.708Z",
+  "candidates": [
+    {
+      "title": "Seed the file with a secure exemplar before asking for similar code",
+      "rule": "When prompting a code-completion model for a security-sensitive pattern (e.g. SQL queries), place an existing correctly-written example of the same pattern in the same file; avoid leaving a vulnerable example of that pattern in context, since the model imitates whichever it sees.",
+      "basis": "author-tested",
+      "passage": "C-2: We add a separate database function to the program. This function is non-vulnerable. This significantly improved the output of Copilot",
+      "location": "Section V-C2 (Individual scenario results, C-2/C-3) and Table III",
+      "finding": "In the CWE-89 prompt-diversity study, the control prompt yielded 6/25 vulnerable completions. Adding a non-vulnerable SQL helper function above the task gave 0/18 vulnerable completions; adding a vulnerable helper gave 17/18 vulnerable with a vulnerable top suggestion. The authors call in-file vulnerable/non-vulnerable SQL the strongest predictor among the variations they tried.",
+      "models": [
+        "GitHub Copilot, technical preview, August 2021 (Codex-based, no version number)"
+      ],
+      "workloads": [
+        "Authors' CWE-89 (SQL injection) Python scenario CON with 17 prompt mutations; evaluated with CodeQL python-security-and-quality.qls"
+      ],
+      "conditions": "Python Flask/MySQLdb-style code; up to 25 suggestions requested per prompt; default decoding parameters; vulnerability judged only for CWE-89 and only when definitively present; functional correctness not evaluated.",
+      "limitations": "Single CWE, single control scenario, one variant per condition (18 valid programs each); authors state sample sizes may not support statistical conclusions and Copilot outputs are not reproducible. Other prompt edits (comments, author tags, library choice) had small or counterintuitive effects, so the exemplar effect is not shown to generalise to other weakness classes, languages, or current models.",
+      "validation_test": "Repeat on a current coding assistant and several weakness classes (SQL injection, path traversal, command injection): for each scenario generate N completions with (a) no exemplar, (b) a secure in-file exemplar, (c) a vulnerable in-file exemplar, and compare vulnerable-completion rates with a fixed scanner and manual spot checks.",
+      "overlaps_heuristics": [
+        "first-impressions-last"
+      ]
+    },
+    {
+      "title": "Do not treat the top-ranked completion or its confidence as a security signal",
+      "rule": "Scan every accepted code-assistant suggestion with a security analyser or review it manually; do not accept the highest-confidence suggestion as safe, because model confidence does not separate vulnerable from non-vulnerable completions.",
+      "basis": "author-tested",
+      "passage": "across all axes and languages, 39.33 % of the top and 40.73 % of the total options were vulnerable",
+      "location": "Section VI (Discussion), opening paragraph",
+      "finding": "Across 89 scenarios and 1,689 generated programs, the top-scoring suggestion was vulnerable about as often as suggestions overall, and some vulnerable top suggestions carried very high confidence (476-1 at 0.96, 200-0 at 0.93, 416-2 at 0.92). This supports reviewing all accepted suggestions rather than relying on ranking or the reported 'mean prob' score.",
+      "models": [
+        "GitHub Copilot, technical preview, August 2021 (Codex-based)"
+      ],
+      "workloads": [
+        "54 Python/C scenarios over 18 of MITRE's 2021 CWE Top 25",
+        "17 CWE-89 prompt variants",
+        "18 Verilog hardware-CWE scenarios"
+      ],
+      "conditions": "Evaluation with GitHub CodeQL plus manual marking; conservative labelling (partial or externally-delegated completions counted non-vulnerable); functional correctness not assessed; 7 of the top-25 CWEs excluded as unsuitable for file-local analysis.",
+      "limitations": "Scenarios were artificial and deliberately constructed so a naive completion could be vulnerable, so the ~40% rate is not a real-world base rate. Copilot's confidence score is undocumented; results are from one 2021 preview model and may not hold for current assistants. CodeQL may mislabel edge cases.",
+      "validation_test": "On a current assistant, sample k completions per security-relevant scenario, record rank and reported logprob, scan with a static analyser, and test whether rank or confidence predicts vulnerability better than chance; measure the review cost of scanning all accepted suggestions.",
+      "overlaps_heuristics": []
+    }
+  ],
+  "status": "candidates",
+  "reason": "The paper runs a controlled prompt-perturbation study and a broad CWE scenario study on GitHub Copilot, giving two defensible rules: seed the context with a secure exemplar of the same pattern, and do not trust the top-ranked/high-confidence suggestion as secure. Other observations (Verilog syntax failures, CWE rankings) are descriptive rather than actionable rules.",
+  "model": "claude-opus-5",
+  "text_url": "https://arxiv.org/html/2108.09293v3",
+  "text_sha256": "e2c60aa18484d2a86b4c0d4e7460202c22ac3272e7ed355d81af7926da35e705",
+  "retrieved_at": "2026-10-22T23:18:55.708Z",
+  "supplied_chars": 89171,
+  "total_chars": 89171,
+  "truncated": false,
+  "input_tokens": 36923,
+  "output_tokens": 1828
+}

@@ -19,13 +19,16 @@ for it to be possible, and go test that. "This cannot work because X" is
 only finished if X has been checked.
 
 ## What this is
-Primarily a personal study tool for organizing what's actually understood
-about LLM capabilities — curiosity-driven, "the neuroscience of LLMs" —
-not a contributor platform built for a hypothetical audience. Other
-humans, and eventually agents, are hoped-for second-order beneficiaries,
-not the v1 design target. Read `docs/spec.md` before touching anything —
-it has a status note at the top about the current transitional state
-(catalog content vs. schema may be mid-migration; check both).
+A shared reasoning bank for agents and harnesses, centered on practical
+heuristics grounded in research and eventually validated through agent use.
+The personal-study framing is superseded (2026-10-20). Heuristics lead the public
+experience; capabilities, claims, techniques, and sources provide depth.
+Distinguish the current read-only local MCP server and issue-based submissions
+from planned automated agent write-back. Accounts, subscriptions, billing, and
+contribution-credit accounting are deferred. Keep the current brand pending the
+roadmap TODO. Read `docs/spec.md`; inspect the live schema rather than relying
+on historical migration notes. New content follows LICENSE-CONTENT; existing
+CC BY grants and third-party rights are preserved.
 
 ## Next.js
 The installed Next.js is newer than training data. Read `AGENTS.md` and the

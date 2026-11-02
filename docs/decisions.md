@@ -1813,3 +1813,77 @@ reviewed evidence, several with `breaks` verdicts, the catalog's most
 valued kind -- Practice makes perfect had just picked up a `narrows`
 verdict from ReasoningBank itself. Nothing was retired. The naming
 complaint was real; the content underneath it was not thin.
+
+
+## 2026-10-20 — Heuristics lead the service
+
+Russ confirmed the project has moved beyond personal research: agents should
+consume a shared reasoning bank, with papers and eventually integrated agents
+supplying evidence. Guidance leads; capabilities, claims, techniques, and sources
+provide depth. Accounts and subscriptions are explicitly deferred.
+
+The homepage now shows practical readings of existing heuristics, explains the
+learning loop and the value of unsuccessful attempts, and links to local MCP.
+It does not claim automated agent submissions already exist. The current name
+stays while branding is a roadmap TODO. The visual direction uses warm paper
+tones, green accents, system sans type, and restrained serif notes.
+
+An initial mining pass proposes 18 scoped heuristics from existing paper-backed
+claims. Seven overlap existing principles and should be considered refinements,
+not automatically new records. Three have some human-reviewed support; the
+remaining fifteen depend on AI-reviewed support. All remain candidate proposals
+outside the catalog, visible at /heuristics/candidates with evidence links.
+The paper texts were not re-read in this pass.
+
+
+## 2026-10-21 — Paper-by-paper heuristic discovery
+
+Approved by Russ: mine all ingested papers for scoped candidate heuristics and
+show them separately from validated guidance. Implemented a resumable extractor,
+text-grounding and provenance checks, explicit empty/failure outcomes, exact-rule
+grouping, existing-heuristic overlap suggestions, a searchable coverage inventory,
+and a manual-only GitHub workflow with bounded estimated spend. Downloaded paper
+text stays in ignored local cache; only short passages and analysis are published.
+
+First run: 566 inventoried, three paper fetches failed with ENOTFOUND, zero papers
+read, no model tokens spent. Remaining papers are unattempted. This is an external
+network blocker, not a completed mining pass. Earlier 18 editorial proposals stay
+visible with their original claims-level provenance. Source passages occurring in
+text do not establish semantic correctness; author-tested does not imply our own
+validation or independent replication.
+
+
+## 2026-10-22 — Subscription-session discovery, five-paper checkpoints
+
+Russ chose to perform paper review inside Codex rather than separately billed
+Anthropic calls. The API run is stopped. The paid extractor now requires an
+explicit `--paid-api` opt-in; the document preparation script neither imports a
+model SDK nor loads an API key. The manual GitHub API workflow is distinct and
+not scheduled. No further provider spending is authorized by a session review.
+
+First session batch: five targeted harness papers, nine candidate proposals,
+zero external inference calls. Exact inspected text ranges are recorded; all
+five are selected-section reviews, not complete appendix reads. The validator
+checks quotes only against those ranges. The workbench labels the review method
+and scope. Stop after the batch for a `/status` subscription-allowance check;
+the agent cannot directly read remaining allowance. The batch report is
+`discovery/heuristics/session-batches/2026-10-22-01.md`.
+
+
+## 2026-10-24 — Separate admission of claims from promotion of guidance
+
+Russ approved a calibrated automatic-admission workflow for narrow, source-backed
+research claims and requested a strong roadmap commitment to making promotion
+into broader heuristic guidance a separate decision. The roadmap now schedules
+A1–A2 for shadow evaluation and bounded claim admission, and H1–H2 for explicit
+promotion dossiers and separately calibrated promotion automation.
+
+Acceptance records establish source fidelity, not universal truth or independent
+replication. Heuristic promotion must justify the proposed scope, retain null and
+negative findings, identify extrapolation, and require transfer evidence for
+untested extensions or narrow the rule. Promotion starts with explicit curator
+decisions, remains reversible, and is not triggered by claim admission, reviewer
+agreement, or paper counts. Existing implementation and spending permissions do
+not change; the source of truth and roadmap describe planned gates.
+
+

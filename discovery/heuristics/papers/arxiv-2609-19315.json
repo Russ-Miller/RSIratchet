@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "source": "arxiv-2609-19315",
+  "fingerprint": "1f903d3f3d2550212c0d72788a15cfedf35c4a656c154e4c9c0645f5ca281dba",
+  "attempted_at": "2026-10-23T00:04:51.769Z",
+  "status": "candidates",
+  "reason": "Selected graph-repair and replanning comparisons support a division between mechanically implied repair and semantic replanning in symbolic simulation.",
+  "candidates": [
+    {
+      "title": "Repair modeled action errors before asking the LLM to replan",
+      "rule": "When an explicit action model determines a failed plan’s correction, compare direct graph-derived repair with sending every failure back to the LLM; reserve replanning for unresolved semantic errors.",
+      "basis": "author-tested",
+      "passage": "graph repairs and never re-queries the LLM",
+      "location": "Section V-E, Table I; V-F, Table II",
+      "finding": "For Qwen3-4B single-task planning, graph-only repair reaches 67.7% versus 55.4% feedback-only replanning, using fewer model calls. Combining graph repair and selective semantic replanning reaches 88.8%.",
+      "models": [
+        "Qwen3-4B",
+        "Qwen3-8B"
+      ],
+      "workloads": [
+        "BEHAVIOR-1K symbolic long-horizon planning"
+      ],
+      "conditions": "World model represents object relations, action preconditions/effects and relevant beliefs. Comparisons use the same symbolic task environment.",
+      "limitations": "Graph correctness and instruction grounding remain prerequisites. Symbolic manipulation omits geometric feasibility, reachability and collisions, so these figures are not physical-robot safety validation.",
+      "validation_test": "Compare feedback-only, graph-only and hybrid repair on held-out modeled tasks; separately inject grounding and world-model errors and measure success, calls, latency and unsafe proposed actions.",
+      "overlaps_heuristics": []
+    },
+    {
+      "title": "Reorder independent subtasks as location beliefs change",
+      "rule": "For partially observed multi-task planning, compare fixed or point-estimate ordering with distribution-aware ordering that is recomputed after new observations.",
+      "basis": "author-tested",
+      "passage": "online reordering after each completed task further reduces it to 78.01 m.",
+      "location": "Section V-F, Table II",
+      "finding": "With Qwen3-8B, distributional ordering reduces travel from 82.45m for map-only to 79.69m for static distributional ordering; online reordering reduces it further to 78.01m with unchanged reported success.",
+      "models": [
+        "Qwen3-8B"
+      ],
+      "workloads": [
+        "Five hundred BEHAVIOR-1K multi-task instructions"
+      ],
+      "conditions": "Travel comparisons use matched successful sets; graph beliefs represent unobserved object locations and permit task reordering.",
+      "limitations": "The combined 5.4% reduction is relative to map-only, not the marginal online-versus-static gain. Symbolic settings omit geometric feasibility; room-type priors may be wrong. Dependencies must remain satisfied when reordering.",
+      "validation_test": "Compare fixed, point-estimate, static-distributional and online-distributional schedules on the same tasks; report travel on matched successes, failures and planning overhead.",
+      "overlaps_heuristics": []
+    }
+  ],
+  "model": "Codex session",
+  "review_method": "codex-session",
+  "review_scope": "Selected abstract, introduction, methods or main-result sections; not a comprehensive paper or appendix review.",
+  "review_segments": [
+    {
+      "start": 0,
+      "end": 1800
+    },
+    {
+      "start": 28633,
+      "end": 37133
+    }
+  ],
+  "text_url": "https://arxiv.org/html/2609.19315v1",
+  "text_sha256": "44214e5b37230e934bd6ca8fa3a9cf14539b1974a9a9c1f41c334ac09f9bdb28",
+  "retrieved_at": "2026-10-23T00:03:58.794Z",
+  "supplied_chars": 10302,
+  "total_chars": 43831,
+  "truncated": true
+}

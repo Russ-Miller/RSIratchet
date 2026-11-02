@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "source": "arxiv-2210-03629",
+  "fingerprint": "5e756001525851594221af34190777f613226e22c278389caad5399e56180320",
+  "attempted_at": "2026-10-22T23:19:44.630Z",
+  "candidates": [
+    {
+      "title": "Interleave sparse reasoning steps with actions in interactive environments",
+      "rule": "For long-horizon text-action agents (household/web tasks), let the model emit free-form thoughts at self-chosen points between actions rather than acting only; include thoughts that decompose the goal, track subgoal completion, choose the next subgoal, and apply commonsense about where things are.",
+      "basis": "author-tested",
+      "passage": "On ALFWorld, the best ReAct trial achieves an average success rate of 71%, significantly outperforming the best Act (45%) and BUTLER (37%) trials.",
+      "location": "Section 4, Results / Table 3, Table 4",
+      "finding": "With identical demonstration trajectories minus thoughts, Act loses track of state and fails to decompose goals; ReAct won on all six controlled ALFWorld prompt trials (gains 33-90%) and improved WebShop success from 30.1% to 40.0%. A dense 'inner monologue' thought style limited to state feedback (ReAct-IM) scored 53% vs ReAct's 71%, so thought content matters, not just presence.",
+      "models": [
+        "PaLM-540B",
+        "GPT-3 text-davinci-002 (ALFWorld only, 78.4%)"
+      ],
+      "workloads": [
+        "ALFWorld (134 unseen games)",
+        "WebShop (500 test instructions)"
+      ],
+      "conditions": "Few-shot prompting (1-3 annotated trajectories per task type), greedy decoding, text-only action spaces; thoughts appear sparsely and are chosen by the model.",
+      "limitations": "Single paper; 2022-era models; thought annotation is manual; WebShop still far below human expert (59.6% SR); prompt-set variance is large (worst ReAct trial 48%).",
+      "validation_test": "On your agent benchmark, build two prompt sets from the same expert trajectories, one with and one without interleaved thoughts, hold decoding and step budget fixed, and compare success rates across several prompt permutations.",
+      "overlaps_heuristics": []
+    },
+    {
+      "title": "Back off between retrieval-grounded acting and internal-knowledge reasoning",
+      "rule": "For knowledge QA/fact-checking, run a retrieval-acting agent and a self-consistency chain-of-thought sampler, and switch: fall back to CoT-SC when the agent returns no answer within a step budget, and fall back to the agent when the CoT-SC majority answer occurs in fewer than half the samples.",
+      "basis": "author-tested",
+      "passage": "they both significantly and consistently outperform CoT-SC across different number of samples, reaching CoT-SC performance with 21 samples using merely 3-5 samples.",
+      "location": "Section 3.3, 'ReAct + CoT-SC perform best for prompting LLMs' / Table 1",
+      "finding": "On HotpotQA, ReAct->CoT-SC reached 35.1 EM vs CoT-SC 33.4, CoT 29.4, ReAct 27.4; on FEVER, CoT-SC->ReAct reached 64.6 vs 60.4. The combination also reduces sample cost of self-consistency. Error analysis explains why: CoT hallucinates (56% of its failures) while ReAct suffers non-informative search (23%) and reasoning loops (47%).",
+      "models": [
+        "PaLM-540B"
+      ],
+      "workloads": [
+        "HotpotQA (question-only)",
+        "FEVER"
+      ],
+      "conditions": "Wikipedia search/lookup/finish API; step budget 7 (HotpotQA) and 5 (FEVER); CoT-SC with 21 samples at temperature 0.7; 3-6 hand-written exemplars.",
+      "limitations": "Gains are a few EM points and remain far below supervised SoTA (67.5 EM / 89.5 acc); which direction of backoff wins differs per dataset; requires extra sampling cost; untested on modern tool-using models.",
+      "validation_test": "Implement both backoff directions on a multi-hop QA set with a matched token budget against plain self-consistency, and report accuracy per sample count to check the cost-matched gain reproduces.",
+      "overlaps_heuristics": []
+    },
+    {
+      "title": "If finetuning a small model for tool use, train on reasoning+action trajectories, not answers",
+      "rule": "When finetuning smaller models for knowledge tasks with tool access, use bootstrapped trajectories containing thoughts, actions and observations rather than question-answer or question-rationale pairs.",
+      "basis": "author-tested",
+      "passage": "when finetuned with just 3,000 examples, ReAct becomes the best method among the four, with PaLM-8B finetuned ReAct outperforming all PaLM-62B prompting methods",
+      "location": "Section 3.3, 'ReAct performs best for fine-tuning' / Figure 3",
+      "finding": "Prompting ReAct was the worst of four methods at 8B/62B scale, but finetuning reversed the ordering; the authors attribute this to Standard/CoT finetuning teaching fact memorization while ReAct/Act teach information access. Figure 3 numbers are not given in text, so the effect size is unreported here.",
+      "models": [
+        "PaLM-8B",
+        "PaLM-62B",
+        "PaLM-540B (prompting comparison)"
+      ],
+      "workloads": [
+        "HotpotQA"
+      ],
+      "conditions": "3,000 self-generated correct trajectories, batch size 64, 4,000 steps for ReAct/Act vs 1,000-2,000 for Standard/CoT; Wikipedia search API at inference.",
+      "limitations": "One dataset, one model family, 2022 models; trajectories are filtered by correct final answer so they may contain flawed reasoning; training steps not matched across methods; absolute scores still below supervised SoTA.",
+      "validation_test": "Finetune a small open model on matched-size sets of (a) QA pairs, (b) rationale+answer, (c) thought-action-observation trajectories from the same questions, with equal training compute, and compare exact match on held-out multi-hop QA.",
+      "overlaps_heuristics": []
+    }
+  ],
+  "status": "candidates",
+  "reason": "The paper runs controlled ablations (ReAct vs Act vs CoT vs CoT-SC, and ReAct vs ReAct-IM) on four benchmarks with PaLM-540B, supporting a few narrowly scoped rules about interleaving reasoning with tool actions, backing off between internal and external knowledge, and finetuning trajectory format. Scores are single-paper, model- and benchmark-dependent.",
+  "model": "claude-opus-5",
+  "text_url": "https://arxiv.org/html/2210.03629v3",
+  "text_sha256": "e365d33f898612fe94cf125c4d2a3d8f2b6c35b81ab9d647f028a52accf00f05",
+  "retrieved_at": "2026-10-22T23:19:44.630Z",
+  "supplied_chars": 102936,
+  "total_chars": 102936,
+  "truncated": false,
+  "input_tokens": 44543,
+  "output_tokens": 2139
+}

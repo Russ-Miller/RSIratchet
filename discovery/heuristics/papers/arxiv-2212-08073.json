@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "source": "arxiv-2212-08073",
+  "fingerprint": "723f914e47b6bd99230ab4ecf6aa7140db7bf813134bc8e3870392265639503f",
+  "attempted_at": "2026-10-22T23:20:13.586Z",
+  "candidates": [
+    {
+      "title": "Add a critique step before revision mainly for smaller models",
+      "rule": "When using a model to revise its own harmful outputs, insert an explicit self-critique turn before the revision for smaller models; for the largest models, direct revision performs nearly as well, so spend the extra sampling only if you want the reasoning trace for transparency.",
+      "basis": "author-tested",
+      "passage": "We found that critiqued revisions achieved better harmlessness scores for small models, but made no noticeable different for large models.",
+      "location": "Section 3.5 (Are Critiques Necessary?) and Figure 7",
+      "finding": "Critiqued vs direct revisions were compared by scoring revised responses with a 52B harmlessness preference model trained on human feedback. Smaller models benefited from the critique step; at 52B the two were similar with critiques only slightly better. Authors note the 52B critiques were often inaccurate or overstated, yet revisions were still more harmless than originals; they kept critiques for transparency, not measured accuracy gains.",
+      "models": [
+        "Anthropic internal pretrained/helpful-RLHF LMs up to 52B parameters"
+      ],
+      "workloads": [
+        "red-team prompts from Ganguli et al. 2022 plus model-generated harmful prompts",
+        "harmlessness preference-model scoring"
+      ],
+      "conditions": "Few-shot prompts showing correctly formatted critique/revision examples were needed because the model otherwise confused the two roles; principles were sampled randomly per revision step; sampling at temperature 1.",
+      "limitations": "Single paper, proprietary models, evaluated by a preference model whose scores the authors say are poorly calibrated at high values rather than by direct human judgment of the critique step. Extra critique sampling doubles generation cost. No test on tasks other than harmlessness revision.",
+      "validation_test": "On a fixed set of harmful prompts, generate (a) direct revisions and (b) critique-then-revision using the same model and budget-matched sampling, then compare harmfulness with a held-out judge and human spot checks, across at least two model sizes.",
+      "overlaps_heuristics": [
+        "no-one-should-judge-their-own-cause",
+        "two-heads-are-better-than-one"
+      ]
+    },
+    {
+      "title": "Sample from a pool of differently worded principles rather than reusing one",
+      "rule": "When an LM judge or reviser is steered by written principles, draw a principle at random from a set of ~16 differently worded variants per example instead of applying one fixed principle; expect more robust preference-model behaviour and response diversity rather than a higher harmlessness score.",
+      "basis": "author-tested",
+      "passage": "we found that ensembling over principles led to notably more robust PM behavior compared to using the same principle for all labels",
+      "location": "Section 4.1 (Method) and Section 4.3 (Ensembling); Figure 6",
+      "finding": "Authors randomly sampled one of 16 principles per comparison label and per revision step. They report the ensemble gave more robust preference-model scores, while separately measuring that increasing the number of principles did not raise harmlessness PM scores; the claimed diversity benefit for RL exploration was not quantified.",
+      "models": [
+        "52B and smaller Anthropic pretrained and helpful-RLHF models",
+        "52B preference models"
+      ],
+      "workloads": [
+        "RLAIF harmlessness preference labeling",
+        "critique-revision generation on red-team prompts"
+      ],
+      "conditions": "Principles were ad hoc hand-written natural-language instructions listed in Appendix C; few-shot examples prepended; applies to harmlessness judging, not helpfulness.",
+      "limitations": "The robustness claim is qualitative with no ablation figure; diversity benefit is explicitly 'not studied quantitatively'. Number of principles had no measured effect on harmlessness score, so this is not a quality lever. Principles were selected ad hoc, not designed.",
+      "validation_test": "Run two matched RLAIF pipelines, one with a single fixed principle and one sampling from ~16 paraphrased principles, and compare judge-label variance, policy response diversity, and held-out human harmlessness/helpfulness ratings at equal training budget.",
+      "overlaps_heuristics": [
+        "ashbys-law-of-requisite-variety",
+        "goodharts-law"
+      ]
+    }
+  ],
+  "status": "candidates",
+  "reason": "The paper tests several concrete harness-level choices for AI-feedback pipelines: inserting a self-critique step before revision, iterating critique-revision rounds, ensembling multiple written principles, and clamping chain-of-thought-derived preference probabilities. These are scoped, actionable rules with reported comparisons, though all on Anthropic's 52B-and-smaller internal models and human-preference Elo evaluations, so they remain single-paper and model-dependent.",
+  "model": "claude-opus-5",
+  "text_url": "https://arxiv.org/html/2212.08073v1",
+  "text_sha256": "71a9d59de65df2aa9f2fa80bbffb4af3bfc33ea1ed0b6ff58e8d0cd3b93c2b5f",
+  "retrieved_at": "2026-10-22T23:20:13.586Z",
+  "supplied_chars": 117418,
+  "total_chars": 117418,
+  "truncated": false,
+  "input_tokens": 42794,
+  "output_tokens": 2327
+}

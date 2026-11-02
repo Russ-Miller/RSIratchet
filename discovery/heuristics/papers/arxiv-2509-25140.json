@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "source": "arxiv-2509-25140",
+  "fingerprint": "86c870bdd69a78bddd42f57b3edb32204715441619c290a064c2e31acd5a9f97",
+  "attempted_at": "2026-10-22T23:17:27.384Z",
+  "candidates": [
+    {
+      "title": "Distill memory into reasoning strategies, including from failed trajectories",
+      "rule": "For streaming agent tasks with a persistent memory store, extract a few structured strategy items (title/description/content) from each trajectory and include self-judged failures as pitfall lessons, instead of storing raw trajectories or success-only workflows.",
+      "basis": "author-tested",
+      "passage": "ReasoningBank can transform failures into constructive signals rather than noise, enabling more robust generalization.",
+      "location": "Section 5, failure-trajectory ablation (Figure 7)",
+      "finding": "On WebArena-Shopping with Gemini-2.5-flash, success-only extraction scored 46.5 and adding failures raised it to 49.7, while AWM dropped from 44.4 to 42.2 and Synapse moved 40.6 to 41.7 when failures were added. Overall WebArena success rates rose +8.3/+7.2/+4.6 points over no-memory across three backbones, with fewer steps and only ~4.3% more tokens than no-memory per the cost breakdown.",
+      "models": [
+        "Gemini-2.5-flash",
+        "Gemini-2.5-pro",
+        "Claude-3.7-sonnet",
+        "Gemma-3-12B-Instruct"
+      ],
+      "workloads": [
+        "WebArena (5 subsets, 684 tasks)",
+        "Mind2Web (cross-task/website/domain)",
+        "SWE-Bench-Verified"
+      ],
+      "conditions": "ReAct-style agents in BrowserGym or bash-only SWE harness; LLM-as-a-judge (same backbone) supplies success/failure labels without ground truth; at most 3 memory items per trajectory; memory appended without pruning; embedding retrieval via gemini-embedding-001.",
+      "limitations": "Single paper, author-implemented baselines; judge accuracy measured at only 72.7% on one subset; absolute SWE-Bench and Mind2Web task success rates remain low; no matched-token budget control across memory methods; gains may depend on benchmark task similarity within a stream.",
+      "validation_test": "Run a streaming task sequence on your own agent with three memory variants (none, success-only distilled strategies, success+failure distilled strategies) using the same backbone and retrieval, and compare success rate, steps, and token cost.",
+      "overlaps_heuristics": [
+        "practice-makes-perfect",
+        "hashimotos-rule",
+        "first-impressions-last"
+      ]
+    },
+    {
+      "title": "Retrieve few memories, not many",
+      "rule": "When injecting distilled memory into the agent's system prompt, retrieve only the single most similar past experience by default; adding more retrieved experiences degraded performance in this setup.",
+      "basis": "author-tested",
+      "passage": "as the number of experiences increases, the success rate gradually declines (46.0 with 2 , 45.5 with 3 , and 44.4 with 4 )",
+      "location": "Appendix C.1, Figure 13 ablation",
+      "finding": "On WebArena-Shopping with Gemini-2.5-flash, retrieving one experience gave 49.7 success rate versus 39.0 with no memory, and more retrieved experiences monotonically reduced success rate down to 44.4 at four. The authors attribute this to conflicting or noisy context.",
+      "models": [
+        "Gemini-2.5-flash"
+      ],
+      "workloads": [
+        "WebArena-Shopping subset (187 tasks)"
+      ],
+      "conditions": "Embedding cosine similarity over a growing memory pool; retrieved items appended to system instruction with an instruction to reason about relevance before acting; up to 3 items per experience.",
+      "limitations": "Single subset, single model, single run; no error bars; the optimum may shift with better retrieval, pruning, or longer context budgets, and may differ for coding or non-web tasks.",
+      "validation_test": "Sweep retrieved-experience count k in {1,2,4,8} on your workload holding the extraction method fixed and chart success rate and prompt token cost.",
+      "overlaps_heuristics": [
+        "braesss-paradox",
+        "ashbys-law-of-requisite-variety"
+      ]
+    },
+    {
+      "title": "Aggregate parallel rollouts into memory rather than storing each separately",
+      "rule": "If you spend test-time compute on multiple rollouts per task, write memory from a contrastive comparison across those rollouts instead of converting each trajectory into memory independently.",
+      "basis": "author-tested",
+      "passage": "at k = 5 , MaTTS achieves 55.1 in parallel scaling compared with 52.4 for vanilla TTS, and 54.5 versus 51.9 in sequential scaling",
+      "location": "Section 4.3, scaling results (Figure 4)",
+      "finding": "Memory-aware aggregation beat per-trajectory memory extraction at k=5 in both parallel and sequential scaling. Without any memory, scaling gains were small and unstable (parallel 39.0-42.2). Pass@1 after curation rose 49.7 to 53.0 with this memory, while weaker memory methods gained little from scaling.",
+      "models": [
+        "Gemini-2.5-flash"
+      ],
+      "workloads": [
+        "WebArena-Shopping subset"
+      ],
+      "conditions": "Parallel scaling compares k trajectories with a self-contrast prompt; sequential scaling uses self-refinement notes; best-of-N selection uses the same backbone LLM as judge; k up to 5.",
+      "limitations": "Demonstrated on one subset and one backbone; costs scale roughly linearly with k and are not reported for the scaling experiments; sequential benefit saturates early; depends on the agent's own judge being reasonably reliable.",
+      "validation_test": "At fixed k=5 rollouts per task, compare downstream success on later tasks when memory is written per-trajectory versus from a contrastive summary of all k, holding total compute equal.",
+      "overlaps_heuristics": [
+        "two-heads-are-better-than-one",
+        "no-one-should-judge-their-own-cause"
+      ]
+    }
+  ],
+  "status": "candidates",
+  "reason": "The paper reports controlled comparisons of memory content designs (strategy distillation vs raw trajectories vs success-only workflows), inclusion of self-judged failure trajectories, retrieved-memory count ablation, and memory-aware test-time scaling aggregation. These yield scoped, actionable harness rules, though all are single-paper, mostly web-agent benchmarks.",
+  "model": "claude-opus-5",
+  "text_url": "https://arxiv.org/html/2509.25140v2",
+  "text_sha256": "a0485ae4f6047d41bff83730bacb67acabfd2a018c4f10ed374ad1065ad82219",
+  "retrieved_at": "2026-10-22T23:15:47.444Z",
+  "supplied_chars": 87079,
+  "total_chars": 87079,
+  "truncated": false,
+  "input_tokens": 37332,
+  "output_tokens": 2068
+}

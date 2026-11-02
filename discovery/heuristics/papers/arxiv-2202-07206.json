@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "source": "arxiv-2202-07206",
+  "fingerprint": "0652eb735c083906f5454e55ef5ee669d02bf02c9775fc9a3afd4eae4bb99c01",
+  "attempted_at": "2026-10-22T23:19:33.124Z",
+  "candidates": [
+    {
+      "title": "Treat low-frequency operands as a failure mode in arithmetic agents",
+      "rule": "For agent workflows that depend on LLM-computed arithmetic or unit conversion, route the computation to an external calculator/tool rather than relying on in-context few-shot answers, especially when operands are uncommon; adding more shots does not remove the frequency bias.",
+      "basis": "inferred",
+      "passage": "even though the model gets more accurate, the improvements focus on more frequent instances of the task",
+      "location": "Section 4, Time-Unit Conversion",
+      "finding": "Authors measured that performance gaps generally grew with more shots (e.g., GPT-J addition-# gap 18.1 at k=2 to 38.5 at k=16). The tool-use recommendation is our extrapolation; the paper did not test calculators or tool routing.",
+      "models": [
+        "GPT-J-6B",
+        "GPT-Neo-1.3B",
+        "GPT-Neo-2.7B"
+      ],
+      "workloads": [
+        "Two-operand addition/multiplication prompts",
+        "Time-unit conversion prompts"
+      ],
+      "conditions": "Plain Q/A prompt templates, no chain-of-thought, no tools, k up to 16 shots; models from 2021-2022.",
+      "limitations": "Tool routing was never compared in the paper; the frequency effect may be weaker in newer, larger, or CoT/tool-trained models. One easy task (decade-to-year) reached 100% with no gap, so blanket tool routing may be unnecessary for trivial conversions.",
+      "validation_test": "Build a task mix with matched-difficulty arithmetic over frequent vs rare operands and compare end-to-end agent accuracy with direct model computation vs calculator tool calls at equal token budget.",
+      "overlaps_heuristics": []
+    }
+  ],
+  "status": "candidates",
+  "reason": "The paper measures a term-frequency performance gap on numerical reasoning tasks across GPT-Neo/GPT-J models, which supports an evaluation-design rule (report frequency-stratified accuracy) and a deployment caution (don't trust aggregate few-shot arithmetic accuracy for rare operands). Other content is descriptive or related work.",
+  "model": "claude-opus-5",
+  "text_url": "https://arxiv.org/html/2202.07206v2",
+  "text_sha256": "6d24809d1f8550d2d0207e100cf938818a28298bb8211c33176924651612741e",
+  "retrieved_at": "2026-10-22T23:19:33.125Z",
+  "supplied_chars": 55684,
+  "total_chars": 55684,
+  "truncated": false,
+  "input_tokens": 24431,
+  "output_tokens": 1395
+}

@@ -1,0 +1,87 @@
+{
+  "version": 1,
+  "source": "arxiv-2410-10813",
+  "fingerprint": "5ecbc209816bd1f1cd10c211dab18f875f1b738c8969cc73dfdf9cd1af1df646",
+  "attempted_at": "2026-10-22T23:48:40.992Z",
+  "status": "candidates",
+  "reason": "Selected methods and ablations support reader-dependent context budgets, fact-augmented indexing and qualified temporal filtering.",
+  "candidates": [
+    {
+      "title": "Tune retrieved-token budgets to the reader",
+      "rule": "When building conversational memory, sweep the retrieved-token budget separately for each reader model instead of maximizing retrieved context by default.",
+      "basis": "author-tested",
+      "passage": "Llama 3.1 8B Instruct’s performance drops sharply beyond 3k retrieved tokens",
+      "location": "Section 5.2, Figure 5",
+      "finding": "GPT-4o continues improving beyond 20k retrieved tokens, while Llama 3.1 8B degrades beyond 3k. Decomposing sessions into rounds helps GPT-4o more than the smaller reader.",
+      "models": [
+        "GPT-4o",
+        "Llama 3.1 8B Instruct"
+      ],
+      "workloads": [
+        "LongMemEval M long-term conversational QA"
+      ],
+      "conditions": "Budget-aware comparison of memory value granularity; questions include extraction, multi-session and temporal reasoning, updates and abstention.",
+      "limitations": "Historical models and constructed histories. The observed thresholds are setup-specific; they are not fixed limits for every workload or modern model.",
+      "validation_test": "Sweep token budgets and memory granularity per reader on development tasks; freeze the configuration before measuring accuracy, abstention and latency on held-out histories.",
+      "overlaps_heuristics": []
+    },
+    {
+      "title": "Augment memory keys with facts while retaining original evidence",
+      "rule": "For conversational-memory retrieval, compare indexing the original round plus extracted user facts with indexing only compressed facts; keep original text available to the reader.",
+      "basis": "author-tested",
+      "passage": "using these condensed forms alone does not enhance the memory recall performance.",
+      "location": "Section 5.3, Table 3",
+      "finding": "Round-level value-plus-fact keys improve recall@10 from 0.692 to 0.784. GPT-4o top-10 QA rises from 0.670 to 0.720. Summary-only or fact-only keys do not reliably improve retrieval; improvements vary by granularity and reader.",
+      "models": [
+        "GPT-4o",
+        "Llama 3.1 70B Instruct",
+        "Llama 3.1 8B Instruct"
+      ],
+      "workloads": [
+        "LongMemEval M conversational-memory QA"
+      ],
+      "conditions": "Document expansion concatenates facts with the original retrieval value. Comparisons include both rounds and whole sessions.",
+      "limitations": "Fact extraction adds cost and can introduce errors. Session-level effects are mixed, including some QA regressions; this is not proof that all compression is harmful.",
+      "validation_test": "Compare original-only, fact-only and original-plus-fact indexing using the same retriever and reader budget; measure retrieval recall, downstream QA and unsupported facts.",
+      "overlaps_heuristics": []
+    },
+    {
+      "title": "Validate time-range extraction before filtering memory",
+      "rule": "For time-sensitive memory queries, test event-date indexing and query-derived time filters only with a model that can reliably infer the required date range.",
+      "basis": "author-tested",
+      "passage": "Llama 8B, on the other hand, struggles to generate accurate time ranges",
+      "location": "Section 5.4, Table 4",
+      "finding": "GPT-4o-derived time filters improve several retrieval measures, especially with fact-expanded keys; Llama 3.1 8B filters show mixed or negative effects. Some individual GPT-4o cells also decline, so the benefit is not uniform.",
+      "models": [
+        "GPT-4o",
+        "Llama 3.1 8B Instruct"
+      ],
+      "workloads": [
+        "Temporal reasoning subset of LongMemEval M"
+      ],
+      "conditions": "Values carry event-date metadata and a model extracts a query time range to narrow retrieval.",
+      "limitations": "Reported gains concern retrieval; they do not alone establish end-to-end QA improvement or safe hard filtering. Incorrect dates can discard decisive evidence.",
+      "validation_test": "Measure date-range precision and evidence recall before enabling filters; compare filtered and unfiltered retrieval on ambiguous dates, relative time and updated facts.",
+      "overlaps_heuristics": []
+    }
+  ],
+  "model": "Codex session",
+  "review_method": "codex-session",
+  "review_scope": "Selected abstract, introduction, methods or main-result sections; not a comprehensive paper or appendix review.",
+  "review_segments": [
+    {
+      "start": 0,
+      "end": 2200
+    },
+    {
+      "start": 30000,
+      "end": 38000
+    }
+  ],
+  "text_url": "https://arxiv.org/html/2410.10813v2",
+  "text_sha256": "bb7b8650cb9da8e7dadde31696596c1f61ff0c466345ff0e6f4b68a36af3dc91",
+  "retrieved_at": "2026-10-22T23:47:40.222Z",
+  "supplied_chars": 10202,
+  "total_chars": 99951,
+  "truncated": true
+}

@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "source": "arxiv-2304-03442",
+  "fingerprint": "93b409855a2ecda0198bf6f16486bc63011d2015896cc310acbed8590d62ede2",
+  "attempted_at": "2026-10-22T23:20:32.784Z",
+  "candidates": [
+    {
+      "title": "Score memories by recency, importance and relevance instead of summarising everything",
+      "rule": "When agent memory exceeds the context window, retrieve a top-k subset scored by a weighted sum of exponential recency decay, LLM-rated importance (1-10), and embedding cosine relevance to the current query, rather than compressing the whole history into one summary.",
+      "basis": "inferred",
+      "passage": "Summarizing all of Isabella’s experiences to fit in the limited context window of the language model produces an uninformative response",
+      "location": "Section 4.1 Memory and Retrieval, Challenge/Approach",
+      "finding": "The three-signal retrieval scheme is described with concrete parameters (decay 0.995, all weights 1, min-max normalisation) and an illustrative contrast against summarisation, but the paper does not run a controlled comparison of retrieval scoring variants; the summarisation comparison is anecdotal. The recommendation extrapolates from that example plus the ablation showing memory access matters.",
+      "models": [
+        "ChatGPT gpt-3.5-turbo"
+      ],
+      "workloads": [
+        "Smallville 25-agent sandbox",
+        "agent interview questions about memories and relationships"
+      ],
+      "conditions": "Memory objects are natural-language strings with creation and last-access timestamps; importance is generated once at memory-creation time by a prompt; top-ranked memories fill the remaining context window.",
+      "limitations": "No ablation isolates recency vs importance vs relevance, and no tuning study; the summarisation baseline is a single anecdote. Retrieval failures persisted: agents gave incomplete or embellished answers (e.g. recalling party plans but not the invitation).",
+      "validation_test": "On the same interview set, compare full-history summarisation, relevance-only retrieval, and the three-signal weighted score at equal prompt lengths, measuring accuracy against ground-truth memory logs rather than subjective believability.",
+      "overlaps_heuristics": []
+    },
+    {
+      "title": "Expect retrieval misses and embellishment; verify agent claims against the memory log",
+      "rule": "Do not treat a memory-augmented LLM agent's confident statements as evidence it holds the underlying memory; audit affirmative claims against the stored memory stream, because agents retrieve partial memories and add unsupported details.",
+      "basis": "author-tested",
+      "passage": "Out of the 453 agent responses regarding their awareness of other agents, 1.3% (n=6) were found to be hallucinated.",
+      "location": "Section 7.1.2 Results; also Section 6.5.2",
+      "finding": "The authors verified each affirmative knowledge claim against the agent's memory stream and found a small but nonzero hallucination rate, plus qualitative cases of partial retrieval (Tom recalling party plans but doubting the party existed) and world-knowledge embellishment (Adam Smith 'authored Wealth of Nations').",
+      "models": [
+        "ChatGPT gpt-3.5-turbo"
+      ],
+      "workloads": [
+        "Smallville two-game-day simulation, 25 agents",
+        "post-hoc interviews about information diffusion and mutual acquaintance"
+      ],
+      "conditions": "Verification done manually by inspecting memory stream entries after a two-day simulation; rate measured only for the 'do you know of X' question family.",
+      "limitations": "Single run, one model, short horizon; the 1.3% figure is specific to acquaintance questions and manual labelling, not a general hallucination rate. No automated verification method was proposed or evaluated.",
+      "validation_test": "Instrument an agent harness to require a memory-ID citation for each factual claim and automatically check it, then measure how often claims lack support across tasks and models, comparing to the manual audit rate reported here.",
+      "overlaps_heuristics": [
+        "no-one-should-judge-their-own-cause"
+      ]
+    }
+  ],
+  "status": "candidates",
+  "reason": "The paper runs a controlled ablation of memory retrieval, planning, and reflection within one sandbox LLM-agent setup, with human ranking of believability. This supports narrowly scoped rules about adding retrieval-based memory, periodic reflection, and hierarchical plans; secondary observations (plan decomposition fixing repeated actions, cost) are design arguments rather than measured comparisons, so they are flagged as inferred or scoped carefully.",
+  "model": "claude-opus-5",
+  "text_url": "https://arxiv.org/html/2304.03442v2",
+  "text_sha256": "90512fa4dd9001fbd8615e6ae59d25987b45db9adb8bd7290e0d029737e3eeaf",
+  "retrieved_at": "2026-10-22T23:20:32.784Z",
+  "supplied_chars": 120000,
+  "total_chars": 132682,
+  "truncated": true,
+  "input_tokens": 44567,
+  "output_tokens": 2085
+}
