@@ -50,6 +50,16 @@ candidates:
       fine-tuning, MARD achieves an F1 score of 93.46%. It not only outperforms continual learning
       baselines but also exhibits robustness against concept drift and strong cross-domain
       generalization capabilities in evaluations spanning up to f
+    verdicts:
+      - capability: multi-model-coordination
+        about_capability: false
+        direction: not_applicable
+        confidence: medium
+        rationale: The paper applies a multi-agent LLM pipeline to Android malware detection but benchmarks
+          it against continual-learning ML detectors rather than a single-model/single-agent
+          baseline, so it does not isolate the contribution of multi-agent combination.
+        classified_at: 2026-11-02
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7160307478
     score: 25
     signals:
@@ -97,6 +107,15 @@ candidates:
       from thinking mode. Agentic pipelines are particularly effective under low sampling budgets
       and on harder datasets. Failure analysis further shows that incorrect loop invariants are the
       dominant error type, while ag
+    verdicts:
+      - capability: cutting-to-the-chase
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper benchmarks formal specification generation for C programs; thinking mode is
+          evaluated for accuracy gains, not for directness or output padding.
+        classified_at: 2026-11-02
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7158066449
     score: 23
     signals:
@@ -143,6 +162,27 @@ candidates:
       Chain-of-Thought (CoT) training paradigm. We train the MLLM to first predict, then use its
       understanding capabilities to reflect on and refine its own predictions. This capability is
       instilled via a three-stage pipeline of SFT, CoT finetuni
+    verdicts:
+      - capability: video-temporal-reasoning
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: The paper proposes a new large-scale grounding dataset and a self-correction CoT training
+          paradigm that improves MLLM temporal localization, especially for rare concepts.
+        scope_condition: MLLMs for open-world video temporal grounding, trained on the OmniVTG dataset with
+          a three-stage SFT + self-correction CoT pipeline
+        classified_at: 2026-11-02
+        model: claude-opus-5
+      - capability: self-repair
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes a Self-Correction CoT training paradigm that has the MLLM reflect on
+          and refine its own grounding predictions, reporting gains over plain SFT.
+        scope_condition: Multimodal LLMs fine-tuned for open-world video temporal grounding, three-stage SFT
+          + CoT + RL pipeline on the OmniVTG dataset
+        classified_at: 2026-11-02
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7163048516
     score: 19
     signals:
@@ -185,6 +225,19 @@ candidates:
       Fine-tuned Llama-3-8B outperforms zero-shot GPT-5.6-Terra, while fine-tuned Llama-3-70B
       achieves 61.17% overall pass@1 and approaches few-shot-augmented GPT-5.6-Terra. QASM-Eval
       provides a benchmark and training resource for specification-guided code generat"
+    verdicts:
+      - capability: code-generation
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper builds a benchmark for a DSL thinly represented in pretraining and shows
+          targeted fine-tuning lets an 8B model beat a zero-shot frontier model and a 70B reach 61%
+          pass@1.
+        supports_claim_id: domain-specific-language-essentially-absent-pretraining-corpora-form-symbolic-algebra
+        scope_condition: OpenQASM 3 hardware-facing code completion (classical logic, timing, pulse
+          control); Llama-3 8B/70B fine-tuned on 4k+ curated tasks vs frontier models zero/few-shot
+        classified_at: 2026-11-02
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7160321522
     score: 19
     signals:
@@ -230,6 +283,16 @@ candidates:
       non-expert humans when given few-shot examples. Finding that VLMs struggle to fully exploit
       in-context examples, we shift from test-time improvements to the training side. We collect the
       first large-scale training dataset for domain-specific actions, tot"
+    verdicts:
+      - capability: domain-knowledge
+        about_capability: false
+        direction: not_applicable
+        confidence: medium
+        rationale: The paper benchmarks fine-grained video action recognition in VLMs, with domains only
+          serving as a source of visual diversity rather than comparing general models to domain
+          experts or domain-adapted practitioners on domain knowledge.
+        classified_at: 2026-11-02
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7159582511
     score: 18
     signals:
@@ -275,6 +338,27 @@ candidates:
       to steer a web agent toward more accurate and reliable trajectory refinement. Together, these
       innovations enable AutoSurfer to comprehensively cover a website's action space and generate
       data suitable for training website-specific LLMs.
+    verdicts:
+      - capability: tool-use
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes a trajectory-generation pipeline (breadth-first exploration, grounded
+          task synthesis, hint-guided refinement) to produce training data that improves web agents'
+          action accuracy in interactive environments.
+        scope_condition: Multimodal LLM web agents acting in website environments, trained on automatically
+          generated trajectory data
+        classified_at: 2026-11-02
+        model: claude-opus-5
+      - capability: hallucination
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper is about web-agent trajectory data generation; hallucination is mentioned only
+          loosely as ambiguous/incorrect task synthesis, not measured or studied as unsupported
+          generation.
+        classified_at: 2026-11-02
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7159672934
     score: 18
     signals:
@@ -321,6 +405,26 @@ candidates:
       outperforms competitive baselines on nine datasets. Our findings highlight the importance of
       bridging autonomous evidence acquisition and specialized temporal reasoning for accurate and
       adaptive agentic forecasting. The source code is available at"
+    verdicts:
+      - capability: forecasting
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: The paper proposes a framework that reportedly outperforms competitive baselines on nine
+          of ten forecasting benchmarks.
+        scope_condition: Agentic LLM time series forecasting on ten real-world benchmarks, with experience
+          memory, tool orchestration, and a specialized LLM trained via SFT+RLVR refining an
+          ensemble prior
+        classified_at: 2026-11-02
+        model: claude-opus-5
+      - capability: video-temporal-reasoning
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper concerns numerical time series forecasting with LLM agents, not reasoning about
+          time in video.
+        classified_at: 2026-11-02
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7157938612
     score: 18
     signals:
@@ -365,6 +469,28 @@ candidates:
       reasoning settings do not straightforwardly transfer to hallucination and
       unanswerable-question scenarios. We further explore uncertainty-based adaptive inference as a
       potential downstream application. We hope this study provides a foundation fo
+    verdicts:
+      - capability: abstention-and-self-knowledge
+        about_capability: true
+        direction: measures
+        confidence: medium
+        rationale: The paper is a systematic benchmark of uncertainty estimation methods (including P(True)
+          and semantic entropy) for ALLMs, including unanswerable-question settings, without
+          proposing a new improvement.
+        scope_condition: Audio-aware LLMs; five uncertainty estimation methods across audio understanding,
+          reasoning, hallucination detection, and unanswerable-question benchmarks
+        classified_at: 2026-11-02
+        model: claude-opus-5
+      - capability: audio-understanding
+        about_capability: true
+        direction: measures
+        confidence: medium
+        rationale: The paper benchmarks existing uncertainty estimation methods on audio LLMs without
+          proposing a new capability-improving technique or reporting a regression.
+        scope_condition: Audio-aware LLMs evaluated on audio understanding/reasoning, hallucination, and
+          unanswerable-question benchmarks with five uncertainty estimation methods
+        classified_at: 2026-11-02
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7158495802
     score: 17
     signals:

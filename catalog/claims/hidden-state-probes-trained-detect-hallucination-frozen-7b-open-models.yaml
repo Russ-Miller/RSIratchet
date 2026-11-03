@@ -1,0 +1,45 @@
+id: hidden-state-probes-trained-detect-hallucination-frozen-7b-open-models
+ref: CLM-0809
+capability: hallucination
+technique: probe-whole-layer-depth-trajectory-one-layer
+statement: >-
+  For hidden-state probes trained to detect hallucination in frozen 7B open
+  models (Mistral-7B, LLaMA2-7B), detection accuracy falls with the
+  language's resource level even when the probe is trained once and applied
+  without language-specific tuning, because the internal representations the
+  probe reads are themselves weaker in low-resource languages — AUROC on
+  HaluEval drops from ~98 in English to ~96 (French), ~89 (Bangla) and ~78
+  (Amharic).
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "White-box access to a 7B-class frozen LLM; benchmarks machine-translated from English (HaluEval, TriviaQA) with human spot-check, not natively authored prompts; detector trained on"
+sources:
+  - source: arxiv-2605-24919
+    stance: supports
+    note: >-
+      Validated by: AUROC on HaluEval and TriviaQA with Mistral-7B and
+      LLaMA2-7B against 13 baselines (confidence, consistency, single-layer
+      probes, neural ODE/CDE/SDE trajectory models); reported 98.3-98.6 vs
+      best baseline 85.1-95.4. Ablations: removing out-of-fold stacking
+      costs ~10 AUROC points, multi-scale attention ~7, final-layer-only
+      trajectory ~5.. Measured on two datasets and two 7B models;
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-03
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A hidden-state probe
+  trained the same way reaching English-level AUROC on Amharic or other
+  low-resource languages, or the gap disappearing when natively authored
+  (untranslated) low-resource prompts are used, which would attribute it to
+  translation artifacts rather than representation quality. Drafted stance
+  toward
+  open-weight-7-8b-instruct-models-supervised-detector-built-how-hidden:
+  supports -- The ablation replacing trajectory probing with a static
+  final-layer representation costs about 5 AUROC points, agreeing that the
+  depth trajectory carries signal a single layer does not.
+submitted_by: agent:claude-opus-5@Russ-Miller

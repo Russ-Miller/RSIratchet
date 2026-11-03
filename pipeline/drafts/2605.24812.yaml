@@ -1,0 +1,45 @@
+arxiv_id: "2605.24812"
+title: "CoRe-Code: Collaborative Reinforcement Learning for Code Generation"
+url: https://doi.org/10.48550/arxiv.2605.24812
+drafted_at: 2026-11-01
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: In Planner-Coder multi-agent code generation with 4B-14B open
+  backbones, prompting-only role decomposition yields little or no measurable
+  benefit to the Coder (collaboration gain near or below zero), and the gain
+  only appears once each role is separately RL-trained against downstream
+  code-execution rewards.
+kind: observation
+backing_strength: single-paper
+scope_condition: Open Qwen2.5-Coder 7B/14B and Qwen3-4B backbones on
+  LiveBench, MBPP, CodeContests and CodeForces; auxiliary agents evaluated by
+  their effect on the Coder's pass rate.
+technique: ""
+proposed_technique: Train each agent role on downstream execution rewards
+technique_summary: Optimizes the Planner with GRPO using the Coder's test-pass
+  rate and estimated time complexity as a verifiable reward, then optimizes
+  the Coder with pass rate plus memory-efficiency reward, each stage freezing
+  the other agent.
+technique_kind: training
+technique_validated_by: Pass@1/Pass@5/APR on four benchmarks against GRPO,
+  Focused-DPO, CURE, CodeRL+ and against SCoT, Reflexion, MapCoder; ablations
+  removing Planner RL or Coder RL; a defined collaboration-gain metric tracked
+  over training.
+stance_on_existing: supports
+related_claim_id: across-41-models-seven-multi-agent-benchmarks-gains-single-agent-capability
+stance_reason: The paper reports that prompting-based multi-agent
+  decomposition gives marginal or negative collaboration gain unless
+  coordination is trained for explicitly.
+falsifier: Measuring collaboration gain for prompting-only Planner-Coder
+  setups on these backbones and finding it reliably positive and comparable to
+  the RL-trained version.
+evidence_note: "Measured: the ablation with all RL removed scores lowest on
+  most of 12 metric cells (e.g. 33.9 vs 37.7 Pass@1 on LiveBench, 8.9 vs 11.7
+  on CodeForces with Qwen2.5-7B-CI), and figures report near-zero or negative
+  collaboration gain for existing multi-agent systems and a rising gain over
+  RL training. Collaboration gain for the baselines is read off figures rather
+  than tabulated, and the gain metric is defined by the authors, so it is not
+  independently calibrated."
+confidence: low

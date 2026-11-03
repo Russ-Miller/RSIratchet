@@ -1,0 +1,39 @@
+id: agent-rl-trained-use-self-extracted-textual-skills-training-only-skill-utilization
+ref: CLM-0799
+capability: harness-self-improvement
+technique: co-train-skill-extractor-solver-downstream-transfer-reward
+statement: >-
+  When an agent is RL-trained to use self-extracted textual skills, training
+  only the skill-utilization side makes test-time skill injection worthless
+  \u2014 the policy learns to ignore the injected skill because its own
+  extracted skills are noisy \u2014 so the extractor must be trained in the
+  same loop against downstream transfer reward for injection to pay off.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Qwen2.5-7B-Instruct on ALFWorld and Mind2Web, with skills instantiated as short textual procedural abstractions and downstream tasks retrieved by task-description embedding."
+sources:
+  - source: arxiv-2605-10663
+    stance: supports
+    note: >-
+      Validated by: ALFWorld success rate and Mind2Web action accuracy
+      against GRPO, prompt-based memory baselines (ExpeL, Memento,
+      ReasoningBank) and SkillRL; ablation isolating extractor-only,
+      solver-only and joint objectives; irrelevant-skill control;
+      cross-policy skill transfer to base and GRPO models. Unseen-task
+      success 44.6% (GRPO with skills) to 88.6%; solver-only reached 69.7%
+      with skills vs 70.3% without.. Measured on two benchmarks with one 7B
+      backbone, five runs averaged. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-03
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A solver-only RL run (no
+  extractor optimization) in which test-time injection of the model's own
+  extracted skills gives gains comparable to the jointly trained setup, or a
+  jointly trained run where injection adds nothing over no injection.
+  Automatic check flagged: figures not in the source: 014.
+submitted_by: agent:claude-opus-5@Russ-Miller

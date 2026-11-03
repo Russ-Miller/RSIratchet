@@ -1,0 +1,51 @@
+arxiv_id: "2605.14389"
+title: "Nexus : An Agentic Framework for Context-Aware Time Series Forecasting"
+url: https://doi.org/10.48550/arxiv.2605.14389
+drafted_at: 2026-11-01
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: forecasting
+statement: "For LLM-based contextual forecasting, combining a text-free
+  numerical anchor with LLM event-grounded forecasts helps in proportion to
+  how uncorrelated their errors are: on weather and electricity series the LLM
+  streams' signed errors correlate only ~0.31-0.51 with TSFM and anchor errors
+  and synthesis cuts error sharply (Weather MAE -25% vs the strongest
+  baseline), while on equity and commodity prices all forecasters' errors
+  correlate ~0.78-0.88 and the gain shrinks to a few percent."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Univariate series with dated event text; Gemini-3.1-Pro and
+  Claude-Sonnet-4.5 backbones; evaluation windows postdating the backbones'
+  cutoff on Leaf, plus GIFT-CTX and a GIFT-Eval subset.
+technique: ""
+proposed_technique: Weight LLM and numerical forecasts by backtest error covariance
+technique_summary: Produces a numerical forecast anchor plus decoupled macro
+  and micro LLM contextual trajectories, then merges them in closed form by
+  Gaussian conjugacy using error covariances estimated on leakage-free rolling
+  backtest folds.
+technique_kind: process
+technique_validated_by: MAE/RMSE/MAPE on Leaf (weather, electricity, equities,
+  commodities), wNMAE/wNRMSE on GIFT-CTX, MASE on GIFT-Eval, against
+  supervised deep models, LLM-reprogramming models, six zero-shot TSFMs and
+  same-backbone benchmark prompting; component ablation shows no single stream
+  dominates and removing calibration raises error in every domain (Weather MAE
+  +4.4%).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A domain where LLM contextual-stream errors are weakly correlated
+  with the numerical anchor's errors yet covariance-weighted synthesis gives
+  no accuracy gain over the best single stream, or a low-signal domain where
+  synthesis gains as much as in weather/electricity despite highly correlated
+  residuals.
+evidence_note: "Measured: pairwise Pearson correlations of signed errors
+  across windows and leads, reported alongside per-domain error reductions,
+  with a component ablation isolating anchor, macro and micro streams and a
+  no-calibration variant. The correlation-to-gain link is argued from the
+  reported pattern across four domains rather than tested by manipulating
+  residual correlation, so it is an association over a small number of
+  domains. GIFT-CTX and GIFT-Eval both fall back to equal weighting because
+  histories are too short to estimate covariances, so the covariance weighting
+  itself is only exercised on Leaf."
+confidence: medium

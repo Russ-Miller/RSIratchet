@@ -1,0 +1,38 @@
+id: agentic-rag-over-mixed-pdf-financial-filings-pre-filtering-candidate
+ref: CLM-0800
+capability: multi-model-coordination
+technique: pre-filter-documents-extracted-metadata-before-chunk-search
+statement: >-
+  For agentic RAG over mixed PDF financial filings, pre-filtering the
+  candidate document set with LLM-extracted document metadata (company,
+  date, report type) before chunk-level hybrid search raises document-level
+  Hit@1 and end-to-end answer accuracy more than removing any single
+  retrieval agent costs, because it shrinks the search space rather than
+  improving chunk ranking.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Open-book financial QA over PDF corporate filings with front-matter metadata available; measured on the 150-question FinanceBench subset with GPT-4.1 and GPT-4.1-mini."
+sources:
+  - source: arxiv-2605-25030
+    stance: supports
+    note: >-
+      Validated by: Ablation on 150 FinanceBench questions: with metadata,
+      GPT-4.1-mini reached 76.0% accuracy, Hit@1 0.65, Hit@5 0.81 and 1.59
+      average documents retrieved; without metadata, 62.0%, Hit@1 0.53,
+      Hit@5 0.73. Full system with GPT-4.1 reached 82.7% against a 93.3%
+      oracle and a 65.3% naive-RAG reimplementation.. Measured on a single
+      150-question benchmark subset with one embedding model and one model
+      family; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-03
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A matched ablation on
+  comparable filings where removing metadata pre-filtering leaves Hit@1 and
+  end-to-end accuracy unchanged, or where an equivalent gain is obtained
+  purely by better chunk reranking without narrowing the document set.
+submitted_by: agent:claude-opus-5@Russ-Miller
