@@ -1,0 +1,70 @@
+id: arxiv-2604-19305
+ref: SRC-0885
+kind: paper
+title: "DebugRepair: Enhancing LLM-Based Automated Program Repair via
+  Self-Directed Debugging"
+authors:
+  - Linhao Wu
+  - Yifei Pei
+  - Zhen Yang
+  - Kainan Li
+  - 卢中杭
+  - Hao Tan
+year: 2026
+date: 2026-04-21
+arxiv_id: "2604.19305"
+url: https://arxiv.org/abs/2604.19305
+tags:
+  - ingested
+summary: Automated Program Repair (APR) has benefited from the code
+  understanding and generation capabilities of Large Language Models (LLMs).
+  Existing feedback-based APR methods iteratively refine candidate patches
+  using test execution feedback and have shown promising results. However,
+  most rely on outcome-level failure symptoms, such as stack traces, which
+  show how failures are observed but fail to expose the intermediate runtime
+  states critical for root-cause analysis. As a result, LLMs often infer bug
+  causes without sufficient runtime evidence, leading to incorrect patches. To
+  address this limitat
+notes: "Filed as a source on debugging from the classifier's judgement that
+  the paper is about it (improves, high): The paper proposes a self-directed
+  debugging framework that increases the number of correctly fixed benchmark
+  bugs over prior state-of-the-art repair methods. No claim has been drafted
+  from it yet."
+ingested_at: 2026-11-04
+brief: >-
+  Feeding a repair model intermediate runtime values, obtained by having it
+  insert its own print statements, fixes bugs that stack traces alone do not.
+  The claim is that outcome-level failure symptoms let LLMs produce
+  plausible-but-wrong patches that mask symptoms rather than fix root causes.
+
+
+  DebugRepair has 3 parts: static slicing of the failing test to a minimal
+  failure-triggering context, LLM-chosen instrumentation with a rule-based AST
+  fallback when the instrumented code fails a consistency or compilation
+  check, and a hierarchical repair loop (6 debugging sessions x 4 rounds, plus
+  8 patch-augmentation queries, so 32 candidate patches per bug). Benchmarks:
+  Defects4J V1.2 (391 bugs) and V2.0 (438), QuixBugs Java and Python (40
+  each), HumanEval-Java (163), against 15 baselines.
+
+
+  With GPT-3.5 it correctly fixes 224 Defects4J bugs (111 on V1.2, 113 on
+  V2.0), 11 more than ReinFix at a smaller patch budget, 23 more than TSAPR,
+  and all 40 QuixBugs in both languages. With DeepSeek-V3 it fixes 295, 59
+  more than the second-best. Across 5 other backbones it fixes 51.3% more than
+  vanilla on average.
+
+
+  Baseline numbers on Defects4J are copied from original papers rather than
+  rerun, except for 6 LLM baselines reproduced under DeepSeek-V3; the setting
+  uses perfect fault localization. Gains concentrate in single-function and
+  single-hunk bugs; on single-line bugs on V1.2 it trails ChatRepair and TSAPR
+  (55 vs 57), consistent with traces adding context length without new
+  evidence.
+
+
+  If you build feedback-based repair loops, instrumentation traces are worth
+  adding, and the authors argue the mechanism is orthogonal to retrieval and
+  search-based tools.
+brief_generated_at: 2026-11-04
+brief_model: claude-opus-5
+brief_source: full-text

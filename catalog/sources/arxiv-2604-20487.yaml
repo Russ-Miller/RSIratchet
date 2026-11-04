@@ -1,0 +1,67 @@
+id: arxiv-2604-20487
+ref: SRC-0892
+kind: paper
+title: "Knowledge Capsules: Structured Nonparametric Memory Units for LLMs"
+authors:
+  - Bin Ju
+  - Shenfeng Weng
+  - Danying Zhou
+  - Rongkai Xu
+  - Rongkai Xu
+year: 2026
+date: 2026-04-22
+arxiv_id: "2604.20487"
+url: https://arxiv.org/abs/2604.20487
+tags:
+  - ingested
+summary: Large language models (LLMs) encode knowledge in parametric weights,
+  making it costly to update or extend without retraining. Retrieval-augmented
+  generation (RAG) mitigates this limitation by appending retrieved text to
+  the input, but operates purely through context expansion, where external
+  knowledge competes as tokens within the attention mechanism. As a result,
+  its influence is indirect and often unstable, particularly in long context
+  and multi hop reasoning scenarios. We propose Knowledge Capsules, structured
+  nonparametric memory units that represent normalized relational knowledge
+  and can
+notes: "Filed as a source on long-context-degradation from the classifier's
+  judgement that the paper is about it (improves, medium): The paper proposes
+  external key-value injection replacing context-appended retrieval and
+  reports improved stability and accuracy in long-context and multi-hop
+  settings, i.e., mitigating long-context degradation. No claim has been
+  drafted from it yet."
+ingested_at: 2026-11-04
+brief: >-
+  Injecting retrieved knowledge as precomputed key-value tensors only helps
+  when the injected content is structured triples; dumping retrieved sentences
+  into the KV cache hurts, falling below a no-retrieval baseline. KVI compiles
+  subject-relation-object "capsules" from a corpus with a frozen LLM into
+  layer-wise KV tensors, retrieves them by graph traversal, and prefixes them
+  to the attention cache while raw evidence sentences stay in the prompt.
+
+
+  Tested on Qwen2.5-7B-Instruct and Mistral-7B-Instruct-v0.3 across NQ
+  (N=100), HotpotQA (N=120), MedHopQA-ID (N=40) and MedHopQA_official (N=342),
+  with exact match and 95% bootstrap CIs.
+
+
+  On Qwen2.5, KVI reaches 49.0 on NQ vs 44.0 GraphRAG, 41.0 RAG, 14.0 KV
+  Prefix; 33.3 on HotpotQA vs 32.5 and 22.5; 92.5 on MedHopQA_n40 vs 82.5;
+  75.4 vs 74.3 on MedHopQA_official. Mistral shows the same ordering, with the
+  largest gap on MedHopQA_official (33.3 vs 13.5).
+
+
+  The 5 conditions form a full ablation grid, so graph retrieval and KV
+  injection are separable; graph retrieval carries most of the gain, KV
+  injection adds a smaller consistent margin, and CIs overlap on HotpotQA and
+  MedHopQA_official. LLM and RAG score 0.0 on MedHop ID tasks largely from
+  malformed identifiers, not reasoning failure. Hallucination results are
+  proxy metrics, not official scorers, and GraphRAG beats KVI on FEVER (7.5 vs
+  10.7).
+
+
+  If you build RAG systems, the takeaway is that KV-level injection is not a
+  drop-in replacement for prompt context, only a complement to structured
+  retrieval.
+brief_generated_at: 2026-11-04
+brief_model: claude-opus-5
+brief_source: full-text

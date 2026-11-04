@@ -1,0 +1,44 @@
+arxiv_id: "2605.15224"
+title: "ICRL: Learning to Internalize Self-Critique with Reinforcement Learning"
+url: https://doi.org/10.48550/arxiv.2605.15224
+drafted_at: 2026-11-01
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: self-repair
+statement: When training an LLM agent on critique-guided revisions,
+  reinforcing the revised trajectory directly teaches critique-dependent
+  behavior rather than unassisted ability, because the revision was sampled
+  from a critique-conditioned distribution; re-conditioning the trajectory on
+  the critique-free prompt and down-weighting tokens whose probability
+  collapses without the critique transfers more of the gain to the
+  critique-free policy.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Qwen3-4B/8B backbones, GRPO-style RL, agentic environments
+  (ALFWorld, WebShop, multi-hop QA) and math reasoning; solver and critic
+  share one backbone.
+technique: ""
+proposed_technique: Re-weight critique-guided tokens by critique-free plausibility
+technique_summary: Revised trajectories are re-conditioned on the
+  critique-free prompt and each token is scaled by the ratio of its
+  critique-free to critique-conditioned probability, so critique-dependent
+  tokens are down-weighted during the policy update.
+technique_kind: training
+technique_validated_by: Average scores against GRPO, GSPO, ScalingInter, MATPO
+  and Critique-GRPO on six agentic benchmarks and five math benchmarks (+7.8
+  over GRPO and +1.1 over Critique-GRPO at 4B; +7.0 over GRPO on math at 8B);
+  ablation removing the re-weight ratio drops the four-benchmark average from
+  69.8 to 67.8.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation in which removing the re-weighting ratio leaves
+  critique-free (no-critique-at-test) accuracy unchanged or higher, or where
+  naive reinforcement of revised trajectories transfers to the critique-free
+  policy as well as the calibrated update.
+evidence_note: Measured on two backbones across eleven benchmarks with several
+  RL baselines; the component ablation is a single averaged 2-point drop, and
+  the distributional-bias argument is theoretical (deferred to an appendix)
+  rather than directly measured as critique dependence.
+confidence: medium

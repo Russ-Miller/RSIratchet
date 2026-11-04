@@ -1,0 +1,39 @@
+id: black-box-hallucination-detectors-score-chain-of-thought-traces-lose-or-invert
+ref: CLM-0810
+capability: evaluation-validity
+technique: force-or-remove-final-answer-test-trace-detectors
+statement: >-
+  Black-box hallucination detectors that score chain-of-thought traces lose
+  or invert their discriminative power when the final answer is replaced
+  with ground truth or the answer-announcement step is deleted while the
+  reasoning body is left intact, so AUC measured on unperturbed traces
+  partly reflects endpoint cues rather than assessment of the reasoning.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Black-box sampling-based detectors (exact-match repetition, NLI non-contradiction, BERTScore consistency, cosine similarity, semantic negentropy, RACE, SEU) over 10 sampled traces,"
+sources:
+  - source: arxiv-2605-08346
+    stance: supports
+    note: >-
+      Validated by: Applied across 7 baseline scorers x 5 models x 4
+      benchmarks, reporting AUC under Force vs Remove; several baselines
+      shifted by over 20 points (RACE 76.17 Force to 54.67 Remove on
+      BBH-Tracking/Gemma-3-27B; 24.28 vs 59.01 on GPQA Diamond), while NSN
+      sat at chance under Force and rose to 77-80 under Remove on MATH-500.
+      A lexical-trajectory scorer (TRACT) computed after answer removal gave
+      near-identical scores under both and stayed competitive in absolute
+      AUC.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-04
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Detectors whose reported
+  AUC is attributed to reasoning assessment hold their scores within noise
+  under both Force and Remove across models and benchmarks; or showing the
+  perturbations themselves alter the reasoning body's statistics enough to
+  explain the shifts.
+submitted_by: agent:claude-opus-5@Russ-Miller

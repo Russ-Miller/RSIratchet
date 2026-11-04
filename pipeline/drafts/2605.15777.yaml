@@ -1,0 +1,47 @@
+arxiv_id: "2605.15777"
+title: "SaaS-Bench: Can Computer-Use Agents Leverage Real-World SaaS to Solve
+  Professional Workflows?"
+url: https://doi.org/10.48550/arxiv.2605.15777
+drafted_at: 2026-11-01
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: long-horizon-execution
+statement: "In cross-application SaaS workflows averaging over 100 UI steps,
+  weighted partial-credit checkpoint scores overstate what agents can actually
+  finish: across 14 frontier models the best overall checkpoint score was
+  about 44% while the best end-to-end resolved rate was under 4%, and every
+  model's checkpoint pass rate declines monotonically from early to late
+  positions within a task."
+kind: observation
+backing_strength: single-paper
+scope_condition: 106 tasks over 23 locally deployed open-source SaaS systems,
+  browser-only action space, environment reset before each run, checkpoints
+  verified by state checks, content checks and LLM judges
+technique: ""
+proposed_technique: Stratify checkpoint pass rates by position in the task
+technique_summary: Instead of reporting one aggregate partial-credit score,
+  bin a task's verification checkpoints into early, middle and late stages and
+  report pass rate per stage alongside strict all-checkpoint completion.
+technique_kind: process
+technique_validated_by: Applied to trajectories of the evaluated models; all
+  models showed a monotonic early-to-late decline, and the authors use this to
+  explain the large checkpoint-versus-resolved gap. Not validated as improving
+  agent performance, only as a diagnostic.
+stance_on_existing: supports
+related_claim_id: llm-agents-dependent-multi-step-tasks-success-decays-geometrically-number
+stance_reason: The within-task early-to-late checkpoint decay and the
+  near-zero all-checkpoint completion despite ~44% partial credit are
+  consistent with per-step reliability below 1 compounding over dependent
+  steps.
+falsifier: A benchmark of comparably long multi-application workflows where
+  models with high aggregate checkpoint scores also resolve a large share of
+  tasks end-to-end, or where late-stage checkpoint pass rates equal or exceed
+  early-stage ones.
+evidence_note: Measured over 106 tasks and 14 models with per-checkpoint
+  verification; the position-stratified decay is reported for all evaluated
+  models and the complexity analysis shows scores falling with trajectory
+  length and checkpoint count. Single benchmark, one execution framework
+  (browser-use), and most per-task variance analysis rests on a handful of
+  case studies with 3 runs.
+confidence: medium

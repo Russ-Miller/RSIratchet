@@ -1,69 +1,65 @@
 # Consolidated capability candidates. Suggestions, not capabilities.
-generated_at: 2026-10-31
-from_raw_proposals: 28
+generated_at: 2026-11-03
+from_raw_proposals: 31
 recommended:
   - id: spatial-reasoning
-    label: "Reasoning about space, 3D layout and affordances"
-    scope_note: "Covers metric and relational spatial judgments, 3D scene/depth understanding, and inferring how objects can be acted on; excludes temporal video reasoning and plain object grounding."
+    label: "Reasoning about space, distance and layout"
+    scope_note: "Covers metric, topological and relative spatial judgements over images, scenes or coordinates (distance, bearing, containment, arrangement, comparative size); excludes merely locating or naming an object, which visual-grounding already covers."
     paper_count: 4
-    merged_from: [spatial-reasoning, 3d-spatial-understanding, affordance-reasoning]
-    note: "Recurring across several papers and clearly distinct from visual-grounding and video-temporal-reasoning."
-  - id: scientific-discovery
-    label: "Proposing and deriving new scientific results"
-    scope_note: "Covers hypothesis generation scored against data, multi-step symbolic derivation and causal identification/study design; excludes factual science QA and literature summarization."
+    merged_from: [visual-spatial-layout, quantitative-spatial-reasoning, fine-grained-visual-comparison, geospatial-reasoning]
+    note: "Four independent papers converge on a well-defined weakness distinct from visual-grounding: models see what is there but misjudge where and how big."
+  - id: visual-document-and-diagram-reading
+    label: "Reading charts, diagrams and degraded text"
+    scope_note: "Covers extracting values and insight from charts, interpreting stepwise visual manuals or schematics, reading sketch markup, and OCR under blur or low resolution; excludes general image description and clean text-only documents."
+    paper_count: 4
+    merged_from: [chart-understanding, diagrammatic-instruction-following, degraded-text-recognition, sketch-input-interpretation]
+    note: "Four papers hit the same practical bottleneck — turning structured or noisy visual information into usable content — and it is not reducible to visual-grounding."
+  - id: compression-and-continual-learning-retention
+    label: "Retaining behavior after compression or continual training"
+    scope_note: "Covers whether pruning, quantization or a sequence of training tasks preserves prior capabilities (catastrophic forgetting, behavioral drift); excludes a single fine-tuning round's safety effects, covered by fine-tuning-retention."
     paper_count: 3
-    merged_from: [scientific-hypothesis-search, scientific-derivation, causal-inference-design]
-    note: "Three papers point at generative scientific reasoning, which domain-knowledge and formal-math do not cover."
-  - id: adversarial-robustness
-    label: "Holding up under adversarial inputs and planted triggers"
-    scope_note: "Covers optimized perturbations, transfer attacks and poisoned/backdoor triggers that flip behavior; excludes prompt-level jailbreaks and injected instructions in retrieved data."
+    merged_from: [compression-retention, continual-learning-retention]
+    note: "Complements fine-tuning-retention with the deployment-time modifications practitioners actually apply, and has repeated evidence."
+  - id: causal-reasoning
+    label: "Reasoning about cause rather than correlation"
+    scope_note: "Covers causal structure (confounders, chains, colliders), interventions and counterfactuals, including under flipped surface semantics; excludes plain logical deduction and factual recall."
     paper_count: 2
-    merged_from: [adversarial-perturbation-robustness, backdoor-robustness]
-    note: "Two independent papers on input-level and training-level attacks that no existing entry covers."
-  - id: compression-retention
-    label: "Keeping behavior after compression"
-    scope_note: "Covers whether quantization, pruning, distillation or KV-cache eviction preserves accuracy, robustness and outputs; excludes changes from task fine-tuning or alignment."
+    merged_from: [causal-reasoning]
+    note: "A classic, separable reasoning failure mode not captured by multi-step-reasoning or logical-deduction-robustness."
+  - id: scientific-discovery
+    label: "Proposing and validating new scientific models"
+    scope_note: "Covers autonomous hypothesis generation, symbolic/mechanistic model search over data, and empirical refinement loops; excludes domain QA, literature recall and ordinary code generation."
     paper_count: 2
-    merged_from: [compression-retention, kv-cache-compression-fidelity]
-    note: "Clean analogue to fine-tuning-retention with two supporting papers."
-  - id: information-seeking
-    label: "Asking the questions that resolve uncertainty"
-    scope_note: "Covers actively eliciting missing evidence and updating hypotheses from user critiques across interaction rounds; excludes static QA and self-repair of its own errors."
+    merged_from: [scientific-model-discovery, scientific-discovery]
+    note: "A high-stakes, increasingly benchmarked capability that domain-knowledge and planning do not cover."
+  - id: feedback-incorporation
+    label: "Revising after external correction"
+    scope_note: "Covers updating reasoning and answers in response to another party's natural-language corrections and steering a derailed dialogue back on track; excludes unprompted self-repair and excludes caving to wrong pushback, which sycophancy covers."
     paper_count: 2
-    merged_from: [information-seeking, learning-from-language-feedback]
-    note: "Two papers converge on interactive uncertainty reduction, a gap between abstention and procedure-following."
-  - id: uncertainty-calibration
-    label: "Knowing how likely its answer is right"
-    scope_note: "Covers whether stated or elicited confidence tracks actual accuracy; excludes outright refusal, which abstention-and-self-knowledge covers."
-    paper_count: 1
-    merged_from: [uncertainty-calibration]
-    note: "Calibration is a well-established, separately measurable axis that the abstention entry does not capture."
-  - id: over-refusal
-    label: "Refusing harmless requests"
-    scope_note: "Covers rejection of benign queries that superficially resemble risky ones and the helpfulness cost of alignment; excludes failures to refuse genuinely harmful requests."
-    paper_count: 1
-    merged_from: [over-refusal]
-    note: "The necessary counterpart to jailbreak-robustness; without it the index only measures one direction of safety."
+    merged_from: [feedback-incorporation, conversational-error-recovery]
+    note: "Sits in the gap between self-repair and sycophancy: taking valid correction without over-deferring is a distinct, measurable skill."
+  - id: negotiation
+    label: "Negotiating toward a deal under competing interests"
+    scope_note: "Covers multi-party bargaining, coalition formation and concession strategy in scoreable games; excludes one-way persuasion and generic multi-agent coordination."
+    paper_count: 2
+    merged_from: [negotiation]
+    note: "Distinct from persuasion (mutual stakes, scoreable outcomes) with two papers behind it."
 set_aside:
-  - id: social-reasoning
-    note: "Thin and heterogeneous evidence; turn-taking and theory-of-mind are not really one capability yet."
-  - id: fine-grained-visual-perception
-    note: "Largely subsumed by visual-grounding; the split is a task-domain distinction rather than a new capability."
-  - id: niche-code-generation
-    note: "These are task variants of code-generation, not separate capabilities."
-  - id: answer-format-consistency
-    note: "One-off framing that evaluation-validity and judge-position-bias already touch."
-  - id: persona-adherence
-    note: "Single paper, and largely covered by procedure-following, sycophancy and goal-conflict-safety."
-  - id: moral-reasoning
-    note: "One-off framing that overlaps cultural-competence and sycophancy."
-  - id: rule-extension-generalization
-    note: "Too abstract and single-sourced; overlaps logical-deduction-robustness and knowledge-updating."
-  - id: physical-consistency
-    note: "One-off, domain-specific instance of hallucination and domain-knowledge."
-  - id: adversarial-game-play
-    note: "A task domain rather than a capability; planning already covers the core skill."
-  - id: machine-text-detection
-    note: "A classification task about models, not a capability of the model being indexed."
-  - id: rubric-generation
-    note: "Single paper and effectively a sub-skill of critique and evaluation-validity."
+  - id: visual-generation
+    note: "The two papers address quite different output modalities and the index is currently about understanding and agency, so this is premature."
+  - id: user-modeling
+    note: "Thin and partly spanned by long-term-memory and cultural-competence; revisit if more evidence accumulates."
+  - id: embodied-perception-and-replanning
+    note: "Each is a single-paper framing already largely inside embodied-control and planning."
+  - id: difficulty-estimation
+    note: "Essentially a routing technique and already adjacent to abstention-and-self-knowledge."
+  - id: verbatim-memorization
+    note: "One-off, and it is a leakage property rather than a capability the index tracks."
+  - id: machine-generated-text-detection
+    note: "A task domain for detectors rather than a general model capability, and the two proposals are not really the same thing."
+  - id: constrained-output-conformance
+    note: "Single paper and largely covered by procedure-following and code-generation."
+  - id: subjective-and-affective-behavior
+    note: "Two unrelated one-off framings forced together; neither has recurring evidence."
+  - id: rule-induction-from-examples
+    note: "Single paper and substantially overlapping with multi-step-reasoning and logical-deduction-robustness."

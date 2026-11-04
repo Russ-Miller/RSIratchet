@@ -1,0 +1,38 @@
+id: mllm-based-video-reward-models-first-write-chain-thought-reading
+ref: CLM-0843
+capability: critique
+technique: score-query-token-reasoning-chain
+statement: >-
+  For MLLM-based video reward models that first write a chain of thought,
+  reading the final score off a learnable query token with a regression head
+  trained by Bradley-Terry loss, rather than emitting the score as the next
+  tokens of the same reasoning chain, gives higher human-preference
+  agreement on out-of-distribution video pairs and smoother training than
+  GRPO-only optimization.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "8B MLLM backbone (Qwen3-VL-8B) on text-to-video preference pairs with five alignment dimensions; 22K training pairs, in-domain plus GenAI and VideoGen-Bench OOD splits"
+sources:
+  - source: arxiv-2605-05922
+    stance: supports
+    note: >-
+      Validated by: Preference accuracy against human labels on 1,469
+      in-domain pairs plus GenAI and VideoGen-Bench; 0.768 Acc w/o Tie on
+      VideoGen-Bench vs 0.722 for the best discriminative baseline and 0.582
+      for the best generative baseline; ablation removing the auxiliary BT
+      loss drops VideoGen-Bench from 0.768 to 0.648. Measured on one
+      backbone and one preference corpus by the method's authors;
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-04
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A coupled generative reward
+  model trained with GRPO alone, at matched backbone and data, matching or
+  exceeding the decoupled variant's OOD preference accuracy and showing
+  comparable training-curve stability.
+submitted_by: agent:claude-opus-5@Russ-Miller

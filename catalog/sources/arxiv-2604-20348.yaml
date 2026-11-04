@@ -1,0 +1,70 @@
+id: arxiv-2604-20348
+ref: SRC-0889
+kind: paper
+title: Bimanual Robot Manipulation via Multi-Agent In-Context Learning
+authors:
+  - Alessio Palma
+  - Indro Spinelli
+  - Vignesh Prasad
+  - Luca Scofano
+  - Yufeng Jin
+  - Georgia Chalvatzaki
+year: 2026
+date: 2026-04-22
+arxiv_id: "2604.20348"
+url: https://arxiv.org/abs/2604.20348
+tags:
+  - ingested
+summary: Large Language Models (LLMs) have emerged as powerful reasoning
+  engines for embodied control. In particular, In-Context Learning (ICL)
+  enables off-the-shelf, text-only LLMs to predict robot actions without any
+  task-specific training while preserving their generalization capabilities.
+  Applying ICL to bimanual manipulation remains challenging as the
+  high-dimensional joint action space and tight inter-arm coordination
+  constraints rapidly overwhelm standard context windows. To address this, we
+  introduce BiCICLe (Bimanual Coordinated In-Context Learning), the first
+  framework that enables standard L
+notes: "Filed as a source on multi-model-coordination from the classifier's
+  judgement that the paper is about it (improves, medium): The paper
+  decomposes bimanual control into a leader-follower multi-agent pair of
+  sequentially conditioned single-arm predictors and reports higher success
+  than the best training-free single-agent baseline. No claim has been drafted
+  from it yet."
+ingested_at: 2026-11-04
+brief: >-
+  Splitting a bimanual action prediction into 2 sequential single-arm
+  predictions, with the second arm conditioned on the first arm's full
+  predicted trajectory, lets a frozen text-only LLM act as a bimanual policy
+  without any gradient updates. BiCICLe serializes object centroids and
+  discretized 7D end-effector keyposes (100^3 voxel grid, 5-degree rotation
+  bins) into prompts of N = 10 demonstrations, with GPT-5-mini driving a
+  leader agent and a follower agent.
+
+
+  On 13 TWIN benchmark tasks (3 seeds x 100 episodes), BiCICLe reaches 70.5%
+  average success versus 64.4% for independent per-arm calls and 60.6% for a
+  monolithic 14D single-agent prompt. A context-fitted XGBoost baseline gets
+  49.1%; a VLM prompted with RGB+depth images gets 13.4%. Supervised 3DFA
+  still leads at 85.1%, but on 2 held-out tasks with 10 demonstrations 3DFA
+  fine-tuning reaches 10.0% and LoRA 15.0% against BiCICLe's 54.5%. Real
+  hardware: 53.3% over 3 tasks, 10 trials each.
+
+
+  The decomposition is isolated by ablation: removing the leader-trajectory
+  augmentation while keeping sequential 7D predictions drops to 65.0%, so
+  conditioning adds 5.5 points beyond factorization. Best-of-N adds only 0.7
+  points at 8.4x the tokens. A Qwen 2.5 7B check (55.6% vs 51.9%) is the only
+  second model family.
+
+
+  Supervised comparisons are literature numbers with different cameras,
+  resolutions and action interfaces, not matched runs. Simulation perception
+  uses ground-truth segmentation masks. Discretization caps fine tasks: Pick
+  Laptop 29.0%, Straighten Rope 34.3%, Tray Oven 36.0%.
+
+
+  If you assumed bimanual control needs trained policies, this is evidence
+  that prompt structure, not training, carries the coordination.
+brief_generated_at: 2026-11-04
+brief_model: claude-opus-5
+brief_source: full-text

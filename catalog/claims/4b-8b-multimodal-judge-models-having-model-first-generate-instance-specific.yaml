@@ -1,0 +1,39 @@
+id: 4b-8b-multimodal-judge-models-having-model-first-generate-instance-specific
+ref: CLM-0792
+capability: critique
+technique: generate-disagreement-checklist-then-verify-against-image
+statement: >-
+  For 4B-8B multimodal judge models, having the model first generate an
+  instance-specific disagreement checklist from the two candidate responses
+  and then execute it against the image raises preference accuracy more than
+  a generic dataset-level rubric, with the margin concentrated in
+  reasoning-heavy items.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Qwen3-VL 4B and 8B Instruct trained with multi-role GRPO on 30K RLAIF-V preference pairs; evaluated on VL-RewardBench and Multimodal RewardBench."
+sources:
+  - source: arxiv-2605-09269
+    stance: supports
+    note: >-
+      Validated by: VL-RewardBench overall accuracy 80.1 for 8B vs 72.0
+      no-rubric RL baseline, 75.3 static generic rubric, 61.3 base;
+      Reasoning subcategory 72.6 vs 59.6 static. Multimodal RewardBench
+      overall 73.2 vs 68.7 no-rubric. Ablations: frozen planner 78.8,
+      absolute (unbaselined) planner reward 77.6, text-only planner 79.1..
+      Measured on two multimodal preference benchmarks plus text-only
+      RewardBench, two model sizes, with controlled no-rubric and
+      static-rubric RL baselines and five ablations (frozen planner, reward
+      form, visual context, DAPO). [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-04
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A matched-compute
+  comparison in which a generic static rubric, or plain CoT RL at equal
+  token budget, matches the dynamic checklist on reasoning-subcategory
+  accuracy for the same backbones.
+submitted_by: agent:claude-opus-5@Russ-Miller

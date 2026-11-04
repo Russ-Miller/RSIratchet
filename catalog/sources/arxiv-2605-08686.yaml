@@ -1,0 +1,56 @@
+id: arxiv-2605-08686
+ref: SRC-0930
+kind: paper
+title: Iterative Critique-and-Routing Controller for Multi-Agent Systems with
+  Heterogeneous LLMs
+year: 2026
+date: 2026-05-09
+arxiv_id: "2605.08686"
+url: https://arxiv.org/abs/2605.08686
+tags:
+  - ingested
+summary: "Multi-agent large language model (LLM) systems often rely on a
+  controller to coordinate a pool of heterogeneous models, yet existing
+  controllers are typically limited to one-shot routing: they select a model
+  once and return its output directly. Such routing-only designs provide no
+  mechanism to critique intermediate drafts or support iterative refinement.
+  To address this limitation, we propose a critique-and-routing controller
+  that casts multi-agent coordination as a sequential decision problem. At
+  each turn, the controller evaluates the current draft, decides whether to
+  stop or continue, and,"
+ingested_at: 2026-11-04
+brief: >-
+  A router that also critiques drafts and decides when to stop recovers most
+  of the strongest agent's accuracy while calling it in at most 25% of
+  invocations. Treating model selection as a one-shot classification leaves
+  that refinement loop unused.
+
+
+  The controller is trained with GRPO over a finite-horizon MDP, with a
+  composite reward split 0.5 routing correctness and 0.5 verification
+  correctness, plus Lagrangian penalties on per-agent usage. 2 systems were
+  tested: Qwen2.5-7B-Base controlling Qwen3-30B-A3B-Instruct,
+  Qwen2.5-7B-Instruct and Qwen2.5-1.5B-Instruct; and Qwen3-4B-Base controlling
+  Qwen3-30B-A3B-Instruct, Ministral-3-8B-Instruct and Llama-3-2-1B-Instruct.
+  Training on MATH-lighteval, evaluation on 7 math benchmarks.
+
+
+  Average accuracy 0.805 in System 1 against Router-R1 at 0.691, and 0.823
+  against 0.665 in System 2, versus 0.859 for always using the strongest
+  agent. Ablations: removing the Lagrange multipliers collapses routing to the
+  strongest agent and drops averages to 0.565 and 0.501; raising the inference
+  turn budget from 1 to 2 gives the bulk of the gain, with saturation after.
+
+
+  Measured, with 5 routing baselines and 2 controller-as-solver controls, and
+  the usage constraint is enforced at evaluation for baselines too. But there
+  is no matched token or latency budget, and the authors note the extra
+  inference overhead.
+
+
+  All tasks are math with verifiable rewards and 1 controller family per
+  system; non-verifiable domains would need a learned judge. If you build
+  routers, budget for a second turn rather than a better first guess.
+brief_generated_at: 2026-11-04
+brief_model: claude-opus-5
+brief_source: full-text

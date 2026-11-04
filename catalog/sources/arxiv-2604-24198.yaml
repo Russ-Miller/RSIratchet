@@ -1,0 +1,65 @@
+id: arxiv-2604-24198
+ref: SRC-0899
+kind: paper
+title: "Rewarding the Scientific Process: Process-Level Reward Modeling for
+  Agentic Data Analysis"
+authors:
+  - Zhisong Qiu
+  - Shuofei Qiao
+  - Kewei Xu
+  - Yuqi Zhu
+  - Lun Du
+  - Ningyu Zhang
+year: 2026
+date: 2026-04-27
+arxiv_id: "2604.24198"
+url: https://arxiv.org/abs/2604.24198
+tags:
+  - ingested
+summary: Process Reward Models (PRMs) have achieved remarkable success in
+  augmenting the reasoning capabilities of Large Language Models (LLMs) within
+  static domains such as mathematics. However, their potential in dynamic data
+  analysis tasks remains underexplored. In this work, we first present a
+  empirical study revealing that general-domain PRMs struggle to supervise
+  data analysis agents. Specifically, they fail to detect silent errors,
+  logical flaws that yield incorrect results without triggering interpreter
+  exceptions, and erroneously penalize exploratory actions, mistaking
+  necessary trial-and-erro
+notes: "Filed as a source on critique from the classifier's judgement that the
+  paper is about it (improves, medium): The paper shows general PRMs misjudge
+  data-analysis steps and that a trained environment-interacting generative
+  PRM yields better step-level judgements that improve downstream policy
+  performance by 7-11%. No claim has been drafted from it yet."
+ingested_at: 2026-11-04
+brief: >-
+  Process reward models trained on math transfer badly to data analysis
+  agents: they mark logically wrong code as correct when it executes cleanly,
+  and punish exploratory steps that recover. Giving the verifier its own code
+  interpreter and a 3-valued reward fixes both.
+
+
+  DataPRM is a 4B generative PRM in the ReAct loop that runs code against the
+  data, calls document and image tools, and scores each agent step as 1.0, 0.5
+  (correctable grounding error), or 0.0. Training used 7K step annotations
+  from Qwen3-235B-A22B-Instruct trajectories, labelled by DeepSeek-V3.2.
+  Evaluation: 78 data-analysis tasks from ScienceAgentBench and DABStep, with
+  Qwen3-235B-A22B-Instruct as policy.
+
+
+  At Best-of-16 on DABStep DataPRM reaches 40.89% average versus 38.00%
+  majority vote, 39.77% self-rewarding with the 235B policy, and 29.11% for
+  Qwen2.5-Math-PRM-72B, which degrades as N grows (31.33% at 8). RL with the
+  process reward hits 78.73% on DABench and 64.84% on TableBench, with entropy
+  holding near 0.18 instead of collapsing to 0.12 under outcome-only reward.
+
+
+  Ablations isolate the pieces: environment access, multi-turn, and ternary
+  reward each add, and the Hard subset moves 32.01%→32.80%→33.86%. Filtering
+  ablation is included; aggressive filtering hurts at N=16.
+
+
+  One policy model, one PRM size, no ML/DL or model-training tasks. If you
+  supervise code agents, text-only step verification is the weak link.
+brief_generated_at: 2026-11-04
+brief_model: claude-opus-5
+brief_source: full-text

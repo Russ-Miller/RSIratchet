@@ -1,0 +1,45 @@
+arxiv_id: "2605.05953"
+title: "Hallucination as an Anomaly: Dynamic Intervention via Probabilistic
+  Circuits"
+url: https://doi.org/10.48550/arxiv.2605.05953
+drafted_at: 2026-11-02
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: For 1B-8B open LLMs, hallucination-correction methods that edit
+  activations or logits at every decoding step degrade a large fraction of
+  generations that were already correct (26-90% depending on model), so gating
+  the correction on a per-token anomaly signal recovers much of that loss.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Four LLMs from 1B to 8B across CoQA, SQuAD v2.0, TriviaQA and
+  TruthfulQA; correction methods DoLa, ITI, AdaSteer, SADI, ICD; gate
+  calibrated on a labeled set of factual/hallucinated hidden states.
+technique: ""
+proposed_technique: Gate correction on exact latent density from a probabilistic circuit
+technique_summary: Trains a probabilistic circuit as a tractable density
+  estimator over a 128-d projection of the LLM's final hidden state, and
+  applies a density-penalized top-k lookahead in token space only when the
+  per-token negative log-likelihood exceeds a calibrated threshold.
+technique_kind: decoding
+technique_validated_by: Detection AUROC up to 0.99 on CoQA/SQuAD/TriviaQA
+  against Token-NLL, SEP, HaloScope and AutoFact baselines; gated vs un-gated
+  comparison of six correction methods over three seeds reports mean
+  corruption rate 53.7% and preservation rate 79.3% for the proposed decoder,
+  plus best True+Info/MC2/MC3 on TruthfulQA in three of four models.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Measuring un-gated activation-steering or contrastive-decoding
+  interventions on the same models and finding that previously-correct
+  generations are rarely degraded, or that gating on a latent-density signal
+  does not raise the preservation rate over un-gated application.
+evidence_note: Measured on four models (Llama-3.2-1B, Qwen3-4B,
+  Mistral-7B-v0.3, Llama-3.1-8B), four benchmarks, three seeds, with un-gated
+  vs gated arms for six correction methods. Corruption and preservation rates
+  carry very large standard deviations (about ±24 points), so the aggregate
+  separation is driven by model-level variation. Hallucination labels come
+  from the paper's own pipeline, and the gate threshold is calibrated on
+  labeled hidden states, which the paper lists as a limitation.
+confidence: medium

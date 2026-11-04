@@ -1,0 +1,69 @@
+id: arxiv-2604-19488
+ref: SRC-0887
+kind: paper
+title: "CoDA: Towards Effective Cross-domain Knowledge Transfer via CoT-guided
+  Domain Adaptation"
+authors:
+  - Jianzhi Yan
+  - Le Liu
+  - Buzhou Tang
+  - Yang Xiang
+  - Dongning Sun
+  - Zhiming Li
+year: 2026
+date: 2026-04-21
+arxiv_id: "2604.19488"
+url: https://arxiv.org/abs/2604.19488
+tags:
+  - ingested
+summary: Large language models (LLMs) have achieved substantial advances in
+  logical reasoning, yet they continue to lag behind human-level performance.
+  In-context learning provides a viable solution that boosts the model's
+  performance via prompting its input with expert-curated, in-domain
+  exemplars. However, in many real-world, expertise-scarce domains, such as
+  low-resource scientific disciplines, emerging biomedical subfields, or niche
+  legal jurisdictions, such high-quality in-domain demonstrations are
+  inherently limited or entirely unavailable, thereby constraining the general
+  applicability of these
+notes: "Filed as a source on domain-knowledge from the classifier's judgement
+  that the paper is about it (improves, medium): The paper proposes CoDA to
+  transfer knowledge into low-resource specialist domains and reports better
+  performance than raw cross-domain in-context prompting. No claim has been
+  drafted from it yet."
+ingested_at: 2026-11-04
+brief: >-
+  Steering a frozen model's mid-layer hidden states with a small trained
+  adapter transfers reasoning across domains better than retrieving
+  cross-domain exemplars or fine-tuning on the source domain. The claim is
+  that surface-level prompting cannot bridge source-target distribution shift,
+  but latent alignment can.
+
+
+  CoDA trains a residual adapter at one mid-to-late layer using 2 losses: MSE
+  against a teacher state built from source question plus CoT rationale, and
+  MMD between source and target enhanced states. Evaluation covers 8
+  source-to-target directions over GSM8K, LogicalDeduction, FOLIO, ProofWriter
+  and CommonSenseQA, on Qwen-2.5-Instruct (3B, 7B, 14B, 32B), Gemma-3-it (4B,
+  12B, 27B) and Llama-3.1-8B, against BM25, Embed, ConE, DIN, LoRA, P-tuning,
+  CAA and CoT-Vectors.
+
+
+  On Gemma-3-27B, CoDA averages 85.0% versus 82.4% for ConE and 7.8% above
+  zero-shot. LoRA often falls below zero-shot: 64.1% versus 73.7% on
+  Qwen-2.5-14B. At 12B, CoDA reaches 80.3% with 7.4M trainable parameters
+  against LoRA's 64.0% with 32.7M.
+
+
+  Ablations remove each loss separately and both hurt across 4 backbones. PEFT
+  baselines share learning rate and batch size with CoDA, though compute is
+  not matched across paradigms, and the intervention layer is tuned per model.
+  Only accuracy on short-answer reasoning sets is measured; no closed models,
+  no generative or agentic tasks. One reported figure, a 27.7% CoT-Vectors
+  score, is inconsistent with its own table.
+
+
+  If you are considering LoRA for an unlabeled target domain, latent steering
+  is worth a comparison.
+brief_generated_at: 2026-11-04
+brief_model: claude-opus-5
+brief_source: full-text

@@ -1,0 +1,73 @@
+id: arxiv-2604-21718
+ref: SRC-0893
+kind: paper
+title: Building a Precise Video Language with Human-AI Oversight
+authors:
+  - Zhiqiu Lin
+  - Chancharik Mitra
+  - Siyuan Cen
+  - Isaac Li
+  - Yuhan Huang
+  - Yu Tong Tiffany Ling
+year: 2026
+date: 2026-04-22
+arxiv_id: "2604.21718"
+url: https://arxiv.org/abs/2604.21718
+tags:
+  - ingested
+summary: Video-language models (VLMs) learn to reason about the dynamic visual
+  world through natural language. We introduce a suite of open datasets,
+  benchmarks, and recipes for scalable oversight that enable precise video
+  captioning. First, we define a structured specification for describing
+  subjects, scenes, motion, spatial, and camera dynamics, grounded by hundreds
+  of carefully defined visual primitives developed with professional video
+  creators such as filmmakers. Next, to curate high-quality captions, we
+  introduce CHAI (Critique-based Human-AI Oversight), a framework where
+  trained experts critique
+notes: "Filed as a source on critique from the classifier's judgement that the
+  paper is about it (improves, medium): The paper trains models on
+  expert-curated critiques to improve caption critique generation and reward
+  modeling, showing critique precision/recall/constructiveness directly
+  governs downstream performance and surpassing closed-source baselines. No
+  claim has been drafted from it yet."
+ingested_at: 2026-11-04
+brief: >-
+  Video-language models describe subjects and scenes competently but fail on
+  motion and camera dynamics, and the gap closes only with supervision that
+  includes explicit human critiques, not just preference pairs. Training on
+  critiques is what carries the gain; their quality, not their quantity,
+  governs it.
+
+
+  The CHAI pipeline has a model draft a pre-caption from human-labeled visual
+  primitives, trained experts write a correctional critique, and the model
+  produces a post-caption. About 20k (pre-caption, critique, post-caption)
+  triplets were collected over ~4k videos from films, games, commercials and
+  user clips, 5k held out as a benchmark covering caption generation, reward
+  modeling and critique generation across subject, scene, motion, spatial and
+  camera.
+
+
+  Qwen3-VL-8B-Instruct with SFT on the full data reaches 18.2 average BLEU-4
+  captioning, 89.8 reward accuracy and 41.7 critique BLEU-4, versus 12.0 /
+  50.9 / 5.5 for caption-only SFT, and above Gemini-3.1-Pro at 5.1 / 49.9* /
+  3.3 and Gemini-2.5-Pro at 6.2 / 62.0 / 3.0.
+
+
+  The critique-quality claim is isolated by ablation: Gemini-2.5-Pro injected
+  controlled errors into ground-truth critiques, dropping captioning to 12.1
+  (inaccurate), 12.5 (incomplete), 13.4 (unhelpful); Gemini-written critiques
+  with video access gave 12.7. Dropping the second quality-control stage gave
+  14.8.
+
+
+  Boundaries: 1 trained model family at 8B, benchmark references authored by
+  the same pipeline being evaluated, BLEU-4 as the headline metric, and
+  generation results from only 200 samples.
+
+
+  If you are collecting preference data, this argues for paying for corrective
+  critiques rather than more comparisons.
+brief_generated_at: 2026-11-04
+brief_model: claude-opus-5
+brief_source: full-text

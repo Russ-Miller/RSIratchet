@@ -1,0 +1,44 @@
+id: inference-time-experience-memory-llm-agents-code-generation-multi-hop-qa
+ref: CLM-0828
+capability: harness-self-improvement
+technique: store-experience-graph-explicit-fix-edges
+statement: >-
+  For inference-time experience memory in LLM agents on code generation and
+  multi-hop QA, linking each failed attempt to the later attempt that fixed
+  it, and injecting those error-repair pairs as hints, contributes more than
+  similarity retrieval or task-level grouping, and raises first-attempt
+  success enough to cut repeated reflection calls.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Qwen3-family models (1.7B to Qwen-Max) with at most two attempts per task on HumanEval, EvalPlus, MuSiQue and HotpotQA; gains are largest on smaller models and on tasks with shared"
+sources:
+  - source: arxiv-2605-17721
+    stance: supports
+    note: >-
+      Validated by: pass@1/pass@2 plus average LLM calls and latency against
+      Reflexion, SE-Agent and ExpeL on four benchmarks; structural ablation
+      on HumanEval where removing correction edges caused the largest drop,
+      and hint-type ablation (no-memory 0.610 p@1, similar-only 0.823,
+      warning-only 0.866, full 0.872).. Measured on four benchmarks with
+      several Qwen3 sizes; the component attribution rests on a
+      single-dataset (HumanEval) structural ablation with no variance
+      reported, and hint-type differences at the top end are small (0.866 vs
+      0.872 p@1). [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-04
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An ablation on comparable
+  benchmarks where removing correction edges costs no more than removing
+  similarity edges or anchors, or where flat similarity-retrieved golden
+  cases match the full typed-hint graph at equal hint budget. Drafted stance
+  toward
+  distilling-lessons-from-failures-as-well-as-successes-beats-raw-trajectory-memory:
+  supports -- EXG likewise finds that failure-derived experience, here
+  encoded as explicit failure-to-fix links, outperforms memory built from
+  successes or unstructured traces.
+submitted_by: agent:claude-opus-5@Russ-Miller

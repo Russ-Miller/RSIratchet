@@ -1,0 +1,57 @@
+id: arxiv-2605-05922
+ref: SRC-0919
+kind: paper
+title: "Think, then Score: Decoupled Reasoning and Scoring for Video Reward
+  Modeling"
+year: 2026
+date: 2026-05-07
+arxiv_id: "2605.05922"
+url: https://arxiv.org/abs/2605.05922
+tags:
+  - ingested
+summary: "Recent advances in generative video models are increasingly driven
+  by post-training and test-time scaling, both of which critically depend on
+  the quality of video reward models (RMs). An ideal reward model should
+  predict accurate rewards that align with human preferences across diverse
+  scenarios. However, existing paradigms face a fundamental dilemma:
+  \\textit{Discriminative RMs} regress rewards directly on features extracted
+  by multimodal large language models (MLLMs) without explicit reasoning,
+  making them prone to shortcut learning and heavily reliant on massive data
+  scaling for generalizati"
+ingested_at: 2026-11-04
+brief: >-
+  Letting a video reward model reason in text, then scoring with a separate
+  regression head rather than by emitting a score token, improves preference
+  accuracy and makes training stable. The usual generative recipe couples
+  chain-of-thought and score in one autoregressive chain, forcing the score to
+  be learned through GRPO with high-variance gradients.
+
+
+  DeScore builds on Qwen3-VL-8B: the backbone generates a CoT, then a
+  learnable [Reward] query token is appended and its hidden state projected to
+  a scalar. Training is a Bradley-Terry cold start with random CoT masking,
+  then GRPO on reasoning plus an auxiliary BT loss on the score. Data is 22K
+  human-annotated T2V preference pairs across 5 alignment dimensions,
+  evaluated on 1,469 in-domain pairs, GenAI (1.9k pairs), and VideoGen-Bench
+  (26.5k pairs).
+
+
+  In-domain accuracy is 0.734 against 0.642 for VideoAlign and 0.617 for
+  VideoScore2. On VideoGen-Bench Acc w/o Tie, DeScore gets 0.768 vs 0.722 for
+  VideoAlign and 0.582 for the best generative baseline, with 76% less
+  training data.
+
+
+  Ablations isolate components: CoT lifts in-domain 0.588 to 0.615, masking to
+  0.656; dropping the auxiliary BT loss in stage 2 drops VideoGen-Bench from
+  0.768 to 0.648. Baselines are off-the-shelf models trained on different
+  data, so compute and data are not matched, and only 1 backbone is tested.
+  Generation gains on VBench use Wan-2.1-1.3B with no competing reward model
+  as control.
+
+
+  If you train reward models, the decoupling is cheap and the ablation for it
+  is the strongest part here.
+brief_generated_at: 2026-11-04
+brief_model: claude-opus-5
+brief_source: full-text

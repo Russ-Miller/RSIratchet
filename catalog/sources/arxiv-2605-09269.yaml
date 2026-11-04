@@ -1,0 +1,59 @@
+id: arxiv-2605-09269
+ref: SRC-0932
+kind: paper
+title: "DeltaRubric: Generative Multimodal Reward Modeling via Joint Planning
+  and Verification"
+year: 2026
+date: 2026-05-10
+arxiv_id: "2605.09269"
+url: https://arxiv.org/abs/2605.09269
+tags:
+  - ingested
+summary: Aligning Multimodal Large Language Models (MLLMs) requires reliable
+  reward models, yet existing single-step evaluators can suffer from lazy
+  judging, exploiting language priors over fine-grained visual verification.
+  While rubric-based evaluation mitigates these biases in text-only settings,
+  extending it to multimodal tasks is bottlenecked by the complexity of visual
+  reasoning. The critical differences between responses often depend on
+  instance-specific visual details. Robust evaluation requires dynamically
+  synthesizing rubrics that isolate spatial and factual discrepancies. To
+  address this, we
+ingested_at: 2026-11-04
+brief: >-
+  Making a multimodal judge write its own instance-specific disagreement
+  checklist before judging, and training both roles with RL, beats judging
+  with a free-form rationale. DeltaRubric runs one shared MLLM twice: first as
+  a Disagreement Planner that lists the verifiable points where two candidate
+  responses conflict, then as a Checklist Verifier that executes those checks
+  against the image.
+
+
+  Qwen3-VL-4B and 8B Instruct were RL-finetuned with GRPO on 30K RLAIF-V
+  preference instances, with planner and verifier advantages computed in
+  separate groups, and evaluated on VL-RewardBench, Multimodal RewardBench and
+  text-only RewardBench.
+
+
+  Overall VL-RewardBench accuracy rose +22.6 (4B) and +18.8 (8B) over the base
+  models, and +4.3 and +8.1 over an RL-finetuned no-rubric CoT baseline.
+  Multimodal RewardBench 8B went to 73.2 against 68.7 no-rubric. Text-only
+  RewardBench rose from 81.4 to 84.6, with Reasoning 79.0 to 85.7.
+
+
+  The effect is measured against a matched RL-finetuned no-rubric baseline,
+  plus ablations on a frozen planner (Reasoning 66.3 vs 72.6), a static
+  generic rubric (8B Overall 75.3 vs 80.1), absolute vs relative planner
+  reward, an image-free planner, and DAPO as an alternative algorithm.
+  Attribution is reasonably isolated.
+
+
+  Limits: 1 model family, 2 sizes, 1 training source, pairwise preference
+  only; no test as a reward signal in downstream policy training, and no cost
+  accounting for the 2-pass inference.
+
+
+  If you build multimodal judges, the gain comes from dynamic per-instance
+  checklists, not from rubrics as such.
+brief_generated_at: 2026-11-04
+brief_model: claude-opus-5
+brief_source: full-text

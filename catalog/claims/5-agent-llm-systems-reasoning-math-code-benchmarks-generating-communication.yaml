@@ -1,0 +1,40 @@
+id: 5-agent-llm-systems-reasoning-math-code-benchmarks-generating-communication
+ref: CLM-0793
+capability: multi-model-coordination
+technique: generate-agent-topology-redundancy-guided-graph-diffusion
+statement: >-
+  For 5-agent LLM systems on reasoning, math and code benchmarks, generating
+  the communication topology step by step with a redundancy penalty
+  (effective size of each agent's ego network) rather than in one shot
+  raises accuracy and lowers token consumption relative to one-step topology
+  generators, and removing the redundancy term is the largest single
+  ablation loss.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "gpt-4o-mini backbone, five agents, six benchmarks (MMLU, GSM8K, MultiArith, SVAMP, AQuA, HumanEval); 50 training queries per dataset; compared against one-step and search-based top"
+sources:
+  - source: arxiv-2605-09907
+    stance: supports
+    note: >-
+      Validated by: Accuracy on six benchmarks vs. 20 baselines (average
+      90.32 vs. 88.57 for the strongest, ARG-Designer), token consumption on
+      GSM8K (6.5e6 vs. 1.1e7 for AgentPrune, 1.4e7 for AFlow), MMLU
+      prompt-attack robustness, and ablations removing effective size (-2.61
+      MMLU), query conditioning (-4.58), utility loss (-0.70), and diffusion
+      (-4.56).. Measured on six benchmarks with one backbone for the
+      headline table; the design does not isolate the step-wise generation
+      from the redundancy conditioning, since both are novel together,
+      though component ablations are reported. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-04
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A replication where the
+  redundancy-guided diffusion generator matches or loses to one-step
+  topology generators on accuracy or token cost, or where removing the
+  effective-size term costs nothing, would falsify it.
+submitted_by: agent:claude-opus-5@Russ-Miller

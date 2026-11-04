@@ -1,0 +1,39 @@
+id: transferring-reasoning-ability-target-domain-no-target-domain-labels-or
+ref: CLM-0863
+capability: domain-knowledge
+technique: steer-hidden-states-toward-cot-enriched-source-states
+statement: >-
+  When transferring reasoning ability to a target domain with no
+  target-domain labels or CoT annotations, fine-tuning 3B-32B open instruct
+  models with LoRA or P-tuning on source-domain data often scores below the
+  same model's zero-shot accuracy on the target, while a lightweight adapter
+  that steers mid-to-late-layer hidden states toward CoT-enriched source
+  representations and aligns source/target feature distributions raises
+  target accuracy above both zero-shot and cross-domain retrieval prompting.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Logical and mathematical reasoning datasets (ProofWriter, FOLIO, LogicalDeduction, GSM8K, CommonSenseQA) used as paired source/target domains; Qwen-2.5, Gemma-3, Llama-3.1 backbone"
+sources:
+  - source: arxiv-2604-19488
+    stance: supports
+    note: >-
+      Validated by: Accuracy on 8 source-to-target transfer directions
+      across 8 backbones against zero-shot, BM25/Embed/ConE retrieval, LoRA,
+      P-tuning, CAA, CoT-Vectors and DIN; best average reported 85.0% on
+      Gemma-3-27B vs 82.4% for the strongest retrieval baseline and 77.2%
+      zero-shot; ablations remove each loss term; t-SNE plus
+      Silhouette/MMD/k-NN mixing used to check distribution alignment..
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-04
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Running the same adapter on
+  other model families or transfer pairs and finding it does not beat
+  zero-shot, or finding that source-domain LoRA under a matched budget
+  matches or exceeds it on unlabeled target domains.
+submitted_by: agent:claude-opus-5@Russ-Miller

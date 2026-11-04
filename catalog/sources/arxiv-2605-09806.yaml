@@ -1,0 +1,59 @@
+id: arxiv-2605-09806
+ref: SRC-0935
+kind: paper
+title: "LEAD: Length-Efficient Adaptive and Dynamic Reasoning for Large
+  Language Models"
+year: 2026
+date: 2026-05-10
+arxiv_id: "2605.09806"
+url: https://arxiv.org/abs/2605.09806
+tags:
+  - ingested
+summary: "Large reasoning models, such as OpenAI o1 and DeepSeek-R1, tend to
+  become increasingly verbose as their reasoning capabilities improve. These
+  inflated Chain-of-Thought (CoT) trajectories often exceed what the
+  underlying problems require, wasting compute, latency, and context budgets.
+  While introducing length-based efficiency rewards during reinforcement
+  learning offers a natural remedy, existing methods struggle with two
+  fundamental challenges: the optimal balance between correctness and
+  efficiency is non-stationary throughout training, and intrinsic reasoning
+  budgets vary drastically across p"
+ingested_at: 2026-11-04
+brief: >-
+  Shrinking chain-of-thought with a fixed length penalty forces a choice
+  between accuracy loss and weak compression; letting the length target and
+  the correctness-efficiency weighting both be estimated online from the
+  model's own correct rollouts avoids that choice, at least at 1.5B.
+
+
+  LEAD modifies GRPO in 2 ways: each reward is group-normalized separately,
+  with weights set online from a Potential-Scaled Instability statistic
+  (variability times headroom), and the global length budget is replaced by a
+  per-prompt target set to the mean length of correct rollouts, with a
+  symmetric reward penalizing both overthinking and over-compression. Training
+  is on MATH Level 3-5 (8,521 problems) with DeepSeek-R1-Distill-Qwen-1.5B and
+  -7B, evaluated on AIME24, AIME25, AMC23, MATH-500 and OlympiadBench.
+
+
+  At 1.5B, LEAD reaches 53.36 accuracy and 0.68 AES versus 50.74 / 0.50 for
+  DRPO and 51.85 for the base model, at 3714 tokens against the base's 9213.
+  At 7B every RL method loses accuracy; LEAD drops least, 65.17 against 68.20
+  base.
+
+
+  Ablations isolate both components: 6 static weight ratios all trail dynamic
+  weighting, and mean-of-correct beats min, median, and correctness-blind
+  targets. 3 data-order seeds give 52.93 +/- 0.91 accuracy. Paired bootstrap
+  intervals exclude zero at 1.5B but include zero at 7B.
+
+
+  Scope is math with verifiable answers, 1 distilled model family plus a
+  Qwen3-4B LoRA run; LASER comparisons use released checkpoints trained on
+  different data, not matched runs.
+
+
+  If you train length-penalized reasoners, the fixed-coefficient recipe is the
+  thing to drop first.
+brief_generated_at: 2026-11-04
+brief_model: claude-opus-5
+brief_source: full-text

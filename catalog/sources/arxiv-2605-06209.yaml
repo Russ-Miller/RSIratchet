@@ -1,0 +1,55 @@
+id: arxiv-2605-06209
+ref: SRC-0921
+kind: paper
+title: "SiblingRepair: Sibling-Based Multi-Hunk Repair with Large Language Models"
+year: 2026
+date: 2026-05-07
+arxiv_id: "2605.06209"
+url: https://arxiv.org/abs/2605.06209
+tags:
+  - ingested
+summary: Developers often make similar mistakes across code locations
+  implementing related functionalities. These locations, called siblings,
+  share similar issues and require similar fixes. Accurately identifying
+  siblings and consistently repairing them are crucial for automated program
+  repair. Hercules is a SOTA technique designed for sibling repair. However,
+  it is limited by strong assumptions about sibling locations and
+  commit-history availability, rigid AST-based sibling matching, and
+  inflexible template-based patch generation. To address these limitations, we
+  present SiblingRepair, a new LLM-based
+ingested_at: 2026-11-04
+brief: >-
+  Searching for similar buggy locations across all test-exercised code, rather
+  than only failing-test coverage plus commit history, raises multi-hunk
+  repair rates sharply when an LLM does the patching. SiblingRepair ranks
+  suspicious statements by Ochiai spectrum-based fault localization, filters
+  candidate "siblings" by TF-IDF then text-embedding-ada-002 cosine
+  similarity, and prompts DeepSeek-V3.2 either to repair all siblings at once
+  or to walk them one at a time, keeping patches that reduce failing tests or
+  push execution past the prior failure point.
+
+
+  On Defects4J v2.0.1 under SBFL, it correctly repairs 176 of 835 bugs versus
+  78 for ITER, 37 for ARJACLM, 28 for Hercules; 23 sibling bugs versus 4 for
+  Hercules; 76 multi-hunk versus 24. Under single perfect fault localization,
+  278 total. Median time to a correct patch is 9 minutes under SBFL, 6 under
+  SPFL.
+
+
+  The comparison is measured against 3 re-run baselines under a 5-hour budget,
+  with manual inspection of 1,751 plausible patches. No ablation: the authors
+  argue components are sequential and run an effectiveness analysis instead,
+  so simultaneous versus iterative contributions are not isolated. Baselines
+  are not LLM-based, so compute is not matched.
+
+
+  Of 77 Defects4J sibling bugs, 48 still fail: 18 from incomplete test
+  coverage, 12 from missed detection. Only Java, 1 LLM on Defects4J; GHRB used
+  17 bugs with GPT-3.5-Turbo as a leakage check.
+
+
+  If you build APR, the sibling search space, not the patch generator, is the
+  binding constraint.
+brief_generated_at: 2026-11-04
+brief_model: claude-opus-5
+brief_source: full-text

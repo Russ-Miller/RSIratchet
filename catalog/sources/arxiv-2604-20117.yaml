@@ -1,0 +1,65 @@
+id: arxiv-2604-20117
+ref: SRC-0888
+kind: paper
+title: "To Know is to Construct: Schema-Constrained Generation for Agent Memory"
+authors:
+  - Lei Zheng
+  - Weinan Song
+  - Daili Li
+  - Yanming Yang
+year: 2026
+date: 2026-04-22
+arxiv_id: "2604.20117"
+url: https://arxiv.org/abs/2604.20117
+tags:
+  - ingested
+summary: Constructivist epistemology argues that knowledge is actively
+  constructed rather than passively copied. Despite the generative nature of
+  Large Language Models (LLMs), most existing agent memory systems are still
+  based on dense retrieval. However, dense retrieval heavily relies on
+  semantic overlap or entity matching within sentences. Consequently,
+  embeddings often fail to distinguish instances that are semantically similar
+  but contextually distinct, introducing substantial noise by retrieving
+  context-mismatched entries. Conversely, directly employing open-ended
+  generation for memory access risk
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, medium): The paper proposes
+  constrained decoding over a dynamic cognitive schema to guarantee the model
+  cannot generate nonexistent memory keys, directly mitigating fabricated
+  entity generation. No claim has been drafted from it yet."
+ingested_at: 2026-11-04
+brief: >-
+  Forcing a small model to generate memory keys under a prefix-trie constraint
+  beats dense-retrieval memory on long-dialogue QA, and the constraint itself
+  carries much of the gain.
+
+
+  SCG-Mem distills dialogue into concept keys, stores them in a dynamic prefix
+  trie that hard-masks decoding so every generated key exists, grows the trie
+  via assimilation and accommodation, and overlays an associative graph with
+  IDF-product edge weights for 1-hop expansion. Evaluation is on LoCoMo
+  (Single-Hop, Multi-Hop, Temporal, Adversarial; F1 and BLEU-1) with Qwen2.5
+  1.5B/3B and Llama 3.2 1B/3B, against LoCoMo full-context, ReadAgent,
+  MemoryBank, MemGPT, and A-MEM.
+
+
+  Average F1 rises from 21.33 to 41.48 on Qwen2.5 3B and 28.50 to 40.80 on
+  Llama 3.2 3B over A-MEM, with Single-Hop +146.7% F1 and Multi-Hop +126.6% on
+  Qwen2.5 3B. Ablations on Qwen2.5 3B: replacing constrained decoding with
+  unconstrained generation plus embedding lookup drops Multi-Hop F1 -39.5%;
+  removing assimilation drops Multi-Hop -34.2% and Temporal -20.1%. Sweeps
+  peak at k = 35 and hop depth 1.
+
+
+  Measured, with 2 component ablations and 4 model sizes, but 1 benchmark, no
+  matched retrieval-budget or token-budget baseline, and no test of structural
+  hallucination rate in isolation. All models are under 3B open weights;
+  nothing shows the trie still helps when a larger model can already pick keys
+  correctly.
+
+
+  If you build agent memory, treat key-space constraints as a cheap substitute
+  for retrieval quality at small scale.
+brief_generated_at: 2026-11-04
+brief_model: claude-opus-5
+brief_source: full-text

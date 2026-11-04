@@ -1,0 +1,45 @@
+arxiv_id: "2605.09907"
+title: "RADAR: Redundancy-Aware Diffusion for Multi-Agent Communication
+  Structure Generation"
+url: https://doi.org/10.48550/arxiv.2605.09907
+drafted_at: 2026-11-02
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: For 5-agent LLM systems on reasoning, math and code benchmarks,
+  generating the communication topology step by step with a redundancy penalty
+  (effective size of each agent's ego network) rather than in one shot raises
+  accuracy and lowers token consumption relative to one-step topology
+  generators, and removing the redundancy term is the largest single ablation
+  loss.
+kind: observation
+backing_strength: single-paper
+scope_condition: gpt-4o-mini backbone, five agents, six benchmarks (MMLU,
+  GSM8K, MultiArith, SVAMP, AQuA, HumanEval); 50 training queries per dataset;
+  compared against one-step and search-based topology designers.
+technique: ""
+proposed_technique: Generate the agent topology by redundancy-guided graph diffusion
+technique_summary: Builds the multi-agent communication graph node by node
+  with a conditional discrete graph diffusion model whose ordering and
+  denoising networks are biased by each agent's effective size (non-redundant
+  in/out neighborhood), conditioned on the task query.
+technique_kind: process
+technique_validated_by: Accuracy on six benchmarks vs. 20 baselines (average
+  90.32 vs. 88.57 for the strongest, ARG-Designer), token consumption on GSM8K
+  (6.5e6 vs. 1.1e7 for AgentPrune, 1.4e7 for AFlow), MMLU prompt-attack
+  robustness, and ablations removing effective size (-2.61 MMLU), query
+  conditioning (-4.58), utility loss (-0.70), and diffusion (-4.56).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A replication where the redundancy-guided diffusion generator
+  matches or loses to one-step topology generators on accuracy or token cost,
+  or where removing the effective-size term costs nothing, would falsify it.
+evidence_note: Measured on six benchmarks with one backbone for the headline
+  table; the design does not isolate the step-wise generation from the
+  redundancy conditioning, since both are novel together, though component
+  ablations are reported. Inference time is higher than baselines (17.55 vs
+  7.32 min for AFlow). Gains over the best prior baseline average 1.75 points
+  with no variance or seed counts reported.
+confidence: low

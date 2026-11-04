@@ -1,0 +1,59 @@
+id: arxiv-2605-03308
+ref: SRC-0915
+kind: paper
+title: Revisiting the Travel Planning Capabilities of Large Language Models
+year: 2026
+date: 2026-05-05
+arxiv_id: "2605.03308"
+url: https://arxiv.org/abs/2605.03308
+tags:
+  - ingested
+summary: Travel planning serves as a critical task for long-horizon reasoning,
+  exposing significant deficits in LLMs. However, existing benchmarks and
+  evaluations primarily assess final plans in an end-to-end manner, which
+  lacks interpretability and makes it difficult to analyze the root causes of
+  failures. To bridge this gap, we decompose travel planning into five
+  constituent atomic sub-capabilities, including \emph{Constraint Extraction},
+  \emph{Tool Use}, \emph{Plan Generation}, \emph{Error Identification}, and
+  \emph{Error Correction}. We implement a decoupled evaluation protocol
+  leveraging oracle in
+ingested_at: 2026-11-04
+brief: >-
+  Travel planning failures in current models are not mostly about losing
+  constraints or calling the wrong tool; they come from plan synthesis and
+  from broken self-correction, even when every upstream input is supplied as
+  an oracle.
+
+
+  The study decomposes travel planning into 5 atomic sub-tasks (constraint
+  extraction, tool use, plan generation, error identification, error
+  correction) and evaluates each in isolation with oracle intermediate
+  contexts, on TravelPlanner, TripCraft and ChinaTravel, using GPT-5.2,
+  DeepSeek V3.2, Qwen3 Max, Claude Sonnet 4.5 and Gemini 3 Pro in reasoning
+  and non-reasoning modes. Reference and deliberately-violating plans are
+  produced by an MILP solver.
+
+
+  Extraction F1 reaches 0.98 on TravelPlanner but falls to 0.61-0.71 on
+  ChinaTravel with 0.00 exact match for every model. Tool use is 1.00 on
+  TravelPlanner and TripCraft, 0.64-0.84 on ChinaTravel. Plan success peaks at
+  0.43 (Gemini 3 Pro, TravelPlanner) and stays at 0.01-0.15 on TripCraft.
+  Error identification shows high recall with low precision (0.44-0.95),
+  consistent with over-flagging; correction success is 0.03-0.32, with the
+  same errors recurring after feedback.
+
+
+  Effects are measured, and the oracle-context design isolates each stage
+  cleanly. One targeted intervention supports the POI-prior claim: on 37
+  queries where Gemini 3 Pro failed under minimal information, rebuilding the
+  context around its own chosen POIs raised success from 0 to 0.49.
+
+
+  Scale is limited by cost, ChinaTravel is excluded from plan generation and
+  correction due to 64k-token contexts, Gemini 3 Pro High is missing on
+  TripCraft planning, and cross-module error accumulation is by construction
+  not measured. Treat end-to-end travel-planning scores as dominated by
+  synthesis and revision, not information gathering.
+brief_generated_at: 2026-11-04
+brief_model: claude-opus-5
+brief_source: full-text

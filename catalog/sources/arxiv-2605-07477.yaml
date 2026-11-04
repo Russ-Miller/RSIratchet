@@ -1,0 +1,56 @@
+id: arxiv-2605-07477
+ref: SRC-0925
+kind: paper
+title: "ReasonEdit: Towards Interpretable Image Editing Evaluation via
+  Reinforcement Learning"
+year: 2026
+date: 2026-05-08
+arxiv_id: "2605.07477"
+url: https://arxiv.org/abs/2605.07477
+tags:
+  - ingested
+summary: Recent text-guided image editing (TIE) models have achieved
+  remarkable progress, however, many edited results still suffer from
+  artifacts, unintended modifications, and suboptimal aesthetics. Although
+  several benchmarks and evaluation methods have been proposed, most existing
+  approaches rely on scalar scores and lack interpretability. This limitation
+  largely stems from the absence of high-quality interpretation datasets for
+  TIE and effective reward models to train interpretable evaluators. To
+  address these challenges, we introduce ReasonEdit-22K, the first dataset
+  that combines 22K edited imag
+ingested_at: 2026-11-04
+brief: >-
+  Training a small reward model on human ratings of critique text, then using
+  it as the GRPO signal, makes an MLLM judge of image edits both better
+  calibrated to human scores and better at writing the explanation. The
+  paper's own data also shows most of the gain comes from supervised
+  fine-tuning, not the RL stage.
+
+
+  ReasonEdit-22K pairs 22K edited images with 113,898 CoT critiques from 9
+  MLLMs, 1,366,776 expert Likert ratings on logicality/accuracy/usefulness,
+  and 12K human-curated CoT samples. RE-Reward is a Qwen3.5-4B regression
+  head; ReasonEdit is a Qwen-3.5-9B dual-head model trained with SFT then GRPO
+  (G = 4, reward 0.3/0.4/0.3).
+
+
+  RE-Reward reaches SRCC 0.8958/0.9323/0.9428 on the 3 critique dimensions
+  versus 0.8438/0.8587/0.8676 for Gemini-3-Flash. On EBench-18K, ReasonEdit
+  beats LMM4Edit by +1.49 to +4.62% SRCC. Zero-shot it scores 83.90% on
+  GenAI-Bench and 0.7566 SRCC on ImagenHub.
+
+
+  The ablation across 3 backbones over 5 runs isolates the stages: SFT alone
+  already gives MOS SRCC 0.9027 on Qwen3.5-VL-9B against 0.9316 for SFT+GRPO,
+  while GRPO alone gives 0.8435. So RL adds a few points on top of SFT, not
+  the bulk.
+
+
+  In-distribution tests and the CoT text metrics both use data derived from
+  EBench-18K and the authors' own curation, so reward-model and evaluator
+  share annotation sources; text quality is scored by n-gram and embedding
+  overlap, not humans. Treat the headline as evidence that curated
+  critique-quality supervision matters more than the optimizer.
+brief_generated_at: 2026-11-04
+brief_model: claude-opus-5
+brief_source: full-text

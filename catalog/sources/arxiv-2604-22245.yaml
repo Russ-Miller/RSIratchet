@@ -1,0 +1,67 @@
+id: arxiv-2604-22245
+ref: SRC-0895
+kind: paper
+title: "Listening with Time: Precise Temporal Awareness for Long-Form Audio
+  Understanding"
+authors:
+  - Mingchen Shao
+  - Hang Su
+  - Wenjie Tian
+  - Bingshen Mu
+  - Zhennan Lin
+  - Lichun Fan
+year: 2026
+date: 2026-04-24
+arxiv_id: "2604.22245"
+url: https://arxiv.org/abs/2604.22245
+tags:
+  - ingested
+summary: While Large Audio Language Models (LALMs) achieve strong performance
+  on short audio, they degrade on long-form inputs. This degradation is more
+  severe in temporal awareness tasks, where temporal alignment becomes
+  increasingly inaccurate as audio duration grows. We attribute these
+  limitations to the lack of data, benchmarks, and modeling approaches
+  tailored for long-form temporal awareness. To bridge this gap, we first
+  construct LAT-Chronicle, a 1.2k hour long-form audio dataset with temporal
+  annotations across real-world scenarios. We further develop LAT-Bench, the
+  first human-verified benchma
+notes: "Filed as a source on audio-understanding from the classifier's
+  judgement that the paper is about it (improves, high): The paper proposes
+  LAT-Audio with a global-to-local reasoning paradigm plus new training data,
+  reporting improved long-form temporal awareness and duration robustness over
+  existing models. No claim has been drafted from it yet."
+ingested_at: 2026-11-04
+brief: >-
+  Audio language models lose temporal alignment as recordings get longer, and
+  a two-stage global-to-local reasoning loop with audio cropping as a tool
+  recovers much of it. Timestamp drift is concrete: Gemini-2.5-Pro predicted
+  captions ending at 27:48 for a 23:27 clip.
+
+
+  LAT-Audio builds on Qwen3-Omni-30B-A3B-Instruct. It first emits a global
+  timeline of 2–5 segments, then runs Think-With-Audio Chain-of-Thought,
+  calling crop_audio for up to 4 steps. Training uses LAT-Chronicle, a 1.2k
+  hour Chinese/English dataset (7K timeline samples, 30K trajectories, 2.5K
+  GRPO instances). Evaluation is on LAT-Bench (human-verified, audio to 30
+  minutes, tasks: dense captioning, temporal grounding, targeted captioning)
+  and a BLAB subset.
+
+
+  On LAT-Bench TAG it beats Gemini-2.5-Pro by 17.1%, and by 13.8% on BLAB
+  advertisement localization; DAC improves 10.11% relative over
+  Gemini-3.0-Pro. Across 15+ minute audio, TAG falls 68.4 to 35.2 for
+  LAT-Audio versus 62.6 to 16.1 for Gemini-2.5-Pro.
+
+
+  Ablations isolate parts: removing the global timeline, TWA-CoT, or Stage-3
+  RL each degrades results, and QA-only SFT sits ~22% below full LAT-Audio.
+  Sliding-window baselines at 60-second chunks are included. Caveats: 1
+  backbone, benchmark and training data share a pipeline, and Gemini baselines
+  are API-accessed with default decoding.
+
+
+  If you work on long audio, treat timeline-then-crop as the stronger default
+  over chunking.
+brief_generated_at: 2026-11-04
+brief_model: claude-opus-5
+brief_source: full-text

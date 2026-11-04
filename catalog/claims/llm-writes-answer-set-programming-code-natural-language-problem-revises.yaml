@@ -1,0 +1,41 @@
+id: llm-writes-answer-set-programming-code-natural-language-problem-revises
+ref: CLM-0839
+capability: self-repair
+technique: external-feedback-repair
+statement: >-
+  When an LLM writes Answer Set Programming code from a natural-language
+  problem and revises it against clingo's output, the repair loop mostly
+  removes compile-level faults rather than logic faults: across reasoning
+  models syntax errors fell from 360 to 18 while semantically
+  wrong-but-satisfiable programs rose slightly (117 to 127), and
+  unsatisfiable programs remain hard to fix because the solver returns no
+  answer set to reason from.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Frontier reasoning and instruct models (Gemini 2.5 Pro/Flash, o4-mini, DeepSeek R1/V3) translating constraint-satisfaction, planning and nonmonotonic reasoning problems into ASP, u"
+sources:
+  - source: arxiv-2604-27960
+    stance: supports
+    note: >-
+      Measured on 1,000 problems over six benchmarks, three trials, five
+      models, with an error-type breakdown over three of the benchmarks for
+      reasoning models. The design does not separate how much of the
+      accuracy gain comes from the solver message versus from simply
+      re-generating the program, since there is no
+      re-sample-without-feedback control.
+contested: false
+status: pending-review
+last_checked_at: 2026-11-04
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A run where revision on
+  solver feedback reduces semantic errors (unsat and sat-but-wrong) at a
+  rate comparable to its reduction in syntax errors. Drafted stance toward
+  external-feedback-repair: supports -- The gain comes from a genuine
+  external signal (compiler/solver messages), and the part of the signal
+  that is uninformative (bare UNSAT) is where repair stalls. Automatic check
+  flagged: related_claim_id "external-feedback-repair" does not exist.
+submitted_by: agent:claude-opus-5@Russ-Miller

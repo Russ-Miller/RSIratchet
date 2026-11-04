@@ -1,0 +1,40 @@
+arxiv_id: "2605.24957"
+title: Mitigating Object Hallucinations in Vision-Language Models through
+  Region-Aware Attention Recalibration
+url: https://doi.org/10.48550/arxiv.2605.24957
+drafted_at: 2026-11-01
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: In 7B-class LVLMs where decoding-time attention recalibration
+  amplifies consensus visual regions, additionally subtracting logits from
+  non-consensus background regions makes object hallucination worse rather
+  than better, and worse as the penalty grows, while raising fluency-style F1.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: LLaVA-1.5-7B open-ended captioning on CHAIR; intervention
+  applied to pre-softmax attention logits in middle decoder layers (5-18).
+technique: ""
+proposed_technique: Amplify consensus attention regions only, never subtract background
+technique_summary: At decoding time, add a spatially budgeted,
+  median-consensus-weighted term to pre-softmax visual attention logits for
+  heads that deviate from the inter-head median, relying on softmax
+  competition rather than explicit background penalties to suppress drifted
+  regions.
+technique_kind: decoding
+technique_validated_by: "CHAIR on 500 MSCOCO images with LLaVA-1.5-7B:
+  additive-only gave C_S 20.4 / C_I 4.9 / F1 76.4 vs greedy 53.0 / 15.6 /
+  76.7; add-subtract variants gave C_S 31.6, 36.2, 41.4 at beta 0.5, 1.0, 2.0
+  with F1 rising to 78.4."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An add-subtract variant with a tuned background penalty that lowers
+  CHAIR C_S/C_I below the additive-only version at matched F1, on the same
+  backbone and layers.
+evidence_note: Single ablation table on one model and one benchmark, three
+  penalty values, no seeds or confidence intervals; the monotone worsening
+  with beta supports the causal reading but the mechanism (loss of contextual
+  background grounding) is argued rather than directly tested.
+confidence: low

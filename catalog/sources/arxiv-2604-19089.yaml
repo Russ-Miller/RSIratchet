@@ -1,0 +1,70 @@
+id: arxiv-2604-19089
+ref: SRC-0884
+kind: paper
+title: Towards Scalable Lifelong Knowledge Editing with Selective Knowledge
+  Suppression
+authors:
+  - Dahyun Jung
+  - Jaewook Lee
+  - Heuiseok Lim
+year: 2026
+date: 2026-04-21
+arxiv_id: "2604.19089"
+url: https://arxiv.org/abs/2604.19089
+tags:
+  - ingested
+summary: Large language models (LLMs) require frequent knowledge updates to
+  reflect changing facts and mitigate hallucinations. To meet this demand,
+  lifelong knowledge editing has emerged as a continual approach to modify
+  specific pieces of knowledge without retraining the entire model. Existing
+  parameter editing methods struggle with stability during sequential edits
+  due to catastrophic forgetting. While retrieval-based approaches are
+  proposed to alleviate this issue, their applicability remains limited across
+  various datasets because of high training costs. To address these
+  limitations and enhance sc
+notes: "Filed as a source on knowledge-updating from the classifier's
+  judgement that the paper is about it (improves, medium): LightEdit combines
+  selective retrieved-knowledge query modification with a decoding strategy
+  that suppresses the model's original (stale) knowledge probabilities,
+  reportedly outperforming prior lifelong editing methods. No claim has been
+  drafted from it yet."
+ingested_at: 2026-11-04
+brief: >-
+  Lifelong knowledge editing can be done without touching model weights:
+  retrieve the edited fact, filter it with a small relevance classifier, and
+  suppress the log probability of the original answer's first token at
+  decoding time.
+
+
+  LightEdit pairs an edit-aware selector (XLM-RoBERTa-large cross-encoder
+  trained on 1,000 sampled instances, 1 epoch) with in-context decoding that
+  subtracts a weighted prior-knowledge log probability. Tested on LLaMA-3 (8B)
+  and GPT-J (6B) over 1,000 sequential edits on ZSRE, Counterfact, and RIPE
+  against FT, ROME, MEMIT, GRACE, R-ROME, AlphaEdit, LTE, and RECIPE.
+
+
+  Average scores: 0.9664 on ZSRE, 0.9296 on Counterfact, 0.9818 on RIPE,
+  versus RECIPE at 0.9380 / 0.7664 / 0.5473 and LTE at 0.7934 / 0.8753 /
+  0.8980. Parameter-editing baselines collapse (MEMIT averages 0.0105 on
+  ZSRE). On CSQA/MMLU/ANLI/TriviaQA, LightEdit averages 0.6108 against the
+  unedited 0.6092, while ROME drops to 0.2004. Edit time is 0.0000s versus
+  13.8527s for AlphaEdit.
+
+
+  Evidence is measured, with an ablation separating the two components
+  (removing the selector drops locality to 0.4612; removing decoding drops
+  reliability to 0.8978), plus sweeps over alpha and top-k, and a first-token
+  vs all-tokens comparison (0.9664 vs 0.9174).
+
+
+  All 3 datasets are standard triple-based editing sets; no open-domain QA,
+  multilingual, or multi-hop reasoning test, and the selector still needs
+  supervised training.
+
+
+  If you assumed retrieval-based editing requires expensive task-specific
+  training, this suggests a classifier plus decoding contrast gets most of the
+  way there.
+brief_generated_at: 2026-11-04
+brief_model: claude-opus-5
+brief_source: full-text

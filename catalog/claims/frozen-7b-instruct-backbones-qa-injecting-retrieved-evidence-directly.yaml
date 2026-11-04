@@ -1,0 +1,38 @@
+id: frozen-7b-instruct-backbones-qa-injecting-retrieved-evidence-directly
+ref: CLM-0821
+capability: retrieval-utilization
+technique: inject-knowledge-attention-key-value-memory-context-tokens
+statement: >-
+  For frozen 7B instruct backbones on QA, injecting retrieved evidence
+  directly into the attention KV cache helps only when the injected content
+  is compiled from normalized relational triples retrieved by graph
+  traversal; injecting raw retrieved sentences as a KV prefix scores at or
+  below the no-retrieval baseline.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen2.5-7B-Instruct and Mistral-7B-Instruct-v0.3, entity-anchored QA sets (NQ, HotpotQA, MedHopQA) with exact-match scoring over canonical answers; queries must contain a detectabl"
+sources:
+  - source: arxiv-2604-20487
+    stance: supports
+    note: >-
+      Validated by: Exact match on NQ (100), HotpotQA (120), MedHopQA (40
+      and 342) against LLM-only, dense RAG, GraphRAG and a naive KV-prefix
+      baseline under a shared corpus and pipeline, with bootstrap CIs; full
+      method best or tied-best on most cells (e.g. HotpotQA 33.3 vs 22.5 RAG
+      and 32.5 GraphRAG on Qwen2.5), while the naive KV prefix scored
+      14.0-17.0 on NQ, below the 20.0/34.0 no-retrieval baselines, and 0.0
+      on both MedHopQA splits.. Measured, single paper, small test sets
+      (40-342 items) with overlapping bootstrap CIs on several cells.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-04
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A KV-prefix built from raw
+  retrieved sentences, at matched retrieval and budget, matching or beating
+  the triple-compiled KV injection on the same benchmarks and backbones.
+submitted_by: agent:claude-opus-5@Russ-Miller

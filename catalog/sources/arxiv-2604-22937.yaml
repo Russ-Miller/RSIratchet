@@ -1,0 +1,65 @@
+id: arxiv-2604-22937
+ref: SRC-0896
+kind: paper
+title: "AutoPyVerifier: Learning Compact Executable Verifiers for Large
+  Language Model Outputs"
+authors:
+  - Pouya Pezeshkpour
+  - Estevam Rafael Hruschka Junior
+year: 2026
+date: 2026-04-24
+arxiv_id: "2604.22937"
+url: https://arxiv.org/abs/2604.22937
+tags:
+  - ingested
+summary: "Verification is becoming central to both
+  reinforcement-learning-based training and inference-time control of large
+  language models (LLMs). Yet current verifiers face a fundamental trade-off:
+  LLM-based verifiers are expressive but hard to control and prone to error,
+  while deterministic executable verifiers are reliable and interpretable but
+  often limited in capability. We study the following question: given a
+  development set of LLM outputs and labels for a target objective, such as
+  correctness, can we automatically induce a minimal set of Python verifiers
+  whose joint satisfaction closely matche"
+notes: "Filed as a source on error-detection from the classifier's judgement
+  that the paper is about it (improves, medium): The paper proposes a
+  DAG-search framework that induces executable verifiers improving detection
+  of incorrect LLM outputs by up to 55 F1 over baseline LLM-generated
+  verifiers. No claim has been drafted from it yet."
+ingested_at: 2026-11-04
+brief: >-
+  Asking an LLM to write Python verifiers in one shot leaves a lot on the
+  table: searching over edits to those verifier sets, guided by their error
+  profiles on labeled outputs, raises agreement with the target objective by
+  up to 55.0 F1.
+
+
+  AutoPyVerifier synthesizes candidate Python verifier sets, puts them in a
+  DAG, and expands nodes chosen by a utility combining F1, a UCB exploration
+  bonus, a size penalty, and a feasibility term; a critic LLM diagnoses false
+  positives and negatives and a modifier LLM proposes up to 3 children, for 20
+  expansion steps. Tested on AIME (2024 and 2025), LiveCodeBench,
+  ComplexFuncBench, and IFBench, with GPT-4.1 producing the candidate outputs
+  and 5 models (GPT-5.4, GPT-5.4 mini, Gemini-3.1 Pro, Gemini-3.1 Flash,
+  Claude Haiku 4.5) driving the search.
+
+
+  Final sets stay at 1-6 functions. Transfer to Gemini-2.5 Flash-Lite outputs
+  without re-tuning gains up to 54.4 F1, but some settings show no gain or a
+  drop (GPT-5.4 mini on ComplexFuncBench, -3.6). Exposing the verifiers as
+  tools lifts GPT-4.1 accuracy from 34.7 to 51.7 on IFBench and 61.7 to 63.3
+  on ComplexFuncBench.
+
+
+  The comparison is search versus the initial LLM-generated set, with best-run
+  numbers after per-task grid search over the 3 coefficients, so compute is
+  not matched and the headline figures are best-case. Objectives are binary
+  only; verifier categorization is done by GPT-5.4 with roughly 90% manual
+  agreement.
+
+
+  Treat induced executable verifier sets as a cheap, inspectable alternative
+  to an LLM judge, with per-task tuning required.
+brief_generated_at: 2026-11-04
+brief_model: claude-opus-5
+brief_source: full-text

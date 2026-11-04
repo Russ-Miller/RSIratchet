@@ -1,0 +1,69 @@
+id: arxiv-2604-27261
+ref: SRC-0907
+kind: paper
+title: "SynSQL: Synthesizing Relational Databases for Robust Evaluation of
+  Text-to-SQL Systems"
+authors:
+  - Mohammadamin Habibollah
+  - Davood Rafiei
+year: 2026
+date: 2026-04-29
+arxiv_id: "2604.27261"
+url: https://arxiv.org/abs/2604.27261
+tags:
+  - ingested
+summary: "Evaluating text-to-SQL systems remains largely fragile: correctness
+  is typically judged by executing predicted and gold SQL queries on a single
+  static database, even though the same queries may behave differently under
+  alternative database instances. This raises a broader language modeling
+  question: Can large language models synthesize semantically meaningful,
+  schema-consistent relational data directly from a natural language question?
+  If so, such generation can serve as a controlled mechanism for
+  stress-testing text-to-SQL systems beyond fixed benchmark databases. We
+  introduce SynSQL, a frame"
+notes: "Filed as a source on formal-query-synthesis from the classifier's
+  judgement that the paper is about it (measures, high): The paper introduces
+  an evaluation framework that re-measures text-to-SQL accuracy on synthesized
+  databases, revealing 3-14% drops masked by static benchmarks, without
+  proposing a method to improve generation. No claim has been drafted from it
+  yet."
+ingested_at: 2026-11-04
+brief: >-
+  Text-to-SQL accuracy measured on a single benchmark database overstates how
+  often predictions are actually semantically correct. Requiring the same
+  prediction to match the gold query on a second, synthesized database
+  instance removes several points of accuracy from every system tested.
+
+
+  SynSQL generates test databases from the natural language question and
+  schema alone, without gold SQL, in 3 stages: schema selection by
+  ensemble-expansion, question-conditioned tuple synthesis, and a critic that
+  scores 6 dimensions on a 1-10 scale and refines up to 3 iterations. It was
+  run with GPT-4.1-mini, Gemini-2.5-Flash, Gemini-3-Flash, and Qwen-3-8B,
+  against 10 text-to-SQL systems on Spider, BIRD, and Spider 2.0-SQLite.
+
+
+  Compound accuracy drops 3-14% versus static evaluation; on BIRD the drop is
+  6-9%, and on Spider 2.0 GPT 5.4 falls 14.07 under SynSQL with
+  Gemini-3-Flash. Rankings mostly hold, but on Spider, Graphix overtakes C3.
+  Structural validity reaches 99%; success rate on Spider (93.04%) exceeds the
+  human-curated database (92.55%).
+
+
+  Ablations isolate both components: removing the critic drops Qwen-3-8B
+  success from 73.60% to 67.86%, and removing schema selection drops BIRD
+  success to 71.25% from 82.07%, with an oracle schema at 91.46%. A vanilla
+  single-pass synthesizer serves as the baseline.
+
+
+  Failures were hand-analyzed on 500 BIRD questions: 84 empty-result cases, of
+  which 44 were semantic and 17 of those traced to ambiguous BIRD annotations
+  rather than synthesis. Only SQLite-scale, single-database settings were
+  tested.
+
+
+  Treat reported execution accuracy as an upper bound, especially when
+  comparing systems within a few points.
+brief_generated_at: 2026-11-04
+brief_model: claude-opus-5
+brief_source: full-text

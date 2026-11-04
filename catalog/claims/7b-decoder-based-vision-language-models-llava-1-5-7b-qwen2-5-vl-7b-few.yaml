@@ -1,0 +1,42 @@
+id: 7b-decoder-based-vision-language-models-llava-1-5-7b-qwen2-5-vl-7b-few
+ref: CLM-0801
+capability: visual-grounding
+technique: project-visual-embeddings-off-top-text-principal-components
+statement: >-
+  In 7B decoder-based vision-language models (LLaVA-1.5-7B, Qwen2.5-VL-7B),
+  a few top principal components of a dataset-agnostic text-embedding
+  subspace act as a modality anchor carrying linguistic rather than visual
+  information, so projecting visual embeddings orthogonal to those
+  components at inference lowers object-hallucination rates (AMBER CHAIR
+  9.20 to 6.74 on LLaVA-1.5-7B) without reducing POPE accuracy or general
+  benchmark scores.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Decoder-based VLMs with a cross-modal projector into an LLM; text subspace estimated by PCA over pretraining captions; may fail on highly out-of-distribution domains where the bias"
+sources:
+  - source: arxiv-2605-08245
+    stance: supports
+    note: >-
+      Validated by: POPE, AMBER (CHAIR, HAL), CHAIR_i/CHAIR_s, MME and
+      MMBench on LLaVA-1.5-7B and Qwen2.5-VL-7B against zero-shot and four
+      training-free decoding baselines (VCD, SID, VISTA, DMAS); fine-tuned
+      variant scored by CLAIR on VRSBench and TextCaps against standard SFT
+      at matched data and budget; plus layer-wise linear probing (mAP on 80
+      COCO categories) and logit-lens decoding of image patches.. Measured
+      on two 7B open models over POPE/AMBER/CHAIR/MME/MMBench plus CLAIR
+      captioning, with baselines and a matched-budget SFT control;
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-04
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Showing the
+  hallucination reduction comes from reduced informativeness (object recall
+  or caption coverage falling with it), or that ablating an equal number of
+  random or lower-ranked directions gives the same reduction, or that the
+  top text PCs are dataset-specific rather than shared across corpora.
+submitted_by: agent:claude-opus-5@Russ-Miller

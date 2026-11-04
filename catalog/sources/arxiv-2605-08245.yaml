@@ -1,0 +1,55 @@
+id: arxiv-2605-08245
+ref: SRC-0927
+kind: paper
+title: "When Language Overwrites Vision: Over-Alignment and Geometric
+  Debiasing in Vision-Language Models"
+year: 2026
+date: 2026-05-07
+arxiv_id: "2605.08245"
+url: https://arxiv.org/abs/2605.08245
+tags:
+  - ingested
+summary: "Vision-Language Models (VLMs) increasingly power high-stakes
+  applications, from medical imaging to autonomous systems, yet they routinely
+  hallucinate, confidently describing content not present in the input. We
+  investigate the root causes of these failure modes with a mechanistic
+  analysis focusing on the decoder-based VLMs. We trace these failure modes to
+  a geometric over-alignment: to bridge the modality gap required by attention
+  mechanisms, decoder-based VLMs over-align visual embeddings with the text
+  manifold, injecting a statistical linguistic bias that systematically
+  overshadows fine-grai"
+ingested_at: 2026-11-04
+brief: >-
+  Object hallucination in decoder-based VLMs can be reduced by deleting a few
+  directions from the visual embeddings: the top principal components of a
+  text manifold carry a modality anchor rather than image content, and
+  projecting visual tokens orthogonal to them improves grounding at no extra
+  compute.
+
+
+  The text subspace is estimated by PCA over pretraining captions, then
+  subtracted from vision embeddings either post-hoc at inference or inside the
+  forward pass during projector-only fine-tuning (LLM frozen, 2 epochs).
+  Tested on LLaVA-1.5-7B and Qwen2.5-VL-7B across POPE, AMBER, CHAIR, MME,
+  MMBench, plus long-form captioning on VRSBench and TextCaps scored with
+  CLAIR.
+
+
+  On Qwen2.5-VL-7B, AMBER CHAIR falls 5.14 to 4.23, HAL 28.62 to 25.07,
+  CHAIR_i 10.40 to 8.20, POPE rises 87.3 to 88.4. On LLaVA-1.5-7B, AMBER CHAIR
+  9.20 to 6.74, HAL 38.80 to 29.87. Fine-tuning beats standard SFT: VRSBench
+  74.70 vs 72.30, TextCaps 63.80 vs 60.30 on LLaVA.
+
+
+  Evidence is measured, with contemporary training-free baselines (VCD, SID,
+  VISTA, DMAS), matched data and training budget against SFT, linear probes
+  across decoder layers, logit-lens inspection, and ablations over K and
+  intervention layer. Only 2 models, both 7B, and the linear-subspace
+  assumption is untested out of distribution.
+
+
+  If you are chasing hallucination with expensive multi-pass decoding, try
+  subtracting the text subspace first.
+brief_generated_at: 2026-11-04
+brief_model: claude-opus-5
+brief_source: full-text

@@ -1,0 +1,58 @@
+id: arxiv-2605-08221
+ref: SRC-0926
+kind: paper
+title: "NoisyCoconut: Counterfactual Consensus via Latent Space Reasoning"
+year: 2026
+date: 2026-05-06
+arxiv_id: "2605.08221"
+url: https://arxiv.org/abs/2605.08221
+tags:
+  - ingested
+summary: This paper presents NoisyCoconut, a novel inference-time method that
+  enhances large language model (LLM) reliability by manipulating internal
+  representations. Unlike fine-tuning methods that require extensive
+  retraining, NoisyCoconut operates directly on model representations during
+  inference and requires no retraining. Rather than training models to reason
+  in latent space, we inject controlled noise into latent trajectories to
+  generate diverse reasoning paths. Agreement among these paths provides a
+  confidence signal, enabling models to abstain when uncertain. We demonstrate
+  that this approach
+ingested_at: 2026-11-04
+brief: >-
+  Perturbing a model's hidden states with Gaussian noise, running 5 such
+  trajectories, and abstaining when they disagree gives a usable confidence
+  signal without retraining. Agreement among noise-perturbed latent paths
+  tracks correctness as well as token-level self-consistency is claimed to,
+  and needs no fine-tuning or training data.
+
+
+  NoisyCoconut adapts the Coconut continuous-chain-of-thought loop: noise is
+  injected into the first hidden state after the first forward pass, with
+  exponentially decaying scale, and up to 8 latent steps. Tested on
+  Qwen2.5-7B-Instruct, Llama-3.1-8B-Instruct, Mixtral-8B-Instruct-v0.1,
+  gpt-oss-20B, and DeepSeek-R1-Distill-Qwen-7B, over 1000 sampled questions
+  each from GSM8K, GSM-Symbolic, and MMLU.
+
+
+  At unanimous 5/5 agreement, error rates fall from 40% to 70% at low
+  agreement to below 15%. On GSM8K no baseline exceeds 75% accuracy, yet all
+  models exceed 90% at 5/5, with coverage 31.1% (Llama-3.1-8B) to 53.2%
+  (gpt-oss-20B). DeepSeek-Qwen goes 62.0% to 95.2% at 31.4% coverage.
+
+
+  The comparison is greedy single-path decoding, not token-space
+  self-consistency at matched 5x compute, so the latent-space part of the
+  claim is not isolated. Noise calibration (sigmoid fits, R2 >= 0.94)
+  justifies sigma0 = 0.2. Hyperparameter ablations are component-wise only.
+
+
+  Boundaries: open weights required, exact-match answers only, no open-ended
+  generation, and gpt-oss-20B needed first-layer rather than final-layer
+  feedback to avoid degenerate output.
+
+
+  Treat this as evidence that representational instability is readable, not
+  yet that latent noise beats resampling.
+brief_generated_at: 2026-11-04
+brief_model: claude-opus-5
+brief_source: full-text

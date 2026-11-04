@@ -1,0 +1,41 @@
+id: general-purpose-mllm-asked-read-text-real-world-images-lora-supervised
+ref: CLM-0823
+capability: visual-grounding
+technique: fine-tune-degraded-synthetic-ocr-images-stop-text
+statement: >-
+  For a general-purpose MLLM asked to read text in real-world images, LoRA
+  supervised fine-tuning on roughly 5M multilingual OCR samples that include
+  synthetically degraded variants (blur, rotation, occlusion) cuts
+  fabricated-text rates most where visual evidence is weakest, lowering
+  hallucination from 24.8% to 6.6% under blur and 21.4% to 5.8% under
+  rotation versus 8.0% to 2.2% on clean images, while prompt-only OCR
+  chain-of-thought adds little.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "One 70B LLaMA-3-based MLLM, five European languages, ~3,000 held-out real-world image-QA samples; hallucination judged by an LLM judge with manual check on low-confidence cases."
+sources:
+  - source: arxiv-2605-16409
+    stance: supports
+    note: >-
+      Validated by: Held-out ~3,000-sample real-world multilingual OCR
+      benchmark against the same model before post-training: OCR
+      completeness 71.3 to 84.6, hallucination 18.3% to 5.5%, BLEU-1 52.3 to
+      80.2; public benchmarks (DocVQA, TextVQA, MMBench, VQAv2) show small
+      OCR gains with no broad regression.. Measured on one model family with
+      one baseline (its own pre-post-training checkpoint); no ablation
+      separating synthetic degraded data from the rest of the 5M corpus, and
+      the hallucination metric relies on an LLM judge. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-04
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A replication where
+  OCR-aware SFT on degraded synthetic data reduces hallucination no more
+  under blur/rotation than on clean images, or where the measured drop
+  disappears once completeness is held fixed (i.e. the model simply says
+  less).
+submitted_by: agent:claude-opus-5@Russ-Miller

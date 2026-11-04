@@ -1,0 +1,67 @@
+id: arxiv-2604-26565
+ref: SRC-0905
+kind: paper
+title: "DenseStep2M: A Scalable, Training-Free Pipeline for Dense
+  Instructional Video Annotation"
+authors:
+  - Mingji Ge
+  - Qirui Chen
+  - Zeqian Li
+  - Weidi Xie
+year: 2026
+date: 2026-04-29
+arxiv_id: "2604.26565"
+url: https://arxiv.org/abs/2604.26565
+tags:
+  - ingested
+summary: Long-term video understanding requires interpreting complex temporal
+  events and reasoning over procedural activities. While instructional video
+  corpora, like HowTo100M, offer rich resources for model training, they
+  present significant challenges, including noisy ASR transcripts and
+  inconsistent temporal alignments between narration and visual content. In
+  this work, we introduce an automated, training-free pipeline to extract
+  high-quality procedural annotations from in-the-wild instructional videos.
+  Our approach segments videos into coherent shots, filters poorly aligned
+  content, and leverages
+notes: "Filed as a source on video-temporal-reasoning from the classifier's
+  judgement that the paper is about it (improves, medium): The paper builds a
+  training-free pipeline producing temporally grounded procedural step
+  annotations and shows fine-tuned models gain in temporal localization and
+  dense captioning. No claim has been drafted from it yet."
+ingested_at: 2026-11-04
+brief: >-
+  Pairing a large vision-language model for perception with a text-only
+  reasoning LLM for global correction produces better temporally grounded
+  video annotations than either alone, without any training. The VLM supplies
+  noisy visual timestamps as scaffolding; the reasoning model merges,
+  deduplicates, and rectifies them against the full transcript.
+
+
+  The pipeline filters HowTo100M videos (keeping those with at least 75%
+  instructional content), segments them into shots, generates candidate steps
+  with Qwen2.5-VL-72B, then refines with DeepSeek-R1-671B. Output is
+  DenseStep2M: 99.2K videos, 1.9M steps, 19.0 steps per video, 10.5 words per
+  step. DenseCaption100 (100 videos, 11.0 human-annotated steps/video) is the
+  human-written yardstick.
+
+
+  On YouCook2 the training-free pipeline reaches METEOR 9.4 vs 6.1 for CM2
+  without pretraining, CIDEr 33.6 vs 31.7, SODA_c 5.6 vs 5.3. On
+  DenseCaption100 the full pipeline reaches F1 75.81 and mIoU 42.90; removing
+  DeepSeek-R1 drops precision from 67.79 to 57.39 and mIoU from 42.90 to
+  32.87; removing VLM timestamps drops mIoU to 41.16.
+
+
+  Ablations isolate VLM capacity, the refinement stage, and the timestamp
+  scaffold. Downstream, a vision-agnostic ASR-only control dataset is the
+  matched baseline: fine-tuned Qwen2.5-VL-3B gains +4.2% R1-mIoU in captioning
+  and +8.6% grounding mIoU over it.
+
+
+  Boundaries: the data is 59.06% Food and Entertaining, and retrieval
+  fine-tuning costs general-domain accuracy (MSRVTT T2V -4.0 for the embedding
+  model). Useful if you need dense procedural supervision without human
+  labeling.
+brief_generated_at: 2026-11-04
+brief_model: claude-opus-5
+brief_source: full-text

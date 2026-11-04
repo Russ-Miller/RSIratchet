@@ -1,0 +1,66 @@
+id: arxiv-2604-25642
+ref: SRC-0904
+kind: paper
+title: Prefill-Time Intervention for Mitigating Hallucination in Large
+  Vision-Language Models
+authors:
+  - Chengsheng Zhang
+  - Chenghao Sun
+  - Xinyan Jiang
+  - Wei Li
+  - Xinmei Tian
+year: 2026
+date: 2026-04-28
+arxiv_id: "2604.25642"
+url: https://arxiv.org/abs/2604.25642
+tags:
+  - ingested
+summary: "Large Vision-Language Models (LVLMs) have achieved remarkable
+  progress in visual-textual understanding, yet their reliability is
+  critically undermined by hallucinations, i.e., the generation of factually
+  incorrect or inconsistent responses. While recent studies using steering
+  vectors demonstrated promise in reducing hallucinations, a notable challenge
+  remains: they inadvertently amplify the severity of residual hallucinations.
+  We attribute this to their exclusive focus on the decoding stage, where
+  errors accumulate autoregressively and progressively worsen subsequent
+  hallucinatory outputs. To"
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, high): The paper proposes a one-shot
+  prefill-time steering intervention that reduces hallucination rates across
+  LVLMs and benchmarks, and notes decoding-stage steering amplifies residual
+  hallucinations. No claim has been drafted from it yet."
+ingested_at: 2026-11-04
+brief: >-
+  Steering a vision-language model's KV cache once, during prefill, cuts
+  object hallucination more than steering hidden states continuously during
+  decoding. The authors argue decoding-time intervention arrives after a
+  poorly grounded representation already exists, letting errors snowball.
+
+
+  Prefill-Time Intervention (PTI) derives separate visual and textual steering
+  directions from 100 MSCOCO VQA pairs, contrasting object-segmented images
+  against background-only images, and object-mention words against the rest of
+  the caption. Keys are steered toward grounded objects, values to filter
+  background. Tested on LLaVA-1.5, Qwen-VL-Chat and DeepSeek-VL-Chat across
+  CHAIR, POPE, AMBER, MMHal-Bench and MME, against PAI, VTI, VISTA, VCD and
+  OPERA.
+
+
+  On CHAIR with greedy decoding, LLaVA-1.5 CHAIR_S drops 47.4 to 15.4 and
+  CHAIR_I 13.7 to 5.4; Qwen-VL-Chat 39.6 to 20.6. MME cognition accuracy rises
+  611.6 to 651.6 on LLaVA. POPE gains are smaller, under 3 points, and PTI is
+  not best everywhere (DeepSeek nucleus CHAIR_S 27.0 trails VISTA's 22.2).
+
+
+  Ablations separate modality and position and show visual intervention does
+  most of the work while hurting F1, which textual intervention partly
+  recovers. Baselines were reproduced under matched prompts and temperature.
+  Cross-model transfer is tested only between 2 models with matching cache
+  dimensions, and MMHal scoring uses GPT-5 as judge.
+
+
+  If you build steering-based hallucination fixes, test intervention timing,
+  not just direction.
+brief_generated_at: 2026-11-04
+brief_model: claude-opus-5
+brief_source: full-text

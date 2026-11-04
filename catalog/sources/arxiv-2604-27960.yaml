@@ -1,0 +1,63 @@
+id: arxiv-2604-27960
+ref: SRC-0909
+kind: paper
+title: "LLMs as ASP Programmers: Self-Correction Enables Task-Agnostic
+  Nonmonotonic Reasoning"
+authors:
+  - Adam Ishay
+  - Joohyung Lee
+year: 2026
+date: 2026-04-30
+arxiv_id: "2604.27960"
+url: https://arxiv.org/abs/2604.27960
+tags:
+  - ingested
+summary: Recent large language models (LLMs) have achieved impressive
+  reasoning milestones but continue to struggle with high computational costs,
+  logical inconsistencies, and sharp performance degradation on
+  high-complexity problems. While neuro-symbolic methods attempt to mitigate
+  these issues by coupling LLMs with symbolic reasoners, existing approaches
+  typically rely on monotonic logics (e.g., SMT) that cannot represent
+  defeasible reasoning -- essential components of human cognition. We present
+  "LLM+ASP," a framework that translates natural language into Answer Set
+  Programming (ASP), a nonmonotonic
+notes: "Filed as a source on self-repair from the classifier's judgement that
+  the paper is about it (improves, medium): The paper reports that an
+  automated self-correction loop using solver-generated structured feedback is
+  the primary driver of performance gains, replacing handcrafted domain
+  knowledge. No claim has been drafted from it yet."
+ingested_at: 2026-11-04
+brief: >-
+  Letting an LLM write Answer Set Programming code and then repair it from
+  solver feedback beats having the model reason directly, and the repair loop,
+  not any hand-authored domain knowledge, is what does the work. ASP's
+  nonmonotonic stable model semantics also beats SMT on defeasible tasks,
+  where SMT-based pipelines fall below the standalone LLM.
+
+
+  LLM+ASP translates a problem description into a clingo program with a
+  task-agnostic prompt, runs it, and feeds solver output back for UPDATE or
+  PASS decisions. Tested with Gemini 2.5 Pro, Gemini 2.5 Flash, o4-mini,
+  DeepSeek R1-0528 and DeepSeek V3 on ZebraLogic XL and a custom XXL set,
+  SudokuBench, Mystery Blocksworld, MultiLogicNMR and BoardgameQA, 3 trials
+  each.
+
+
+  Average accuracy rises from 51.3% baseline to 78.0%. Ablating revision drops
+  it to 54.6%, at 2.18 revisions on average. On ZL-XXL, 24.2% to 71.3%;
+  SudokuBench 8.4% to 59.8%. A 2.6k-token compact reference beats a 22k-token
+  one (73.1% vs 70.0%), with syntax errors 84 to 41 to 16. On MultiLogicNMR,
+  ASP reaches 92.9% skeptical vs 35.8% for SMT.
+
+
+  The revision ablation and the matched zero-shot ASP-vs-SMT comparison
+  isolate the causes well. BoardgameQA shows no gain (82.4% vs 84.7%) and may
+  be contaminated; DeepSeek V3 reaches only 45.0% with a 37.33% false-accept
+  rate, so the loop does not rescue non-reasoning models.
+
+
+  If you are routing hard constraint or defeasible problems, pick the
+  formalism by task type and budget revisions rather than prompt engineering.
+brief_generated_at: 2026-11-04
+brief_model: claude-opus-5
+brief_source: full-text
