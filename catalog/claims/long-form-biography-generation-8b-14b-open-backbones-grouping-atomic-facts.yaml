@@ -1,0 +1,38 @@
+id: long-form-biography-generation-8b-14b-open-backbones-grouping-atomic-facts
+ref: CLM-0854
+capability: hallucination
+technique: verify-grouped-facts-per-sentence-each-fact
+statement: >-
+  For long-form biography generation with 8B-14B open backbones, grouping
+  the atomic facts of each sentence into one retrieval-verification query
+  rather than verifying each fact separately cuts token cost by 33-46% and,
+  on the 8B model, also raises FactScore, because per-fact verification
+  fragments evidence and drives defensive deletion of facts.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Llama-3-8B and Qwen2.5-14B on LongForm Bio, with Tavily web retrieval, temperature 0; ablation run on only 20 random instances."
+sources:
+  - source: arxiv-2605-28837
+    stance: supports
+    note: >-
+      Validated by: On 20 LongForm Bio instances, compared against a
+      high-density 1:1 per-fact verification baseline and the uncorrected
+      initial answer: FactScore 0.8568 vs 0.7002 (8B) and 0.8146 vs 0.8128
+      (14B), with token usage 39,492 vs 72,634 (8B) and 36,533 vs 54,407
+      (14B); fact preservation 77.7% vs 61.6% (8B).. Measured, but the
+      dense-vs-sparse comparison rests on a 20-instance ablation with two
+      backbones and one benchmark; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-05
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A larger evaluation in
+  which per-fact (dense) verification matches or exceeds grouped
+  verification on FactScore at comparable fact-preservation rates, or in
+  which grouped verification shows no token saving once retrieval calls are
+  counted.
+submitted_by: agent:claude-opus-5@Russ-Miller

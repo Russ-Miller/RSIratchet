@@ -1,0 +1,64 @@
+id: arxiv-2604-17464
+ref: SRC-0903
+kind: paper
+title: "Project Prometheus: Bridging the Intent Gap in Agentic Program Repair
+  via Reverse-Engineered Executable Specifications"
+authors:
+  - Yongchao Wang
+  - Zhiqiu Huang
+year: 2026
+date: 2026-04-19
+arxiv_id: "2604.17464"
+url: https://arxiv.org/abs/2604.17464
+tags:
+  - ingested
+summary: The transition from neural machine translation to agentic workflows
+  has revolutionized Automated Program Repair (APR). However, existing agents,
+  despite their advanced reasoning capabilities, frequently suffer from the
+  ``Intent Gap'' -- the misalignment between the generated patch and the
+  developer's original intent. Current solutions relying on natural language
+  summaries or adversarial sampling often fail to provide the deterministic
+  constraints required for surgical repairs. In this paper, we introduce
+  \textsc{Prometheus}, a novel framework that bridges this gap by prioritizing
+  \textit{Speci
+notes: "Filed as a source on debugging from the classifier's judgement that
+  the paper is about it (improves, medium): The paper proposes a multi-agent
+  specification-inference framework that raises correct patch rate on
+  Defects4J to ~94% and rescues 119 bugs a baseline agent failed. No claim has
+  been drafted from it yet."
+ingested_at: 2026-11-05
+brief: >-
+  Telling a code agent exactly what the fixed behavior should be, in
+  executable form, rescues most of the bugs it fails blind — but the
+  specification was validated against the known fix, so the number is an upper
+  bound, not a deployable result.
+
+
+  Prometheus splits repair into 3 roles: an Architect (Gemini-3.0-Pro) that
+  reverse-engineers a Gherkin BDD scenario from the runtime failure report, an
+  Engineer that checks the scenario fails on the buggy code and passes on the
+  developer-fixed code, and a Fixer (Qwen-3.0-Coder) restricted to the single
+  primary suspicious file. Evaluated on 680 Defects4J v3.0.1 defects across 16
+  projects, with Closure excluded.
+
+
+  The blind Fixer solved 520/680 (76.5%). Applying the spec-guided Fixer to
+  the 160 failures rescued 119, a 74.4% rescue rate and a composite 639/680
+  (93.97%). On those same 160 hard bugs, TSAPR resolved 22 and RepairAgent 27,
+  a 4.4x gap. The Engineer consumes 58.2% of the 5,782,441 average tokens; the
+  Architect only ~6.4%.
+
+
+  The ablation is clean in one respect — the Enlightened Fixer gets a strict
+  superset of the blind input — but the enlightened arm never ran on the 520
+  already-solved bugs, there is no matched-token-budget blind baseline, and
+  the oracle is the ground-truth fix the authors acknowledge is unavailable in
+  practice. Single-file scope excludes multi-file defects (Time-1 degraded
+  badly), and BDD failed on implicit binary protocols (Collections-8).
+
+
+  Read the 93.97% as a measurement of how much headroom intent clarity
+  represents, not as a repair rate.
+brief_generated_at: 2026-11-05
+brief_model: claude-opus-5
+brief_source: full-text

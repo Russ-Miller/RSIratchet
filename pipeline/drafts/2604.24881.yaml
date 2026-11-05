@@ -1,0 +1,48 @@
+arxiv_id: "2604.24881"
+title: "Latent Agents: A Post-Training Procedure for Internalized Multi-Agent
+  Debate"
+url: https://doi.org/10.48550/arxiv.2604.24881
+drafted_at: 2026-11-04
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: For 7-12B open instruct models, fine-tuning a single model on full
+  multi-agent debate transcripts (SFT) and then applying RL with a decaying
+  format reward and a shrinking answer-position length limit matches or
+  exceeds three-agent two-round explicit debate accuracy while using roughly
+  6-21% of its tokens, and distilling only the final consensus answers instead
+  of the full traces scores lower.
+kind: observation
+backing_strength: single-paper
+scope_condition: LLaMA-3.1 8B, Qwen2.5 7B, Mistral Nemo 12B; training traces
+  from GPT-3.5 debates on six-term two-digit arithmetic; evaluated on
+  1000-sample subsets of GSM8K, MMLU-Pro, BBH; gains not uniform (Qwen and
+  Mistral lose to debate on MMLU-Pro)
+technique: ""
+proposed_technique: Distill full debate transcripts, then shrink them with RL
+technique_summary: Supervised fine-tune one model on complete tagged
+  multi-agent debate traces, then run GRPO where the structure-tag reward
+  decays to near zero and the answer must appear within an annealed token
+  prefix, forcing the debate into the model's latent computation.
+technique_kind: training
+technique_validated_by: Accuracy and input+output tokens per question across
+  three runs on GSM8K, MMLU-Pro and BBH against single-agent, explicit debate
+  (Du et al.), and DebateGPT (final-output-only distillation), on three
+  backbones; RL stage ablated against SFT-only.
+stance_on_existing: supports
+related_claim_id: knowledge-math-medical-qa-benchmarks-8b-open-backbones-llama-3
+stance_reason: Both find that debate's accuracy benefit can be reproduced
+  inside one model at a fraction of the token cost, implying the gain comes
+  from multi-perspective structure rather than inter-agent text exchange.
+falsifier: A replication where the internalized model, trained the same way,
+  falls materially below explicit debate accuracy on most backbone-benchmark
+  cells, or where final-answer-only distillation matches full-trace
+  distillation at equal token budget.
+evidence_note: Measured on three backbones and three benchmarks with three
+  runs and standard errors; token counts reported. Design does not isolate how
+  much of the gain is from the debate structure versus from fine-tuning on any
+  GPT-3.5-generated reasoning traces, since no matched non-debate trace
+  control is reported. Transfer from arithmetic-only training is argued from
+  benchmark results, not from a controlled domain ablation.
+confidence: medium

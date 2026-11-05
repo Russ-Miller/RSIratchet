@@ -1,0 +1,40 @@
+id: selecting-among-several-sampled-sql-candidates-without-training-verifying
+ref: CLM-0872
+capability: formal-query-synthesis
+technique: verify-sql-candidates-synthesized-distinguishing-database-against-parallel
+statement: >-
+  For selecting among several sampled SQL candidates without training,
+  verifying the top two execution-distinct candidates against a synthesized
+  small adversarial database plus an independently generated Python/Pandas
+  solution of the same question raises execution accuracy over
+  self-consistency and LLM-as-judge selection, with the gain concentrated on
+  cases where the majority vote is wrong.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Training-free candidate selection over 5-11 sampled SQL candidates on BIRD Mini-Dev and Spider Test, with Qwen2.5-Coder-7B, DeepSeek-V3.2 and GPT-5 backbones; absolute gains are sm"
+sources:
+  - source: arxiv-2604-15163
+    stance: supports
+    note: >-
+      Validated by: Execution accuracy on BIRD Mini-Dev (500 queries) and
+      Spider Test (2,147) against random, execution-guided, self-consistency
+      and multiple-choice selection: e.g. BIRD 53.4 vs 51.2 for
+      self-consistency on DeepSeek-V3.2; also plugged into DAIL-SQL, CHESS,
+      OmniSQL-7B, XiYanCoder-7B (+1.0 to +2.4 points over self-consistency);
+      ablations remove Tester (-1.4), Slicer (-0.8), Python solver (-0.6),
+      BS-F1 (-0.6).. Measured on two benchmarks and three backbones with
+      four selection baselines; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-05
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A replication where the
+  Python cross-paradigm check and adversarial database add nothing over
+  self-consistency at matched candidate budget, or where the gain disappears
+  once the extra verification compute is given to self-consistency as more
+  samples.
+submitted_by: agent:claude-opus-5@Russ-Miller

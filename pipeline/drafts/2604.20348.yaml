@@ -1,0 +1,48 @@
+arxiv_id: "2604.20348"
+title: Bimanual Robot Manipulation via Multi-Agent In-Context Learning
+url: https://doi.org/10.48550/arxiv.2604.20348
+drafted_at: 2026-11-04
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: For text-only LLMs predicting discretized bimanual keyposes from a
+  handful of in-context demonstrations, splitting the 14-dimensional joint
+  action into two sequential single-arm predictions and feeding the first
+  arm's predicted trajectory into the second arm's observation beats both
+  monolithic joint prediction and two independent per-arm predictions, and the
+  conditioning rather than the factorization carries most of the gain.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Training-free in-context learning with discretized keypose
+  actions and text object-centroid observations; 13 TWIN simulation tasks plus
+  3 real Franka tasks; gain is small or absent on tasks where the arms act
+  nearly independently.
+technique: ""
+proposed_technique: Condition the second arm on the first arm's predicted trajectory
+technique_summary: Decompose bimanual in-context action prediction into a
+  leader agent that predicts its full single-arm trajectory and a follower
+  agent that predicts its own trajectory with the leader's plan inserted into
+  its observation dictionary.
+technique_kind: prompting
+technique_validated_by: "Average success over 13 TWIN tasks, 3 seeds x 100
+  episodes: 70.5% vs 64.4% for independent dual-agent and 60.6% for monolithic
+  single-agent prediction, same GPT-5-mini backbone and same 10
+  demonstrations; an ablation that keeps sequential single-arm predictions but
+  removes the leader-trajectory observation augmentation scores 65.0%;
+  real-robot 53.3% vs 33.3% for the dual-agent baseline over 10 trials on each
+  of 3 tasks."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A replication where sequential single-arm prediction without the
+  leader-trajectory conditioning matches the conditioned version, or where
+  monolithic joint prediction matches or beats both, under the same backbone,
+  demonstrations and task set.
+evidence_note: Measured in simulation (13 tasks, 3 seeds x 100 episodes) with
+  matched backbone and demonstration count across ICL arms, plus 10 real-robot
+  trials per task on 3 tasks. The ablation isolates conditioning from
+  factorization. Supervised comparisons are not matched on perception or
+  supervision and should be ignored. Real-world n is small; a second backbone
+  (Qwen 2.5 7B) reproduces the ordering only against one baseline.
+confidence: medium

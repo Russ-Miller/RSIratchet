@@ -1,0 +1,39 @@
+id: 7b-video-mllms-timestamp-accuracy-higher-model-emits-dense
+ref: CLM-0809
+capability: video-temporal-reasoning
+technique: predict-coarse-span-then-self-correct-understanding-checks
+statement: >-
+  For 7B video MLLMs, timestamp accuracy is higher when the model emits
+  dense timestamped captions than when it localizes a given query directly,
+  and the same gap shows up in auxiliary understanding tasks (query-clip
+  matching, event-status classification) being more stable across rare and
+  common concepts than direct grounding — so grounding can be improved by
+  having the model first predict a coarse span and then revise it with those
+  understanding checks.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Open-world video temporal grounding with Qwen2.5-VL-7B and Gemini-2.5-Pro; measured on the authors' own dataset plus four public VTG benchmarks under zero-shot transfer."
+sources:
+  - source: arxiv-2604-25276
+    stance: supports
+    note: >-
+      Validated by: R1@0.5 on the authors' test set and four public VTG
+      benchmarks against Time-R1, UniTime and the untuned backbone; staged
+      ablation shows SFT+CoT+RL 63.3 / 62.4 (rare) / 39.8 (ActivityNet)
+      versus SFT alone 62.3 / 59.6 / 25.6 and SFT+RL without CoT 62.8 / 60.6
+      / 37.2, with content-aware coarse spans beating randomly shifted
+      ones.. Measured, single paper, one backbone (Qwen2.5-VL-7B) with a
+      staged ablation; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-05
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Show that on a held-out
+  benchmark the dense-caption timestamps are no more accurate than direct
+  grounding for the same model, or that the predict-then-correct CoT stage
+  adds nothing over SFT+RL at matched training compute and data.
+submitted_by: agent:claude-opus-5@Russ-Miller

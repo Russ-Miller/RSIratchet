@@ -1,0 +1,69 @@
+id: arxiv-2604-07506
+ref: SRC-0885
+kind: paper
+title: "ReflectRM: Boosting Generative Reward Models via Self-Reflection
+  within a Unified Judgment Framework"
+authors:
+  - Kai Qin
+  - Liangxin Liu
+  - Yu Liang
+  - Longzheng Wang
+  - Yan Wang
+  - Yueyang Zhang
+year: 2026
+date: 2026-04-08
+arxiv_id: "2604.07506"
+url: https://arxiv.org/abs/2604.07506
+tags:
+  - ingested
+summary: Reward Models (RMs) are critical components in the Reinforcement
+  Learning from Human Feedback (RLHF) pipeline, directly determining the
+  alignment quality of Large Language Models (LLMs). Recently, Generative
+  Reward Models (GRMs) have emerged as a superior paradigm, offering higher
+  interpretability and stronger generalization than traditional scalar RMs.
+  However, existing methods for GRMs focus primarily on outcome-level
+  supervision, neglecting analytical process quality, which constrains their
+  potential. To address this, we propose ReflectRM, a novel GRM that leverages
+  self-reflection to asses
+notes: "Filed as a source on critique from the classifier's judgement that the
+  paper is about it (improves, high): Adding self-reflection on analysis
+  quality raises preference-agreement accuracy (+3.7) and reduces positional
+  bias (+10.2), improving judge quality. No claim has been drafted from it
+  yet."
+ingested_at: 2026-11-05
+brief: >-
+  Training a generative reward model to judge its own analytical traces, not
+  just final verdicts, improves both judgment accuracy and positional
+  consistency. ReflectRM converts standard preference data into process-level
+  pairs by sampling multiple judgments and pairing analyses that led to
+  correct versus incorrect verdicts, then trains on a 4:1 mix of
+  response-preference and reflection data with GRPO on Qwen3-4B/8B/14B. At
+  inference it draws N = 8 rollouts, picks a high-confidence anchor from token
+  log-probabilities, uses self-reflection to filter the rest, and
+  majority-votes the survivors.
+
+
+  Average accuracy across RewardBench, RM-Bench, RMB and PPE-Preference rises
+  3.7 points on Qwen3-4B (72.7 to 76.4) and 2.2 on Qwen3-8B; the 4B system at
+  76.4 beats the 8B RFT baseline at 76.1. Positional consistency, scored only
+  when the model picks correctly under both orderings, gains 10.2 points on 4B
+  versus 5.4 for RFT.
+
+
+  The design isolates causes reasonably well: a token-matched baseline trains
+  on 17.1k pure preference samples (79.1 AVG) against 13.7k Pref. plus 3.4k
+  Refl. (80.3), and ablations replacing the anchor or the reflection filter
+  with random selection cost 0.5 and 1.0 points. Matched-compute comparisons
+  are deferred to an appendix section not shown here.
+
+
+  Only 1 model family, pairwise preference judging, and mainly 2 training
+  sources were tested. Inference cost roughly doubles over N-sample majority
+  voting.
+
+
+  If you build reward models, process-level preference pairs look cheaper than
+  scaling preference data.
+brief_generated_at: 2026-11-05
+brief_model: claude-opus-5
+brief_source: full-text

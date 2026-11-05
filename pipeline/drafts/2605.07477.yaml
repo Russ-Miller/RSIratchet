@@ -1,0 +1,46 @@
+arxiv_id: "2605.07477"
+title: "ReasonEdit: Towards Interpretable Image Editing Evaluation via
+  Reinforcement Learning"
+url: https://doi.org/10.48550/arxiv.2605.07477
+drafted_at: 2026-11-02
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: critique
+statement: For MLLM judges of text-guided image editing, supervised
+  fine-tuning on human-curated chain-of-thought critiques carries most of the
+  gain in both score-human correlation and critique text quality, while GRPO
+  against a reward model trained on human ratings of critique logicality,
+  accuracy and usefulness adds a smaller further gain on top of it.
+kind: observation
+backing_strength: single-paper
+scope_condition: 8-9B open multimodal backbones (Ovis2.5, InternVL3.5,
+  Qwen3.5-VL) judging edited-image triplets; measured on the paper's own CoT
+  test split and EBench-18K
+technique: ""
+proposed_technique: Reward critique logicality, accuracy and usefulness,
+  scored by a human-rating-trained reward model
+technique_summary: Train a small MLLM reward model to regress human ratings of
+  a critique's logicality, accuracy and usefulness, then GRPO-tune an
+  evaluator judge against the weighted combination of those three scores after
+  SFT on curated critiques.
+technique_kind: training
+technique_validated_by: Rank/linear correlation (SRCC, KRCC, PLCC) with human
+  MOS on EBench-18K and zero-shot pairwise accuracy on five public editing
+  benchmarks, plus text-similarity metrics (SimCSE, Word2Vec, METEOR, ROUGE)
+  against curated reference critiques; ablated against base, GRPO-only and
+  SFT-only variants on three backbones.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On a held-out editing benchmark with the same backbones, GRPO-only
+  tuning matching or exceeding SFT-only on both MOS SRCC and critique quality,
+  or SFT+GRPO showing no gain over SFT alone.
+evidence_note: "Measured: ablation across three backbones over five runs
+  reports base MOS SRCC ~0.42-0.50, GRPO-only ~0.82-0.84, SFT-only ~0.88-0.90,
+  SFT+GRPO ~0.91-0.93, with the same ordering on text-similarity metrics.
+  Text-quality metrics are n-gram/embedding overlap with the paper's own
+  curated references, so they partly measure imitation of the SFT target
+  rather than critique usefulness; no downstream test of whether the critique
+  improves an edit."
+confidence: medium

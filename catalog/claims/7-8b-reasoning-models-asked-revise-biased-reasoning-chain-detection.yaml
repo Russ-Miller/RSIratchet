@@ -1,0 +1,42 @@
+id: 7-8b-reasoning-models-asked-revise-biased-reasoning-chain-detection
+ref: CLM-0800
+capability: self-repair
+technique: train-biased-to-corrected-suffix-pairs-freezing-valid
+statement: >-
+  For 7-8B reasoning models asked to revise a biased reasoning chain,
+  detection does not produce correction: when a stereotypical prefix is
+  forced into the chain the models emit reflection tokens ("Wait", "But") in
+  11.8-32.6% of cases yet still rationalize the premise to a discriminatory
+  answer, and prompting a post-hoc revision pass lowers average
+  fairness-plus-utility scores below the uncorrected baseline (e.g. Qwen3-8B
+  -13.5 points).
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "7-8B open reasoning/instruct models (Qwen3-8B, Qwen2.5-7B, DeepSeek-R1-Distill-Qwen-7B, Llama-3.1-8B) on fairness benchmarks (BBQ, UnQover, CEB, CrowS-Pairs) with a biased prefix i"
+sources:
+  - source: arxiv-2604-08243
+    stance: supports
+    note: >-
+      Validated by: Average over six fairness and two utility benchmarks:
+      Qwen3-8B 77.5 base and 64.0 with prompted self-correction, versus 81.7
+      and 82.1 after Self-Debias (p<0.05); replicated on Llama-3.1-8B (52.3
+      to 81.4); ablation shows response-level instead of suffix-level
+      optimization drops to 78.5, and removing the consistency filter
+      degrades across online iterations.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-05
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A measurement on
+  comparable models showing that prompted post-hoc revision of a
+  bias-injected chain raises both fairness and utility above the uncorrected
+  baseline, or that reflection-token emission predicts a corrected final
+  answer. Drafted stance toward self-critique-without-grounding-unreliable:
+  supports -- Prompted post-hoc self-critique (Self-Refine, Denying,
+  BiasFilter) on biased reasoning traces made fairness and utility scores
+  worse than leaving the output alone.
+submitted_by: agent:claude-opus-5@Russ-Miller

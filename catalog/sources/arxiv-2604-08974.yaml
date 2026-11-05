@@ -1,0 +1,69 @@
+id: arxiv-2604-08974
+ref: SRC-0889
+kind: paper
+title: "Confident in a Confidence Score: Investigating the Sensitivity of
+  Confidence Scores to Supervised Fine-Tuning"
+authors:
+  - Lorenzo Jaime Yu Flores
+  - Cesare Spinoso-Di Piano
+  - Jackie Chi Kit Cheung
+year: 2026
+date: 2026-04-10
+arxiv_id: "2604.08974"
+url: https://arxiv.org/abs/2604.08974
+tags:
+  - ingested
+summary: "Uncertainty quantification techniques measure confidence in language
+  model outputs to support critical applications like hallucination detection
+  and selective prediction. While prior work has developed various confidence
+  metrics and demonstrated their calibration for classification tasks or using
+  verbalized confidence, the robustness of probability-based and
+  self-consistency-based UQ metrics for natural language generation remains
+  underexplored particularly under model adaptation. Since practitioners
+  routinely apply supervised fine-tuning to adapt models to new tasks, a key
+  question arises: do"
+notes: "Filed as a source on abstention-and-self-knowledge from the
+  classifier's judgement that the paper is about it (degrades, medium): The
+  paper reports that supervised fine-tuning shifts confidence calibration
+  unpredictably, degrading it in over half of configurations and reducing the
+  practical utility of confidence scores for identifying correct answers. No
+  claim has been drafted from it yet."
+ingested_at: 2026-11-05
+brief: >-
+  Confidence scores from token probabilities or self-consistency do not keep
+  their calibration through supervised fine-tuning, and the direction of the
+  shift cannot be predicted from the pre-SFT model.
+
+
+  The authors fine-tuned BART Base, Flan-T5 Base, Llama 3.1-8B, Gemma-2-2B,
+  Gemma-2-9B and QWen 2.5-14B on English-Afrikaans translation (NLLB/FLORES),
+  SQUAD and GSM8K, and scored 12 probability- and consistency-based UQ metrics
+  by Prediction-Rejection Ratio before and after SFT.
+
+
+  Across 216 configurations calibration degraded in 112 cases (43
+  statistically significant) and improved in 104 (47 significant). PRR could
+  drop by up to 0.290 points between consecutive epochs. Probability-based
+  scores drifted toward relative overconfidence, consistency-based scores
+  toward underconfidence. On TruthfulQA (817 question-answer pairs, filtered
+  to entity answers), AUROC for detecting correct answers fell in 35/72 cases
+  post-SFT.
+
+
+  The effect is measured, with 3 seeds and ANOVA plus Holm correction. Fixing
+  training steps at 2,500 while varying sample count isolates sample size from
+  step count: 13/216 configurations still differed significantly. Mechanistic
+  analysis covers only 2 of the 12 metrics, and the training-similarity
+  explanation rests on correlations with cosine similarity to training data,
+  not intervention.
+
+
+  Untested on summarization and dialogue, and PRR assumes a monotonic
+  confidence-quality relation.
+
+
+  If you ship a confidence score on a fine-tuned model, revalidate it after
+  every adaptation run.
+brief_generated_at: 2026-11-05
+brief_model: claude-opus-5
+brief_source: full-text

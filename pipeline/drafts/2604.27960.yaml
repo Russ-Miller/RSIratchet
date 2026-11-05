@@ -1,0 +1,46 @@
+arxiv_id: "2604.27960"
+title: "LLMs as ASP Programmers: Self-Correction Enables Task-Agnostic
+  Nonmonotonic Reasoning"
+url: https://doi.org/10.48550/arxiv.2604.27960
+drafted_at: 2026-11-04
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: self-repair
+statement: "When an LLM writes Answer Set Programming code from a
+  natural-language problem and revises it against clingo's output, the repair
+  loop mostly removes compile-level faults rather than logic faults: across
+  reasoning models syntax errors fell from 360 to 18 while semantically
+  wrong-but-satisfiable programs rose slightly (117 to 127), and unsatisfiable
+  programs remain hard to fix because the solver returns no answer set to
+  reason from."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Frontier reasoning and instruct models (Gemini 2.5 Pro/Flash,
+  o4-mini, DeepSeek R1/V3) translating constraint-satisfaction, planning and
+  nonmonotonic reasoning problems into ASP, up to a bounded revision budget;
+  the model itself decides when to stop.
+technique: external-feedback-repair
+proposed_technique: ""
+technique_summary: ""
+technique_kind: ""
+technique_validated_by: Accuracy with revisions vs. without across six
+  benchmarks (average 54.6% to 78.0%), plus a four-way classification of
+  final-program failure modes (syntax, timeout, sat-but-wrong, unsat) with and
+  without revision.
+stance_on_existing: supports
+related_claim_id: external-feedback-repair
+stance_reason: The gain comes from a genuine external signal (compiler/solver
+  messages), and the part of the signal that is uninformative (bare UNSAT) is
+  where repair stalls.
+falsifier: A run where revision on solver feedback reduces semantic errors
+  (unsat and sat-but-wrong) at a rate comparable to its reduction in syntax
+  errors.
+evidence_note: Measured on 1,000 problems over six benchmarks, three trials,
+  five models, with an error-type breakdown over three of the benchmarks for
+  reasoning models. The design does not separate how much of the accuracy gain
+  comes from the solver message versus from simply re-generating the program,
+  since there is no re-sample-without-feedback control.
+confidence: medium
+problems:
+  - related_claim_id "external-feedback-repair" does not exist

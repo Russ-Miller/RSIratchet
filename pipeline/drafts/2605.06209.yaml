@@ -1,0 +1,47 @@
+arxiv_id: "2605.06209"
+title: "SiblingRepair: Sibling-Based Multi-Hunk Repair with Large Language Models"
+url: https://doi.org/10.48550/arxiv.2605.06209
+drafted_at: 2026-11-04
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: debugging
+statement: For multi-hunk Java bug repair where the same mistake recurs at
+  several code locations, retrieving sibling candidates by token plus
+  embedding similarity over all test-exercised code and letting an LLM pick
+  and patch them beats template-based sibling repair restricted to
+  failing-test coverage and commit history (23 vs 4 sibling bugs, 76 vs 9
+  multi-hunk bugs on Defects4J under spectrum-based localization).
+kind: observation
+backing_strength: single-paper
+scope_condition: Java bugs in Defects4J v1.2/v2.0 and GHRB with reproducing
+  test suites, 5-hour budget, DeepSeek-V3.2 backbone, spectrum-based or
+  single-perfect fault localization.
+technique: ""
+proposed_technique: Retrieve sibling locations by embedding similarity, then LLM-patch them
+technique_summary: From each suspicious location, prunes all test-exercised
+  code by TF-IDF then embedding similarity to get sibling candidates, and has
+  an LLM jointly or iteratively identify the failure-relevant siblings and
+  emit consistent method-level patches, keeping patches that reduce failing
+  tests or extend execution.
+technique_kind: tooling
+technique_validated_by: Correct-patch counts on 835 Defects4J bugs with manual
+  patch inspection against developer ground truth, against Hercules, ITER and
+  ARJACLM run in the same environment; plus 17 GHRB sibling bugs with a
+  pre-dataset-cutoff model (GPT-3.5-Turbo) as a leakage control.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A replication where the candidate-sibling retrieval is replaced by
+  naive top-k lexical or random candidates and the same LLM repair loop yields
+  comparable sibling/multi-hunk correct-repair counts, showing the gain came
+  from the LLM patching rather than the retrieval scope.
+evidence_note: Measured on 835 Defects4J bugs plus 17 GHRB sibling bugs with
+  manual correctness assessment of 1,751 plausible patches split across three
+  authors. Baselines re-run in the same environment, which is a reasonable
+  comparison, but the design confounds two changes at once (broader sibling
+  search scope and LLM vs template patching) and the authors explicitly
+  decline a standard ablation, so component attribution rests on a
+  failure-category analysis rather than controlled removal. 48 of 77 sibling
+  bugs still fail.
+confidence: medium

@@ -1,0 +1,42 @@
+id: 4b-agent-trained-group-based-rl-both-retrieve-tools-repository
+ref: CLM-0796
+capability: tool-use
+technique: reward-retrieval-execution-separately-only-roll-out-execution
+statement: >-
+  When a 4B agent is trained with group-based RL to both retrieve tools from
+  a repository of over 16,000 APIs and then execute them, computing separate
+  rewards and group-relative advantages for the retrieval and execution
+  phases and updating them sequentially beats a single unified reward, and
+  gating execution rollouts on retrieval having recalled all gold tools
+  matters more than either: removing that filter cost 14 points of solvable
+  pass rate (52.5 to 38.5) versus 9.9 for summing the two gradients and 1.7
+  for a vanilla single reward.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "One 4B backbone (Qwen3-4B-Instruct) on ToolBench, with an LLM-simulated tool environment and a model-based answer reward; not tested at other scales or on other tool benchmarks."
+sources:
+  - source: arxiv-2604-13787
+    stance: supports
+    note: >-
+      Validated by: Solvable Pass Rate on ToolBench (GPT-5 judge): full
+      method 52.5%, w/o trajectory filter 38.5%, combined gradient update
+      42.6%, vanilla single-reward GRPO 50.8%; end-to-end SoPR 54.13% vs
+      42.35% for a GPT-3.5 + ToolRetriever pipeline.. Measured on ToolBench
+      with one 4B backbone; the component ablations are single-number
+      comparisons with no seeds or intervals reported, and execution is
+      scored by a GPT-5 judge against an LLM tool simulator rather than live
+      APIs. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-05
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An ablation on another
+  backbone or tool benchmark where vanilla single-reward GRPO matches the
+  decoupled version, or where removing the retrieval-success filter on
+  execution rollouts costs little, would show the decomposition is not what
+  carries the gain. Automatic check flagged: figures not in the source: 9.9.
+submitted_by: agent:claude-opus-5@Russ-Miller

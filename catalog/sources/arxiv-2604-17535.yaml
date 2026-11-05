@@ -1,0 +1,65 @@
+id: arxiv-2604-17535
+ref: SRC-0904
+kind: paper
+title: "OPSDL: On-Policy Self-Distillation for Long-Context Language Models"
+authors:
+  - Xinsen Zhang
+  - Zhenkai Ding
+  - Tianjun Pan
+  - Run Yang
+  - Chun Kang
+  - Xue Xiong
+year: 2026
+date: 2026-04-19
+arxiv_id: "2604.17535"
+url: https://arxiv.org/abs/2604.17535
+tags:
+  - ingested
+summary: Extending the effective context length of large language models
+  (LLMs) remains a central challenge for real-world applications. While recent
+  post-training methods have made progress in long-context scaling, they
+  either rely on high-quality supervision data or sparse sequence-level
+  rewards, leading to unstable and inefficient optimization. We propose OPSDL,
+  an On-Policy Self-Distillation method for enhancing the Long-context
+  capabilities of LLMs. Unlike other recent self-distillation methods that
+  inject privileged information and rely on the model's in-context learning
+  ability to act as a teach
+notes: "Filed as a source on long-context-degradation from the classifier's
+  judgement that the paper is about it (improves, high): The paper proposes a
+  post-training method that substantially improves long-context benchmark
+  performance across context lengths without harming short-context ability. No
+  claim has been drafted from it yet."
+ingested_at: 2026-11-05
+brief: >-
+  A model's own short-context behavior is a usable teacher for its
+  long-context behavior: distilling token-by-token from the same weights
+  prompted with an extracted short passage recovers most of the degradation
+  seen at 128K tokens.
+
+
+  OPSDL builds (long context, extracted short chunk, self-generated question)
+  triplets from raw documents with no annotation, samples responses on-policy
+  under the long context, and uses the log-ratio of short-context teacher to
+  long-context student probability as a per-token advantage for a
+  policy-gradient update. Backbones are Qwen2.5-Instruct at 7B, 14B and 32B,
+  evaluated on RULER and LongBench V2.
+
+
+  RULER average rises from 77.16 to 86.32 at 7B, and at 128K the gain over the
+  base instruct model is +48.70, +34.25 and +30.29 at 7B, 14B and 32B. The gap
+  to the dedicated Qwen2.5-Instruct-1M variants narrows from 13.10 to 3.94 at
+  7B and 10.57 to 3.28 at 14B. Short-context benchmarks drop about 1.3
+  percentage points versus 3-4 for Long-SFT.
+
+
+  Measured against Long-SFT and LongPO baselines, but LongPO is only reported
+  at 7B (it failed to converge at 14B and 32B in their reproduction), there is
+  no matched-compute comparison, no ablation of the short-chunk extraction or
+  the reverse-KL form, and 1 model family only.
+
+
+  If you are post-training for long context, this removes the reward model and
+  preference pairs from the pipeline.
+brief_generated_at: 2026-11-05
+brief_model: claude-opus-5
+brief_source: full-text

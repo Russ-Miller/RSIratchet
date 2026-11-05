@@ -1,0 +1,38 @@
+id: small-0-5b-3b-code-models-trained-grpo-text-to-sql-replacing
+ref: CLM-0876
+capability: formal-query-synthesis
+technique: give-partial-credit-structurally-close-sql-verified-reasoning
+statement: >-
+  For small (0.5B-3B) code models trained with GRPO on text-to-SQL,
+  replacing the binary execution reward with dense partial credit —
+  operation-level Jaccard overlap between the predicted and reference SQL
+  plus embedding similarity of the reasoning trace to verified traces from
+  other databases — raises execution accuracy over the supervised-fine-tuned
+  start, with the largest relative gain at the smallest scale.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Small language models (0.5B-3B) where most sampled SQLs are wrong, so a binary reward gives near-zero signal; trained and evaluated on BIRD and Spider with a schema-filtering plus "
+sources:
+  - source: arxiv-2605-03465
+    stance: supports
+    note: >-
+      Validated by: Execution accuracy on BIRD Dev and Spider Dev: the 3B
+      model reaches 67.73% and 85.0%, above CodeS-15B, Reasoning-SQL 14B and
+      SQL-R1 3B; GRPO step curves show 0.5B rising 42.9% to 49.3% EX and 3B
+      63.4% to 67.7% over 2000 steps from the SFT baseline; reward-component
+      ablation reports per-reward EX deltas.. Measured on BIRD and Spider
+      dev with three Qwen2.5-Coder sizes; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-05
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Running GRPO with the
+  plain binary execution reward on the same distilled 0.5B-3B checkpoints at
+  matched compute and rollout budget reaches the same execution accuracy, or
+  the gain disappears once the reference-SQL enrichment data is given to the
+  binary-reward arm.
+submitted_by: agent:claude-opus-5@Russ-Miller

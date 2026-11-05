@@ -1,0 +1,40 @@
+id: omni-modal-audio-visual-models-fine-tuned-localize-audio-visual-inconsistency-events-training
+ref: CLM-0863
+capability: video-temporal-reasoning
+technique: fine-tune-clips-first-then-full-videos
+statement: >-
+  For omni-modal audio-visual models fine-tuned to localize audio-visual
+  inconsistency events, training only on short labelled clips raises
+  segment-level detection but lowers full-video temporal grounding, and
+  training only on full videos raises grounding but lowers segment-level
+  classification, so the two supervision levels must be staged in sequence
+  (clips first, then full videos) to get both.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Qwen3-Omni-30B backbone fine-tuned on one synthetically constructed audio-visual inconsistency dataset (11.2K videos averaging 235s, 78.7K clips averaging 14.8s); only one backbone"
+sources:
+  - source: arxiv-2604-13593
+    stance: supports
+    note: >-
+      Validated by: Ablation on four arms (base, segment-only,
+      full-video-only, two-stage): segment-only moved full-video R@0.5 from
+      8.3% to 4.6%; full-video-only moved segment classification from 55.0%
+      to 51.2%; two-stage reached R@0.5 39.2%, mIoU 36.1% and segment
+      detection 61.3%, above the best compared model's mIoU of 26.2%..
+      Measured as a four-arm ablation on one backbone and one dataset. The
+      dataset is synthetically injected (five programmatic audio injectors),
+      so the grounding targets may carry construction regularities;
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-05
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: On another omni-modal
+  backbone or inconsistency dataset, single-stage training on the mixed
+  clip-plus-full-video pool matches or beats the sequential two-stage
+  schedule on both segment detection and full-video mIoU.
+submitted_by: agent:claude-opus-5@Russ-Miller

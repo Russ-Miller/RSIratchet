@@ -1,0 +1,38 @@
+id: sequential-knowledge-edits-frozen-vision-language-model-how-much-per-concept
+ref: CLM-0873
+capability: knowledge-updating
+technique: confine-each-edit-own-orthogonal-concept-subspace
+statement: >-
+  For sequential knowledge edits to a frozen vision-language model, how much
+  the per-concept edit subspaces overlap predicts how much earlier knowledge
+  is lost: keeping the bases approximately orthogonal via residualized
+  incremental PCA holds mean pairwise overlap near 3e-3 over 1,000 edits
+  while omitting orthogonalization lets it drift above 1e-1, and forgetting
+  rises nearly linearly with overlap.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "LLaVA-1.5-7B and PaliGemma-3B with a frozen backbone, edits applied as gated low-rank residuals in the fused cross-modal representation; up to ~1,000 sequential edits on E-VQA, VLK"
+sources:
+  - source: arxiv-2604-07965
+    stance: supports
+    note: >-
+      Validated by: Single-edit average 98.50 on E-VQA vs 97.84 for
+      DualEdit; after 1,000 sequential edits reliability 96.85 vs 92.93
+      (LiveEdit) on E-VQA and 98.10 vs 92.22 on VLKEB; CoIN BWT -9.37 vs
+      -19.45 for PAM at matched plasticity; ablation removing orthogonality
+      raises locality drop from 0.5 to 2.8.. Measured on one paper's own
+      benchmarks with baseline numbers copied from prior papers rather than
+      re-run; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-05
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An editing setup where
+  subspace overlap is driven high (no orthogonalization) yet backward
+  transfer and locality stay as good as the orthogonalized variant, or where
+  forcing orthogonality fails to reduce forgetting across edit sequences.
+submitted_by: agent:claude-opus-5@Russ-Miller

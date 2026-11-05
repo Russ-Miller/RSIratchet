@@ -1,0 +1,43 @@
+id: instruction-following-household-agents-simulated-environments-where-target-object-s
+ref: CLM-0839
+capability: embodied-control
+technique: check-action-applicability-before-executing-then-defer
+statement: >-
+  For instruction-following household agents in simulated environments where
+  a target object's usability can be violated at runtime (occupied
+  appliance, dirty cloth, used container) without the instruction saying so,
+  intercepting each planned high-level action with an affordance check and
+  deferring it until the precondition is resolved raises success and
+  goal-condition rates over the same planners run unchanged, but the
+  remaining gap is in visual state inference rather than planning: a
+  symbolic heuristic given ground-truth simulator state scores far higher
+  than the vision-based module (46.15% vs 27.69% SR on test unseen).
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "AI2-THOR household tasks built on the ALFRED pipeline, three injected affordance categories (occupied, used, dirty), FILM and CAPEAM base planners, single-view egocentric observati"
+sources:
+  - source: arxiv-2604-14902
+    stance: supports
+    note: >-
+      Validated by: Success rate and goal-condition rate plus
+      path-length-weighted variants on DynAfford test seen/unseen against
+      unmodified FILM, CAPEAM, MOCA, LLM-Planner and SayCan; FILM unseen SR
+      9.34 to 16.18, CAPEAM 19.39 to 21.10; ablations removing LoRA
+      fine-tuning (27.69 to 16.07 SR) and multimodal in-context exemplars
+      (to 6.15).. Measured on one benchmark the authors built, 2,076 test
+      tasks, five baselines plus two ADAPT integrations, single
+      deterministic run with no seeds or confidence intervals. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-05
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An affordance-gating
+  module whose vision-based inference matches or exceeds a
+  ground-truth-state symbolic heuristic on the same dynamic-affordance
+  tasks, or a base planner that gains nothing from the gate because its
+  replanning already recovers from unmet preconditions.
+submitted_by: agent:claude-opus-5@Russ-Miller

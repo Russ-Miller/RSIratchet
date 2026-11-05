@@ -1,0 +1,39 @@
+id: 7b-vision-language-reward-models-judging-response-pairs-supervising-per-dimension
+ref: CLM-0810
+capability: critique
+technique: score-each-response-gated-instruction-selected-quality-dimensions
+statement: >-
+  For 7B vision-language reward models judging response pairs, supervising a
+  per-dimension score head with fine-grained preference labels and gating to
+  the top-3 instruction-relevant dimensions agrees with human preference
+  labels more often than a single scalar reward head, and most of the gain
+  comes from the explicit per-dimension supervision rather than from the
+  gating.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen2.5-VL-7B backbone trained on 321k filtered vision-language preference pairs with 21 machine-annotated dimensions; evaluated on VL-RewardBench, Multimodal RewardBench and MM-RL"
+sources:
+  - source: arxiv-2604-05445
+    stance: supports
+    note: >-
+      Validated by: Controlled ablation on a fixed 200k subset,
+      VL-RewardBench overall/macro accuracy: scalar head 64.55/60.87, 21
+      heads without per-dimension ranking loss 68.72/65.94, coarse
+      7-dimension supervision 67.12/64.20, fine 21-dimension without gating
+      69.77/68.51, full model 70.81/69.96; top-k sweep peaks at k=3. Full
+      model on the complete dataset reaches 73.06 overall / 71.84 macro
+      versus 72.98/68.82 for Skywork-VL-Reward.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-05
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An ablation under
+  matched data and compute where a scalar reward head on the same backbone
+  matches or beats the dimension-decomposed head on held-out preference
+  agreement, or where removing the per-dimension ranking loss leaves
+  accuracy unchanged.
+submitted_by: agent:claude-opus-5@Russ-Miller

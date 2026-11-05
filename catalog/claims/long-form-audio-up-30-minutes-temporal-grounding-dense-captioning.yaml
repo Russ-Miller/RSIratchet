@@ -1,0 +1,41 @@
+id: long-form-audio-up-30-minutes-temporal-grounding-dense-captioning
+ref: CLM-0853
+capability: audio-understanding
+technique: build-global-timeline-first-then-crop-re-listen
+statement: >-
+  For long-form audio (up to 30 minutes) temporal grounding and dense
+  captioning, having the model first emit a coarse global timeline of 2-5
+  temporal-semantic segments and then iteratively crop and re-listen to
+  local audio spans through tool calls yields higher IoU and caption scores
+  than single-pass long-context inference or fixed sliding-window chunking,
+  and degrades less as duration grows.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Qwen3-Omni-30B backbone fine-tuned on 1.2k hours of purpose-built temporally annotated Chinese/English audio, then RL-tuned; evaluated on the authors' own benchmark plus one extern"
+sources:
+  - source: arxiv-2604-22245
+    stance: supports
+    note: >-
+      Validated by: mIoU and Recall@0.3/0.5/0.7 for grounding, IoU-gated
+      FENSE for dense captioning, on LAT-Bench (ZH/EN) and BLAB
+      advertisement localization against Gemini-2.5/3.0-Pro, Qwen3-Omni, and
+      sliding-window variants; ablations removing the global timeline or the
+      tool-use CoT each lose several points.. Measured on the authors' own
+      benchmark built from the same pipeline as their training data, which
+      favors their method; the external check (BLAB advertisement
+      localization, 30-min subset) is a single transferable task.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-05
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An independent long-form
+  audio temporal benchmark on which the same backbone trained on the same
+  data without the global timeline or without audio-cropping tool calls
+  matches or exceeds the full framework, or on which the duration-robustness
+  gap versus a long-context baseline disappears.
+submitted_by: agent:claude-opus-5@Russ-Miller

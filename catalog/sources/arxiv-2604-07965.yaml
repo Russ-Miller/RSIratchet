@@ -1,0 +1,65 @@
+id: arxiv-2604-07965
+ref: SRC-0886
+kind: paper
+title: "DSCA: Dynamic Subspace Concept Alignment for Lifelong VLM Editing"
+authors:
+  - Gyanendra Das
+  - Sai Satyam Jena
+year: 2026
+date: 2026-04-09
+arxiv_id: "2604.07965"
+url: https://arxiv.org/abs/2604.07965
+tags:
+  - ingested
+summary: Model editing aims to update knowledge to add new concepts and change
+  relevant information without retraining. Lifelong editing is a challenging
+  task, prone to disrupting previously learned concepts, especially for Vision
+  Language Models (VLMs), because sequential edits can lead to degraded
+  reasoning and cross modal misalignment. Existing VLM knowledge editing
+  methods based on gated adapters, activation edits, and parameter merging
+  techniques address catastrophic forgetting seen in full fine tuning;
+  however, they still operate in the shared representation space of the VLM,
+  where concepts are e
+notes: "Filed as a source on knowledge-updating from the classifier's
+  judgement that the paper is about it (improves, medium): The paper proposes
+  DSCA, a subspace-isolation editing method that enables precise
+  non-interfering sequential knowledge edits in VLMs, i.e., improving
+  knowledge updating. No claim has been drafted from it yet."
+ingested_at: 2026-11-05
+brief: >-
+  Confining knowledge edits to per-concept orthogonal subspaces of a frozen
+  VLM's fused representation, rather than to adapter weights, keeps sequential
+  edits from bleeding into unrelated concepts. The claim is that interference
+  is a geometric quantity you can measure and bound, not an optimization side
+  effect.
+
+
+  DSCA builds concept clusters online via EMA prototypes, derives a low-rank
+  basis per cluster with residualized incremental PCA, and applies gated
+  residual updates routed by a 2-stage visual-then-fused similarity search.
+  Tested on LLaVA-1.5-7B over E-VQA, E-IC and VLKEB, and on PaliGemma-3B over
+  the CoIN continual benchmark, against LiveEdit, DualEdit, MEND, LTE,
+  VisEdit, SERAC and PAM.
+
+
+  Single-edit average rises from 97.84 to 98.50 on E-VQA. After 1,000
+  sequential edits reliability is 96.85 vs 92.93 for LiveEdit on E-VQA, and
+  average 96.72 vs 91.79 on VLKEB. CoIN BWT is -9.37 vs -19.45 for PAM and
+  -39.51 for fine-tuning, with plasticity A_t = 76.48. CHAIR-H hallucination
+  drops to 15.9 from 21.1 (LiveEdit).
+
+
+  The mechanism is partly isolated: ablating orthogonality raises locality
+  drop from 0.5 to 2.8, and subspace overlap correlates with forgetting at r ≈
+  0.94 across 1,000 edits. But baselines are quoted from prior papers rather
+  than rerun, there is no matched-compute comparison, CoIN results use a
+  different backbone, and the geometric proof sits in an unavailable
+  supplement.
+
+
+  Boundaries: linear subspaces only, cost grows with concept count K, and
+  routing failures on overlapping concepts are untested. Worth reading if you
+  maintain a deployed VLM under a long edit stream.
+brief_generated_at: 2026-11-05
+brief_model: claude-opus-5
+brief_source: full-text

@@ -1,0 +1,70 @@
+id: arxiv-2604-13023
+ref: SRC-0896
+kind: paper
+title: "SpotSound: Enhancing Large Audio-Language Models with Fine-Grained
+  Temporal Grounding"
+authors:
+  - Luoyi Sun
+  - Xiao Zhou
+  - Zeqian Li
+  - Ya Zhang
+  - Yanfeng Wang
+  - Weidi Xie
+year: 2026
+date: 2026-04-14
+arxiv_id: "2604.13023"
+url: https://arxiv.org/abs/2604.13023
+tags:
+  - ingested
+summary: "Large Audio-Language Models (ALMs) have recently demonstrated
+  remarkable capabilities in holistic audio understanding, yet they remain
+  unreliable for temporal grounding, i.e., the task of pinpointing exactly
+  when an event occurs within long-form audio. This limitation stems from two
+  factors: training data dominated by clip-level supervision lacking precise
+  timestamps, and benchmarks that fail to simulate real-world scenarios where
+  short events are obscured by dense background sounds. In this paper, we
+  introduce SpotSound, an audio language model designed for grounding audio
+  events. SpotSound i"
+notes: "Filed as a source on audio-understanding from the classifier's
+  judgement that the paper is about it (improves, high): The paper proposes a
+  model and training objective that achieves state-of-the-art temporal
+  grounding while preserving general audio-language task performance. No claim
+  has been drafted from it yet."
+ingested_at: 2026-11-05
+brief: >-
+  Interleaving literal text timestamp tokens with audio tokens, rather than
+  relying on positional encodings, is what gives audio-language models usable
+  temporal grounding; lifting the 30-second encoder window alone does much
+  less.
+
+
+  SpotSound fine-tunes Qwen2-Audio and Audio Flamingo 3 with LoRA on 77.6k
+  samples (67.6k from AudioGrounding, Clotho-Moment, UnAV-100, AudioSet Strong
+  Label, plus 10k synthetic long-form clips where a trimmed foreground event
+  is mixed into Walking Tours background at a known insertion point). Each
+  instance is paired with a negative query naming an absent event.
+  SpotSound-Bench adds 400 YouTube triplets, 54.2s clips with 3.9s targets,
+  7.2% temporal density.
+
+
+  mIoU on SpotSound-Bench rises from 7.6 (Audio Flamingo 3) to 57.9, and from
+  4.4 (Qwen2-Audio) to 49.9; Gemini-2.5-Pro reaches 19.7. Negative-query
+  accuracy on AudioGrounding goes 76.0 to 87.9. Ablations separate the two
+  changes: unlocking the 30s limit gives +9.3/+9.0/+10.6/+0.6% mIoU,
+  timestamps add a further 16.9/2.8%, 12.7/17.1%, 15.5/20.5%, 4.7/10.0% across
+  benchmarks on the 2 backbones.
+
+
+  The timestamp effect is measured against a matched fine-tuned baseline on 2
+  backbones, which attributes it reasonably well; the hallucination objective
+  has no comparable ablation, so its contribution is argued rather than
+  isolated.
+
+
+  Both backbones are Whisper-large-v3 plus Qwen 7B, benchmarks are
+  environmental sound, not speech or music, and SpotSound-Bench is authored by
+  the same group. Takeaway: if you need event timing from an ALM, explicit
+  timestamp tokens are the lever.
+brief_generated_at: 2026-11-05
+brief_model: claude-opus-5
+brief_source: full-text

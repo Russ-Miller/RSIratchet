@@ -1,0 +1,71 @@
+id: arxiv-2604-05445
+ref: SRC-0883
+kind: paper
+title: "Learning What Matters: Dynamic Dimension Selection and Aggregation for
+  Interpretable Vision-Language Reward Modeling"
+authors:
+  - Qiyuan Chen
+  - Hongsen Huang
+  - Jiahe Chen
+  - Shao, Qian
+  - Jintai Chen
+  - Hongxia Xu
+year: 2026
+date: 2026-04-07
+arxiv_id: "2604.05445"
+url: https://arxiv.org/abs/2604.05445
+tags:
+  - ingested
+summary: 'Vision-language reward modeling faces a dilemma: generative
+  approaches are interpretable but slow, while discriminative ones are
+  efficient but act as opaque "black boxes." To bridge this gap, we propose
+  VL-MDR (Vision-Language Multi-Dimensional Reward), a framework that
+  dynamically decomposes evaluation into granular, interpretable dimensions.
+  Instead of outputting a monolithic scalar, VL-MDR employs a visual-aware
+  gating mechanism to identify relevant dimensions and adaptively weight them
+  (e.g., Hallucination, Reasoning) for each specific input. To support this,
+  we curate a dataset of 321k vi'
+notes: "Filed as a source on critique from the classifier's judgement that the
+  paper is about it (improves, medium): The paper proposes a
+  dimension-decomposed reward model that improves agreement with human
+  preference labels over existing open-source VL reward models. No claim has
+  been drafted from it yet."
+ingested_at: 2026-11-05
+brief: >-
+  Splitting a vision-language reward model into 21 explicitly supervised
+  quality dimensions, then gating which 3 matter per instruction, beats a
+  single scalar head on the same backbone at essentially identical inference
+  cost.
+
+
+  VL-MDR fine-tunes Qwen2.5-VL-7B-Instruct with three heads: dimension
+  relevance (from the instruction token), per-dimension scoring (from the
+  response token), and adaptive weighting, trained on 321.3k preference pairs
+  filtered from 414.2k by 3-judge consensus and tagged with a 7-capability,
+  21-dimension taxonomy.
+
+
+  On VL-RewardBench it reaches 73.06 Overall / 71.84 Macro, above
+  Skywork-VL-Reward (72.98/68.82) and UnifiedReward-Think (71.45/71.82), and
+  69.0 overall on Multimodal RewardBench. Inference costs 0.218 ± 0.04 GPU
+  hours versus 0.518 ± 0.11 for UnifiedReward-Think, with 17.86M added
+  parameters (0.25% of the backbone).
+
+
+  The causal attribution is unusually clean: an ablation trains all variants
+  on the same 200k subset, showing scalar 64.55, 21-head without per-dimension
+  ranking 68.72, coarse 7D 67.12, fine without gating 69.77, full 70.81, with
+  a Top-k sweep peaking at k=3. Baselines from other papers are not retrained,
+  so cross-model comparisons are less controlled.
+
+
+  DPO gains over the baselines are marginal (77.9 vs 77.6 on LLaVABenchWilder,
+  4.2 MMHal tied). VQA is a weak spot (45.2). 1 backbone, image-text only,
+  labels from AI judges.
+
+
+  If you run a discriminative RM, dimension-level supervision is close to free
+  accuracy plus readable rationales.
+brief_generated_at: 2026-11-05
+brief_model: claude-opus-5
+brief_source: full-text

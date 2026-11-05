@@ -1,0 +1,38 @@
+id: lifelong-knowledge-editing-6-8b-models-where-edited-facts-retrieved
+ref: CLM-0843
+capability: knowledge-updating
+technique: gate-retrieved-edits-selector-then-suppress-stale-answer
+statement: >-
+  In lifelong knowledge editing of 6-8B models where edited facts are
+  retrieved into context, the two failure sides come apart: a trained
+  relevance selector that drops irrelevant retrieved facts is what preserves
+  locality on unedited queries, while contrastively suppressing the model's
+  prior-knowledge log-probability at decoding is what raises reliability and
+  generality on edited queries, and neither alone gives both.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "LLaMA-3-8B and GPT-J-6B on ZSRE, Counterfact and RIPE, 1,000 sequential edits, retrieved top-k edited facts supplied in context; not tested on open-domain or multilingual updates."
+sources:
+  - source: arxiv-2604-19089
+    stance: supports
+    note: >-
+      Validated by: Average of reliability/generality/locality over 1,000
+      sequential edits on ZSRE 0.9664, Counterfact 0.9296, RIPE 0.9818,
+      above LTE, RECIPE, AlphaEdit, GRACE, ROME, MEMIT; ablation: removing
+      the selector drops locality to 0.4612 while reliability stays 0.8898,
+      removing the decoding step drops reliability 0.9543 to 0.8978 while
+      locality stays 0.9979; suppressing all tokens rather than the first
+      lowers reliability to 0.8477.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-05
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An ablation on other
+  backbones or edit sets where removing the selector leaves locality intact,
+  or where the prior-suppression term raises locality rather than
+  reliability, would break the role split.
+submitted_by: agent:claude-opus-5@Russ-Miller

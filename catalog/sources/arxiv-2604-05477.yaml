@@ -1,0 +1,67 @@
+id: arxiv-2604-05477
+ref: SRC-0884
+kind: paper
+title: "Don't Act Blindly: Robust GUI Automation via Action-Effect
+  Verification and Self-Correction"
+authors:
+  - Yuzhe Zhang
+  - Xianwei Xue
+  - Xingyong Wu
+  - Mengke Chen
+  - Chen Liu
+  - Xinran He
+year: 2026
+date: 2026-04-07
+arxiv_id: "2604.05477"
+url: https://arxiv.org/abs/2604.05477
+tags:
+  - ingested
+summary: Autonomous GUI agents based on vision-language models (VLMs) often
+  assume deterministic environment responses, generating actions without
+  verifying whether previous operations succeeded. In real-world settings with
+  network latency, rendering delays, and system interruptions, this assumption
+  leads to undetected action failures, repetitive ineffective behaviors, and
+  catastrophic error accumulation. Moreover, learning robust recovery
+  strategies is challenging due to the high cost of online interaction and the
+  lack of real-time feedback in offline datasets.We propose VeriGUI
+  (Verification-driven G
+notes: "Filed as a source on self-repair from the classifier's judgement that
+  the paper is about it (improves, high): The paper proposes a
+  verification-and-correction framework plus training pipeline that reduces
+  failure loops and improves recovery success, i.e., makes agents better at
+  detecting and fixing their own failed actions. No claim has been drafted
+  from it yet."
+ingested_at: 2026-11-05
+brief: >-
+  Training a GUI agent to predict each action's expected screen effect and
+  then check that effect on the next step removes the infinite-retry loops
+  that otherwise kill offline-trained agents outright. VeriGUI wraps a
+  Thinking-Verification-Action-Expectation cycle around Qwen2.5-VL-3B and -7B,
+  trained in 2 stages: supervised fine-tuning on a 70:30 mix of success and
+  synthetic failure trajectories, then GRPO with asymmetric verification
+  rewards (+1.0 correct, -0.5 miss, -2.0 hallucinated success). Evaluation
+  spans AndroidControl-High, AITW-Gen, GUI Odyssey, plus live MiniWoB++ and
+  AndroidWorld.
+
+
+  Under pseudo-online simulation all 3B baselines score 0 Sim-TSR; VeriGUI-3B
+  reaches 16.7% and VeriGUI-7B 23.5%. Recovery Success Rate is 51.1% and 52.5%
+  versus 45.5% for UI-TARS-7B and 21.9% for GPT-5.1. Live gains follow: 59.7%
+  MiniWoB++ and 25.1% AndroidWorld for the 7B. Output tokens per step rise
+  about 45%, but tokens per trajectory fall because loops end early.
+
+
+  Stage and reward ablations isolate the contributions: Robust SFT lifts RSR
+  from 29.7% to 45.5%, GRPO to 51.1%, and dropping the effect reward costs 3
+  points. Both online benchmarks are unmodified, so the transfer claim is
+  measured rather than argued, though all training sits on 1 model family.
+
+
+  The simulated evaluation assumes failed actions leave the screen unchanged,
+  so crashes, partial transitions and stray navigations are untested, and the
+  authors note degradation with task length. If you train GUI agents offline,
+  failure-injection data plus a hallucination penalty is a cheap substitute
+  for live RL.
+brief_generated_at: 2026-11-05
+brief_model: claude-opus-5
+brief_source: full-text

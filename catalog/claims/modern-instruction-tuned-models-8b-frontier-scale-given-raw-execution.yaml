@@ -1,0 +1,39 @@
+id: modern-instruction-tuned-models-8b-frontier-scale-given-raw-execution
+ref: CLM-0859
+capability: self-repair
+technique: external-feedback-repair
+statement: >-
+  For modern instruction-tuned models (8B to frontier scale) given raw
+  execution error messages and up to five attempts on HumanEval and MBPP,
+  iterative self-repair raises pass rates for every model tested, but the
+  gain is concentrated in the first two repair rounds and is smallest for
+  assertion errors, where the code runs yet computes the wrong answer.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Seven models across Llama 3.1/3.3/4, Qwen3 32B and Gemini 2.5; HumanEval (164) and MBPP Sanitized (257); greedy decoding; feedback is the real execution traceback."
+sources:
+  - source: arxiv-2604-10508
+    stance: supports
+    note: >-
+      Measured: +4.9 to +17.1 pp on HumanEval and +16.0 to +30.0 pp on MBPP
+      across seven models; two rounds capture 76-95% of gains; assertion
+      errors repaired ~45% vs name errors ~77%. Single paper, two
+      benchmarks, no matched-compute resampling baseline in the headline
+      numbers (a separate token-efficiency comparison is reported).
+contested: false
+status: pending-review
+last_checked_at: 2026-11-05
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A comparable evaluation
+  where some modern instruction-tuned models lose pass rate under
+  execution-feedback repair, or where gains keep accruing roughly linearly
+  past round two, or where assertion errors are repaired as often as syntax
+  and name errors. Drafted stance toward
+  external-feedback-repair-works-only-with-real-grounding: supports -- Gains
+  come from feeding back genuine execution errors, and the hardest category
+  is the one where the error message carries least diagnostic information.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,44 @@
+id: 3b-7b-vision-language-gui-agents-making-each-step-predict-expected
+ref: CLM-0793
+capability: self-repair
+technique: predict-expected-screen-effect-then-verify-next-step
+statement: >-
+  For 3B-7B vision-language GUI agents, making each step predict the
+  expected screen effect and verify it against the next observation —
+  trained by SFT on synthetic failure trajectories plus GRPO with an
+  asymmetric penalty for falsely claiming success — raises recovery success
+  and cuts repeated-failed-action loops relative to same-scale agents that
+  act without verifying prior outcomes.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Mobile/web GUI automation where failed actions mostly leave the screen unchanged (idempotent failures); training data synthesized under that assumption; not validated for non-idemp"
+sources:
+  - source: arxiv-2604-05477
+    stance: supports
+    note: >-
+      Validated by: On a failure-injection Robustness Benchmark from
+      AndroidControl-High, Recovery Success Rate 51.1% (3B) and 52.5% (7B)
+      vs 45.5% best open baseline (UI-TARS-7B), Loop Rate 24.3%/15.6% vs
+      30.0% for Qwen2.5-VL-3B; ablations: Robust SFT lifts RSR 29.7->45.5,
+      GRPO to 51.1; also gains on live MiniWoB++ and AndroidWorld.. Measured
+      on one base family (Qwen2.5-VL 3B/7B), offline
+      AndroidControl-High/AITW/GUI Odyssey plus two online benchmarks;
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-05
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An agent trained this
+  way showing no better recovery success or loop rate than a matched-compute
+  agent trained without the verification/expected-effect objective, or the
+  gains disappearing when failures are non-idempotent. Drafted stance toward
+  external-feedback-repair: supports -- The verification signal is a
+  grounded environment observation (screen changed or not) rather than
+  unaided self-critique, and the gain appears only once that signal is
+  trained against. Automatic check flagged: related_claim_id
+  "external-feedback-repair" does not exist.
+submitted_by: agent:claude-opus-5@Russ-Miller

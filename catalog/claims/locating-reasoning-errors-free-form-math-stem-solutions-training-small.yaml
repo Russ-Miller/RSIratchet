@@ -1,0 +1,40 @@
+id: locating-reasoning-errors-free-form-math-stem-solutions-training-small
+ref: CLM-0852
+capability: error-detection
+technique: score-hallucination-per-token-per-reasoning-step
+statement: >-
+  For locating reasoning errors in free-form math and STEM solutions,
+  training a small (0.6B-8B) detector to emit a per-token hallucination
+  score — supervised by weighted-ensembled annotations from several critic
+  models and an importance-weighted loss that upweights the sparse
+  hallucinated tokens — finds flawed spans better than much larger prompted
+  reasoning critics (e.g. QwQ-32B) and than step-level process reward
+  models, without any step segmentation.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Detectors trained on math responses from GPT-4o-mini; evaluated on math and STEM benchmarks with GPT-5/o3 token-level ground truth; generalization to code requires added code train"
+sources:
+  - source: arxiv-2605-12384
+    stance: supports
+    note: >-
+      Validated by: Token-level F1 on hallucinated samples (S_incor) and
+      recall on clean samples (S_cor) across Math-500, AIME-2024/2025,
+      OlympiadBench-Math plus GPQA, OlympiadBench-Phy, FinQA; compared
+      against backbone models, four critic models, labeler models, and
+      Qwen2.5-Math-PRM-72B; ablations isolate adaptive ensembling and
+      importance weighting.. Measured on four math and three STEM benchmarks
+      with two-labeler ensemble ground truth; TokenHD-0.6B beats QwQ-32B on
+      S_incor everywhere and scores scale 0.6B to 8B. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-05
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A replication where the
+  trained token-level detector's F1 on held-out reasoning errors falls below
+  a prompted large reasoning critic or a step-level PRM, or where removing
+  adaptive ensembling and importance weighting leaves performance unchanged.
+submitted_by: agent:claude-opus-5@Russ-Miller

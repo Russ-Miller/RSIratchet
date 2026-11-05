@@ -1,0 +1,65 @@
+id: arxiv-2604-13787
+ref: SRC-0899
+kind: paper
+title: "ToolOmni: Enabling Open-World Tool Use via Agentic learning with
+  Proactive Retrieval and Grounded Execution"
+authors:
+  - Shouzheng Huang
+  - Meishan Zhang
+  - Baotian Hu
+  - Zhang, Min
+year: 2026
+date: 2026-04-15
+arxiv_id: "2604.13787"
+url: https://arxiv.org/abs/2604.13787
+tags:
+  - ingested
+summary: Large Language Models (LLMs) enhance their problem-solving capability
+  by utilizing external tools. However, in open-world scenarios with massive
+  and evolving tool repositories, existing methods relying on static embedding
+  retrieval or parameter memorization of tools struggle to align user intent
+  with tool semantics or generalize to unseen tools, respectively, leading to
+  suboptimal accuracy of open-world tool retrieval and execution. To address
+  these, we present ToolOmni, a unified agentic framework that enables LLMs
+  for open-world tool use by proactive retrieval and grounded execution within
+  a
+notes: "Filed as a source on tool-use from the classifier's judgement that the
+  paper is about it (improves, high): The paper proposes a training framework
+  that raises end-to-end tool retrieval and execution success by +10.8% over
+  baselines. No claim has been drafted from it yet."
+ingested_at: 2026-11-05
+brief: >-
+  Letting a tool agent issue its own retrieval queries inside its reasoning
+  loop, and training retrieval and execution with separate rewards, beats
+  pipelines that retrieve once with a dense embedder and hand the results to
+  an executor.
+
+
+  ToolOmni starts from Qwen3-4B-Instruct, cold-starts on roughly 28,000
+  retrieval and 33,000 execution trajectories curated from ToolBench, then
+  runs a decoupled multi-objective GRPO with independent group-relative
+  advantages for retrieval recall and answer correctness. Evaluation is
+  ToolBench (I1-I3, over 16,000 APIs in the multi-domain split), NDCG@1/3/5
+  for retrieval and SoPR/SoWR judged by GPT-5 for execution.
+
+
+  Multi-domain retrieval average NDCG reaches 78.29% against ToolRetriever's
+  76.44%. End-to-end SoPR is 54.13% vs 42.35% for the GPT-3.5 pipeline and
+  36.10% for ToolGen; SoWR 50.16%. On unseen categories SoPR is 55.95% vs
+  42.10%. Ablations: removing trajectory filtering drops SoPR to 38.5%,
+  combined gradient updates to 42.6%, vanilla GRPO to 50.8%; removing RL cuts
+  retrieval NDCG to 49.3, removing SFT cuts execution to 43.4.
+
+
+  Budgets are matched: 4 retrieval turns against IterFeedback, 6 execution
+  turns for all models. But execution during RL uses an LLM tool simulator
+  rather than live APIs, the judge is an LLM, and only 1 model at 1 scale was
+  trained. ToolOmni sometimes loses at NDCG@5 because it stops searching
+  early.
+
+
+  If you build retrieval-augmented tool agents, the decoupled reward and the
+  filter on invalid retrievals are the parts worth copying.
+brief_generated_at: 2026-11-05
+brief_model: claude-opus-5
+brief_source: full-text

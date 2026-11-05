@@ -1,0 +1,43 @@
+arxiv_id: "2605.05922"
+title: "Think, then Score: Decoupled Reasoning and Scoring for Video Reward
+  Modeling"
+url: https://doi.org/10.48550/arxiv.2605.05922
+drafted_at: 2026-11-02
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: critique
+statement: For MLLM-based video reward models that first write a chain of
+  thought, reading the final score off a learnable query token with a
+  regression head trained by Bradley-Terry loss, rather than emitting the
+  score as the next tokens of the same reasoning chain, gives higher
+  human-preference agreement on out-of-distribution video pairs and smoother
+  training than GRPO-only optimization.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: 8B MLLM backbone (Qwen3-VL-8B) on text-to-video preference
+  pairs with five alignment dimensions; 22K training pairs, in-domain plus
+  GenAI and VideoGen-Bench OOD splits
+technique: ""
+proposed_technique: Score from a query token, not from the reasoning chain
+technique_summary: Have the MLLM generate a chain of thought, then append a
+  learnable [Reward] token whose hidden state a regression head maps to a
+  scalar reward, trained with Bradley-Terry loss alongside GRPO on the
+  reasoning.
+technique_kind: architecture
+technique_validated_by: Preference accuracy against human labels on 1,469
+  in-domain pairs plus GenAI and VideoGen-Bench; 0.768 Acc w/o Tie on
+  VideoGen-Bench vs 0.722 for the best discriminative baseline and 0.582 for
+  the best generative baseline; ablation removing the auxiliary BT loss drops
+  VideoGen-Bench from 0.768 to 0.648
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A coupled generative reward model trained with GRPO alone, at
+  matched backbone and data, matching or exceeding the decoupled variant's OOD
+  preference accuracy and showing comparable training-curve stability.
+evidence_note: Measured on one backbone and one preference corpus by the
+  method's authors; ablations isolate the auxiliary BT loss and the
+  CoT-masking step, but there is no matched-compute control and the stability
+  claim rests on reported training curves rather than repeated seeds.
+confidence: low

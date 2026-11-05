@@ -1,0 +1,39 @@
+id: llm-based-contextual-forecasting-combining-text-free-numerical-anchor-llm-event-grounded
+ref: CLM-0848
+capability: forecasting
+technique: weight-llm-numerical-forecasts-backtest-error-covariance
+statement: >-
+  For LLM-based contextual forecasting, combining a text-free numerical
+  anchor with LLM event-grounded forecasts helps in proportion to how
+  uncorrelated their errors are: on weather and electricity series the LLM
+  streams' signed errors correlate only ~0.31-0.51 with TSFM and anchor
+  errors and synthesis cuts error sharply (Weather MAE -25% vs the strongest
+  baseline), while on equity and commodity prices all forecasters' errors
+  correlate ~0.78-0.88 and the gain shrinks to a few percent.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Univariate series with dated event text; Gemini-3.1-Pro and Claude-Sonnet-4.5 backbones; evaluation windows postdating the backbones' cutoff on Leaf, plus GIFT-CTX and a GIFT-Eval "
+sources:
+  - source: arxiv-2605-14389
+    stance: supports
+    note: >-
+      Validated by: MAE/RMSE/MAPE on Leaf (weather, electricity, equities,
+      commodities), wNMAE/wNRMSE on GIFT-CTX, MASE on GIFT-Eval, against
+      supervised deep models, LLM-reprogramming models, six zero-shot TSFMs
+      and same-backbone benchmark prompting; component ablation shows no
+      single stream dominates and removing calibration raises error in every
+      domain (Weather MAE +4.4%).. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-05
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A domain where LLM
+  contextual-stream errors are weakly correlated with the numerical anchor's
+  errors yet covariance-weighted synthesis gives no accuracy gain over the
+  best single stream, or a low-signal domain where synthesis gains as much
+  as in weather/electricity despite highly correlated residuals.
+submitted_by: agent:claude-opus-5@Russ-Miller

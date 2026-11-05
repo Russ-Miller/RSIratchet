@@ -1,0 +1,46 @@
+arxiv_id: "2605.03465"
+title: "FINER-SQL: Boosting Small Language Models for Text-to-SQL"
+url: https://doi.org/10.48550/arxiv.2605.03465
+drafted_at: 2026-11-04
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: formal-query-synthesis
+statement: For small (0.5B-3B) code models trained with GRPO on text-to-SQL,
+  replacing the binary execution reward with dense partial credit —
+  operation-level Jaccard overlap between the predicted and reference SQL plus
+  embedding similarity of the reasoning trace to verified traces from other
+  databases — raises execution accuracy over the supervised-fine-tuned start,
+  with the largest relative gain at the smallest scale.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Small language models (0.5B-3B) where most sampled SQLs are
+  wrong, so a binary reward gives near-zero signal; trained and evaluated on
+  BIRD and Spider with a schema-filtering plus 30-candidate majority-voting
+  inference pipeline.
+technique: ""
+proposed_technique: Give partial credit for structurally close SQL and verified reasoning
+technique_summary: Augments GRPO's binary execution reward with an
+  atomic-operation Jaccard overlap score against execution-verified reference
+  SQLs and a cosine-similarity score between the generated reasoning trace and
+  the centroid of retrieved verified traces from other databases.
+technique_kind: training
+technique_validated_by: "Execution accuracy on BIRD Dev and Spider Dev: the 3B
+  model reaches 67.73% and 85.0%, above CodeS-15B, Reasoning-SQL 14B and
+  SQL-R1 3B; GRPO step curves show 0.5B rising 42.9% to 49.3% EX and 3B 63.4%
+  to 67.7% over 2000 steps from the SFT baseline; reward-component ablation
+  reports per-reward EX deltas."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Running GRPO with the plain binary execution reward on the same
+  distilled 0.5B-3B checkpoints at matched compute and rollout budget reaches
+  the same execution accuracy, or the gain disappears once the reference-SQL
+  enrichment data is given to the binary-reward arm.
+evidence_note: Measured on BIRD and Spider dev with three Qwen2.5-Coder sizes;
+  the baseline for the RL gain is the paper's own SFT checkpoint rather than a
+  matched-compute binary-reward GRPO run, so the comparison isolates reward
+  density only against step 0, not against sparse RL. Cross-model comparisons
+  in Table II differ in training data and pipeline. Component ablation figure
+  is truncated in the source text.
+confidence: medium

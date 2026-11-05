@@ -1,0 +1,48 @@
+arxiv_id: "2604.19488"
+title: "CoDA: Towards Effective Cross-domain Knowledge Transfer via CoT-guided
+  Domain Adaptation"
+url: https://doi.org/10.48550/arxiv.2604.19488
+drafted_at: 2026-11-04
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: domain-knowledge
+statement: When transferring reasoning ability to a target domain with no
+  target-domain labels or CoT annotations, fine-tuning 3B-32B open instruct
+  models with LoRA or P-tuning on source-domain data often scores below the
+  same model's zero-shot accuracy on the target, while a lightweight adapter
+  that steers mid-to-late-layer hidden states toward CoT-enriched source
+  representations and aligns source/target feature distributions raises target
+  accuracy above both zero-shot and cross-domain retrieval prompting.
+kind: observation
+backing_strength: single-paper
+scope_condition: Logical and mathematical reasoning datasets (ProofWriter,
+  FOLIO, LogicalDeduction, GSM8K, CommonSenseQA) used as paired source/target
+  domains; Qwen-2.5, Gemma-3, Llama-3.1 backbones from 3B to 32B; target
+  domain unlabeled.
+technique: ""
+proposed_technique: Steer hidden states toward CoT-enriched source states
+technique_summary: Train a small residual adapter on a frozen LLM's
+  mid-to-late-layer hidden states with an MSE loss pulling source states
+  toward states computed from the question plus its CoT rationale, plus an MMD
+  loss matching source and target state distributions, then apply the adapter
+  at inference on target inputs.
+technique_kind: training
+technique_validated_by: Accuracy on 8 source-to-target transfer directions
+  across 8 backbones against zero-shot, BM25/Embed/ConE retrieval, LoRA,
+  P-tuning, CAA, CoT-Vectors and DIN; best average reported 85.0% on
+  Gemma-3-27B vs 82.4% for the strongest retrieval baseline and 77.2%
+  zero-shot; ablations remove each loss term; t-SNE plus Silhouette/MMD/k-NN
+  mixing used to check distribution alignment.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Running the same adapter on other model families or transfer pairs
+  and finding it does not beat zero-shot, or finding that source-domain LoRA
+  under a matched budget matches or exceeds it on unlabeled target domains.
+evidence_note: Measured across 8 transfer directions and 8 backbones with
+  multiple baseline families and per-loss ablations, but all source/target
+  pairs come from a narrow set of logic and math reasoning datasets, tuning
+  (steering layer, strength) appears selected per backbone, and no variance or
+  repeat-run figures are reported.
+confidence: low

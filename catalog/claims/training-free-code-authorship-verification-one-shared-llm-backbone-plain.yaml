@@ -1,0 +1,43 @@
+id: training-free-code-authorship-verification-one-shared-llm-backbone-plain
+ref: CLM-0881
+capability: multi-model-coordination
+technique: re-weight-expert-evidence-dimensions-before-deciding
+statement: >-
+  For training-free code authorship verification with one shared LLM
+  backbone, plain multi-agent decomposition (sequential pipeline or parallel
+  debate) is not reliably better than single-agent prompting and collapses
+  on cross-language code pairs, while adding a coordinator that re-weights
+  each expert dimension's reliability before deciding recovers most of the
+  gap.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen3-80B-Instruct backbone only; balanced pairs from GCJ C++, GitHub C/Java and CodeNet cross-language pairs; high-resource languages only; no cost accounting for the extra LLM ca"
+sources:
+  - source: arxiv-2605-09421
+    stance: supports
+    note: >-
+      Validated by: F1 against supervised feature baselines, direct
+      prompting, CoT, ReAct, pipeline and debate multi-agent baselines on
+      identical pairs: 89.15% on GCJ C++ and 80.00% on mixed cross-language
+      vs 11.85-52.38% for the multi-agent baselines; ablation removing the
+      contraction (weight-adjust) step drops same-language F1 83.08 to 76.47
+      and cross-language 75.37 to 71.19.. Measured on 500 balanced pairs per
+      same-language dataset and 200 per cross-language pair, one backbone,
+      with an ablation isolating the weight-adjustment step. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-05
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A replication where the
+  pipeline or debate multi-agent baselines match the weight-calibrating
+  coordinator on cross-language pairs, or where removing the weight-adjust
+  step leaves F1 unchanged. Drafted stance toward
+  splitting-task-across-several-agents-helps-long-horizon-tasks-whose:
+  supports -- Pipeline and debate multi-agent baselines fell far below a
+  single prompted agent on several splits, consistent with decomposition not
+  helping by itself.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,40 @@
+id: llm-judges-long-open-ended-writing-sub-features-having-separate-call
+ref: CLM-0850
+capability: critique
+technique: fix-sub-feature-weights-before-scoring-during
+statement: >-
+  When an LLM judges long open-ended writing by sub-features, having a
+  separate call fix the aggregation weights for each instruction before any
+  sub-scores are produced agrees with human rankings better than letting the
+  judge plan and aggregate sub-scores in one pass, and it cuts run-to-run
+  drift in how much each sub-score contributes.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Chinese writing tasks of roughly thousand-character length across 12 genres (completion, outline-guided, open), GPT-4o as the judge, system-level correlation against 221 human-rate"
+sources:
+  - source: arxiv-2604-19071
+    stance: supports
+    note: >-
+      Validated by: System-level Pearson/Kendall/Spearman against human
+      rankings of 9 LLM outputs on 221 instructions: 0.93/0.83/0.93 overall
+      vs 0.89/0.67/0.87 best auto-planned rubric and 0.88/0.67/0.83 best
+      auto-plan, at comparable cost; contribution-share fluctuation across 5
+      trials fell from mean 0.273 to 0.080; perturbation test (dropped or
+      repeated paragraphs, genre transfer) lowered scores under the tree
+      method while auto-planning and BLEU sometimes rose.. Measured on one
+      Chinese benchmark with one judge model (GPT-4o) and 10 generator
+      models; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-05
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: On a comparable
+  long-form writing set, a one-pass judge with self-consistency matching or
+  exceeding the explicit-weight tree's correlation with human rankings at
+  equal cost, or the explicit-weight variant showing no lower trial-to-trial
+  variation in sub-score contribution shares.
+submitted_by: agent:claude-opus-5@Russ-Miller
