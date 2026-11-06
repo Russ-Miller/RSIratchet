@@ -1,0 +1,47 @@
+arxiv_id: "2605.17721"
+title: "EXG: Self-Evolving Agents with Experience Graphs"
+url: https://doi.org/10.48550/arxiv.2605.17721
+drafted_at: 2026-11-01
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: harness-self-improvement
+statement: For inference-time experience memory in LLM agents on code
+  generation and multi-hop QA, linking each failed attempt to the later
+  attempt that fixed it, and injecting those error-repair pairs as hints,
+  contributes more than similarity retrieval or task-level grouping, and
+  raises first-attempt success enough to cut repeated reflection calls.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Qwen3-family models (1.7B to Qwen-Max) with at most two
+  attempts per task on HumanEval, EvalPlus, MuSiQue and HotpotQA; gains are
+  largest on smaller models and on tasks with shared structure.
+technique: ""
+proposed_technique: Store experience as a graph with explicit fix-edges
+technique_summary: Each attempt is abstracted into a case node attached to a
+  task anchor, linked by similarity edges and by directed fixed_by edges from
+  a failed attempt to the attempt that corrected it, and retrieved cases are
+  turned into typed hints (fix, warning, golden) injected into the next
+  prompt.
+technique_kind: process
+technique_validated_by: pass@1/pass@2 plus average LLM calls and latency
+  against Reflexion, SE-Agent and ExpeL on four benchmarks; structural
+  ablation on HumanEval where removing correction edges caused the largest
+  drop, and hint-type ablation (no-memory 0.610 p@1, similar-only 0.823,
+  warning-only 0.866, full 0.872).
+stance_on_existing: supports
+related_claim_id: distilling-lessons-from-failures-as-well-as-successes-beats-raw-trajectory-memory
+stance_reason: EXG likewise finds that failure-derived experience, here
+  encoded as explicit failure-to-fix links, outperforms memory built from
+  successes or unstructured traces.
+falsifier: An ablation on comparable benchmarks where removing correction
+  edges costs no more than removing similarity edges or anchors, or where flat
+  similarity-retrieved golden cases match the full typed-hint graph at equal
+  hint budget.
+evidence_note: Measured on four benchmarks with several Qwen3 sizes; the
+  component attribution rests on a single-dataset (HumanEval) structural
+  ablation with no variance reported, and hint-type differences at the top end
+  are small (0.866 vs 0.872 p@1). Efficiency gains (up to 45.7% fewer calls)
+  are confounded with higher first-attempt success rather than isolated. No
+  seed/run variation reported.
+confidence: low

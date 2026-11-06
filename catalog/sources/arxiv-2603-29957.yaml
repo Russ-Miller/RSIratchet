@@ -1,0 +1,72 @@
+id: arxiv-2603-29957
+ref: SRC-0885
+kind: paper
+title: Think Anywhere in Code Generation
+authors:
+  - Xue Jiang
+  - Tianyu Zhang
+  - Ge Li
+  - Mengyang Liu
+  - Taozhi Chen
+  - Zhenhua Xu
+year: 2026
+date: 2026-03-31
+arxiv_id: "2603.29957"
+url: https://arxiv.org/abs/2603.29957
+tags:
+  - ingested
+summary: Recent advances in reasoning Large Language Models (LLMs) have
+  primarily relied on upfront thinking, where reasoning occurs before final
+  answer. However, this approach suffers from critical limitations in code
+  generation, where upfront thinking is often insufficient as problems' full
+  complexity only reveals itself during code implementation. Moreover, it
+  cannot adaptively allocate reasoning effort throughout the code generation
+  process where difficulty varies significantly. In this paper, we propose
+  Think-Anywhere, a novel reasoning mechanism that enables LLMs to invoke
+  thinking on-demand at a
+notes: "Filed as a source on code-generation from the classifier's judgement
+  that the paper is about it (improves, high): The paper proposes interleaved
+  on-demand thinking during code generation and reports state-of-the-art gains
+  over upfront-reasoning and other post-training baselines across four code
+  benchmarks. No claim has been drafted from it yet."
+ingested_at: 2026-11-06
+brief: >-
+  Letting a code model pause and reason mid-generation, at arbitrary token
+  positions inside the code, beats confining reasoning to an upfront block,
+  and it does so with fewer total tokens.
+
+
+  Think-Anywhere adds a <thinkanywhere> block the model can emit anywhere
+  during code generation. Training is 2 stages: LoRA cold-start on ~5,000
+  samples synthesized by Gemini 2.5 Flash, then GRPO on 14K Skywork problems
+  with a gated reward (structure 0.1, correctness 0.9). Base model is
+  Qwen2.5-Coder-7B-Instruct; evaluation is pass@1 greedy on LeetCode,
+  LiveCodeBench, HumanEval, MBPP.
+
+
+  Average goes 61.0 to 70.3, above GRPO at 68.4 and CodeRL+ at 66.8. Prompting
+  alone (56.9) and SFT alone (60.6) fall below the base model, so RL carries
+  the effect. The code-trained model also lifts AIME 2024 pass@1 from 5.3 to
+  17.3 and HMMT 2025 from 0.0 to 14.4.
+
+
+  Ablations on LeetCode isolate the parts: cold start only 47.9, RLVR only
+  63.4, line-level thinking 67.2, no upfront thinking 66.6, and replacing
+  thinking content with padding tokens 67.6 — so position choice matters
+  nearly as much as content. Token-cost comparison is matched against GRPO and
+  CoT.
+
+
+  Gains over GRPO are 1.9–2.6 points on 3 model families; the larger numbers
+  are against untrained bases. Decoding is greedy at temperature 0, 1 run per
+  benchmark, no variance reported, and the special-token variant (70.0) does
+  not improve on the text version.
+
+
+  If you post-train code models, the placement of reasoning, not just its
+  amount, is a tunable axis.
+brief_generated_at: 2026-11-06
+brief_model: claude-opus-5
+brief_source: full-text
+brief_unverified_figures:
+  - "2.6"

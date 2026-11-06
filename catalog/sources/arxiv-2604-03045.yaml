@@ -1,0 +1,68 @@
+id: arxiv-2604-03045
+ref: SRC-0899
+kind: paper
+title: "STEAR: Layer-Aware Spatiotemporal Evidence Intervention for
+  Hallucination Mitigation in Video Large Language Models"
+authors:
+  - Linfeng Fan
+  - Yuan Tian
+  - Ziwei Li
+  - Zhiwu Lu
+year: 2026
+date: 2026-04-03
+arxiv_id: "2604.03045"
+url: https://arxiv.org/abs/2604.03045
+tags:
+  - ingested
+summary: Video Large Language Models (Video-LLMs) remain prone to
+  spatiotemporal hallucinations, often generating visually unsupported details
+  or incorrect temporal relations. Existing mitigation methods typically treat
+  hallucination as a uniform decoding failure, applying globally shared
+  correction rules. We instead observe that decoder layers contribute
+  differently to visual grounding and later linguistic composition, indicating
+  that intervention must be layer-aware. Based on this insight, we propose
+  STEAR, a layer-aware spatiotemporal evidence intervention framework. STEAR
+  identifies high-risk decod
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, high): The paper proposes a
+  layer-aware evidence intervention that reduces visually unsupported spatial
+  and temporal details in video-LLM generations. No claim has been drafted
+  from it yet."
+ingested_at: 2026-11-06
+brief: >-
+  Where you intervene in a video model's decoder matters more than how hard
+  you intervene: middle layers are where token-relevant visual evidence is
+  aligned, and repairing grounding there beats early- or late-layer
+  correction.
+
+
+  STEAR is a training-free inference-time method that flags risky decoding
+  steps by normalized entropy (threshold tau = 0.85, monitored over layers
+  5-16), picks the top 10% attention-salient patches as token-conditioned
+  evidence, reinjects that evidence into middle-layer FFNs, and launches a
+  temporally perturbed counterfactual branch from the trigger layer for
+  contrastive decoding over a single video encode. Tested on LLaVA-Video-7B,
+  InternVL2.5-8B and Qwen2.5-VL-7B across EventHallusion, VidHalluc, NExT-QA
+  and MVBench against VCD, MemVR, TCD and DINO-HEAL.
+
+
+  On LLaVA-Video-7B, EventHallusion rises 46.70 to 54.77 and the Misleading
+  split 43.13 to 73.53; averages improve 52.37 to 56.05, 70.40 to 74.10, and
+  65.97 to 68.44 across the 3 backbones. Latency is 1.89x baseline versus
+  2.42x for VCD and 2.25x for TCD, with 1 encoding pass instead of 2.
+
+
+  Ablations isolate the components: removing the uncertainty trigger drops
+  EventHallusion to 48.41, removing counterfactual decoding to 47.92,
+  late-layer-only reinjection to 47.19. Random patches instead of KES cost
+  little (54.03), so evidence localization is a weaker factor than branch
+  consistency.
+
+
+  Gains on general understanding are small (MVBench 41.28 to 41.74), the layer
+  diagnostic relies on benchmark-annotated evidence regions, and only 7-8B
+  models were tested. Useful if you are choosing where in a decoder to apply
+  hallucination fixes.
+brief_generated_at: 2026-11-06
+brief_model: claude-opus-5
+brief_source: full-text

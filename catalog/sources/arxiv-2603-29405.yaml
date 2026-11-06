@@ -1,0 +1,73 @@
+id: arxiv-2603-29405
+ref: SRC-0884
+kind: paper
+title: Hallucination-aware intermediate representation edit in large
+  vision-language models
+authors:
+  - Wei Suo
+  - Hanzu Zhang
+  - Lijun Zhang
+  - Ji Ma
+  - Peng Wang
+  - Yanning Zhang
+year: 2026
+date: 2026-03-31
+arxiv_id: "2603.29405"
+url: https://arxiv.org/abs/2603.29405
+tags:
+  - ingested
+summary: Large Vision-Language Models have demonstrated exceptional
+  performance in multimodal reasoning and complex scene understanding.
+  However, these models still face significant hallucination issues, where
+  outputs contradict visual facts. Recent research on hallucination mitigation
+  has focused on retraining methods and Contrastive Decoding (CD) methods.
+  While both methods perform well, retraining methods require substantial
+  training resources, and CD methods introduce dual inference overhead. These
+  factors hinder their practical applicability. To address the above issue, we
+  propose a framework for
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, medium): The paper proposes
+  dynamically detecting and editing hallucination-related internal
+  representations to reduce visual hallucination at low compute cost,
+  reporting state-of-the-art benchmark results. No claim has been drafted from
+  it yet."
+ingested_at: 2026-11-06
+brief: >-
+  Object hallucination in vision-language models can be cut by editing
+  intermediate attention-layer representations at inference, without
+  retraining weights or the second forward pass contrastive decoding needs.
+  HIRE pairs an Editor, a dual-encoder autoencoder trained with contrastive
+  learning to separate semantic from hallucinatory subspaces, with a
+  lightweight Router trained by DPO that decides per token whether to edit at
+  all; editing strength alpha is a single knob.
+
+
+  Tested on LLaVA-1.5-7B and InstructBLIP over CHAIR (500 MSCOCO images), POPE
+  (9,000 QA pairs) and AMBER (1,004 generative, 14,216 discriminative
+  instances).
+
+
+  At 512 max new tokens, LLaVA-1.5 CHAIR_S drops from 51.3 to 30.2 and CHAIR_I
+  from 16.8 to 9.7, at 11.81 TFLOPs versus roughly 20 for contrastive decoding
+  baselines. POPE overall accuracy/F1 rise to 87.27/87.23 from 82.04/80.42.
+  AMBER improves by 7.54 on LLaVA-1.5 and 6.38 on InstructBLIP. MME (1751.64
+  to 1751.99) and SEED (64.3 to 63.8) are unchanged.
+
+
+  Ablations isolate each part: either encoder alone is weaker (37.0/12.2 and
+  48.6/13.0), both together give 30.4/9.5, and the Router cuts compute roughly
+  30% at 30.2/9.7. FLOPs are reported, so the efficiency claim is measured,
+  not argued. Some comparison numbers are quoted from prior papers rather than
+  rerun.
+
+
+  Only 2 model families, both 7B-class, and training data comes from MSCOCO,
+  so cross-domain transfer is untested. Negative alpha amplifies
+  hallucination, which the authors frame as controllability.
+
+
+  If you were paying 2x inference for contrastive decoding, a trained
+  representation editor is a cheaper option worth checking.
+brief_generated_at: 2026-11-06
+brief_model: claude-opus-5
+brief_source: full-text

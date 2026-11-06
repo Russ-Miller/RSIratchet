@@ -1,0 +1,42 @@
+arxiv_id: "2604.09021"
+title: Noise-Aware In-Context Learning for Hallucination Mitigation in ALLMs
+url: https://doi.org/10.48550/arxiv.2604.09021
+drafted_at: 2026-11-05
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: For audio captioning with auditory LLMs, supplying a few
+  broadband-noise clips paired with deliberately conservative acoustics-level
+  descriptions as in-context examples lowers the judged hallucination rate,
+  while using real audio clips as the few-shot examples does not help and can
+  raise it.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Tested mainly on Qwen2.5-Omni-7B captioning 1,000 multi-event
+  Clotho clips, with hallucination judged by an LLM against manually revised
+  references.
+technique: ""
+proposed_technique: Prompt with noise clips plus conservative descriptions
+technique_summary: Retrieves the acoustically most similar synthetic
+  broadband-noise clips, each paired with a non-committal acoustics-level
+  caption, and prepends them as in-context examples so the model hedges when
+  acoustic evidence is weak.
+technique_kind: prompting
+technique_validated_by: Hallucination rate on the 1,000-sample Clotho-1K
+  benchmark fell from 26.53% to 16.98% for Qwen2.5-Omni-7B, versus 27.54% for
+  real-audio in-context examples; ablations varied shot count, noise duration,
+  retrieval and description structure, and keyword-frequency counts showed
+  fewer event/definite terms and more acoustic terms.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Noise-prior in-context examples failing to lower judged
+  hallucination rate on other ALLMs or caption benchmarks, or real-audio
+  few-shot examples matching them, would falsify it.
+evidence_note: Measured on one new benchmark with an LLM judge and no human
+  verification of judge accuracy; mitigation measured on a single backbone, so
+  cross-model generality of the gain is argued rather than shown. The lower
+  rate may partly reflect vaguer, less informative captions, which the paper
+  notes as over-conservatism without quantifying caption quality.
+confidence: low

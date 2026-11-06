@@ -1,0 +1,72 @@
+id: arxiv-2604-02852
+ref: SRC-0898
+kind: paper
+title: Dependency-Guided Repository-Level C-to-Rust Translation with
+  Reinforcement Alignment
+authors:
+  - Jia Ming Feng
+  - Wenjie Gan
+  - Cuiyun Gao
+  - Chaozheng Wang
+  - Feng Luo
+  - Xin Xia
+year: 2026
+date: 2026-04-03
+arxiv_id: "2604.02852"
+url: https://arxiv.org/abs/2604.02852
+tags:
+  - ingested
+summary: Automating C-to-Rust migration is critical for improving software
+  security without sacrificing performance. Traditional rule-based methods
+  struggle with diverse C idioms, often producing rigid and unidiomatic Rust
+  code. Large Language Models (LLMs), trained on massive code corpora, offer a
+  promising alternative by leveraging cross-language generalization to
+  generate more idiomatic and maintainable Rust code. However, several
+  challenges remain. First, existing LLM-based approaches fail to handle
+  cross-file dependencies effectively, either ignoring them or including
+  entire files as context, whic
+notes: "Filed as a source on code-generation from the classifier's judgement
+  that the paper is about it (improves, high): DepTrans proposes
+  reinforcement-aligned syntax training plus dependency-guided iterative
+  refinement that raises repository-level compilation and
+  functional-equivalence rates over prior LLM approaches. No claim has been
+  drafted from it yet."
+ingested_at: 2026-11-06
+brief: >-
+  Feeding a model fine-grained cross-file dependency context beats dumping
+  whole files into the prompt for repository-level C-to-Rust translation, and
+  compiler-reward RL lets a 7B model beat an untuned 32B.
+
+
+  DepTrans combines Dependency-Guided Iterative Refinement (call-graph
+  topological ordering, BGE-M3 retrieval into a categorized Rust dependency
+  pool, compiler-diagnostic plus self-consistency repair loops) with
+  multi-task fine-tuning on 82.5k function-level samples and GRPO on 2.5k
+  samples. Evaluated on DCBench (125 samples), IMCBench (20), CRust-Bench (100
+  projects), and HWBench (15 Huawei C projects), across DeepSeek-Coder
+  6.7B/33B and Qwen2.5-Coder 7B/14B/32B.
+
+
+  DGIR alone lifts Qwen2.5-Coder-32B to 57.2% compilation and 41.4%
+  computational accuracy, versus 37.9%/26.2% for File Context. RAST-7B reaches
+  60.7%/43.5%, above the untrained 32B. On HWBench, DGIR builds 7 of 15
+  projects versus 5 for Sactor; on CRust-Bench, 27 builds but only 5 projects
+  passing all tests.
+
+
+  The framework effect is isolated by running all models in the same pipeline,
+  with 4 DGIR ablations and 4 reward-weight settings. The compilation-only
+  reward exposes reward hacking: 97.9% CSR with 0.0% CA from trivial panic!
+  bodies. No equal-token-budget baseline; repair iterations cost over 100k
+  tokens at iteration 5.
+
+
+  Benchmarks are small and drawn from 2 parallel repositories, RAST was
+  trained on 1 model only, and leakage cannot be excluded.
+
+
+  Treat dependency retrieval, not longer context, as the lever for
+  repository-scale translation.
+brief_generated_at: 2026-11-06
+brief_model: claude-opus-5
+brief_source: full-text

@@ -1,0 +1,46 @@
+arxiv_id: "2605.10120"
+title: "MicroWorld: Empowering Multimodal Large Language Models to Bridge the
+  Microscopic Domain Gap with Multimodal Attribute Graph"
+url: https://doi.org/10.48550/arxiv.2605.10120
+drafted_at: 2026-11-02
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: domain-knowledge
+statement: On microscopy visual question answering, injecting retrieved entity
+  definitions and typed relations from a literature-built multimodal knowledge
+  graph into the prompt of general 2B-8B multimodal models raises accuracy
+  substantially on knowledge-intensive reasoning questions while adding little
+  on fine-grained visual discrimination, so the domain gap being closed is
+  knowledge rather than perception.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Microscopy VQA benchmarks (MicroVQA, MicroBench) with
+  Qwen3-VL and InternVL3.5 backbones at 2B-8B, no domain fine-tuning; graph
+  built from ~692K microscopy image-caption pairs
+technique: ""
+proposed_technique: Retrieve from a multimodal microscopy knowledge graph at inference
+technique_summary: Builds a graph of biomedical entities, typed relations and
+  image nodes from scientific image-caption corpora, then matches query
+  entities (extracted by the model itself) and injects their definitions and
+  neighbors into the prompt.
+technique_kind: retrieval
+technique_validated_by: "MicroVQA accuracy: Qwen3-VL-8B 48.8% zero-shot to
+  67.1% two-pass, above zero-shot GPT-5 (59.4%); beats six RAG baselines on
+  the same 20K corpus by 18.4 pp at 8B; a text-only version of the same graph
+  reaches 66.0% vs 67.1%, and MicroBench fine-grained classification gains at
+  most +2.6 pp."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A setup where the same graph context yields equal or larger gains
+  on fine-grained visual classification than on knowledge-intensive reasoning,
+  or where removing the knowledge text while keeping retrieval structure
+  preserves the gain.
+evidence_note: Measured on two benchmarks, two model families, three scales,
+  against six RAG baselines sharing the same corpus; but the baseline
+  comparison does not isolate graph structure from richer knowledge content,
+  the main corpus was filtered with MicroVQA contact, and the text-only vs
+  full-MAPG gap (1.1 pp) is small and non-additive with per-component
+  ablations.
+confidence: medium

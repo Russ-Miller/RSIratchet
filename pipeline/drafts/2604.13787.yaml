@@ -1,0 +1,50 @@
+arxiv_id: "2604.13787"
+title: "ToolOmni: Enabling Open-World Tool Use via Agentic learning with
+  Proactive Retrieval and Grounded Execution"
+url: https://doi.org/10.48550/arxiv.2604.13787
+drafted_at: 2026-11-05
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: tool-use
+statement: "When a 4B agent is trained with group-based RL to both retrieve
+  tools from a repository of over 16,000 APIs and then execute them, computing
+  separate rewards and group-relative advantages for the retrieval and
+  execution phases and updating them sequentially beats a single unified
+  reward, and gating execution rollouts on retrieval having recalled all gold
+  tools matters more than either: removing that filter cost 14 points of
+  solvable pass rate (52.5 to 38.5) versus 9.9 for summing the two gradients
+  and 1.7 for a vanilla single reward."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: One 4B backbone (Qwen3-4B-Instruct) on ToolBench, with an
+  LLM-simulated tool environment and a model-based answer reward; not tested
+  at other scales or on other tool benchmarks.
+technique: ""
+proposed_technique: Reward retrieval and execution separately, and only roll
+  out execution on valid retrievals
+technique_summary: Within one GRPO step, compute task-specific rewards and
+  group-normalized advantages for the tool-retrieval and tool-execution spans
+  separately, apply their updates sequentially rather than summing gradients,
+  and generate execution rollouts only for trajectories whose retrieved tool
+  set contains every ground-truth tool.
+technique_kind: training
+technique_validated_by: "Solvable Pass Rate on ToolBench (GPT-5 judge): full
+  method 52.5%, w/o trajectory filter 38.5%, combined gradient update 42.6%,
+  vanilla single-reward GRPO 50.8%; end-to-end SoPR 54.13% vs 42.35% for a
+  GPT-3.5 + ToolRetriever pipeline."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation on another backbone or tool benchmark where vanilla
+  single-reward GRPO matches the decoupled version, or where removing the
+  retrieval-success filter on execution rollouts costs little, would show the
+  decomposition is not what carries the gain.
+evidence_note: Measured on ToolBench with one 4B backbone; the component
+  ablations are single-number comparisons with no seeds or intervals reported,
+  and execution is scored by a GPT-5 judge against an LLM tool simulator
+  rather than live APIs. The filter ablation confounds supervision quality
+  with training-set size, since filtering also removes rollouts.
+confidence: low
+problems:
+  - "figures not in the source: 9.9"

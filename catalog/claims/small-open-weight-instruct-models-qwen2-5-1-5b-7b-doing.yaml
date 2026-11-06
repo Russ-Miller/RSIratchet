@@ -1,0 +1,39 @@
+id: small-open-weight-instruct-models-qwen2-5-1-5b-7b-doing
+ref: CLM-0895
+capability: hallucination
+technique: commit-valid-function-name-before-reasoning
+statement: >-
+  For small open-weight instruct models (Qwen2.5-1.5B/7B) doing single-step
+  function calling over a 2-4 candidate tool set, lengthening the
+  chain-of-thought budget raises fabricated function names that are not in
+  the candidate set (about 2.5% at 32 tokens to 18-20% at 256-512 tokens),
+  and committing to a candidate name as the first generated tokens of a
+  templated routing step removes them entirely.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "200 BFCL v3 Multiple tasks, greedy decoding, two-phase reason-then-emit-JSON protocol; the below-baseline collapse was specific to the Qwen2.5 family, with Phi-3-mini degrading but"
+sources:
+  - source: arxiv-2604-02155
+    stance: supports
+    note: >-
+      Validated by: On 200 BFCL v3 Multiple tasks, FR-CoT matched free-form
+      32-token CoT accuracy (64.0% at 1.5B, McNemar p=0.896; 83.0% at 7B)
+      while cutting function hallucination from 2.5% to 0.0%, and beat a
+      log-prob constrained-decoding baseline at 7B (83.0% vs 63.5%,
+      non-overlapping CIs); free-form 16-token CoT still scored higher on
+      accuracy (71.5%/84.5%).. Measured on one 200-task contiguous slice of
+      BFCL v3 Multiple, three models, greedy decoding, with bootstrap CIs
+      and McNemar tests; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-06
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A replication on the
+  same benchmark showing hallucinated function names do not rise with
+  reasoning budget, or showing the prompt-committed routing template leaves
+  hallucination rates unchanged relative to free-form brief CoT.
+submitted_by: agent:claude-opus-5@Russ-Miller

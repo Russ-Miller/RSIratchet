@@ -1,0 +1,43 @@
+id: llm-based-program-repair-benchmark-java-python-bugs-feeding-model
+ref: CLM-0858
+capability: debugging
+technique: have-model-instrument-buggy-function-read-own-runtime
+statement: >-
+  For LLM-based program repair on benchmark Java and Python bugs, feeding
+  the model intermediate runtime values captured by print statements it
+  inserted itself into the buggy function repairs more bugs than iterating
+  on outcome-level failure symptoms (stack traces, test errors) alone,
+  because the symptom reveals where the failure surfaced but not which
+  variable carried the wrong value.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Function-level bugs with a failing test and perfect fault localization; Defects4J, QuixBugs, HumanEval-Java; gains largest on multi-statement (single-function) bugs and smallest or"
+sources:
+  - source: arxiv-2604-19305
+    stance: supports
+    note: >-
+      Validated by: Correct fixes on Defects4J: 224 with GPT-3.5 (vs 201 for
+      the best feedback-based baseline TSAPR, 213 for ReinFix) and 295 with
+      DeepSeek-V3 (59 more than the second-best), at a patch budget of 32;
+      40/40 on QuixBugs Java and Python; 51.3% average improvement over
+      vanilla settings across five further backbones; ablations reported for
+      test purification and the debugging mechanism. Correctness judged by
+      manual review of plausible patches.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-06
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A matched-budget
+  comparison in which supplying captured runtime traces yields no more
+  correct fixes than the same iterative loop given only stack traces and
+  test errors, or in which the gain disappears once the extra prompt tokens
+  are controlled for. Drafted stance toward external-feedback-repair:
+  supports -- It shows that the quality of the external signal matters, not
+  just its presence: richer runtime evidence beats test-outcome feedback at
+  the same iteration budget. Automatic check flagged: related_claim_id
+  "external-feedback-repair" does not exist.
+submitted_by: agent:claude-opus-5@Russ-Miller

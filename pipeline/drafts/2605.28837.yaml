@@ -1,0 +1,44 @@
+arxiv_id: "2605.28837"
+title: "SERC: LDPC-Inspired Semantic Error Correction for Retrieval-Augmented
+  Generation"
+url: https://arxiv.org/abs/2605.28837
+drafted_at: 2026-11-05
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: For long-form biography generation with 8B-14B open backbones,
+  grouping the atomic facts of each sentence into one retrieval-verification
+  query rather than verifying each fact separately cuts token cost by 33-46%
+  and, on the 8B model, also raises FactScore, because per-fact verification
+  fragments evidence and drives defensive deletion of facts.
+kind: observation
+backing_strength: single-paper
+scope_condition: Llama-3-8B and Qwen2.5-14B on LongForm Bio, with Tavily web
+  retrieval, temperature 0; ablation run on only 20 random instances.
+technique: ""
+proposed_technique: Verify grouped facts per sentence, not each fact
+technique_summary: Decomposes a response into atomic facts, then issues one
+  combined retrieval-verification query per sentence group (a sparse
+  LDPC-style check node) and corrects or prunes facts based on the resulting
+  verdicts before rewriting the text from the corrected facts.
+technique_kind: process
+technique_validated_by: "On 20 LongForm Bio instances, compared against a
+  high-density 1:1 per-fact verification baseline and the uncorrected initial
+  answer: FactScore 0.8568 vs 0.7002 (8B) and 0.8146 vs 0.8128 (14B), with
+  token usage 39,492 vs 72,634 (8B) and 36,533 vs 54,407 (14B); fact
+  preservation 77.7% vs 61.6% (8B)."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A larger evaluation in which per-fact (dense) verification matches
+  or exceeds grouped verification on FactScore at comparable fact-preservation
+  rates, or in which grouped verification shows no token saving once retrieval
+  calls are counted.
+evidence_note: Measured, but the dense-vs-sparse comparison rests on a
+  20-instance ablation with two backbones and one benchmark; the two arms
+  differ only in verification granularity, so the cost comparison is clean,
+  but the FactScore difference reverses in direction at 14B (0.8146 vs 0.8128,
+  essentially a tie), so the accuracy half of the claim rests on the 8B cell
+  alone. No confidence intervals reported.
+confidence: low

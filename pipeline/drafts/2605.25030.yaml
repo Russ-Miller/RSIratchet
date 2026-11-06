@@ -1,0 +1,47 @@
+arxiv_id: "2605.25030"
+title: "MimirRAG: A Multi-Agent RAG Framework for Financial Data Retrieval
+  with Metadata Integration"
+url: https://doi.org/10.48550/arxiv.2605.25030
+drafted_at: 2026-11-01
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: For agentic RAG over mixed PDF financial filings, pre-filtering the
+  candidate document set with LLM-extracted document metadata (company, date,
+  report type) before chunk-level hybrid search raises document-level Hit@1
+  and end-to-end answer accuracy more than removing any single retrieval agent
+  costs, because it shrinks the search space rather than improving chunk
+  ranking.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Open-book financial QA over PDF corporate filings with
+  front-matter metadata available; measured on the 150-question FinanceBench
+  subset with GPT-4.1 and GPT-4.1-mini.
+technique: ""
+proposed_technique: Pre-filter documents by extracted metadata before chunk search
+technique_summary: An extractor agent reads each filing's first ~1024 tokens
+  for company, date and report type, and the search agent uses those fields as
+  hard filters to restrict which documents' chunks enter hybrid dense+sparse
+  retrieval.
+technique_kind: retrieval
+technique_validated_by: "Ablation on 150 FinanceBench questions: with
+  metadata, GPT-4.1-mini reached 76.0% accuracy, Hit@1 0.65, Hit@5 0.81 and
+  1.59 average documents retrieved; without metadata, 62.0%, Hit@1 0.53, Hit@5
+  0.73. Full system with GPT-4.1 reached 82.7% against a 93.3% oracle and a
+  65.3% naive-RAG reimplementation."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched ablation on comparable filings where removing metadata
+  pre-filtering leaves Hit@1 and end-to-end accuracy unchanged, or where an
+  equivalent gain is obtained purely by better chunk reranking without
+  narrowing the document set.
+evidence_note: Measured on a single 150-question benchmark subset with one
+  embedding model and one model family; the metadata and no-metadata arms
+  differ only in the filter, so the comparison is reasonably clean, but
+  accuracy differences are confounded with agent-count differences across
+  other rows, and chunk-similarity results show higher similarity without the
+  full pipeline, so the causal path is argued more than isolated. No repeated
+  runs or confidence intervals.
+confidence: medium

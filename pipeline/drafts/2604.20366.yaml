@@ -1,0 +1,51 @@
+arxiv_id: "2604.20366"
+title: Mitigating Hallucinations in Large Vision-Language Models without
+  Performance Degradation
+url: https://doi.org/10.48550/arxiv.2604.20366
+drafted_at: 2026-11-04
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: In 7B-class LVLMs (LLaVA-1.5-7B, MiniGPT-4, mPLUG-Owl2), estimating
+  the hallucination direction as the component of hallucinated-response hidden
+  states orthogonal to the faithful-response subspace, and
+  null-space-projecting only the top-K weight rows most cosine-aligned with
+  it, lowers CHAIR object-hallucination rates further than whole-layer
+  null-space editing while leaving the PCA distribution of hidden
+  representations closer to the unedited model.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Captioning and yes/no existence probing on MSCOCO-derived
+  benchmarks with three 7B-class open LVLMs; paired faithful/hallucinated
+  prompts are needed to estimate the subspaces, and edits are applied to
+  mid-to-late decoder layers (16-32 best).
+technique: ""
+proposed_technique: Edit only weights aligned with the faithful-orthogonal hallucination residual
+technique_summary: Extract the hallucination component as the residual of
+  hallucinated hidden states after projecting onto the SVD subspace of
+  faithful hidden states, then null-space-project only the top-K weight
+  vectors whose cosine similarity to that residual is highest.
+technique_kind: training
+technique_validated_by: CHAIR_S/CHAIR_I and BLEU on MSCOCO, POPE F1 under
+  random/popular/adversarial sampling, HallusionBench, MME subsets and
+  LLaVA-Bench accuracy/detailedness, against Nullu, HALC, OPERA, VCD, LURE,
+  DoLa and greedy decoding; plus PCA visualisation of hidden-state drift and a
+  count of modified parameters (42% and 37% fewer perturbations than
+  whole-layer editing).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation showing that replacing the orthogonal residual with the
+  naive hallucinated-minus-faithful difference, or selecting the same number
+  of weight rows at random, gives equal CHAIR reduction and equal
+  representation preservation.
+evidence_note: Measured on three LVLMs across CHAIR, POPE, HallusionBench, MME
+  and LLaVA-Bench with several published baselines; the two components
+  (orthogonal extraction, selective weight choice) are argued theoretically
+  and supported by a layer-range ablation and a parameter-count comparison,
+  but the paper reports no ablation isolating orthogonal extraction from
+  selective updating, so their separate contributions are not established.
+  HallusionBench mPLUG-Owl2 rows appear duplicated from MiniGPT-4, and the
+  claimed 97.4% retention is a single aggregate.
+confidence: low

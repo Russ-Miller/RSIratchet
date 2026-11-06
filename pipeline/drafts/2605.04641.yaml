@@ -1,0 +1,48 @@
+arxiv_id: "2605.04641"
+title: "CAST: Mitigating Object Hallucination in Large Vision-Language Models
+  via Caption-Guided Visual Attention Steering"
+url: https://doi.org/10.48550/arxiv.2605.04641
+drafted_at: 2026-11-02
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: In 7B-class LVLMs (LLaVA-1.5-7B, Qwen-VL-Chat, LLaVA-NeXT), visual
+  attention is higher under caption queries than under non-caption queries at
+  mid-layer attention heads, and adding the precomputed
+  caption-minus-non-caption attention-output shift vector to the top-K of
+  those heads at inference lowers object-hallucination rates on POPE, CHAIR
+  and MMHal-Bench without the inference-latency cost of contrastive decoding.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: 7B-class open LVLMs; shift vectors and head selection
+  estimated offline from 1,000 VQA samples with paired caption/non-caption
+  queries; requires tuning steering strength and head count, both of which
+  degrade performance when too large
+technique: ""
+proposed_technique: Steer caption-sensitive attention heads with
+  caption-minus-noncaption shift vectors
+technique_summary: Probe attention heads whose last-token visual-only
+  attention output distinguishes caption from non-caption queries, then at
+  inference add a precomputed averaged output-difference vector to the top-K
+  such heads.
+technique_kind: decoding
+technique_validated_by: POPE accuracy/F1 (+5.64/+5.50 avg over regular), CHAIR
+  CS/CI down 6.43 points avg, MMHal-Bench score +0.16 and hallucination rate
+  -2.95%, against VCD, OPERA, PAI and VTI baselines; MME held or improved;
+  latency TTFT/TPOT ~1.0x base vs 1.6-2.7x for VCD/PAI
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Measuring visual attention under matched caption and non-caption
+  queries and finding no mid-layer enhancement, or applying the shift vectors
+  to the probed heads and finding hallucination rates unchanged relative to
+  random-head steering of equal magnitude.
+evidence_note: "Measured on five benchmarks and three to five LVLMs with four
+  training-free baselines. The design does not isolate head selection from the
+  steering magnitude: there is no random-head control at matched alpha, so the
+  claim that the probed heads specifically carry perception is argued from the
+  probe-accuracy/attention-change alignment rather than tested.
+  Hallucination-vs-informativeness tradeoff is partly addressed (CHAIR recall
+  and MMHal informativeness reported as preserved)."
+confidence: medium

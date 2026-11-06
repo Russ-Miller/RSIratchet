@@ -1,0 +1,45 @@
+arxiv_id: "2604.13593"
+title: "AVID: A Benchmark for Omni-Modal Audio-Visual Inconsistency
+  Understanding via Agent-Driven Construction"
+url: https://doi.org/10.48550/arxiv.2604.13593
+drafted_at: 2026-11-05
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: video-temporal-reasoning
+statement: For omni-modal audio-visual models fine-tuned to localize
+  audio-visual inconsistency events, training only on short labelled clips
+  raises segment-level detection but lowers full-video temporal grounding, and
+  training only on full videos raises grounding but lowers segment-level
+  classification, so the two supervision levels must be staged in sequence
+  (clips first, then full videos) to get both.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Qwen3-Omni-30B backbone fine-tuned on one synthetically
+  constructed audio-visual inconsistency dataset (11.2K videos averaging 235s,
+  78.7K clips averaging 14.8s); only one backbone tested.
+technique: ""
+proposed_technique: Fine-tune on clips first, then full videos
+technique_summary: Two-stage supervised fine-tuning that first teaches
+  per-clip inconsistency detection and category, then continues on long videos
+  for multi-event temporal localization and reasoning.
+technique_kind: training
+technique_validated_by: "Ablation on four arms (base, segment-only,
+  full-video-only, two-stage): segment-only moved full-video R@0.5 from 8.3%
+  to 4.6%; full-video-only moved segment classification from 55.0% to 51.2%;
+  two-stage reached R@0.5 39.2%, mIoU 36.1% and segment detection 61.3%, above
+  the best compared model's mIoU of 26.2%."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On another omni-modal backbone or inconsistency dataset,
+  single-stage training on the mixed clip-plus-full-video pool matches or
+  beats the sequential two-stage schedule on both segment detection and
+  full-video mIoU.
+evidence_note: Measured as a four-arm ablation on one backbone and one
+  dataset. The dataset is synthetically injected (five programmatic audio
+  injectors), so the grounding targets may carry construction regularities; no
+  matched mixed-data single-stage control is reported, only separate
+  single-source arms, so the claim that ordering rather than data diversity
+  does the work is not fully isolated.
+confidence: low

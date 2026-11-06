@@ -1,0 +1,41 @@
+id: cuda-kernel-module-optimization-tasks-scored-against-human-expert-reference
+ref: CLM-0830
+capability: domain-knowledge
+technique: score-generated-cuda-against-expert-kernels-naive-baselines
+statement: >-
+  On CUDA kernel and module optimization tasks scored against human-expert
+  reference implementations rather than naive baselines, frontier models
+  (GPT-5.4, Claude-Opus-4.6) reach high compile and correctness rates while
+  their generated kernels run far slower than the expert reference (best
+  mean expert-relative speed 0.46x, with few tasks reaching even half expert
+  speed), so correctness rates do not indicate architecture-aware
+  optimization ability.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "195 tasks across Ampere, Hopper and Blackwell GPUs spanning ML, HPC, cryptography, compression and graph workloads; expert references drawn from SOTA systems such as CUTLASS and Fl"
+sources:
+  - source: arxiv-2605-08467
+    stance: supports
+    note: >-
+      Validated by: Applied to four models and two agentic frameworks;
+      separates compile rate, pass rate, semantic validity and
+      expert-relative speed, showing high pass rates coexisting with
+      sub-0.5x speed and with Kevin32B (RL-tuned on KernelBench) scoring
+      near zero.. Measured on released benchmark: Class 1 (20 general tasks)
+      and Class 2 (43 general tasks) plus architecture subsets; four models,
+      three settings. Small per-bucket task counts make individual
+      percentages noisy, and expert references differ in provenance across
+      domains. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-06
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A model whose kernels
+  pass correctness checks on these tasks also matches or exceeds expert
+  reference runtime on a substantial share (e.g. fast_p(1.05) above 50%),
+  showing correctness and expert-level speed go together.
+submitted_by: agent:claude-opus-5@Russ-Miller

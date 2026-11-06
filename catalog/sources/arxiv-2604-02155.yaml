@@ -1,0 +1,66 @@
+id: arxiv-2604-02155
+ref: SRC-0897
+kind: paper
+title: "Brief Is Better: Non-Monotonic Chain-of-Thought Budget Effects in
+  Function-Calling Language Agents"
+authors:
+  - Xuan Qi
+year: 2026
+date: 2026-04-02
+arxiv_id: "2604.02155"
+url: https://arxiv.org/abs/2604.02155
+tags:
+  - ingested
+summary: "How much should a language agent think before taking action?
+  Chain-of-thought (CoT) reasoning is widely assumed to improve agent
+  performance, but the relationship between reasoning length and accuracy in
+  structured tool-use settings remains poorly understood. We present a
+  systematic study of CoT budget effects on function-calling agents, sweeping
+  six token budgets (0--512) across 200 tasks from the Berkeley Function
+  Calling Leaderboard v3 Multiple benchmark. Our central finding is a striking
+  non-monotonic pattern on Qwen2.5-1.5B-Instruct: brief reasoning (32 tokens)
+  dramatically improves accur"
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (degrades, medium): The error decomposition shows
+  extended CoT (256 tokens) drives 18% hallucinated (nonexistent) function
+  calls versus near-zero with brief reasoning, i.e., longer reasoning induces
+  fabricated tool names. No claim has been drafted from it yet."
+ingested_at: 2026-11-06
+brief: >-
+  For function-calling agents, reasoning length is non-monotonic: 32 tokens of
+  chain-of-thought helps a lot, 256 tokens drops accuracy below answering with
+  no reasoning at all.
+
+
+  The sweep covers budgets d in {0, 32, 64, 128, 256, 512} on 200 tasks from
+  the BFCL v3 Multiple split (2-4 candidate functions per task, JSON output),
+  with greedy decoding on Qwen2.5-1.5B-Instruct, Qwen2.5-7B-Instruct and
+  Phi-3-mini-4k-instruct.
+
+
+  Qwen2.5-1.5B goes 44.0% at d = 0, 64.0% at d = 32, 25.0% at d = 256, 22.5%
+  at d = 512; 7B goes 40.5% to 82.5% to 18.0%. A fine-grained sweep puts the
+  optimum at 8-16 tokens (69.0% at d = 16). Error decomposition attributes the
+  gain to function routing: wrong-valid-function errors fall 30.5% to 1.5% at
+  d = 32, then return as 28.0% wrong-valid plus 18.0% hallucinated at d = 256.
+  Oracle analysis finds 88.6% of solvable tasks need at most 32 tokens (mean
+  27.6).
+
+
+  Effects are measured with McNemar tests (p < 0.001) and bootstrap CIs, and
+  two confounds are addressed: EOS-rate analysis shows Qwen fills every budget
+  (0.0% EOS), and a constrained-decoding baseline isolates structure from
+  output constraint (FR-CoT 83.0% vs constrained d = 32 at 63.5% on 7B,
+  +19.5pp, non-overlapping CIs).
+
+
+  The below-baseline collapse is Qwen-specific; Phi-3-mini peaks at 86.0% at d
+  = 32 but stays above its 29.5% baseline. Only single-step calls on one
+  benchmark split were tested; no reasoning-trained models (o1-style, R1).
+
+
+  If you ship tool-use agents, treat CoT budget as a tuned hyperparameter in
+  the 8-32 token range rather than scaling it up.
+brief_generated_at: 2026-11-06
+brief_model: claude-opus-5
+brief_source: full-text

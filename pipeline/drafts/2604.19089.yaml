@@ -1,0 +1,47 @@
+arxiv_id: "2604.19089"
+title: Towards Scalable Lifelong Knowledge Editing with Selective Knowledge
+  Suppression
+url: https://arxiv.org/abs/2604.19089
+drafted_at: 2026-11-04
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: knowledge-updating
+statement: "In lifelong knowledge editing of 6-8B models where edited facts
+  are retrieved into context, the two failure sides come apart: a trained
+  relevance selector that drops irrelevant retrieved facts is what preserves
+  locality on unedited queries, while contrastively suppressing the model's
+  prior-knowledge log-probability at decoding is what raises reliability and
+  generality on edited queries, and neither alone gives both."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: LLaMA-3-8B and GPT-J-6B on ZSRE, Counterfact and RIPE, 1,000
+  sequential edits, retrieved top-k edited facts supplied in context; not
+  tested on open-domain or multilingual updates.
+technique: ""
+proposed_technique: Gate retrieved edits by a selector, then suppress the
+  stale answer's first token
+technique_summary: A cross-encoder classifies each retrieved edited fact as
+  relevant to the query, and if any is selected the model's log-probability
+  for the first token of the original object is subtracted (weight 0.2) from
+  the context-conditioned distribution at decoding.
+technique_kind: decoding
+technique_validated_by: "Average of reliability/generality/locality over 1,000
+  sequential edits on ZSRE 0.9664, Counterfact 0.9296, RIPE 0.9818, above LTE,
+  RECIPE, AlphaEdit, GRACE, ROME, MEMIT; ablation: removing the selector drops
+  locality to 0.4612 while reliability stays 0.8898, removing the decoding
+  step drops reliability 0.9543 to 0.8978 while locality stays 0.9979;
+  suppressing all tokens rather than the first lowers reliability to 0.8477."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation on other backbones or edit sets where removing the
+  selector leaves locality intact, or where the prior-suppression term raises
+  locality rather than reliability, would break the role split.
+evidence_note: "Measured: two-component ablation plus hyperparameter and top-k
+  sweeps on three benchmarks and two backbones, against eight editing
+  baselines. The ablation isolates the two components cleanly on the metrics,
+  but all datasets are triple-based fact edits with short-object answers, and
+  the selector is trained on 1,000 in-distribution samples per dataset, so
+  cross-dataset selector transfer is not isolated."
+confidence: medium

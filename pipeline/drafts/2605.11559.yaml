@@ -1,0 +1,53 @@
+arxiv_id: "2605.11559"
+title: "When Looking Is Not Enough: Visual Attention Structure Reveals
+  Hallucination in MLLMs"
+url: https://doi.org/10.48550/arxiv.2605.11559
+drafted_at: 2026-11-04
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: "In 7B-class vision-language models (LLaVA-1.5, Qwen-VL-Chat,
+  InstructBLIP), object hallucination is not signalled by low visual-attention
+  mass — mass can peak at the very layer emitting the hallucinated token —
+  while the spatial high-frequency (Laplacian) energy of the last-query visual
+  attention does separate layers: the peak-energy layer marks where the
+  hallucinated preference forms and the minimum-energy layer transiently
+  favours the ground-truth token."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Patch-based vision encoders with grid-like visual token
+  layouts; image and video QA/captioning benchmarks; not tested on
+  reasoning-heavy tasks or much larger MLLMs.
+technique: ""
+proposed_technique: Contrast final logits against the Laplacian-energy-peak layer
+technique_summary: At each decoding step, compute Laplacian energy of the
+  last-query visual attention per candidate layer, then remap next-token
+  logits by subtracting a weighted share of the LM-head output at the
+  maximum-energy layer (optionally adding a confidence-gated term from the
+  minimum-energy layer).
+technique_kind: decoding
+technique_validated_by: CHAIR, POPE, HallusionBench, VideoHallucer plus
+  general benchmarks (MME, MM-Vet, LLaVA-Bench) against vanilla decoding and
+  training-free baselines (OPERA, VCD, ICD, DeCo, MemVR, AIR, DMAS); e.g.
+  CHAIR average 32.7 to 26.2 on LLaVA-1.5 with recall roughly flat (77.1 to
+  77.6); ablations substitute raw visual mass, text-side energy, Shannon
+  entropy and fixed/all layer ranges, all weaker.
+stance_on_existing: supports
+related_claim_id: 7-13b-open-vision-language-models-object-hallucination-explained-weak-visual
+stance_reason: Both find hallucinated tokens retain substantial visual
+  attention, so attention magnitude does not explain hallucination, and locate
+  the separating signal elsewhere in the internal computation.
+falsifier: If, measured over many hallucinated decoding steps, the
+  maximum-Laplacian-energy layer were no more likely than a random layer to be
+  where the hallucinated token first takes top-1, or if ablating to raw
+  attention mass as the layer-selection signal matched the full method's
+  hallucination reduction.
+evidence_note: "Measured: one worked case plus an MME-Hall subset analysis
+  (max-mass layer 7.7% answer accuracy vs 43% for min-energy layer; max-energy
+  layer ~10 points higher hallucination rate), plus benchmark gains and
+  signal-substitution ablations on CHAIR. The quantitative layer analysis is
+  reported on a single subset and the sample size is not given; gains over the
+  newest baselines (DMAS, AIR) are small and not consistent on every POPE
+  split."
+confidence: medium

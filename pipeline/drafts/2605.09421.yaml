@@ -1,0 +1,48 @@
+arxiv_id: "2605.09421"
+title: "MACAA: Belief-Revision Multi-Agent Reasoning for Code Authorship
+  Verification"
+url: https://doi.org/10.48550/arxiv.2605.09421
+drafted_at: 2026-11-04
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: For training-free code authorship verification with one shared LLM
+  backbone, plain multi-agent decomposition (sequential pipeline or parallel
+  debate) is not reliably better than single-agent prompting and collapses on
+  cross-language code pairs, while adding a coordinator that re-weights each
+  expert dimension's reliability before deciding recovers most of the gap.
+kind: observation
+backing_strength: single-paper
+scope_condition: Qwen3-80B-Instruct backbone only; balanced pairs from GCJ
+  C++, GitHub C/Java and CodeNet cross-language pairs; high-resource languages
+  only; no cost accounting for the extra LLM calls.
+technique: ""
+proposed_technique: Re-weight expert evidence dimensions before deciding
+technique_summary: A coordinator agent collects per-dimension reports (layout,
+  lexical, syntactic, programming pattern) from expert agents, down-weights
+  dimensions whose signal is likely language-induced or contested after
+  targeted recheck and debate, then makes the final same-author call from the
+  re-weighted evidence.
+technique_kind: process
+technique_validated_by: "F1 against supervised feature baselines, direct
+  prompting, CoT, ReAct, pipeline and debate multi-agent baselines on
+  identical pairs: 89.15% on GCJ C++ and 80.00% on mixed cross-language vs
+  11.85-52.38% for the multi-agent baselines; ablation removing the
+  contraction (weight-adjust) step drops same-language F1 83.08 to 76.47 and
+  cross-language 75.37 to 71.19."
+stance_on_existing: supports
+related_claim_id: splitting-task-across-several-agents-helps-long-horizon-tasks-whose
+stance_reason: Pipeline and debate multi-agent baselines fell far below a
+  single prompted agent on several splits, consistent with decomposition not
+  helping by itself.
+falsifier: A replication where the pipeline or debate multi-agent baselines
+  match the weight-calibrating coordinator on cross-language pairs, or where
+  removing the weight-adjust step leaves F1 unchanged.
+evidence_note: Measured on 500 balanced pairs per same-language dataset and
+  200 per cross-language pair, one backbone, with an ablation isolating the
+  weight-adjustment step. The ablation ran only on GCJ C++ and C-C++ subsets;
+  removing expansion disables the whole chain so that arm is uninformative. No
+  seed variance or repeated runs reported, and no token-cost comparison, so
+  the gain is not matched for compute.
+confidence: low

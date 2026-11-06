@@ -1,0 +1,49 @@
+arxiv_id: "2604.24198"
+title: "Rewarding the Scientific Process: Process-Level Reward Modeling for
+  Agentic Data Analysis"
+url: https://arxiv.org/abs/2604.24198
+drafted_at: 2026-11-04
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: error-detection
+statement: For verifying steps of a data-analysis agent, a verifier that only
+  reads the step text and its interpreter output cannot catch logical flaws
+  that execute without exceptions, so general-domain PRMs trained on math fail
+  here; letting the verifier run its own code against the live environment and
+  scoring recoverable exploratory errors separately from fatal ones raises
+  step selection quality.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Agentic data analysis with a code interpreter and data files;
+  shown with Qwen3-235B-A22B-Instruct as policy on DABStep and
+  ScienceAgentBench, with a 4B trained verifier; not tested on ML
+  model-training tasks.
+technique: ""
+proposed_technique: Let the verifier execute code against the environment
+technique_summary: Train a generative process reward model that runs a
+  multi-turn ReAct loop with code execution and document/image tools to probe
+  intermediate state before scoring a step, and assigns a ternary reward
+  (correct / correctable grounding error / irrecoverable error).
+technique_kind: process
+technique_validated_by: "Best-of-N with the 4B DataPRM beat majority voting,
+  LLM-as-judge, self-rewarding with a 235B model, and PRMs up to 72B: +7.21%
+  on ScienceAgentBench and +11.28% on DABStep; ablation isolates environment
+  access (CoT 38.89 vs multi-turn-with-env 39.77 vs full 40.89 at N=16) and
+  the ternary reward; also used as RL reward, reaching 78.73% DABench and
+  64.84% TableBench over outcome-only rewards."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A static text-only PRM matching the environment-interacting
+  verifier on silent-error detection and downstream Best-of-N on the same
+  data-analysis benchmarks, or the env-interaction ablation showing no gain
+  over the CoT verifier.
+evidence_note: Measured on two benchmarks with one policy model; ablations
+  separate environment access, multi-turn, and ternary reward, but each
+  component's marginal gain is 1-2 points and no variance is reported.
+  Annotation quality checked on 100 manual spot checks (86% raw accuracy). The
+  silent-error claim itself is supported by qualitative case analysis plus a
+  prompted-LLM ablation rather than a labelled silent-error detection
+  benchmark.
+confidence: medium

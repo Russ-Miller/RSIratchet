@@ -1,0 +1,48 @@
+arxiv_id: "2605.08221"
+title: "NoisyCoconut: Counterfactual Consensus via Latent Space Reasoning"
+url: https://doi.org/10.48550/arxiv.2605.08221
+drafted_at: 2026-11-04
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: abstention-and-self-knowledge
+statement: "For open-weight 7-20B models answering discrete-answer math and
+  multiple-choice questions, injecting Gaussian noise into the latent
+  hidden-state feedback loop to generate five reasoning paths yields an
+  agreement signal whose strictness tracks correctness: error rates fall from
+  40-70% at plurality agreement to under 15% at unanimity, bought with
+  coverage dropping to roughly a third of queries."
+kind: observation
+backing_strength: single-paper
+scope_condition: Five open-weight models (7B-20B), GSM8K, GSM-Symbolic and
+  MMLU with 1000 sampled questions each, K=5 paths, noise scale sigma0=0.2,
+  exact-match agreement; requires access to internal hidden states and does
+  not cover open-ended generation.
+technique: ""
+proposed_technique: Abstain unless noise-perturbed latent paths agree
+technique_summary: Injects decaying Gaussian noise into the hidden state fed
+  back through the model across latent reasoning steps, producing several
+  trajectories per query, and answers only when enough of them agree on the
+  final answer.
+technique_kind: decoding
+technique_validated_by: Accuracy and coverage at agreement thresholds from 2/5
+  to 5/5 against single-path greedy decoding, across 5 models x 3 benchmarks
+  (1000 questions each); on GSM8K no baseline exceeded 75% while all models
+  exceeded 90% at unanimity with coverage 31-53%; noise-scale sweep fitted
+  sigmoid degradation curves with R2 >= 0.94. No matched-compute comparison
+  against token-level self-consistency or semantic entropy.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Error rate at unanimous agreement failing to fall below the
+  plurality-agreement error rate, or token-level self-consistency with the
+  same number of samples achieving the same or better coverage-accuracy curve
+  on these benchmarks.
+evidence_note: Measured on 5 models and 3 benchmarks, 1000 questions each,
+  with per-threshold accuracy, coverage and error rates reported. Design
+  isolates agreement threshold as the variable but does not compare against
+  output-space sampling at matched compute, so it cannot show that latent
+  perturbation beats ordinary self-consistency. One model (gpt-oss-20B) needed
+  first-layer rather than final-layer feedback to avoid degenerate output,
+  indicating architecture sensitivity.
+confidence: medium

@@ -1,0 +1,46 @@
+arxiv_id: "2605.08467"
+title: "CUDAHercules: Benchmarking Hardware-Aware Expert-level CUDA
+  Optimization for LLMs"
+url: https://doi.org/10.48550/arxiv.2605.08467
+drafted_at: 2026-11-04
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: domain-knowledge
+statement: On CUDA kernel and module optimization tasks scored against
+  human-expert reference implementations rather than naive baselines, frontier
+  models (GPT-5.4, Claude-Opus-4.6) reach high compile and correctness rates
+  while their generated kernels run far slower than the expert reference (best
+  mean expert-relative speed 0.46x, with few tasks reaching even half expert
+  speed), so correctness rates do not indicate architecture-aware optimization
+  ability.
+kind: observation
+backing_strength: single-paper
+scope_condition: 195 tasks across Ampere, Hopper and Blackwell GPUs spanning
+  ML, HPC, cryptography, compression and graph workloads; expert references
+  drawn from SOTA systems such as CUTLASS and FlashAttention-3; one-shot,
+  self-refine and tool-augmented settings.
+technique: ""
+proposed_technique: Score generated CUDA against expert kernels, not naive baselines
+technique_summary: Fix the target GPU architecture and compare generated
+  kernels' runtime against curated human-expert state-of-the-art
+  implementations, gating performance credit on domain-specific semantic
+  validators.
+technique_kind: process
+technique_validated_by: Applied to four models and two agentic frameworks;
+  separates compile rate, pass rate, semantic validity and expert-relative
+  speed, showing high pass rates coexisting with sub-0.5x speed and with
+  Kevin32B (RL-tuned on KernelBench) scoring near zero.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A model whose kernels pass correctness checks on these tasks also
+  matches or exceeds expert reference runtime on a substantial share (e.g.
+  fast_p(1.05) above 50%), showing correctness and expert-level speed go
+  together.
+evidence_note: "Measured on released benchmark: Class 1 (20 general tasks) and
+  Class 2 (43 general tasks) plus architecture subsets; four models, three
+  settings. Small per-bucket task counts make individual percentages noisy,
+  and expert references differ in provenance across domains. Does not isolate
+  why the gap exists beyond a strategy-enriched prompt diagnostic."
+confidence: medium

@@ -1,0 +1,52 @@
+arxiv_id: "2604.08243"
+title: "Self-Debias: Self-correcting for Debiasing Large Language Models"
+url: https://doi.org/10.48550/arxiv.2604.08243
+drafted_at: 2026-11-05
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: self-repair
+statement: 'For 7-8B reasoning models asked to revise a biased reasoning
+  chain, detection does not produce correction: when a stereotypical prefix is
+  forced into the chain the models emit reflection tokens ("Wait", "But") in
+  11.8-32.6% of cases yet still rationalize the premise to a discriminatory
+  answer, and prompting a post-hoc revision pass lowers average
+  fairness-plus-utility scores below the uncorrected baseline (e.g. Qwen3-8B
+  -13.5 points).'
+kind: observation
+backing_strength: single-paper
+scope_condition: 7-8B open reasoning/instruct models (Qwen3-8B, Qwen2.5-7B,
+  DeepSeek-R1-Distill-Qwen-7B, Llama-3.1-8B) on fairness benchmarks (BBQ,
+  UnQover, CEB, CrowS-Pairs) with a biased prefix injected into the chain of
+  thought
+technique: ""
+proposed_technique: Train on biased-to-corrected suffix pairs, freezing valid prefixes
+technique_summary: Cold-start SFT on (biased response, instruction, corrected
+  response) tuples, then preference optimization on the implicit reward margin
+  of the reasoning suffix after the bias-activation step only, with a
+  batch-level variance penalty and an online loop that mines pairs from
+  self-consistent revision chains.
+technique_kind: training
+technique_validated_by: "Average over six fairness and two utility benchmarks:
+  Qwen3-8B 77.5 base and 64.0 with prompted self-correction, versus 81.7 and
+  82.1 after Self-Debias (p<0.05); replicated on Llama-3.1-8B (52.3 to 81.4);
+  ablation shows response-level instead of suffix-level optimization drops to
+  78.5, and removing the consistency filter degrades across online
+  iterations."
+stance_on_existing: supports
+related_claim_id: self-critique-without-grounding-unreliable
+stance_reason: Prompted post-hoc self-critique (Self-Refine, Denying,
+  BiasFilter) on biased reasoning traces made fairness and utility scores
+  worse than leaving the output alone.
+falsifier: A measurement on comparable models showing that prompted post-hoc
+  revision of a bias-injected chain raises both fairness and utility above the
+  uncorrected baseline, or that reflection-token emission predicts a corrected
+  final answer.
+evidence_note: Measured on four 7-8B models across eight benchmarks under a
+  forced-prefix bias-injection protocol, plus 1,000 uninjected BBQ samples (89
+  errors, 29.2% with stereotype-reliant steps) to show the pathology is not an
+  artifact of injection. The injection protocol is artificial, and the
+  reflection-token rate is a surface proxy for detection rather than a
+  representational measure; the paper's own method is the only intervention
+  that comes out positive, so the baseline comparison is not independent.
+confidence: medium

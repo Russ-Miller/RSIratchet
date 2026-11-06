@@ -1,0 +1,57 @@
+arxiv_id: "2605.13156"
+title: Dual-Pathway Circuits of Object Hallucination in Vision-Language Models
+url: https://doi.org/10.48550/arxiv.2605.13156
+drafted_at: 2026-11-01
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: In 7B-14B vision-language models across four fusion architectures,
+  the components whose causal contribution is highest on correct
+  object-existence answers do not stop carrying visual evidence when the model
+  hallucinates — their indirect effect flips sign, aligning with the
+  hallucinated answer rather than the ground truth, while their within-pathway
+  redundancy persists — so object hallucination is grounding representations
+  entrained to a non-visual prior rather than missing visual evidence.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Object-existence (binary yes/no) hallucination on
+  POPE-adversarial; five VLMs of 7B-14B with embed-concat, projector-concat,
+  ViT-MLP-LLM and cross-attention fusion; does not hold for attribute
+  hallucination, which the same circuit does not cover.
+technique: ""
+proposed_technique: Scale down hallucination-pathway components found by patching
+technique_summary: Identify components whose patching effect is larger on
+  hallucinating than correct samples, then multiply their outputs by a fixed
+  factor (or just the top-k by effect size) at every forward pass, with no
+  retraining.
+technique_kind: architecture
+technique_validated_by: "On a held-out 400-sample POPE-adversarial set with
+  hyperparameters picked on a disjoint 100-sample selection set: 40-76%
+  relative hallucination reduction at under 2pp accuracy cost across five
+  models; random-component suppression at the same factor gave no reduction
+  (and slightly raised hallucination, up to +7.2pp); scaling the grounding
+  pathway to zero collapsed accuracy to chance; ITI and mean-difference
+  projection on the same components were weaker or ineffective."
+stance_on_existing: contests
+related_claim_id: 7-13b-open-vision-language-models-object-hallucination-explained-weak-visual
+stance_reason: Both findings say hallucination is not a shortage of visual
+  attention/evidence, but this paper locates the failure in a sign flip of the
+  grounding components' causal effect rather than in a mismatch between
+  attended visual tokens and the generated word.
+falsifier: Measuring per-component indirect effects on hallucinating samples
+  in these or similar VLMs and finding grounding-pathway effects stay positive
+  (or shift inconsistently in sign across models), or finding that suppressing
+  the identified hallucination-pathway components does no better than random
+  components matched for count and scale.
+evidence_note: Measured by activation patching on 1,000 POPE-adversarial
+  samples per model for circuit discovery and 400 for the interaction
+  analysis, across five models; the polarity flip is consistent in all five
+  (subset-mean IE positive on correct, negative on hallucinating, cross-subset
+  Cohen's d -1.60 to -2.45, p<0.001) while the hallucination pathway shows no
+  such consistent flip. Causal side has a random-component control and a
+  grounding-ablation specificity check. Logit-lens corroboration holds in four
+  of five models. Design isolates which components matter but not what the
+  flipped representation encodes; all evidence is on binary existence
+  questions in one benchmark family.
+confidence: medium

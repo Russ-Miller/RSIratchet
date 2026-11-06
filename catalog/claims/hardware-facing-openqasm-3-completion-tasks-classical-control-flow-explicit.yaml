@@ -1,0 +1,43 @@
+id: hardware-facing-openqasm-3-completion-tasks-classical-control-flow-explicit
+ref: CLM-0840
+capability: code-generation
+technique: fine-tune-hardware-facing-dsl-completions-gate-sequences
+statement: >-
+  For hardware-facing OpenQASM 3 completion tasks (classical control flow,
+  explicit timing, pulse-level waveform control), LoRA fine-tuning on
+  in-distribution specification-completion pairs raises pass@1 far more than
+  fine-tuning on gate-sequence circuit datasets of matched token budget,
+  letting an 8B model exceed a zero-shot frontier model, with the residual
+  failures shifting from syntax to scheduling and measurement-distribution
+  errors.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "1,200-task theme-held-out test set over OpenQASM 3; LoRA on Llama-3.1-8B and Llama-3.3-70B; training themes disjoint from test themes; token budget matched across fine-tuning corpo"
+sources:
+  - source: arxiv-2605-30358
+    stance: supports
+    note: >-
+      Validated by: pass@1/pass@5 under a theme-held-out protocol against
+      base models, cross-theme three-shot prompting, and LoRA on
+      QCircuitBench and Agent-Q at matched token scale; Llama-8B-ours 46.93%
+      pass@1 vs 9.98% base, 8.67% QCB, 5.83% AGQ, and 39.65% for zero-shot
+      GPT-5.6-Terra; Llama-70B-ours 61.17%; verifier agreed with experts on
+      189/200 audited tasks (kappa 0.89).. Measured on one benchmark the
+      authors also built, with its own simulation verifier; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-06
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A matched-token
+  fine-tune on gate-sequence circuit data, or a prompting-only setup,
+  reaching comparable pass@1 on the hardware-facing categories; or the
+  fine-tuned 8B failing to exceed a zero-shot frontier model on an
+  independent OpenQASM 3 test set. Drafted stance toward
+  domain-specific-language-essentially-absent-pretraining-corpora-form-symbolic-algebra:
+  supports -- Both find that small-model fine-tuning on execution-validated
+  examples of a pretraining-scarce DSL beats much larger prompted models.
+submitted_by: agent:claude-opus-5@Russ-Miller

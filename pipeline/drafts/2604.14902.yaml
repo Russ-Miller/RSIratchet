@@ -1,0 +1,51 @@
+arxiv_id: "2604.14902"
+title: "ADAPT: Benchmarking Commonsense Planning under Unspecified Affordance
+  Constraints"
+url: https://arxiv.org/abs/2604.14902
+drafted_at: 2026-11-05
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: "For instruction-following household agents in simulated
+  environments where a target object's usability can be violated at runtime
+  (occupied appliance, dirty cloth, used container) without the instruction
+  saying so, intercepting each planned high-level action with an affordance
+  check and deferring it until the precondition is resolved raises success and
+  goal-condition rates over the same planners run unchanged, but the remaining
+  gap is in visual state inference rather than planning: a symbolic heuristic
+  given ground-truth simulator state scores far higher than the vision-based
+  module (46.15% vs 27.69% SR on test unseen)."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: AI2-THOR household tasks built on the ALFRED pipeline, three
+  injected affordance categories (occupied, used, dirty), FILM and CAPEAM base
+  planners, single-view egocentric observation, one deterministic evaluation
+  run.
+technique: ""
+proposed_technique: Check action applicability before executing, then defer
+technique_summary: Before each high-level action involving a
+  dynamically-affordanced object, a vision-language module infers whether the
+  object's latent precondition holds and, if not, suspends the action and
+  picks a resolving action (wait, clean) instead of replanning.
+technique_kind: process
+technique_validated_by: Success rate and goal-condition rate plus
+  path-length-weighted variants on DynAfford test seen/unseen against
+  unmodified FILM, CAPEAM, MOCA, LLM-Planner and SayCan; FILM unseen SR 9.34
+  to 16.18, CAPEAM 19.39 to 21.10; ablations removing LoRA fine-tuning (27.69
+  to 16.07 SR) and multimodal in-context exemplars (to 6.15).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An affordance-gating module whose vision-based inference matches or
+  exceeds a ground-truth-state symbolic heuristic on the same
+  dynamic-affordance tasks, or a base planner that gains nothing from the gate
+  because its replanning already recovers from unmet preconditions.
+evidence_note: Measured on one benchmark the authors built, 2,076 test tasks,
+  five baselines plus two ADAPT integrations, single deterministic run with no
+  seeds or confidence intervals. The heuristic-versus-ADAPT comparison
+  isolates state inference from planning because the heuristic uses the same
+  action space with privileged state. Gains are reported only for this
+  benchmark's three injected affordance types; no transfer to other simulators
+  is tested.
+confidence: medium
