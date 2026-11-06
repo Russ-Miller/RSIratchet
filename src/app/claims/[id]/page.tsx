@@ -56,7 +56,7 @@ export default async function ClaimPage({ params }: PageProps<"/claims/[id]">) {
           {c.contested && <ContestedBadge />}
           <ReviewBadge claim={c} />
         </div>
-        <h1 className="text-2xl font-semibold tracking-tight">{c.statement}</h1>
+        <h1 className="claim-statement">{c.statement}</h1>
         {(() => {
           const ad = heuristicsForClaim(c.id);
           if (!ad.length) return null;
