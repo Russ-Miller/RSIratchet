@@ -530,6 +530,11 @@ rather than rendering blank, since a blank reads as "no activity".
 
 ## 8. Site (progressive disclosure)
 
+Stable `/id/<ref>` links resolve through one route handler backed by the
+allocation ledger. They retain temporary redirects and query strings; unknown
+refs and model refs (which have no public detail pages) return 404. The lookup
+does not allocate one platform redirect per catalog record.
+
 The draft review workbench is paginated statically at 25 drafts per page.
 `/drafts` shows the first page; `/drafts/page/2` and subsequent numbered routes
 retain the same flagged-first ordering and evidence details. Browser-local
