@@ -1,0 +1,87 @@
+{
+  "version": 1,
+  "source": "arxiv-2305-14975",
+  "fingerprint": "3e09568e4fd7060edb10b3e0176ac13d6c809d13f516308a7c6fba1f7ec8c1ea",
+  "attempted_at": "2026-10-22T23:20:48.301Z",
+  "candidates": [
+    {
+      "title": "Ask RLHF chat models to verbalize a confidence instead of sampling for probabilities",
+      "rule": "For short-form factual QA with RLHF-tuned chat models lacking token logprobs, elicit a numeric confidence in the output tokens rather than estimating confidence from repeated samples; verify on your own data for open-weight models like Llama-2-70B-Chat, where gains were inconsistent.",
+      "basis": "author-tested",
+      "passage": "we find that verbalized confidences emitted as output tokens are typically better-calibrated than the model’s conditional probabilities on the TriviaQA, SciQ, and TruthfulQA benchmarks",
+      "location": "Abstract",
+      "finding": "Across Tables 1-5, verbalized confidence prompts cut ECE relative to sampled label probabilities for gpt-3.5-turbo, gpt-4, claude-1, claude-2; for Llama-2-70b-chat improvements were less consistent across metrics.",
+      "models": [
+        "gpt-3.5-turbo (June 2023)",
+        "gpt-4",
+        "claude-1",
+        "claude-2",
+        "Llama-2-70b-chat"
+      ],
+      "workloads": [
+        "TriviaQA (1000 val questions)",
+        "SciQ (1000 val questions)",
+        "TruthfulQA (817 questions)"
+      ],
+      "conditions": "Short-answer factual recall; correctness judged by LLM semantic-equivalence check; sampled baseline uses n=10 samples; verbalized method needs only one sample (cheaper).",
+      "limitations": "Single paper; short-form QA only, no reasoning or long-form tasks; closed models may have changed since 2023; absolute calibration on TruthfulQA remains poor (ECE ~0.2-0.4); AUC sometimes worse than logprobs (e.g., Claude-1 on SciQ).",
+      "validation_test": "On your task, compare ECE/Brier/selective-accuracy AUC of a one-sample verbalized-probability prompt against 10-sample answer-frequency confidence, using an LLM equivalence judge for correctness.",
+      "overlaps_heuristics": []
+    },
+    {
+      "title": "Request multiple candidate answers before confidences",
+      "rule": "When eliciting verbalized confidences, prompt for the top-2 or top-4 guesses with a probability each and use the top-ranked one, instead of asking for a single guess and probability.",
+      "basis": "author-tested",
+      "passage": "Among the methods for verbalizing probabilities directly, we observe that generating and evaluating multiple hypotheses improves calibration (see Figure 1 )",
+      "location": "Section 3 Results, conclusion 2",
+      "finding": "Verb. 1S top-2/top-4 generally show lower ECE than top-1 across models and datasets (e.g., gpt-3.5-turbo SciQ ECE 0.234 -> 0.132 -> 0.065).",
+      "models": [
+        "gpt-3.5-turbo",
+        "gpt-4",
+        "claude-1",
+        "claude-2",
+        "Llama-2-70b-chat"
+      ],
+      "workloads": [
+        "TriviaQA",
+        "SciQ",
+        "TruthfulQA"
+      ],
+      "conditions": "One-stage prompt asking for k guesses with per-guess probability; extra output tokens cost; benefit varies by metric.",
+      "limitations": "Not uniform: on TriviaQA top-4 sometimes worse than top-2; AUC can drop with larger k (gpt-3.5 SciQ AUC 0.766 at k=2 vs 0.763 at k=4; Claude-1 drops); untested beyond short-form QA.",
+      "validation_test": "Run k=1,2,4 variants of the same verbalized prompt on a held-out labeled QA set and compare ECE, temperature-scaled ECE, Brier, and selective-accuracy AUC.",
+      "overlaps_heuristics": []
+    },
+    {
+      "title": "Do not add chain-of-thought to improve confidence calibration",
+      "rule": "Do not add chain-of-thought prompting solely to improve confidence calibration in short-form factual QA; it did not help and in places hurt.",
+      "basis": "author-tested",
+      "passage": "Chain-of-thought prompting does not improve verbalized calibration (see Appendix Figure 5 for additional CoT results).",
+      "location": "Section 3 Results, conclusion 4",
+      "finding": "Verb. 2S CoT had worse ECE than non-CoT verbalized variants for gpt-3.5-turbo (e.g., SciQ 0.323 vs 0.065 for 1S top-4), and Appendix Figure 5 CoT variants showed no consistent ECE gain.",
+      "models": [
+        "gpt-3.5-turbo"
+      ],
+      "workloads": [
+        "TriviaQA",
+        "SciQ",
+        "TruthfulQA"
+      ],
+      "conditions": "CoT variants tested only on gpt-3.5-turbo in the appendix; calibration metrics only, not answer accuracy.",
+      "limitations": "Rule concerns calibration, not accuracy, which CoT may still improve; tested on one model and three factual QA sets; reasoning-heavy domains untested.",
+      "validation_test": "Compare CoT and non-CoT verbalized-confidence prompts on the same questions, reporting both accuracy and ECE/Brier, to check whether CoT trades calibration for accuracy in your domain.",
+      "overlaps_heuristics": []
+    }
+  ],
+  "status": "candidates",
+  "reason": "The paper compares concrete confidence-elicitation prompts across five RLHF models and three QA datasets, yielding actionable prompting rules (verbalized confidence vs sampled probabilities; top-k multi-guess; CoT null result).",
+  "model": "claude-opus-5",
+  "text_url": "https://arxiv.org/html/2305.14975v2",
+  "text_sha256": "d8da8608c033bb513f0c0cae7c0da197d708e82c52e3c084e1bf597c34e34ba5",
+  "retrieved_at": "2026-10-22T23:20:48.301Z",
+  "supplied_chars": 40332,
+  "total_chars": 40332,
+  "truncated": false,
+  "input_tokens": 19835,
+  "output_tokens": 1834
+}

@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "source": "arxiv-2609-05903",
+  "fingerprint": "331839a5b27554f9fc4eac4ea7b10963196d31cb94bd1f84744ab1e2f8032bd4",
+  "attempted_at": "2026-10-22T23:29:02.019Z",
+  "status": "candidates",
+  "reason": "Selected sections of the retrieved revision support deployment-specific safety-harness optimization and an ablation of fresh-context artifact review. These are safety-domain results, not a universal harness ranking.",
+  "candidates": [
+    {
+      "title": "Tune safety enforcement to the model and deployment domain",
+      "rule": "For tool-using agents, test a safety harness against both the domain’s permitted actions and the target model’s failure behavior; compare safety and benign utility rather than porting one strictness level unchanged.",
+      "basis": "author-tested",
+      "passage": "so no fixed harness fits every deployment.",
+      "location": "Sections 3.1 and 4, DTAP comparisons and mechanism analysis",
+      "finding": "The method searches separate harnesses for fifteen model–domain deployments. Direct and indirect attack success fall while average utility decreases 3.3 points. Analysis finds domain-specific action relations and model-specific enforcement choices. This tests the combined search procedure against fixed defenses, not equal-budget tuning of every baseline.",
+      "models": [
+        "Five-model DTAP panel; inspected examples include Sonnet 4.6 and GLM-5"
+      ],
+      "workloads": [
+        "DecodingTrust-Agent: os-filesystem, finance and telecom",
+        "Agent-SafetyBench",
+        "AgentDojo and transfer to AgentDyn"
+      ],
+      "conditions": "The backbone is frozen per deployment. Search combines natural-language policies with executable hooks and evaluates benign utility alongside direct and indirect attacks.",
+      "limitations": "Baselines are ported once while the proposed method is searched per deployment, so equal tuning effort is not established by this comparison. Mechanism observations are not isolated causal ablations. Transfer sometimes succeeds: the AgentDojo harness is reused on AgentDyn. The retrieved revision differs from the older catalog brief.",
+      "validation_test": "For each target model and workload, compare the existing harness with a tuned variant on disjoint benign and adversarial tasks. Report utility, attack success, cost and overblocking together.",
+      "overlaps_heuristics": []
+    },
+    {
+      "title": "Screen optimized defenses for benchmark-specific shortcuts",
+      "rule": "When searching safety-harness rules, add an independent fresh-context review for literal benchmark artifacts and verify the selected defense on tasks outside the search set.",
+      "basis": "author-tested",
+      "passage": "yet lose 19.5 held-out points on average and 31.0 on os-filesystem",
+      "location": "Section 3.2, Importance of Criticizer design",
+      "finding": "Removing the Criticizer produces search-set scores as good as or better than the full method but worse held-out scores. A blind code audit finds more rules keyed to literal benchmark tokens. This supports the complete Criticizer intervention in the tested safety search.",
+      "models": [
+        "Three DTAP search settings in the Criticizer ablation"
+      ],
+      "workloads": [
+        "DecodingTrust-Agent safety-harness search"
+      ],
+      "conditions": "The reviewer screens candidate code and policy for benchmark artifacts. Held-out scores and a blind code audit provide checks beyond the search score.",
+      "limitations": "The inspected sections do not isolate fresh context from the reviewer rubric or other Criticizer details. A second model review can still share blind spots; this does not remove the need for separate evaluation or prove that all literal constants are illegitimate.",
+      "validation_test": "Run the same search with and without the reviewer. Blind-audit shortcut rules, then compare benign utility and attack success on new tasks under matched search budgets.",
+      "overlaps_heuristics": [
+        "no-one-should-judge-their-own-cause",
+        "goodharts-law"
+      ]
+    }
+  ],
+  "model": "Codex session",
+  "review_method": "codex-session",
+  "review_scope": "Focused reading of abstract/introduction and selected main-text results, ablations and limitations; intervening sections, references and appendices were not comprehensively reviewed.",
+  "review_segments": [
+    {
+      "start": 0,
+      "end": 4000
+    },
+    {
+      "start": 24759,
+      "end": 38759
+    }
+  ],
+  "text_url": "https://arxiv.org/html/2609.05903v2",
+  "text_sha256": "e42370a71282bfc3a46804720180614f2472c6884489e8bc9ad87e63e54faf34",
+  "retrieved_at": "2026-10-22T23:25:33.029Z",
+  "supplied_chars": 18002,
+  "total_chars": 90686,
+  "truncated": true
+}

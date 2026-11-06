@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "source": "arxiv-2109-07958",
+  "fingerprint": "44975944ad110b97f1d785735bcc64cc05dce56c69344887ab3eaf3c2676e1e7",
+  "attempted_at": "2026-10-22T23:18:55.708Z",
+  "candidates": [
+    {
+      "title": "Add an explicit truthfulness instruction prompt, but expect no informativeness gain",
+      "rule": "For factual QA with a base LM, prepend an instruction prompt telling the model to interpret questions literally, avoid common myths, and say 'I have no comment' unless certain; expect higher truthfulness but roughly unchanged true-and-informative rate.",
+      "basis": "author-tested",
+      "passage": "Different prompts for GPT-3-175B had a significant impact on truthfulness but not on the percentage of true and informative answers",
+      "location": "Section 4.1 Truthfulness of models vs humans",
+      "finding": "GPT-3-175B with the 'helpful' prompt reached 58% true vs 20.4% with the default QA prompt, but true+informative rose only to 21.4% from 18.2%; the harmful prompt dropped truthfulness to 12.5%. The gain comes largely from more non-committal answers.",
+      "models": [
+        "GPT-3-175B"
+      ],
+      "workloads": [
+        "TruthfulQA zero-shot generation (817 questions)"
+      ],
+      "conditions": "Greedy decoding, OpenAI API defaults; human evaluation per Appendix D; prompts not tuned on TruthfulQA examples.",
+      "limitations": "Prompt comparison run only on GPT-3-175B; the improvement partly reflects abstention counted as truthful, which may be undesirable where answers are required; human baseline was 94% true and 87% true+informative, so the gap stays large.",
+      "validation_test": "On your QA workload, compare a plain QA prompt against the helpful-instruction prompt and score both truthfulness and informativeness separately; verify the gain is not purely from increased abstentions.",
+      "overlaps_heuristics": [
+        "first-impressions-last"
+      ]
+    },
+    {
+      "title": "Use a finetuned judge model as a cheap proxy for human truthfulness grading, keeping humans as gold standard",
+      "rule": "When human grading of free-form answers is too costly, finetune a mid-size LM on (question, answer, true/false) triples for your fixed question set and use it to rank systems; keep human spot-checks, especially for long multi-sentence answers.",
+      "basis": "author-tested",
+      "passage": "The finetuned GPT-judge model is able to predict human evaluations of truthfulness with 90-96% validation accuracy. GPT-judge also generalizes well to new answer formats.",
+      "location": "Section 4.4 Automated metrics vs human evaluation",
+      "finding": "GPT-judge (GPT-3-6.7B finetuned on ~6.9k reference answers plus ~15.5k human-labelled model answers) outperformed ROUGE1, BLEURT and a similarity-based GPT-3 metric, held 90% accuracy on the unseen UnifiedQA family and 89.5% on the human baseline, and preserved model rank ordering. It misclassifies qualified, mixed-truth and long answers.",
+      "models": [
+        "GPT-judge: GPT-3-6.7B finetuned",
+        "graded outputs from GPT-3, GPT-Neo/J, GPT-2, UnifiedQA"
+      ],
+      "workloads": [
+        "TruthfulQA truthfulness labelling",
+        "informativeness labelling (GPT-info, 86.3% on UnifiedQA)"
+      ],
+      "conditions": "Judge trained with all benchmark questions in its training set; intended only for this fixed question set, not new questions; requires thousands of human labels up front.",
+      "limitations": "Single paper; generalisation only tested across four 2021 model families; errors concentrate on long-form and qualified answers; not shown to work for unseen questions; label cost and finetuning cost not quantified.",
+      "validation_test": "Collect human labels for a held-out system's answers on your fixed question set and measure agreement with the finetuned judge, checking separately on long multi-sentence and hedged answers.",
+      "overlaps_heuristics": [
+        "no-one-should-judge-their-own-cause"
+      ]
+    }
+  ],
+  "status": "candidates",
+  "reason": "The paper reports tested comparisons: inverse scaling on truthfulness, prompt effects on GPT-3-175B, and a finetuned GPT-judge evaluator that matches human truth labels with 90-96% accuracy. These support narrowly scoped harness rules. Scores depend on this benchmark, zero-shot setting, and 2021-era models.",
+  "model": "claude-opus-5",
+  "text_url": "https://arxiv.org/html/2109.07958v2",
+  "text_sha256": "345fbed53273b0f3f6a33b2c7f331726a4812256437c294269bf758187ef71f5",
+  "retrieved_at": "2026-10-22T23:18:55.708Z",
+  "supplied_chars": 82318,
+  "total_chars": 82318,
+  "truncated": false,
+  "input_tokens": 34152,
+  "output_tokens": 2132
+}

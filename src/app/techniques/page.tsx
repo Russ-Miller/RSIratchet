@@ -1,3 +1,4 @@
+import { EvidenceNav } from "@/components/evidence-nav";
 import Link from "next/link";
 import { ListSearch } from "@/components/list-search";
 import { ModelStrip } from "@/components/model-strip";
@@ -17,16 +18,12 @@ export default function TechniquesPage() {
   ];
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-semibold">Techniques</h1>
-      <p className="max-w-3xl text-sm text-neutral-500">
-        A technique is a fix: something you do to a model, a prompt, or the system around it to
-        move a capability. The entry says what the technique is and which capabilities it
-        addresses. It never says whether it works; that is a claim, filed under the capability,
-        with the source that measured it. So a technique listed here with no claim measuring it
-        is an untested fix, and the filters below find those: nothing has measured it, nobody has
-        looked, or it has been argued for but not measured. Those are the cuts from{" "}
-        <Link href="/open-questions" className="hover:underline">open questions</Link>.
-      </p>
+      <header className="library-heading">
+        <p className="eyebrow">Evidence library</p>
+        <h1>Techniques</h1>
+      <p className="max-w-3xl text-sm text-neutral-500">Ways to put the guidance into practice: prompting, retrieval, tools, training, and harness design. Open a technique to see what it needs, the evidence for it, and when it fails.</p>
+      </header>
+      <EvidenceNav current="/techniques" />
       <ModelStrip compact />
       <ListSearch noun="techniques" />
       <FilterBar options={options}>

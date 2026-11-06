@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "source": "arxiv-2005-14165",
+  "fingerprint": "4f4107dfd76fe5344368ceb27892fc42be18c490f0e2d83beee80a68f68853ac",
+  "attempted_at": "2026-10-22T23:18:55.708Z",
+  "candidates": [
+    {
+      "title": "Fill the context with demonstrations before concluding a large model cannot do a task",
+      "rule": "When evaluating a large pretrained LM on a new task without fine-tuning, supply as many in-context demonstrations as the context window allows (roughly 10-100) plus a natural-language task description, rather than relying on zero-shot; expect the gain to be large for the biggest model and small or negative for small models.",
+      "basis": "author-tested",
+      "passage": "While zero-shot performance improves steadily with model size, few-shot performance increases more rapidly, demonstrating that larger models are more proficient at in-context learning.",
+      "location": "Figure 1.3 caption (Introduction)",
+      "finding": "Across 42 accuracy-denominated benchmarks and 8 model sizes (125M-175B), few-shot beat one-shot and zero-shot for the 175B model, e.g. LAMBADA 76.2 -> 86.4, SuperGLUE improves with K up to 32, arithmetic 2-digit subtraction 58.0 -> 98.9, word unscrambling near zero at zero-shot but 37.9 few-shot. On Winograd there was no clear in-context learning gain, and the LAMBADA fill-in-blank format was worse one-shot than zero-shot, and it cut the smallest model's accuracy by ~20%.",
+      "models": [
+        "GPT-3 175B",
+        "GPT-3 13B",
+        "GPT-3 6.7B",
+        "GPT-3 2.7B",
+        "GPT-3 1.3B",
+        "GPT-3 760M",
+        "GPT-3 350M",
+        "GPT-3 125M"
+      ],
+      "workloads": [
+        "LAMBADA",
+        "TriviaQA",
+        "WebQuestions",
+        "Natural Questions",
+        "SuperGLUE",
+        "WMT Fr/De/Ro-En translation",
+        "synthetic arithmetic (2-5 digit)",
+        "word scrambling tasks",
+        "SAT analogies"
+      ],
+      "conditions": "Base autoregressive LMs, no gradient updates, 2048-token context, demonstrations drawn randomly from each task's training set; K tuned on a dev set where available.",
+      "limitations": "Single paper, 2020 base models with no instruction tuning; gains are task-dependent (none on Winograd, near-random on WiC and ANLI regardless of K); longer prompts cost tokens and latency; no matched token-budget comparison against alternatives like fine-tuning.",
+      "validation_test": "On your own task, sweep K in {0,1,8,32,max-that-fits} with and without a task description on at least two model sizes, holding the evaluation set fixed, and record accuracy versus prompt token cost.",
+      "overlaps_heuristics": [
+        "practice-makes-perfect",
+        "first-impressions-last"
+      ]
+    }
+  ],
+  "status": "candidates",
+  "reason": "The paper compares zero-, one-, and few-shot in-context prompting across 8 model sizes on many benchmarks, and runs a contamination analysis comparing full vs. clean subsets. These yield scoped, actionable rules about prompt-time demonstrations, task formatting, and benchmark hygiene. Findings are from a single 2020 paper on base GPT-3 models with a 2048-token context and no instruction tuning, so scope is limited.",
+  "model": "claude-opus-5",
+  "text_url": "https://arxiv.org/html/2005.14165v4",
+  "text_sha256": "109d4077d92e219e042254e1219d1e5077288f20d2428cf9b656203d04459365",
+  "retrieved_at": "2026-10-22T23:18:55.708Z",
+  "supplied_chars": 120000,
+  "total_chars": 234449,
+  "truncated": true,
+  "input_tokens": 43533,
+  "output_tokens": 2771
+}

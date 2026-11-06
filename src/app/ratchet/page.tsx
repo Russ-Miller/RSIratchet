@@ -1,10 +1,11 @@
+import { EvidenceNav } from "@/components/evidence-nav";
 import Link from "next/link";
 import { ListSearch } from "@/components/list-search";
 import { vecAttr } from "@/lib/embeddings";
 import { RATCHET_ROLE_HINT, claimsCiting, getSources, ratchetTechniques } from "@/lib/catalog";
 
 export const metadata = {
-  title: "The ratchet",
+  title: "Learning loops",
   description: "Sources on systems that improve their own scaffolding, and what held.",
 };
 
@@ -23,26 +24,17 @@ export default function RatchetPage() {
 
   return (
     <div className="space-y-6">
-      <div className="space-y-3">
-        <h1 className="text-2xl font-semibold">The ratchet</h1>
-        <p className="max-w-3xl text-sm text-neutral-600 dark:text-neutral-400">
-          The site is named for a claim: a fix placed in structure applies on every later run, while a
-          fix given in conversation dies with the session. These are the sources about systems that try
-          to build that ratchet — a loop that reads its own failures and rewrites the harness it runs
-          inside — together with the claims drawn from each. It is the catalog looking at its own
-          subject: a system like this could read these claims, apply them, and file what broke.
-        </p>
-        <p className="max-w-3xl text-sm text-neutral-600 dark:text-neutral-400">
-          Four tests separate a ratchet from a fitted harness, and they are what to read each paper
-          against: freeze the harness before evaluation; forbid the improver from editing its own tests
-          or notes; require that failed paths stay observable; promote only changes that survive a new
-          session or a disjoint task set. The recurring finding across these sources is that the
-          acceptance gate, not the improvement engine, is what makes a loop ratchet rather than drift.
-        </p>
-      </div>
-
-      <Hypothesis />
-      <WhyFailures />
+      <header className="library-heading">
+        <p className="eyebrow">Research behind the learning loop</p>
+        <h1 className="text-3xl font-semibold">How agents keep learning.</h1>
+        <p className="max-w-3xl text-neutral-600 dark:text-neutral-400">Research on turning experience into reusable strategies, improving harnesses, and testing whether the gains survive new tasks. Each source links to the claims drawn from it.</p>
+        <p className="max-w-3xl text-sm text-neutral-500">Look for independent evaluation, visible failures, and regression checks. A better result on the tasks used to choose an improvement does not establish that it generalizes.</p>
+      </header>
+      <EvidenceNav current="/ratchet" />
+      <details className="rounded border border-neutral-200 p-5 dark:border-neutral-800">
+        <summary className="font-medium">The research questions guiding the bank</summary>
+        <div className="mt-6 space-y-8"><Hypothesis /><WhyFailures /></div>
+      </details>
       <Techniques />
 
       <ListSearch noun="sources" />
@@ -64,10 +56,9 @@ function Techniques() {
     <section className="space-y-3">
       <h2 className="text-lg font-semibold">Techniques that serve the loop</h2>
       <p className="max-w-3xl text-sm text-neutral-600 dark:text-neutral-400">
-        Of {ratchetTechniques().length} flagged techniques, these are grouped by the job they do for a
-        loop. The rest of the catalog is object-level: it improves the work, not the loop that improves
-        the work. A fix at the object level pays once; a better gate reduces error that would otherwise
-        accumulate over every later round, which is why the gate keeps coming out load-bearing above.
+        {ratchetTechniques().length} techniques address a part of the learning process: proposing
+        improvements, checking which ones to keep, or preserving them between runs. Open a technique
+        for the evidence and its limitations.
       </p>
       {roles.map(({ role, items }) => (
         <div key={role} className="space-y-1">
@@ -177,7 +168,7 @@ function Hypothesis() {
   return (
     <section className="max-w-3xl space-y-3 rounded border border-neutral-300 p-4 text-sm text-neutral-700 dark:border-neutral-700 dark:text-neutral-300">
       <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <h2 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">The hypothesis we are trying to prove</h2>
+        <h2 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">A hypothesis to test</h2>
         <span className="rounded bg-neutral-100 px-1.5 py-0.5 text-xs text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400">argued, not yet measured</span>
       </div>
       <p className="text-base text-neutral-900 dark:text-neutral-100">

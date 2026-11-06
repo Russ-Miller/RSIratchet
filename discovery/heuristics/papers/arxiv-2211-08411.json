@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "source": "arxiv-2211-08411",
+  "fingerprint": "7bdac99ea62ecb2c8e2753f929bce767ad54b8949fea35535630d968e88030cc",
+  "attempted_at": "2026-10-22T23:19:56.061Z",
+  "candidates": [
+    {
+      "title": "Use retrieval, not bigger models, for rare-entity factoid questions",
+      "rule": "When an agent must answer factoid questions about entities with little web support, route to a retrieval-augmented prompt rather than relying on a larger closed-book model; scaling parameters buys far less accuracy on long-tail facts than adding retrieved passages.",
+      "basis": "author-tested",
+      "passage": "Overall, retrieval-augmented models outperform their closed-book counterparts across all ranges of relevant document counts, and especially on rare examples.",
+      "location": "Section 4.3, BM25 Retrieval (with Figure 9)",
+      "finding": "GPT-Neo models augmented with top-3 BM25 Wikipedia paragraphs beat closed-book counterparts on Natural Questions, most notably on low-document-count questions; oracle gold-paragraph prompting removed the long-tail penalty entirely. By contrast, a log-linear BLOOM scaling fit (R^2=0.98) on NQ questions with <100 relevant documents extrapolates to needing >10^18 parameters to match a supervised baseline.",
+      "models": [
+        "BLOOM 560M-176B",
+        "GPT-Neo/GPT-J/GPT-NeoX 125M-20B",
+        "GPT-3 Ada-Davinci (appendix, uncertain data estimates)",
+        "4.8B-parameter C4-trained LM (retraining experiment)"
+      ],
+      "workloads": [
+        "Natural Questions (few-shot closed-book, oracle-paragraph, and BM25-augmented)",
+        "TriviaQA (few-shot closed-book)"
+      ],
+      "conditions": "4-shot prompting (2-shot for oracle retrieval); BM25 retriever over Wikipedia with top-3 paragraphs inserted into both in-context examples and test question; exact-match scoring; English only.",
+      "limitations": "Single paper; 2021-2022 models predating modern instruction-tuned LLMs. Retrieval corpus is Wikipedia, well matched to NQ, so gains may not transfer to domains without a good corpus. BM25 recall itself still mildly declines with low document count. The scaling extrapolation to 10^18 parameters is an extrapolation far outside measured range, not an observation.",
+      "validation_test": "On a held-out set of factoid questions binned by entity rarity, compare closed-book accuracy of a small and a much larger current model against the small model plus top-3 retrieved passages, at matched inference cost; check whether retrieval closes the rare-bin gap more than scaling does.",
+      "overlaps_heuristics": []
+    },
+    {
+      "title": "Do not expect modest pre-training data scaling or source diversification to fix long-tail gaps",
+      "rule": "Do not plan to close long-tail factual gaps by adding moderately more or more-diverse web pre-training data; treat added web corpora as largely redundant for rare facts and budget for retrieval or targeted data instead.",
+      "basis": "inferred",
+      "passage": "Despite having different collection methodologies, these pre-training datasets are highly correlated in terms of how much information they contain related to different QA pairs.",
+      "location": "Section 4.1 and Table 1",
+      "finding": "The paper measures Spearman rank correlations of 0.87-0.97 between relevant-document counts across ROOTS, Pile, C4, OpenWebText and Wikipedia, and observes log-scaled accuracy gains, but it does not run a controlled data-scaling or data-mixing experiment. The recommendation is an inference from the high cross-corpus redundancy plus the roughly log-linear accuracy-vs-count curves.",
+      "models": [
+        "BLOOM 560M-176B",
+        "GPT-Neo family"
+      ],
+      "workloads": [
+        "TriviaQA relevant-document counts across five corpora",
+        "TriviaQA/Natural Questions accuracy binned by document count"
+      ],
+      "conditions": "English web-scraped corpora of 39GB-825GB collected 2019-2022; factoid QA with entity-linkable answers.",
+      "limitations": "No matched data-scaling experiment was run; the claim rests on correlation of corpus statistics and an extrapolated curve. Does not cover deliberately curated or synthetic long-tail data, non-English sources, or repeated-epoch training, which the authors raise only as untested ideas.",
+      "validation_test": "Pre-train matched-size models on 1x vs 5x web data from independently collected sources and compare accuracy specifically on questions with <10 relevant documents in the 1x corpus.",
+      "overlaps_heuristics": []
+    }
+  ],
+  "status": "candidates",
+  "reason": "The paper tests closed-book vs retrieval-augmented QA accuracy stratified by pre-training relevant-document count, and fits scaling trends. Two actionable rules follow: prefer retrieval over scaling for rare-entity factoid questions, and treat entity co-occurrence counts as a usable prior for when a model's parametric answer is unreliable. Both are scoped to few-shot factoid QA on TriviaQA/NQ with 2021-2022 era models.",
+  "model": "claude-opus-5",
+  "text_url": "https://arxiv.org/html/2211.08411v2",
+  "text_sha256": "87e0fe243639a734d6367e5e30b26a4ec30dc9a0fa3460ab12e222df24ae76f5",
+  "retrieved_at": "2026-10-22T23:19:56.061Z",
+  "supplied_chars": 44775,
+  "total_chars": 44775,
+  "truncated": false,
+  "input_tokens": 18961,
+  "output_tokens": 2398
+}

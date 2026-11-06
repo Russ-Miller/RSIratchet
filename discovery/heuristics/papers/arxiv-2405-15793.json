@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "source": "arxiv-2405-15793",
+  "fingerprint": "1b3ddc3418f765722b9b052f22e09d88ec39edfc2a4880eaaee56b8a77ec40ec",
+  "attempted_at": "2026-10-22T23:50:07.711Z",
+  "status": "candidates",
+  "reason": "Selected interface ablations support search-result presentation and edit guardrails; observational trajectory correlations are not promoted into causal stopping rules.",
+  "candidates": [
+    {
+      "title": "Test compact search results against iterative match browsing",
+      "rule": "For repository-repair agents, compare a compact search interface with interfaces that require opening matches one at a time; measure tool-call and context overhead as well as fix rate.",
+      "basis": "author-tested",
+      "passage": "agents tend to look through every match exhaustively",
+      "location": "Section 5.1, Figure 6",
+      "finding": "Iterative search reaches 12.0% resolved versus 15.7% without extra search tools and 18.0% for the complete interface in the reported ablation. Exhaustive browsing can consume the task budget.",
+      "models": [
+        "GPT-4 family; Section 5.1 describes the GPT-4 configuration"
+      ],
+      "workloads": [
+        "SWE-bench repository issue repair"
+      ],
+      "conditions": "Custom agent-computer interface with bounded search output, file viewer and editor. The inspected excerpt describes the interface ablation, not a universal search algorithm comparison.",
+      "limitations": "The result concerns an older model and particular interfaces. Search quality, limits and context presentation interact; fewer tool calls alone do not imply better repairs.",
+      "validation_test": "Compare result summaries, iterative browsing and the existing interface at matched task budgets; evaluate repair success, search omissions, tokens and calls.",
+      "overlaps_heuristics": []
+    },
+    {
+      "title": "Reject syntax-breaking edits with immediate feedback",
+      "rule": "For repository repair, test an editor that checks proposed modifications for major syntax errors before applying them and returns actionable feedback when rejecting an edit.",
+      "basis": "author-tested",
+      "passage": "This intervention improves performance considerably (without linting, 15.0 % ↓ 3.0 ).",
+      "location": "Section 5.1, Figure 6",
+      "finding": "Removing edit-time linting reduces resolved tasks from 18.0% to 15.0% in the ablation. The guard is intended to prevent cascading edits after an introduced syntax error.",
+      "models": [
+        "GPT-4 family; Section 5.1 describes the GPT-4 configuration"
+      ],
+      "workloads": [
+        "SWE-bench repository issue repair"
+      ],
+      "conditions": "Agent uses a multi-line editor with automatic view updates and major-error checks.",
+      "limitations": "Syntax acceptance does not establish semantic correctness. Existing malformed files and multi-step transformations may require different policies; blocking intermediate states can interfere with legitimate edits.",
+      "validation_test": "Compare guarded and unguarded editing on held-out issues, recording resolved tasks, failed-edit cascades and false rejections; still run functional validation.",
+      "overlaps_heuristics": []
+    }
+  ],
+  "model": "Codex session",
+  "review_method": "codex-session",
+  "review_scope": "Selected abstract, introduction, methods or main-result sections; not a comprehensive paper or appendix review.",
+  "review_segments": [
+    {
+      "start": 0,
+      "end": 2200
+    },
+    {
+      "start": 19000,
+      "end": 34849
+    }
+  ],
+  "text_url": "https://arxiv.org/html/2405.15793v3",
+  "text_sha256": "7dbede531502edfc4d771714a27928e19874b62cb8565e20c7a55b9d558c0c3f",
+  "retrieved_at": "2026-10-22T23:49:20.136Z",
+  "supplied_chars": 18051,
+  "total_chars": 274376,
+  "truncated": true
+}

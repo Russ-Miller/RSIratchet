@@ -39,7 +39,7 @@ export function GET() {
     counts: { evidence: (a.evidence ?? []).length }, url: `${SITE}/heuristics/${a.id}`,
   }));
   return NextResponse.json({
-    site: SITE, generated_at: new Date().toISOString().slice(0, 10), license: { code: "MIT", content: "CC BY 4.0" },
+    site: SITE, generated_at: new Date().toISOString().slice(0, 10), license: { code: "MIT", content: "RSI Ratchet Content Terms; legacy CC BY 4.0 grants preserved", content_terms: "https://github.com/Russ-Miller/RSIratchet/blob/main/LICENSE-CONTENT" },
     ref_lookup: `${SITE}/id/<ref>`,
     counts: { capabilities: capabilities.length, techniques: techniques.length, claims: claims.length, sources: sources.length, heuristics: heuristics.length },
     capabilities, techniques, claims, sources, heuristics,

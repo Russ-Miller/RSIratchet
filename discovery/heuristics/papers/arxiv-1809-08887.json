@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "source": "arxiv-1809-08887",
+  "fingerprint": "cb45ad0815f7d82dfc680534ce5e3d0436c4614214471a1e91c6b2f9f375bbb0",
+  "attempted_at": "2026-10-22T23:18:55.708Z",
+  "candidates": [
+    {
+      "title": "Split text-to-SQL evaluation by database, not by example",
+      "rule": "When evaluating a text-to-SQL or semantic-parsing system that is meant to work on new customer schemas, hold out entire databases (and queries) from training rather than splitting examples randomly; report the database-split number as the generalization estimate.",
+      "basis": "author-tested",
+      "passage": "For all models, the performance under database split is much lower than that under example split.",
+      "location": "Section 8, Example Split vs Database Split (Tables 2-3)",
+      "finding": "On Spider, exact-match accuracy fell sharply under database split versus example split (e.g., TypeSQL 33.0 to 8.2; SQLNet 18.3 to 12.4), and component F1 on column-bearing clauses also dropped, showing random example splits overstate cross-schema ability.",
+      "models": [
+        "Seq2Seq",
+        "Seq2Seq+Attention (Dong and Lapata 2016)",
+        "Seq2Seq+Copying",
+        "SQLNet",
+        "TypeSQL"
+      ],
+      "workloads": [
+        "Spider text-to-SQL (10,181 questions, 5,693 queries, 200 databases)",
+        "exact matching accuracy",
+        "component matching F1"
+      ],
+      "conditions": "2018-era non-pretrained parsers; values excluded from prediction (gold value lists supplied); 206 databases split 146/20/40 train/dev/test; schema names manually normalized to readable words.",
+      "limitations": "Single paper, pre-LLM models; no results for modern pretrained or prompted models; database split also changes domain, so schema and domain effects are confounded; absolute numbers not transferable.",
+      "validation_test": "Take a current text-to-SQL agent, evaluate it on Spider (or an internal query set) under both a random example split and a held-out-database split with matched training/few-shot budget, and compare exact-match accuracy to see whether the gap persists.",
+      "overlaps_heuristics": [
+        "goodharts-law"
+      ]
+    },
+    {
+      "title": "Expect degradation as schema foreign-key count grows",
+      "rule": "When planning text-to-SQL deployments, stratify accuracy reporting by the number of foreign keys in the target schema and invest in explicit table-relation encoding or schema pruning for the high-foreign-key databases rather than assuming average accuracy holds.",
+      "basis": "author-tested",
+      "passage": "The performance decreases as the database has more foreign keys.",
+      "location": "Section 8, Complexity of Database Schema (Figure 4)",
+      "finding": "Exact-match accuracy plotted against the number of foreign keys declines, which the authors attribute to larger candidate column/table sets and the need to capture inter-table relations for joins. The recommendation to add relation encoding or pruning is our extrapolation, not something they compared.",
+      "models": [
+        "Seq2Seq variants",
+        "SQLNet",
+        "TypeSQL"
+      ],
+      "workloads": [
+        "Spider exact matching accuracy as a function of foreign keys per database"
+      ],
+      "conditions": "Spider databases average 27.6 columns and 8.8 foreign keys; no value prediction; readable column names.",
+      "limitations": "Only a trend plot, no statistics or per-bucket sample sizes; foreign-key count correlates with query difficulty, so the cause is not isolated; no intervention (relation encoding, pruning) was tested in this paper.",
+      "validation_test": "Bucket Spider dev databases by foreign-key count, measure a current model's exact match per bucket, then test whether adding schema-linking/pruning or explicit foreign-key encoding closes the gap in the highest bucket.",
+      "overlaps_heuristics": [
+        "lehmans-law-of-increasing-complexity",
+        "simons-law"
+      ]
+    }
+  ],
+  "status": "candidates",
+  "reason": "The paper is primarily a dataset/benchmark contribution, but it does report controlled comparisons (example split vs database split; sketch-based vs seq2seq decoding; accuracy vs number of foreign keys) that support a few narrowly scoped evaluation and system-design rules. Rules are limited to 2018-era text-to-SQL models and Spider data.",
+  "model": "claude-opus-5",
+  "text_url": "https://arxiv.org/html/1809.08887v5",
+  "text_sha256": "82065f631a7f785ff2bec493f7304fd953aec378fa8442c4eb8c574d82f2e611",
+  "retrieved_at": "2026-10-22T23:18:55.708Z",
+  "supplied_chars": 45010,
+  "total_chars": 45010,
+  "truncated": false,
+  "input_tokens": 18983,
+  "output_tokens": 2008
+}

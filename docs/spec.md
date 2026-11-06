@@ -3,39 +3,43 @@
 Version 0.3, 2026-09-03. This document is the source of truth. Change it in
 the same pull request as the code that changes behavior.
 
-**Status note (2026-09-03):** this version is a substantial rewrite — see
-`docs/decisions.md`, "Personal-study reframe," for why. The live catalog
-under `catalog/` and the deployed site still reflect the *previous* model
-(Weakness→Capability with a 1-10 score) as of this writing. A worked
-example of the new model lives under `docs/examples/` pending review;
-`catalog/` itself gets migrated in the next pass. If the two disagree,
-this document describes where the project is headed, not necessarily
-what's live right now — check `catalog/schema/` directly to see which
-schema is actually in force.
+**Current direction (2026-11-01):** the October 20 heuristic-first service
+reframe supersedes the original personal-study framing. The public entry point
+is guidance for agents; capabilities organize the supporting research. Historical
+migration descriptions below are context, not the live schema. Inspect
+`catalog/schema/` for the current data model.
+
+The public navigation is Heuristics, Research, and How it works. `/research`
+introduces claims, techniques, capabilities, and sources; `/ratchet` remains a
+focused learning-loop collection within Research. Candidate heuristics remain
+under `/heuristics/candidates` with explicit proposal, review, and applicability
+status. Public pages share the warm paper/green visual system, readable headers,
+and responsive evidence surfaces. Research review and promotion into reusable
+guidance remain distinct. See `docs/reports/m58.md` for reconciliation evidence.
 
 ## 1. Purpose
 
-This is primarily a personal study tool: a place to organize what I
-actually understand about LLM capabilities as I learn it — "the
-neuroscience of LLMs." Curiosity-driven, not built to a spec for a
-hypothetical audience. The reasoning: the most useful tools were usually
-built because their creator wanted such a tool for themselves; build the
-version that's genuinely useful to me, and it will serve others better
-than one designed for an imagined user from day one.
+RSI Ratchet is becoming a shared reasoning bank for agents and the harnesses
+around them. Its primary output is actionable heuristics: guidance on what to
+try, when it helps, and where it fails. Research supplies initial findings;
+reproducible results from integrated agents should test those findings against
+real use and refine the guidance. Failures are retained alongside successes.
+The earlier personal-study framing is superseded by this service direction
+(2026-10-20).
 
-Two things follow from that:
+The public experience starts with heuristics. Claims, techniques, capabilities,
+and sources provide the underlying depth rather than competing for attention
+at first contact. The current heuristic collection consists of borrowed rules
+tested against AI evidence; editorial application summaries do not constitute
+new measured findings. Candidate distilled heuristics remain proposals until
+reviewed and tested.
 
-1. **v1 optimizes for one reader: me, thinking.** Progressive disclosure
-   (capability → claims → backing detail), honest epistemic status on
-   every claim, and structure that makes it easy to revise my own mind —
-   not conversion funnels or contributor onboarding.
-2. **Everyone else is a hoped-for second-order benefit, not the design
-   target** — first other humans curious about the same questions, and
-   only after that, agentic systems that might use this as an input. Both
-   are welcome, neither drives v1 decisions. Concretely: the earlier
-   contributor-platform design (accounts, admin CRUD, capability requests,
-   an MCP server framed around "what should I as an agent do") is real
-   and stays documented (§9), but it's explicitly a later phase, not v1.
+Today the MCP server supports local reads; automated agent result submission,
+hosted MCP, and a measured shared validation loop are future work. Existing
+forms create GitHub issues. Accounts, subscriptions, billing, and contribution
+credit accounting are deferred while the service's content and experience are
+reworked. New content licensing preserves the option for paid early access to
+fresh findings; it does not implement access restrictions.
 
 ### What this is, versus a paper feed
 
@@ -44,14 +48,14 @@ and how it's organized. Feeds like Hugging Face's Daily Papers are a
 crowd-sourced view of what is *new and in vogue* — a genuinely useful
 signal, organized by recency and popularity. That is not what this is.
 
-This is an index of **capabilities**, and of the research that helps
+The supporting research is organized by **capabilities** and helps
 someone understand, for a given capability:
 
 - what emerging work is making systems **better** at it, and
 - what **holds systems back** — the research that spotlights the
   weaknesses, kept alongside rather than filtered out as bad news.
 
-The organizing axis is the capability, not the publication date and not
+Within the research library, the organizing axis is the capability, not the publication date and not
 the upvote count. A five-year-old paper that still explains why something
 fails belongs here; a paper trending today that doesn't change what's
 known about any capability does not. Popularity is a *discovery* signal
@@ -75,8 +79,9 @@ conditions it stops being true.*
 The longer-term thought, still explicitly second-order per the point
 above: an agentic system working to improve itself could consult this
 index for exactly that pairing — what improves a capability, and what
-currently limits it. That possibility shapes nothing about v1 beyond
-keeping the content machine-readable, which git-backed YAML already is.
+currently limits it. The October 20 service direction makes this an explicit goal; today the local
+MCP server and machine-readable catalog support reads, with automated agent
+write-back still planned.
 
 ### The lifecycle this is built to track
 
@@ -610,3 +615,86 @@ computed from reviewed claims only. The catalog values breaks over holds: a
 break is a finding about how models differ from people. Renamed from
 "Adages" 2026-10-20; the `ADG` ref prefix and route redirects from `/adages`
 are unchanged. See decisions.md, 2026-09-11 and 2026-10-20.
+
+
+## 2026-10-20 — Content rights and freshness
+
+Russ authorized replacing blanket CC BY licensing for future original content
+to support paid early access to freshly learned heuristics, techniques, claims,
+and applicability/failure annotations. LICENSE-CONTENT governs new protectable
+material; MIT still governs code, and existing CC BY grants remain valid. The
+pre-transition snapshot is cf33e049c16ba272b7be9b5fb00b223ce85cf6fd.
+Third-party papers and underlying facts or methods are not owned by the service.
+Public content permits internal application, including commercial harnesses;
+redistribution of protected new content requires permission. No release window
+is set. Contribution rights require explicit intake agreement; credits require
+separate program terms. This is a licensing change only: paid access, export
+filtering, contributor assent, and credit accounting are not implemented. Fresh
+restricted content must not be committed to a public repository or included in
+public pages, index.json, feeds, downloads, or MCP responses.
+
+
+## 2026-10-20 — Heuristic-first presentation and initial mining
+
+The homepage leads with reusable guidance and the research/experience learning
+loop. Primary navigation is Heuristics, Research, How it works, and MCP; deeper
+catalog routes remain accessible through contextual links and the footer.
+The About page distinguishes current functionality from planned agent write-back.
+A warm, responsive visual system applies across the existing routes.
+
+`/heuristics/candidates` presents 18 editorial proposals drawn from existing
+paper-backed claims, with qualifications and review status. The proposals live
+under `docs/examples/heuristic-mining/`, outside the authoritative catalog and
+its search/MCP index. The offline audit script validates their links and reports
+coverage. This is an initial claims-level pass, not exhaustive full-text mining.
+
+
+## 2026-10-21 — Full-paper heuristic discovery workbench
+
+Russ approved reviewing all ingested research for candidate heuristics, with
+source passages, model/workload scope, author-tested versus inferred guidance,
+exceptions, tentative overlaps, and an explicit no-actionable-rule outcome.
+`discovery/heuristics/` stores an inventory and paper-level extraction outcomes,
+separate from authoritative catalog heuristics. The workbench derives coverage
+from current sources, so new ingestions appear pending without manual listing.
+
+`npm run discover-heuristics` is bounded, resumable, source-fingerprinted, and
+uses the configured model API. Mechanical admission checks require a passage
+present in the supplied paper text; semantic validation and independent
+reproduction are later review steps. No abstract or source brief is silently
+substituted for full text. Partial text, failed fetches, unavailable formats,
+and source changes are visible and distinct from completed negative findings.
+Only exact normalized rules merge automatically, retaining source evidence.
+
+The first attempt inventoried 566 papers and stopped after three DNS failures;
+zero full-paper extractions completed. The 18 initial editorial candidates
+remain separate. Neither those proposals nor extraction results enter default
+search, the JSON catalog, heuristic standing, or MCP recommendations. The new
+manual-only GitHub workflow creates a PR for bounded discovery batches; it
+introduces no scheduled model spending. Network access is required to complete
+the requested full-paper review.
+
+
+## 2026-10-24 — Claim admission is separate from heuristic promotion
+
+Approved direction: automate admission of faithful, scoped reports of research
+findings only after a calibrated gate passes a held-out evaluation. Admission
+means the claim meets catalog standards for source fidelity; it does not mean
+the underlying result is independently replicated, causal, or broadly applicable.
+Extraction and a separate source-grounded challenge review retain evidence and
+decision provenance; ambiguous cases remain pending. Audit errors can reopen or
+withdraw an admitted claim.
+
+Promotion from accepted claims to a recommended heuristic is a separate decision
+with a declared applicability envelope, explicit extrapolations, counterevidence
+search, assessment of study quality and evaluation reuse, and transfer evidence
+where the recommendation extends beyond tested conditions. A single paper may
+support a narrow rule. Automatic admission never implies automatic promotion,
+and curation never turns inferred guidance into an author-tested intervention.
+Paper evidence, independent replication, applicability, and curation status remain
+separate dimensions across the site and machine-readable consumers.
+
+The roadmap’s A1–A2 and H1–H2 milestones define calibration, audit, promotion,
+reassessment, and release criteria. They are planned work: no current review
+state, heuristic standing computation, default recommendation behavior, or paid
+model execution is changed by this decision.

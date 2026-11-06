@@ -1813,3 +1813,110 @@ reviewed evidence, several with `breaks` verdicts, the catalog's most
 valued kind -- Practice makes perfect had just picked up a `narrows`
 verdict from ReasoningBank itself. Nothing was retired. The naming
 complaint was real; the content underneath it was not thin.
+
+
+## 2026-10-20 — Content rights and freshness
+
+Russ authorized replacing blanket CC BY licensing for future original content
+to support paid early access to freshly learned heuristics, techniques, claims,
+and applicability/failure annotations. LICENSE-CONTENT governs new protectable
+material; MIT still governs code, and existing CC BY grants remain valid. The
+pre-transition snapshot is cf33e049c16ba272b7be9b5fb00b223ce85cf6fd.
+Third-party papers and underlying facts or methods are not owned by the service.
+Public content permits internal application, including commercial harnesses;
+redistribution of protected new content requires permission. No release window
+is set. Contribution rights require explicit intake agreement; credits require
+separate program terms. This is a licensing change only: paid access, export
+filtering, contributor assent, and credit accounting are not implemented. Fresh
+restricted content must not be committed to a public repository or included in
+public pages, index.json, feeds, downloads, or MCP responses.
+
+
+## 2026-10-20 — Heuristics lead the service
+
+Russ confirmed the project has moved beyond personal research: agents should
+consume a shared reasoning bank, with papers and eventually integrated agents
+supplying evidence. Guidance leads; capabilities, claims, techniques, and sources
+provide depth. Accounts and subscriptions are explicitly deferred.
+
+The homepage now shows practical readings of existing heuristics, explains the
+learning loop and the value of unsuccessful attempts, and links to local MCP.
+It does not claim automated agent submissions already exist. The current name
+stays while branding is a roadmap TODO. The visual direction uses warm paper
+tones, green accents, system sans type, and restrained serif notes.
+
+An initial mining pass proposes 18 scoped heuristics from existing paper-backed
+claims. Seven overlap existing principles and should be considered refinements,
+not automatically new records. Three have some human-reviewed support; the
+remaining fifteen depend on AI-reviewed support. All remain candidate proposals
+outside the catalog, visible at /heuristics/candidates with evidence links.
+The paper texts were not re-read in this pass.
+
+
+## 2026-10-21 — Paper-by-paper heuristic discovery
+
+Approved by Russ: mine all ingested papers for scoped candidate heuristics and
+show them separately from validated guidance. Implemented a resumable extractor,
+text-grounding and provenance checks, explicit empty/failure outcomes, exact-rule
+grouping, existing-heuristic overlap suggestions, a searchable coverage inventory,
+and a manual-only GitHub workflow with bounded estimated spend. Downloaded paper
+text stays in ignored local cache; only short passages and analysis are published.
+
+First run: 566 inventoried, three paper fetches failed with ENOTFOUND, zero papers
+read, no model tokens spent. Remaining papers are unattempted. This is an external
+network blocker, not a completed mining pass. Earlier 18 editorial proposals stay
+visible with their original claims-level provenance. Source passages occurring in
+text do not establish semantic correctness; author-tested does not imply our own
+validation or independent replication.
+
+
+## 2026-10-22 — Subscription-session discovery, five-paper checkpoints
+
+Russ chose to perform paper review inside Codex rather than separately billed
+Anthropic calls. The API run is stopped. The paid extractor now requires an
+explicit `--paid-api` opt-in; the document preparation script neither imports a
+model SDK nor loads an API key. The manual GitHub API workflow is distinct and
+not scheduled. No further provider spending is authorized by a session review.
+
+First session batch: five targeted harness papers, nine candidate proposals,
+zero external inference calls. Exact inspected text ranges are recorded; all
+five are selected-section reviews, not complete appendix reads. The validator
+checks quotes only against those ranges. The workbench labels the review method
+and scope. Stop after the batch for a `/status` subscription-allowance check;
+the agent cannot directly read remaining allowance. The batch report is
+`discovery/heuristics/session-batches/2026-10-22-01.md`.
+
+
+## 2026-10-24 — Separate admission of claims from promotion of guidance
+
+Russ approved a calibrated automatic-admission workflow for narrow, source-backed
+research claims and requested a strong roadmap commitment to making promotion
+into broader heuristic guidance a separate decision. The roadmap now schedules
+A1–A2 for shadow evaluation and bounded claim admission, and H1–H2 for explicit
+promotion dossiers and separately calibrated promotion automation.
+
+Acceptance records establish source fidelity, not universal truth or independent
+replication. Heuristic promotion must justify the proposed scope, retain null and
+negative findings, identify extrapolation, and require transfer evidence for
+untested extensions or narrow the rule. Promotion starts with explicit curator
+decisions, remains reversible, and is not triggered by claim admission, reviewer
+agreement, or paper counts. Existing implementation and spending permissions do
+not change; the source of truth and roadmap describe planned gates.
+
+
+## 2026-11-01 — Reconcile the heuristic-first UI
+
+Russ requested an archaeology-led reconciliation of changes made across Codex
+and Claude sessions. The October 20 report and subsequent discovery decisions
+support one direction: useful heuristics first, inspectable evidence beneath,
+failures retained, and candidate promotion distinct from accepting research.
+The surviving local files already implement much of that direction; attribution
+of every uncommitted edit to a particular assistant is not established.
+
+Research now has an overview and shared section navigation. The learning-loop
+collection retains `/ratchet`; it no longer stands in for the whole library.
+Evidence indexes share the paper/green palette, heading hierarchy, filter states,
+and scrollable tables. Home shows useful principles before the applicability
+note; the note and candidate status remain visible. Sources use shared-bank
+language. These changes preserve the existing content, licensing decisions,
+discovery workflow, and present-versus-planned MCP distinction.

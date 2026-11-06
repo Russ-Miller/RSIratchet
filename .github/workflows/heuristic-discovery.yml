@@ -1,0 +1,95 @@
+name: heuristic-discovery
+
+# Manual only: a new paid pass is explicitly requested, never silently scheduled.
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: "Max papers to attempt (or all); resumes unfinished work"
+        default: "10"
+        required: true
+      max_cost_usd:
+        description: "Estimated spend ceiling for this run; verify model pricing first"
+        default: "5"
+        required: true
+      model:
+        description: "Structured-output model available to this account"
+        default: "claude-opus-5"
+        required: true
+      input_rate:
+        description: "Applicable USD per million input tokens"
+        default: "5"
+        required: true
+      output_rate:
+        description: "Applicable USD per million output tokens"
+        default: "25"
+        required: true
+
+concurrency:
+  group: heuristic-discovery
+  cancel-in-progress: false
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - name: Discover candidate heuristics
+        continue-on-error: true
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          DISCOVERY_MODEL: ${{ inputs.model }}
+          DISCOVERY_LIMIT: ${{ inputs.limit }}
+          DISCOVERY_MAX_COST: ${{ inputs.max_cost_usd }}
+          DISCOVERY_INPUT_RATE: ${{ inputs.input_rate }}
+          DISCOVERY_OUTPUT_RATE: ${{ inputs.output_rate }}
+        run: |
+          set -o pipefail
+          if [ "$DISCOVERY_LIMIT" = "all" ]; then
+            PAPER_LIMIT=(--all)
+          else
+            PAPER_LIMIT=(--limit "$DISCOVERY_LIMIT")
+          fi
+          node scripts/discover-heuristics.mjs --paid-api "${PAPER_LIMIT[@]}" \
+            --model "$DISCOVERY_MODEL" --max-cost-usd "$DISCOVERY_MAX_COST" \
+            --input-usd-per-million "$DISCOVERY_INPUT_RATE" \
+            --output-usd-per-million "$DISCOVERY_OUTPUT_RATE" | tee /tmp/heuristic-discovery.log
+      - name: Validate all outputs and check the site
+        run: npm test
+      - name: Propose discovered results for review
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if git diff --quiet -- discovery/heuristics/ && [ -z "$(git ls-files --others --exclude-standard discovery/heuristics/)" ]; then
+            echo "No discovery changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          BR="heuristic-discovery-${{ github.run_id }}"
+          git checkout -b "$BR"
+          git add discovery/heuristics/
+          git commit -m "Record paper-to-heuristic discovery outcomes"
+          git push origin "$BR"
+          cat > /tmp/heuristic-discovery-pr.md <<'BODY'
+          This pass records paper-level discovery outcomes and scoped candidate heuristics for the research workbench. Proposals remain outside the authoritative catalog and default agent advice. Missing text and failed attempts remain distinct from no-actionable-rule findings.
+
+          Validation: catalog and discovery validation, unit tests, lint, and production build.
+          BODY
+          gh pr create --head "$BR" --title "Review paper-to-heuristic discovery results" --body-file /tmp/heuristic-discovery-pr.md
+      - name: Retain outcomes when a run needs attention
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: heuristic-discovery-outcomes
+          path: |
+            discovery/heuristics/
+            /tmp/heuristic-discovery.log
+          retention-days: 30

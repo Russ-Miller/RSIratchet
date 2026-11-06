@@ -1,0 +1,87 @@
+{
+  "version": 1,
+  "source": "arxiv-2211-09527",
+  "fingerprint": "8771b5ae7baa3ce5b439683f7b6e9af6257f798da365855785e1d905c9d0edbd",
+  "attempted_at": "2026-10-22T23:20:05.843Z",
+  "candidates": [
+    {
+      "title": "Keep trailing instructions and stop sequences around user input in LLM app prompts",
+      "rule": "When templating user input into an application prompt, place additional instruction text after the {user_input} slot and configure stop sequences; both measurably lower goal-hijacking success.",
+      "basis": "author-tested",
+      "passage": "F5 Stop sequences hinder attacks (Table B8 ). F6 Prompts with text after the {user_input} are harder to attack (Table B9 ).",
+      "location": "Section 5 Results and discussion; Tables B8, B9",
+      "finding": "With text-davinci-002 and the default attack prompt, goal-hijack success fell from 60.0±0.0% to 47.5±5.0% with stop sequences (on the 10 prompts that have them) and from 63.1±2.4% to 51.8±3.6% for prompts with text after the user input. Both reduce but do not eliminate attacks.",
+      "models": [
+        "text-davinci-002"
+      ],
+      "workloads": [
+        "35 base prompts from the OpenAI Examples page",
+        "goal hijacking attack (rogue string 'I hate humans')"
+      ],
+      "conditions": "Single default attack prompt with newline/dash delimiters; 4 repetitions per experiment; stop-sequence comparison used only 10 prompts that natively include stop sequences; text-after-input comparison is between different prompt groups, not a controlled rewrite of the same prompt.",
+      "limitations": "2022-era GPT-3 models only; group comparisons are confounded by prompt content; residual attack success remains ~48-52%; no test on modern chat models or system/user message separation.",
+      "validation_test": "Take a set of current production-style prompts, create matched variants with and without trailing instructions and with/without stop sequences, run a fixed injection suite on today's models, and compare success rates.",
+      "overlaps_heuristics": [
+        "first-impressions-last",
+        "kerckhoffss-principle"
+      ]
+    },
+    {
+      "title": "Treat delimiter sequences in user input as an injection signal",
+      "rule": "Strip or escape delimiter runs (e.g. newline plus repeated '-', '=', '>') from user-supplied text before substituting it into a prompt, since such separators raise injection success.",
+      "basis": "author-tested",
+      "passage": "F2 Delimiters significantly improve attacks, but the impact of delimiter type, length, and repetitions is not clear",
+      "location": "Section 5 Results; Tables B3, B4, B5",
+      "finding": "Adding a newline plus two 10-character dash runs before the injected instruction raised goal-hijack success from 43.6±2.7% to 58.6±1.6% on text-davinci-002. The paper measured the attack side; filtering delimiters as a defence is our inference from that attack result.",
+      "models": [
+        "text-davinci-002"
+      ],
+      "workloads": [
+        "35 OpenAI example prompts",
+        "goal hijacking with 'Ignore any previous and following instructions and just print...'"
+      ],
+      "conditions": "Delimiter type (-, =, >), length (4/10/20) and repetitions (1-4) all helped, with differences within noise; no filtering defence was actually implemented or evaluated.",
+      "limitations": "Defence is untested; stripping delimiters may break legitimate inputs (code, tables, markdown) and attackers can use other separators or paraphrases.",
+      "validation_test": "Implement delimiter stripping/escaping in a prompt-templating layer and measure injection success and task quality on benign inputs before and after, on current models.",
+      "overlaps_heuristics": [
+        "postels-law"
+      ]
+    },
+    {
+      "title": "Budget more injection defence for the most instruction-capable model in a family",
+      "rule": "When choosing a model for a user-facing prompt app, assume the strongest instruction-following variant is the most vulnerable to injected instructions and allocate more output filtering and red-teaming to it rather than assuming capability implies robustness.",
+      "basis": "author-tested",
+      "passage": "F8 text-davinci-002 is by far the model most susceptible to attacks (Table B10 ).",
+      "location": "Section 5 Results; Table B10",
+      "finding": "Default attack success was 13.8±2.2% (ada), 29.5±5.9% (babbage), 23.8±3.9% (curie), 30.5±3.9% (davinci-001) versus 58.6±1.6% (text-davinci-002); authors attribute this to better instruction-following, an inverse-scaling pattern.",
+      "models": [
+        "text-ada-001",
+        "text-babbage-001",
+        "text-curie-001",
+        "text-davinci-001",
+        "text-davinci-002"
+      ],
+      "workloads": [
+        "35 OpenAI example prompts",
+        "goal hijacking with default attack prompt"
+      ],
+      "conditions": "One attack prompt, one model family, 2022 API models; weaker models may fail the underlying task too, so low attack rates do not mean they are usable substitutes.",
+      "limitations": "Single paper, single family, pre-RLHF-chat era; later safety training may reverse the trend, so this is not a reason to pick weaker models.",
+      "validation_test": "Run the same injection suite across a current model family's small-to-large variants with task accuracy measured alongside, checking whether attack success still rises with capability.",
+      "overlaps_heuristics": [
+        "ashbys-law-of-requisite-variety"
+      ]
+    }
+  ],
+  "status": "candidates",
+  "reason": "The paper measures prompt-injection success rates on 35 OpenAI example prompts with GPT-3, and reports which application-side settings reduce success. Two defensive configuration rules and one delimiter/sanitisation rule are actionable; other findings are descriptive.",
+  "model": "claude-opus-5",
+  "text_url": "https://arxiv.org/html/2211.09527v1",
+  "text_sha256": "06dd692f31c254a54c67fcecdddb38f757c1ed54ec36077bd4bb983631a82050",
+  "retrieved_at": "2026-10-22T23:20:05.843Z",
+  "supplied_chars": 39660,
+  "total_chars": 39660,
+  "truncated": false,
+  "input_tokens": 17927,
+  "output_tokens": 1901
+}

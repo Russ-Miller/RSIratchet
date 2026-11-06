@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "source": "arxiv-2609-20519",
+  "fingerprint": "90290ba379bd2e2dd5aa4b2cfb0935a1fade8c7a0800bb9a9cbc2021b7eb8a59",
+  "attempted_at": "2026-10-22T23:57:22.721Z",
+  "status": "candidates",
+  "reason": "Selected component and cost analyses support testing fused actions and evaluating whole-task cost, with meaningful quality trade-offs in the efficiency stack.",
+  "candidates": [
+    {
+      "title": "Expose frequently paired actions through a tested fused interface",
+      "rule": "For coding-agent workflows with repeated adjacent actions, compare a fused tool-schema action with the existing separate calls, validating both triggering and task success.",
+      "basis": "author-tested",
+      "passage": "Every component reduces the total token count under both backends.",
+      "location": "Section 3.4, Table 4; Action Fusion case study Section 3.5",
+      "finding": "Adding Action Fusion to Pi reduces recorded traffic and cost while raising average EdgeBench score under both tested backends. The recorded lineage reports unreliable prompt-only triggering before exposing the action directly in the tool schema.",
+      "models": [
+        "GPT-5.6 Sol",
+        "Opus 5"
+      ],
+      "workloads": [
+        "EdgeBench 51 tasks"
+      ],
+      "conditions": "The add-one test keeps Pi as baseline and changes one selected mechanism. The interface is refined on development tasks before held-out validation.",
+      "limitations": "One selected mechanism and benchmark; prompt-versus-schema triggering is a development case study rather than a randomized isolated comparison. No evidence that arbitrary action fusion is safe or improves other workflows.",
+      "validation_test": "Identify repeated action pairs from traces; compare separate and fused calls on disjoint tasks, checking intermediate preconditions, invalid calls, token cost and final quality.",
+      "overlaps_heuristics": []
+    },
+    {
+      "title": "Evaluate context compaction by full-task cost and quality",
+      "rule": "When tuning context compaction, measure total billed activity and task quality rather than choosing the policy with the highest prompt-cache reuse.",
+      "basis": "inferred",
+      "passage": "preserving a long prefix is not always the cheapest choice over an entire task.",
+      "location": "Section 3.4, Table 4, Cache Reuse and Total Cost",
+      "finding": "The full Sol stack lowers cache-read traffic but raises cache writes and reduces fixed-price model cost. Its average score is below baseline in both backend blocks, so lower cost must be assessed against the quality change.",
+      "models": [
+        "GPT-5.6 Sol",
+        "Opus 5"
+      ],
+      "workloads": [
+        "EdgeBench coding-agent evaluation"
+      ],
+      "conditions": "Cost includes recorded input, cache read/write and output under fixed prices; component and full-stack comparisons are available.",
+      "limitations": "No universal acceptable quality tolerance is established. Recorded traffic is not the same as uncached token count; search-development costs and price changes matter. Triggered-subset comparisons do not isolate mechanism interactions.",
+      "validation_test": "Compare compaction policies on identical tasks with provider-measured costs, latency and quality. Include cache writes and any compaction calls; set the acceptable quality loss before selecting a policy.",
+      "overlaps_heuristics": []
+    }
+  ],
+  "model": "Codex session",
+  "review_method": "codex-session",
+  "review_scope": "Selected abstract, introduction, methods or main-result sections; not a comprehensive paper or appendix review.",
+  "review_segments": [
+    {
+      "start": 0,
+      "end": 2000
+    },
+    {
+      "start": 25000,
+      "end": 41205
+    }
+  ],
+  "text_url": "https://arxiv.org/html/2609.20519v1",
+  "text_sha256": "ee538b2c2c4fd7b552fe0c599a6e745d04d169b9140c00132ccd93bf6a912764",
+  "retrieved_at": "2026-10-22T23:56:37.548Z",
+  "supplied_chars": 18207,
+  "total_chars": 51734,
+  "truncated": true
+}
