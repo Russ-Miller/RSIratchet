@@ -1,0 +1,44 @@
+arxiv_id: "2604.04857"
+title: "The Blind Spot of Adaptation: Quantifying and Mitigating Forgetting in
+  Fine-tuned Driving Models"
+url: https://doi.org/10.48550/arxiv.2604.04857
+drafted_at: 2026-11-06
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: fine-tuning-retention
+statement: When vision-language models are fine-tuned on driving-specific
+  data, in-domain driving QA scores rise while recall of rare objects in
+  long-tail driving scenes falls below the un-tuned base model, and this loss
+  is invisible to benchmarks whose test distribution matches the fine-tuning
+  data.
+kind: observation
+backing_strength: single-paper
+scope_condition: VLM-centric autonomous driving models (0.5B-8B backbones)
+  evaluated on a 1,000-image long-tail test set mined by IDF rarity scoring,
+  scored by an LLM judge against human-verified noteworthy-object annotations
+technique: ""
+proposed_technique: Route driving expertise through prompts and gated LoRA
+  experts, not full fine-tuning
+technique_summary: Keeps the VLM frozen and injects driving knowledge via
+  learnable prompt embeddings retrieved per question plus a gated mixture of
+  scenario-specific LoRA experts.
+technique_kind: training
+technique_validated_by: On Qwen2.5VL-3B, knowledge retention rate 79.0% versus
+  68.4% for full fine-tuning (ImpromptuVLA-3B) and 64.6% for plain LoRA, with
+  scene description 58.8 and Traffic-QA 41.0 versus base 56.6/28.7; ablation
+  removes prompt adapter (74.4%) and each component separately.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Measuring rare-object perception recall on a held-out long-tail set
+  and finding fully fine-tuned driving VLMs match or exceed their base models,
+  or finding the reported drop disappears under a different judge or
+  annotation protocol.
+evidence_note: Measured across 10 published driving VLMs plus 6 LoRA
+  before/after pairs on a new 1,000-image benchmark; retention is computed as
+  a ratio of LLM-judged object recall to the base model's, so it inherits the
+  judge's and the annotation pipeline's biases, though rankings held across
+  three judge models. No ablation isolates whether the drop comes from domain
+  shift or from prompt-format overfitting.
+confidence: medium

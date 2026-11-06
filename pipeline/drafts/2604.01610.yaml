@@ -1,0 +1,47 @@
+arxiv_id: "2604.01610"
+title: "GraphWalk: Enabling Reasoning in Large Language Models through
+  Tool-Based Graph Navigation"
+url: https://doi.org/10.48550/arxiv.2604.01610
+drafted_at: 2026-11-06
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-step-reasoning
+statement: For non-reasoning GPT-class models answering multi-hop structural
+  queries over synthetic graphs, giving them a minimal set of generic
+  graph-navigation tools (node lookup, neighbor retrieval, property
+  enumeration) raises accuracy over placing the whole graph in context, and
+  the advantage grows with graph size because in-context accuracy collapses as
+  the graph grows even while it still fits the context window.
+kind: observation
+backing_strength: single-paper
+scope_condition: Synthetic, non-semantic property graphs of 100-500 nodes and
+  10x10 mazes; GPT-4o/4.1 family and o3/o4-mini; 12 query templates, 10 runs
+  each; graphs always fit inside the context window.
+technique: ""
+proposed_technique: Navigate the graph with minimal generic tools instead of in-context
+technique_summary: Equips an off-the-shelf LLM with a few domain-free graph
+  primitives (get node by property, get neighbors, get unique property values,
+  think) and lets it compose sequential tool calls into a reasoning chain
+  instead of reading the serialized graph in context.
+technique_kind: tooling
+technique_validated_by: Correct-answer count, accuracy, precision/recall/F1
+  and false positives over 120 queries per model, against a no-tool baseline
+  with the full graph in context; mazes scored by whether any valid path was
+  found (tool-equipped gpt-4.1 10/10 vs 1/10 no-tool); at 500 nodes
+  gpt-4.1-with-tools 26.67% accuracy vs 10.83% no-tool and o4-mini 4.17%.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A comparison on the same synthetic graph benchmark where in-context
+  models match or beat tool-equipped models at larger graph sizes, or where
+  the tool gain disappears once the in-context prompt is formatted
+  differently.
+evidence_note: Measured on one synthetic generator and one maze family with
+  OpenAI models only; 12 query templates x 10 graph instances per model.
+  Baseline is full-graph-in-context, which the authors argue stands in for
+  perfect retrieval. Absolute accuracies are low (best tool-equipped
+  non-reasoning model 29%), and several categories score zero in both
+  settings, so the claim is about relative ordering, not competence. No
+  open-weight models, no ablation of individual tools.
+confidence: medium

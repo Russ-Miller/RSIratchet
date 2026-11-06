@@ -1,0 +1,46 @@
+arxiv_id: "2603.29957"
+title: Think Anywhere in Code Generation
+url: https://doi.org/10.48550/arxiv.2603.29957
+drafted_at: 2026-11-06
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: code-generation
+statement: "For 1.5B-8B instruct code models, letting the model open short
+  reasoning blocks at arbitrary token positions inside the code it is writing
+  only helps if the placement is learned by outcome-reward RL: prompting or
+  supervised fine-tuning on demonstrated placements scores below the untrained
+  base model, while cold-start SFT followed by RLVR beats both
+  upfront-thinking RL (GRPO) and the base model on code benchmarks."
+kind: observation
+backing_strength: single-paper
+scope_condition: Qwen2.5-Coder 1.5B/7B-Instruct and LLaMA-3.1-8B-Instruct,
+  pass@1 on LeetCode, LiveCodeBench, HumanEval, MBPP; trained on 14K Skywork
+  programming problems with ~5K Gemini-synthesized cold-start samples.
+technique: ""
+proposed_technique: Let the model pause and think mid-code, placement learned by RL
+technique_summary: Teach the model to emit bracketed reasoning blocks at any
+  token position inside generated code via LoRA cold-start SFT on synthesized
+  examples, then use GRPO with a format-plus-test-pass reward so it learns
+  where to invoke them.
+technique_kind: training
+technique_validated_by: pass@1 on four code benchmarks against the base model,
+  CoT, Self-Planning, Interleaved Thinking, GRPO, and five code post-training
+  baselines (average 70.3 vs 68.4 GRPO and 61.0 base); ablations isolate
+  cold-start-only (47.9 on LeetCode), RLVR-only (63.4), line-level thinking
+  (67.2), and padded thinking content (67.6) against the full 69.4.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A run in which the SFT-only or prompting-only variant of mid-code
+  thinking matches the full pipeline, or in which the full pipeline fails to
+  exceed outcome-reward RL with upfront thinking at matched compute on the
+  same benchmarks.
+evidence_note: Measured on four benchmarks with greedy decoding, one base
+  model for the main table plus two others for generalization; baselines share
+  the base model. Ablations are single-benchmark (LeetCode) and single-seed,
+  so the ordering of the variants is not error-barred. The RL and SFT arms do
+  not appear compute-matched, so part of the SFT-vs-RL gap may be training
+  budget rather than the reward signal. Interleaved Thinking was reimplemented
+  by the authors.
+confidence: medium

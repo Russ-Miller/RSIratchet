@@ -1,0 +1,51 @@
+arxiv_id: "2604.00149"
+title: Towards Verifiable and Self-Correcting AI Physicists for Quantum
+  Many-Body Simulations
+url: https://doi.org/10.48550/arxiv.2604.00149
+drafted_at: 2026-11-06
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: self-repair
+statement: For LLM agents reproducing research-level quantum many-body
+  simulations with third-party libraries (ITensors, NetKet, Qiskit, ORCA),
+  ReAct-style execution-repair loops that surface only the first runtime error
+  leave most scripts non-executable (generally under 50%, under 75% even with
+  documentation retrieval), while forcing the script into modular 'element
+  functions' and running unit plus integration tests over all of them at once
+  pushes executability toward 100% in fewer iterations.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: 100 end-to-end tasks from 21 published quantum many-body
+  papers; four frontier backbones (GPT-5.1, Gemini 2.5 Flash, Qwen3-Max,
+  Claude Sonnet 4); pass@8; physical-validity results only on a 5-task subset
+technique: ""
+proposed_technique: Modularize the script, then unit-test and physics-assert it
+technique_summary: Force the generated simulation script into reusable element
+  functions, run unit and integration tests over all of them in one round to
+  surface and fix every programming error in parallel, then run rubric,
+  physics-principle assertion and convergence tests to find and correct
+  physical misconfigurations.
+technique_kind: process
+technique_validated_by: Executability (pass@8) across 4 models x 4 task topics
+  versus ReAct, ReAct-RAG and a one-shot variant; unit/integration test
+  accuracy before and after correction; executability-vs-iteration curves; and
+  number of physically valid reproductions on a 5-task dmrg subset compared
+  with ground-truth figures.
+stance_on_existing: supports
+related_claim_id: external-feedback-repair
+stance_reason: The gain comes from richer grounded signals (compiler/runtime
+  results on isolated functions plus executed physics assertions) rather than
+  unaided self-critique.
+falsifier: A ReAct loop with the same token and retrieval budget reaching
+  comparable executability and physical validity on QMP-Bench, or the
+  modular-plus-test pipeline failing to beat it on a new set of simulation
+  tasks.
+evidence_note: Measured on the authors' own benchmark, which they also
+  constructed; baselines are their own ReAct implementations and no
+  matched-token-budget control is reported (PhysVEC uses substantially more
+  tokens). Physical-validity evidence rests on 5 tasks and hand-written
+  rubrics/assertions, so the scientific-verifier half is weakly evidenced.
+confidence: medium
+problems:
+  - related_claim_id "external-feedback-repair" does not exist
