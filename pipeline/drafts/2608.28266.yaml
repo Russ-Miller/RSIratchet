@@ -1,0 +1,48 @@
+arxiv_id: "2608.28266"
+title: "CoCoBench: A Cooperative Coordination Benchmark for Embodied
+  Multi-Agent Task Planning"
+url: https://doi.org/10.48550/arxiv.2608.28266
+drafted_at: 2026-10-20
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: "In embodied multi-agent household planning with a fixed high-level
+  skill interface, a team's task success rate overstates coordination quality,
+  because goal predicates can be reached through illegal shortcuts: several of
+  11 tested MLLMs succeed on more episodes than they produce legal plans on
+  (Claude Haiku 4.5 63.1% success vs 47.2% legal; Qwen3.6-Plus 69.1% vs
+  56.7%), while others honour constraints yet miss the goal."
+kind: observation
+backing_strength: single-paper
+scope_condition: 897 oracle-validated AI2-THOR household instances, 2-4
+  agents, four coordination constructs (allocation, ordering, mutual
+  exclusion, handoff), centralized image-observation protocol; low-level
+  execution fixed.
+technique: ""
+proposed_technique: Score coordination constructs separately from task success
+technique_summary: Alongside the binary goal check, compute per-trajectory
+  construct scores from simulator-logged events — makespan versus an oracle
+  reference, precedence-violation rate with a legality gate, shared-resource
+  collision rate, and buffer overflow/wait rate — so coordination quality is
+  measured independently of whether the goal was reached.
+technique_kind: process
+technique_validated_by: Cross-applying all four scoring functions to 897
+  GPT-5.6-sol trajectories gave off-diagonal Pearson correlations within
+  [-0.10, 0.16], indicating the four scores are largely non-redundant and not
+  a re-encoding of binary success; per-model success and legality rates
+  diverge in both directions.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A study showing that on these or similar embodied coordination
+  tasks, legal-plan rate and construct scores track task success closely (high
+  correlation, consistent model ranking), so aggregate success loses no
+  diagnostic information.
+evidence_note: Measured on 897 instances across 11 models, plus a 240-instance
+  balanced subset for architecture, observation and team-size ablations.
+  Construct scores are hand-designed formulas calibrated so oracle
+  trajectories score near ceiling; whether they correspond to human judgements
+  of good coordination is not validated, and the non-redundancy check uses one
+  model's trajectories only.
+confidence: medium

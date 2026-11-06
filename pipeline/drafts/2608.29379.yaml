@@ -1,0 +1,47 @@
+arxiv_id: "2608.29379"
+title: Bridging Semantics and Physics with Constrained LLMs for Safe and
+  Trustworthy Robotic Manipulation
+url: https://doi.org/10.48550/arxiv.2608.29379
+drafted_at: 2026-10-20
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: For LLM-driven robot manipulation where every tool call is
+  schema-validated and every motion kinematically and collision-checked before
+  execution, execution-time recovery mechanisms (retrying a failed plan with
+  an alternative candidate, resetting to a collision-checked safe pose between
+  stages) contribute more to end-to-end task success than canonical action
+  sequencing, because most residual failures are transient planning or IK
+  failures rather than wrong orderings.
+kind: observation
+backing_strength: single-paper
+scope_condition: Single real robot (UFactory 850) with eye-to-hand RGB-D
+  perception, four pouring tasks plus one grasp-and-place task, 10 physical
+  trials per condition.
+technique: ""
+proposed_technique: Schema-validated tool calls plus verify-then-act motion checking
+technique_summary: Restrict the LLM to typed tool calls carrying only semantic
+  object references and bounded skill parameters, bind each accepted call to a
+  fixed motion-planning template, and execute only trajectories that pass
+  kinematic and collision checks against a perception-grounded scene, with
+  retry and safe-pose reset on failure.
+technique_kind: tooling
+technique_validated_by: "End-to-end success over 10 physical trials per task:
+  72.5% mean vs 50.0% for a scripted FSM/BT policy and 47.5% for the same LLM
+  without canonical sequencing; ablations removing safe-pose reset (-32.5
+  points) and retry (-47.5 points) versus removing the task graph (-25.0
+  points)."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A replication with a larger trial count in which removing canonical
+  sequencing costs more end-to-end success than removing retry and safe-pose
+  reset, or in which retry gives no measurable gain once verification is in
+  place.
+evidence_note: Measured, but on only 10 trials per condition on one robot, so
+  each trial is 10 percentage points and per-task differences are noisy; the
+  authors say so. Ablations are one-at-a-time and share perception and planner
+  backends, which does isolate the recovery mechanisms, but no baseline
+  separates retry from simply having more attempts at the task.
+confidence: low

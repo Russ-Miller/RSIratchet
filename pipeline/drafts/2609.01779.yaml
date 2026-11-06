@@ -1,0 +1,50 @@
+arxiv_id: "2609.01779"
+title: "Agents That Model Agents: Five Principles Toward a Theory of Mind for
+  6G Networks"
+url: https://doi.org/10.48550/arxiv.2609.01779
+drafted_at: 2026-10-20
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: In multi-agent LLM networks where a correct minority peer disagrees
+  with an agreeing majority, ranking peers by raw divergence from the
+  receiver's own belief systematically prefers the wrong peers, while scoring
+  each peer by asserted precision divided by its divergence from a
+  second-order model of what that peer should have concluded given its data
+  subscription isolates the correct one.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Demonstrated on a simulated 5-agent O-RAN control plane with
+  locally deployed 1B-parameter telecom SLMs, one signaling-storm scenario;
+  requires the receiver to know each peer's telemetry subscription mask and to
+  be able to elicit a precision estimate from the model.
+technique: ""
+proposed_technique: Weight peers by cognitive SNR, not by divergence
+technique_summary: Each incoming agent message is weighted by the sender's
+  asserted belief precision divided by the KL divergence between its reported
+  belief and what the receiver's second-order model predicts a peer with that
+  telemetry access should have reported, instead of being gated on
+  disagreement.
+technique_kind: process
+technique_validated_by: "Ranking the four peers at storm onset averaged over
+  80 rounds: cognitive SNR gave AUC 1.000 for identifying the single correct
+  peer while a divergence gate gave AUC 0.000; the correct peer scored +7.8 dB
+  against -4.3 dB for the miscalibrated one, a ~13x trust-weight advantage.
+  Recursion-depth sweep: depth 2 recovered the correct action in every trial
+  (accuracy 1.000) vs 0.050 at depth 1 and 0.083 at depth 3."
+stance_on_existing: supports
+related_claim_id: one-agent-s-context-carries-planted-misinformation-wrong-answer
+stance_reason: Both find that majority agreement among peers does not track
+  correctness and can propagate a single agent's error through the group.
+falsifier: On a comparable setup, a divergence-based gate ranks the correct
+  minority peer above the mistaken majority, or precision-over-divergence
+  weighting fails to separate the correct peer (AUC near chance) across more
+  scenarios and agent configurations.
+evidence_note: Measured, but on a single hand-constructed scenario in one
+  simulated cell with five 1B SLMs; the asymmetry (one storm-trained agent,
+  four not) was deliberately designed, so AUC 0.000 vs 1.000 is
+  near-tautological for this construction. Topology and latency results use a
+  statistical emitter, not the SLMs. No hardware validation; authors list
+  eliciting calibrated precision from LLMs as an open problem.
+confidence: low

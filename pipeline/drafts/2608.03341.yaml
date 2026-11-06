@@ -1,0 +1,43 @@
+arxiv_id: "2608.03341"
+title: Route-Align-Verify for Functional Correctness in Code Generation
+url: https://doi.org/10.48550/arxiv.2608.03341
+drafted_at: 2026-10-24
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: code-generation
+statement: For a fixed 7B code backbone on short Python tasks (MBPP),
+  task-aware prompt routing plus LoRA fine-tuning on prompts rewritten into
+  the routed style raises pass@1 only slightly (+1.1 points) when one sample
+  is returned, but yields large gains (+9-10 points) once several candidates
+  are sampled and selected by execution against the task's visible public
+  tests.
+kind: observation
+backing_strength: single-paper
+scope_condition: Qwen2.5-Coder-7B-Instruct on MBPP sanitized and full, where
+  visible public tests ship with each task; partial ablation only (no
+  Verify-alone cell).
+technique: ""
+proposed_technique: Route prompts, align LoRA to them, verify on public tests
+technique_summary: Picks a task-specific prompt template by keyword
+  heuristics, fine-tunes a LoRA adapter on training inputs rewritten into that
+  same template style, then samples several programs and returns the one
+  passing the most visible public tests.
+technique_kind: process
+technique_validated_by: "pass@1 on MBPP: base 0.8276/0.7528 (sanitized/full)
+  vs full pipeline 0.8911/0.8520; Route+Align without verification only
+  0.8366/0.7640; repeated 120-task subsets gave a 95% CI of [0.0250,0.1417] on
+  Full and [-0.0194,0.0722] on Sanitized; Jaccard contamination check found
+  zero overlap."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation isolating Verify alone that matches full-pipeline
+  pass@1, or a setting where routing plus aligned LoRA gives most of the gain
+  without multi-candidate execution selection.
+evidence_note: Measured on one benchmark, one backbone, no Verify-only cell,
+  so the attribution to component interaction rests on comparing three
+  combinations; the Sanitized confidence interval crosses zero under repeated
+  subset evaluation; the verifier uses the benchmark's own public tests, which
+  overlap in kind with the evaluation tests.
+confidence: low

@@ -1,0 +1,41 @@
+id: llms-scored-hallucination-detectors-bengali-bangla-english-tasks-measuring-only
+ref: CLM-0684
+capability: hallucination
+technique: score-hallucination-detection-gold-hallucinated-tracks-jointly
+statement: >-
+  When LLMs are scored as hallucination detectors on Bengali and
+  Bangla-English tasks, measuring only detection on hallucinated candidates
+  hides uniform label bias: several models reach low miss rates while
+  flagging most or nearly all correct answers as hallucinated, so a balanced
+  dual-track error rate over both gold and hallucinated instances is needed
+  to separate content-sensitive judgement from a constant verdict.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Nine LLMs (3B-32B plus GPT-4.1 mini) on four Bengali/Bangla-English tasks (QA, code-mixed QA, summarization, math reasoning) with GPT-generated hallucinated candidates and binary y"
+sources:
+  - source: arxiv-2605-31483
+    stance: supports
+    note: >-
+      Validated by: Applied across 9 models x 4 tasks; the metric exposes
+      models such as Mistral-nemo-12B (B-err 19.98%, A-err 87.70% on QA) and
+      TituLLM-3B (near-constant verdicts, BHS ~50%) that single-track
+      scoring would rank well; a weighting sensitivity analysis shows equal
+      weighting is the only setting where no degenerate responder wins..
+      Measured on a constructed benchmark of 12,000 generated hallucinated
+      candidates and 4,000 gold instances, human-validated at Fleiss kappa
+      0.911-0.926. Dual-track error tables show opposing biases per model.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-10-31
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: If, on these tasks,
+  models' hallucinated-candidate detection rates ranked them the same way as
+  the balanced dual-track score — i.e. no model with a low miss rate had a
+  high false-alarm rate on gold instances — the dual-track protocol would
+  add nothing.
+submitted_by: agent:claude-opus-5@Russ-Miller

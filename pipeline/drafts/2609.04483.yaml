@@ -1,0 +1,49 @@
+arxiv_id: "2609.04483"
+title: "Integrating Crash Report Mining and LLMs for Bug Localization and
+  Repair: An Industrial Report"
+url: https://doi.org/10.48550/arxiv.2609.04483
+drafted_at: 2026-10-22
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: debugging
+statement: For repair of production crash bugs in large Java enterprise
+  systems, feeding an LLM the source of the top-3 suspicious files plus a
+  representative stack trace localizes the developer-modified code in about
+  71% of responses and yields a semantically valid patch in about 52%, and
+  adding an explicit ranking of suspicious files and methods helps only when
+  the full stack trace is withheld (per-response repair 28% to 47% with stack
+  messages only) while slightly lowering performance when the stack trace is
+  already present.
+kind: observation
+backing_strength: single-paper
+scope_condition: Two closed-source Java Enterprise web systems (~2.1M LOC), 38
+  crash bugs with identified corrective commits, Claude-3.5-sonnet, zero-shot
+  prompts, five samples per configuration, manual grading against developer
+  commits.
+technique: ""
+proposed_technique: Rank crash-clustered suspicious files as LLM repair context
+technique_summary: Cluster crash reports by stack-trace similarity, score
+  candidate files by proximity to the crash point, bucket specificity and
+  in-group frequency, and put the top-ranked files' source plus a
+  representative stack trace into a zero-shot repair prompt.
+technique_kind: retrieval
+technique_validated_by: Manual two-rater grading (Cohen's kappa 0.88
+  localization, 0.51 repair) of 760 responses on 38 bugs against developer
+  corrective commits; ablation across four prompt configurations and five LLMs
+  on an 8-bug subset. No no-ranking, no-clustering baseline on the full
+  dataset; no test-based execution.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On a comparable industrial crash-bug set, supplying the ranked
+  suspicious files gives no advantage over random or purely stack-trace-order
+  file selection, or adding the ranking list raises repair accuracy as much
+  with full stack traces as without.
+evidence_note: "Measured on 38 bugs from one company, graded manually with no
+  test execution; repair-status inter-rater agreement was only moderate. The
+  developer-modified file was in the top-3 ranked files for all 38 issues, so
+  the ranking stage was effectively never wrong, and no baseline isolates
+  ranking from the clustering that produced the file set. Low external
+  validity: one organization, one language, retrospective."
+confidence: low

@@ -1,0 +1,52 @@
+arxiv_id: "2608.30841"
+title: "HSRM: Hidden-State Reward Models for Test-Time Verification"
+url: https://doi.org/10.48550/arxiv.2608.30841
+drafted_at: 2026-10-18
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: error-detection
+statement: For best-of-N selection on mathematical reasoning, a small verifier
+  (~2M parameters) that reads the frozen generator's own hidden states at
+  reasoning-step boundaries ranks correct candidates above incorrect ones
+  better than a larger text-only verifier that re-encodes the generated
+  solution, because the correctness signal is already present in the
+  generator's upper-layer representations and must otherwise be inferred
+  indirectly from emitted tokens.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Math reasoning benchmarks (GSM8K, MATH-500, AIME,
+  OlympiadBench) with frozen Qwen3 1.7B-14B and Llama 1B-8B generators,
+  verifier trained on self-sampled trajectories with outcome labels; requires
+  white-box access to hidden states. A 7B domain-trained PRM still leads on
+  the hardest benchmarks.
+technique: ""
+proposed_technique: Verify candidates from step-boundary hidden states, not text
+technique_summary: Extract the frozen generator's last-layer hidden states at
+  reasoning-step delimiters, feed the step sequence to a 2-layer Transformer
+  encoder, and score candidates with a tie-safe pairwise ranking loss trained
+  on self-sampled trajectories with final-answer labels.
+technique_kind: architecture
+technique_validated_by: "Best-of-8 accuracy and within-problem AUROC against
+  EORM-55M text-only verifier, Qwen2.5-Math-PRM-7B, single-pass, and oracle
+  pass@8, over five seeds; matched or beat EORM in 15 of 16 generator-dataset
+  settings and all 6 Llama settings. An input-modality ablation on GSM8K held
+  architecture size roughly fixed: text-only 82.23% / 0.519 AUROC vs
+  last-hidden-state 86.11% / 0.691, isolating representation from capacity."
+stance_on_existing: supports
+related_claim_id: reward-related-information-reasoning-model-s-hidden-states-concentrated-sparse
+stance_reason: Both find that a reasoning model's hidden states carry
+  correctness signal usable as a reward model for inference-time selection.
+falsifier: A capacity-matched text-only verifier reading the same candidate
+  solutions matching or beating the hidden-state verifier on best-of-N
+  accuracy and within-problem AUROC across generators, or the hidden-state
+  advantage disappearing once the text verifier is given the same training
+  pool.
+evidence_note: "Measured: 4 math benchmarks, 4 Qwen3 scales plus 3 Llama
+  scales, five seeds, disjoint eval splits, zero-shot transfer to
+  OlympiadBench. Baselines include a 55M text verifier, a 7B PRM,
+  log-prob/entropy/length heuristics. The input-modality ablation is the part
+  that isolates representation from architecture; the text-only baseline is a
+  from-scratch encoder rather than a pretrained one, which may understate text
+  verification. Efficiency comparison is estimated FLOPs, not wall clock."
+confidence: medium

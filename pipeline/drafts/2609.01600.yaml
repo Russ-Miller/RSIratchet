@@ -1,0 +1,50 @@
+arxiv_id: "2609.01600"
+title: "CordisBench: Can Language Models Reason About Component Lifecycles in
+  Dynamic Agent Harnesses?"
+url: https://doi.org/10.48550/arxiv.2609.01600
+drafted_at: 2026-10-18
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: harness-self-improvement
+statement: When a model must anticipate, without execution feedback, what a
+  change to its own runtime harness components will do, naming which
+  components a lifecycle change can affect stays near ceiling as the number of
+  interacting effects grows from 2 to 32, while predicting the resulting
+  state, reasoning across teardown orders, and choosing minimal
+  reconfigurations degrade sharply (e.g. GPT-5.6 Luna's reachable-condition
+  Jaccard 91.7% to 14.1%, executed reconfiguration success 62.5% to 25.0%).
+kind: observation
+backing_strength: single-paper
+scope_condition: 1,200 generated questions over a component runtime (Cordis)
+  with dependency-driven removal and restore-on-cleanup effects; three
+  efficiency-oriented models at low reasoning effort, single completion, no
+  tools or execution feedback; 24- and 32-interaction cases are stress tests.
+technique: ""
+proposed_technique: Compute lifecycle consequences in the harness, not in the model
+technique_summary: Where component dependencies and cleanup effects are
+  explicitly represented, have the runtime enumerate legal teardown
+  continuations and compute or verify the resulting state, leaving the model
+  only the higher-level goal choice.
+technique_kind: tooling
+technique_validated_by: An independent finite reference semantics agreed with
+  Cordis execution on every observation and action outcome used for scoring
+  across all 528 executable questions, so the outcomes models got wrong were
+  exactly computable at zero inference cost; the paper does not measure an
+  end-to-end agent using this.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A model whose localization and final-state/teardown-order accuracy
+  degrade at similar rates as interaction count grows, or on which
+  reconfiguration success stays flat to 32 interactions at low reasoning
+  effort.
+evidence_note: "Measured on a synthetic generated benchmark with deterministic
+  scoring, three models, three replicates, cluster bootstrap over systems.
+  Shortcut controls reach only 7.3% exact match. Confounds partly addressed:
+  an output-token-limit diagnostic explains much of Gemini's
+  guaranteed-condition drop, and a fixed-schedule-count diagnostic shows the
+  trend persists for GPT-5.6 Luna. Only three efficiency-oriented models, one
+  of them near ceiling and one adopting a return-all strategy, so dynamic
+  range rests largely on one model."
+confidence: medium

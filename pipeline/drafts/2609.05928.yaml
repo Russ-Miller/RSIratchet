@@ -1,0 +1,49 @@
+arxiv_id: "2609.05928"
+title: "Solving versus Verifying: Catching Contradictions in Tax Reasoning Systems"
+url: https://doi.org/10.48550/arxiv.2609.05928
+drafted_at: 2026-10-22
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: abstention-and-self-knowledge
+statement: On statutory tax calculation cases, models asked to solve an input
+  that contains an injected contradictory fact mostly compute straight through
+  it and return the clean-input answer, while the same model asked only to
+  verify the same input flags most of those contradictions \u2014 so
+  abstention failure here is a task-framing gap, not missing detection
+  ability.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Six recent LLMs on 91 SARA-derived US federal income tax
+  cases; contradictions injected into categorical facts (marital/filing
+  status, dependent count); missing-fact perturbations targeted numeric facts
+  and did trigger abstention.
+technique: ""
+proposed_technique: Gate the answer on a separate self-verification call for contradictions
+technique_summary: Run one extra call asking the same model only whether the
+  input facts are sufficient and consistent, and override the solver's numeric
+  answer with abstention when it returns the 'contradiction' label.
+technique_kind: process
+technique_validated_by: Across all six models, contradiction abstention rose
+  from 0-43% (solver alone) to 70-83% with the gate, at a clean-accuracy cost
+  of 0-5.1 percentage points; false-flag rate on clean inputs 0-5.5%. Compared
+  against a self-consistency baseline over three solve runs, which flagged
+  only 11-35% of contradictions at a higher false-flag rate.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A setup where models asked to verify the same contradicted inputs
+  flag them no more often than they abstain while solving, or where the
+  verification gate fails to raise contradiction abstention without large
+  clean-accuracy loss.
+evidence_note: Measured on 108 contradiction variants and 78 redacted variants
+  from 91 SARA cases, three runs per model, binary numeric-or-null output
+  schema. Four high-accuracy models abstained 0-15% while solving but flagged
+  75-83% when verifying. Single benchmark, single legal domain, rule-generated
+  contradictions; defect type is confounded with fact category (numeric
+  redaction vs categorical contradiction), which the authors note they cannot
+  disentangle. Verifier is the same model, so shared blind spots are not
+  isolated.
+confidence: medium
+problems:
+  - "figures not in the source: 014"

@@ -1,0 +1,39 @@
+arxiv_id: "2608.22090"
+title: "Semantic Reasoning Denoising: Correcting Language Model Reasoning with
+  Semantic Operators"
+url: https://doi.org/10.48550/arxiv.2608.22090
+drafted_at: 2026-10-19
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: self-repair
+statement: For 8B instruction-tuned backbones run in an iterative
+  typed-error-operator correction loop, accuracy gains concentrate in the
+  first few iterations and then plateau rather than decline as the denoising
+  budget grows, so a small step budget captures nearly all the benefit.
+kind: observation
+backing_strength: single-paper
+scope_condition: Llama-3-8B-Instruct and Qwen3-8B with a LoRA corrector
+  trained on typed executable error operators; math, commonsense and general
+  reasoning benchmarks (GSM8K, MATH, CSQA, BBH); budgets K from 1 to 16
+technique: correct-reasoning-inverting-typed-error-operators
+proposed_technique: ""
+technique_summary: ""
+technique_kind: ""
+technique_validated_by: Accuracy measured against base chain-of-thought at K =
+  1, 2, 4, 8, 16 on four benchmarks; inference cost table shows generated
+  tokens growing 7.8x from K=1 to 16 while latency grows 2.0x.
+stance_on_existing: supports
+related_claim_id: 8b-instruction-tuned-backbones-training-lora-corrector-diagnose-typed-executable
+stance_reason: Same method and backbone class; this paper reports the
+  per-iteration profile of the gain the existing claim records, with
+  operator-only and adjacent-state-only ablations both losing accuracy.
+falsifier: Running the same loop to larger K and finding accuracy continuing
+  to rise substantially past the first few steps, or declining systematically
+  as self-produced states drift from the training distribution.
+evidence_note: Measured on four benchmarks at five budget settings with a
+  single stated figure (no error bars reported for the budget sweep); the
+  plateau is argued to come from the three-source noise construction
+  approximating the backbone's own error distribution, which the design does
+  not isolate. Limited to 8B backbones and a fixed operator library.
+confidence: medium

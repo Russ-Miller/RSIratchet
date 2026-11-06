@@ -1,0 +1,48 @@
+arxiv_id: "2608.25992"
+title: "ProgRouter: Online Progress-Guided Orchestration for Multi-Agent LLM
+  Workflows under Quality-Cost Tradeoffs"
+url: https://doi.org/10.48550/arxiv.2608.25992
+drafted_at: 2026-10-19
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: In multi-agent LLM workflows with a mixed-size model zoo, choosing
+  which model instantiates each agent step-by-step from an online estimate of
+  task-progress gain plus remaining time and cost budget keeps task quality
+  near the best single-model policy at lower energy than one-shot query-level
+  routing or stall-triggered escalation.
+kind: observation
+backing_strength: single-paper
+scope_condition: Code generation (HumanEval Plus, MBPP), math (MATH-500) and
+  retrieval-augmented long-form QA (ASQA), with 7-9 open-weight models per zoo
+  and an imposed long-term energy budget; not tested on web navigation or
+  tool-augmented QA.
+technique: ""
+proposed_technique: Route each agent step by predicted task-progress gain
+technique_summary: Scores intermediate workflow state into a progress value,
+  predicts each candidate model's progress gain from structured and semantic
+  features, and picks the model maximizing gain minus time/cost-budget
+  penalties at every dispatch step.
+technique_kind: process
+technique_validated_by: Pass rate / citation precision, energy in Joules and
+  wall-clock time against single-model policies, MasRouter (one-shot),
+  CASCADIA (escalation) and an Educated Guessing baseline on four benchmarks,
+  with a fixed long-term energy budget marking feasible methods; best or
+  near-best among budget-satisfying methods on 3 of 4 datasets, and 3.5 points
+  below CASCADIA on MATH-500 at lower energy.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched comparison where step-wise progress-guided routing fails
+  to beat one-shot query-level routing on quality at equal or lower energy, or
+  where its gain disappears once the progress scorer's domain-specific
+  milestone definitions are removed.
+evidence_note: Measured on four benchmarks with 100-200 items each (164 for
+  HumanEval Plus), single runs reported without variance, authors' own method
+  versus three baselines. Energy accounting depends on the authors' local
+  serving setup. No ablation isolating the multi-view scorer, dual-path
+  predictor, or virtual-queue terms, so the credit within the design is
+  unresolved; the progress scorer also needs hand-specified milestones per
+  domain.
+confidence: low

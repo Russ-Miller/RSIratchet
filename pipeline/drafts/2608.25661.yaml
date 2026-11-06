@@ -1,0 +1,49 @@
+arxiv_id: "2608.25661"
+title: "From General Agents to RCA Experts: A Self-Evolving Harness for Root
+  Cause Analysis"
+url: https://doi.org/10.48550/arxiv.2608.25661
+drafted_at: 2026-10-20
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: harness-self-improvement
+statement: When an agent harness mines reusable rules and tools from its own
+  labelled diagnosis trajectories, promoting every proposal that helps the
+  cases it was mined from makes the harness worse over time than not evolving
+  at all, and only admitting a proposal when it also fails to regress on a
+  freshly resampled held-out case set keeps accuracy climbing across
+  successive evolution rounds.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Root cause analysis over microservice telemetry, general
+  coding agents (Codex, Claude Code) with four backbones, 12
+  continuous-diagnosis windows over two public benchmarks; effect worst for
+  weaker backbones.
+technique: ""
+proposed_technique: Gate harness edits on both source cases and a resampled held-out testbed
+technique_summary: Each mined edit to the harness's knowledge or tool library
+  is applied in a sandbox and promoted only if it strictly improves accuracy
+  or cost on the trajectories it was mined from and does not regress on a
+  stratified held-out case set resampled before every evolution round.
+technique_kind: process
+technique_validated_by: "Per-window top-1 accuracy over 12
+  continuous-diagnosis windows on OpenRCA and RCAEval across four backbones:
+  full system final-window A@1 0.83 vs 0.43 for the non-evolving harness and
+  0.33 for the ungated variant (0.4 to 0.0 collapse on DeepSeek-V4); 37% of
+  proposals rejected by the gate."
+stance_on_existing: supports
+related_claim_id: self-evolving-agents-accumulate-reusable-skills-bank-admit-new-skill
+stance_reason: Both find that admitting a skill because aggregate reward rose
+  on the mined cases produces a net-negative accumulated library, and this
+  paper measures the resulting decay directly.
+falsifier: An ablation on comparable tasks where the ungated self-evolving
+  harness matches or exceeds the dual-gated one across many evolution rounds,
+  or where removing the held-out gate leaves accuracy at or above the
+  static-harness baseline.
+evidence_note: "Measured ablation with three variants across four backbones
+  and two benchmarks, with per-window curves rather than a single endpoint.
+  Weaknesses: accuracy labels partly come from the paper's own scoring, the
+  gate and the evolver share the same LLM, and the inner/outer gates are not
+  separated, so the claim rests on the combination rather than on the held-out
+  gate alone."
+confidence: medium

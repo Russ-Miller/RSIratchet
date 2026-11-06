@@ -1,0 +1,52 @@
+arxiv_id: "2609.17632"
+title: "EvolveTrade: Experience-Driven Policy Refinement for Self-Evolving LLM
+  Trading Agents"
+url: https://doi.org/10.48550/arxiv.2609.17632
+drafted_at: 2026-10-22
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: harness-self-improvement
+statement: For tool-using LLM trading agents with a frozen backbone,
+  periodically rewriting the system prompt from the agent's own decision
+  traces and realized portfolio returns changes tool-use behavior reliably —
+  code-interpreter calls rise from about 1 to 2.6-4.5 per day and
+  regime-relevant metrics (VaR, EMA, RSI, signal normalization) that the
+  fixed-prompt agent never computes start appearing — but the resulting
+  risk-adjusted performance beats the fixed-policy agent in only about half
+  the evaluated model-by-regime settings (best Sharpe and cumulative return
+  among LLM methods in 3 of 6).
+kind: observation
+backing_strength: single-paper
+scope_condition: Daily-close simulated trading over 15 US blue-chip stocks
+  plus cash, one-month windows after each model's knowledge cutoff, GPT-5-mini
+  and Gemini-2.5-Flash, policy updated every 5 trading days, 3 runs averaged.
+technique: ""
+proposed_technique: Rewrite the agent's tool-use policy prompt from realized outcomes
+technique_summary: A separate Policy Agent reads a batch of decision traces
+  paired with realized portfolio returns and rewrites the trading agent's
+  whole system prompt — tool selection, query formulation, verification and
+  sizing rules — before the next batch of days.
+technique_kind: process
+technique_validated_by: Sharpe ratio, cumulative return, max drawdown, win
+  rate and volatility against rule-based baselines (SPY, B&H, MACD, KDJ&RSI,
+  ZMR, SMA), a static tool-calling agent, a tool-free evolving agent, and a
+  strategy-only evolving agent (ATLAS-style), across six market regimes and a
+  50-day horizon; plus per-day maps of which analytic metrics appear in
+  code-interpreter calls.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A run where the self-evolved policy shows the same analytic-metric
+  usage and tool-call distribution as the fixed prompt, or where fixed-policy
+  agents match or beat the evolved agent on Sharpe and cumulative return in a
+  majority of model-by-regime settings under the same seeds and universe.
+evidence_note: Measured on six one-month regimes plus one 50-day window, two
+  backbones, three runs each averaged, with rule-based and three ablation
+  baselines. Behavioral evidence (metric activation maps, tool-call counts) is
+  clear; return evidence is mixed and the windows are short, the universe is
+  15 stocks, and transaction-cost modelling omits slippage and market impact.
+  The design does not separate gains from policy refinement from gains from
+  the longer prompts themselves, and the return attribution rests on one
+  hand-picked NVDA case.
+confidence: medium

@@ -1,0 +1,50 @@
+arxiv_id: "2608.18579"
+title: "MR-IQA-2: Faithful Image Quality Reflection via Fine-Grained Credit
+  Assignment"
+url: https://doi.org/10.48550/arxiv.2608.18579
+drafted_at: 2026-10-18
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: explanation-faithfulness
+statement: In RL-trained multimodal image-quality models, applying the
+  reasoning reward only to reasoning tokens and the human-rating reward only
+  to rating tokens keeps rating alignment at the level of rating-only training
+  while turning reasoning-guided edit quality gain positive, and it prevents
+  the collapse to a single universal edit that an unmasked shared reward
+  produces despite that variant's larger raw gain.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: 4B-class MLLM actor (Qwen3.5-4B) trained with GRPO on
+  KonIQ-10k, with a frozen diffusion editor and a frozen MLLM judge supplying
+  the reasoning signal; faithfulness measured as judge-scored quality change,
+  not human inspection.
+technique: reward-reasoning-whether-editing-improves-image
+proposed_technique: Mask each reward to the output tokens it supervises
+technique_summary: Separate rewards for reasoning, rating and format are each
+  normalized within the sample group and applied as advantages only to their
+  own token spans of the actor's structured output, so reasoning credit comes
+  from edit-induced judge gain and rating credit from human scores.
+technique_kind: training
+technique_validated_by: "Ablation on six IQA benchmarks: rating-only training
+  reached average PLCC/SRCC 0.836/0.815 but mean quality gain -0.260 (baseline
+  -0.136); masked credit reached 0.838/0.812 with gain +1.079 and 23,457
+  distinct normalized solutions, versus unmasked +1.442 but collapse to one
+  solution; gains held when the editor and judge were swapped for different
+  models."
+stance_on_existing: supports
+related_claim_id: rl-trained-multimodal-image-quality-models-supervising-reasoning-rating-reward-alone
+stance_reason: Rating-only training here matched the best rating alignment
+  while producing edit gains worse than the untrained baseline, repeating the
+  finding that rating reward alone does not buy faithful reasoning.
+falsifier: An ablation under matched KL scope and compute where masked
+  token-specific credit gives no higher edit-induced quality gain than a
+  shared reward at equal solution diversity, or where the unmasked variant
+  does not collapse to a universal edit.
+evidence_note: Measured on one actor backbone and one training split, with the
+  final E5 comparison confounded by a difference in KL scope (the authors flag
+  this and defer the controlled comparison to an appendix). Faithfulness is
+  operationalized as judge-scored quality gain, which the paper itself
+  concedes conflates identifying the limiting factor with proposing a good
+  fix; semantic drift in edits is unmeasured.
+confidence: low

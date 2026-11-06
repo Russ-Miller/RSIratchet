@@ -1,0 +1,47 @@
+arxiv_id: "2607.03833"
+title: "Beyond Static Rules: Automated Discovery of Latent Vulnerabilities in
+  Text-to-SQL"
+url: https://arxiv.org/abs/2607.03833
+drafted_at: 2026-10-27
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: formal-query-synthesis
+statement: On text-to-SQL items that open-weight 12B-32B models already answer
+  correctly, an automated search for semantics-preserving perturbations of the
+  question or schema flips most of them to wrong (average exposure 76.98% on
+  BIRD, 58.45% on Spider), and the perturbation patterns that work on one
+  model transfer to other architectures, so benchmark execution accuracy
+  reflects a fragile region rather than stable competence.
+kind: observation
+backing_strength: single-paper
+scope_condition: Three open models (Gemma-3-12B, OmniSQL-32B,
+  inf-rl-qwen-coder-32B) on BIRD and Spider; perturbations validated as
+  semantics-preserving by an LLM checker agent, not by human annotation of
+  every case.
+technique: ""
+proposed_technique: Evolve a codex of failure archetypes to probe text-to-SQL
+technique_summary: An agent loop generates vulnerability hypotheses per
+  sample, builds targeted semantics-preserving perturbations guided by a
+  growing codex of abstracted past failures, verifies them against the target
+  model, and compresses new archetypes back into the codex.
+technique_kind: process
+technique_validated_by: "Vulnerability Exposure Rate and Attempts per
+  Discovery against a static expert-rule baseline built from
+  Dr.Spider/SpiderSyn/ADVETA: VER 76.98% vs 50.66% on BIRD and 58.45% vs
+  39.79% on Spider, with lower attempts per discovery; plus cross-model
+  transfer gains and a 1,580-sample SFT mitigation run."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Human audit showing the perturbed samples are largely not
+  semantics-preserving (so the flips are legitimate answer changes), or a
+  replication where codex-derived perturbations give no exposure advantage
+  over static expert rules and do not transfer across models.
+evidence_note: "Measured on the initially-correct subset of BIRD and Spider
+  for three models, with an expert-rule control at matched framework. Key
+  weakness: semantic preservation is judged by an LLM checker with only
+  appendix-level human and proxy validation, so some of the measured fragility
+  may be mislabeled perturbations. Mitigation experiment is one 7B model,
+  1,580 samples, no matched-data control."
+confidence: medium

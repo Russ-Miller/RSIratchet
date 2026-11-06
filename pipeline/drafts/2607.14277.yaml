@@ -1,0 +1,54 @@
+arxiv_id: "2607.14277"
+title: "Multi-Head Latent Control: A Unified Interface for LLM Agent Decision
+  Making"
+url: https://doi.org/10.48550/arxiv.2607.14277
+drafted_at: 2026-10-26
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: abstention-and-self-knowledge
+statement: For frozen instruct LLMs and VLMs deciding whether to answer
+  directly, ask for clarification, call a tool, or abstain, a lightweight head
+  reading the hidden-state trace of the model's own completion picks the
+  correct action more often than the model's stated action does (on When2Call,
+  F1 37.3 to 49.0 and accuracy 52.7 to 65.1 on Qwen-VL-2B), so the latent
+  trajectory carries resolution information the surface response does not
+  express.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Heads trained on hidden-state traces from the same frozen
+  backbone they are deployed on; shown on six 2B-4B backbones across Qwen3-VL,
+  Qwen3.5 and Gemma on the When2Call benchmark, plus TriviaQA web-search
+  escalation and routed agentic execution.
+technique: ""
+proposed_technique: Read control decisions off hidden states, not the output
+technique_summary: Attach two small heads to a frozen LLM that read
+  hidden-state traces of its own generated tokens and emit a capability score
+  (stay or defer to a stronger model) and a resolution score (clarify, call a
+  tool, abstain, or answer directly).
+technique_kind: architecture
+technique_validated_by: When2Call F1/accuracy against the backbone's own
+  native action choice and against full-LLM When2Call SFT baselines; TriviaQA
+  task score, tool-call precision and missed-required web calls against the
+  backbone's native search behaviour; routed small-to-large execution scored
+  on AndroidWorld, CharXiv, MathVerse, MathVista, ScreenSpot-Pro, SimpleVQA
+  and MMLU-Pro with estimated paid API cost against always-large and
+  always-small baselines; prefix-time ROC-AUC/AUPR/ECE ablations; compared
+  against a prompted self-abstention baseline and token-level confidence.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A head trained on hidden states of the same frozen backbone matches
+  or underperforms the backbone's own stated resolution choice, or its
+  advantage disappears once the backbone is simply prompted to pick among the
+  four actions explicitly.
+evidence_note: Measured on When2Call across six backbones, with the head
+  beating native choice on five of six (it loses on Qwen-VL-2B-Thk, 54.5 vs
+  55.1 F1). Heads are supervised on When2Call labels while the backbone is
+  zero-shot, so part of the gap is in-domain training rather than purely
+  latent information; the paper does not run a prompt-tuned or few-shot
+  backbone control. Encoder architecture is borrowed unchanged from prior
+  work, isolating the capability/resolution decomposition but not the
+  representation. Cost-reduction figures rest on an assumption that the small
+  model runs locally for free.
+confidence: medium

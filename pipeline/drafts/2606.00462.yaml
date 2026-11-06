@@ -1,0 +1,42 @@
+arxiv_id: "2606.00462"
+title: Short-form Text Rewriting with Phi Silica
+url: https://doi.org/10.48550/arxiv.2606.00462
+drafted_at: 2026-10-31
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: For a 3.3B on-device SLM doing short-form text rewriting, LoRA
+  fine-tuning on ~93k rewrites distilled from a frontier model at temperature
+  0 raises judged hallucination-avoidance (4.27 to 4.76 on a 1-5 rubric) and
+  semantic fidelity, but buys it with less lexical variation
+  (novelty/diversity 3.59 to 2.92), because the supervision style is
+  deliberately conservative.
+kind: observation
+backing_strength: single-paper
+scope_condition: Phi Silica (3.3B), short presentation-style textboxes under
+  1000 characters, supervision and judging both by GPT-5-Chat; gains survive
+  post-training quantization.
+technique: ""
+proposed_technique: Distill conservative rewrites from a deterministic teacher, then LoRA
+technique_summary: Generate rewrite supervision from a frontier model at
+  temperature 0 with a short task-focused prompt, LoRA fine-tune the small
+  model on it, then shorten the inference prompt since the behaviour is
+  internalized.
+technique_kind: training
+technique_validated_by: LLM-as-judge rubric scores and pairwise preference
+  against GPT-5-Chat on a fixed length-stratified ~1,000-item held-out set;
+  baseline win+tie 23.8% vs fine-tuned 35.61%, hallucination 4.27 to 4.76; no
+  human evaluation of the final set.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Fine-tuning on the same deterministic-teacher data raises
+  hallucination rates, or raises fidelity with no loss of output diversity,
+  under a human or non-teacher judge.
+evidence_note: Measured on one model, one dataset, one judge which is also the
+  supervision source — so improvement partly measures imitation of the judge's
+  own style. Authors note gains shrank once the evaluation set was fixed at
+  ~1,000 length-stratified items, and that small evaluation sets inflated
+  apparent gains.
+confidence: medium

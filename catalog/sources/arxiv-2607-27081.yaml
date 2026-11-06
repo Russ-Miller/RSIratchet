@@ -1,14 +1,15 @@
 id: arxiv-2607-27081
 ref: SRC-0322
 kind: paper
-title: "On-Policy Distillation for LLM Safety: A Routing Approach to Template-Robust Realignment"
+title: "On-Policy Distillation for LLM Safety: A Routing Approach to
+  Template-Robust Realignment"
 year: 2026
 date: 2026-07-29
 arxiv_id: "2607.27081"
 url: https://arxiv.org/abs/2607.27081
-tags: [ingested]
-summary: >-
-  Fine-tuning is the dominant paradigm for specializing large language
+tags:
+  - ingested
+summary: "Fine-tuning is the dominant paradigm for specializing large language
   models (LLMs), yet it exposes a critical vulnerability: malicious data
   providers can embed harmful behaviors into downstream corpora, creating
   models that retain professional skills while violating human values on
@@ -16,5 +17,43 @@ summary: >-
   three key limitations: they frequently cause catastrophic forgetting of
   specialized skills; their effectiveness collapses when the defender cannot
   observe the attacker's prompt template; and successfully realigned models
-  remain susceptible to
+  remain susceptible to"
 ingested_at: 2026-09-19
+brief: >-
+  Safety realignment of a fine-tuning-compromised model mostly works only in
+  the prompt template the defender happened to pick, and switching the system
+  prompt at inference re-opens the attack channel for every method tested,
+  including the one proposed here.
+
+
+  The setup: an attacker LoRA-fine-tunes Llama-2-7B-Chat, Qwen2.5-7B-Instruct
+  and Gemma-2-9B-it on a task corpus plus 1,500 BeaverTails harmful examples,
+  giving SQL, SAMSum and NL2Bash skill alongside compliance. Defenses
+  (rollback, RESTA, soft-SFT, SSRD) are repaired under raw or self templates
+  without knowing the attack template; ASR is judged by Qwen2.5-32B-Instruct
+  on 700 held-out harmful prompts. ROPD routes harmful tokens to the original
+  aligned model as teacher and task tokens to the fine-tuned model, matched by
+  top-K KL.
+
+
+  Under template mismatch, baselines either leave the channel open (SSRD 3.1
+  to 46.3 on Llama-2; RESTA 6.4 to 66.4 on Qwen2.5) or collapse the task
+  (RESTA to 0.036, rollback to 0.017). ROPD under the self defense holds
+  2.1-2.4 ASR on Llama-2 and task 0.596-0.626, but rises to 28.3 under a raw
+  deployment template. Cross-template re-evaluation after acceptance pushes
+  ASR back up for all: soft-SFT 36.4, rollback 42.3, ROPD 19.7.
+
+
+  Evidence is measured across 3 models, 3 tasks and 4 baselines with
+  attack/defense/eval templates controlled independently, plus a teacher
+  ablation showing the safety teacher alone drives harm reduction (ASR 23.0)
+  while dropping the task teacher costs skill (0.563). Baselines run at their
+  own published configurations rather than matched compute; harm judgments
+  rely on 1 LLM judge; only 7-9B instruct models, 4-bit LoRA attacks.
+
+
+  If you evaluate a realigned model under one template, treat the resulting
+  ASR as an underestimate.
+brief_generated_at: 2026-10-18
+brief_model: claude-opus-5
+brief_source: full-text
