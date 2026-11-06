@@ -530,6 +530,11 @@ rather than rendering blank, since a blank reads as "no activity".
 
 ## 8. Site (progressive disclosure)
 
+The draft review workbench is paginated statically at 25 drafts per page.
+`/drafts` shows the first page; `/drafts/page/2` and subsequent numbered routes
+retain the same flagged-first ordering and evidence details. Browser-local
+verdicts persist across pages, and collecting verdicts includes all drafts.
+
 - `/` — recent activity first (§6), then browse by capability.
 - `/capabilities`, `/capabilities/[id]` — a capability page lists its
   claims (statement + kind + backing_strength badge), click through to a

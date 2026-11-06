@@ -35,6 +35,8 @@ export interface Draft {
 
 const DRAFTS_DIR = path.join(process.cwd(), "pipeline", "drafts");
 
+export const DRAFTS_PER_PAGE = 25;
+
 export function getDrafts(): Draft[] {
   if (!fs.existsSync(DRAFTS_DIR)) return [];
   return fs.readdirSync(DRAFTS_DIR)
