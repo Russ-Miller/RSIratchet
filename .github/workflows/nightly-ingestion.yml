@@ -48,6 +48,7 @@ jobs:
     permissions:
       contents: write         # to commit the refreshed queue and push the catalog branch
       pull-requests: write    # to open the nightly catalog pull request
+      actions: write          # to dispatch CI on the nightly branch
       issues: write           # to close reader-evidence issues after ingesting them
     env:
       STATE_BRANCH: pipeline-state
@@ -274,6 +275,10 @@ jobs:
           if gh pr create --base main --head "$BR" --title "Nightly catalog: $(date -u +%Y-%m-%d)" --body "$(printf 'Filed by the nightly job. Every claim is reviewed by AI; merging makes it visible on the site, a person reading it is what adds weight.\n\n%s\n\nRun log: %s/%s/actions/runs/%s' "$SUMMARY" "${{ github.server_url }}" "${{ github.repository }}" "${{ github.run_id }}")" 2>&1 | tee -a "$RUN_LOG"; then :; else
             echo "PR not opened (see above); branch pushed: ${{ github.server_url }}/${{ github.repository }}/compare/$BR?expand=1" | tee -a "$RUN_LOG"
           fi
+          # A PR opened with GITHUB_TOKEN triggers no workflows, so its required
+          # checks never start and it sits BLOCKED. workflow_dispatch is the
+          # exception GitHub allows; its check runs land on the branch head.
+          gh workflow run ci.yml --ref "$BR" 2>&1 | tee -a "$RUN_LOG" || echo "CI not dispatched; run it from the Actions tab" | tee -a "$RUN_LOG"
           # Stay on the catalog branch: the deploy ships this working tree, and
           # the persist step checks out the state branch from wherever it is.
 

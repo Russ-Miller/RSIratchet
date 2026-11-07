@@ -1,6 +1,7 @@
 name: ci
 on:
   pull_request:
+  workflow_dispatch:   # the nightly job dispatches this on its branch
   push:
     branches: [main]
 jobs:
@@ -15,14 +16,19 @@ jobs:
       - run: npm run test:unit
       - run: npm run lint
       - run: npm run build
-  # Paper titles are checked against arXiv on a schedule rather than on every
-  # PR, because arXiv rate-limits shared CI addresses.
+  # Paper titles are checked against arXiv. On a pull request only the
+  # sources it adds or changes are checked (a few calls, so arXiv's limits on
+  # shared CI addresses rarely bite); the full pass runs on main. Skipping PRs
+  # entirely let bad titles reach main and turn it red.
   verify-papers:
-    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
       - uses: actions/setup-node@v4
         with: { node-version: 22, cache: npm }
       - run: npm ci
-      - run: npm run verify-papers
+      - if: github.event_name != 'push'
+        run: npm run verify-papers -- --changed origin/${{ github.base_ref || 'main' }}
+      - if: github.event_name == 'push'
+        run: npm run verify-papers
