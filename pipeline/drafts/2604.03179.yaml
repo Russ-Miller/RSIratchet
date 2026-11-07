@@ -1,0 +1,43 @@
+arxiv_id: "2604.03179"
+title: Understanding the Role of Hallucination in Reinforcement Post-Training
+  of Multimodal Reasoning Models
+url: https://doi.org/10.48550/arxiv.2604.03179
+drafted_at: 2026-11-06
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: evaluation-validity
+statement: "For GRPO post-training of 3B-7B Qwen2.5-VL models on visual math
+  reasoning, accuracy gains cannot be attributed to the training images:
+  replacing every training image with a blank or a mismatched random image
+  still raises benchmark scores well above the base model, and at 7B the
+  random-image variant beats clean-data GRPO on average (54.23 vs 53.52)."
+kind: observation
+backing_strength: single-paper
+scope_condition: GRPO with final-answer rule-based rewards, Qwen2.5-VL 3B/7B,
+  trained on Geometry3K, MMR1-V0 or CLEVR and scored on MathVision, MathVerse,
+  MathVista and WeMath.
+technique: ""
+proposed_technique: Corrupt one modality during RL training to test grounding
+technique_summary: Train and evaluate the same RL recipe with blanked images,
+  randomly swapped images, or stripped text conditions, and compare against
+  clean training to see how much of the gain depends on that modality.
+technique_kind: process
+technique_validated_by: Measured as paired training runs on three datasets and
+  two model sizes, reporting accuracy on four multimodal math benchmarks
+  against both the untrained base model and clean GRPO; corrupted training
+  beat the base model everywhere and matched or exceeded clean GRPO at 7B.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Running the same corrupted-input GRPO on these or similar backbones
+  and finding no improvement over the untrained base model, or finding the
+  gain disappears once a matched text-only control or contamination check is
+  applied.
+evidence_note: "Measured: three corruption types, two model sizes, three
+  training datasets, four benchmarks plus Geometry3K splits, with base-model
+  and clean-GRPO baselines. Single paper, one model family, one RL algorithm.
+  The design does not isolate whether residual text context in the prompt is
+  doing all the work, and the 7B random-image advantage over clean GRPO is
+  under a point with no seed variance reported."
+confidence: medium

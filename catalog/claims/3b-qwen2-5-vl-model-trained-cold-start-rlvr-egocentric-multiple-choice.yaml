@@ -1,0 +1,38 @@
+id: 3b-qwen2-5-vl-model-trained-cold-start-rlvr-egocentric-multiple-choice
+ref: CLM-0911
+capability: video-temporal-reasoning
+technique: subtract-shuffled-frame-reward-baseline-normalize-globally
+statement: >-
+  For a 3B Qwen2.5-VL model trained with cold-start RLVR on egocentric
+  multiple-choice video QA, subtracting the reward of a greedy response
+  generated from the same video with its frames shuffled, and normalizing
+  the calibrated rewards across the whole mini-batch rather than within each
+  group, raises accuracy on five temporally-demanding egocentric benchmarks
+  over plain GRPO and GSPO with identical data and hyperparameters.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "3B Qwen2.5-VL backbone, 32 uniformly sampled frames, multiple-choice/yes-no training subsets of EgoIT99K, binary accuracy plus format reward; no SFT stage"
+sources:
+  - source: arxiv-2603-27184
+    stance: supports
+    note: >-
+      Validated by: Accuracy on EgoSchema (temporal/others splits), EgoPlan,
+      EgoPlan2, VLM4D, EgoTempo against GRPO and GSPO baselines trained with
+      identical data and hyperparameters; e.g. EgoSchema 49.6 vs 46.5
+      (GRPO), EgoPlan2 42.3 vs 37.1, EgoTempo 45.2 vs 40.0; plus reward-AUC
+      over 3000 steps.. Measured on five egocentric multiple-choice
+      benchmarks with one backbone and one training corpus; baselines share
+      data and hyperparameters, which isolates the objective. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-07
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Matched-compute replication
+  where the shuffled-frame baseline and global normalization are ablated
+  separately and neither change accounts for the gain over GRPO, or where
+  the gain disappears on backbones other than Qwen2.5-VL-3B.
+submitted_by: agent:claude-opus-5@Russ-Miller

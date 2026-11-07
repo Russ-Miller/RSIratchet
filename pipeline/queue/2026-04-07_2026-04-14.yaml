@@ -1085,6 +1085,18 @@ candidates:
           Qwen-3-8B/32B
         classified_at: 2026-11-05
         model: claude-opus-5
+      - capability: tool-use
+        about_capability: true
+        direction: measures
+        confidence: medium
+        rationale: The paper's core contribution is a trajectory-level benchmark showing frontier models
+          select tools well but fail at information utilization and final answer quality, with a
+          secondary fine-tuning demonstration.
+        supports_claim_id: single-step-tool-calling-agents-near-ceiling-accuracy-unperturbed-calls-does-predict
+        scope_condition: 13 LLMs on 800 expert-annotated long-horizon financial tool-calling trajectories
+          (34 task categories), rubric-based trajectory-level metrics; plus SFT+DPO on Qwen-3-8B/32B
+        classified_at: 2026-11-06
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7162894267
     score: 18
     signals:
@@ -1126,6 +1138,16 @@ candidates:
       capabilities comparable to some of the latest API-based models. In addition, our method
       demonstrates strong potential to scale effectively across downstream tools, underscoring its
       real-world applicability.
+    verdicts:
+      - capability: multi-model-coordination
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The multi-agent framework is used only as a synthetic data generation pipeline for
+          function-calling fine-tuning; the paper evaluates a single fine-tuned 8B model, not a
+          multi-agent system against a single-model baseline.
+        classified_at: 2026-11-06
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7154389524
     score: 18
     signals:
@@ -1169,6 +1191,23 @@ candidates:
       the newly proposed FSU-Reasoning benchmark, TrafficSignEval, show that SignReasoner achieves
       new SOTA with remarkable data efficiency and no architectural modification, significantly
       improving the traffic sign un"
+    verdicts:
+      - capability: multi-step-reasoning
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper is about compositional traffic-sign parsing by VLMs in a domain application,
+          not about accuracy as a function of dependent inference steps.
+        classified_at: 2026-11-06
+        model: claude-opus-5
+      - capability: procedure-following
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper is about compositional visual understanding of traffic signs, not about
+          following unfamiliar multi-step procedures or constraints.
+        classified_at: 2026-11-06
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7159571928
     score: 18
     signals:
@@ -1209,6 +1248,16 @@ candidates:
       a constrained decoding mechanism that enforces both lexical and syntactic constraints. We
       evaluate Sliceformer on Java and Python program slicing benchmarks, demonstrating consistent
       improvements over state-of-the-art baselines with up to 22% gain in ExactMatch.
+    verdicts:
+      - capability: hallucination
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper targets slices containing hallucinated tokens/statements and uses constrained
+          decoding plus dataflow-aware pretraining to eliminate such unsupported generation.
+        scope_condition: Small code LMs (CodeT5+) generating static program slices on Java/Python slicing benchmarks
+        classified_at: 2026-11-06
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7154375159
     score: 18
     signals:
@@ -1253,6 +1302,16 @@ candidates:
       difficulty-1 tasks (15.8% to 26.3% FP16; 5.3% to 14.0% AWQ). On full-precision inference, our
       scaffolded 8B model surpasses DeepSeek-Coder 33B Instruct (7.1%) from the original AppWorld
       evaluation, demonstrating that struc"
+    verdicts:
+      - capability: harness-self-improvement
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The scaffolding is hand-designed by the authors from a failure-mode analysis, not
+          autonomously edited by the system itself, so it falls under harness engineering rather
+          than self-improvement.
+        classified_at: 2026-11-06
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7152666202
     score: 18
     signals:
@@ -1297,6 +1356,26 @@ candidates:
       hallucination detection signals can be distilled into transformer representations, enabling
       internal detection without any external verification at inference time. Results support this
       hypothesis. Transformer-based probes achieve the strongest discrimination, w"
+    verdicts:
+      - capability: hallucination
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes training probing classifiers on internal hidden states, using weak
+          grounding supervision, to detect hallucination without external verification at inference,
+          reporting improved discrimination.
+        scope_condition: LLaMA-2-7B generated answers on SQuAD v2, probes trained on per-layer hidden states
+          with weakly supervised grounding labels
+        classified_at: 2026-11-06
+        model: claude-opus-5
+      - capability: judge-position-bias
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper uses an LLM judge only as one weak-supervision signal for hallucination labels,
+          not studying judge bias.
+        classified_at: 2026-11-06
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7152117782
     score: 17
     signals:
@@ -1337,6 +1416,28 @@ candidates:
       exclusively within this mapped circuit. Extensive experiments on the MQuAKE-series benchmarks
       demonstrate the effectiveness of the proposed method for multi-hop reasoning in knowledge
       editing.
+    verdicts:
+      - capability: multi-step-reasoning
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper diagnoses a gap where edited facts are recalled but not propagated through
+          multi-hop chains and proposes circuit-localized editing that improves multi-hop reasoning
+          performance.
+        scope_condition: Knowledge editing in LLMs evaluated on MQuAKE multi-hop benchmarks
+        classified_at: 2026-11-06
+        model: claude-opus-5
+      - capability: knowledge-updating
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: The paper proposes MCircKE, a circuit-localized editing method that improves use of
+          edited facts in multi-hop reasoning, while documenting the known reasoning gap of prior
+          editors.
+        supports_claim_id: knowledge-editing-methods-such-rome-fine-tuning-insert-stated-fact-reliably
+        scope_condition: Parameter editing in LLMs evaluated on MQuAKE-series multi-hop benchmarks
+        classified_at: 2026-11-06
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7151769127
     score: 17
     signals:
@@ -1381,6 +1482,17 @@ candidates:
       candidate based on a failing test, and the Auditor, which reads the candidate code to generate
       new tests that expose its remaining bugs. We evaluate FixAudit on three benchmarks: APPS,
       CodeContests, and xCodeEval. Applied to "
+    verdicts:
+      - capability: code-generation
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: The paper proposes FixAudit, a trained iterative test-and-repair framework that improves
+          over CURE-style candidate selection on competitive code benchmarks.
+        scope_condition: Competitive programming code generation (APPS, CodeContests, xCodeEval) with a
+          single shared model trained in Fixer and Auditor roles
+        classified_at: 2026-11-06
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7153204405
     score: 17
     signals:
@@ -1425,6 +1537,15 @@ candidates:
       evaluation framework for infrastructure-assisted perception in cooperative autonomous driving.
       The CrashSight benchmark, including the full dataset and code, is accessible at
       https://mcgrche.github.io/crashsight.
+    verdicts:
+      - capability: goal-conflict-safety
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper benchmarks VLM video understanding of traffic crash scenes, with no conflict
+          between a task goal and an oversight mechanism.
+        classified_at: 2026-11-06
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7154418206
     score: 17
     signals:
@@ -1469,6 +1590,19 @@ candidates:
       decision-making. We further introduce span-focused loss-driven local distillation mechanism
       (SFL) to transfer the decision-making capability of powerful Cloud Large Language Models
       (C-LLMs) to lightweight local models, reducing inferen
+    verdicts:
+      - capability: multi-model-coordination
+        about_capability: true
+        direction: improves
+        confidence: low
+        rationale: The paper proposes splitting emergency scheduling into a Perception Agent and an
+          Emergency Decision Agent to reduce the harm of long system contexts, claiming improved
+          decision-making over monolithic LLM use.
+        scope_condition: Emergency handling in scheduling systems, two-agent (Perception + Emergency
+          Decision) decomposition with distilled lightweight local models generating formal
+          instructions
+        classified_at: 2026-11-06
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7154539356
     score: 17
     signals:
@@ -1512,6 +1646,18 @@ candidates:
       solely through asset creation, establishing it as a substantially more effective and stable
       self-evolving agent framework. Code is available at:
       https://buaa-irip-llm.github.io/Mem2Evolve."
+    verdicts:
+      - capability: harness-self-improvement
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: The paper proposes a framework where agents distill experience and create new
+          tools/agents from it, reporting measured gains over experience-only and asset-only
+          self-evolving baselines.
+        scope_condition: LLM agents with frozen weights evolving experience memory and dynamically created
+          tools/agents, across 6 task categories and 8 benchmarks
+        classified_at: 2026-11-06
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7153259574
     score: 17
     signals:
@@ -1554,6 +1700,17 @@ candidates:
       establishes a state-of-the-art performance. Empowered by MemCoT, several open- and
       closed-source models achieve SOTA performance on the LoCoMo benchmark and LongMemEval-S
       benchmark.
+    verdicts:
+      - capability: long-context-degradation
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes MemCoT, an iterative memory-driven retrieval framework that reportedly
+          improves long-context reasoning accuracy over static single-step retrieval.
+        scope_condition: Long-context/memory QA benchmarks (LoCoMo, LongMemEval-S) with open- and
+          closed-source LLMs using an iterative test-time memory retrieval framework
+        classified_at: 2026-11-06
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7153113934
     score: 17
     signals:
@@ -1596,6 +1753,18 @@ candidates:
       that our method achieves competitive performance with state-of-the-art models using only 2.3B
       parameters, while also effectively mitigating hallucinations through our decoupling-oriented
       design.
+    verdicts:
+      - capability: hallucination
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes a multi-stage training strategy for LLM-based ASR that it reports
+          mitigates hallucinated (ungrounded) transcription output while keeping competitive
+          accuracy.
+        scope_condition: LLM-based ASR (2.3B parameters) on Mandarin and English benchmarks with a
+          multi-stage, entropy-allocation-aware training strategy
+        classified_at: 2026-11-06
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7154004750
     score: 16
     signals:
@@ -1637,6 +1806,25 @@ candidates:
       consistently improves grounded reasoning without any retraining, establishing inference-time
       contrastive decoding over structured 3D representations as an effective and practical route to
       more reliable embodied intelligence.
+    verdicts:
+      - capability: hallucination
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes a training-free contrastive decoding method that reportedly reduces
+          ungrounded/hallucinated outputs in 3D embodied reasoning benchmarks.
+        scope_condition: 3D-LLM embodied agents evaluated on 3D-POPE and HEAL, inference-time contrastive
+          decoding over perturbed 3D scene graphs, no retraining
+        classified_at: 2026-11-06
+        model: claude-opus-5
+      - capability: embodied-control
+        about_capability: false
+        direction: not_applicable
+        confidence: medium
+        rationale: The method targets hallucination in 3D scene-graph question answering benchmarks
+          (3D-POPE, HEAL) rather than outputs driving actuation evaluated by achieved world state.
+        classified_at: 2026-11-06
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7152614880
     score: 16
     signals:
@@ -1685,6 +1873,28 @@ candidates:
       that Argus significantly outperforms existing methods by detecting a higher volume of true
       vulnerabilities while simultaneously reducing false positives and operational costs. Notably,
       Argus has identified several critical zero-day vulnerabil"
+    verdicts:
+      - capability: multi-model-coordination
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes a collaborative multi-agent ensemble for vulnerability detection and
+          reports it detects more true vulnerabilities with fewer false positives and lower cost
+          than existing (largely single-model/tool-assisted) methods.
+        scope_condition: LLM-centered static application security testing (vulnerability detection) with
+          supply-chain analysis, RAG and ReAct, compared against existing LLM-assisted and
+          rule-based SAST approaches
+        classified_at: 2026-11-06
+        model: claude-opus-5
+      - capability: hallucination
+        about_capability: false
+        direction: not_applicable
+        confidence: medium
+        rationale: The paper is about a multi-agent SAST vulnerability detection framework, mentioning
+          hallucination reduction only in passing without measuring or analyzing unsupported
+          generation as its subject.
+        classified_at: 2026-11-06
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7153670757
     score: 16
     signals:
@@ -1724,6 +1934,17 @@ candidates:
       hallucinations. Through extensive experiments, ART demonstrates significant reductions in
       hallucinations across multiple LLM architectures, proving its effectiveness and
       generalizability without requiring fine-tuning or additional training data."
+    verdicts:
+      - capability: hallucination
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: Proposes replacing uniform shallow-layer attention with local attention, reporting
+          reduced hallucination across architectures without training.
+        scope_condition: Training-free inference-time intervention on multiple LLM architectures, mainly
+          QA/hallucination benchmarks
+        classified_at: 2026-11-06
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7162308493
     score: 16
     signals:
@@ -1764,6 +1985,27 @@ candidates:
       capabilities advance, detecting when models begin to master these deceptive behaviors is
       crucial. The developed framework serves as a reproducible testbed for future alignment
       research."
+    verdicts:
+      - capability: persuasion
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper measures deception/persuasion among LLM agents in a game environment without
+          measuring change in human beliefs or decisions caused by model output.
+        classified_at: 2026-11-06
+        model: claude-opus-5
+      - capability: strategic-deception
+        about_capability: true
+        direction: measures
+        confidence: medium
+        rationale: The paper benchmarks LLM deception, persuasion, and role-identification in a social
+          deduction game with new metrics, finding models fail at sustained multi-turn manipulation
+          without proposing an improvement.
+        contradicts_claim_id: frozen-llms-play-werewolf-competently-via-reflection
+        scope_condition: LLM agents (e.g., Llama 3.1 70B) playing the hidden-role game Secret Hitler,
+          benchmarked against rule-based agents and human games, with and without CoT/memory
+        classified_at: 2026-11-06
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7154510748
     score: 16
     signals:
@@ -1802,6 +2044,15 @@ candidates:
       perception, and visual grounding, demonstrate that VIF yields competitive improvements over
       previous methods, validating its effectiveness in enhancing the fine-grained perception of
       MLLMs.'
+    verdicts:
+      - capability: persuasion
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper concerns fine-grained visual perception in MLLMs, with no measurement of human
+          belief or decision change.
+        classified_at: 2026-11-06
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7151904992
     score: 16
     signals:
@@ -1842,6 +2093,38 @@ candidates:
       tax'' inherent to constrained decoding, highlighting a tension between structural granularity
       and internal model capacity in autonomous workflows. Code and raw logs are available in the
       GitHub repository: https://github.com/hongxuzhou/agentic_llm_structured_self_critique."
+    verdicts:
+      - capability: self-repair
+        about_capability: true
+        direction: degrades
+        confidence: high
+        rationale: The paper reports that imposing structural constraints on self-reflection fails to
+          improve self-correction and introduces a new 'structure snowballing' failure mode where
+          syntactic compliance crowds out semantic error detection.
+        supports_claim_id: self-critique-without-grounding-unreliable
+        scope_condition: 8B model (Qwen3-8B) doing intrinsic self-correction with Outlines-based constrained
+          decoding for structured reflection, no external critic or tools
+        classified_at: 2026-11-06
+        model: claude-opus-5
+      - capability: hallucination
+        about_capability: true
+        direction: degrades
+        confidence: medium
+        rationale: The paper reports that imposing structured-decoding constraints on reflection fails to
+          curb hallucination snowballing and instead introduces a new 'structure snowballing'
+          failure mode where syntactic compliance masks unresolved semantic errors.
+        scope_condition: 8B open-weight model (Qwen3-8B) doing intrinsic self-correction on open-ended
+          reasoning with Outlines-based constrained decoding for structured reflection
+        classified_at: 2026-11-06
+        model: claude-opus-5
+      - capability: fine-tuning-retention
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper studies inference-time constrained decoding effects on self-correction, not
+          capability loss from fine-tuning/post-training, which the scope explicitly excludes.
+        classified_at: 2026-11-06
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7153670963
     score: 16
     signals:
@@ -1885,6 +2168,26 @@ candidates:
       factual precision of the Refer-Answer at the token level. Experiments on five QA benchmarks
       demonstrate that GuarantRAG improves accuracy by up to 12.1% and reduces hallucinations by
       16.3% compared to standard and dynami"
+    verdicts:
+      - capability: hallucination
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: The paper proposes a contrastive-DPO plus joint-decoding framework that suppresses
+          ungrounded parametric answers in favor of retrieved evidence, reporting a 16.3%
+          hallucination reduction.
+        scope_condition: RAG QA with LLMs where retrieved evidence conflicts with parametric knowledge; five
+          QA benchmarks
+        classified_at: 2026-11-06
+        model: claude-opus-5
+      - capability: factual-recall
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper is about integrating retrieved in-context evidence in RAG, explicitly excluded
+          from this capability's scope.
+        classified_at: 2026-11-06
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7162780483
     score: 16
     signals:
@@ -1928,6 +2231,18 @@ candidates:
       84.7\\%, outperforming CCS by 6.2\\% and direct linear probing by 9.1\\%. Crucially, MechELK
       successfully identifies latent knowledge in 78.3\\% of cases where the model's surface output
       is incorrect or evasive, demonstrating its utility for AI s"
+    verdicts:
+      - capability: strategic-deception
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: MechELK proposes an interpretability pipeline that surfaces knowledge a model withholds
+          or misreports, improving detection of deceptive/evasive outputs over CCS and linear
+          probing.
+        scope_condition: Open-weight LLMs with accessible internals; TruthfulQA, a curated Deceptive
+          Alignment benchmark, and Quirky LM dataset
+        classified_at: 2026-11-06
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7154326758
     score: 16
     signals:
@@ -1973,6 +2288,28 @@ candidates:
       demonstrate consistent reductions in object hallucination on CHAIR and POPE benchmarks,
       alongside improvements in GPT-4o assessed captioning quality across correctness, consistency,
       detail, context and temporal dimensions. DOP"
+    verdicts:
+      - capability: hallucination
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: The paper proposes a decoding strategy that reallocates attention and reports consistent
+          reductions in object hallucination on CHAIR and POPE.
+        scope_condition: Image and video MLLMs, training-free decoding-time attention modulation, evaluated
+          on CHAIR/POPE object hallucination benchmarks
+        classified_at: 2026-11-06
+        model: claude-opus-5
+      - capability: visual-grounding
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: The paper proposes a training-free attention-modulating decoding strategy that
+          consistently reduces object hallucination on CHAIR and POPE while improving caption
+          quality.
+        scope_condition: Training-free decoding-time attention modulation (DOP-OBC) in image and video
+          MLLMs, evaluated on CHAIR/POPE and GPT-4o captioning quality
+        classified_at: 2026-11-06
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7154539809
     score: 16
     signals:
@@ -2007,6 +2344,17 @@ candidates:
       precise, token-specific adaptation. Experimental results across multiple benchmarks and MLLMs
       demonstrate that DaID significantly mitigates hallucination while enhancing general reasoning
       capabilities.
+    verdicts:
+      - capability: hallucination
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: The paper proposes a dual-anchor contrastive decoding method that reportedly reduces
+          visual-content-contradicting generation across multiple MLLMs and benchmarks.
+        scope_condition: Multimodal LLMs generating text about images; contrastive decoding with
+          layer-selected anchors guided by visual attention, evaluated on hallucination benchmarks
+        classified_at: 2026-11-06
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7152720431
     score: 28
     signals:

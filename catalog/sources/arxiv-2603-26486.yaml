@@ -1,0 +1,65 @@
+id: arxiv-2603-26486
+ref: SRC-1034
+kind: paper
+title: "ClipTTT: CLIP-Guided Test-Time Training Helps LVLMs See Better"
+authors:
+  - Mriganka Nath
+  - Anurag Das
+  - Jiahao Xie
+  - Bernt Schiele
+year: 2026
+date: 2026-03-27
+arxiv_id: "2603.26486"
+url: https://arxiv.org/abs/2603.26486
+tags:
+  - ingested
+summary: Large vision-language models (LVLMs) tend to hallucinate, especially
+  when visual inputs are corrupted at test time. We show that such corruptions
+  act as additional distribution shifts, significantly amplifying
+  hallucination rates in real-world applications. To address this, we propose
+  CLIP-guided Test-Time Training (ClipTTT), a method to adapt LVLMs under
+  degraded conditions on the fly with a single test sample. Specifically, we
+  leverage the image-text alignment strength of a pre-trained CLIP model as a
+  stable guidance signal to identify reliable self-supervision targets,
+  enabling rapid adapta
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, medium): The paper proposes
+  CLIP-guided test-time training that reduces hallucination rates and improves
+  descriptive faithfulness for LVLMs under corrupted visual inputs. No claim
+  has been drafted from it yet."
+ingested_at: 2026-11-07
+brief: >-
+  Fine-tuning an LVLM on a single corrupted test image, using CLIP to pick
+  which of its own sampled captions to train on, cuts object hallucination
+  more than any training-free decoding intervention. Corruption itself is
+  shown to be a hallucination amplifier: rates rise with severity, and CLIP
+  score correlates with factual correctness.
+
+
+  ClipTTT has a teacher LVLM sample 16 captions under a null prompt, ranks
+  them by sentence-averaged CLIP score (ViT-L/14), trains student LoRA weights
+  on the top caption for 70 iterations, and updates the teacher by EMA.
+  Evaluated mainly on LLaVA-v1.5-7B over 15 ImageNet-C corruptions at severity
+  5, on CHAIR, NoCaps, and a GPT-4o judge.
+
+
+  Average CHAIR_S falls from 55.6 (greedy) to 47.9 and CHAIR_I from 15.4 to
+  13.7, a reported 4.9 p.p. and 1.6 p.p. over prior state of the art.
+  CLIP-based caption selection without training only reaches 55.2 CHAIR_S, so
+  most of the gain comes from adaptation, not reranking.
+
+
+  Ablations isolate checkpoint choice (max CLIP score 45.6 vs best-loss 48.2),
+  teacher update (EMA 45.6 vs fixed 53.9), and LoRA placement, with an
+  inference-time tradeoff curve (116s at 70 steps, 37.2s at 30 steps still
+  beating VAP). Ablations run on 1 corruption (zoom blur); the LLM judge used
+  50 pairs.
+
+
+  Gains are small on TinyLLaVA-1.1B (59.8 to 59.4), InstructBLIP-7B and
+  InternVL2-2B, and shrink at severity 3 (50.0 to 48.8). Treat per-sample TTT
+  as a real option when input quality is unpredictable and latency is
+  tolerable.
+brief_generated_at: 2026-11-07
+brief_model: claude-opus-5
+brief_source: full-text

@@ -1,0 +1,41 @@
+id: multi-step-agent-frameworks-mixing-small-large-model-letting-small
+ref: CLM-0934
+capability: long-horizon-execution
+technique: escalate-stronger-model-agent-s-own-stagnation-signal
+statement: >-
+  In multi-step agent frameworks mixing a small and a large model, letting
+  the small model emit a binary self-assessment of whether the trajectory is
+  progressing and escalating to the large model only on stagnation recovers
+  most of the large-model accuracy at a fraction of its latency, and
+  escalating earlier (checking every step rather than every 3-5) matters
+  more than the cost of the check itself.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Two open agent frameworks (DDV2, WebSailor) with 3B-38B model pairs on web research, math and long-form writing benchmarks; depends on the small model's self-assessment being relia"
+sources:
+  - source: arxiv-2603-26034
+    stance: supports
+    note: >-
+      Validated by: Accuracy, average reasoning steps and end-to-end speedup
+      against small-only, large-only, random switching and five routing
+      baselines (RouteLLM, FrugalGPT, TRiM, Miroflow, WeDAS) on
+      BrowseComp_zh, HLE-math and WritingBench; e.g. DDV2 BrowseComp_zh 18.3
+      (small) / 34.6 (large) / 33.9 at 1.36x speedup; ablations on budget
+      growth k, check frequency, role assignment and cross-family pairings..
+      Measured on three benchmarks (289/866/1000 questions) across two agent
+      frameworks with eight baselines and local vLLM-Ascend inference, so
+      latency is controlled. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-07
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A matched comparison
+  showing that escalation triggered by the model's own progress signal does
+  no better on the accuracy-latency frontier than escalation triggered at
+  random or on a fixed schedule at the same large-model token share, or that
+  reducing check frequency leaves accuracy unchanged.
+submitted_by: agent:claude-opus-5@Russ-Miller

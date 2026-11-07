@@ -1,0 +1,43 @@
+id: llm-driven-black-box-optimization-splitting-loop-into-strategy-agent-emits
+ref: CLM-0928
+capability: multi-model-coordination
+technique: split-search-policy-weighting-candidate-generation
+statement: >-
+  In LLM-driven black-box optimization, splitting the loop into a strategy
+  agent that emits interpretable weights over exploration/exploitation
+  criteria and a separate generation agent that produces candidates
+  conditioned on those weights gives more stable search and better final
+  objective values than one prompt doing both, with the gain concentrated in
+  weakly structured landscapes (hyperparameter tuning, robot pushing) and
+  absent on smooth analytical functions where both LLM variants trail
+  EI/UCB.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "One 70B open model (llama-3.3-70b-instruct), 30-query budget, three benchmarks (Rosenbrock, hyperparameter tuning, robot pushing); continuous/low-cost-proxy objectives only."
+sources:
+  - source: arxiv-2603-28959
+    stance: supports
+    note: >-
+      Validated by: Best-so-far objective curves against a single-agent LLM
+      baseline and against EI and UCB on Rosenbrock, hyperparameter tuning
+      and robot pushing under a fixed 30-evaluation budget, plus
+      paired-metric ablations restricting the strategy agent to one
+      exploration criterion.. Measured on three benchmarks with one model,
+      fixed seeds, 30 evaluations each; curves reported without variance
+      bands or token-budget matching, and the two-agent system makes two LLM
+      calls per iteration against the baseline's one, so compute is not
+      controlled. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-07
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Running the two-agent and
+  single-agent variants under matched token/call budgets and seeds shows no
+  reliable difference in best-so-far objective on the weakly structured
+  benchmarks, or the single-agent variant matching it once its prompt is
+  given the same metric definitions.
+submitted_by: agent:claude-opus-5@Russ-Miller

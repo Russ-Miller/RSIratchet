@@ -1,0 +1,46 @@
+id: local-8b-model-wrapped-tiered-retrieve-and-verify-pipeline-intrinsic-check
+ref: CLM-0931
+capability: hallucination
+technique: answer-memory-first-escalate-tiered-retrieval
+statement: >-
+  For a local 8B model wrapped in a tiered retrieve-and-verify pipeline
+  (intrinsic check, then trusted-archive then open-web search, context
+  filtering, atomic-claim verification), the gain over zero-shot answering
+  concentrates on narrow temporal and numerical queries and shrinks toward
+  parity on open-domain common knowledge, while the pipeline introduces its
+  own failure of confidently answering false-premise questions instead of
+  denying them.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Llama 3.1 8B generating and grading, Gemma3 27B as judge, 650 queries over TimeQA v2, FreshQA v2, HaluEval General, MMLU Global Facts, TruthfulQA; win rate against a zero-shot base"
+sources:
+  - source: arxiv-2603-17872
+    stance: supports
+    note: >-
+      Validated by: Judge-preference win rate against the same model
+      answering zero-shot: 83.7% on TimeQA v2, 78.0% on MMLU Global Facts,
+      64.7% FreshQA, 54.7% TruthfulQA, 50.0% HaluEval General; groundedness
+      78.8-86.4% on factual-answer rows; 20% of HaluEval queries exited
+      early without retrieval. No ablation of individual phases, no
+      matched-compute baseline, and 64 of 150 TimeQA queries were lost to
+      API quota and counted as ties.. Measured on 650 queries, single 8B
+      backbone, single judge model, no per-phase ablation, so the four
+      phases cannot be separated; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-07
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A run of the same pipeline
+  showing equal or larger win rates on open-domain common-knowledge
+  benchmarks than on narrow temporal/numerical ones, or showing no
+  false-premise overclaiming losses relative to the zero-shot baseline.
+  Drafted stance toward
+  retrieval-moves-the-trust-boundary-rather-than-removing-it: supports --
+  The pipeline lowers unsupported generation but the residual failures are
+  retrieval-side: distraction by tangential retrieved documents and
+  confirming a false premise from contextually related evidence.
+submitted_by: agent:claude-opus-5@Russ-Miller

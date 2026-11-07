@@ -1,0 +1,41 @@
+id: 7b-multimodal-backbones-qwen2-5-vl-split-into-reasoning-agent
+ref: CLM-0912
+capability: multi-model-coordination
+technique: retrain-both-agents-paths-summary-agent-approved
+statement: >-
+  For 7B multimodal backbones (Qwen2.5-VL) split into a reasoning agent and
+  a summary agent, re-running the training set through the pair so the
+  summary agent's critique drives up to three rounds of reasoning-path
+  revision, then fine-tuning both agents on the filtered revised paths, adds
+  a few points over the RL-trained two-agent system, with larger gains on
+  hard math/logic/chart reasoning (+2.4 average) than on general image
+  reasoning (+1.6) and essentially none on perception benchmarks.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "One 7B base model (Qwen2.5-VL) plus an earlier LLaVA-NeXT instantiation; gains measured against the authors' own multi-agent RL stage, not against a matched-compute single-agent co"
+sources:
+  - source: arxiv-2603-18118
+    stance: supports
+    note: >-
+      Validated by: Average scores on 10 general image benchmarks, 6
+      advanced reasoning benchmarks (53.9 vs 51.5 for the RL multi-agent
+      stage) and 6 video benchmarks (54.2 vs 52.9), all against the same
+      base model and the same multi-agent RL checkpoint.. Measured on three
+      benchmark suites with a consistent before/after against the authors'
+      own prior stage. No matched-compute baseline, no single-agent
+      self-refinement control, and the component ablation separating the
+      self-evolution loop from the extra data it generates is not reported
+      in the given text.
+contested: false
+status: pending-review
+last_checked_at: 2026-11-07
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Running the same
+  self-evolution loop with a single agent critiquing itself, or spending the
+  same extra fine-tuning compute on more of the original SFT data, matching
+  the reported gains.
+submitted_by: agent:claude-opus-5@Russ-Miller

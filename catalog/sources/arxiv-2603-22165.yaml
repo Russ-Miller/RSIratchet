@@ -1,0 +1,65 @@
+id: arxiv-2603-22165
+ref: SRC-1017
+kind: paper
+title: "ACPO: Counteracting Likelihood Displacement in Vision-Language
+  Alignment with Asymmetric Constraints"
+authors:
+  - Kaili Huang
+  - Hongming Zhang
+  - Rui Shen
+  - Linjun Dai
+  - Jiahao Wang
+  - Hanming Deng
+year: 2026
+date: 2026-03-23
+arxiv_id: "2603.22165"
+url: https://arxiv.org/abs/2603.22165
+tags:
+  - ingested
+summary: "While Direct Preference Optimization (DPO) has become the de facto
+  approach for aligning Large Vision-Language Models (LVLMs), it suffers from
+  Likelihood Displacement, where the probability of both chosen and rejected
+  responses collapses. This optimization flaw is especially detrimental in
+  multimodal settings: the erosion of chosen likelihoods -- a failure we term
+  Visual Anchor Collapse -- causes models to abandon visual evidence for
+  strong language priors, precipitating significant hallucinations. To address
+  this, we propose Asymmetric Constrained Preference Optimization (ACPO), a
+  modality-ag"
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, high): The paper proposes an
+  asymmetric preference-optimization objective that prevents likelihood
+  displacement and reportedly reduces hallucination on multimodal benchmarks
+  relative to standard DPO. No claim has been drafted from it yet."
+ingested_at: 2026-11-07
+brief: >-
+  DPO on vision-language models can make hallucination worse than no alignment
+  at all: on POPE, standard DPO drops InternVL3-14B-Instruct from 88.48 to
+  86.89, because the symmetric objective pushes down the likelihood of tokens
+  shared between chosen and rejected responses.
+
+
+  ACPO replaces the symmetric penalty with a dynamically scaled coefficient
+  applied only to the rejected reward, derived in closed form from a
+  length-adaptive target margin (per-token advantage δ = 0.1) and wrapped in a
+  stop-gradient. It was trained on ~320K proprietary preference pairs on
+  InternVL3-Instruct 14B and 8B, against DPO, IPO, SimPO, β-DPO and DPO-Shift
+  on 11 benchmarks.
+
+
+  ACPO reaches 89.22 on POPE, 90.79 on AMBER, 0.570 on MM-IFEval (base 0.480,
+  DPO 0.500), 70.0 on HallusionBench, and 0.520 on OCRBench_v2 ZH, best on 8
+  of 11 benchmarks at 8B. Training curves show the chosen reward stabilizing
+  near +10 versus roughly +2 for DPO, with a margin of ~30 versus ~27.
+
+
+  Baselines were trained on the same data with matched sweeps and the ablation
+  isolates both components, with α = 1 reverting POPE to 86.89 exactly.
+  Weaknesses: 1 model family, a proprietary preference set, a Gemini judge for
+  win rates reported without numbers, and no test on multi-turn or online RL.
+
+
+  If you are applying DPO to a VLM, check the chosen reward trajectory before
+  trusting the margin.
+brief_generated_at: 2026-11-07
+brief_model: claude-opus-5
+brief_source: full-text

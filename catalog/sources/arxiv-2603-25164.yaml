@@ -1,0 +1,72 @@
+id: arxiv-2603-25164
+ref: SRC-1025
+kind: paper
+title: "PIDP-Attack: Combining Prompt Injection with Database Poisoning
+  Attacks on Retrieval-Augmented Generation Systems"
+authors:
+  - Haozhen Wang
+  - Haoyue Liu
+  - Jionghao Zhu
+  - Zhichao Wang
+  - Yongxin Guo
+  - Xiaoying Tang
+year: 2026
+date: 2026-03-26
+arxiv_id: "2603.25164"
+url: https://arxiv.org/abs/2603.25164
+tags:
+  - ingested
+summary: Large Language Models (LLMs) have demonstrated remarkable performance
+  across a wide range of applications. However, their practical deployment is
+  often hindered by issues such as outdated knowledge and the tendency to
+  generate hallucinations. To address these limitations, Retrieval-Augmented
+  Generation (RAG) systems have been introduced, enhancing LLMs with external,
+  up-to-date knowledge sources. Despite their advantages, RAG systems remain
+  vulnerable to adversarial attacks, with data poisoning emerging as a
+  prominent threat. Existing poisoning-based attacks typically require prior
+  knowledge o
+notes: "Filed as a source on prompt-injection from the classifier's judgement
+  that the paper is about it (degrades, high): It proposes a compound
+  prompt-injection plus database-poisoning attack that raises attack success
+  rates 4-16% over PoisonedRAG, i.e., makes RAG systems more susceptible to
+  instructions planted in retrieved content. No claim has been drafted from it
+  yet."
+ingested_at: 2026-11-07
+brief: >-
+  Attacking a RAG system through both the query path and the corpus at once
+  removes the need to know the victim's query in advance, which is the main
+  constraint on existing poisoning attacks. PIDP-Attack appends a fixed
+  injection suffix carrying an attacker-chosen target question S to any
+  incoming query, and inserts n poisoned passages keyed on S into the corpus;
+  the suffix pulls those passages into the top-k, and they supply the evidence
+  that makes the generator emit the attacker's wrong answer.
+
+
+  Evaluation covers Natural Questions, HotpotQA and MS-MARCO in BEIR format, a
+  Contriever retriever, and 8 instruction-tuned LLMs, with defaults n=5, k=5
+  and strict substring matching on the target string.
+
+
+  Average ASR is 98.125% versus 92% for PoisonedRAG and 3.125% for GCG, with
+  gains of +4% to +16% on NQ and +5% to +12% on MS-MARCO. Ablations separate
+  the two vectors: prompt-only injection reaches 0% relaxed success on NQ and
+  MS-MARCO, Clean-RAG (injected query, clean corpus) reaches 68%–96% relaxed
+  on some models, and n=2 already gives >95% strict ASR on NQ and HotpotQA
+  while MS-MARCO climbs from ~30% at n=1 to >90% at n=5.
+
+
+  The comparison is matched on query IDs, retriever, prompt template and
+  target pair, and retrieval F1 is reported separately so retrieval-stage and
+  generation-stage effects can be told apart; sweeps use 3 models, 10 queries
+  per iteration, 10 iterations. No defended baseline is tested: the prompt
+  wrapper deliberately omits guardrails, sanitization or provenance checks.
+  The attack is retrieval-limited on noisy corpora, generation-limited on
+  refusal-prone models (ASR near 0), and dilution-limited at large k
+  (qwen2.5-7b falls from 97% at k=5 to 82% at k=10); 1 retriever, text only.
+
+
+  If you treat the query string as trusted in a RAG orchestrator, assume
+  poisoning requires knowing the query no longer holds.
+brief_generated_at: 2026-11-07
+brief_model: claude-opus-5
+brief_source: full-text

@@ -1,0 +1,46 @@
+arxiv_id: "2604.14199"
+title: "PolyBench: Benchmarking LLM Forecasting and Trading Capabilities on
+  Live Prediction Market Data"
+url: https://doi.org/10.48550/arxiv.2604.14199
+drafted_at: 2026-11-06
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: forecasting
+statement: "On live binary prediction markets with timestamp-locked order-book
+  and news snapshots, current LLMs state near-uniformly high confidence
+  (average ~0.81-0.87, and 0.8-0.9 in every event category) regardless of
+  domain volatility, so stated confidence separates profitable from
+  loss-making trades only weakly: five of seven models tested lost money while
+  declaring confidence as high as the two that gained."
+kind: observation
+backing_strength: single-paper
+scope_condition: Seven open- and closed-source models, 36,165 predictions over
+  5,097 resolved Polymarket markets collected 6-12 Feb 2026, with a
+  prompt-enforced 0.6 confidence floor for acting and a skip option.
+technique: ""
+proposed_technique: Score forecasts by confidence-weighted order-book-executed return
+technique_summary: Scales each trade's simulated capital by the model's stated
+  confidence and executes it against the recorded CLOB snapshot, so
+  overconfident wrong calls are penalised and slippage is charged.
+technique_kind: process
+technique_validated_by: Compared against unweighted return and directional
+  accuracy over 36,165 predictions; confidence-weighted return exceeded the
+  unweighted return for all seven models, and degraded as base lot size rose
+  from $10 to $1,000 due to order-book depth.
+stance_on_existing: supports
+related_claim_id: llm-based-forecasting-systems-reported-benchmark-gains-often-cannot-be
+stance_reason: It shows directional accuracy on self-selected trades does not
+  track financial outcome, so accuracy-based forecasting results overstate
+  usable skill.
+falsifier: A model whose declared confidence varies systematically with domain
+  volatility, or whose confidence predicts realised return well enough that
+  confidence weighting leaves aggregate return roughly unchanged.
+evidence_note: Measured on one 7-day collection window with a single week of
+  resolutions, no repeated runs, no significance tests, and self-selected
+  trades (skips excluded), so model ranking is a single-sample reading; the
+  flat-confidence pattern is shown by a radar chart over eight categories for
+  three models plus per-model averages.
+confidence: medium
+problems:
+  - "figures not in the source: 0.81"

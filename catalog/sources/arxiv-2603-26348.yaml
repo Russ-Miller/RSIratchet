@@ -1,0 +1,67 @@
+id: arxiv-2603-26348
+ref: SRC-1032
+kind: paper
+title: "Reflect to Inform: Boosting Multimodal Reasoning via
+  Information-Gain-Driven Verification"
+authors:
+  - Shuai Lv
+  - Chang Liu
+  - Feng Tang
+  - Yujie Yuan
+  - Aojun Zhou
+  - Kui Zhang
+year: 2026
+date: 2026-03-27
+arxiv_id: "2603.26348"
+url: https://arxiv.org/abs/2603.26348
+tags:
+  - ingested
+summary: "Multimodal Large Language Models (MLLMs) achieve strong multimodal
+  reasoning performance, yet we identify a recurring failure mode in long-form
+  generation: as outputs grow longer, models progressively drift away from
+  image evidence and fall back on textual priors, resulting in ungrounded
+  reasoning and hallucinations. Interestingly, Based on attention analysis, we
+  find that MLLMs have a latent capability for late-stage visual verification
+  that is present but not consistently activated. Motivated by this
+  observation, we propose Visual Re-Examination (VRE), a self-evolving
+  training framework that"
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, high): The paper proposes a
+  self-evolving training framework (VRE) that triggers latent visual
+  re-verification and reports substantially reduced hallucinations in
+  long-chain multimodal generation. No claim has been drafted from it yet."
+ingested_at: 2026-11-07
+brief: >-
+  Making a multimodal model re-read its own reasoning trace with the same
+  visual backbone, and rewarding only reflections that add new image evidence,
+  raises both perception and reasoning scores without any tool use or extra
+  visual input. The authors frame the target failure as "visual drift":
+  attention to image tokens decays monotonically as generation lengthens, and
+  the model falls back on text priors.
+
+
+  VRE builds on Qwen2.5-VL-7B. Rollouts (N=8) are partitioned by pass rate
+  into stable/unstable/intractable; unstable traces are re-fed to the same
+  policy to synthesize elaborative, corrective, or recheck reflections, then
+  cold-start SFT (~80k Thyme-SFT), GRPO with a format/accuracy/reflection
+  reward judged by Qwen2.5-72B, and a post-RL self-distillation pass.
+
+
+  Gains over base: +7.4 on V*-Bench (83.8 overall), +5.1 on ChartQA (88.8),
+  +6.3/+7.5 on OCRBench_v2 en/zh, +3.0 MathVista, +3.9 MathVerse, +0.9 MMMU.
+  ChartQA Aug drops 4.5. Ablation separates stages: SFT alone moves MathVerse
+  only +0.4, RLVR adds +2.9, iterative SFT adds the rest.
+
+
+  Evidence is measured with a staged ablation and a GPT-5-distillation
+  comparison via KL divergence, plus entropy (1.08 vs 0.66 for Semantic-back)
+  as a redundancy proxy. But it is 1 base model, 1 size, reflection quality is
+  scored by an LLM that also supplies the training reward, and there is no
+  matched-token-budget baseline. RL collapses past 150 steps.
+
+
+  Useful if you suspected long-chain multimodal hallucination needs explicit
+  cropping tools; it may not.
+brief_generated_at: 2026-11-07
+brief_model: claude-opus-5
+brief_source: full-text

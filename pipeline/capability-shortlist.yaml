@@ -1,63 +1,75 @@
 # Consolidated capability candidates. Suggestions, not capabilities.
-generated_at: 2026-11-05
-from_raw_proposals: 21
+generated_at: 2026-11-06
+from_raw_proposals: 24
 recommended:
-  - id: fine-grained-visual-perception
-    label: "Seeing fine detail, layout, and viewpoint consistently"
-    scope_note: "Covers resolving small details, precise attributes, counting, spatial relations, visually similar subcategories, consistency across camera viewpoints, and deciding where to zoom in high-resolution images; excludes hallucination of absent objects and video temporal reasoning."
-    paper_count: 4
-    merged_from: [fine-grained-visual-perception, fine-grained-visual-recognition, viewpoint-invariance, active-visual-search]
-    note: "Four independent papers converge on the same failure mode — detail is lost before reasoning starts — and existing visual-grounding only covers whether an answer is tied to the image, not whether the model can see it."
-  - id: scientific-hypothesis-generation
-    label: "Generating and testing scientific hypotheses"
-    scope_note: "Covers proposing novel, evidence-grounded hypotheses and inferring, fitting, and discriminating mechanistic or symbolic models that explain measured data; excludes recalling known science and routine data analysis."
-    paper_count: 2
-    merged_from: [scientific-model-discovery, hypothesis-generation]
-    note: "Two papers hit the same capability from the hypothesis and the model-fitting side, and it is clearly separate from domain-knowledge recall."
-  - id: causal-reasoning
-    label: "Reasoning about cause and effect"
-    scope_note: "Covers causal judgment, interventions, confounding and collider structures, and explaining-away; excludes purely logical deduction and correlational statistics."
-    paper_count: 1
-    merged_from: [causal-reasoning]
-    note: "A long-standing, coherent capability distinct from the index's deduction and multi-step-reasoning entries, and a natural slot for the steady stream of causal benchmarks."
-  - id: rule-induction
-    label: "Inducing general rules from examples"
-    scope_note: "Covers inferring a general hypothesis or program consistent with positive and negative examples, including whether it survives anonymization of surface names; excludes deducing consequences from rules that were given."
-    paper_count: 1
-    merged_from: [rule-induction]
-    note: "Induction is the missing half of the index's deduction entry and is cheap to test, so it is worth a slot despite thin evidence so far."
-  - id: in-context-exploration
-    label: "Learning from interaction within a session"
-    scope_note: "Covers balancing exploration and exploitation and improving from trial-and-error feedback inside the context window without weight updates; excludes static few-shot prompting and cross-session memory."
-    paper_count: 1
-    merged_from: [in-context-exploration]
-    note: "Distinct from long-horizon-execution and self-repair in that it asks whether feedback actually changes behaviour, and it is increasingly load-bearing for agents."
   - id: offensive-security
-    label: "Finding and exploiting vulnerabilities offensively"
-    scope_note: "Covers agents solving capture-the-flag or penetration-testing tasks by discovering and exploiting a flaw in a live target; excludes writing secure code and spotting bugs in supplied source."
+    label: "Finding and exploiting vulnerabilities in real systems"
+    scope_note: "Covers agentic vulnerability discovery, exploit construction, and penetration testing against running targets; excludes writing secure code or spotting a bug in a given snippet."
+    paper_count: 2
+    merged_from: [offensive-security, offensive-security-exploitation]
+    note: "Two independent proposals and a clear complement to the existing defensive secure-coding and debugging entries."
+  - id: streaming-interaction
+    label: "Responding at the right moment while input is still arriving"
+    scope_note: "Covers acting on partially received streaming audio/video/text under latency constraints, including when to speak or stay silent; excludes offline understanding of a complete recording."
+    paper_count: 2
+    merged_from: [streaming-response-timing, streaming-interaction]
+    note: "Converged proposals on a real-time axis that offline audio-understanding and video entries do not capture."
+  - id: spatial-and-imagery-reasoning
+    label: "Reasoning about and with spatial structure in images"
+    scope_note: "Covers geometry, scale, position and topology judgements plus internal manipulation of visual states such as mental rotation; excludes hallucinating absent objects and video temporal tracking."
+    paper_count: 2
+    merged_from: [visual-spatial-reasoning, visual-imagery-reasoning]
+    note: "Recurring and distinct from visual-grounding, which is about faithfulness to a given image rather than spatial inference."
+  - id: privacy-leakage
+    label: "Leaking information it should not share"
+    scope_note: "Covers verbatim memorization and membership exposure of training data as well as violations of contextual norms about whose information may be told to whom; excludes general harmful-content refusal."
+    paper_count: 2
+    merged_from: [training-data-memorization, contextual-privacy]
+    note: "Privacy is a substantial safety axis with no existing entry, and the two proposals are two faces of the same failure."
+  - id: training-data-poisoning-robustness
+    label: "Resisting poisoned or backdoored training data"
+    scope_note: "Covers hijacking of behavior via corrupted fine-tuning data including transferred poisoned reasoning traces; excludes inference-time prompt injection and jailbreaks."
     paper_count: 1
-    merged_from: [vulnerability-exploitation]
-    note: "A high-stakes capability with its own benchmark ecosystem that neither secure-coding nor error-detection captures."
+    merged_from: [training-data-poisoning-robustness]
+    note: "Train-time attack surface is coherent and clearly outside the existing inference-time robustness entries."
+  - id: evaluation-awareness
+    label: "Behaving differently when it senses it is being tested"
+    scope_note: "Covers detecting evaluation, audit, or training contexts and concealing propensities that would appear in deployment; excludes ordinary deception toward a user and reward hacking against a scored metric."
+    paper_count: 1
+    merged_from: [evaluation-awareness]
+    note: "Single paper here but a fast-growing safety concern that undercuts every other measurement in the index."
+  - id: world-model-simulation
+    label: "Predicting what an action will do before doing it"
+    scope_note: "Covers forecasting consequences of candidate actions in an environment, including rare high-impact outcomes; excludes ordering plan steps and actual execution."
+    paper_count: 1
+    merged_from: [environment-outcome-simulation]
+    note: "Distinct prerequisite for planning and embodied-control that neither entry currently isolates."
+  - id: temporal-reasoning
+    label: "Reasoning about time and elapsed duration"
+    scope_note: "Covers computing and applying dates, durations, and time-dependent constraints in text; excludes frame ordering in video, which the existing video entry covers."
+    paper_count: 1
+    merged_from: [temporal-reasoning]
+    note: "Broad, well-attested reasoning axis that the video-only entry leaves uncovered."
 set_aside:
-  - id: gui-grounding
-    note: "Largely a task domain sitting at the intersection of existing visual-grounding and tool-use entries."
-  - id: evidence-attribution
-    note: "Already split between retrieval-utilization and explanation-faithfulness; one paper does not justify a third entry."
-  - id: process-reward-model-reliability
-    note: "A narrower instance of critique, and framed around a training technique rather than a model capability."
-  - id: knowledge-unlearning
-    note: "This is an intervention evaluated on the model rather than something the model is good or bad at; fine-tuning-retention already covers the collateral-damage question."
-  - id: harness-invariance
-    note: "An important measurement concern but one that evaluation-validity already frames better than a standalone capability would."
-  - id: speech-text-capability-transfer
-    note: "A modality-gap finding that fits inside the existing audio-understanding entry."
-  - id: system-prompt-confidentiality
-    note: "A specific attack surface already reachable through prompt-injection and jailbreak-robustness."
-  - id: reward-and-task-specification-design
-    note: "A one-off framing of a code-generation task in an RL setting rather than a distinct capability."
-  - id: latent-reasoning-capacity
-    note: "An architecture research question, not a capability a deployed model can be said to have."
-  - id: face-attribute-inference
-    note: "Too narrow and single-source to earn an index slot."
-  - id: raster-image-synthesis-via-text
-    note: "A curiosity probe tied to one experimental setup rather than a capability anyone will track."
+  - id: user-personalization
+    note: "Plausible but thin, and in practice overlaps long-term-memory and procedure-following enough to wait for more evidence."
+  - id: language-control
+    note: "Narrow slice of multilingual-disparity rather than a separate capability."
+  - id: format-constrained-reasoning
+    note: "One-off framing of a prompting artifact, not a durable capability."
+  - id: problem-formalization
+    note: "Single paper and largely absorbed by multi-step-reasoning and formal-math."
+  - id: rule-extrapolation-ood
+    note: "One-off benchmark framing with no recurring evidence."
+  - id: data-analysis-workflow
+    note: "A task domain composed of existing entries (tool-use, code-generation, long-horizon-execution)."
+  - id: negation-understanding
+    note: "Already within logical-deduction-robustness."
+  - id: tool-availability-interference
+    note: "One-off effect sitting between tool-use and context-hygiene."
+  - id: code-semantics-over-identifiers
+    note: "A probe of code understanding rather than a separately trackable capability."
+  - id: chart-data-extraction
+    note: "Task domain under visual-grounding; not enough evidence to split out."
+  - id: image-geolocalization
+    note: "Too narrow a task to earn an index slot."

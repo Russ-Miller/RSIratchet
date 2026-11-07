@@ -1,0 +1,45 @@
+arxiv_id: "2604.01765"
+title: "DriveDreamer-Policy: A Geometry-Grounded World-Action Model for
+  Unified Generation and Planning"
+url: https://doi.org/10.48550/arxiv.2604.01765
+drafted_at: 2026-11-06
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: For LLM-backboned driving world-action models that jointly generate
+  future video and plan trajectories, adding an explicit depth-generation
+  branch whose embeddings are causally attended by the video and action
+  queries improves both future-video quality and closed-loop planning scores
+  over video-plus-action training alone.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Navsim v1/v2 navtest, single-stage training on navtrain only,
+  Qwen3-VL-2B backbone with Wan-2.1-1.3B video generator; depth labels come
+  from an off-the-shelf depth foundation model.
+technique: ""
+proposed_technique: Generate depth first, then condition video and action on it
+technique_summary: Appends separate depth, video and action query groups to an
+  LLM with a causal mask so video queries read depth context and action
+  queries read both, with lightweight diffusion experts decoding each
+  modality.
+technique_kind: architecture
+technique_validated_by: "Ablation on Navsim navtest: action-only 88.0 PDMS,
+  depth+action 88.5, video+action 88.9, depth+video+action 89.2; video quality
+  improved from FVD 65.82 to 53.59 and LPIPS 0.22 to 0.20 when depth was
+  trained jointly; depth AbsRel 8.1 vs 9.3 for a fine-tuned depth-only
+  baseline."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A replication in which adding the depth branch and causal
+  depth-to-video-to-action conditioning leaves planning score and video FVD
+  unchanged or worse at matched compute, or in which the same gain is obtained
+  by adding equivalent query/parameter capacity with no depth target.
+evidence_note: Measured on one benchmark family (Navsim navtest) with one
+  backbone; the ablation isolates depth vs video targets but not added
+  parameter capacity, and the query-count ablation shows capacity alone also
+  moves scores, so the depth-specific contribution is confounded with extra
+  capacity. Depth is scored against pseudo-labels from the same model used for
+  training.
+confidence: medium

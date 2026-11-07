@@ -1,0 +1,72 @@
+id: arxiv-2603-25412
+ref: SRC-1026
+kind: paper
+title: "Beyond Content Safety: Real-Time Monitoring for Reasoning
+  Vulnerabilities in Large Language Models"
+authors:
+  - Xunguang Wang
+  - Yuguang Zhou
+  - Qingyue Wang
+  - Zongjie Li
+  - Ruixuan Huang
+  - Zhenlan Ji
+year: 2026
+date: 2026-03-26
+arxiv_id: "2603.25412"
+url: https://arxiv.org/abs/2603.25412
+tags:
+  - ingested
+summary: "Large language models increasingly rely on explicit chain-of-thought
+  reasoning to solve complex tasks, yet the safety of the reasoning process
+  itself remains largely unaddressed. Existing work focuses predominantly on
+  content safety (i.e., detecting harmful, biased, or factually incorrect
+  outputs), while treating the underlying reasoning chain as an opaque
+  intermediate artifact. We argue that reasoning safety constitutes a
+  fundamental security dimension orthogonal to content safety: the requirement
+  that a model's reasoning trajectory be logically consistent, computationally
+  efficient, and resi"
+notes: "Filed as a source on multi-step-reasoning from the classifier's
+  judgement that the paper is about it (improves, low): The paper proposes a
+  step-level zero-shot monitor that localizes unsafe/flawed reasoning steps
+  with up to 87% accuracy, beating hallucination detectors and process reward
+  models, i.e., improving detection of broken inference chains. No claim has
+  been drafted from it yet."
+ingested_at: 2026-11-07
+brief: >-
+  Prompting an off-the-shelf LLM with an explicit 9-type error taxonomy turns
+  it into a step-level reasoning-error localizer; remove the taxonomy and the
+  same model collapses on structural failures like reasoning loops.
+
+
+  The authors define "reasoning safety" (logical consistency, computational
+  efficiency, manipulation resistance), annotate 4,155 chains from
+  ProcessBench (Omni-MATH, GSM8K) plus 4 attacks (BadChain, Preemptive Answer
+  Attack, OverThink, Deadlock), and build a parallel monitor that inspects
+  each \n\n-delimited step and can interrupt generation.
+
+
+  On a 450-chain static benchmark, position accuracy reaches 87.11% with
+  Gemini-3-Flash, versus 68.00% for Qwen2.5-Math-PRM-7B and 36.22% for the
+  LLM-as-Critic hallucination baseline; false positive rate on 193 clean
+  chains is 1.04% vs 84.46% for LCM. BadChain ASR falls from 0.78 to 0.00 on
+  DeepSeek-V3.2; Deadlock token amplification drops from 33.86x to 0.11x on
+  DeepSeek-R1-Distill-Llama-8B.
+
+
+  The taxonomy ablation is the cleanest evidence: identical prompt minus
+  taxonomy drops Gemini-3-Flash reasoning-loop localization from 94.00% to
+  2.00%, overall 87.11% to 63.11%. Weaknesses: no matched-token-budget
+  baseline, PRM thresholding details thin, monitor latency measured only under
+  attack, and ground truth comes from the authors' own annotation by majority
+  vote.
+
+
+  Missing-constraint errors stay hard (42.00% at best). Attacks are 4 known
+  ones; adaptive evasion is claimed but not shown here.
+
+
+  If you are building CoT guardrails, the taxonomy in the prompt, not the
+  backend model, is the lever.
+brief_generated_at: 2026-11-07
+brief_model: claude-opus-5
+brief_source: full-text

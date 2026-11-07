@@ -1,0 +1,46 @@
+arxiv_id: "2604.03045"
+title: "STEAR: Layer-Aware Spatiotemporal Evidence Intervention for
+  Hallucination Mitigation in Video Large Language Models"
+url: https://doi.org/10.48550/arxiv.2604.03045
+drafted_at: 2026-11-06
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: "For 7-8B video LLMs, inference-time hallucination intervention is
+  only effective when it is layer- and step-selective: reinjecting
+  token-conditioned visual evidence into grounding-sensitive middle decoder
+  layers at high-uncertainty decoding steps lowers event-hallucination error,
+  while applying the same intervention at every token or at late layers gives
+  little or no gain over the untouched baseline."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Three 7-8B video-LLM backbones (LLaVA-Video-7B,
+  InternVL2.5-8B, Qwen2.5-VL-7B) on multiple-choice hallucination and video-QA
+  benchmarks; middle layers defined as decoder layers 5-16.
+technique: ""
+proposed_technique: Repair grounding in middle layers, only at risky tokens
+technique_summary: At decoding steps with high token entropy, select the
+  top-attention visual patches from middle-layer cross-attention, reinject
+  them as key-value memory into those same middle layers, and additionally
+  branch a temporally perturbed copy of the same patches for late-layer
+  contrastive decoding, all within one video encoding pass.
+technique_kind: decoding
+technique_validated_by: Accuracy on EventHallusion, VidHalluc, NExT-QA and
+  MVBench across three backbones against VCD, MemVR, TCD and DINO-HEAL
+  baselines, plus ablations removing the uncertainty trigger (54.77 to 48.41
+  on EventHallusion) and relocating reinjection to early (49.63) or late
+  (47.19, below the 47.43 baseline) layers.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Applying the same evidence reinjection uniformly at all decoding
+  steps, or at late decoder layers, matching or beating the selective
+  middle-layer version on the same backbones and benchmarks.
+evidence_note: Measured on four benchmarks and three backbones with four
+  inference-time baselines; the layer and trigger ablations are
+  single-backbone (LLaVA-Video-7B) and reported without variance, and the
+  grounding-score diagnostic relies on the paper's own benchmark-annotation
+  projection. Gains on general video understanding (MVBench) are small, so the
+  result is concentrated on hallucination-sensitive splits.
+confidence: medium
