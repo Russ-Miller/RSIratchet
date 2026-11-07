@@ -1,69 +1,63 @@
 # Consolidated capability candidates. Suggestions, not capabilities.
-generated_at: 2026-10-31
-from_raw_proposals: 28
+generated_at: 2026-11-05
+from_raw_proposals: 21
 recommended:
-  - id: spatial-reasoning
-    label: "Reasoning about space, 3D layout and affordances"
-    scope_note: "Covers metric and relational spatial judgments, 3D scene/depth understanding, and inferring how objects can be acted on; excludes temporal video reasoning and plain object grounding."
-    paper_count: 4
-    merged_from: [spatial-reasoning, 3d-spatial-understanding, affordance-reasoning]
-    note: "Recurring across several papers and clearly distinct from visual-grounding and video-temporal-reasoning."
-  - id: scientific-discovery
-    label: "Proposing and deriving new scientific results"
-    scope_note: "Covers hypothesis generation scored against data, multi-step symbolic derivation and causal identification/study design; excludes factual science QA and literature summarization."
-    paper_count: 3
-    merged_from: [scientific-hypothesis-search, scientific-derivation, causal-inference-design]
-    note: "Three papers point at generative scientific reasoning, which domain-knowledge and formal-math do not cover."
-  - id: adversarial-robustness
-    label: "Holding up under adversarial inputs and planted triggers"
-    scope_note: "Covers optimized perturbations, transfer attacks and poisoned/backdoor triggers that flip behavior; excludes prompt-level jailbreaks and injected instructions in retrieved data."
-    paper_count: 2
-    merged_from: [adversarial-perturbation-robustness, backdoor-robustness]
-    note: "Two independent papers on input-level and training-level attacks that no existing entry covers."
-  - id: compression-retention
-    label: "Keeping behavior after compression"
-    scope_note: "Covers whether quantization, pruning, distillation or KV-cache eviction preserves accuracy, robustness and outputs; excludes changes from task fine-tuning or alignment."
-    paper_count: 2
-    merged_from: [compression-retention, kv-cache-compression-fidelity]
-    note: "Clean analogue to fine-tuning-retention with two supporting papers."
-  - id: information-seeking
-    label: "Asking the questions that resolve uncertainty"
-    scope_note: "Covers actively eliciting missing evidence and updating hypotheses from user critiques across interaction rounds; excludes static QA and self-repair of its own errors."
-    paper_count: 2
-    merged_from: [information-seeking, learning-from-language-feedback]
-    note: "Two papers converge on interactive uncertainty reduction, a gap between abstention and procedure-following."
-  - id: uncertainty-calibration
-    label: "Knowing how likely its answer is right"
-    scope_note: "Covers whether stated or elicited confidence tracks actual accuracy; excludes outright refusal, which abstention-and-self-knowledge covers."
-    paper_count: 1
-    merged_from: [uncertainty-calibration]
-    note: "Calibration is a well-established, separately measurable axis that the abstention entry does not capture."
-  - id: over-refusal
-    label: "Refusing harmless requests"
-    scope_note: "Covers rejection of benign queries that superficially resemble risky ones and the helpfulness cost of alignment; excludes failures to refuse genuinely harmful requests."
-    paper_count: 1
-    merged_from: [over-refusal]
-    note: "The necessary counterpart to jailbreak-robustness; without it the index only measures one direction of safety."
-set_aside:
-  - id: social-reasoning
-    note: "Thin and heterogeneous evidence; turn-taking and theory-of-mind are not really one capability yet."
   - id: fine-grained-visual-perception
-    note: "Largely subsumed by visual-grounding; the split is a task-domain distinction rather than a new capability."
-  - id: niche-code-generation
-    note: "These are task variants of code-generation, not separate capabilities."
-  - id: answer-format-consistency
-    note: "One-off framing that evaluation-validity and judge-position-bias already touch."
-  - id: persona-adherence
-    note: "Single paper, and largely covered by procedure-following, sycophancy and goal-conflict-safety."
-  - id: moral-reasoning
-    note: "One-off framing that overlaps cultural-competence and sycophancy."
-  - id: rule-extension-generalization
-    note: "Too abstract and single-sourced; overlaps logical-deduction-robustness and knowledge-updating."
-  - id: physical-consistency
-    note: "One-off, domain-specific instance of hallucination and domain-knowledge."
-  - id: adversarial-game-play
-    note: "A task domain rather than a capability; planning already covers the core skill."
-  - id: machine-text-detection
-    note: "A classification task about models, not a capability of the model being indexed."
-  - id: rubric-generation
-    note: "Single paper and effectively a sub-skill of critique and evaluation-validity."
+    label: "Seeing fine detail, layout, and viewpoint consistently"
+    scope_note: "Covers resolving small details, precise attributes, counting, spatial relations, visually similar subcategories, consistency across camera viewpoints, and deciding where to zoom in high-resolution images; excludes hallucination of absent objects and video temporal reasoning."
+    paper_count: 4
+    merged_from: [fine-grained-visual-perception, fine-grained-visual-recognition, viewpoint-invariance, active-visual-search]
+    note: "Four independent papers converge on the same failure mode — detail is lost before reasoning starts — and existing visual-grounding only covers whether an answer is tied to the image, not whether the model can see it."
+  - id: scientific-hypothesis-generation
+    label: "Generating and testing scientific hypotheses"
+    scope_note: "Covers proposing novel, evidence-grounded hypotheses and inferring, fitting, and discriminating mechanistic or symbolic models that explain measured data; excludes recalling known science and routine data analysis."
+    paper_count: 2
+    merged_from: [scientific-model-discovery, hypothesis-generation]
+    note: "Two papers hit the same capability from the hypothesis and the model-fitting side, and it is clearly separate from domain-knowledge recall."
+  - id: causal-reasoning
+    label: "Reasoning about cause and effect"
+    scope_note: "Covers causal judgment, interventions, confounding and collider structures, and explaining-away; excludes purely logical deduction and correlational statistics."
+    paper_count: 1
+    merged_from: [causal-reasoning]
+    note: "A long-standing, coherent capability distinct from the index's deduction and multi-step-reasoning entries, and a natural slot for the steady stream of causal benchmarks."
+  - id: rule-induction
+    label: "Inducing general rules from examples"
+    scope_note: "Covers inferring a general hypothesis or program consistent with positive and negative examples, including whether it survives anonymization of surface names; excludes deducing consequences from rules that were given."
+    paper_count: 1
+    merged_from: [rule-induction]
+    note: "Induction is the missing half of the index's deduction entry and is cheap to test, so it is worth a slot despite thin evidence so far."
+  - id: in-context-exploration
+    label: "Learning from interaction within a session"
+    scope_note: "Covers balancing exploration and exploitation and improving from trial-and-error feedback inside the context window without weight updates; excludes static few-shot prompting and cross-session memory."
+    paper_count: 1
+    merged_from: [in-context-exploration]
+    note: "Distinct from long-horizon-execution and self-repair in that it asks whether feedback actually changes behaviour, and it is increasingly load-bearing for agents."
+  - id: offensive-security
+    label: "Finding and exploiting vulnerabilities offensively"
+    scope_note: "Covers agents solving capture-the-flag or penetration-testing tasks by discovering and exploiting a flaw in a live target; excludes writing secure code and spotting bugs in supplied source."
+    paper_count: 1
+    merged_from: [vulnerability-exploitation]
+    note: "A high-stakes capability with its own benchmark ecosystem that neither secure-coding nor error-detection captures."
+set_aside:
+  - id: gui-grounding
+    note: "Largely a task domain sitting at the intersection of existing visual-grounding and tool-use entries."
+  - id: evidence-attribution
+    note: "Already split between retrieval-utilization and explanation-faithfulness; one paper does not justify a third entry."
+  - id: process-reward-model-reliability
+    note: "A narrower instance of critique, and framed around a training technique rather than a model capability."
+  - id: knowledge-unlearning
+    note: "This is an intervention evaluated on the model rather than something the model is good or bad at; fine-tuning-retention already covers the collateral-damage question."
+  - id: harness-invariance
+    note: "An important measurement concern but one that evaluation-validity already frames better than a standalone capability would."
+  - id: speech-text-capability-transfer
+    note: "A modality-gap finding that fits inside the existing audio-understanding entry."
+  - id: system-prompt-confidentiality
+    note: "A specific attack surface already reachable through prompt-injection and jailbreak-robustness."
+  - id: reward-and-task-specification-design
+    note: "A one-off framing of a code-generation task in an RL setting rather than a distinct capability."
+  - id: latent-reasoning-capacity
+    note: "An architecture research question, not a capability a deployed model can be said to have."
+  - id: face-attribute-inference
+    note: "Too narrow and single-source to earn an index slot."
+  - id: raster-image-synthesis-via-text
+    note: "A curiosity probe tied to one experimental setup rather than a capability anyone will track."

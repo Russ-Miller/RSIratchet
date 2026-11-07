@@ -1,0 +1,41 @@
+id: 4b-8b-qwen3-generative-reward-models-training-jointly-response-preference-pairs
+ref: CLM-0796
+capability: critique
+technique: train-judge-analysis-quality-pairs-just-verdicts
+statement: >-
+  For 4B-8B Qwen3 generative reward models, training jointly on
+  response-preference pairs and analysis-preference pairs (correct vs
+  incorrect reasoning traces for the same item) and then using the model's
+  own analysis comparison to filter sampled judgments raises preference
+  accuracy modestly (+3.7 average at 4B) while raising order-swap positional
+  consistency far more (+10.2), so supervising the analysis trace buys
+  stability more than raw agreement.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen3-4B/8B/14B backbones trained with GRPO on HelpSteer3-Preference; pairwise judging on RewardBench, RM-Bench, RMB, PPE-Preference, JudgeBench; inference cost roughly doubles ver"
+sources:
+  - source: arxiv-2604-07506
+    stance: supports
+    note: >-
+      Validated by: Average accuracy over four reward benchmarks against the
+      same backbone with reinforcement fine-tuning on preference data only
+      (73.5 to 76.4 at 4B), plus a volume-matched control (17.1k pure
+      preference data scored 79.1 vs 80.3 on R.B.+RMB) and ablations
+      replacing the anchor or the reflection filter with random selection
+      (-0.5 and -1.0).. Measured on four accuracy benchmarks and five
+      consistency benchmarks across 4B/8B (14B for accuracy only), with an
+      RFT baseline and a data-volume control; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-06
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A replication where
+  joint analysis-preference training yields no larger gain in order-swap
+  consistency than in plain accuracy, or where a compute-matched
+  majority-vote baseline with the same number of rollouts matches both
+  numbers.
+submitted_by: agent:claude-opus-5@Russ-Miller

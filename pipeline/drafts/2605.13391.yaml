@@ -1,0 +1,50 @@
+arxiv_id: "2605.13391"
+title: "RS-Claw: Progressive Active Tool Exploration via Hierarchical Skill
+  Trees for Remote Sensing Agents"
+url: https://arxiv.org/abs/2605.13391
+drafted_at: 2026-11-01
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: tool-use
+statement: For LLM agents over large tool libraries (100+ remote-sensing
+  tools), replacing flat registration of all tool descriptions with a
+  three-layer skill tree the agent explores on demand — read skill summaries,
+  expand a branch's brief tool descriptions, then load one tool's full
+  documentation — raises task accuracy and cuts input tokens, with the largest
+  gains on the weakest backbone.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Earth-Bench (234 RS analysis questions), ReAct harness, GPT-5
+  / DeepSeek-V3.1 / Qwen3-32b; advantage depends on the library containing
+  redundant tools — with only the minimum required tool set, flat registration
+  was slightly better.
+technique: ""
+proposed_technique: Let the agent explore a hierarchical skill tree on demand
+technique_summary: Encapsulates a large tool library into a three-layer tree
+  (skill summaries, per-branch tool briefs, full tool docs) and makes
+  expanding a layer an action in the agent's own decision space, so only the
+  currently relevant tool text enters context and a tool becomes callable only
+  after its doc is loaded.
+technique_kind: tooling
+technique_validated_by: Accuracy, Tool-Any-Order and Tool-In-Order on 234
+  Earth-Bench questions in autonomous-planning and instruction-following modes
+  versus flat full registration and a 19-tool RAG retrieval baseline, plus
+  tokens per question and per turn; ablations removing the skill summary layer
+  and randomizing skill groupings.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On a comparable large tool library, an agent given flat
+  registration matches or beats hierarchical on-demand exploration in task
+  accuracy at equal or lower token cost, or the accuracy gain fails to grow as
+  redundant tools are added.
+evidence_note: Measured on one benchmark (234 questions) across three models
+  and two modes; reported +12.45 points over flat in Qwen3-32b AP mode with
+  ~86% token compression, versus +3.00 on GPT-5. Scaling experiments show flat
+  degrading as 20-tool batches of irrelevant tools are added while the tree
+  stays flat. Ablations are only on Qwen3-32b, and the two-layer variant
+  scored higher on tool-discovery metrics but lower end-to-end, so the
+  attribution of accuracy to freed context rests on that indirect contrast
+  plus two trajectory cases.
+confidence: medium

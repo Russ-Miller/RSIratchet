@@ -1,0 +1,49 @@
+arxiv_id: "2604.25276"
+title: "OmniVTG: A Large-Scale Dataset and Training Paradigm for Open-World
+  Video Temporal Grounding"
+url: https://doi.org/10.48550/arxiv.2604.25276
+drafted_at: 2026-11-02
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: video-temporal-reasoning
+statement: For 7B video MLLMs, timestamp accuracy is higher when the model
+  emits dense timestamped captions than when it localizes a given query
+  directly, and the same gap shows up in auxiliary understanding tasks
+  (query-clip matching, event-status classification) being more stable across
+  rare and common concepts than direct grounding — so grounding can be
+  improved by having the model first predict a coarse span and then revise it
+  with those understanding checks.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Open-world video temporal grounding with Qwen2.5-VL-7B and
+  Gemini-2.5-Pro; measured on the authors' own dataset plus four public VTG
+  benchmarks under zero-shot transfer.
+technique: ""
+proposed_technique: Predict a coarse span, then self-correct it with understanding checks
+technique_summary: Train the model in three stages — multi-task SFT on
+  grounding plus query-clip matching and event-status classification, then CoT
+  fine-tuning on 'predict an enclosing coarse segment, then zoom to the
+  target' traces, then GRPO on hard cases — so grounding predictions are
+  revised using the model's stronger understanding skills.
+technique_kind: training
+technique_validated_by: R1@0.5 on the authors' test set and four public VTG
+  benchmarks against Time-R1, UniTime and the untuned backbone; staged
+  ablation shows SFT+CoT+RL 63.3 / 62.4 (rare) / 39.8 (ActivityNet) versus SFT
+  alone 62.3 / 59.6 / 25.6 and SFT+RL without CoT 62.8 / 60.6 / 37.2, with
+  content-aware coarse spans beating randomly shifted ones.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Show that on a held-out benchmark the dense-caption timestamps are
+  no more accurate than direct grounding for the same model, or that the
+  predict-then-correct CoT stage adds nothing over SFT+RL at matched training
+  compute and data.
+evidence_note: Measured, single paper, one backbone (Qwen2.5-VL-7B) with a
+  staged ablation; the caption-vs-grounding accuracy gap is reported from a
+  manual check of Gemini-2.5-Pro outputs with no sample size given, and the
+  authors' train and test sets share a distribution, so the rare-concept
+  robustness rests mainly on the smaller ActivityNet rare split. No
+  matched-compute control separating the extra CoT training from the extra
+  tokens it adds.
+confidence: low

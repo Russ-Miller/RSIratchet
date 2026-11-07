@@ -1,0 +1,49 @@
+arxiv_id: "2604.19071"
+title: "HoWToBench: Holistic Evaluation for LLM's Capability in Human-level
+  Writing using Tree of Writing"
+url: https://arxiv.org/abs/2604.19071
+drafted_at: 2026-11-04
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: critique
+statement: When an LLM judges long open-ended writing by sub-features, having
+  a separate call fix the aggregation weights for each instruction before any
+  sub-scores are produced agrees with human rankings better than letting the
+  judge plan and aggregate sub-scores in one pass, and it cuts run-to-run
+  drift in how much each sub-score contributes.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Chinese writing tasks of roughly thousand-character length
+  across 12 genres (completion, outline-guided, open), GPT-4o as the judge,
+  system-level correlation against 221 human-rated instructions.
+technique: ""
+proposed_technique: Fix sub-feature weights before scoring, not during
+technique_summary: A separate LLM call assigns per-instruction weights to leaf
+  evaluation traits (content, format, impression sub-features) in a fixed
+  tree, and leaf scores are then aggregated by those weights rather than by
+  the judge's own implicit combination.
+technique_kind: process
+technique_validated_by: "System-level Pearson/Kendall/Spearman against human
+  rankings of 9 LLM outputs on 221 instructions: 0.93/0.83/0.93 overall vs
+  0.89/0.67/0.87 best auto-planned rubric and 0.88/0.67/0.83 best auto-plan,
+  at comparable cost; contribution-share fluctuation across 5 trials fell from
+  mean 0.273 to 0.080; perturbation test (dropped or repeated paragraphs,
+  genre transfer) lowered scores under the tree method while auto-planning and
+  BLEU sometimes rose."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On a comparable long-form writing set, a one-pass judge with
+  self-consistency matching or exceeding the explicit-weight tree's
+  correlation with human rankings at equal cost, or the explicit-weight
+  variant showing no lower trial-to-trial variation in sub-score contribution
+  shares.
+evidence_note: Measured on one Chinese benchmark with one judge model (GPT-4o)
+  and 10 generator models; human meta-evaluation set of 221 instructions, two
+  annotators each, Cohen's kappa 0.71. Correlations are system-level over only
+  ~10 systems, so rank statistics are coarse. The design does not separate the
+  gain from explicit weighting from the gain from the fixed three-node tree
+  itself, though a no-plan averaging ablation (0.89/0.61/0.82) partly isolates
+  it. Robustness test is 50 samples.
+confidence: medium

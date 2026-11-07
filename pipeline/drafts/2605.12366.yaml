@@ -1,0 +1,45 @@
+arxiv_id: "2605.12366"
+title: "Classifier Context Rot: Monitor Performance Degrades with Context Length"
+url: https://doi.org/10.48550/arxiv.2605.12366
+drafted_at: 2026-11-01
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: reward-hacking
+statement: When a language model is used as a monitor to classify whole agent
+  transcripts for dangerous actions, recall falls as the transcript grows, and
+  most sharply when the dangerous action sits in the middle of the context
+  rather than at the end.
+kind: observation
+backing_strength: single-paper
+scope_condition: Transcript-level monitoring of coding-agent transcripts up to
+  ~800K-1M tokens; localized (short-span) attacks, both subtle (MonitorBench
+  firewall disabling) and blatant injected needles; Opus 4.6, GPT 5.4, Gemini
+  3.1 Pro.
+technique: ""
+proposed_technique: Insert monitoring-task reminders between tool calls
+technique_summary: Repeats the monitor's classification instruction between
+  every tool call and tool response in the transcript being classified, and/or
+  monitors truncated sub-transcripts incrementally rather than only at the
+  end.
+technique_kind: prompting
+technique_validated_by: Recall on needle-injection and padded-MonitorBench
+  evaluations versus the same prompt without reminders, paired McNemar tests;
+  reminders raised needle detection for most models but not on subtle
+  MonitorBench attacks, at <3% input-token overhead and no increase in false
+  positives (verified <2% on clean transcripts).
+stance_on_existing: supports
+related_claim_id: long-context-accuracy-drops-in-the-middle-gpt-3-5-turbo
+stance_reason: Reproduces the middle-of-context penalty in a
+  classification/monitoring task rather than multi-document QA, with detection
+  worst when the attack is placed mid-transcript.
+falsifier: A frontier monitor showing flat or rising recall on the same
+  attacks as benign padding grows from 0 to 800K tokens, with position of the
+  attack having no effect.
+evidence_note: Measured on 148 MonitorBench transcripts padded with 80 real
+  Claude Code sessions plus injected-needle variants; Opus 4.6 recall
+  98.6%->88% with 800K prefill, 99.7%->69% for obvious needles at 100K vs
+  800K; false positives verified below 2%. The authors note higher detection
+  could partly reflect calibration differences between models, though not the
+  within-model length trend.
+confidence: high

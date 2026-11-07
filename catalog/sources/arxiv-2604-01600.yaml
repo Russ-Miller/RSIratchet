@@ -1,0 +1,66 @@
+id: arxiv-2604-01600
+ref: SRC-0894
+kind: paper
+title: "MM-ReCoder: Advancing Chart-to-Code Generation with Reinforcement
+  Learning and Self-Correction"
+authors:
+  - Zitian Tang
+  - Xu Zhang
+  - Jianbo Yuan
+  - Yang Zou
+  - Varad Gunjal
+  - Songyao Jiang
+year: 2026
+date: 2026-04-02
+arxiv_id: "2604.01600"
+url: https://arxiv.org/abs/2604.01600
+tags:
+  - ingested
+summary: Multimodal Large Language Models (MLLMs) have recently demonstrated
+  promising capabilities in multimodal coding tasks such as chart-to-code
+  generation. However, existing methods primarily rely on supervised
+  fine-tuning (SFT), which requires the model to learn code patterns through
+  chart-code pairs but does not expose the model to a code execution
+  environment. Moreover, while self-correction through execution feedback
+  offers a potential route to improve coding quality, even state-of-the-art
+  MLLMs have been shown to struggle with effective self-correction. In this
+  work, we introduce MM-ReCoder,
+notes: "Filed as a source on code-generation from the classifier's judgement
+  that the paper is about it (improves, high): The paper proposes an RL-based
+  self-correction training strategy that raises chart-to-code generation
+  accuracy and executability to state-of-the-art on three benchmarks. No claim
+  has been drafted from it yet."
+ingested_at: 2026-11-06
+brief: >-
+  Apparent self-correction gains on chart-to-code are mostly just fixing
+  crashes, not improving already-working code. Filtering to charts that
+  rendered in both turns, Qwen3-VL-8B's low-level score changes by -1.03% and
+  Qwen3-VL-235B-A22B's by -0.26%, even though their aggregate 2-turn scores
+  rise by 1.5% and 0.4% alongside execution-rate jumps of 10.7% and 2.3%.
+
+
+  MM-ReCoder trains Qwen2.5-VL-7B with SFT on Chart2Code-160k, a 7k-sample
+  multi-turn cold start distilled from Qwen3-VL-235B, then 2 GRPO stages:
+  shared-first-turn rollouts, then full-trajectory. Rewards mix rule-based
+  Matplotlib element extraction with a Qwen2.5-VL-72B judge. Evaluated on
+  ChartMimic, Plot2Code, ChartX.
+
+
+  At 4 turns it reaches 86.5 low-level and 84.9 high-level on ChartMimic and
+  98.5 pass rate on Plot2Code, with +0.30 low-level improvement on re-rendered
+  charts, 7.3% improved versus 4.5% degraded. Gains shrink each turn and go
+  negative by turn 5.
+
+
+  The rollout-strategy comparison is a real ablation: full-trajectory with no
+  bonus repeats the first turn in 46.9% of cases, and a self-correction bonus
+  of 0.1 makes the model sandbag turn 1 to 66.7 low-level. Reward-weight
+  ablations isolate rule-based versus model-based contributions.
+
+
+  Single base model, 1 domain, charts only; the model-based reward shares a
+  family with the evaluated policy. Treat reported multi-turn gains elsewhere
+  as executability artifacts until filtered.
+brief_generated_at: 2026-11-06
+brief_model: claude-opus-5
+brief_source: full-text

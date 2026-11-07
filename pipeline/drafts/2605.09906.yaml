@@ -1,0 +1,43 @@
+arxiv_id: "2605.09906"
+title: "Separate First, Fuse Later: Mitigating Cross-Modal Interference in
+  Audio-Visual LLMs Reasoning with Modality-Specific Chain-of-Thought"
+url: https://doi.org/10.48550/arxiv.2605.09906
+drafted_at: 2026-11-04
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: In audio-visual LLMs, marking separate audio and visual reasoning
+  segments with chain-of-thought tags does not by itself stop cross-modal
+  leakage — because causal attention still lets each segment read the other
+  modality's input tokens — so enforcing the separation with an attention mask
+  that blocks those query-key pairs is what delivers stable gains on
+  cross-modal hallucination and general AVQA.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Qwen2.5-Omni-7B and Qwen3-Omni-30B-A3B backbones on AVHBench
+  and AVQA-style benchmarks; both train-free and GRPO-trained variants.
+technique: ""
+proposed_technique: Mask cross-modal attention during separated audio/visual CoT
+technique_summary: Tags split the reasoning trace into visual-only and
+  audio-only spans, and an asymmetric attention mask stops visual reasoning
+  tokens attending to audio inputs and audio reasoning tokens attending to
+  video inputs or the visual span, with full cross-modal access restored only
+  in the fusion/answer span.
+technique_kind: architecture
+technique_validated_by: "Ablation on AVHBench (VAH/AVH/MIS) and AVQA:
+  train-free, tags alone moved MIS 66.36 to 74.89 but dropped AVH 81.95 to
+  79.93 and left AVQA flat; adding the mask raised AVH to 83.98 and AVQA 89.61
+  to 92.11. Same ordering under GRPO training. No comparison against other
+  isolation schemes such as two separate forward passes."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation on comparable audio-visual backbones where tag-only
+  separated CoT matches the attention-masked variant on both hallucination and
+  general AVQA metrics, or where the mask gives no gain over tags alone.
+evidence_note: Measured on one paper's ablation table across two conditions
+  (train-free, GRPO) on AVHBench's three subsets plus AVQA; the direction is
+  consistent but the comparison is within one model family's omni backbones
+  and the mask is never isolated from the tag scheme it depends on.
+confidence: medium

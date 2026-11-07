@@ -1,0 +1,51 @@
+arxiv_id: "2605.24919"
+title: "MultiHaluDet: Multilingual Hallucination Detection via LLM Hidden
+  State Probing"
+url: https://doi.org/10.48550/arxiv.2605.24919
+drafted_at: 2026-11-01
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: For hidden-state probes trained to detect hallucination in frozen
+  7B open models (Mistral-7B, LLaMA2-7B), detection accuracy falls with the
+  language's resource level even when the probe is trained once and applied
+  without language-specific tuning, because the internal representations the
+  probe reads are themselves weaker in low-resource languages — AUROC on
+  HaluEval drops from ~98 in English to ~96 (French), ~89 (Bangla) and ~78
+  (Amharic).
+kind: observation
+backing_strength: single-paper
+scope_condition: White-box access to a 7B-class frozen LLM; benchmarks
+  machine-translated from English (HaluEval, TriviaQA) with human spot-check,
+  not natively authored prompts; detector trained on labelled QA pairs.
+technique: ""
+proposed_technique: Probe the whole layer-depth trajectory, not one layer
+technique_summary: Extracts per-layer statistical descriptors across uniformly
+  sampled depths of a frozen LLM, encodes them with multi-scale attention and
+  a layer-weighted transformer, and feeds out-of-fold embeddings to a stacked
+  classifier ensemble.
+technique_kind: architecture
+technique_validated_by: "AUROC on HaluEval and TriviaQA with Mistral-7B and
+  LLaMA2-7B against 13 baselines (confidence, consistency, single-layer
+  probes, neural ODE/CDE/SDE trajectory models); reported 98.3-98.6 vs best
+  baseline 85.1-95.4. Ablations: removing out-of-fold stacking costs ~10 AUROC
+  points, multi-scale attention ~7, final-layer-only trajectory ~5."
+stance_on_existing: supports
+related_claim_id: open-weight-7-8b-instruct-models-supervised-detector-built-how-hidden
+stance_reason: The ablation replacing trajectory probing with a static
+  final-layer representation costs about 5 AUROC points, agreeing that the
+  depth trajectory carries signal a single layer does not.
+falsifier: A hidden-state probe trained the same way reaching English-level
+  AUROC on Amharic or other low-resource languages, or the gap disappearing
+  when natively authored (untranslated) low-resource prompts are used, which
+  would attribute it to translation artifacts rather than representation
+  quality.
+evidence_note: Measured on two datasets and two 7B models; the cross-lingual
+  table reports only a single 'best baseline' number per cell with no
+  per-method breakdown, no variance, and no separate
+  English-trained-to-target-tested transfer condition, so it does not isolate
+  whether the drop comes from the base model's weaker representations or from
+  translated data. The attribution to base-model representation quality is
+  argued, not tested.
+confidence: low

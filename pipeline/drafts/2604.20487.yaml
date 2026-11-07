@@ -1,0 +1,45 @@
+arxiv_id: "2604.20487"
+title: "Knowledge Capsules: Structured Nonparametric Memory Units for LLMs"
+url: https://doi.org/10.48550/arxiv.2604.20487
+drafted_at: 2026-11-04
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: retrieval-utilization
+statement: For frozen 7B instruct backbones on QA, injecting retrieved
+  evidence directly into the attention KV cache helps only when the injected
+  content is compiled from normalized relational triples retrieved by graph
+  traversal; injecting raw retrieved sentences as a KV prefix scores at or
+  below the no-retrieval baseline.
+kind: observation
+backing_strength: single-paper
+scope_condition: Qwen2.5-7B-Instruct and Mistral-7B-Instruct-v0.3,
+  entity-anchored QA sets (NQ, HotpotQA, MedHopQA) with exact-match scoring
+  over canonical answers; queries must contain a detectable entity anchor.
+technique: ""
+proposed_technique: Inject knowledge as attention key-value memory, not context tokens
+technique_summary: Compiles relational triples extracted from a corpus into
+  pre-computed per-layer key-value tensors with a frozen LLM, retrieves them
+  by graph traversal, and concatenates them as a prefix to the attention cache
+  alongside a prompt carrying the raw evidence sentences.
+technique_kind: architecture
+technique_validated_by: Exact match on NQ (100), HotpotQA (120), MedHopQA (40
+  and 342) against LLM-only, dense RAG, GraphRAG and a naive KV-prefix
+  baseline under a shared corpus and pipeline, with bootstrap CIs; full method
+  best or tied-best on most cells (e.g. HotpotQA 33.3 vs 22.5 RAG and 32.5
+  GraphRAG on Qwen2.5), while the naive KV prefix scored 14.0-17.0 on NQ,
+  below the 20.0/34.0 no-retrieval baselines, and 0.0 on both MedHopQA splits.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A KV-prefix built from raw retrieved sentences, at matched
+  retrieval and budget, matching or beating the triple-compiled KV injection
+  on the same benchmarks and backbones.
+evidence_note: Measured, single paper, small test sets (40-342 items) with
+  overlapping bootstrap CIs on several cells. The five conditions form a clean
+  ablation grid, so graph retrieval and KV injection are separated — but graph
+  retrieval carries most of the gain (removing it drops MedHopQA to 0.0) while
+  KV injection adds only a few points, and on MedHopQA the exact-match metric
+  mostly rewards emitting a well-formed DrugBank ID. The hallucination
+  benchmarks use non-standard proxy metrics and do not show a consistent win.
+confidence: low

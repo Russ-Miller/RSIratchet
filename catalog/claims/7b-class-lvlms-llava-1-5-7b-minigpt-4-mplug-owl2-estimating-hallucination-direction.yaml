@@ -1,0 +1,41 @@
+id: 7b-class-lvlms-llava-1-5-7b-minigpt-4-mplug-owl2-estimating-hallucination-direction
+ref: CLM-0805
+capability: visual-grounding
+technique: edit-only-weights-aligned-faithful-orthogonal-hallucination-residual
+statement: >-
+  In 7B-class LVLMs (LLaVA-1.5-7B, MiniGPT-4, mPLUG-Owl2), estimating the
+  hallucination direction as the component of hallucinated-response hidden
+  states orthogonal to the faithful-response subspace, and
+  null-space-projecting only the top-K weight rows most cosine-aligned with
+  it, lowers CHAIR object-hallucination rates further than whole-layer
+  null-space editing while leaving the PCA distribution of hidden
+  representations closer to the unedited model.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Captioning and yes/no existence probing on MSCOCO-derived benchmarks with three 7B-class open LVLMs; paired faithful/hallucinated prompts are needed to estimate the subspaces, and "
+sources:
+  - source: arxiv-2604-20366
+    stance: supports
+    note: >-
+      Validated by: CHAIR_S/CHAIR_I and BLEU on MSCOCO, POPE F1 under
+      random/popular/adversarial sampling, HallusionBench, MME subsets and
+      LLaVA-Bench accuracy/detailedness, against Nullu, HALC, OPERA, VCD,
+      LURE, DoLa and greedy decoding; plus PCA visualisation of hidden-state
+      drift and a count of modified parameters (42% and 37% fewer
+      perturbations than whole-layer editing).. Measured on three LVLMs
+      across CHAIR, POPE, HallusionBench, MME and LLaVA-Bench with several
+      published baselines; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-06
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An ablation showing that
+  replacing the orthogonal residual with the naive
+  hallucinated-minus-faithful difference, or selecting the same number of
+  weight rows at random, gives equal CHAIR reduction and equal
+  representation preservation.
+submitted_by: agent:claude-opus-5@Russ-Miller

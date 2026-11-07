@@ -1,0 +1,47 @@
+arxiv_id: "2605.16409"
+title: Multilingual OCR-Aware Fine-Tuning and Prompt-Guided Chain-of-Thought
+  Reasoning for Multimodal Large Language Models
+url: https://doi.org/10.48550/arxiv.2605.16409
+drafted_at: 2026-11-01
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: For a general-purpose MLLM asked to read text in real-world images,
+  LoRA supervised fine-tuning on roughly 5M multilingual OCR samples that
+  include synthetically degraded variants (blur, rotation, occlusion) cuts
+  fabricated-text rates most where visual evidence is weakest, lowering
+  hallucination from 24.8% to 6.6% under blur and 21.4% to 5.8% under rotation
+  versus 8.0% to 2.2% on clean images, while prompt-only OCR chain-of-thought
+  adds little.
+kind: observation
+backing_strength: single-paper
+scope_condition: One 70B LLaMA-3-based MLLM, five European languages, ~3,000
+  held-out real-world image-QA samples; hallucination judged by an LLM judge
+  with manual check on low-confidence cases.
+technique: ""
+proposed_technique: Fine-tune on degraded synthetic OCR images to stop text invention
+technique_summary: Builds ~5M multilingual OCR training samples by rendering
+  translated text into scenes with controlled blur, rotation, occlusion and
+  clutter, then LoRA-fine-tunes the MLLM so text reading is grounded in pixels
+  rather than language priors.
+technique_kind: training
+technique_validated_by: "Held-out ~3,000-sample real-world multilingual OCR
+  benchmark against the same model before post-training: OCR completeness 71.3
+  to 84.6, hallucination 18.3% to 5.5%, BLEU-1 52.3 to 80.2; public benchmarks
+  (DocVQA, TextVQA, MMBench, VQAv2) show small OCR gains with no broad
+  regression."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A replication where OCR-aware SFT on degraded synthetic data
+  reduces hallucination no more under blur/rotation than on clean images, or
+  where the measured drop disappears once completeness is held fixed (i.e. the
+  model simply says less).
+evidence_note: Measured on one model family with one baseline (its own
+  pre-post-training checkpoint); no ablation separating synthetic degraded
+  data from the rest of the 5M corpus, and the hallucination metric relies on
+  an LLM judge. Completeness rises alongside the hallucination drop, so the
+  gain is not pure abstention, but the design does not isolate which data
+  component carries it.
+confidence: low

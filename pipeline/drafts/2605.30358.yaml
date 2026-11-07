@@ -1,0 +1,46 @@
+arxiv_id: "2605.30358"
+title: "QASM-Eval: A Dataset to Train and Evaluate LLMs on OpenQASM-3 Beyond
+  Quantum Circuits"
+url: https://doi.org/10.48550/arxiv.2605.30358
+drafted_at: 2026-11-02
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: code-generation
+statement: For hardware-facing OpenQASM 3 completion tasks (classical control
+  flow, explicit timing, pulse-level waveform control), LoRA fine-tuning on
+  in-distribution specification-completion pairs raises pass@1 far more than
+  fine-tuning on gate-sequence circuit datasets of matched token budget,
+  letting an 8B model exceed a zero-shot frontier model, with the residual
+  failures shifting from syntax to scheduling and measurement-distribution
+  errors.
+kind: observation
+backing_strength: single-paper
+scope_condition: 1,200-task theme-held-out test set over OpenQASM 3; LoRA on
+  Llama-3.1-8B and Llama-3.3-70B; training themes disjoint from test themes;
+  token budget matched across fine-tuning corpora
+technique: ""
+proposed_technique: Fine-tune on hardware-facing DSL completions, not gate sequences
+technique_summary: Builds specification-plus-program-context completion tasks
+  covering a DSL's classical-logic, timing and pulse constructs and LoRA
+  fine-tunes on them, verified by a simulator that checks syntax, measurement
+  distributions and execution schedules.
+technique_kind: training
+technique_validated_by: pass@1/pass@5 under a theme-held-out protocol against
+  base models, cross-theme three-shot prompting, and LoRA on QCircuitBench and
+  Agent-Q at matched token scale; Llama-8B-ours 46.93% pass@1 vs 9.98% base,
+  8.67% QCB, 5.83% AGQ, and 39.65% for zero-shot GPT-5.6-Terra; Llama-70B-ours
+  61.17%; verifier agreed with experts on 189/200 audited tasks (kappa 0.89).
+stance_on_existing: supports
+related_claim_id: domain-specific-language-essentially-absent-pretraining-corpora-form-symbolic-algebra
+stance_reason: Both find that small-model fine-tuning on execution-validated
+  examples of a pretraining-scarce DSL beats much larger prompted models.
+falsifier: A matched-token fine-tune on gate-sequence circuit data, or a
+  prompting-only setup, reaching comparable pass@1 on the hardware-facing
+  categories; or the fine-tuned 8B failing to exceed a zero-shot frontier
+  model on an independent OpenQASM 3 test set.
+evidence_note: Measured on one benchmark the authors also built, with its own
+  simulation verifier; theme-held-out folds and token-matched baseline corpora
+  isolate dataset content from scale, but verifier and test set share
+  provenance and the complex category remains low (12.7% at 8B, 33.9% at 70B).
+confidence: medium

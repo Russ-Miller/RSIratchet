@@ -1,0 +1,49 @@
+arxiv_id: "2604.07506"
+title: "ReflectRM: Boosting Generative Reward Models via Self-Reflection
+  within a Unified Judgment Framework"
+url: https://arxiv.org/abs/2604.07506
+drafted_at: 2026-11-05
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: critique
+statement: For 4B-8B Qwen3 generative reward models, training jointly on
+  response-preference pairs and analysis-preference pairs (correct vs
+  incorrect reasoning traces for the same item) and then using the model's own
+  analysis comparison to filter sampled judgments raises preference accuracy
+  modestly (+3.7 average at 4B) while raising order-swap positional
+  consistency far more (+10.2), so supervising the analysis trace buys
+  stability more than raw agreement.
+kind: observation
+backing_strength: single-paper
+scope_condition: Qwen3-4B/8B/14B backbones trained with GRPO on
+  HelpSteer3-Preference; pairwise judging on RewardBench, RM-Bench, RMB,
+  PPE-Preference, JudgeBench; inference cost roughly doubles versus N-rollout
+  majority voting.
+technique: ""
+proposed_technique: Train the judge on analysis-quality pairs, not just verdicts
+technique_summary: Builds process-level preference pairs by comparing the
+  model's own analyses that led to correct versus incorrect verdicts, trains
+  them jointly with ordinary response-preference data in one generative
+  objective, then at inference picks a high-confidence anchor analysis and
+  keeps only sampled judgments whose analysis the model itself prefers over
+  the anchor before majority voting.
+technique_kind: training
+technique_validated_by: Average accuracy over four reward benchmarks against
+  the same backbone with reinforcement fine-tuning on preference data only
+  (73.5 to 76.4 at 4B), plus a volume-matched control (17.1k pure preference
+  data scored 79.1 vs 80.3 on R.B.+RMB) and ablations replacing the anchor or
+  the reflection filter with random selection (-0.5 and -1.0).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A replication where joint analysis-preference training yields no
+  larger gain in order-swap consistency than in plain accuracy, or where a
+  compute-matched majority-vote baseline with the same number of rollouts
+  matches both numbers.
+evidence_note: Measured on four accuracy benchmarks and five consistency
+  benchmarks across 4B/8B (14B for accuracy only), with an RFT baseline and a
+  data-volume control; the two-stage inference doubles compute and the paper's
+  compute-matched comparison is deferred to an appendix not included here, so
+  the inference-time share of the gain is not fully isolated.
+confidence: medium

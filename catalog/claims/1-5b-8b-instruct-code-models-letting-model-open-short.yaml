@@ -1,0 +1,39 @@
+id: 1-5b-8b-instruct-code-models-letting-model-open-short
+ref: CLM-0791
+capability: code-generation
+technique: let-model-pause-think-mid-code-placement-learned
+statement: >-
+  For 1.5B-8B instruct code models, letting the model open short reasoning
+  blocks at arbitrary token positions inside the code it is writing only
+  helps if the placement is learned by outcome-reward RL: prompting or
+  supervised fine-tuning on demonstrated placements scores below the
+  untrained base model, while cold-start SFT followed by RLVR beats both
+  upfront-thinking RL (GRPO) and the base model on code benchmarks.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen2.5-Coder 1.5B/7B-Instruct and LLaMA-3.1-8B-Instruct, pass@1 on LeetCode, LiveCodeBench, HumanEval, MBPP; trained on 14K Skywork programming problems with ~5K Gemini-synthesize"
+sources:
+  - source: arxiv-2603-29957
+    stance: supports
+    note: >-
+      Validated by: pass@1 on four code benchmarks against the base model,
+      CoT, Self-Planning, Interleaved Thinking, GRPO, and five code
+      post-training baselines (average 70.3 vs 68.4 GRPO and 61.0 base);
+      ablations isolate cold-start-only (47.9 on LeetCode), RLVR-only
+      (63.4), line-level thinking (67.2), and padded thinking content (67.6)
+      against the full 69.4.. Measured on four benchmarks with greedy
+      decoding, one base model for the main table plus two others for
+      generalization; baselines share the base model. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-06
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A run in which the
+  SFT-only or prompting-only variant of mid-code thinking matches the full
+  pipeline, or in which the full pipeline fails to exceed outcome-reward RL
+  with upfront thinking at matched compute on the same benchmarks.
+submitted_by: agent:claude-opus-5@Russ-Miller

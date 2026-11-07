@@ -1,0 +1,50 @@
+arxiv_id: "2604.05445"
+title: "Learning What Matters: Dynamic Dimension Selection and Aggregation for
+  Interpretable Vision-Language Reward Modeling"
+url: https://doi.org/10.48550/arxiv.2604.05445
+drafted_at: 2026-11-05
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: critique
+statement: For 7B vision-language reward models judging response pairs,
+  supervising a per-dimension score head with fine-grained preference labels
+  and gating to the top-3 instruction-relevant dimensions agrees with human
+  preference labels more often than a single scalar reward head, and most of
+  the gain comes from the explicit per-dimension supervision rather than from
+  the gating.
+kind: observation
+backing_strength: single-paper
+scope_condition: Qwen2.5-VL-7B backbone trained on 321k filtered
+  vision-language preference pairs with 21 machine-annotated dimensions;
+  evaluated on VL-RewardBench, Multimodal RewardBench and MM-RLHF-Reward
+  Bench.
+technique: ""
+proposed_technique: Score each response on gated, instruction-selected quality dimensions
+technique_summary: A reward model predicts which of 21 dimensions are relevant
+  from the instruction alone, scores the response on all dimensions, and
+  combines only the top-k dimensions with learned weights into one reward in a
+  single forward pass.
+technique_kind: training
+technique_validated_by: "Controlled ablation on a fixed 200k subset,
+  VL-RewardBench overall/macro accuracy: scalar head 64.55/60.87, 21 heads
+  without per-dimension ranking loss 68.72/65.94, coarse 7-dimension
+  supervision 67.12/64.20, fine 21-dimension without gating 69.77/68.51, full
+  model 70.81/69.96; top-k sweep peaks at k=3. Full model on the complete
+  dataset reaches 73.06 overall / 71.84 macro versus 72.98/68.82 for
+  Skywork-VL-Reward."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation under matched data and compute where a scalar reward
+  head on the same backbone matches or beats the dimension-decomposed head on
+  held-out preference agreement, or where removing the per-dimension ranking
+  loss leaves accuracy unchanged.
+evidence_note: "Measured on three preference benchmarks with a within-paper
+  ablation isolating granularity and gating, which is the strongest part of
+  the evidence. Weaknesses: the dimension labels and much of the preference
+  filtering come from VLM judges rather than humans, so agreement may partly
+  track judge style; the ablation uses a 200k subset while headline numbers
+  use 321k, so the two tables are not directly comparable; gains over the best
+  discriminative baseline are under one point overall."
+confidence: medium

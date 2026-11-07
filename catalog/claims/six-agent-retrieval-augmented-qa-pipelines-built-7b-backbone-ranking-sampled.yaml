@@ -1,0 +1,41 @@
+id: six-agent-retrieval-augmented-qa-pipelines-built-7b-backbone-ranking-sampled
+ref: CLM-0892
+capability: multi-model-coordination
+technique: rank-trajectories-inter-agent-dependency-pairwise-win-loss
+statement: >-
+  In six-agent retrieval-augmented QA pipelines built on a 7B backbone,
+  ranking sampled trajectories by how consistently they score tightly
+  coupled agents (retriever, filter, locator) together — rather than by a
+  single winning/losing pair or a full-order sort on raw preference scores —
+  yields higher answer accuracy, because the score pattern across coupled
+  agents carries the dependency information a single pairwise contrast
+  discards.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "7B open backbones, six fixed agent roles, knowledge-intensive QA with short trajectories (under ~10 steps); M=N=10 sampled trajectories, Top-K=5"
+sources:
+  - source: arxiv-2605-17352
+    stance: supports
+    note: >-
+      Validated by: Accuracy on five knowledge-intensive QA benchmarks
+      (HealthQA, ARC-C, PopQA, SQuAD 1.1, ASQA) against vanilla DPO,
+      full-order DPO, a global-local trajectory system (SMART) and RL
+      baselines (GiGPO, SPA-RL); reported average 60.57 vs 55.70-56.55, with
+      removal of the inter-agent loss the largest single ablation drop..
+      Measured on five QA benchmarks with one 7B backbone, with ablations
+      removing each loss term and each of three agents, plus a comparison
+      across DPO variants. Single-paper, single scale; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-06
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A matched-data,
+  matched-compute rerun in which plain pairwise DPO or full-order DPO on the
+  same sampled trajectories equals the dependency-aware ranking, or in which
+  the gain disappears once the intra-trajectory prefix stage is held
+  constant.
+submitted_by: agent:claude-opus-5@Russ-Miller

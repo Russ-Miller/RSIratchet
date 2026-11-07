@@ -1,0 +1,48 @@
+arxiv_id: "2605.10865"
+title: "BenchCAD: A Comprehensive, Industry-Standard Benchmark for Programmatic CAD"
+url: https://doi.org/10.48550/arxiv.2605.10865
+drafted_at: 2026-11-02
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: code-generation
+statement: "For frontier multimodal models generating parametric CAD programs
+  (CadQuery) from multi-view renders of industrial part families,
+  rendered-geometry similarity overstates competence: models recover the
+  coarse outer shape while omitting fine features and substituting
+  sketch-and-extrude for required operations such as sweeps, lofts and
+  twist-extrudes, and on matched numeric design questions accuracy is far
+  lower from images than from the program text (best total ~0.587 vs ~0.838)."
+kind: observation
+backing_strength: single-paper
+scope_condition: 17,900 execution-verified CadQuery parts across 106
+  standard-anchored industrial families; 2,400 paired image/code QA items; 10+
+  frontier and CAD-specialist models evaluated zero-shot.
+technique: ""
+proposed_technique: Score CAD generation per capability level, not by IoU alone
+technique_summary: Evaluates CAD program generation along a four-level
+  hierarchy (part recognition, operation understanding, parametric
+  abstraction, spatial-code reasoning) using matched image/code QA pairs,
+  essential-operation recall, and verified edit pairs instead of a single
+  shape-match score.
+technique_kind: process
+technique_validated_by: Applied to 10+ models; the matched image-vs-code QA
+  gap and essential-op recall localize failures that a single IoU score
+  reports as undifferentiated low similarity; no human-agreement study of the
+  level assignments is reported.
+stance_on_existing: supports
+related_claim_id: text-to-cad-program-generation-final-geometry-similarity-iou-against-reference-solid
+stance_reason: Both find that geometric similarity of the generated solid
+  carries little information about whether the program preserves the intended
+  construction operations and parameters.
+falsifier: A model whose rendered-geometry IoU on these parts tracks
+  essential-operation recall and parametric-QA accuracy, or image-based and
+  code-based QA accuracy converging on the same questions, would show the gap
+  is not real.
+evidence_note: Measured on a purpose-built benchmark with expert sign-off;
+  blind baselines included (blank image total 0.375 against best 0.587, so the
+  image QA signal is real but weak). The image/code QA contrast isolates
+  perception from reasoning only to the extent the paired questions are
+  genuinely matched, which is asserted rather than independently audited.
+  Failure categories come from case studies, not a counted taxonomy.
+confidence: medium

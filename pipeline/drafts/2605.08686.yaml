@@ -1,0 +1,44 @@
+arxiv_id: "2605.08686"
+title: Iterative Critique-and-Routing Controller for Multi-Agent Systems with
+  Heterogeneous LLMs
+url: https://doi.org/10.48550/arxiv.2605.08686
+drafted_at: 2026-11-04
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: For routing over a heterogeneous pool of math-reasoning agents,
+  training the controller to also critique the current draft and decide
+  whether to continue refining raises average accuracy well above one-shot RL
+  routing (80.5% vs 69.1% and 82.3% vs 66.5% across two controller/agent
+  configurations on seven math benchmarks), while an explicit per-agent
+  utilization penalty is needed to stop the policy from routing everything to
+  the strongest agent.
+kind: observation
+backing_strength: single-paper
+scope_condition: Verifiable math reasoning where routing and verification
+  correctness are rule-checkable; 4B-7B base controllers over 1B-30B agent
+  pools; gains saturate past about two interaction turns.
+technique: ""
+proposed_technique: Critique the draft and re-route, under a per-agent usage penalty
+technique_summary: Trains an LLM controller by multi-turn RL to, at each turn,
+  evaluate the current agent draft, decide stop-or-continue, and pick the next
+  agent, with a Lagrangian penalty on each agent's invocation share.
+technique_kind: training
+technique_validated_by: Accuracy on seven math benchmarks against Router-R1,
+  RouterDC, RoBERTa and random routers, and controller-as-solver baselines, in
+  two controller/agent-pool configurations; ablations on turn budget and on
+  removing the Lagrange multipliers (which collapses routing to the strongest
+  agent).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A one-shot RL router matching the critique-and-routing controller's
+  accuracy at equal strongest-agent usage, or the gain disappearing once the
+  extra agent calls and tokens are compute-matched.
+evidence_note: Measured on seven math benchmarks, two systems, with routing
+  and controller-as-solver baselines and two ablations; but all training data
+  is MATH-lighteval, all tasks are math, and there is no matched-token-budget
+  baseline, so part of the gain may be the extra agent invocations rather than
+  the critique itself.
+confidence: medium

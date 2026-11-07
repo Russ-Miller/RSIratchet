@@ -1,0 +1,41 @@
+id: 7-13b-open-vision-language-models-amplifying-visual-attention-only-heads
+ref: CLM-0800
+capability: visual-grounding
+technique: amplify-only-attention-heads-move-across-decoding-steps
+statement: >-
+  In 7-13B open vision-language models, amplifying visual attention only in
+  heads whose spatial attention map shifts across decoding steps (low
+  spatio-temporal covariance similarity) lowers object-hallucination rates
+  without the general multimodal degradation that uniformly amplifying all
+  heads causes.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Training-free decoding intervention on LLaVA-1.5-7B/13B, InternVL2/2.5-8B, Qwen2-VL/2.5-VL-7B; mid layers targeted; head sets profiled offline on ~500 unlabeled images; object and "
+sources:
+  - source: arxiv-2604-00983
+    stance: supports
+    note: >-
+      Validated by: POPE accuracy 85.2 to 88.0, MME hallucination total
+      638.3 to 668.3, CHAIR_S 51.4 to 33.0 and CHAIR_I 15.2 to 9.3 on
+      LLaVA-1.5-7B, with gains on five more backbones; ablated against
+      uniform ('Global') head amplification, which cut MME from 638.3 to
+      630.0, and against four alternative head-profiling metrics and a
+      guidance-shift sweep toward static heads.. Measured on five LVLM
+      families across POPE, MME-hallucination, AMBER and CHAIR, with the
+      targeted-vs-global ablation and a guidance-shift ratio sweep isolating
+      head selection. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-06
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A replication in which
+  amplifying a layer-matched random or static head set gives the same
+  hallucination reduction as the dynamic-head set at matched
+  general-benchmark scores, or in which the dynamic-head intervention
+  degrades MME/general multimodal performance as much as uniform
+  amplification.
+submitted_by: agent:claude-opus-5@Russ-Miller

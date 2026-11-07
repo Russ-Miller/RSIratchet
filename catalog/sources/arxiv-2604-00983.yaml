@@ -1,0 +1,72 @@
+id: arxiv-2604-00983
+ref: SRC-0893
+kind: paper
+title: "ACT Now: Preempting LVLM Hallucinations via Adaptive Context Integration"
+authors:
+  - Bei Yan
+  - Yuecong Min
+  - Jie Zhang
+  - Shiguang Shan
+  - Xilin Chen
+year: 2026
+date: 2026-04-01
+arxiv_id: "2604.00983"
+url: https://arxiv.org/abs/2604.00983
+tags:
+  - ingested
+summary: Large Vision-Language Models (LVLMs) frequently suffer from severe
+  hallucination issues. Existing mitigation strategies predominantly rely on
+  isolated, single-step states to enhance visual focus or suppress strong
+  linguistic priors. However, these static approaches neglect dynamic context
+  changes across the generation process and struggles to correct inherited
+  information loss. To address this limitation, we propose Adaptive Context
+  inTegration (ACT), a training-free inference intervention method that
+  mitigates hallucination through the adaptive integration of contextual
+  information. Specifica
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, medium): The paper proposes an
+  inference-time context-integration method reported to significantly reduce
+  LVLM hallucination without harming generation quality. No claim has been
+  drafted from it yet."
+ingested_at: 2026-11-06
+brief: >-
+  Attention heads in vision-language models split into two temporal behaviours
+  during decoding, and amplifying only the exploratory ones cuts object
+  hallucination more than amplifying all visual attention uniformly. ACT
+  profiles heads by a Spatio-Temporal Covariance Similarity metric on 500
+  MSCOCO images, boosts the low-similarity dynamic heads in middle layers, and
+  fuses the attention query over the Top-5 token branches instead of
+  committing to 1.
+
+
+  It is training-free and tested on LLaVA-1.5-7B/13B, InternVL2-8B,
+  InternVL2.5-8B, Qwen2-VL-7B and Qwen2.5-VL-7B, across POPE, the MME
+  hallucination subset, AMBER and CHAIR.
+
+
+  On LLaVA-1.5-7B, POPE accuracy goes 85.2 to 88.0, MME total 638.3 to 668.3,
+  CHAIR_S 51.4 to 33.0 and CHAIR_I 15.2 to 9.3. Gains shrink on stronger
+  backbones: InternVL2.5-8B POPE rises only 0.5, and Qwen2.5-VL-7B CHAIR_S
+  gets worse by 1.0.
+
+
+  The causal attribution is reasonably isolated. Modules are ablated
+  separately (SCA alone moves only generative metrics, 51.4 to 46.8 CHAIR_S),
+  the STCS metric is compared against 4 alternatives, head targeting is
+  compared against global amplification which drops MME to 630.0, and SCA is
+  compared against greedy, nucleus and beam decoding at matched benchmark.
+  Calibration-set robustness is checked down to 50 images and out-of-domain
+  ImageNet.
+
+
+  Boundaries: object and attribute hallucination only, no relational or
+  multi-step reasoning tests, output length falls from 97.5-103 range to 92.4,
+  recall of fine detail drops, and SCA adds memory and latency not quantified
+  here.
+
+
+  If you intervene on visual attention, head selection by temporal dynamics is
+  worth trying before global scaling.
+brief_generated_at: 2026-11-06
+brief_model: claude-opus-5
+brief_source: full-text

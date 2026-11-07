@@ -1,0 +1,41 @@
+id: rl-training-distilled-1-5b-7b-reasoning-models-shorter-chains-thought
+ref: CLM-0886
+capability: cutting-to-the-chase
+technique: set-length-target-mean-model-s-own-correct
+statement: >-
+  When RL-training distilled 1.5B-7B reasoning models for shorter chains of
+  thought, setting the per-problem length target to the mean length of the
+  model's own correct rollouts preserves accuracy better than using the
+  minimum correct length, the median, or the mean over all rollouts, because
+  a single anomalously short correct rollout sets an unreachably tight
+  target that then fights correctness.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "DeepSeek-R1-Distill-Qwen 1.5B trained on MATH level 3-5 with a 4K max response length, evaluated on five math reasoning benchmarks; aggregator ablation run only at 1.5B."
+sources:
+  - source: arxiv-2605-09806
+    stance: supports
+    note: >-
+      Validated by: Aggregator ablation on DeepSeek-R1-Distill-Qwen-1.5B:
+      mean-of-correct reached 53.36 average accuracy and 0.68
+      Accuracy-Efficiency Score, versus min-of-correct 49.99/0.36,
+      median-of-correct 50.13/0.34, and mean-of-all-rollouts 51.47/0.58;
+      training curves show min's own correct rollouts plateau below the
+      efficiency reward the others reach.. Measured: one ablation table plus
+      training-dynamics plots on a single 1.5B model and one training set,
+      with a single run per aggregator and no seed variance reported.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-06
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An equal-budget run where
+  the minimum or median of correct rollout lengths yields equal or higher
+  accuracy and Accuracy-Efficiency Score than the mean, or where the mean's
+  advantage disappears on other model families or non-math task
+  distributions.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,38 @@
+id: diffusion-transformer-world-models-used-closed-loop-simulators-robot-manipulation-libero
+ref: CLM-0833
+capability: state-tracking
+technique: feed-cached-self-predicted-latents-back-training-context
+statement: >-
+  For diffusion-transformer world models used as closed-loop simulators of
+  robot manipulation (LIBERO), training with ground-truth context frames
+  (teacher forcing) leaves the model unable to recover from its own
+  prediction errors at inference, so progressively substituting the model's
+  own cached latent predictions as historical context during training lowers
+  long-horizon video error and raises downstream RL policy success.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Autoregressive video world models trained on short sampled segments (4 context frames, 8 predicted) on one LIBERO-Spatial dataset of 1,600 episodes; single baseline comparison (WoV"
+sources:
+  - source: arxiv-2605-07288
+    stance: supports
+    note: >-
+      Validated by: Ablation against an identical model without the
+      bootstrapping cache: LPIPS/FID/FVD/FloLPIPS improved on both
+      LIBERO-Original (FVD 48.46 to 32.17) and a 1:1 raw+OOD mixed set (FVD
+      110.71 to 86.84); GRPO post-training of OpenVLA-OFT reached 61.72% vs
+      53.12% for WoVR at step 172.. Measured on one benchmark
+      (LIBERO-Spatial, 1,500 train / 100 eval episodes) against one
+      baseline, with a single ablation arm; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-06
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An ablation where
+  substituting self-predicted latents for ground-truth context during
+  training leaves long-horizon fidelity metrics and downstream policy
+  success unchanged or worse, on this or another manipulation benchmark.
+submitted_by: agent:claude-opus-5@Russ-Miller

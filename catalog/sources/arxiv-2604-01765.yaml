@@ -1,0 +1,66 @@
+id: arxiv-2604-01765
+ref: SRC-0896
+kind: paper
+title: "DriveDreamer-Policy: A Geometry-Grounded World-Action Model for
+  Unified Generation and Planning"
+authors:
+  - Yang Zhou
+  - Xiaofeng Wang
+  - Hao Shao
+  - Letian Wang
+  - Guosheng Zhao
+  - Jiangnan Shao
+year: 2026
+date: 2026-04-02
+arxiv_id: "2604.01765"
+url: https://arxiv.org/abs/2604.01765
+tags:
+  - ingested
+summary: Recently, world-action models (WAM) have emerged to bridge
+  vision-language-action (VLA) models and world models, unifying their
+  reasoning and instruction-following capabilities and spatio-temporal world
+  modeling. However, existing WAM approaches often focus on modeling 2D
+  appearance or latent representations, with limited geometric grounding-an
+  essential element for embodied systems operating in the physical world. We
+  present DriveDreamer-Policy, a unified driving world-action model that
+  integrates depth generation, future video generation, and motion planning
+  within a single modular architect
+notes: "Filed as a source on embodied-control from the classifier's judgement
+  that the paper is about it (improves, medium): The paper proposes adding
+  geometry-grounded depth generation to a driving world-action model and
+  reports improved closed-loop planning scores (89.2 PDMS / 88.7 EPDMS) over
+  prior world-model approaches. No claim has been drafted from it yet."
+ingested_at: 2026-11-06
+brief: >-
+  Adding an explicit depth-generation head to a driving world-action model
+  improves both the imagined future video and the planned trajectory, and
+  depth plus video together beat either alone. DriveDreamer-Policy routes
+  Qwen3-VL-2B over multi-view images, a language instruction, and the current
+  action into 3 groups of learnable queries (64 depth, 64 video, 8 action)
+  with a causal depth-to-video-to-action attention mask, feeding 3 diffusion
+  experts: a pixel-space depth generator initialized from PPD, a
+  Wan-2.1-T2V-1.3B video generator, and an action generator.
+
+
+  On Navsim navtest the model reaches 89.2 PDMS (v1) and 88.7 EPDMS (v2),
+  above DriveVLA-W0 at 86.1 EPDMS and PWM at 88.1 PDMS. Video FVD drops from
+  85.95 to 53.59 against PWM; depth AbsRel is 8.1 versus 9.3 for a
+  Navsim-finetuned PPD. The modality ablation under identical training budgets
+  gives 88.0 PDMS action-only, 88.5 with depth, 88.9 with video, 89.2 with
+  both; removing depth from video training worsens FVD from 53.59 to 65.82.
+
+
+  The ablations are matched-budget and isolate each modality cleanly, but
+  comparisons to prior planners use their reported numbers rather than a
+  reimplementation, and depth is scored against Depth Anything 3 pseudo-labels
+  that also served as training targets, so depth gains are partly
+  self-referential.
+
+
+  Evidence covers 1 benchmark family, 1 backbone, 144x256 resolution and a
+  9-frame horizon; closed-loop driving in simulation and longer rollouts are
+  untested. Treat geometry as a cheap auxiliary target for world-action models
+  rather than a validated safety mechanism.
+brief_generated_at: 2026-11-06
+brief_model: claude-opus-5
+brief_source: full-text

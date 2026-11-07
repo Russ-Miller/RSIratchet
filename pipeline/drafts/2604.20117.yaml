@@ -1,0 +1,44 @@
+arxiv_id: "2604.20117"
+title: "To Know is to Construct: Schema-Constrained Generation for Agent Memory"
+url: https://doi.org/10.48550/arxiv.2604.20117
+drafted_at: 2026-11-04
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: long-term-memory
+statement: For small open-weight models (1B-3B Qwen2.5 and Llama 3.2)
+  answering questions over multi-session dialogue histories, constraining
+  decoding to a prefix trie of existing memory keys so the model cannot emit a
+  nonexistent key, then expanding one hop over a co-occurrence graph, raises
+  F1 over dense-retrieval memory systems across single-hop, multi-hop,
+  temporal and adversarial categories.
+kind: observation
+backing_strength: single-paper
+scope_condition: LoCoMo benchmark only; open-weight models 1B-3B where logits
+  are accessible; gains reported against A-MEM and other retrieval baselines;
+  no frontier-model comparison
+technique: ""
+proposed_technique: Constrain memory-key generation to a trie of existing keys
+technique_summary: Store memory concepts as a dynamic prefix trie and mask
+  decoding so the model can only generate token sequences that are valid
+  existing memory keys, then expand retrieved seeds one hop over a
+  co-occurrence graph.
+technique_kind: decoding
+technique_validated_by: F1 and BLEU-1 on four LoCoMo categories against LoCoMo
+  full-context, ReadAgent, MemoryBank, MemGPT and A-MEM on four backbones;
+  ablation replacing constrained decoding with unconstrained generation plus
+  embedding lookup drops multi-hop F1 39.5%
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Constrained-decoding key generation matching or losing to dense
+  retrieval on LoCoMo at matched retrieval size, or the ablation gap
+  disappearing when the unconstrained variant is given a repair step that maps
+  invalid keys to nearest valid ones
+evidence_note: Measured on one benchmark with four small open-weight
+  backbones; large reported improvements (up to +146% F1) but all from one
+  lab, no frontier backbone, and the comparison bundles constrained decoding
+  with the associative graph and schema-evolution mechanism — the ablation
+  separates them partially but the unconstrained control still routes through
+  embedding lookup rather than raw generation.
+confidence: low

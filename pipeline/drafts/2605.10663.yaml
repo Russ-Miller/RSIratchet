@@ -1,0 +1,50 @@
+arxiv_id: "2605.10663"
+title: "Evolving-RL: End-to-End Optimization of Experience-Driven
+  Self-Evolving Capability within Agents"
+url: https://doi.org/10.48550/arxiv.2605.10663
+drafted_at: 2026-11-02
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: harness-self-improvement
+statement: When an agent is RL-trained to use self-extracted textual skills,
+  training only the skill-utilization side makes test-time skill injection
+  worthless \u2014 the policy learns to ignore the injected skill because its
+  own extracted skills are noisy \u2014 so the extractor must be trained in
+  the same loop against downstream transfer reward for injection to pay off.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Qwen2.5-7B-Instruct on ALFWorld and Mind2Web, with skills
+  instantiated as short textual procedural abstractions and downstream tasks
+  retrieved by task-description embedding.
+technique: ""
+proposed_technique: Co-train skill extractor and solver on downstream transfer reward
+technique_summary: One shared policy both writes candidate skills from a
+  finished trajectory and solves retrieved related tasks conditioned on them,
+  with each skill rewarded by the mean downstream success it produces and the
+  skill-conditioned rollouts reused to train the solver.
+technique_kind: training
+technique_validated_by: ALFWorld success rate and Mind2Web action accuracy
+  against GRPO, prompt-based memory baselines (ExpeL, Memento, ReasoningBank)
+  and SkillRL; ablation isolating extractor-only, solver-only and joint
+  objectives; irrelevant-skill control; cross-policy skill transfer to base
+  and GRPO models. Unseen-task success 44.6% (GRPO with skills) to 88.6%;
+  solver-only reached 69.7% with skills vs 70.3% without.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A solver-only RL run (no extractor optimization) in which test-time
+  injection of the model's own extracted skills gives gains comparable to the
+  jointly trained setup, or a jointly trained run where injection adds nothing
+  over no injection.
+evidence_note: "Measured on two benchmarks with one 7B backbone, five runs
+  averaged. The objective ablation is the load-bearing evidence: solver-only
+  gained generalization but gained nothing from injection (97.8/69.7 with
+  skills vs 98.2/70.3 without), while co-evolution gained from injection
+  (98.6/88.6 vs 97.4/81.1). The irrelevant-skill control argues the gain is
+  semantic, not format. Does not isolate how much of the co-evolution gain
+  comes from extractor training versus more diverse rollouts, and the Mind2Web
+  cross-website split shows no injection benefit."
+confidence: medium
+problems:
+  - "figures not in the source: 014"

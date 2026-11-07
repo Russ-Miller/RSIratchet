@@ -1,0 +1,42 @@
+id: training-llm-agent-critique-guided-revisions-reinforcing-revised-trajectory-directly
+ref: CLM-0901
+capability: self-repair
+technique: re-weight-critique-guided-tokens-critique-free-plausibility
+statement: >-
+  When training an LLM agent on critique-guided revisions, reinforcing the
+  revised trajectory directly teaches critique-dependent behavior rather
+  than unassisted ability, because the revision was sampled from a
+  critique-conditioned distribution; re-conditioning the trajectory on the
+  critique-free prompt and down-weighting tokens whose probability collapses
+  without the critique transfers more of the gain to the critique-free
+  policy.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Qwen3-4B/8B backbones, GRPO-style RL, agentic environments (ALFWorld, WebShop, multi-hop QA) and math reasoning; solver and critic share one backbone."
+sources:
+  - source: arxiv-2605-15224
+    stance: supports
+    note: >-
+      Validated by: Average scores against GRPO, GSPO, ScalingInter, MATPO
+      and Critique-GRPO on six agentic benchmarks and five math benchmarks
+      (+7.8 over GRPO and +1.1 over Critique-GRPO at 4B; +7.0 over GRPO on
+      math at 8B); ablation removing the re-weight ratio drops the
+      four-benchmark average from 69.8 to 67.8.. Measured on two backbones
+      across eleven benchmarks with several RL baselines; the component
+      ablation is a single averaged 2-point drop, and the
+      distributional-bias argument is theoretical (deferred to an appendix)
+      rather than directly measured as critique dependence.
+contested: false
+status: pending-review
+last_checked_at: 2026-11-06
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An ablation in which
+  removing the re-weighting ratio leaves critique-free (no-critique-at-test)
+  accuracy unchanged or higher, or where naive reinforcement of revised
+  trajectories transfers to the critique-free policy as well as the
+  calibrated update.
+submitted_by: agent:claude-opus-5@Russ-Miller

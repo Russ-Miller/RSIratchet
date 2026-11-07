@@ -1,0 +1,50 @@
+arxiv_id: "2605.07208"
+title: "FAME: Forecasting Academic Impact via Continuous-Time Manifold Evolution"
+url: https://doi.org/10.48550/arxiv.2605.07208
+drafted_at: 2026-11-02
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: forecasting
+statement: Asked to score the future impact of arXiv manuscripts published
+  after their knowledge cutoff, frontier LLMs prompted with 30 labelled
+  historical few-shot examples rank papers against realized composite impact
+  at Spearman correlations mostly below 0.25 and fluctuating near zero across
+  monthly windows, while a trained model over the same text embeddings plus a
+  time-indexed topic-trajectory structure reaches above 0.5.
+kind: observation
+backing_strength: single-paper
+scope_condition: 3,200 arXiv papers in three fast-moving CS subfields (time
+  series forecasting, sparse attention, image generation), 18 monthly 2-month
+  test windows, impact = log-normalized sum of GitHub stars, citations,
+  influential citations, Altmetric
+technique: ""
+proposed_technique: Score impact by alignment with a field's trajectory momentum
+technique_summary: Papers are embedded into a continuous-time latent manifold
+  with learned per-topic trajectory 'spines', and predicted impact is the
+  cosine similarity between a paper's offset from its topic spine and that
+  spine's instantaneous time derivative.
+technique_kind: training
+technique_validated_by: "Spearman rank correlation with realized composite
+  impact over 18 sliding windows: FAME averages ~0.51-0.54 vs <0.25 for six
+  frontier LLMs and SciJudge-4B, and 0.16-0.40 for
+  XGBoost/SVR/Transformer/TGCN on raw embeddings; ablations show removing the
+  vanguard loss causes the largest drop."
+stance_on_existing: supports
+related_claim_id: forecasting-underperforms-humans-without-scaffolding
+stance_reason: Frontier LLMs scoring near-zero rank correlation on prospective
+  manuscript impact is another case of weak unaided forecasting that external
+  structure improves.
+falsifier: A frontier LLM prompted with the same few-shot labelled window
+  reaching Spearman above ~0.5 on these or comparable held-out future windows,
+  or FAME failing to beat LLM baselines when retrained on a different corpus
+  with the same protocol.
+evidence_note: Measured on one curated 3,200-paper dataset in three CS
+  subfields, three runs per cell with reported SDs, against ML, LLM and
+  domain-tuned baselines under a shared label-access protocol. Ground-truth
+  impact is a composite bibliometric score the authors validate against 300
+  human-rated papers (Spearman 0.53). Design does not isolate how much of
+  FAME's edge comes from supervised fitting to this specific impact metric
+  versus genuine trajectory modelling, and LLMs are scored on a 1-10
+  novelty/interest/impact average rather than the composite metric directly.
+confidence: medium

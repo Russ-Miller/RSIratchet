@@ -1,0 +1,55 @@
+arxiv_id: "2604.19305"
+title: "DebugRepair: Enhancing LLM-Based Automated Program Repair via
+  Self-Directed Debugging"
+url: https://doi.org/10.48550/arxiv.2604.19305
+drafted_at: 2026-11-04
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: debugging
+statement: For LLM-based program repair on benchmark Java and Python bugs,
+  feeding the model intermediate runtime values captured by print statements
+  it inserted itself into the buggy function repairs more bugs than iterating
+  on outcome-level failure symptoms (stack traces, test errors) alone, because
+  the symptom reveals where the failure surfaced but not which variable
+  carried the wrong value.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Function-level bugs with a failing test and perfect fault
+  localization; Defects4J, QuixBugs, HumanEval-Java; gains largest on
+  multi-statement (single-function) bugs and smallest or slightly negative on
+  single-line bugs where the extra trace lengthens the prompt.
+technique: ""
+proposed_technique: Have the model instrument the buggy function and read its own runtime trace
+technique_summary: Slice the failing test to its minimal failure-triggering
+  statements, let the LLM insert print statements around variables it names as
+  critical (with a rule-based AST instrumentation fallback when the
+  instrumented code fails a semantics and compilation check), execute, and
+  feed the captured runtime values into an iterative patch-refinement
+  conversation.
+technique_kind: tooling
+technique_validated_by: "Correct fixes on Defects4J: 224 with GPT-3.5 (vs 201
+  for the best feedback-based baseline TSAPR, 213 for ReinFix) and 295 with
+  DeepSeek-V3 (59 more than the second-best), at a patch budget of 32; 40/40
+  on QuixBugs Java and Python; 51.3% average improvement over vanilla settings
+  across five further backbones; ablations reported for test purification and
+  the debugging mechanism. Correctness judged by manual review of plausible
+  patches."
+stance_on_existing: supports
+related_claim_id: external-feedback-repair
+stance_reason: "It shows that the quality of the external signal matters, not
+  just its presence: richer runtime evidence beats test-outcome feedback at
+  the same iteration budget."
+falsifier: A matched-budget comparison in which supplying captured runtime
+  traces yields no more correct fixes than the same iterative loop given only
+  stack traces and test errors, or in which the gain disappears once the extra
+  prompt tokens are controlled for.
+evidence_note: Measured on three benchmarks against 15 baselines, with
+  baseline numbers mostly taken from original papers (so budgets and FL
+  settings are only roughly matched); DeepSeek-V3 baselines were reproduced by
+  the authors. Ablations are asserted in the abstract but the ablation table
+  is not in the excerpt. Correctness depends on the authors' own manual patch
+  review, and perfect fault localization is assumed throughout.
+confidence: medium
+problems:
+  - related_claim_id "external-feedback-repair" does not exist

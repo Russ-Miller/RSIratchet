@@ -1,0 +1,51 @@
+arxiv_id: "2604.18612"
+title: "Agent-GWO: Collaborative Agents for Dynamic Prompt Optimization in
+  Large Language Models"
+url: https://arxiv.org/abs/2604.18612
+drafted_at: 2026-11-05
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: harness-self-improvement
+statement: For frozen LLM backbones on math and hybrid reasoning benchmarks
+  with labeled validation splits, treating a prompt template plus its decoding
+  hyperparameters as one searchable agent configuration and updating a
+  population of such configurations toward the top-3 scoring ones raises test
+  accuracy over static CoT and over prior prompt/workflow optimization
+  methods, and guiding the update with more than three leaders lowers accuracy
+  again.
+kind: observation
+backing_strength: single-paper
+scope_condition: Frozen weights, 5-10 agents and 10-30 iterations, verifiable
+  exact-match fitness computed on a held-out-from-test validation split;
+  measured on 11 math and hybrid reasoning benchmarks with five backbones
+  (GPT-4o-mini, GPT-4.1-mini/nano, Qwen2.5-Coder-7B, Gemma-3-12b).
+technique: ""
+proposed_technique: Search prompt and decoding settings together as one agent configuration
+technique_summary: Maintains a population of agents, each a prompt template
+  plus temperature/top-p/penalty/length settings, ranks them by validation
+  accuracy, and updates non-elite agents by sampling hyperparameters around
+  the top three and having an LLM edit their prompts toward the top three
+  prompts.
+technique_kind: process
+technique_validated_by: "Average accuracy over 11 benchmarks against CoT,
+  CoT-SC, Self-Refine, AFlow, ToT, GoT, AoT on three backbones (e.g.
+  GPT-4o-mini 74.6% CoT, 83.3% AoT, 84.0% Agent-GWO); ablations on agent
+  count, iteration count, elite set size (m=3 best: GSM8K 95.9 vs 92.4 at m=1
+  and 94.1 at m=5), and decoding-hyperparameter sensitivity (within ~1.5%)."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched-compute comparison in which single-agent prompt
+  optimization, or prompt-only search at the same number of LLM calls, matches
+  the joint prompt-plus-decoding population search on the same benchmarks and
+  backbones; or an ablation showing m>3 leaders does not cost accuracy.
+evidence_note: Measured on 11 benchmarks x 3-5 backbones against 7 baselines,
+  with a stated optimization/evaluation split protocol. Gains over the
+  strongest baseline (AoT) are small, 0.7-2.2 average points. No
+  matched-inference-cost baseline is reported — the paper concedes higher
+  test-time compute — and no ablation isolates the decoding-hyperparameter
+  half from the prompt-edit half, so the attribution to joint search is not
+  established. Seeds/variance for the main table are not reported despite the
+  stability claim.
+confidence: low

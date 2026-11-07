@@ -1,0 +1,39 @@
+id: multi-hunk-java-bug-repair-where-same-mistake-recurs-several
+ref: CLM-0871
+capability: debugging
+technique: retrieve-sibling-locations-embedding-similarity-then-llm-patch
+statement: >-
+  For multi-hunk Java bug repair where the same mistake recurs at several
+  code locations, retrieving sibling candidates by token plus embedding
+  similarity over all test-exercised code and letting an LLM pick and patch
+  them beats template-based sibling repair restricted to failing-test
+  coverage and commit history (23 vs 4 sibling bugs, 76 vs 9 multi-hunk bugs
+  on Defects4J under spectrum-based localization).
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Java bugs in Defects4J v1.2/v2.0 and GHRB with reproducing test suites, 5-hour budget, DeepSeek-V3.2 backbone, spectrum-based or single-perfect fault localization."
+sources:
+  - source: arxiv-2605-06209
+    stance: supports
+    note: >-
+      Validated by: Correct-patch counts on 835 Defects4J bugs with manual
+      patch inspection against developer ground truth, against Hercules,
+      ITER and ARJACLM run in the same environment; plus 17 GHRB sibling
+      bugs with a pre-dataset-cutoff model (GPT-3.5-Turbo) as a leakage
+      control.. Measured on 835 Defects4J bugs plus 17 GHRB sibling bugs
+      with manual correctness assessment of 1,751 plausible patches split
+      across three authors. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-06
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A replication where the
+  candidate-sibling retrieval is replaced by naive top-k lexical or random
+  candidates and the same LLM repair loop yields comparable
+  sibling/multi-hunk correct-repair counts, showing the gain came from the
+  LLM patching rather than the retrieval scope.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,43 @@
+id: multimodal-code-model-trained-self-correction-group-relative-rl-optimizing-whole
+ref: CLM-0872
+capability: self-repair
+technique: train-self-correction-shared-first-turn-before-joint
+statement: >-
+  When a multimodal code model is trained for self-correction with
+  group-relative RL, optimizing whole two-turn trajectories at once makes it
+  copy its first-turn code into the second turn (46-56% repetition,
+  near-zero score gain) because a model that cannot yet self-correct gets
+  negative expected reward for changing an already-executable answer; first
+  running an RL stage that fixes the first turn as shared context and
+  optimizes only second-turn refinements breaks this and yields real
+  second-turn gains.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "7B chart-to-code model (Qwen2.5-VL-7B base) after SFT cold start, two-turn self-correction with rendered-image or error feedback, GRPO with rule-based chart-element rewards"
+sources:
+  - source: arxiv-2604-01600
+    stance: supports
+    note: >-
+      Validated by: Compared against full-trajectory GRPO at several
+      first-turn and boosting reward weights, and a turn-wise 50/50 variant,
+      on ChartMimic: two-stage reached 86.0 second-turn low-level score with
+      +0.55 average improvement on charts executable in both turns and 21.6%
+      code repetition, versus full-trajectory variants at 83.5-85.5 with
+      -0.03 to +0.21 improvement and 46.9-81.1% repetition; a
+      boosting-reward variant gamed the reward by degrading the first turn
+      (64.5% exec rate).. Measured on ChartMimic with one backbone and one
+      dataset; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-06
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A full-trajectory
+  multi-turn RL run on the same base model and data that reaches equal or
+  better second-turn improvement on already-executable outputs without a
+  shared-first-turn stage, or showing the repetition collapse disappears
+  under a different reward scale rather than a different rollout structure.
+submitted_by: agent:claude-opus-5@Russ-Miller

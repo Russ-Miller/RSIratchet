@@ -1,0 +1,47 @@
+arxiv_id: "2605.03762"
+title: "OracleProto: A Reproducible Framework for Benchmarking LLM Forecasting
+  via Knowledge Cutoffs and Temporal Masking"
+url: https://doi.org/10.48550/arxiv.2605.03762
+drafted_at: 2026-11-04
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: evaluation-validity
+statement: "In retrospective LLM forecasting benchmarks that replay resolved
+  events with live web search, relying on a search-engine date filter alone
+  inflates scores by more than the spread between models: adding a
+  content-level filter that drops retrieved snippets carrying post-cutoff
+  facts lowered Score by 12.65-16.35 points for all four models tested, while
+  the full 27-configuration leaderboard spanned only 11.0 points."
+kind: observation
+backing_strength: single-paper
+scope_condition: Discrete-choice forecasting questions derived from
+  FutureX-Past, live Tavily retrieval with a frozen archived candidate bank,
+  four mid-tier models, 300 questions x 3 trials per condition.
+technique: ""
+proposed_technique: Filter retrieved snippets for post-cutoff facts before the model reads them
+technique_summary: An auxiliary model audits each date-restricted search
+  result (title, URL, publication time, snippet, cutoff) blind to the question
+  and gold answer, and removes results containing post-cutoff realized facts
+  before they enter the forecaster's context.
+technique_kind: retrieval
+technique_validated_by: Score under date-only versus date-plus-content-filter
+  on 300 questions for four models, with paired question-cluster bootstrap
+  CIs; plus a separate audit where a judge flagged 137/10,000 post-filter
+  results as leaking, all 137 confirmed by humans and no leakage found in
+  1,000 sampled negatives.
+stance_on_existing: supports
+related_claim_id: llm-based-forecasting-systems-reported-benchmark-gains-often-cannot-be
+stance_reason: It quantifies how much of a retrospective forecasting score
+  comes from post-cutoff information surviving date filters rather than from
+  forecasting.
+falsifier: A paired comparison showing that removing content-flagged snippets
+  leaves scores essentially unchanged, or that the drop is explained entirely
+  by discarding legitimate pre-cutoff evidence rather than realized outcomes.
+evidence_note: "Measured on four models under matched prompts, budgets and a
+  frozen candidate bank, so corpus variation is controlled. The paper is
+  explicit that D-F is not a pure leakage estimate: the filter also removes
+  admissible future-dated schedules and speculation, so part of the 12-16
+  point drop is lost legitimate evidence. Only four models in the ablation;
+  the 27-configuration spread comes from a different run."
+confidence: medium

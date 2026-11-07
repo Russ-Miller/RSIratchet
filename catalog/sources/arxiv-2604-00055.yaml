@@ -1,0 +1,61 @@
+id: arxiv-2604-00055
+ref: SRC-0888
+kind: paper
+title: Generalizable Dense Reward for Long-Horizon Robotic Tasks
+authors:
+  - Silong Yong
+  - Stephen Sheng
+  - Carl Qi
+  - Xiaojie Wang
+  - Evan Sheehan
+  - Anurag Shivaprasad
+year: 2026
+date: 2026-03-31
+arxiv_id: "2604.00055"
+url: https://arxiv.org/abs/2604.00055
+tags:
+  - ingested
+summary: Existing robotic foundation policies are trained primarily via
+  large-scale imitation learning. While such models demonstrate strong
+  capabilities, they often struggle with long-horizon tasks due to
+  distribution shift and error accumulation. While reinforcement learning (RL)
+  can finetune these models, it cannot work well across diverse tasks without
+  manual reward engineering. We propose VLLR, a dense reward framework
+  combining (1) an extrinsic reward from Large Language Models (LLMs) and
+  Vision-Language Models (VLMs) for task progress recognition, and (2) an
+  intrinsic reward based on policy self
+notes: "Filed as a source on long-horizon-execution from the classifier's
+  judgement that the paper is about it (improves, medium): The paper proposes
+  a dense reward framework that raises success rates on long-horizon robotic
+  tasks suffering from error accumulation, up to 56% absolute over the
+  pretrained policy. No claim has been drafted from it yet."
+ingested_at: 2026-11-06
+brief: >-
+  A VLM only needs to shape the value function, not the policy, for
+  long-horizon robot RL: querying it for 200K of 50M steps to initialize a
+  critic captures most of the benefit, and per-step policy self-certainty
+  supplies the rest of the dense signal with no external model in the loop.
+
+
+  VLLR fine-tunes the SPOC foundation policy with PPO on the CHORES benchmark
+  (20 discrete actions, 2 egocentric RGB cameras, held-out ProcThor houses
+  from a 10:1 split of 191,568 houses). Claude-3.7-Sonnet decomposes tasks
+  into subgoals from a scene graph; Nova Pro estimates progress, with median
+  filtering to remove hallucinated spikes.
+
+
+  On 4 in-distribution tasks, success rises to 87.6 on ObjectNav, 70.7 on
+  Fetch, 97.0 on PickUp, 68.3 on RoomVisit, against FLaRe at 85.0, 65.23,
+  91.8, 60.87. On 2 out-of-distribution tasks, ObjNavAff reaches 90.1 vs 79.7.
+  Ablations on 3 tasks separate the parts: self-certainty alone gives 89.7 on
+  ObjNavAff, VLM init alone 89.0, full 90.1.
+
+
+  The component attribution is measured, but gains over FLaRe are small (up to
+  5 % in-distribution) and the efficiency and convergence claims (30M vs. 50M
+  steps) rest on single runs with no reported variance. 1 benchmark, 1 policy,
+  discrete actions only; continuous-action manipulation untested. Useful if
+  you were paying per-step for VLM rewards.
+brief_generated_at: 2026-11-06
+brief_model: claude-opus-5
+brief_source: full-text
