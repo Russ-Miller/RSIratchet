@@ -1,6 +1,12 @@
 // Verifies every paper with an arxiv_id against the arXiv API: the title in
 // the catalog must match arXiv's (normalized). Guards against invented
 // citations. Run: npm run verify-papers   (needs network)
+//   --changed <git-ref>  check only sources added or modified since that ref
+//                        (pull requests: the full pass takes ~20 minutes)
+//   --files a.yaml,b.yaml  check only these (paths under catalog/sources)
+// A catalog title that matches an earlier arXiv version is a rename by the
+// authors, not a bad citation: reported, not failed.
+import { execFileSync } from "node:child_process";
 import { loadCatalog } from "./catalog-lib.mjs";
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -43,8 +49,30 @@ async function fetchSemanticScholar(batch) {
   return null;
 }
 
-const norm = (s) => s.toLowerCase().replace(/[^a-z0-9]/g, ""); // ignore punctuation, hyphens, spacing
-const papers = loadCatalog().sources.filter((p) => p.data.arxiv_id);
+// Compare what a title says, not how it is encoded: HTML entities
+// ("Don&#39;t") and LaTeX markup ("EXAM$^2$: $\\underline{Ex}tending$") are
+// renderings of the same title. Then ignore punctuation, hyphens, spacing.
+const ENTITIES = { amp: "&", lt: "<", gt: ">", quot: '"', apos: "'", nbsp: " " };
+const norm = (s) => String(s)
+  .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
+  .replace(/&#x([0-9a-f]+);/gi, (_, n) => String.fromCodePoint(parseInt(n, 16)))
+  .replace(/&([a-z]+);/gi, (m, n) => ENTITIES[n.toLowerCase()] ?? m)
+  .replace(/\\[a-zA-Z]+/g, "").replace(/[$^_{}]/g, "")
+  .toLowerCase().replace(/[^a-z0-9]/g, "");
+const changedAt = process.argv.indexOf("--changed");
+const changed = changedAt < 0 ? null : new Set(execFileSync("git", ["diff", "--name-only", "--diff-filter=AM", process.argv[changedAt + 1], "--", "catalog/sources"], { encoding: "utf8" })
+  .split("\n").filter(Boolean).map((f) => f.replace(/^catalog\//, "")));
+const filesAt = process.argv.indexOf("--files");
+const only = filesAt < 0 ? changed : new Set(process.argv[filesAt + 1].split(",").map((f) => `sources/${f.replace(/^(catalog\/)?sources\//, "")}`));
+const papers = loadCatalog().sources.filter((p) => p.data.arxiv_id && (!only || only.has(p.file)));
+
+// Title of one specific version, e.g. 2605.01203v1, to tell a rename from a
+// wrong citation. null if arXiv does not answer.
+async function versionTitle(id) {
+  const t = (await fetchArxiv(id))?.get(id.replace(/v\d+$/, ""));
+  return t ?? null;
+}
+const renamed = [];
 const CHUNK = 5; // arXiv rate-limits aggressively; keep batches small
 const UA = "modelselfhelp-verify/0.1 (+https://github.com/Russ-Miller/RSIratchet)";
 let failures = 0;
@@ -58,10 +86,15 @@ for (let i = 0; i < papers.length; i += CHUNK) {
     const want = p.data.arxiv_id.replace(/v\d+$/, "");
     const got = byId.get(want);
     if (!got) { failures++; console.error(`MISSING  ${p.file}: arXiv returned no entry for ${want}`); continue; }
-    if (norm(got) !== norm(p.data.title)) { failures++; console.error(`MISMATCH ${p.file}\n  catalog: ${p.data.title}\n  arxiv:   ${got}`); }
+    if (norm(got) === norm(p.data.title)) continue;
+    await sleep(3500);
+    const v1 = await versionTitle(`${want}v1`);
+    if (v1 && norm(v1) === norm(p.data.title)) { renamed.push(p.file); console.warn(`RENAMED  ${p.file}: catalog has the v1 title; arXiv now has\n  ${got}`); continue; }
+    failures++; console.error(`MISMATCH ${p.file}\n  catalog: ${p.data.title}\n  arxiv:   ${got}${v1 ? `\n  v1:      ${v1}` : ""}`);
   }
   if (i + CHUNK < papers.length) await sleep(6000); // arXiv asks for 3s between requests; be generous
 }
 if (failures) { console.error(`${failures} of ${papers.length} papers failed verification.`); process.exit(1); }
 if (unverified) { console.error(`${unverified} of ${papers.length} papers could not be checked (sources unavailable); rerun later.`); process.exit(2); }
+if (renamed.length) console.warn(`${renamed.length} renamed by their authors since filing (catalog title matches v1).`);
 console.log(`All ${papers.length} arXiv papers verified against arXiv titles.`);

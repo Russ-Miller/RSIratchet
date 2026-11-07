@@ -19,13 +19,19 @@ const ids = args.filter((a, i) => /^\d{4}\.\d{4,5}$/.test(a) && i !== noteIdx + 
 if (!ids.length) { console.log("no arXiv ids given"); process.exit(1); }
 const TODAY = new Date().toISOString().slice(0, 10);
 
+// arXiv escapes meta content both ways (&#39; and &#x27;); decode any entity.
+const decode = (t) => t.replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
+  .replace(/&#x([0-9a-f]+);/gi, (_, n) => String.fromCodePoint(parseInt(n, 16)))
+  .replace(/&quot;/g, '"').replace(/&apos;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
+
 async function meta(id) {
   const html = await (await fetch(`https://arxiv.org/abs/${id}`, { headers: { "User-Agent": "rsiratchet/0.1" } })).text();
-  const m = (n) => [...html.matchAll(new RegExp(`<meta name="${n}" content="([^"]*)"`, "g"))].map((x) => x[1].replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#x27;/g, "'"));
+  const m = (n) => [...html.matchAll(new RegExp(`<meta name="${n}" content="([^"]*)"`, "g"))].map((x) => decode(x[1]));
   const title = m("citation_title")[0];
   const authors = m("citation_author").map((a) => (a.includes(",") ? a.split(", ").reverse().join(" ") : a));
   const date = m("citation_date")[0]?.replace(/\//g, "-");
-  const abstract = (html.match(/<blockquote class="abstract[^"]*">\s*<span[^>]*>Abstract:<\/span>\s*([\s\S]*?)<\/blockquote>/) || [])[1]?.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  let abstract = (html.match(/<blockquote class="abstract[^"]*">\s*<span[^>]*>Abstract:<\/span>\s*([\s\S]*?)<\/blockquote>/) || [])[1]?.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  if (abstract) abstract = decode(abstract);
   if (!title || !abstract) throw new Error(`abstract page for ${id} did not parse`);
   return { title, authors, date, abstract };
 }
