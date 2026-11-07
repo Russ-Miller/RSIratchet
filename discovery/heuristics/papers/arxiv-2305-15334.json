@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "source": "arxiv-2305-15334",
+  "fingerprint": "0417327bf6730365562a486f01fde935efcb9f59ca72c25b34250ea9844020b6",
+  "attempted_at": "2026-10-22T23:20:55.289Z",
+  "candidates": [
+    {
+      "title": "Don't append weak-retriever API docs to a model not trained for retrieval",
+      "rule": "If a model was fine-tuned (or prompted) without retrieval for API selection, do not append top-1 BM25 or embedding-retrieved API documentation at inference; keep it zero-shot unless the retriever is near-oracle.",
+      "basis": "author-tested",
+      "passage": "The result illustrates that adding a non-optimal retriever at test time will sometime misguide the model and result in more errors.",
+      "location": "Section 4.1, 'Finetuning without Retrieval', with Table 2",
+      "finding": "Gorilla fine-tuned without a retriever scored 59.13 (TorchHub), 71.68 (HuggingFace), 83.79 (TensorHub) zero-shot, but dropped to 37.63/11.28/34.30 with BM25 and 60.21/28.10/52.40 with GPT-Index; hallucination also rose with BM25 on HuggingFace (10.95 to 46.46).",
+      "models": [
+        "Gorilla (LLaMA-7B fine-tuned)",
+        "GPT-4 (gpt-4-0314)",
+        "GPT-3.5-turbo (gpt-3.5-turbo-0301)",
+        "Claude v1",
+        "LLaMA-7B"
+      ],
+      "workloads": [
+        "APIBench: TorchHub, HuggingFace, TensorFlow Hub API-call selection, AST sub-tree matching"
+      ],
+      "conditions": "Top-1 retrieved document only, concatenated with the fixed prefix 'Use this API documentation for reference:'; single-line API call generation; no further prompt tuning.",
+      "limitations": "Single paper, 2023 model checkpoints, ML model-hub APIs only; top-1 retrieval is a weak setup and multi-document retrieval was not tested; for GPT-3.5/GPT-4 the GPT-Index retriever actually improved accuracy, so the effect is model-dependent.",
+      "validation_test": "On your own API catalogue, evaluate the same model zero-shot vs. with top-1 retrieved docs, scoring correct API selection and hallucination rate; also test top-k retrieval before concluding retrieval hurts.",
+      "overlaps_heuristics": [
+        "first-impressions-last"
+      ]
+    },
+    {
+      "title": "Verify tool calls by AST sub-tree matching against an API registry",
+      "rule": "To score and gate generated API calls, parse the output into an AST and check that the call node plus a declared set of required arguments form a sub-tree of a registry entry; treat non-matching calls as hallucinated tools rather than relying on execution tests.",
+      "basis": "inferred",
+      "passage": "We define a hallucination as an API call that is not a sub-tree of any API in the database – invoking an entirely imagined tool.",
+      "location": "Section 3.3, 'Verifying APIs' / 'AST Sub-Tree Matching'",
+      "finding": "The authors used this metric to measure all reported accuracies and hallucination rates, arguing unit tests cannot verify semantically equivalent API choices. Using it as a runtime guard before dispatch is our extrapolation; the paper evaluates but does not deploy it as a filter.",
+      "models": [
+        "Gorilla",
+        "GPT-4",
+        "GPT-3.5-turbo",
+        "Claude v1",
+        "LLaMA-7B"
+      ],
+      "workloads": [
+        "APIBench evaluation of single-line Python API calls"
+      ],
+      "conditions": "Single API call per response; optional arguments (e.g. pretrained=True) excluded from matching; required arguments specified per API (e.g. repo_or_dir, model for torch.hub.load).",
+      "limitations": "Only validated on single-call, single-line Python outputs over three ML model hubs; it checks identity against a registry, not functional or runtime correctness; the HuggingFace registry is non-exhaustive, so non-Gorilla models were scored only on domain, weakening cross-model comparability.",
+      "validation_test": "Implement the AST sub-tree check over your tool registry, run it on logged agent calls, and compare its hallucination labels against manual review plus actual execution failures.",
+      "overlaps_heuristics": []
+    }
+  ],
+  "status": "candidates",
+  "reason": "The paper reports matched comparisons of fine-tuning with/without retrieval and of appending retrieved API docs at test time across four retriever settings, yielding two scoped, actionable rules. A third rule about retriever-match between training and inference is inferred from the same tables.",
+  "model": "claude-opus-5",
+  "text_url": "https://arxiv.org/html/2305.15334v1",
+  "text_sha256": "8c72e3625b10eba55a9b28fdbb5a41453ae1d086d4bbd1209774dd38072c7801",
+  "retrieved_at": "2026-10-22T23:20:55.289Z",
+  "supplied_chars": 55098,
+  "total_chars": 55098,
+  "truncated": false,
+  "input_tokens": 24222,
+  "output_tokens": 2164
+}

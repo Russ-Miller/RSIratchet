@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "source": "arxiv-2207-05221",
+  "fingerprint": "9f4e88b2e124065d6a19af019b2d80f4080e8a700ca0c46b23003e133047e6f1",
+  "attempted_at": "2026-10-22T23:19:41.230Z",
+  "candidates": [
+    {
+      "title": "Temperature-adjust RLHF policy probabilities before trusting confidence",
+      "rule": "Do not read confidence directly off an RLHF-finetuned policy's output distribution; apply a single global temperature rescaling (one constant fitted across tasks) before using its probabilities as calibrated confidence.",
+      "basis": "author-tested",
+      "passage": "a simple temperature adjustment (with the same temperature T = 2.5 for all evaluations) largely fixes calibration issues with several independent evaluation tasks",
+      "location": "Section 3.3 (RLHF Policy Miscalibration) and Figure 9",
+      "finding": "Helpful-and-harmless RLHF policies finetuned from the same base LMs appeared badly miscalibrated on multiple-choice evaluations; a single temperature of 2.5 shared across three evaluations largely restored calibration. The authors note more intensive RL training might distort calibration beyond what temperature can fix.",
+      "models": [
+        "RLHF policies finetuned from Anthropic base LMs (trained as in Bai et al., 2022)"
+      ],
+      "workloads": [
+        "three multiple-choice evaluations (not individually specified in the quoted result)"
+      ],
+      "conditions": "Requires access to output token probabilities; the constant T=2.5 is specific to these policies and evaluations and must be refit per model.",
+      "limitations": "Brief side experiment, few evaluations, single paper. T=2.5 is not transferable; heavier RL or different reward models may produce distortions temperature cannot correct. Does not address calibration of free-form verbal confidence.",
+      "validation_test": "For an RLHF model with logprob access, measure ECE on several multiple-choice sets before and after fitting one global temperature on a held-out set, and check whether a single constant generalizes across the tasks.",
+      "overlaps_heuristics": []
+    }
+  ],
+  "status": "candidates",
+  "reason": "The paper contains several directly tested prompt/format interventions with measured effects on calibration and self-evaluation quality, which map to actionable harness rules. I propose three distinct ones: lettered single-token multiple-choice formatting (and avoiding 'none of the above'), few-shot True/False self-evaluation with multiple sampled candidates as a filter, and temperature adjustment for RLHF-policy confidence. All are from a single 2022 Anthropic paper on 800M-52B internal models, so transfer is uncertain.",
+  "model": "claude-opus-5",
+  "text_url": "https://arxiv.org/html/2207.05221v4",
+  "text_sha256": "b446d25b75f0d87b43c180ed1d1941b86ae22ba8779d81e193374c0cc205fac3",
+  "retrieved_at": "2026-10-22T23:19:41.230Z",
+  "supplied_chars": 94579,
+  "total_chars": 94579,
+  "truncated": false,
+  "input_tokens": 36535,
+  "output_tokens": 2276
+}

@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "source": "arxiv-2609-14857",
+  "fingerprint": "51de295bac7e9f8ccd8998d30a9e4895017a6ba23140faac2ca4d657a0a86afe",
+  "attempted_at": "2026-10-22T23:29:02.019Z",
+  "status": "candidates",
+  "reason": "Selected sections include matched-budget modular-versus-joint comparisons and a contrastive-analysis ablation. They also show successful cross-model transfer, which qualifies any blanket claim that every model always requires a different harness.",
+  "candidates": [
+    {
+      "title": "Localize harness evolution before integrating changes",
+      "rule": "For modular coding and terminal harnesses, compare separately evolving functional modules followed by integration with rewriting the whole harness jointly, while matching the aggregate evolution budget.",
+      "basis": "author-tested",
+      "passage": "both joint all-module evolution and unrestricted whole-harness evolution perform worse than the initial harness",
+      "location": "Section 6.3, Tables 3 and 4",
+      "finding": "On TerminalBench 2.0, modular evolution reaches 52.43 accuracy versus 47.57 without evolution, 46.44 for non-modular evolution and 44.19 for joint all-module evolution. The comparison matches aggregate evolution exposure; integration combines complementary module changes.",
+      "models": [
+        "DeepSeek-V4-Flash-Preview for the main evolution ablation",
+        "Transfer tests: GLM-5.2 and MiniMax-2.5"
+      ],
+      "workloads": [
+        "TerminalBench 2.0",
+        "SWE-bench Verified for broader transfer results"
+      ],
+      "conditions": "Five modules cover the loop, tools, observations, context and completion. Main evolution samples 120 instances from each relevant subset of a 2,000-task benchmark-disjoint pool; it does not use all 2,000 in every main run.",
+      "limitations": "The modular-versus-joint ablation is primarily one backbone and one terminal benchmark. Module boundaries and integration quality may change the effect. Transfer across three tested models succeeds, so model-specific retuning should be tested rather than presumed necessary in every case.",
+      "validation_test": "At equal rollout and evolution budgets, compare unchanged, joint-edit and module-localized harnesses. Freeze the selected variants before evaluating on disjoint tasks and additional target models.",
+      "overlaps_heuristics": []
+    },
+    {
+      "title": "Contrast successful and failed trajectories before generalizing a repair",
+      "rule": "When successful and failed runs of the same task are available, compare them to localize recurring behavior differences before proposing module-level changes.",
+      "basis": "author-tested",
+      "passage": "Removing CTA decreases accuracy from 52.43 to 50.56",
+      "location": "Section 6.4, Table 5",
+      "finding": "Removing Contrastive Trajectory Analysis lowers TerminalBench 2.0 accuracy by 1.87 points within the modular evolution pipeline. The method also aggregates recurring deficiencies across tasks rather than promoting a fix for one isolated trace.",
+      "models": [
+        "DeepSeek-V4-Flash-Preview"
+      ],
+      "workloads": [
+        "Benchmark-disjoint terminal-agent evolution, evaluated on TerminalBench 2.0"
+      ],
+      "conditions": "The contrastive stage uses multiple rollouts and module-level attribution within a controlled modular evolution pipeline.",
+      "limitations": "The ablation removes the full CTA component; it does not independently isolate every pairing, aggregation or attribution choice. It requires informative successes as well as failures and does not establish benefits where outcomes cannot be judged.",
+      "validation_test": "Compare failure-only diagnosis with success/failure contrast at the same trace and proposal budgets. Evaluate resulting edits on new tasks and measure regression as well as targeted improvement.",
+      "overlaps_heuristics": [
+        "practice-makes-perfect"
+      ]
+    }
+  ],
+  "model": "Codex session",
+  "review_method": "codex-session",
+  "review_scope": "Focused reading of abstract/introduction and selected main-text results, ablations and limitations; intervening sections, references and appendices were not comprehensively reviewed.",
+  "review_segments": [
+    {
+      "start": 0,
+      "end": 4000
+    },
+    {
+      "start": 20308,
+      "end": 34308
+    }
+  ],
+  "text_url": "https://arxiv.org/html/2609.14857v2",
+  "text_sha256": "7eb551d1bd14cbc247ac21914f19f0095b705505c4490d6549338d3c458c8979",
+  "retrieved_at": "2026-10-22T23:25:36.585Z",
+  "supplied_chars": 18002,
+  "total_chars": 78173,
+  "truncated": true
+}

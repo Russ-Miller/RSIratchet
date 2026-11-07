@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "source": "arxiv-2608-23635",
+  "fingerprint": "b7645eb7276ca6a5a2ebfe3836f15b86ba6a64b60cd7989c4858cd7eb6f209a7",
+  "attempted_at": "2026-10-22T23:59:08.115Z",
+  "status": "candidates",
+  "reason": "Selected intervention and composition tests support stage-aware diagnosis and cross-stage robustness testing.",
+  "candidates": [
+    {
+      "title": "Check upstream tool selection before patching argument reasoning",
+      "rule": "When a tool call has wrong arguments, test whether the agent first chose the wrong tool before adding parameter-binding reasoning instructions.",
+      "basis": "author-tested",
+      "passage": "E2E success remains 21/30 (70.0%) before and after",
+      "location": "Section 5.6, Table 8",
+      "finding": "On thirty user-intent-perturbed tasks, argument-focused CoT leaves gpt-5.4-mini success unchanged. On a separate thirty interface-perturbed tasks, explicit tool aliases raise success from 21/30 to 30/30. These are different perturbation families, not interchangeable treatments.",
+      "models": [
+        "gpt-5.4-mini"
+      ],
+      "workloads": [
+        "ToolRobustBench controlled local tool-use tasks"
+      ],
+      "conditions": "Diagnostic attribution separates tool selection, schema grounding, binding and result interpretation.",
+      "limitations": "Small intervention samples, deterministic tools and single-step tasks; the null result does not show that argument reasoning never helps. Providers and protocols vary in the broader model panel.",
+      "validation_test": "Replay failures with tool identity fixed, then arguments fixed; choose the intervention matching the earliest cause and evaluate on new tasks with both clean and perturbed interfaces.",
+      "overlaps_heuristics": []
+    },
+    {
+      "title": "Test combined tool-use perturbations directly",
+      "rule": "Before inferring robustness from isolated tests, combine representative interface, intent and observation perturbations and measure the resulting end-to-end failures.",
+      "basis": "inferred",
+      "passage": "Mixed-family robustness cannot be inferred from the weaker constituent alone.",
+      "location": "Sections 6–9, Figure 4",
+      "finding": "Selected mixed perturbations generally reduce success below the weaker isolated component, but some combinations appear easier because of salience or floor effects. The testing recommendation is inferred from the observed non-additivity.",
+      "models": [
+        "Seven-model ToolRobustBench panel"
+      ],
+      "workloads": [
+        "Five selected cross-family tool perturbation pairs"
+      ],
+      "conditions": "Medium and heavy severities; sixteen instances per model-pair-severity cell. Some incompatible or degenerate mixtures are excluded.",
+      "limitations": "Selected compositions do not exhaust deployment interactions or provide prevalence estimates. Local single-step tools omit authentication, real rate limits and long-horizon state.",
+      "validation_test": "Evaluate plausible mixed failures in the deployed API wrapper, compare with constituent tests and inspect stage-level causes; report uncertainty and avoid multiplying isolated success rates.",
+      "overlaps_heuristics": []
+    }
+  ],
+  "model": "Codex session",
+  "review_method": "codex-session",
+  "review_scope": "Selected abstract, introduction, methods or main-result sections; not a comprehensive paper or appendix review.",
+  "review_segments": [
+    {
+      "start": 0,
+      "end": 2000
+    },
+    {
+      "start": 34913,
+      "end": 43913
+    }
+  ],
+  "text_url": "https://arxiv.org/html/2608.23635v1",
+  "text_sha256": "1e806cf82dfde969f51a24c3c19d7552889dd9735bdcc71b8559639bc6ac8396",
+  "retrieved_at": "2026-10-22T23:58:23.089Z",
+  "supplied_chars": 11002,
+  "total_chars": 70149,
+  "truncated": true
+}

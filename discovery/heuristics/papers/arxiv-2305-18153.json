@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "source": "arxiv-2305-18153",
+  "fingerprint": "590a81eaae6ae2127c3741b8448d2151d975774105288cd9cdcf38d39543632f",
+  "attempted_at": "2026-10-22T23:21:07.264Z",
+  "candidates": [
+    {
+      "title": "Use few-shot answerable/unanswerable exemplars to improve abstention on unknowable questions",
+      "rule": "When you need a model to say \"I don't know\" on unanswerable questions, prompt with in-context examples mixing answerable and unanswerable questions rather than a bare question or an instruction alone; this matters most for non-instruction-tuned base models.",
+      "basis": "author-tested",
+      "passage": "This impact is particularly noticeable in the davinci model, where ICL facilitates a 27.96% improvement over the direct.",
+      "location": "Section 4.4, Input Forms (Figures 2-4)",
+      "finding": "Across GPT-3 (ada/babbage/curie/davinci) and InstructGPT (text-*-001) models, F1 for identifying unanswerable SelfAware questions rose from direct to instruction to ICL input forms, with the biggest gain (+27.96% for davinci) in the base model; ICL also narrowed the gap between davinci and text-davinci, suggesting the prompt supplies what instruction tuning otherwise provides. Even the best model, GPT-4, reached 75.47% F1 versus a human benchmark of 84.93%.",
+      "models": [
+        "GPT-3 series (ada, babbage, curie, davinci)",
+        "InstructGPT series (text-ada-001 to text-davinci-001)",
+        "GPT-4 (100-sample subset)",
+        "LLaMA, Alpaca, Vicuna (instruction form only)"
+      ],
+      "workloads": [
+        "SelfAware: 1,032 unanswerable questions plus 2,337 answerable ones from SQuAD, HotpotQA, TriviaQA"
+      ],
+      "conditions": "Temperature 0.7; ICL prompt with 3 answerable and 3 unanswerable hand-written examples; uncertainty judged automatically by SimCSE similarity (threshold 0.75) to 16 reference uncertainty sentences; F1 with unanswerable as positive class.",
+      "limitations": "Single paper, 2023-era models; ICL results reported only for GPT-3/InstructGPT series, not LLaMA derivatives or GPT-4; gains may partly reflect increased abstention, and the paper does not report whether added abstention hurts accuracy on answerable questions under ICL; no cost or token-budget matching; exemplars were hand-written and may not transfer to other domains.",
+      "validation_test": "On your own mix of answerable and unanswerable/underspecified requests, run the same model with direct, instruction, and 6-shot mixed-exemplar prompts; measure abstention F1 on unanswerable items and accuracy on answerable items to check that ICL gains are not bought with over-refusal.",
+      "overlaps_heuristics": [
+        "first-impressions-last"
+      ]
+    },
+    {
+      "title": "Detect model abstention by embedding similarity to a curated uncertainty-phrase list",
+      "rule": "To score abstention automatically in free-text generations, compare sliding-window chunks of the output against a small curated list of uncertainty phrases using a sentence embedding model, and tune the similarity threshold on a hand-labelled sample rather than guessing it.",
+      "basis": "author-tested",
+      "passage": "The results in Table 2 indicate that a threshold of 0.75 produced the highest F1 score, balancing precision and the inclusion of other uncertain sentences.",
+      "location": "Appendix A.2, Table 2",
+      "finding": "With 16 manually curated uncertainty reference sentences and SimCSE embeddings, thresholds from 0.65 to 0.95 were swept on 100 hand-labelled text-davinci-002 responses; 0.75 gave the best F1 (91.89, precision 100, recall 85), while higher thresholds lost recall and lower ones lost precision. The ablation shows threshold choice materially changes the measured abstention rate.",
+      "models": [
+        "text-davinci-002 (responses labelled for the ablation)",
+        "SimCSE as the similarity scorer"
+      ],
+      "workloads": [
+        "100 responses to SelfAware questions, manually labelled for uncertainty"
+      ],
+      "conditions": "Sliding window of length 5 to split target text into semantic chunks; punctuation stripped and text lowercased; 16 reference sentences sourced from GPT-3/InstructGPT outputs.",
+      "limitations": "Threshold tuned on only 100 responses from one model family; authors note the reference sentence list came only from GPT-3/InstructGPT and may miss uncertainty phrasing from other models; no comparison against an LLM-as-judge or other detectors; the 0.75 value is unlikely to transfer unchanged to other embedding models or domains.",
+      "validation_test": "Hand-label ~200 of your agent's outputs as abstaining or not, sweep the similarity threshold for your embedding model and phrase list, and compare resulting F1 against an LLM-judge baseline to decide which detector to deploy.",
+      "overlaps_heuristics": [
+        "goodharts-law"
+      ]
+    }
+  ],
+  "status": "candidates",
+  "reason": "The paper compares three input forms (direct, instruction, in-context learning) across GPT-3/InstructGPT series on the SelfAware dataset, giving a testable prompting rule for abstention behaviour. It also reports an automated uncertainty-detection method with a tuned similarity threshold, usable as a harness evaluation rule. Both are narrow, single-paper, 2023-era model results.",
+  "model": "claude-opus-5",
+  "text_url": "https://arxiv.org/html/2305.18153v2",
+  "text_sha256": "4181e99a392c1d8caccdc7f43a0a22ac8f4f2dfb1383440c1a9b43ad2f5be777",
+  "retrieved_at": "2026-10-22T23:21:07.264Z",
+  "supplied_chars": 32022,
+  "total_chars": 32022,
+  "truncated": false,
+  "input_tokens": 15369,
+  "output_tokens": 1764
+}

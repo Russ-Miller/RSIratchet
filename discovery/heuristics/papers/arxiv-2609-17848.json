@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "source": "arxiv-2609-17848",
+  "fingerprint": "535858e9cc1bcc5f39bcca1463a24c06c8638a0092f65cee13a1a24560de975e",
+  "attempted_at": "2026-10-22T23:59:08.115Z",
+  "status": "candidates",
+  "reason": "Selected controlled training results favor a strong SFT baseline and mixed-data transfer, without compute-normalized claims.",
+  "candidates": [
+    {
+      "title": "Include LoRA supervised tuning as a tool-calling baseline",
+      "rule": "For Qwen3 tool-call adaptation with labeled calls, compare LoRA SFT with GRPO and sequential SFT-to-GRPO before assuming RL is the stronger training choice.",
+      "basis": "author-tested",
+      "passage": "achieving the best result in 15 of 18 settings",
+      "location": "Section 4.1, Table 2",
+      "finding": "LoRA SFT is strongest in fifteen of eighteen in-distribution settings across six Qwen3 sizes. GRPO wins more cross-dataset cells but its average advantage over SFT is under one point. Sequential training is rarely best.",
+      "models": [
+        "Qwen3 0.6B through 32B"
+      ],
+      "workloads": [
+        "xLAM",
+        "ToolACE",
+        "Glaive-FC-v2 tool-call exact match"
+      ],
+      "conditions": "Common formats, deduplicated fixed splits and controlled total example counts; the sequential method divides data between stages.",
+      "limitations": "No compute-normalized comparison: GRPO uses more compute per example. One family and exact-match calls rather than long-horizon environment execution. LoRA-versus-full-tuning comparison is only at 4B.",
+      "validation_test": "Compare methods on identical labels and deployed formats, recording training compute and exact-call plus execution success on in-distribution and transferred tasks.",
+      "overlaps_heuristics": []
+    },
+    {
+      "title": "Test mixed tool-call data when deployment spans formats",
+      "rule": "For agents expected to handle diverse tool-call distributions, compare a balanced mixture of training corpora with single-corpus specialization on every intended target.",
+      "basis": "author-tested",
+      "passage": "The uniform mixture provides the strongest overall deployment choice",
+      "location": "Section 4.2, Figure 1",
+      "finding": "The mixture remains within one to five points of the best dataset-specialized model on each target and avoids the observed poor Glaive-to-xLAM transfer across the tested scales and methods.",
+      "models": [
+        "Six Qwen3 model scales"
+      ],
+      "workloads": [
+        "xLAM",
+        "ToolACE",
+        "Glaive-FC-v2"
+      ],
+      "conditions": "Seeded mixture samples up to twenty thousand examples per corpus, with fixed validation and test splits after deduplication.",
+      "limitations": "A larger or more diverse mixture can change training cost; this does not isolate diversity at every equal-compute or equal-example budget. Results do not show that uniform weights suit every deployment.",
+      "validation_test": "Compare specialized and mixed datasets at matched sample and compute budgets; weight target evaluations by actual deployment needs and check rare tools and no-tool requests.",
+      "overlaps_heuristics": []
+    }
+  ],
+  "model": "Codex session",
+  "review_method": "codex-session",
+  "review_scope": "Selected abstract, introduction, methods or main-result sections; not a comprehensive paper or appendix review.",
+  "review_segments": [
+    {
+      "start": 0,
+      "end": 2000
+    },
+    {
+      "start": 8445,
+      "end": 17445
+    }
+  ],
+  "text_url": "https://arxiv.org/html/2609.17848v1",
+  "text_sha256": "0c05d4fa0dc9dcd6d9683e555a9a74ab99fbbf157a31bfa350b0bd472b644c88",
+  "retrieved_at": "2026-10-22T23:58:19.671Z",
+  "supplied_chars": 11002,
+  "total_chars": 29875,
+  "truncated": true
+}

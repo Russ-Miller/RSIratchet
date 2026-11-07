@@ -1,3 +1,4 @@
+import { EvidenceNav } from "@/components/evidence-nav";
 import Link from "next/link";
 import { ListSearch } from "@/components/list-search";
 import { ModelStrip } from "@/components/model-strip";
@@ -34,12 +35,12 @@ export default function ClaimsPage() {
   ];
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-semibold">Claims</h1>
-      <p className="text-sm text-neutral-500">
-        Directional, scoped statements &mdash; the actual content. Each shows which capability it sits
-        under and which sources support or contest it. Sources with no citations in the last 12 months
-        and 2+ years old are tucked behind &ldquo;older sources&rdquo;.
-      </p>
+      <header className="library-heading">
+        <p className="eyebrow">Evidence library</p>
+        <h1>Claims</h1>
+      <p className="max-w-3xl text-sm text-neutral-500">The findings behind the guidance, with their scope and supporting or contesting sources. Disputed findings appear first so you can inspect where the evidence differs.</p>
+      </header>
+      <EvidenceNav current="/claims" />
       <ModelStrip compact />
       <p className="text-sm text-neutral-500">
         {contestedCount} of {claims.length} are contested, sorted first &mdash;{" "}

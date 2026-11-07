@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "source": "arxiv-2110-14168",
+  "fingerprint": "8a48a93bc0e89ae1b9fe5ed9d82a2c88ac5d5d510f96fd1d0cbe10d33c588221",
+  "attempted_at": "2026-10-22T23:18:55.708Z",
+  "candidates": [
+    {
+      "title": "Cap verifier search and vote among top-ranked samples",
+      "rule": "When reranking with a learned verifier, do not scale candidate count indefinitely: around 400 completions accuracy peaked and then declined; and instead of taking only the top-1, majority-vote over the final answers of the top few (3-5 of 100 samples, ~30 of 3200).",
+      "basis": "author-tested",
+      "passage": "performance improves as we increase the number of completions up to 400. Beyond this point, performance start to decrease.",
+      "location": "Section 5.1 Test Time Compute (Figures 7a, 7b)",
+      "finding": "With a 6B verifier on GSM8K, more candidates helped only up to roughly 400, after which adversarial solutions that fool the verifier reduced accuracy. Majority voting over top-ranked samples improved over top-1 selection, with the optimal vote pool growing with the number of samples drawn.",
+      "models": [
+        "GPT-3 6B"
+      ],
+      "workloads": [
+        "GSM8K"
+      ],
+      "conditions": "Verifiers trained on 100 completions per training problem; test-time search over larger pools; voting counts only final answers.",
+      "limitations": "The 400 turnover point was measured only at 6B on GSM8K and may shift with verifier size, verifier quality, or task; exact accuracies not reported in text; single run details unclear.",
+      "validation_test": "Sweep candidate counts (10, 100, 400, 1600) and vote-pool sizes on your task and verifier, plotting accuracy to find your own saturation point before fixing a budget.",
+      "overlaps_heuristics": [
+        "goodharts-law",
+        "braesss-paradox"
+      ]
+    }
+  ],
+  "status": "candidates",
+  "reason": "The paper runs controlled comparisons on GSM8K with GPT-3 6B/175B covering sample-and-rank verification vs finetuning, test-time sample count and voting, and verifier design ablations. These support several scoped, actionable rules; I avoid turning the dataset description or scaling extrapolations into rules.",
+  "model": "claude-opus-5",
+  "text_url": "https://arxiv.org/html/2110.14168v2",
+  "text_sha256": "201a0433b6d3d1e2fc0e932586bb29761f3981e06ca27e339d58d0b107708986",
+  "retrieved_at": "2026-10-22T23:18:55.708Z",
+  "supplied_chars": 40932,
+  "total_chars": 40932,
+  "truncated": false,
+  "input_tokens": 16566,
+  "output_tokens": 1923
+}

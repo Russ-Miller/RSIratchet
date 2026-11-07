@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "source": "arxiv-2005-11401",
+  "fingerprint": "c367fa3ef5261720979e7c3a121e837b8fe15761d2033a02fa357752b0fc3db2",
+  "attempted_at": "2026-10-22T23:18:55.708Z",
+  "candidates": [
+    {
+      "title": "Tune retrieved-document count per aggregation scheme at test time",
+      "rule": "Treat the number of retrieved documents as a test-time knob tuned on dev data per decoding scheme: sequence-level marginalisation kept improving with more documents, while token-level marginalisation peaked around 10, so do not copy one setting across variants.",
+      "basis": "author-tested",
+      "passage": "retrieving more documents at test time monotonically improves Open-domain QA results for RAG-Sequence, but performance peaks for RAG-Token at 10 retrieved documents.",
+      "location": "Section 4.5, Effect of Retrieving more documents (Figure 3)",
+      "finding": "Models trained with 5 or 10 documents performed similarly, but test-time k mattered differently by variant; final reported settings were 50 documents for RAG-Sequence and 15 for RAG-Token on QA. On MS-MARCO more documents raised Rouge-L but lowered Bleu-1 for RAG-Token, so the metric choice affects the optimum.",
+      "models": [
+        "RAG-Sequence and RAG-Token built on BART-large plus DPR"
+      ],
+      "workloads": [
+        "Natural Questions open-domain QA",
+        "MS-MARCO NLG"
+      ],
+      "conditions": "Top-k retrieval from a 21M-passage Wikipedia FAISS index; greedy decoding for QA, beam size 4 for generation; k selected on dev data.",
+      "limitations": "Observed in one paper on two tasks with 2020 models; larger k increases latency and compute, and the monotone trend for RAG-Sequence was only shown over the tested range; does not transfer automatically to long-context LLM pipelines.",
+      "validation_test": "Sweep k (e.g. 1, 5, 10, 25, 50) at test time for each aggregation strategy on a dev split, record accuracy and per-query latency, and pick k per variant and per target metric.",
+      "overlaps_heuristics": [
+        "braesss-paradox"
+      ]
+    }
+  ],
+  "status": "candidates",
+  "reason": "The paper contains several controlled comparisons (dense DPR vs BM25 retrieval per task; frozen vs fine-tuned query encoder; number of retrieved documents at test time for RAG-Sequence vs RAG-Token) that support narrowly scoped, actionable retrieval-harness rules. Other content (SOTA scores, human preference results) is descriptive rather than a decision rule.",
+  "model": "claude-opus-5",
+  "text_url": "https://arxiv.org/html/2005.11401v4",
+  "text_sha256": "7ce6d0fe37ae37f9e9dfbc87fb228195a75d032e1f8de6048ce8286a1cf38b44",
+  "retrieved_at": "2026-10-22T23:18:55.708Z",
+  "supplied_chars": 68609,
+  "total_chars": 68609,
+  "truncated": false,
+  "input_tokens": 29903,
+  "output_tokens": 2225
+}

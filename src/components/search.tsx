@@ -15,8 +15,8 @@ const KIND: Record<SearchRecord["k"], { label: string; plural: string; section: 
 
 const EXAMPLES = ["hallucination", "self-correction", "prompt injection", "long context", "agent harness", "sycophancy"];
 
-/** Display order for the count line: matches the nav. */
-const KIND_ORDER: SearchRecord["k"][] = ["c", "m", "s", "t", "a"];
+/** Heuristics first; deeper record kinds follow. */
+const KIND_ORDER: SearchRecord["k"][] = ["a", "m", "t", "c", "s"];
 
 /**
  * Scoring, deliberately simple. Every query term must appear somewhere, then
@@ -107,10 +107,11 @@ export function Search({ index }: { index: SearchRecord[] }) {
           clear control, ours, with a finger-sized hit area. */}
       <div className="relative">
         <input
+          id="bank-search"
           type="search"
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="Search by words or meaning…"
+          placeholder="Try a problem, a task, or a principle…"
           aria-label="Search the catalog"
           className="w-full rounded border border-neutral-300 bg-transparent py-2.5 pl-3 pr-11 text-base sm:py-2 sm:text-sm dark:border-neutral-700 [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-cancel-button]:appearance-none"
         />
@@ -146,7 +147,7 @@ export function Search({ index }: { index: SearchRecord[] }) {
 
       {/* One compact line on every screen size: "34 capabilities · 167 claims …".
           Five stacked tiles took a third of a phone screen. */}
-      <dl className="flex flex-wrap gap-x-4 gap-y-1 text-sm" aria-live="polite">
+      <dl className={`${terms.length ? "flex" : "hidden"} flex-wrap gap-x-4 gap-y-1 text-sm`} aria-live="polite">
         {KIND_ORDER.map((k) => (
           <div key={k} className="flex items-baseline gap-1">
             <dd className="font-medium">

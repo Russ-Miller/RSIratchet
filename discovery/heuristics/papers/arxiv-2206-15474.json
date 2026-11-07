@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "source": "arxiv-2206-15474",
+  "fingerprint": "838779a52c373ecb2421a4891944bc5e8a502e0125158dcbec509d7f979bc9bb",
+  "attempted_at": "2026-10-22T23:19:35.992Z",
+  "candidates": [
+    {
+      "title": "Add date-filtered news retrieval before asking an LM to forecast events",
+      "rule": "For event-forecasting questions, retrieve and condition on top-ranked news articles published before the question's close date (e.g. BM25 + reranking over a date-indexed corpus) rather than relying on the model's parametric knowledge; expect gains that grow with model size but still fall far short of expert crowds.",
+      "basis": "author-tested",
+      "passage": "Retrieval-based methods substantially outperform both UnifiedQA-v2 and T5, showing a relative increase in the Average score of 93 % and 15 % , respectively.",
+      "location": "Section 4.3 Forecasting Evaluation, Results; Table 2",
+      "finding": "On Autocast, FiD Static (T5 encoder over top-10 retrieved articles) scored 40.6 at 2.8B vs 32.5 for plain fine-tuned T5 and 22.8 for zero-shot UnifiedQA-v2; T/F accuracy 65.4% vs 92.4% for the human crowd. Authors note the T5 backbone was pre-trained before 2020, so retrieval supplied information otherwise unavailable.",
+      "models": [
+        "T5 (0.2B/0.8B/2.8B)",
+        "UnifiedQA-v2 (0.2B/0.8B/2.8B)",
+        "GPT-2 based FiD Temporal (0.6B/1.5B/4.3B)",
+        "BM25 retriever with cross-encoder reranking"
+      ],
+      "workloads": [
+        "Autocast forecasting questions (true/false, multiple-choice, numerical) from Metaculus, Good Judgment Open, CSET Foretell",
+        "CC-NEWS 200GB date-organized news corpus"
+      ],
+      "conditions": "Fine-tuning on pre-cutoff Autocast training questions; articles truncated to 512 tokens; only articles published before question close/resolution are retrievable; test questions resolve mid-2021 to mid-2022.",
+      "limitations": "Single paper, 2022-era models far smaller than current LLMs; absolute performance still near chance on MCQ and far below the crowd; retrieval cost and index maintenance not quantified; no matched-compute comparison between retrieval and non-retrieval setups; gains may not transfer to modern instruction-tuned models with browsing.",
+      "validation_test": "Run a current LLM on held-out post-training-cutoff forecasting questions with and without a strictly date-filtered news retrieval step, matching token budgets, and compare Brier score/accuracy against the crowd aggregate.",
+      "overlaps_heuristics": []
+    },
+    {
+      "title": "Do not expect crowd-forecast time-series supervision to beat plain static retrieval",
+      "rule": "When training a forecasting model, do not assume that supervising on intermediate daily crowd predictions (in addition to final outcomes) will improve accuracy over simple static top-k retrieval fine-tuning; treat it as an unproven extra cost unless calibration is the target.",
+      "basis": "author-tested",
+      "passage": "Thus, our temporal training strategy for incorporating the auxiliary crowd predictions neither harms nor helps compared to the static retrieval baseline.",
+      "location": "Section 4.3 Forecasting Evaluation, Results",
+      "finding": "FiD Temporal's average across sizes (37.8) was only marginally above FiD Static (37.2), and the single best score came from the largest FiD Static model (40.6). The authors report the method neither harms nor helps on accuracy. A separate appendix result does suggest the temporal variant lowered calibration error (17% vs 40%), so the null applies to accuracy, not calibration.",
+      "models": [
+        "FiD Static (T5 0.2B/0.8B/2.8B)",
+        "FiD Temporal (GPT-2 with frozen T5 encoder, 0.6B/1.5B/4.3B)"
+      ],
+      "workloads": [
+        "Autocast resolved test questions (T/F, MCQ, numerical)"
+      ],
+      "conditions": "Top-1 article per active day embedded by a frozen fine-tuned FiD Static and fed to GPT-2 trained for 5 epochs at lr 5e-5; target is the average of daily crowd prediction and resolved outcome.",
+      "limitations": "One architecture and one training recipe; parameter counts are not matched between Static and Temporal variants; the null is on a combined score metric that may mask per-type differences; calibration improved, so the rule should not be read as 'crowd signals are useless'.",
+      "validation_test": "Re-implement both variants at matched parameter count and compute budget on an updated Autocast split, reporting accuracy and calibration separately to see whether the accuracy null and the calibration gain both reproduce.",
+      "overlaps_heuristics": []
+    },
+    {
+      "title": "Split forecasting evaluations by date, not randomly, and verify pretraining cutoff",
+      "rule": "Build forecasting test sets by a resolution-date cutoff and restrict context retrieval to documents published before each forecast timestep; also ensure the model's pretraining data predates the test period, otherwise reported accuracy reflects memorization rather than forecasting.",
+      "basis": "inferred",
+      "passage": "randomly splitting our questions into train and test without considering the date would not simulate the conditions of forecasting",
+      "location": "Section 3, Train and test split",
+      "finding": "The authors adopt this protocol by construction rather than running an ablation comparing random vs date-based splits, so the leakage magnitude is not measured here. The recommendation is inferred from their design rationale plus their critique of prior work (GPT-3 tested on Metaculus questions unfiltered by date) and their note that the T5 backbone predates 2020.",
+      "models": [
+        "T5",
+        "UnifiedQA-v2",
+        "GPT-2",
+        "not specified for the leakage comparison"
+      ],
+      "workloads": [
+        "Autocast (questions resolving mid-2021 to mid-2022)",
+        "CC-NEWS corpus organized by publish date"
+      ],
+      "conditions": "Train/test cutoff 2021-05-11; retrieval index filtered to articles before each question's close or resolution date; true/false questions balanced by GPT-3-edited negations with manual checking.",
+      "limitations": "No quantitative measurement of the inflation caused by random splits or post-cutoff pretraining; applying it requires knowing a model's data cutoff, which is often undisclosed for commercial APIs; building a date-indexed corpus is costly (200GB here).",
+      "validation_test": "Score the same model on the same forecasting questions under (a) date-restricted retrieval plus pre-cutoff weights and (b) unrestricted retrieval or post-cutoff weights, and report the accuracy gap as a leakage estimate.",
+      "overlaps_heuristics": [
+        "goodharts-law"
+      ]
+    }
+  ],
+  "status": "candidates",
+  "reason": "The paper reports a controlled comparison on the Autocast benchmark of retrieval-augmented vs. non-retrieval language models, plus a null result for the temporal crowd-supervision variant, and a date-partitioned evaluation design. These support narrow, actionable rules for forecasting harnesses and benchmark construction, though all are single-paper, 2022-era encoder-decoder models.",
+  "model": "claude-opus-5",
+  "text_url": "https://arxiv.org/html/2206.15474v2",
+  "text_sha256": "f3397141ee671fa9677044ab8a414e66a39a2817a89e4f758802eb1505ff233b",
+  "retrieved_at": "2026-10-22T23:19:35.992Z",
+  "supplied_chars": 66491,
+  "total_chars": 66491,
+  "truncated": false,
+  "input_tokens": 26808,
+  "output_tokens": 2355
+}

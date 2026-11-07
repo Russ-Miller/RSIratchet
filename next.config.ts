@@ -1,24 +1,19 @@
-import type { NextConfig } from "next";
 import fs from "node:fs";
+import path from "node:path";
 import YAML from "yaml";
+import type { NextConfig } from "next";
 
-// /id/<ref> -> the record's page. Refs are stable; slugs are not. The map is
-// read from the allocation ledger at build time, so it needs no runtime.
-const SECTION: Record<string, string> = { CAP: "capabilities", CLM: "claims", TEC: "techniques", SRC: "sources", ADG: "heuristics", MOD: "models" };
-function refRedirects() {
-  const ledger = YAML.parse(fs.readFileSync("catalog/ids.yaml", "utf8")) as { refs: Record<string, string> };
-  return Object.entries(ledger.refs)
-    .filter(([ref]) => SECTION[ref.slice(0, 3)] !== "models") // no model pages yet
-    .map(([ref, slug]) => ({ source: `/id/${ref}`, destination: `/${SECTION[ref.slice(0, 3)]}/${slug}`, permanent: false }));
-}
+// Merged records: the old slug redirects to the record it was folded into.
+const merged = YAML.parse(fs.readFileSync(path.join(process.cwd(), "catalog", "redirects.yaml"), "utf8")) as Record<string, Record<string, string>>;
 
 const nextConfig: NextConfig = {
   async redirects() {
     return [
-      ...refRedirects(),
       // Adages renamed to Heuristics; old links keep working.
       { source: "/adages", destination: "/heuristics", permanent: true },
       { source: "/adages/:id", destination: "/heuristics/:id", permanent: true },
+      ...Object.entries(merged).flatMap(([section, map]) =>
+        Object.entries(map ?? {}).map(([from, to]) => ({ source: `/${section}/${from}`, destination: `/${section}/${to}`, permanent: true }))),
     ];
   },
 };

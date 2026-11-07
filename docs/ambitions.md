@@ -357,7 +357,7 @@ Money stakes (a "validation market", Siegel 2026) are recorded as a source
 and not adopted: they need a resolution oracle the catalog would have to
 fund, and they make a break a loss for someone, which cuts against the
 site's first rule. Revenue, if any, is advice-as-a-service on the MCP
-surface and sponsored validations, with the catalog itself staying CC BY.
+surface and sponsored validations, with paid early access to fresh heuristics, techniques, claims and original validation annotations, and contribution credits for useful independent validation. The 2026-10-20 Content Terms replace blanket CC BY for new protectable content; existing CC grants remain valid. Access controls and credit program terms remain future work.
 
 ### Obstacle: submission is free, review is not
 

@@ -59,7 +59,7 @@ export function FilterBar({
 
   return (
     <>
-      <div className="flex flex-wrap items-center gap-1" role="group" aria-label="Filter list">
+      <div className="filter-controls flex flex-wrap items-center gap-1" role="group" aria-label="Filter list">
         {all.map((o) => {
           const isActive = o.value === active;
           const empty = o.value !== "all" && o.count === 0;

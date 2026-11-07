@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { HEURISTIC_APPLICATIONS } from "@/lib/heuristic-editorial";
 import { RefTag } from "@/components/ref-tag";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { notFound } from "next/navigation";
@@ -26,6 +27,7 @@ export default async function HeuristicPage({ params }: PageProps<"/heuristics/[
   const a = getHeuristic(id);
   if (!a) notFound();
   const standing = heuristicStanding(a);
+  const application = HEURISTIC_APPLICATIONS[a.id];
   const ev = a.evidence ?? [];
   // Breaks first: they carry the information.
   const order: HeuristicVerdict[] = ["breaks", "narrows", "holds"];
@@ -38,11 +40,13 @@ export default async function HeuristicPage({ params }: PageProps<"/heuristics/[
         { label: "This heuristic" },
       ]} />
       <header className="space-y-2">
-        <div className="text-sm text-neutral-500"><code className="font-mono">{a.id}</code> <RefTag refId={a.ref} title={a.label} />{a.status === "retired" ? " · retired" : ""}{a.provenance === "distilled" ? " · distilled here" : ""}</div>
+        <div className="text-sm text-neutral-500"><code className="font-mono">{a.id}</code> <RefTag refId={a.ref} title={a.label} />{a.status === "retired" ? " · retired" : ""}{a.provenance === "distilled" ? " · distilled here" : ""}{` · ${a.form === "prescriptive" ? "prescriptive: says what to do" : "descriptive: says how things behave"}`}</div>
         <h1 className="text-3xl font-semibold tracking-tight">{a.label}</h1>
         <p className="text-lg text-neutral-700 dark:text-neutral-300">&ldquo;{a.statement}&rdquo;</p>
         {a.aliases?.length ? <p className="text-sm text-neutral-500">Also: {a.aliases.join(" · ")}</p> : null}
       </header>
+
+      {application && <section className="application-note"><p className="eyebrow">In practice · editorial interpretation</p><h2>{application.title}</h2><p>{application.guidance}</p></section>}
 
       <section className="text-sm">
         <h2 className="mb-1 font-semibold">Origin</h2>
@@ -57,7 +61,7 @@ export default async function HeuristicPage({ params }: PageProps<"/heuristics/[
       </section>
 
       <section className="text-sm">
-        <h2 className="mb-1 font-semibold">Why it should, or should not, apply to models</h2>
+        <h2 className="mb-1 font-semibold">How this applies to agents</h2>
         <p className="text-neutral-700 dark:text-neutral-300">{a.transfer}</p>
       </section>
 
@@ -116,8 +120,8 @@ export default async function HeuristicPage({ params }: PageProps<"/heuristics/[
       <div className="border-t border-neutral-200 pt-4 dark:border-neutral-800">
         <HeuristicChallengeLink heuristic={a} />
         <p className="mt-2 max-w-2xl text-xs text-neutral-500">
-          A break is worth more than a hold. If you have seen this fail for a model, with the setup
-          written down, that is the most useful thing you can add here.
+          Share a successful test or a counterexample with the setup and result. Both help establish
+          where this guidance applies.
         </p>
       </div>
 

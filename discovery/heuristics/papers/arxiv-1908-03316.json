@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "source": "arxiv-1908-03316",
+  "fingerprint": "4f25ee8fe827b885304fc5aef8444e7df834809e560eafbfbebb4e2a13e52967",
+  "attempted_at": "2026-10-22T23:18:55.708Z",
+  "candidates": [
+    {
+      "title": "Pair natural-language descriptions with positive/negative examples for regex synthesis",
+      "rule": "When building a regex-generation component, require both an English description and positive/negative string examples, and use the description to constrain the search over example-consistent regexes, instead of relying on either modality alone.",
+      "basis": "author-tested",
+      "passage": "Among 322 regex tasks, Regel solves 80% of the benchmarks but DeepRegex solves only 43% and the PBE-baseline solves only 26%.",
+      "location": "Section 9.1, Result 1",
+      "finding": "On 200 adapted DeepRegex benchmarks and 122 StackOverflow benchmarks, the multi-modal system (semantic-parser sketch + example-guided search) solved 80% within up to four example-adding iterations, versus 43% for the NL-only seq2seq baseline and 26% for the examples-only variant of the same engine. Gains were largest on the harder StackOverflow set (60.7% vs 2.4% and 14.7%).",
+      "models": [
+        "SEMPRE-based semantic parser (log-linear model, beam size 500)",
+        "DeepRegex seq2seq model (Locascio et al., 2016)",
+        "Z3 SMT solver",
+        "Brics automaton library"
+      ],
+      "workloads": [
+        "Adapted DeepRegex data set (200 benchmarks, ~4 positive and ~5 negative examples each)",
+        "StackOverflow regex data set (122 curated benchmarks)"
+      ],
+      "conditions": "Time budget 10s/top-1 for DeepRegex set, 60s/top-5 for StackOverflow set; top 25 parser sketches run in parallel; accuracy counted over up to four iterations where two disambiguating examples are added after each failure; StackOverflow sketch training labels were hand-written and posts were manually cleaned.",
+      "limitations": "Single paper, pre-LLM components; fixed regex DSL; StackOverflow benchmarks were pre-processed and ground truth hand-translated; manual sketch annotation effort is not costed; failure cases involve high-level concepts (dates, ranges) the parser cannot represent; absolute accuracy on realistic tasks is only ~61%.",
+      "validation_test": "On a held-out set of regex tasks with descriptions plus examples, compare three pipelines under matched compute: description-only generation, examples-only search, and description-constrained search; score exact-language equivalence of the top-k output against ground truth.",
+      "overlaps_heuristics": [
+        "ashbys-law-of-requisite-variety",
+        "two-heads-are-better-than-one"
+      ]
+    },
+    {
+      "title": "Iterate with counterexamples rather than accepting the first synthesis failure",
+      "rule": "When a synthesizer returns a wrong regex, add two examples that specifically rule out the returned candidate and re-run, up to a small fixed number of rounds, rather than treating the first attempt as final.",
+      "basis": "author-tested",
+      "passage": "If it is unsuccessful, in the next iteration, we provide two additional examples that are guaranteed to rule out the returned incorrect regex .",
+      "location": "Section 9.1, methodology and Figure 14",
+      "finding": "Using this iterative protocol on the DeepRegex set, the system went from 151/200 (75.5%) solved on initial examples to 185/200 (92.5%) after up to four rounds of adding two counterexamples each; the NL-only baseline cannot benefit since it ignores examples.",
+      "models": [
+        "Regel (SEMPRE parser + PBE engine)",
+        "Regel-Pbe examples-only variant"
+      ],
+      "workloads": [
+        "Adapted DeepRegex data set (200 benchmarks)",
+        "StackOverflow regex data set (122 benchmarks)"
+      ],
+      "conditions": "Maximum four iterations; counterexamples were constructed by the experimenters with knowledge of the ground truth, which a real user may not have; per-iteration average running time stayed within a few seconds (DeepRegex set) to ~20s (StackOverflow set).",
+      "limitations": "The oracle-quality counterexamples inflate gains relative to real users; in the 20-person user study (5 engineers, 15 CS students) tool-assisted success was 73.3% vs 28.3% unaided, but tasks were StackOverflow posts, not the participants' own work, and ambiguity caused failures; single paper, no matched-budget comparison against simply running longer.",
+      "validation_test": "Run the synthesizer under two protocols with equal total compute: single-shot, versus up to four rounds where each round adds two examples that the previous wrong output violates; report solved counts and cumulative time per protocol.",
+      "overlaps_heuristics": [
+        "boyds-law-of-iteration",
+        "humphreys-law"
+      ]
+    }
+  ],
+  "status": "candidates",
+  "reason": "The paper is a pre-LLM program synthesis system, but it contains tested comparisons that support scoped rules for harness design: combining natural-language specs with input/output examples rather than either alone, and using the NL-derived sketch structure to prune the example-based search. A third rule about iterative example-driven repair is also supported. All are specific to regex synthesis with a semantic parser and enumerative PBE engine, so scope must be kept narrow.",
+  "model": "claude-opus-5",
+  "text_url": "https://arxiv.org/html/1908.03316v3",
+  "text_sha256": "00d50c9fd42fd00144f29e20276985c5a947106f32a633f6d9cdafdd03b87a08",
+  "retrieved_at": "2026-10-22T23:18:55.708Z",
+  "supplied_chars": 111933,
+  "total_chars": 111933,
+  "truncated": false,
+  "input_tokens": 49676,
+  "output_tokens": 2446
+}

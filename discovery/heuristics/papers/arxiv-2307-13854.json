@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "source": "arxiv-2307-13854",
+  "fingerprint": "1f7b30fbfa379e58dbd47a9c9cbef15faa640a500cdbc97ffeb398408c4ef38c",
+  "attempted_at": "2026-10-22T23:21:25.483Z",
+  "candidates": [
+    {
+      "title": "Don't add a blanket 'say N/A if impossible' hint to web agent prompts",
+      "rule": "When prompting an LLM web agent on tasks that are mostly feasible, omit an explicit instruction to stop and answer 'N/A' when the task seems impossible; strong models still flag some infeasible tasks without it, and the hint causes premature give-ups on solvable tasks.",
+      "basis": "author-tested",
+      "passage": "eliminating this instruction led to a performance boost in achievable tasks, enhancing the overall task success rate of GPT-4 to 14.41%",
+      "location": "Section 5.1 Analysis / Table 2",
+      "finding": "With the UA hint, GPT-4+CoT scored 11.70% overall (8.63% on achievable, 77.78% on unachievable) and misjudged 54.9% of feasible tasks as impossible. Removing the hint raised overall success to 14.41% and achievable success to 13.02%, while unachievable detection fell to 44.44%. GPT-3.5 without the hint detected only 8.33% of unachievable tasks and showed hallucination and action-repetition instead, so the trade-off is model-dependent.",
+      "models": [
+        "GPT-4-0613",
+        "GPT-3.5-turbo-16k-0613",
+        "text-bison-001"
+      ],
+      "workloads": [
+        "WebArena (812 web tasks across shopping, Reddit/Postmill, GitLab, CMS, map, Wikipedia)"
+      ],
+      "conditions": "Two-shot in-context prompting, accessibility-tree observations with element IDs, temperature 1.0, top-p 0.9, max 30 state transitions, early stop on repeated or invalid actions.",
+      "limitations": "Single paper, single benchmark; absolute success rates are very low (8-14%), so differences rest on few tasks. The benchmark has a minority of unachievable tasks; in deployments where refusing infeasible work matters more, the hint's recall benefit (77.78% vs 44.44% for GPT-4) may outweigh the achievable-task loss. No matched-cost or repeated-seed variance reported.",
+      "validation_test": "Run your own agent on a task set with a known achievable/unachievable split, with and without the infeasibility hint, holding all else fixed; report success separately for achievable and unachievable tasks plus false-infeasible rate, over multiple seeds.",
+      "overlaps_heuristics": [
+        "first-impressions-last"
+      ]
+    }
+  ],
+  "status": "candidates",
+  "reason": "The paper reports one clean prompt-level ablation (unachievable-task hint hurting achievable-task success for GPT-4) plus a validated LLM-as-judge fuzzy matching setup and an observation-representation design choice. The first two are actionable; the accessibility-tree choice is a design decision without a measured comparison, so it is not proposed.",
+  "model": "claude-opus-5",
+  "text_url": "https://arxiv.org/html/2307.13854v4",
+  "text_sha256": "adbbf29dc2b849e05dabb90adc7b10b3dbc7c21b269b720fa307295fab7cc4b4",
+  "retrieved_at": "2026-10-22T23:21:25.483Z",
+  "supplied_chars": 76886,
+  "total_chars": 76886,
+  "truncated": false,
+  "input_tokens": 31456,
+  "output_tokens": 1640
+}

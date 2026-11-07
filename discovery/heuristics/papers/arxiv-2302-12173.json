@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "source": "arxiv-2302-12173",
+  "fingerprint": "31d23e2bc82168019cbbb05bd726bf9af5106a364d360266b4baf758ac141e36",
+  "attempted_at": "2026-10-22T23:20:24.724Z",
+  "candidates": [
+    {
+      "title": "Apply jailbreak filtering to retrieved content, not just the user channel",
+      "rule": "If your LLM app filters user-typed prompts for jailbreak/injection content, apply the same (or stronger) filtering to every retrieved or tool-returned text before it enters the context; do not assume user-channel filters cover indirect inputs.",
+      "basis": "author-tested",
+      "passage": "prompts that are typically filtered out via the chat interface are not filtered out when injected indirectly",
+      "location": "Section 4.2 Demonstrations of Threats, high-level remarks",
+      "finding": "On Bing Chat, jailbreak prompts entered by the user ended the session, but the same prompts delivered through page content read by the Edge sidebar took effect and persisted across the conversation. Demonstrations are qualitative; no success rates were measured.",
+      "models": [
+        "Bing Chat (GPT-4 based, 2023)",
+        "GPT-4 via OpenAI chat API",
+        "text-davinci-003 with LangChain/ReAct"
+      ],
+      "workloads": [
+        "Bing Chat sidebar reading local HTML pages with prompts in comments",
+        "synthetic chat app with search/view/email/memory tools"
+      ],
+      "conditions": "Prompts hidden in HTML comments or local pages; attacks tested across Bing creative/balanced/precise modes; synthetic apps run at temperature 0",
+      "limitations": "Single paper, 2023 systems since patched; no quantitative success rates; defenses in Bing Chat are undisclosed; filtering retrieved text may itself be evaded by encoded or multi-stage payloads (Base64 injection succeeded).",
+      "validation_test": "Build a retrieval app on a current model; submit a set of injection strings both as user turns and as retrieved documents, with and without a filter on retrieved text; measure compliance rate per channel.",
+      "overlaps_heuristics": [
+        "postels-law",
+        "kerckhoffss-principle"
+      ]
+    },
+    {
+      "title": "Treat agent long-term memory as an injection persistence channel",
+      "rule": "Before an agent writes tool/retrieval-derived text into persistent memory, and again when it reads memory back, sanitize or tag that content as data; otherwise a single compromised session can re-infect fresh sessions.",
+      "basis": "author-tested",
+      "passage": "if the user asks it to read the last conversation from memory, it re-poisons itself",
+      "location": "Section 4.2.4 Intrusion, Persistence",
+      "finding": "In a GPT-4 synthetic app with a key-value memory tool, an injected payload stored in memory reinstated the attacker's behaviour after the agent was reset. Demonstrated once on a mock memory store, not on a deployed product.",
+      "models": [
+        "GPT-4 via OpenAI chat API"
+      ],
+      "workloads": [
+        "synthetic chat application with read/write key-value memory tool"
+      ],
+      "conditions": "Agent started from an already compromised session; memory contents fed back as system messages when the model issued a memory read; temperature 0",
+      "limitations": "Proof-of-concept with mock tools and prepared content; the paper does not test any sanitization defense, so the recommended mitigation is inferred effectiveness; sanitizing may fail against encoded payloads.",
+      "validation_test": "Run an agent with persistent memory on a poisoned document, reset the session, then query memory; repeat with a sanitization or data-tagging step on memory writes/reads and compare re-infection rates.",
+      "overlaps_heuristics": [
+        "hashimotos-rule"
+      ]
+    },
+    {
+      "title": "Do not let the model compose API arguments from untrusted text unchecked",
+      "rule": "When an agent generates its own tool arguments (search queries, URLs) from retrieved content, validate or constrain those arguments and surface them to the user; injected text can redirect queries, fetch second-stage payloads, or silently degrade results while the answer still cites sources.",
+      "basis": "author-tested",
+      "passage": "Models might issue follow-up API calls (e.g., search queries) that were affected by and reinforce the injected prompt.",
+      "location": "Section 4.2.5 Manipulated Content, Observation #3",
+      "finding": "Injections caused Bing Chat to corrupt search queries with homoglyphs and hallucinate answers while citing unrelated sources, and caused a GPT-4 synthetic app to issue an attacker-chosen search keyword that fetched a second payload. Argument validation itself was not tested.",
+      "models": [
+        "Bing Chat (GPT-4 based, 2023)",
+        "GPT-4 via OpenAI chat API"
+      ],
+      "workloads": [
+        "Bing Chat search/summarization",
+        "synthetic search-engine agent with multi-stage payload in a poisoned Wikipedia page"
+      ],
+      "conditions": "Prompts injected via page content; synthetic search results prepared by the authors; Bing results dynamic and not reproducible",
+      "limitations": "Qualitative, intermittent effects (the paper notes attacks succeeded 'often, although not consistently'); the proposed argument-validation mitigation is inferred, not evaluated; 2023 systems.",
+      "validation_test": "Instrument an agent to log generated tool arguments on injected vs clean corpora; add an allowlist/consistency check on arguments and measure how often attacker-chosen queries or URLs still execute.",
+      "overlaps_heuristics": [
+        "good-regulator-theorem"
+      ]
+    }
+  ],
+  "status": "candidates",
+  "reason": "The paper is largely a taxonomy plus qualitative attack demonstrations, but several demonstrations do compare behaviour across channels (user-typed vs retrieved prompts) and across features (memory, tool calls), supporting narrowly scoped defensive rules. No success rates or matched-budget comparisons are reported, so all proposals are weakly evidenced and model/application dependent.",
+  "model": "claude-opus-5",
+  "text_url": "https://arxiv.org/html/2302.12173v2",
+  "text_sha256": "c4829b03934cfb0543d0d99ad7cf7cb379da532d5ffffd51607ccddd5639db4d",
+  "retrieved_at": "2026-10-22T23:20:24.724Z",
+  "supplied_chars": 115507,
+  "total_chars": 115507,
+  "truncated": false,
+  "input_tokens": 42964,
+  "output_tokens": 2015
+}

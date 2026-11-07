@@ -16,6 +16,7 @@ const validators = Object.fromEntries(Object.entries(SCHEMA_FOR).map(([k, s]) =>
 const cat = loadCatalog();
 const problems = [];
 const problem = (file, msg) => problems.push(`${file}: ${msg}`);
+const warnings = [];
 
 // 1. schema + id/filename agreement + duplicates
 const ids = {};
@@ -93,6 +94,29 @@ for (const a of cat.heuristics) {
   for (const s of a.data.sources ?? []) checkRef(a.file, ids.sources, s, "source");
 }
 
+// duplicate claims: overlapping nightly branches merged one after another
+// filed the same paper twice (24 pairs removed 2026-11-07). An identical
+// statement is an error; a close paraphrase on the same single source and
+// capability is a warning, since one paper can carry distinct findings.
+{
+  const words = (t) => new Set(String(t).toLowerCase().match(/[a-z0-9.%-]+/g));
+  const overlap = (a, b) => { let i = 0; for (const x of a) if (b.has(x)) i++; return i / (a.size + b.size - i); };
+  const seen = new Map(), groups = new Map();
+  for (const c of cat.claims) {
+    const key = String(c.data.statement).replace(/\s+/g, " ").trim().toLowerCase();
+    if (seen.has(key)) problem(c.file, `same statement as ${seen.get(key)}; merge them (see catalog/redirects.yaml)`);
+    else seen.set(key, c.data.id);
+    if (c.data.sources?.length === 1) {
+      const g = `${c.data.sources[0].source}|${c.data.capability}`;
+      groups.set(g, [...(groups.get(g) ?? []), c]);
+    }
+  }
+  for (const list of groups.values()) for (let i = 0; i < list.length; i++) for (let j = i + 1; j < list.length; j++) {
+    const o = overlap(words(list[i].data.statement), words(list[j].data.statement));
+    if (o >= 0.4 && o < 1) warnings.push(`${list[j].file}: may duplicate ${list[i].data.id} (same source and capability, ${Math.round(o * 100)}% word overlap)`);
+  }
+}
+
 // stable refs: present, well-formed, unique, and in the ledger
 try { execFileSync(process.execPath, ["scripts/assign-ids.mjs", "--check"], { stdio: ["ignore", "ignore", "pipe"] }); }
 catch (e) { for (const line of String(e.stderr ?? "").trim().split("\n").filter(Boolean)) problems.push(line); }
@@ -103,4 +127,5 @@ if (problems.length) {
   for (const p of problems) console.error("  " + p);
   process.exit(1);
 }
+for (const w of warnings) console.warn(`warning: ${w}`);
 console.log(`Catalog OK: ${counts}, ${tags.size} tags.`);

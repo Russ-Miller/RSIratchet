@@ -1,0 +1,92 @@
+{
+  "version": 1,
+  "source": "arxiv-2307-03172",
+  "fingerprint": "b854e8a41df044337a46dd173600b4064b419709a5f8cc3ec8f9daa3c1104874",
+  "attempted_at": "2026-10-22T23:21:19.965Z",
+  "candidates": [
+    {
+      "title": "Put the most relevant retrieved document first (or last), not mid-context",
+      "rule": "When building a retrieval-augmented prompt with many documents, rank/rerank so the most likely answer-bearing passage sits at the very start (or very end) of the context rather than in the middle.",
+      "basis": "author-tested",
+      "passage": "models are often much better at using relevant information that occurs at the very beginning (primacy bias) and very end of contexts",
+      "location": "§2.3 Results and Discussion (Figure 5, Tables 5-7)",
+      "finding": "Across 10/20/30-document NaturalQuestions-Open settings, accuracy forms a U-shape with gold-document position; e.g. GPT-3.5-Turbo with 20 docs scored 75.8% at index 0, 53.8% at index 9, 63.2% at index 19. Worst-case mid-context accuracy fell below closed-book (56.1%). The authors suggest reranking as a remedy but did not implement a reranking pipeline, so the ordering prescription is an extrapolation from the position-sweep results.",
+      "models": [
+        "GPT-3.5-Turbo (0613)",
+        "GPT-3.5-Turbo 16K (0613)",
+        "Claude-1.3",
+        "Claude-1.3 (100K)",
+        "MPT-30B-Instruct",
+        "LongChat-13B (16K)",
+        "GPT-4 (8K, subset)",
+        "Llama-2 7B/13B/70B (appendix)"
+      ],
+      "workloads": [
+        "Multi-document QA built from NaturalQuestions-Open with Contriever-retrieved distractors",
+        "Synthetic JSON key-value retrieval with UUIDs"
+      ],
+      "conditions": "Exactly one gold document among k-1 retrieved distractors; greedy decoding; accuracy = answer string appears in output; contexts of ~1.5K-5K tokens for QA. Trend held with random distractors and randomized distractor order.",
+      "limitations": "Single paper, 2023-era models; no end-to-end reranker was evaluated, so gains from reordering are inferred. Magnitude varies by model (Claude-1.3 is flatter than GPT-3.5-Turbo) and could differ for newer long-context models.",
+      "validation_test": "In your RAG stack, hold retrieval fixed and compare answer accuracy when the top-ranked passage is placed first versus in the middle of the context, across your own query set.",
+      "overlaps_heuristics": [
+        "first-impressions-last"
+      ]
+    },
+    {
+      "title": "Repeat the query after the documents for exact-match retrieval, but don't expect it to fix QA",
+      "rule": "For decoder-only models doing exact-token lookup over structured context, place the query both before and after the data; do not assume the same trick improves open-ended multi-document QA.",
+      "basis": "author-tested",
+      "passage": "query-aware contextualization dramatically improves performance on the key-value retrieval task—all models achieve near-perfect performance on the 75, 140, and 300 key-value pair settings",
+      "location": "§4.2 Effect of Query-Aware Contextualization (Figure 9)",
+      "finding": "Placing the key before and after the JSON object lifted GPT-3.5-Turbo (16K) from a 45.6% worst-case at 300 pairs to perfect accuracy. The same change had only marginal effects on multi-document QA: slightly better when the gold doc was first, slightly worse elsewhere — a reported null result.",
+      "models": [
+        "GPT-3.5-Turbo (0613)",
+        "GPT-3.5-Turbo 16K",
+        "Claude-1.3",
+        "Claude-1.3 (100K)",
+        "MPT-30B-Instruct",
+        "LongChat-13B (16K)"
+      ],
+      "workloads": [
+        "Synthetic key-value retrieval (75/140/300 UUID pairs)",
+        "Multi-document QA on NaturalQuestions-Open"
+      ],
+      "conditions": "Decoder-only models that cannot attend to a trailing query while encoding earlier tokens; query duplication costs a small number of extra tokens.",
+      "limitations": "Benefit demonstrated only on a synthetic exact-match task with no natural-language semantics; explicitly did not transfer to QA. 2023 model versions; unclear for newer models or longer natural-language contexts.",
+      "validation_test": "Run your lookup-style task with the query only after the data versus duplicated before and after, measuring accuracy by position of the target item.",
+      "overlaps_heuristics": []
+    },
+    {
+      "title": "Stop adding retrieved documents once reader accuracy saturates",
+      "rule": "In retriever-reader setups, tune the number of retrieved documents on reader accuracy rather than retriever recall; past roughly 20 passages extra context mostly buys latency and cost.",
+      "basis": "author-tested",
+      "passage": "Using more than 20 retrieved documents only marginally improves reader performance ( ∼ 1.5% for GPT-3.5-Turbo and ∼ 1% for Claude-1.3)",
+      "location": "§5 Is More Context Always Better? (Figure 11)",
+      "finding": "On NaturalQuestions-Open with Contriever+MS-MARCO retrieval, retriever recall kept rising while reader accuracy plateaued, so additional documents mainly increased input length, latency and cost.",
+      "models": [
+        "GPT-3.5-Turbo (0613)",
+        "Claude-1.3"
+      ],
+      "workloads": [
+        "Open-domain QA on NaturalQuestions-Open (paragraph-answer subset) with Contriever retrieval over Wikipedia"
+      ],
+      "conditions": "Standard retriever-reader prompt that concatenates retrieved passages; accuracy judged by answer string match.",
+      "limitations": "The 20-document threshold is dataset-, retriever- and model-specific; the authors note the trade-off is task-specific. Only two closed models measured; no cost figures given beyond qualitative latency/cost claims.",
+      "validation_test": "Sweep k (e.g. 5/10/20/50) on your own queries, plotting retriever recall and end answer accuracy plus latency and token cost, and pick the knee of the accuracy curve.",
+      "overlaps_heuristics": [
+        "braesss-paradox"
+      ]
+    }
+  ],
+  "status": "candidates",
+  "reason": "The paper runs controlled position/length experiments on multi-document QA, synthetic key-value retrieval, and a retriever-reader case study, yielding several scoped, actionable prompt-construction rules with explicit null results.",
+  "model": "claude-opus-5",
+  "text_url": "https://arxiv.org/html/2307.03172v3",
+  "text_sha256": "ce998ffdd82aaf2ec45d7fd0888f31f4b510e6f775419c282c0c6e9ff99c9a32",
+  "retrieved_at": "2026-10-22T23:21:19.965Z",
+  "supplied_chars": 60431,
+  "total_chars": 60431,
+  "truncated": false,
+  "input_tokens": 24827,
+  "output_tokens": 2176
+}

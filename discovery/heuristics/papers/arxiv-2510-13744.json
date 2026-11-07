@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "source": "arxiv-2510-13744",
+  "fingerprint": "144e770a0ff87a8e7a2e71dc2ceb0d4d0c7bf211d52374ad6c42dadce73af802",
+  "attempted_at": "2026-10-22T23:52:12.317Z",
+  "status": "candidates",
+  "reason": "Inspected verification analyses directly compare prompting and inference-effort variants with substantial model dependence.",
+  "candidates": [
+    {
+      "title": "Choose error-localization prompts per verifier",
+      "rule": "When asking a math verifier to find the first error, compare direct error-index prompting with deriving the index from step-level judgments for each verifier model.",
+      "basis": "author-tested",
+      "passage": "we advise practitioners to determine the better prompting setup on a per-verifier basis.",
+      "location": "Section 4, Table 3",
+      "finding": "Step-level prompting improves Gemini 2.5 Pro balanced F1 from 52.46 to 62.78 but reduces Seed-OSS-36B from 45.18 to 33.55. More detailed verification is not uniformly beneficial.",
+      "models": [
+        "Gemini 2.5 Pro",
+        "ByteDance Seed-OSS-36B",
+        "GPT-5 and other evaluated verifiers"
+      ],
+      "workloads": [
+        "Hard2Verify frontier open-ended math step verification"
+      ],
+      "conditions": "Human-annotated error labels; first-error index can be produced directly or derived from all step labels.",
+      "limitations": "Benchmark-specific and model-specific effects; not evidence that direct prompting always suits small models. Error identification does not establish that an agent can repair the proof.",
+      "validation_test": "Compare both prompts on held-out human-labeled proofs; report balanced F1, missed errors, false alarms and token cost by verifier and proof difficulty.",
+      "overlaps_heuristics": []
+    },
+    {
+      "title": "Compare reasoning effort with parallel verifier votes",
+      "rule": "For frontier-math step verification, compare higher sequential reasoning effort with majority voting over low-effort samples before spending the budget on parallel judges.",
+      "basis": "author-tested",
+      "passage": "Best-of- N does not meaningfully improve over sampling 1 response as N increases.",
+      "location": "Section 5.1, Figure 5",
+      "finding": "gpt-oss-20B balanced F1 rises from 59.69 to 70.93 at higher effort, while bootstrapped low-effort votes do not close the gap. gpt-oss-120B also improves with effort. The method called best-of-N aggregates labels by majority vote.",
+      "models": [
+        "gpt-oss-20B",
+        "gpt-oss-120B",
+        "GPT-5"
+      ],
+      "workloads": [
+        "Hard2Verify step-level math verification"
+      ],
+      "conditions": "Parallel experiment samples thirty-two low-effort outputs and bootstraps N=4–16 with replacement over ten repetitions.",
+      "limitations": "Exact token or monetary budget matching is not established. Bootstrapping cached samples is not independent repeated deployment. Results concern verification rather than general problem solving.",
+      "validation_test": "Compare effort settings and independent low-effort ensembles under measured token and latency budgets; assess balanced F1 and false acceptance on fresh proofs.",
+      "overlaps_heuristics": []
+    }
+  ],
+  "model": "Codex session",
+  "review_method": "codex-session",
+  "review_scope": "Selected abstract, introduction, methods or main-result sections; not a comprehensive paper or appendix review.",
+  "review_segments": [
+    {
+      "start": 0,
+      "end": 2000
+    },
+    {
+      "start": 27400,
+      "end": 37900
+    }
+  ],
+  "text_url": "https://arxiv.org/html/2510.13744v1",
+  "text_sha256": "aaf5b7fd76e7cacef5ac8e516c7a3a2789b0a3ef500a7c23bb34913d5d99940d",
+  "retrieved_at": "2026-10-22T23:51:27.409Z",
+  "supplied_chars": 12502,
+  "total_chars": 65780,
+  "truncated": true
+}

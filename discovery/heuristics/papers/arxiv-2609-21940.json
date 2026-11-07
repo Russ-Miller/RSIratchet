@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "source": "arxiv-2609-21940",
+  "fingerprint": "84fdab2b7aca02a0b3e9beb3e7e29028d53c463d2d0d6e6459999116fed7c057",
+  "attempted_at": "2026-10-22T23:55:41.700Z",
+  "status": "candidates",
+  "reason": "Selected fixed-budget ablations support multi-view extraction and qualified consolidation checks.",
+  "candidates": [
+    {
+      "title": "Separate memory views before indexing mixed dialogue facts",
+      "rule": "For conversational memory containing events, preferences and constraints, compare complementary write-time views with a single structured extraction under the same retrieval budget.",
+      "basis": "author-tested",
+      "passage": "Removing multi-view organization gives the weakest Judge and BLEU-1",
+      "location": "Section 4.3, Table 3",
+      "finding": "On the Qwen3-8B ablation at K=30, full multi-view memory scores 0.837 judge accuracy versus 0.774 for single-view structured extraction. Random rather than diversity-based view selection scores 0.777.",
+      "models": [
+        "Qwen3-8B ablation",
+        "Qwen3-14B main comparisons"
+      ],
+      "workloads": [
+        "LoCoMo conversational QA",
+        "PersonaMem-32k main evaluation"
+      ],
+      "conditions": "Views are selected from history and guide provenance-grounded extraction before standard retrieval.",
+      "limitations": "One fixed-budget component ablation and model-based judging; extraction and consolidation depend on LLM behavior. Other languages, multi-party dialogue and rapid distribution changes remain untested.",
+      "validation_test": "Compare single-view, random-view and complementary-view extraction at equal retrieved tokens; measure missing evidence, unsupported memories, QA and write-time cost.",
+      "overlaps_heuristics": []
+    },
+    {
+      "title": "Check temporal distinctions when consolidating redundant memories",
+      "rule": "When cleaning a conversational-memory index, test consolidation for retrieval coverage while checking that changing facts and distinct events remain distinguishable.",
+      "basis": "inferred",
+      "passage": "offline consolidation can over-merge when subtle temporal changes should keep items separate",
+      "location": "Conclusion limitations; Section 4.3, Table 3",
+      "finding": "Removing consolidation raises the no-relevant-evidence rate from 5.14% to 9.83% at K=30. The recommendation to test temporal preservation is inferred from the authors’ stated over-merging limitation, not a measured safeguard.",
+      "models": [
+        "Qwen3-8B"
+      ],
+      "workloads": [
+        "LoCoMo fixed-budget memory retrieval"
+      ],
+      "conditions": "Consolidation happens offline and retains provenance; history may contain updates rather than duplicates.",
+      "limitations": "The ablation supports the combined cleanup component, not an isolated temporal-preservation strategy. Provenance retention alone does not prevent over-merging.",
+      "validation_test": "Inject repeated facts, corrections and similarly worded distinct events; compare cleaned and original indexes for coverage, stale answers and loss of temporal distinctions.",
+      "overlaps_heuristics": []
+    }
+  ],
+  "model": "Codex session",
+  "review_method": "codex-session",
+  "review_scope": "Selected abstract, introduction, methods or main-result sections; not a comprehensive paper or appendix review.",
+  "review_segments": [
+    {
+      "start": 0,
+      "end": 1500
+    },
+    {
+      "start": 16948,
+      "end": 26948
+    }
+  ],
+  "text_url": "https://arxiv.org/html/2609.21940v1",
+  "text_sha256": "a6d4199d6c35eb8a4c0df01f57fc8dd8563cda52a6e5997154a492170dc5cea0",
+  "retrieved_at": "2026-10-22T23:54:55.782Z",
+  "supplied_chars": 11502,
+  "total_chars": 34218,
+  "truncated": true
+}

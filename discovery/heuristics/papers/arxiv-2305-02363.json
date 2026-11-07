@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "source": "arxiv-2305-02363",
+  "fingerprint": "a7bb91c855182380588b8eaa3e9f4743c70ca4ae5dc6a553c565a4c567721192",
+  "attempted_at": "2026-10-22T23:20:33.745Z",
+  "candidates": [
+    {
+      "title": "Prefer code-pretrained models for discourse state tracking",
+      "rule": "For tasks requiring tracking entity/object state across a sequence of natural-language operations, choose models whose pretraining includes substantial code (e.g. GPT-3.5 series) rather than text-only or instruction-tuned text models; instruction tuning or RLHF alone did not produce the ability in this study.",
+      "basis": "author-tested",
+      "passage": "GPT-3.5 models that have been trained on code systematically outperformed GPT-3 models, including code-davinci-002 that was not trained on human feedback.",
+      "location": "Section 4.5, 'Training on Code Encourages Entity Tracking Behavior' / Figure 5",
+      "finding": "Across davinci, davinci-instruct-beta, text-davinci-001 (text-only) versus code-davinci-002, text-davinci-002, text-davinci-003 (code+text), only the code-pretrained group beat a strong random baseline on changed-state items; Flan-T5 base/XL mostly echoed the initial state. GPT-4 was better still but its training is undisclosed.",
+      "models": [
+        "GPT-3 davinci",
+        "davinci-instruct-beta",
+        "text-davinci-001",
+        "code-davinci-002",
+        "text-davinci-002",
+        "text-davinci-003",
+        "Flan-T5 base and XL",
+        "GPT-4"
+      ],
+      "workloads": [
+        "synthetic boxes entity-tracking task (base, AltForms, AmbiRef, MoveContents splits)"
+      ],
+      "conditions": "2-shot in-context prompting, greedy decoding, January 2023 OpenAI API snapshots; English only; descriptions fit in the context window.",
+      "limitations": "Observational comparison of closed models differing in size and training details, so code pretraining is confounded; accuracy still degrades toward the random baseline after several operations, so these models are not reliable for high-accuracy state tracking.",
+      "validation_test": "Run matched open models with and without code-heavy pretraining (e.g. code vs text variants at equal size) on a changed-state-only entity-tracking split and compare accuracy as a function of operation count.",
+      "overlaps_heuristics": []
+    },
+    {
+      "title": "Tune output granularity per model when prompting for multi-entity state",
+      "rule": "When prompting for the state of many entities at once, pick the output granularity per model: query all entities in one completion for GPT-style models, but query one entity per prompt for Flan-T5, which otherwise emits only the first entity.",
+      "basis": "author-tested",
+      "passage": "Flan-T5 frequently only output the state of the first box even when the in-context demonstrations contained final descriptions of all box states.",
+      "location": "Section 4.2, Prompting and Demonstrations (and footnote 9)",
+      "finding": "The authors adjusted Flan-T5 prompts to one box per query because of truncated outputs, and separately verified that GPT accuracy was lower under one-box-at-a-time prompting than all-boxes-at-once, so the format choice is model-dependent.",
+      "models": [
+        "Flan-T5 base",
+        "Flan-T5 XL",
+        "GPT-3 davinci",
+        "GPT-3.5 text-davinci-003"
+      ],
+      "workloads": [
+        "synthetic boxes entity-tracking cloze task with 7 boxes"
+      ],
+      "conditions": "2-shot demonstrations; Flan-T5 with beam size 3, max 256 tokens; GPT with greedy decoding, max 150 tokens.",
+      "limitations": "Reported as a prompting adjustment rather than a systematic ablation; the GPT comparison is a single check with no stated effect size, and results are specific to these 2023 models and this synthetic format.",
+      "validation_test": "For your model, run the same multi-entity state query in both formats (all entities per completion vs one per completion) on a held-out set and compare exact-match accuracy and output truncation rates.",
+      "overlaps_heuristics": []
+    }
+  ],
+  "status": "candidates",
+  "reason": "The paper tests entity tracking across GPT-3/GPT-3.5/GPT-4/Flan-T5 and finetuned T5, with a reanalysis of an existing benchmark showing trivial-case inflation, and an incidental prompt-format comparison. These support three scoped rules on evaluation design, model selection, and prompt output format.",
+  "model": "claude-opus-5",
+  "text_url": "https://arxiv.org/html/2305.02363v2",
+  "text_sha256": "552c4e36c8110e2ec3e425d166be6841d901cc6df361715f345fbdce550b9060",
+  "retrieved_at": "2026-10-22T23:20:33.745Z",
+  "supplied_chars": 75886,
+  "total_chars": 75886,
+  "truncated": false,
+  "input_tokens": 29271,
+  "output_tokens": 2193
+}

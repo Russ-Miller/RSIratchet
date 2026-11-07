@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "source": "arxiv-2306-05685",
+  "fingerprint": "4e5a33cdf0f3b5e1ad64b05be19172aa4a032347676e60365df490ac3b8fea1b",
+  "attempted_at": "2026-10-22T23:21:13.537Z",
+  "candidates": [
+    {
+      "title": "Swap answer order and only count consistent LLM-judge verdicts",
+      "rule": "When using an LLM as a pairwise judge, call it twice with the two answers in both orders and count a win only if the same answer wins both times; otherwise record a tie. Do not assume a single-order verdict is stable, especially for closely matched models and open-ended writing/knowledge prompts.",
+      "basis": "author-tested",
+      "passage": "Only GPT-4 outputs consistent results in more than 60% of cases.",
+      "location": "Section 3.3, Table 2 (Position bias of different LLM judges)",
+      "finding": "On 80 MT-bench first-turn questions with two similar GPT-3.5 answers, order-swap consistency was 23.8% (Claude-v1), 46.2% (GPT-3.5) and 65.0% (GPT-4) with the default prompt. The authors adopt the conservative swap-and-require-agreement procedure for their main experiments; with it, GPT-4 pairwise judgments reach ~85% agreement with human experts on non-tie votes. Position bias was weaker when models differed widely (98.8% consistency for GPT-3.5 vs LLaMA-13B) and stronger on writing/STEM/humanities than math/coding.",
+      "models": [
+        "GPT-4 (gpt-4-0314)",
+        "GPT-3.5-turbo",
+        "Claude-v1",
+        "Vicuna-13B (judge, zero-shot and fine-tuned)"
+      ],
+      "workloads": [
+        "MT-bench (80 multi-turn open-ended questions, 8 categories)",
+        "Chatbot Arena crowdsourced pairwise votes (3K sampled)"
+      ],
+      "conditions": "Pairwise comparison prompt (Figure 4); stress test deliberately used two near-identical GPT-3.5 answers at temperature 0.7, which maximizes position sensitivity. Doubles judge API cost.",
+      "limitations": "Single paper, 2023-era model snapshots that may not reproduce; consistency is not accuracy; the swap procedure increases tie rate and cost; the hardest case (near-identical answers) overstates bias relative to typical pairs.",
+      "validation_test": "On your own task, run an LLM judge on N pairs in both orders; report consistency rate and how many verdicts flip, then compare swap-consistent verdicts against a held-out set of human labels versus single-order verdicts.",
+      "overlaps_heuristics": [
+        "first-impressions-last",
+        "no-one-should-judge-their-own-cause"
+      ]
+    }
+  ],
+  "status": "candidates",
+  "reason": "The paper runs controlled comparisons of judge-prompt interventions (position swapping, reference-guided vs CoT vs default grading, single-prompt full-conversation multi-turn judging, few-shot) against human expert votes on MT-bench and Chatbot Arena, yielding scoped, actionable harness rules. Scores and bias descriptions alone were excluded.",
+  "model": "claude-opus-5",
+  "text_url": "https://arxiv.org/html/2306.05685v4",
+  "text_sha256": "d21e9b6162ab69c1e85d8253085cc102f2840f9b2a083325b720ba3dd1b0d317",
+  "retrieved_at": "2026-10-22T23:21:13.537Z",
+  "supplied_chars": 63267,
+  "total_chars": 63267,
+  "truncated": false,
+  "input_tokens": 27861,
+  "output_tokens": 2154
+}
