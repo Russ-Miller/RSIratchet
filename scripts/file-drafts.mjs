@@ -13,7 +13,7 @@ import fs from "node:fs";
 import path from "node:path";
 import YAML from "yaml";
 import { fetchTitles, sameTitle } from "./paper-text-lib.mjs";
-import { loadCatalog } from "./catalog-lib.mjs";
+import { loadCatalog, ROOT } from "./catalog-lib.mjs";
 
 const dryRun = process.argv.includes("--dry-run");
 const DRAFTS = "pipeline/drafts", QUEUE = "pipeline/queue";
@@ -22,6 +22,13 @@ const TODAY = new Date().toISOString().slice(0, 10);
 const catalog = loadCatalog();
 const haveSource = new Set(catalog.sources.map((s) => s.data.id));
 const haveClaim = new Set(catalog.claims.map((c) => c.data.id));
+// The slug rule changed ("llava-1-5" became "llava-15"), so a slug check alone
+// re-filed old claims under their new slug every night. Also match on the
+// statement itself, and on slugs merged away (catalog/redirects.yaml).
+const norm = (s) => String(s).replace(/\s+/g, " ").trim().toLowerCase();
+const haveStatement = new Set(catalog.claims.map((c) => norm(c.data.statement)));
+const redirectsFile = path.join(ROOT, "catalog", "redirects.yaml");
+const mergedAway = new Set(Object.keys((fs.existsSync(redirectsFile) ? YAML.parse(fs.readFileSync(redirectsFile, "utf8")) : null)?.claims ?? {}));
 const capIds = new Set(catalog.capabilities.map((c) => c.data.id));
 const techniques = new Map(catalog.techniques.map((t) => [t.data.id, t.data]));
 
@@ -88,7 +95,7 @@ for (const f of draftFiles) {
   const cid = slug(d.statement);
   // A source may already exist (file-matched-sources files papers before any
   // claim is drafted); only an existing claim means this draft is done.
-  if (haveClaim.has(cid)) { skipped++; continue; }
+  if (haveClaim.has(cid) || mergedAway.has(cid) || haveStatement.has(norm(d.statement))) { skipped++; continue; }
   if (!capIds.has(d.capability)) { notes.push(`${pid}: unknown capability ${d.capability}`); skipped++; continue; }
   const cand = queue.get(pid);
   if (!cand) { notes.push(`${pid}: no queue metadata`); skipped++; continue; }
@@ -172,7 +179,7 @@ for (const f of draftFiles) {
       techniquesFiled++;
     }
   }
-  haveSource.add(sid); haveClaim.add(cid); filed++;
+  haveSource.add(sid); haveClaim.add(cid); haveStatement.add(norm(d.statement)); filed++;
 }
 
 console.log(`${dryRun ? "[dry run] would file" : "filed"} ${filed} claim(s), ${techniquesFiled} technique(s), skipped ${skipped}`);
