@@ -1,0 +1,51 @@
+arxiv_id: "2604.01600"
+title: "MM-ReCoder: Advancing Chart-to-Code Generation with Reinforcement
+  Learning and Self-Correction"
+url: https://doi.org/10.48550/arxiv.2604.01600
+drafted_at: 2026-11-06
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: self-repair
+statement: When a multimodal code model is trained for self-correction with
+  group-relative RL, optimizing whole two-turn trajectories at once makes it
+  copy its first-turn code into the second turn (46-56% repetition, near-zero
+  score gain) because a model that cannot yet self-correct gets negative
+  expected reward for changing an already-executable answer; first running an
+  RL stage that fixes the first turn as shared context and optimizes only
+  second-turn refinements breaks this and yields real second-turn gains.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: 7B chart-to-code model (Qwen2.5-VL-7B base) after SFT cold
+  start, two-turn self-correction with rendered-image or error feedback, GRPO
+  with rule-based chart-element rewards
+technique: ""
+proposed_technique: Train self-correction on a shared first turn before joint turns
+technique_summary: Run GRPO first with one online-sampled first-turn output
+  fixed as shared context while rolling out several second-turn refinements,
+  then switch to optimizing both turns jointly with reward computed only at
+  the final turn.
+technique_kind: training
+technique_validated_by: "Compared against full-trajectory GRPO at several
+  first-turn and boosting reward weights, and a turn-wise 50/50 variant, on
+  ChartMimic: two-stage reached 86.0 second-turn low-level score with +0.55
+  average improvement on charts executable in both turns and 21.6% code
+  repetition, versus full-trajectory variants at 83.5-85.5 with -0.03 to +0.21
+  improvement and 46.9-81.1% repetition; a boosting-reward variant gamed the
+  reward by degrading the first turn (64.5% exec rate)."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A full-trajectory multi-turn RL run on the same base model and data
+  that reaches equal or better second-turn improvement on already-executable
+  outputs without a shared-first-turn stage, or showing the repetition
+  collapse disappears under a different reward scale rather than a different
+  rollout structure.
+evidence_note: Measured on ChartMimic with one backbone and one dataset; the
+  strategy table isolates rollout structure with rewards held to
+  format+rule-based, and reports repetition rate and improvement-on-executable
+  as the discriminating metrics rather than headline score. Single paper, no
+  seed variance reported, and the causal story (negative expected reward for
+  changing an executable answer) is argued from the cold-start table showing
+  negative average improvement, not directly measured.
+confidence: medium

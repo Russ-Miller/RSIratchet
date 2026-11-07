@@ -1,0 +1,42 @@
+id: aligning-8b-14b-vision-language-models-dpo-multimodal-preference-pairs-whose
+ref: CLM-0917
+capability: visual-grounding
+technique: scale-only-rejected-reward-decaying-coefficient
+statement: >-
+  When aligning 8B-14B vision-language models with DPO on multimodal
+  preference pairs whose chosen and rejected responses share many tokens,
+  the standard symmetric objective lowers the chosen response's implicit
+  reward along with the rejected one and degrades object-hallucination
+  scores below the pre-alignment checkpoint, while scaling only the
+  rejected-reward term by a stop-gradient coefficient that decays once a
+  length-scaled target margin is met keeps the chosen reward stable and
+  raises hallucination scores above the base model.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "InternVL3-Instruct 8B/14B fine-tuned on ~320K proprietary preference pairs built partly from visually-degraded rejected responses; language backbone trained, vision encoder frozen"
+sources:
+  - source: arxiv-2603-22165
+    stance: supports
+    note: >-
+      Validated by: POPE, AMBER, HallusionBench, MM-IFEval plus seven
+      general multimodal benchmarks against DPO, IPO, SimPO, beta-DPO and
+      DPO-Shift on the same data; POPE 86.89 (DPO) vs 89.22 (ACPO) vs 88.48
+      base at 14B; ablation forcing the coefficient to 1 returns POPE to
+      86.89; reward-trajectory plots and bootstrap test (p<0.01) on
+      hallucination benchmarks.. Measured on two model sizes against five
+      alignment baselines on 11 benchmarks, with reward-trajectory evidence
+      for the proposed mechanism and a one-variable ablation. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-07
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Training the same models
+  with the asymmetric coefficient and observing chosen implicit reward still
+  drifting down, or hallucination benchmark scores no better than symmetric
+  DPO; or showing that the DPO degradation on POPE disappears under matched
+  hyperparameter tuning.
+submitted_by: agent:claude-opus-5@Russ-Miller

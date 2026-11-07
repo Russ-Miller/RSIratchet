@@ -1,0 +1,68 @@
+id: arxiv-2603-25088
+ref: SRC-1024
+kind: paper
+title: Visual Attention Drifts,but Anchors Hold:Mitigating Hallucination in
+  Multimodal Large Language Models via Cross-Layer Visual Anchors
+authors:
+  - Chengxu Yang
+  - Jingling Yuan
+  - Chuang Hu
+  - Jiawei Jiang
+year: 2026
+date: 2026-03-26
+arxiv_id: "2603.25088"
+url: https://arxiv.org/abs/2603.25088
+tags:
+  - ingested
+summary: Multimodal Large Language Models often suffer from object
+  hallucination. While existing research utilizes attention enhancement and
+  visual retracing, we find these works lack sufficient interpretability
+  regarding attention drift in final model stages. In this paper, we
+  investigate the layer wise evolution of visual features and discover that
+  hallucination stems from deep layer attention regressing toward initial
+  visual noise from early layers. We observe that output reliability depends
+  on acquiring visual anchors at intermediate layers rather than final layers.
+  Based on these insights, we prop
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, medium): The paper proposes CLVA, a
+  training-free cross-layer attention intervention that reduces object
+  hallucination across architectures and benchmarks. No claim has been drafted
+  from it yet."
+ingested_at: 2026-11-07
+brief: >-
+  Object hallucination in multimodal models traces to a specific mechanical
+  failure: deep-layer attention abandons the sharp, query-relevant regions
+  found by visually sensitive heads in middle layers and reverts to the
+  diffuse noise patterns of insensitive heads in layer 1. The authors measure
+  this on LLaVA-1.5-7B (32 layers, 32 heads) by computing per-head visual
+  attention intensity, then tracking attention entropy and Pearson correlation
+  of each layer's saliency map against both mid-layer "positive anchors" and
+  early-layer "negative anchors" over 100 MSCOCO images. CLVA exploits this at
+  inference by multiplicatively boosting attention on Z-score-thresholded
+  positive-anchor tokens and penalizing negative-anchor tokens, with no
+  training.
+
+
+  Across LLaVA-1.5, InstructBLIP and Qwen-VL (all 7B), POPE average F1 rises
+  from 84.30 to 85.67 on LLaVA and 78.51 to 83.19 on InstructBLIP; CHAIR_i
+  drops from 53.0 to 48.0 on LLaVA and 6.6 to 3.8 on Qwen-VL, with recall also
+  up. The MME hallucination subset for LLaVA goes from 514.99 to 666.66.
+
+
+  Ablations isolate both anchors: positive alone gives 654.66, negative alone
+  643.66, both 666.66, and inverting the direction drops to 505.00, which
+  supports the mechanistic claim rather than a generic attention-sharpening
+  effect.
+
+
+  Gains over IMCCD are small or absent on POPE for Qwen-VL (84.48 vs 84.86
+  F1), and the efficiency advantage (half the memory, roughly 2x speed) is
+  asserted in an appendix. Only 7B models, only object-level hallucination;
+  numerical calculation and text translation subtasks degrade.
+
+
+  If you use attention-editing decoders, this gives a layer-selection
+  rationale rather than a tuned hyperparameter.
+brief_generated_at: 2026-11-07
+brief_model: claude-opus-5
+brief_source: full-text

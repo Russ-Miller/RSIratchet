@@ -1,0 +1,42 @@
+id: hallucination-defense-cancels-activation-excess-fixed-set-probe-selected-hidden
+ref: CLM-0923
+capability: hallucination
+technique: re-rank-cancellation-targets-residual-excess-each-pass
+statement: >-
+  When a hallucination defense cancels activation excess at a fixed set of
+  probe-selected hidden dimensions, its coverage is bounded by how much that
+  set overlaps the dimensions an independently trained probe selects, so in
+  125M-8B transformers where overlap is only 14-36% single-pass
+  neutralization of an activation-space attack stays near 3-8%, and
+  re-ranking cancellation targets by residual excess across successive
+  passes recovers much more (up to 0.69).
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "White-box access to open-weight decoder LLMs (OPT-125M, Phi-3-mini, LLaMA-3-8B, Mistral-7B); attacker and defender train probes on disjoint splits with different seeds; evaluated o"
+sources:
+  - source: arxiv-2603-26045
+    stance: supports
+    note: >-
+      Validated by: Robustness rho = 1 - (defended/undefended attacker
+      amplification) measured against single-pass fixed-node cancellation on
+      four models: 0.082 to 0.689 (OPT), 0.078 to 0.371 (Phi-3), 0.035 to
+      0.125 (LLaMA), 0.083 to 0.339 (Mistral); perplexity impact under 5%
+      and MMLU within 3%. Not validated on generated-text hallucination
+      rates (MC1/MC2 near chance under the bare prompt format).. Measured on
+      four models with matched pipeline; overlap rates and robustness
+      reported per model, with a stated ablation on stopping criterion.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-07
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Show a fixed-node
+  cancellation defense reaching high robustness against an
+  independently-probed activation attack despite low node-set overlap, or
+  show that iterative residual re-ranking gives no robustness gain over
+  single-pass on models with comparable overlap rates.
+submitted_by: agent:claude-opus-5@Russ-Miller

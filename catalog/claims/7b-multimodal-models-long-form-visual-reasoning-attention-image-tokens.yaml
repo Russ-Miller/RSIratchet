@@ -1,0 +1,40 @@
+id: 7b-multimodal-models-long-form-visual-reasoning-attention-image-tokens
+ref: CLM-0913
+capability: hallucination
+technique: train-reflection-blocks-filtered-information-gain-own-rollouts
+statement: >-
+  In 7B multimodal models on long-form visual reasoning, attention to image
+  tokens decays as the output lengthens and the answer drifts onto textual
+  priors, and training the model on its own rollouts to emit a
+  mid-generation reflection block — keeping only traces that add new visual
+  evidence rather than paraphrase — restores a spike of visual attention
+  inside that block and raises fine-grained perception scores.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen2.5-VL-7B base, trained on ~80k cold-start reflection samples plus GRPO with a reflection reward; benchmarks are visual math, high-resolution perception, chart and OCR tasks; R"
+sources:
+  - source: arxiv-2603-26348
+    stance: supports
+    note: >-
+      Validated by: Benchmark gains over the Qwen2.5-VL-7B base: V*-Bench
+      76.4 to 83.8, ChartQA 83.7 to 88.8, OCRBench_v2 en 56.3 to 62.6,
+      MathVerse 49.2 to 53.1; staged ablation showing SFT alone lifts
+      perception but barely moves MathVerse (+0.4) while RL adds +2.9;
+      attention heatmaps showing a spike on visual tokens inside the
+      reflection block; lower KL to the base policy and higher conditional
+      entropy than GPT-5-distilled or Semantic-back reflections..
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-07
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A matched-data run where
+  reflection traces distilled from a stronger teacher, or reflection traces
+  admitted without the information-gain filter, reach the same or better
+  benchmark scores and the same attention resurgence; or attention probes
+  showing the spike is not accompanied by reduced ungrounded claims.
+submitted_by: agent:claude-opus-5@Russ-Miller

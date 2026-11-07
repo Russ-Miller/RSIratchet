@@ -1,0 +1,50 @@
+arxiv_id: "2604.00983"
+title: "ACT Now: Preempting LVLM Hallucinations via Adaptive Context Integration"
+url: https://doi.org/10.48550/arxiv.2604.00983
+drafted_at: 2026-11-06
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: In 7-13B open vision-language models, amplifying visual attention
+  only in heads whose spatial attention map shifts across decoding steps (low
+  spatio-temporal covariance similarity) lowers object-hallucination rates
+  without the general multimodal degradation that uniformly amplifying all
+  heads causes.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Training-free decoding intervention on LLaVA-1.5-7B/13B,
+  InternVL2/2.5-8B, Qwen2-VL/2.5-VL-7B; mid layers targeted; head sets
+  profiled offline on ~500 unlabeled images; object and attribute
+  hallucination, not relational or multi-step reasoning hallucination.
+technique: ""
+proposed_technique: Amplify only the attention heads that move across decoding steps
+technique_summary: Profiles each attention head by how much its 2D visual
+  attention map's spatial covariance structure changes between adjacent
+  decoding steps, then adds a scaled bonus to the pre-softmax visual attention
+  scores of the low-similarity 'dynamic' heads in mid layers, with the query
+  formed by probability-weighted marginalization over the top-K candidate
+  previous tokens.
+technique_kind: decoding
+technique_validated_by: POPE accuracy 85.2 to 88.0, MME hallucination total
+  638.3 to 668.3, CHAIR_S 51.4 to 33.0 and CHAIR_I 15.2 to 9.3 on
+  LLaVA-1.5-7B, with gains on five more backbones; ablated against uniform
+  ('Global') head amplification, which cut MME from 638.3 to 630.0, and
+  against four alternative head-profiling metrics and a guidance-shift sweep
+  toward static heads.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A replication in which amplifying a layer-matched random or static
+  head set gives the same hallucination reduction as the dynamic-head set at
+  matched general-benchmark scores, or in which the dynamic-head intervention
+  degrades MME/general multimodal performance as much as uniform
+  amplification.
+evidence_note: "Measured on five LVLM families across POPE, MME-hallucination,
+  AMBER and CHAIR, with the targeted-vs-global ablation and a guidance-shift
+  ratio sweep isolating head selection. Weak points: no random-head control at
+  matched count; CHAIR gains come with shorter outputs (92.4 vs ~97-100
+  tokens) and the paper concedes reduced recall of fine detail, so part of the
+  drop may be reduced informativeness; the 'dynamic' and 'static' labels rest
+  on one hand-designed metric."
+confidence: medium

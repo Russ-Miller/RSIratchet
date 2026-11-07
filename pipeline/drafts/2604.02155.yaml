@@ -1,0 +1,48 @@
+arxiv_id: "2604.02155"
+title: "Brief Is Better: Non-Monotonic Chain-of-Thought Budget Effects in
+  Function-Calling Language Agents"
+url: https://doi.org/10.48550/arxiv.2604.02155
+drafted_at: 2026-11-06
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: For small open-weight instruct models (Qwen2.5-1.5B/7B) doing
+  single-step function calling over a 2-4 candidate tool set, lengthening the
+  chain-of-thought budget raises fabricated function names that are not in the
+  candidate set (about 2.5% at 32 tokens to 18-20% at 256-512 tokens), and
+  committing to a candidate name as the first generated tokens of a templated
+  routing step removes them entirely.
+kind: observation
+backing_strength: single-paper
+scope_condition: 200 BFCL v3 Multiple tasks, greedy decoding, two-phase
+  reason-then-emit-JSON protocol; the below-baseline collapse was specific to
+  the Qwen2.5 family, with Phi-3-mini degrading but staying above its no-CoT
+  baseline.
+technique: ""
+proposed_technique: Commit to a valid function name before reasoning
+technique_summary: "Template the reasoning phase so the prompt ends at
+  'Function: ', forcing the model to emit a candidate tool name as its first
+  tokens before any free reasoning or argument generation."
+technique_kind: prompting
+technique_validated_by: On 200 BFCL v3 Multiple tasks, FR-CoT matched
+  free-form 32-token CoT accuracy (64.0% at 1.5B, McNemar p=0.896; 83.0% at
+  7B) while cutting function hallucination from 2.5% to 0.0%, and beat a
+  log-prob constrained-decoding baseline at 7B (83.0% vs 63.5%,
+  non-overlapping CIs); free-form 16-token CoT still scored higher on accuracy
+  (71.5%/84.5%).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A replication on the same benchmark showing hallucinated function
+  names do not rise with reasoning budget, or showing the prompt-committed
+  routing template leaves hallucination rates unchanged relative to free-form
+  brief CoT.
+evidence_note: Measured on one 200-task contiguous slice of BFCL v3 Multiple,
+  three models, greedy decoding, with bootstrap CIs and McNemar tests; error
+  categories are available only for the 1.5B model at long budgets (7B outputs
+  truncated to 300 chars), so the hallucination-rise curve is single-model.
+  The design isolates budget but not the two-phase protocol from end-to-end
+  CoT, though a 0% EOS-rate analysis argues against forced over-generation as
+  the cause.
+confidence: medium

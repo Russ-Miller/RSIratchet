@@ -1,0 +1,49 @@
+arxiv_id: "2604.00344"
+title: "Agent Q-Mix: Selecting the Right Action for LLM Multi-Agent Systems
+  through Reinforcement Learning"
+url: https://doi.org/10.48550/arxiv.2604.00344
+drafted_at: 2026-11-06
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: For LLM multi-agent systems on math, coding and reasoning
+  benchmarks, letting each agent pick its own discrete communication action
+  per round (solo, broadcast, query, aggregate, verify, debate) under a
+  QMIX-trained value factorization yields higher average accuracy and lower
+  token use than centralized one-shot topology generators and commercial agent
+  frameworks, with the gain concentrated on multi-round mathematics tasks
+  rather than near-saturated coding tasks.
+kind: observation
+backing_strength: single-paper
+scope_condition: Two backbones (GPT-OSS:120B, Gemini-3.1-Flash-Lite), seven
+  benchmarks, 3-agent teams, 2-3 communication rounds; reward explicitly
+  trades accuracy against token cost.
+technique: ""
+proposed_technique: Let each agent choose its own communication action per round
+technique_summary: Trains per-agent Q-heads over six discrete communication
+  primitives with a topology-aware GNN+GRU encoder and a QMIX monotonic mixer,
+  so the round-wise communication graph emerges from decentralized action
+  choices rather than a central generator.
+technique_kind: architecture
+technique_validated_by: Median of three runs on seven benchmarks against
+  single-agent, static debate, five adaptive-topology methods and four
+  commercial frameworks; average accuracy 72.73% vs 68.60% (AutoGen) and
+  60.37% (GTD) on GPT-OSS:120B; token totals reported on three benchmarks;
+  plus an adversarial-agent injection test on MMLU-Pro (2.86-point drop vs
+  8.57-10.00 for baselines).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Under matched backbone, agent count, round budget and prompts, a
+  centralized topology generator or a fixed dense topology matching Agent
+  Q-Mix's average accuracy at equal or lower token cost; or ablating the QMIX
+  mixer while keeping the GNN/GRU encoder leaving accuracy unchanged.
+evidence_note: Measured on seven held-out benchmarks across two backbones,
+  median of three runs, with token counts and an adversarial-agent stress
+  test. Several benchmarks are small (AIME 25/26 are 30 items), and the coding
+  benchmarks are at or near ceiling for many baselines, so the average is
+  driven by the math splits. No ablation isolating the QMIX mixer from the
+  GNN/GRU encoder is reported in the given text, and reward weights are tuned
+  per domain.
+confidence: low

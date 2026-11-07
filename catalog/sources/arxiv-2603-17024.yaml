@@ -1,0 +1,72 @@
+id: arxiv-2603-17024
+ref: SRC-1011
+kind: paper
+title: "HopChain: Multi-Hop Data Synthesis for Generalizable Vision-Language
+  Reasoning"
+authors:
+  - Shenzhi Wang
+  - Shixuan Liu
+  - Jing Zhou
+  - Chang Gao
+  - Xiong-Hui Chen
+  - Binghai Wang
+year: 2026
+date: 2026-03-17
+arxiv_id: "2603.17024"
+url: https://arxiv.org/abs/2603.17024
+tags:
+  - ingested
+summary: Vision-language models (VLMs) show strong multimodal capabilities but
+  still struggle with fine-grained vision-language reasoning. We find that
+  long chain-of-thought (CoT) reasoning exposes diverse failure modes,
+  including perception, reasoning, knowledge, and hallucination errors, which
+  can compound across intermediate steps. However, most existing
+  vision-language data used for reinforcement learning with verifiable rewards
+  (RLVR) does not involve complex reasoning chains that rely on visual
+  evidence throughout, leaving these weaknesses largely unexposed. We
+  therefore propose HopChain, a scala
+notes: "Filed as a source on multi-step-reasoning from the classifier's
+  judgement that the paper is about it (improves, medium): The paper
+  synthesizes logically dependent multi-hop chains for RLVR training and
+  reports improvements on 20 of 24 benchmarks, with ablations showing full
+  chains beat half-chained queries. No claim has been drafted from it yet."
+ingested_at: 2026-11-07
+brief: >-
+  Synthetic multi-hop visual questions, added to an RLVR mix, transfer
+  broadly: training on chained queries that force re-grounding at every hop
+  improves unrelated benchmarks, including video ones, even though the data is
+  image-only and benchmark-agnostic.
+
+
+  HopChain builds queries in 4 stages: Qwen3-VL-235B-A22B-Thinking enumerates
+  categories, SAM3 segments instances, the same VLM writes queries over
+  combinations of 3-6 instances, and 4 annotators independently solve each one
+  with full agreement required. Each query ends in a single number for
+  verifiable reward. Roughly 6k-8k samples per model were used alongside math
+  RLVR data, trained with SAPO on Qwen3.5-35B-A3B and Qwen3.5-397B-A17B,
+  evaluated on 24 benchmarks.
+
+
+  Adding multi-hop data improves 20 out of 24 benchmarks on both models,
+  including 5/6 video benchmarks on each. Stripping the chain hurts: on 5
+  representative benchmarks the average falls from 70.4 to 66.7 for
+  half-chains and 64.3 for last-hop-only.
+
+
+  The hop-structure ablation is the strongest part of the design, since it
+  isolates chain length rather than added data volume. The baseline is RLVR on
+  original data only, so token budget and data quantity are not matched. Error
+  typing rests on 20 sampled wrong responses per benchmark judged by
+  annotators, 1 model family, internal pre-final data recipes, no external
+  replication.
+
+
+  Gains outside long-CoT regimes are modest, and several benchmarks regress.
+  Images with no segmentable objects are excluded entirely.
+
+
+  If you build RLVR data, chain depth looks like the active ingredient, not
+  difficulty alone.
+brief_generated_at: 2026-11-07
+brief_model: claude-opus-5
+brief_source: full-text

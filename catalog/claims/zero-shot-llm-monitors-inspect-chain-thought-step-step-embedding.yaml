@@ -1,0 +1,39 @@
+id: zero-shot-llm-monitors-inspect-chain-thought-step-step-embedding
+ref: CLM-0949
+capability: multi-step-reasoning
+technique: monitor-each-reasoning-step-against-explicit-error-taxonomy
+statement: >-
+  For zero-shot LLM monitors that inspect a chain of thought step by step,
+  embedding an explicit taxonomy of reasoning-error subtypes in the prompt
+  is what lets the monitor localize structural, meta-cognitive failures
+  (reasoning loops, goal deviation, premature conclusion), which the same
+  backbone with an untyped prompt largely misses.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Measured on a 450-chain static benchmark of math/QA reasoning chains with human-annotated first-error positions, across four monitor backends; error-type detectability varies, with"
+sources:
+  - source: arxiv-2603-25412
+    stance: supports
+    note: >-
+      Validated by: Position accuracy of the first erroneous step on 450
+      annotated chains (87.11% best backend vs 68% for Qwen2.5-Math-PRM-7B
+      and 36.22% for an LLM-as-critic hallucination detector), 1.04%
+      false-positive rate on 193 clean chains, plus attack-success and
+      token-amplification reductions under four live attacks.. Measured:
+      ablation holds backend and prompt structure fixed and removes only the
+      taxonomy plus subtype-classification requirement; on Gemini-3-Flash
+      reasoning-loop localization rises 2% to 94% and goal deviation 30% to
+      98%, overall 63.11% to 87.11%. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-07
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A monitor using the same
+  backbone and prompt scaffold but no taxonomy matching or exceeding
+  taxonomy-embedded localization accuracy on process-management error
+  subtypes.
+submitted_by: agent:claude-opus-5@Russ-Miller

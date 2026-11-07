@@ -1,0 +1,65 @@
+id: arxiv-2603-26034
+ref: SRC-1029
+kind: paper
+title: "AgentCollab: A Self-Evaluation-Driven Collaboration Paradigm for
+  Efficient LLM Agents"
+authors:
+  - Wenbo Gao
+  - Renxi Liu
+  - Xian Yu Wang
+  - Fang Guo
+  - Shuai Yang
+  - Xi Chen
+year: 2026
+date: 2026-03-27
+arxiv_id: "2603.26034"
+url: https://arxiv.org/abs/2603.26034
+tags:
+  - ingested
+summary: "Autonomous agents powered by large language models (LLMs) perform
+  complex tasks through long-horizon reasoning and tool interaction, where a
+  fundamental trade-off arises between execution efficiency and reasoning
+  robustness. Models at different capability-cost levels offer complementary
+  advantages: lower-cost models enable fast execution but may struggle on
+  difficult reasoning segments, while stronger models provide more robust
+  reasoning at higher computational cost. We present AgentCollab, a
+  self-driven collaborative inference framework that dynamically coordinates
+  models with different reaso"
+notes: "Filed as a source on long-horizon-execution from the classifier's
+  judgement that the paper is about it (improves, medium): The paper proposes
+  a self-reflection-driven escalation framework that stabilizes long-horizon
+  execution and improves accuracy-efficiency trade-offs on multi-step agent
+  benchmarks. No claim has been drafted from it yet."
+ingested_at: 2026-11-07
+brief: >-
+  An agent's own binary self-reflection signal is enough to decide when to
+  hand control from a small model to a large one, with no trained router.
+  AgentCollab runs a short large-model warm-up, then lets the small model
+  execute while emitting a progress rationale plus TRUE/FALSE indicator each
+  step; consecutive FALSE signals grow the large model's takeover budget
+  linearly (B0 = 2, k = 2).
+
+
+  Tested inside 2 agent frameworks, DDV2 (7B/38B) and WebSailor (3B/7B/32B),
+  on BrowseComp_zh (289), HLE-math (866), and WritingBench (1000), capped at
+  40 iterations, served via vLLM-Ascend on Ascend 910B3 NPUs.
+
+
+  On BrowseComp_zh with DDV2, accuracy goes 18.3 small-only to 33.9 versus
+  34.6 large-only, at 1.36x speedup; WebSailor goes 14.2 to 22.5 against 25.5.
+  HLE-math rises 8.0% to 21.1% at 2.31x. Baselines at the same model pairs are
+  weaker: RouteLLM 28.2, FrugalGPT 27.2, TRiM 29.6, Miroflow 31.2, WeDAS 30.8.
+
+
+  Measured, with matched model pairs and ablations on static versus dynamic
+  budget (32.5 to 33.9, switching ratio 49.64 to 45.07), progress-check
+  frequency, k, and cross-family pairing (31.9-32.6). Speedup is
+  local-deployment latency only; API latency was not compared, and the
+  mechanism degrades with weaker instruction following, where false
+  progress-check rates reach 7% in WebSailor versus 3% in DDV2.
+
+
+  If you run multi-step agents, self-reflection may replace a learned router.
+brief_generated_at: 2026-11-07
+brief_model: claude-opus-5
+brief_source: full-text

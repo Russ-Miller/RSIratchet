@@ -1,0 +1,67 @@
+id: arxiv-2603-23610
+ref: SRC-1021
+kind: paper
+title: "Environment Maps: Structured Environmental Representations for
+  Long-Horizon Agents"
+authors:
+  - Yenchia Feng
+  - Chirag Sharma
+  - Karime Maamari
+year: 2026
+date: 2026-03-24
+arxiv_id: "2603.23610"
+url: https://arxiv.org/abs/2603.23610
+tags:
+  - ingested
+summary: "Although large language models (LLMs) have advanced rapidly, robust
+  automation of complex software workflows remains an open problem. In
+  long-horizon settings, agents frequently suffer from cascading errors and
+  environmental stochasticity; a single misstep in a dynamic interface can
+  lead to task failure, resulting in hallucinations or trial-and-error. This
+  paper introduces $\\textit{Environment Maps}$: a persistent, agent-agnostic
+  representation that mitigates these failures by consolidating heterogeneous
+  evidence, such as screen recordings and execution traces, into a structured
+  graph. The rep"
+notes: "Filed as a source on long-horizon-execution from the classifier's
+  judgement that the paper is about it (improves, medium): Equipping agents
+  with a persistent structured environment map roughly doubles long-horizon
+  task success (28.2% vs 14.2% session-bound baseline). No claim has been
+  drafted from it yet."
+ingested_at: 2026-11-07
+brief: >-
+  How prior experience is organized matters more than whether the agent has
+  it: distilling human trajectories into a structured graph beats handing the
+  agent the same raw traces.
+
+
+  Environment Maps compile screen recordings and Playwright traces into a JSON
+  graph of contexts (URL-pattern pages), parameterized actions, workflows, and
+  tacit knowledge, then expose it to a claude-sonnet-4-5 Claude Agent SDK
+  agent via Read/Grep/Glob. Evaluation covers 812 WebArena tasks across 5
+  sites, scored with WebArena Verified (HAR-trace inspection), 30 steps and
+  180-second timeout per task.
+
+
+  Success was 14.2% with no map, 23.3% with raw trajectory file access, and
+  28.2% with maps (Wilson 95% CIs [11.9,16.7], [20.5,26.3], [25.2,31.4]).
+  Gains concentrated in UI-dense sites: GitLab 8.3% to 11.7% to 22.8%, CMS
+  11.5% to 15.4% to 22.5%. On tasks with no human demo (n=633), 12.6% to 23.1%
+  to 26.9%. Backtracking rate fell from 0.445 to 0.381.
+
+
+  The retrieval interface was held fixed across conditions, which isolates
+  representation from tooling, but the raw-trajectory condition is plainly
+  harder to query: agents made 0.2 file calls per task there vs 12.1 with
+  maps, so usability and structure are confounded. 1 model family, 1
+  benchmark, no fine-tuning baseline.
+
+
+  Multi-site tasks stayed unsolved (0/48 with maps, 1/48 baseline), and gains
+  on the shallow Reddit and Map sites were small.
+
+
+  If you are building long-horizon web agents, the cheap win may be
+  reformatting your trace archive rather than adding data.
+brief_generated_at: 2026-11-07
+brief_model: claude-opus-5
+brief_source: full-text
