@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { CONTENT_TERMS_GRANT, CONTENT_TERMS_URL, CONTENT_TERMS_VERSION } from "@/lib/content-terms";
 
 const REPO = "https://github.com/Russ-Miller/RSIratchet";
 
@@ -21,6 +22,7 @@ export function EvidenceForm({ subject, refId, statement }: { subject: EvidenceS
   const [stance, setStance] = useState<"supports" | "contests" | null>(null);
   const [link, setLink] = useState("");
   const [name, setName] = useState("");
+  const [agreed, setAgreed] = useState(false);
   const [state, setState] = useState<{ kind: "idle" | "busy" | "done" | "error"; msg?: string; url?: string }>({ kind: "idle" });
   const editor = useRef<HTMLDivElement>(null);
   const honeypot = useRef<HTMLInputElement>(null);
@@ -55,18 +57,19 @@ export function EvidenceForm({ subject, refId, statement }: { subject: EvidenceS
     const head = subject.kind === "technique"
       ? `technique: ${subject.id}\n${subject.capability ? `capability: ${subject.capability}\n` : ""}`
       : `claim: ${subject.id}\n`;
-    const body = `${head}${refId ? `ref: ${refId}\n` : ""}stance: ${stance}\n${link ? `link: ${link}\n` : ""}${name ? `submitted_by: ${name}\n` : ""}\n## Evidence\n\n${text || "(link only)"}\n`;
+    const body = `${head}${refId ? `ref: ${refId}\n` : ""}stance: ${stance}\n${link ? `link: ${link}\n` : ""}${name ? `submitted_by: ${name}\n` : ""}terms_presented: ${CONTENT_TERMS_VERSION}\n\n## Evidence\n\n${text || "(link only)"}\n\n---\nBy submitting this issue you agree to the RSI Ratchet Content Terms, section 5 (${CONTENT_TERMS_URL}). ${CONTENT_TERMS_GRANT}\n`;
     return `${REPO}/issues/new?title=${encodeURIComponent(`${verb}: ${subject.id}`)}&body=${encodeURIComponent(body)}&labels=evidence`;
   };
 
   const submit = async () => {
     const text = editorText();
     if (!link && text.length < 20) { setState({ kind: "error", msg: "Give a link, or at least a sentence of evidence." }); return; }
+    if (!agreed) { setState({ kind: "error", msg: "Agree to the contribution terms to file." }); return; }
     setState({ kind: "busy" });
     try {
       const res = await fetch("/api/evidence", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...(subject.kind === "technique" ? { technique: subject.id, capability: subject.capability } : { claim: subject.id }), ref: refId, stance, link, text, name, website: honeypot.current?.value ?? "" }),
+        body: JSON.stringify({ ...(subject.kind === "technique" ? { technique: subject.id, capability: subject.capability } : { claim: subject.id }), ref: refId, stance, link, text, name, terms: CONTENT_TERMS_VERSION, website: honeypot.current?.value ?? "" }),
       });
       if (res.status === 503) { window.open(fallbackUrl(text), "_blank", "noopener"); setState({ kind: "done", msg: "Opened as a GitHub issue for you to submit." }); return; }
       const data = await res.json();
@@ -120,8 +123,14 @@ export function EvidenceForm({ subject, refId, statement }: { subject: EvidenceS
               className="mt-1 w-full max-w-xs rounded border border-neutral-300 bg-transparent px-2 py-1.5 text-sm dark:border-neutral-700" />
           </label>
           <input ref={honeypot} type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
+          <label className="flex items-start gap-2 text-xs text-neutral-600 dark:text-neutral-400">
+            <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} required className="mt-0.5" />
+            <span>
+              I agree to the <a href={CONTENT_TERMS_URL} target="_blank" rel="noopener noreferrer" className="underline">Content Terms, section 5</a>. {CONTENT_TERMS_GRANT}
+            </span>
+          </label>
           <div className="flex flex-wrap items-center gap-3">
-            <button type="submit" disabled={state.kind === "busy"}
+            <button type="submit" disabled={state.kind === "busy" || !agreed}
               className="rounded bg-neutral-900 px-3 py-1.5 text-xs text-white disabled:opacity-50 dark:bg-neutral-100 dark:text-neutral-900">
               {state.kind === "busy" ? "Filing…" : stance === "supports" ? "File support" : "File contest"}
             </button>
