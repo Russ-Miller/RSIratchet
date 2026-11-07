@@ -46,6 +46,12 @@ for (const it of issues) {
   let claimId = field("claim"); const techniqueId = field("technique"); const capField = field("capability");
   const stance = field("stance"); const link = field("link");
   const text = (body.split(/^## Evidence\s*$/m)[1] ?? "").split(/^---$/m)[0].trim().replace(/^\(link only\)$/m, "").trim();
+  // LICENSE-CONTENT §5: the grant holds only where the terms were presented.
+  // The form requires agreement (terms_accepted); the GitHub fallback states
+  // them in the issue (terms_presented); older issues carry neither.
+  const terms = field("terms_accepted") ? `Contribution terms accepted on the form (${field("terms_accepted")}).`
+    : field("terms_presented") ? `Contribution terms stated in the issue the reader submitted (${field("terms_presented")}).`
+    : "Submitted without the contribution terms presented; the section 5 grant does not apply.";
   const fail = (why) => { console.log(`#${it.number}: ${why}`); skipped++; };
 
   // Technique evidence: whether a technique works is a claim, so file one
@@ -68,7 +74,7 @@ for (const it of issues) {
       "statement: >-", wrap(statement),
       "kind: observation", "backing_strength: own-observation",
       "sources: []", "contested: false", "status: pending-review", `last_checked_at: ${TODAY}`,
-      "notes: >-", wrap(`Filed from a reader's report on the technique page (issue #${it.number}). One case, as reported; the source below holds the details. Not read against the technique's other evidence by anyone yet.`),
+      "notes: >-", wrap(`Filed from a reader's report on the technique page (issue #${it.number}). One case, as reported; the source below holds the details. Not read against the technique's other evidence by anyone yet. ${terms}`),
       `submitted_by: ${who}`, "",
     ].join("\n"));
   }
@@ -84,7 +90,7 @@ for (const it of issues) {
     // add-link writes the source file and prints "source-id: …". Non-arXiv
     // links are archived verbatim, which is what makes them citable later.
     let out;
-    try { out = execFileSync(process.execPath, ["scripts/add-link.mjs", link, "--no-feature", ...(text ? ["--note", text.slice(0, 200)] : [])], { encoding: "utf8" }); }
+    try { out = execFileSync(process.execPath, ["scripts/add-link.mjs", link, "--no-feature", "--note", `${text ? `${text.slice(0, 200)} ` : ""}${terms}`], { encoding: "utf8" }); }
     catch (e) { fail(`add-link failed: ${String(e.stdout || e.message).trim().split("\n").pop()}`); continue; }
     sourceId = out.match(/^source-id:\s*(\S+)$/m)?.[1];
     if (!sourceId) { fail("add-link gave no source id"); continue; }
@@ -98,7 +104,7 @@ for (const it of issues) {
       `date: ${TODAY}`, `ingested_at: ${TODAY}`, `url: ${it.url}`, "tags: [reader-filed]",
       `authors: [${JSON.stringify(who.replace(/^human:/, ""))}]`, `author_handle: ${JSON.stringify(who.replace(/^human:/, ""))}`,
       "summary: >-", wrap(text.slice(0, 600)),
-      "notes: >-", wrap(`Filed by a reader through the site's evidence form as ${stance === "supports" ? "support for" : "a contest of"} ${claimId}. Recorded as given; not checked by anyone yet. The full text is below.`),
+      "notes: >-", wrap(`Filed by a reader through the site's evidence form as ${stance === "supports" ? "support for" : "a contest of"} ${claimId}. Recorded as given; not checked by anyone yet. The full text is below. ${terms}`),
       "archived_text: |", text.split("\n").map((l) => `  ${l}`).join("\n"), "",
     ].join("\n"));
   }

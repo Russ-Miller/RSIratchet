@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { CONTENT_TERMS_VERSION } from "@/lib/content-terms";
 
 // Files a reader's evidence for or against a claim as a GitHub issue labelled
 // `evidence`. The nightly ingester turns it into a source on the claim. No
@@ -33,6 +34,7 @@ export async function POST(request: NextRequest) {
   const text = String(body.text ?? "").trim().slice(0, MAX_TEXT);
   const name = String(body.name ?? "").trim().slice(0, 80);
   if (String(body.website ?? "")) return NextResponse.json({ ok: true }); // honeypot filled: pretend
+  if (body.terms !== CONTENT_TERMS_VERSION) return NextResponse.json({ error: "agree to the contribution terms to file" }, { status: 400 });
   const subject = technique || claim;
   if (!/^[a-z0-9-]+$/.test(subject) || !stance) return NextResponse.json({ error: "claim or technique, and stance, required" }, { status: 400 });
   if (technique && capability && !/^[a-z0-9-]+$/.test(capability)) return NextResponse.json({ error: "bad capability" }, { status: 400 });
@@ -53,6 +55,7 @@ export async function POST(request: NextRequest) {
       `stance: ${stance}`,
       link ? `link: ${link}` : "",
       name ? `submitted_by: ${name}` : "",
+      `terms_accepted: ${CONTENT_TERMS_VERSION}`,
       ``,
       `## Evidence`,
       ``,
