@@ -1920,3 +1920,22 @@ and scrollable tables. Home shows useful principles before the applicability
 note; the note and candidate status remain visible. Sources use shared-bank
 language. These changes preserve the existing content, licensing decisions,
 discovery workflow, and present-versus-planned MCP distinction.
+
+## 2026-11-07 — Heuristics carry `form: descriptive | prescriptive`
+
+Prompted by filing "Principles over rules" (ADG-0026), the first entry
+whose statement is an instruction rather than an observation. Most
+borrowed laws describe how systems behave (Goodhart, Conway, Amdahl);
+the advice for models lives in `transfer`, and evidence tests whether the
+behaviour shows up in models. A prescriptive entry (Postel's law,
+Hanlon's razor, Hashimoto's rule, Kerckhoffs's principle, nemo iudex,
+Principles over rules) is the advice itself, so evidence tests whether
+following it pays. Same verdicts, different question; the field says
+which one a reader is looking at. Required on every entry: 6
+prescriptive, 20 descriptive. Shown on the card and detail page,
+filterable on /heuristics, exported in index.json.
+
+Borderline calls: "No one should judge their own cause" is worded as an
+observation but is a procedural maxim, so prescriptive. Boyd's law
+("speed of iteration beats quality") is a comparative claim about
+outcomes, so descriptive.
