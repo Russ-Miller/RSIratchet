@@ -619,7 +619,9 @@ catalog's own claims, with no outside source and no eponym — the version of
 "banking a lesson" (ReasoningBank, arXiv 2509.25140) built for a catalog
 rather than a single agent's memory. Fields: `statement`, `origin`,
 `transfer` (the mechanism by which it should or should not apply, or the
-mechanism a distilled rule rests on), `provenance`, and `evidence` — claims
+mechanism a distilled rule rests on), `provenance`, `form` (`descriptive`: how
+systems behave, the advice inferred in `transfer`; `prescriptive`: what to
+do, so the evidence tests whether doing it pays), and `evidence` — claims
 in this catalog with a verdict of `holds`, `breaks` or `narrows`. Standing is
 computed from reviewed claims only. The catalog values breaks over holds: a
 break is a finding about how models differ from people. Renamed from

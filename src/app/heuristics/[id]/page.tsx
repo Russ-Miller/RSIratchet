@@ -40,7 +40,7 @@ export default async function HeuristicPage({ params }: PageProps<"/heuristics/[
         { label: "This heuristic" },
       ]} />
       <header className="space-y-2">
-        <div className="text-sm text-neutral-500"><code className="font-mono">{a.id}</code> <RefTag refId={a.ref} title={a.label} />{a.status === "retired" ? " · retired" : ""}{a.provenance === "distilled" ? " · distilled here" : ""}</div>
+        <div className="text-sm text-neutral-500"><code className="font-mono">{a.id}</code> <RefTag refId={a.ref} title={a.label} />{a.status === "retired" ? " · retired" : ""}{a.provenance === "distilled" ? " · distilled here" : ""}{` · ${a.form === "prescriptive" ? "prescriptive: says what to do" : "descriptive: says how things behave"}`}</div>
         <h1 className="text-3xl font-semibold tracking-tight">{a.label}</h1>
         <p className="text-lg text-neutral-700 dark:text-neutral-300">&ldquo;{a.statement}&rdquo;</p>
         {a.aliases?.length ? <p className="text-sm text-neutral-500">Also: {a.aliases.join(" · ")}</p> : null}

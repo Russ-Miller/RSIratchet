@@ -17,6 +17,8 @@ export default function HeuristicsPage() {
     { value: "narrowed", label: "Holds, narrowed", count: count("narrowed"), hint: "Holds only under a stated condition" },
     { value: "holds", label: "Holds", count: count("holds"), hint: "Reviewed claims show it applying" },
     { value: "untested", label: "Untested", count: count("untested"), hint: "No reviewed evidence either way — a research brief" },
+    { value: "prescriptive", label: "Says what to do", count: count("prescriptive"), hint: "Prescriptive: the statement is advice, so the evidence tests whether following it pays" },
+    { value: "descriptive", label: "Says how things behave", count: count("descriptive"), hint: "Descriptive: the statement is an observation; the advice is what follows from it for models" },
     { value: "distilled", label: "Distilled here", count: count("distilled"), hint: "Synthesized bottom-up from this catalog's own claims, not borrowed from outside" },
   ];
   return (
@@ -41,7 +43,7 @@ export default function HeuristicsPage() {
               data-vec={vecAttr("a", a.id)}
               data-search={`${a.ref} ${a.label} ${a.statement} ${a.id} ${(a.aliases ?? []).join(" ")} ${a.origin} ${application?.title ?? ""} ${application?.guidance ?? ""}`.toLowerCase()}
               className="guidance-card">
-              <div className="card-top"><span className="eyebrow">{a.provenance === "distilled" ? "Distilled here" : "Borrowed principle"}</span><span className="status-chip">{HEURISTIC_STANDING_LABEL[st]}</span></div>
+              <div className="card-top"><span className="eyebrow">{a.provenance === "distilled" ? "Distilled here" : "Borrowed"} · {a.form === "prescriptive" ? "says what to do" : "says how things behave"}</span><span className="status-chip">{HEURISTIC_STANDING_LABEL[st]}</span></div>
               <Link href={`/heuristics/${a.id}`}><h2>{application?.title ?? a.label}</h2></Link>
               <p>{application?.guidance ?? a.statement}</p>
               <div className="card-bottom"><span>{application ? `${a.label} · ` : ""}{n} linked claim{n === 1 ? "" : "s"}</span><Link aria-label={`Read evidence for ${a.label}`} href={`/heuristics/${a.id}`}>↗</Link></div>

@@ -103,6 +103,7 @@ export interface EvidenceSearch { searched_on: string; note: string; nearest_mis
 export type HeuristicVerdict = "holds" | "breaks" | "narrows";
 export interface HeuristicEvidence { claim: string; verdict: HeuristicVerdict; note: string }
 export type HeuristicProvenance = "borrowed" | "distilled";
+export type HeuristicForm = "descriptive" | "prescriptive";
 export interface Heuristic {
   /** Stable id, e.g. ADG-0012. Never changes; cite this. The ADG prefix predates
    *  the heuristic rename and stays, same as CLM/TEC/SRC are opaque prefixes
@@ -112,6 +113,9 @@ export interface Heuristic {
   /** borrowed: imported from outside, its own origin and author. distilled:
    *  synthesized bottom-up from this catalog's own claims, no eponym. */
   provenance: HeuristicProvenance;
+  /** descriptive: how systems behave, advice inferred. prescriptive: what to
+   *  do, so evidence tests whether doing it pays. */
+  form: HeuristicForm;
   sources?: string[];
   evidence?: HeuristicEvidence[];
   evidence_search?: { searched_on: string; note: string; nearest_miss?: string[] };
@@ -472,7 +476,7 @@ export function heuristicStanding(a: Heuristic): HeuristicStanding {
   return "holds";
 }
 export function heuristicTags(a: Heuristic): string {
-  const tags: string[] = [heuristicStanding(a), a.provenance];
+  const tags: string[] = [heuristicStanding(a), a.provenance, a.form];
   if ((a.evidence ?? []).some((e) => e.verdict === "breaks")) tags.push("any-break");
   return tags.join(" ");
 }
