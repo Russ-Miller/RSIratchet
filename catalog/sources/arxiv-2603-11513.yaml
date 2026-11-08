@@ -1,0 +1,60 @@
+id: arxiv-2603-11513
+ref: SRC-1050
+kind: paper
+title: Can Small Language Models Use What They Retrieve? An Empirical Study of
+  Retrieval Utilization Across Model Scale
+authors:
+  - Sanchit Pandey
+year: 2026
+date: 2026-03-12
+arxiv_id: "2603.11513"
+url: https://arxiv.org/abs/2603.11513
+tags:
+  - ingested
+summary: Retrieval augmented generation RAG is widely deployed to improve
+  factual accuracy in language models yet it remains unclear whether smaller
+  models of size 7B parameters or less can effectively utilize retrieved
+  information. To investigate this question we evaluate five model sizes from
+  360M to 8B across three architecture families SmolLM2 Qwen2.5 and Llama 3.1
+  under four retrieval conditions including no retrieval BM25 dense retrieval
+  using E5 large v2 and oracle retrieval where the retrieved passage is
+  guaranteed to contain the answer. We introduce a parametric knowledge split
+  that separates
+notes: "Filed as a source on retrieval-utilization from the classifier's
+  judgement that the paper is about it (measures, high): It benchmarks whether
+  small models use oracle-correct retrieved passages, isolating utilization
+  failure without proposing a fix. No claim has been drafted from it yet."
+ingested_at: 2026-11-08
+brief: >-
+  Giving a sub-7B model a passage that is guaranteed to contain the answer
+  does not get the answer out of it, and adding any context destroys knowledge
+  the model already had. Five instruction-tuned models (SmolLM2-360M,
+  Qwen2.5-1.5B/3B/7B, Llama-3.1-8B) were run on 1,000 NQ + HotpotQA questions
+  under no retrieval, BM25, dense (E5-large-v2), and an oracle condition drawn
+  from the same 500K-passage Wikipedia corpus, with each (model, question)
+  pair labelled Known or Unknown by its no-retrieval result.
+
+
+  On Unknown questions with oracle passages, EM reaches only 14.6% at 7B,
+  12.8% at 3B, 10.0% at 1.5B, 0.0% at 360M. On Known questions, retrieval
+  overturns 42–64% of previously correct answers; for models below 7B the
+  oracle-vs-noisy difference is not significant (1.5B p = 0.26, 3B p = 0.07).
+  Net EM change from dense retrieval is negative at every scale (−1.3 to
+  −2.9pp). Error analysis of 2,588 oracle failures finds irrelevant generation
+  dominant (61–100%).
+
+
+  The oracle design isolates utilization from retrieval quality cleanly, with
+  bootstrap CIs, McNemar tests with Bonferroni correction, a 3-prompt
+  ablation, and an FP16 Llama-3.1-8B cross-architecture check. Weak spots: the
+  360M Known set is n = 11, the prompt ablation covers 1 model on 200
+  questions, failure categories are heuristic (89% agreement on 96 samples),
+  and local models are all 4-bit.
+
+
+  Scope is English Wikipedia extractive QA only; generative and
+  background-knowledge tasks untested. If you are shipping RAG on a small
+  model, measure the net trade-off before assuming retrieval helps.
+brief_generated_at: 2026-11-08
+brief_model: claude-opus-5
+brief_source: full-text

@@ -1,0 +1,73 @@
+id: arxiv-2603-14323
+ref: SRC-1063
+kind: paper
+title: How Do Medical MLLMs Fail? A Study on Visual Grounding in Medical Images
+authors:
+  - Guimeng Liu
+  - Tianze Yu
+  - Somayeh Ebrahimkhani
+  - Lin Zhi Zheng Shawn
+  - Kok Pin Ng
+  - Ngai Man Cheung
+year: 2026
+date: 2026-03-15
+arxiv_id: "2603.14323"
+url: https://arxiv.org/abs/2603.14323
+tags:
+  - ingested
+summary: Generalist multimodal large language models (MLLMs) have achieved
+  impressive performance across a wide range of vision-language tasks.
+  However, their performance on medical tasks, particularly in zero-shot
+  settings where generalization is critical, remains suboptimal. A key
+  research gap is the limited understanding of why medical MLLMs underperform
+  in medical image interpretation. In this work, we present a pioneering
+  systematic investigation into the visual grounding capabilities of
+  state-of-the-art medical MLLMs. To disentangle visual grounding from
+  semantic grounding, we design VGMED, a nov
+notes: "Filed as a source on visual-grounding from the classifier's judgement
+  that the paper is about it (improves, high): The paper measures that medical
+  MLLMs fail to ground answers in clinically relevant regions and proposes an
+  inference-time attention-refinement method (VGRefine) that improves
+  grounding and VQA performance. No claim has been drafted from it yet."
+ingested_at: 2026-11-08
+brief: >-
+  Medical multimodal LLMs attend to the wrong parts of a medical image even
+  when the question is designed so the answer requires looking at a single
+  annotated region, and that misalignment is domain-specific rather than a
+  general model weakness.
+
+
+  The authors built VGMED with 3 clinicians: 13,962 image–bounding-box pairs
+  drawn from over 40 public medical segmentation datasets, expanded with
+  GPT-4-generated localization and attribute questions into roughly 28K
+  image–bbox–question triplets, plus a matched MS COCO set built through the
+  same pipeline. Grounding is scored from LLM attention maps using attention
+  ratio plus newly proposed KL and JS divergences against the box, across 8
+  medical MLLMs including LLaVA-Med, LLaVA-Tri, HuatuoGPT-V-7B/34B, VILA-M3,
+  and MedRegA.
+
+
+  All 8 show lower AR and higher divergence on medical images than on natural
+  ones, across most layers and both question types; general-domain LLaVA-v1.5
+  also fails on medical images while medical models ground fine on COCO, which
+  separates domain from model capacity.
+
+
+  VGRefine, an inference-time attention triage plus knockout at layer 16,
+  lifts HuatuoGPT-V by +5.6% on VQA-RAD and +11.3% on PathVQA, average 65.3%
+  to 68.4%; MMMU Health & Medicine 45.8% to 47.2%; OmniMedVQA 71.3% to 74.4%
+  with CT +7.5%, MRI +6.4%, X-Ray +8.1%. Ablations over K and p are reported.
+
+
+  Caveats: the method is applied to 1 model only, some baseline numbers are
+  copied from prior papers rather than re-run, attention is taken as a proxy
+  for grounding without causal perturbation checks, and the human study is 5
+  clinicians on 20 cases (76% preference).
+
+
+  If you assumed medical MLLM errors were mostly missing clinical knowledge,
+  this argues a sizeable share is localization that can be fixed without
+  retraining.
+brief_generated_at: 2026-11-08
+brief_model: claude-opus-5
+brief_source: full-text

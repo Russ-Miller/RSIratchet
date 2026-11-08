@@ -1,0 +1,67 @@
+id: arxiv-2603-12193
+ref: SRC-1053
+kind: paper
+title: "SaPaVe: Towards Active Perception and Manipulation in
+  Vision-Language-Action Models for Robotics"
+authors:
+  - Mengzhen Liu
+  - Enshen Zhou
+  - Cheng Chi
+  - Yi Han
+  - Shanyu Rong
+  - Liming Chen
+year: 2026
+date: 2026-03-12
+arxiv_id: "2603.12193"
+url: https://arxiv.org/abs/2603.12193
+tags:
+  - ingested
+summary: "Active perception and manipulation are crucial for robots to
+  interact with complex scenes. Existing methods struggle to unify
+  semantic-driven active perception with robust, viewpoint-invariant
+  execution. We propose SaPaVe, an end-to-end framework that jointly learns
+  these capabilities in a data-efficient manner. Our approach decouples camera
+  and manipulation actions rather than placing them in a shared action space,
+  and follows a bottom-up training strategy: we first train semantic camera
+  control on a large-scale dataset, then jointly optimize both action types
+  using hybrid data. To support th"
+notes: "Filed as a source on embodied-control from the classifier's judgement
+  that the paper is about it (improves, high): The paper proposes a VLA
+  framework decoupling camera and manipulation actions with staged training,
+  reporting up to 31.25% higher real-world success rates. No claim has been
+  drafted from it yet."
+ingested_at: 2026-11-08
+brief: >-
+  Separating camera-movement actions from arm actions, and pretraining the
+  camera head alone, beats folding both into one action space when a robot
+  must move its viewpoint to see the target. SaPaVe adds a LoRA camera adapter
+  plus a decoupled action head to a 2B VLM, trains stage 1 on
+  ActiveViewPose-200K (200k image-language-camera movement pairs built from 4k
+  Objaverse assets, 500 scenes, GPT-4o-written instructions), then fine-tunes
+  on mixed real and simulated manipulation data with a 3D spatial encoder
+  injected into the action decoder. Evaluation covers ActiveManip-Bench (Isaac
+  Sim, Unitree G1, 12 tasks, 100 objects, 20 scenes) and real-robot occluded
+  and out-of-view pick-and-place and articulated manipulation.
+
+
+  On viewpoint prediction it averages 84.3% vs 72.7% for Gemini-2.5-Pro and
+  62.3% for Qwen2.5-VL-72B. In simulation it reaches 74.83% average vs 36.17%
+  for a fixed camera and 52.33% for fixed plus wrist cameras. In the real
+  world it hits 85.00% vs 53.75% for GR00T-N1 and 45.00% for π0, both
+  fine-tuned with a unified action space.
+
+
+  Ablations isolate each piece on 4 real tasks: dropping stage 1 falls to
+  53.75%, dropping the decoupled head to 71.25%, dropping spatial injection to
+  68.75%. Camera configurations are compared under 1 shared architecture,
+  which is the cleanest comparison here; the VLA baselines differ in
+  architecture and pretraining, so the 31.25-40 point gaps mix method and
+  model. 1 embodiment, 1 head design, success-rate only, no human or
+  teleoperation ceiling reported.
+
+
+  If you build VLAs, treat camera control as a separate head with its own
+  pretraining rather than extra action dimensions.
+brief_generated_at: 2026-11-08
+brief_model: claude-opus-5
+brief_source: full-text

@@ -49,6 +49,18 @@ candidates:
       this multi-hop data is not synthesized for any specific benchmark, it improves 20 of 24
       benchmarks on both models, indicating broad and generalizable gains. Consistently, replacing
       full chained queries with half-multi-"
+    verdicts:
+      - capability: multi-step-reasoning
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper synthesizes logically dependent multi-hop chains for RLVR training and reports
+          improvements on 20 of 24 benchmarks, with ablations showing full chains beat half-chained
+          queries.
+        scope_condition: Qwen3.5 MoE VLMs (35B-A3B, 397B-A17B) trained with RLVR on synthesized multi-hop,
+          instance-grounded vision-language queries, evaluated on 24 multimodal benchmarks
+        classified_at: 2026-11-07
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7139939368
     score: 24
     signals:
@@ -97,6 +109,29 @@ candidates:
       these limitations, particularly for long-horizon video understanding, Insight-V++ introduces
       two novel algorithms, ST-GRPO and J-GRPO, which enhance spatial-temporal reasoning and improve
       evaluative robustness. Crucially, by leveraging reliable feedback fr
+    verdicts:
+      - capability: multi-model-coordination
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper designs a dual-agent reasoning/summary decomposition because directly
+          supervising a single MLLM on long-chain data was sub-optimal, reporting gains from the
+          decomposed architecture.
+        scope_condition: Multimodal LLMs on image and video long-chain visual reasoning, with a separately
+          trained reasoning agent and summary agent plus RL (ST-GRPO/J-GRPO)
+        classified_at: 2026-11-07
+        model: claude-opus-5
+      - capability: video-temporal-reasoning
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes a data pipeline, dual-agent architecture, and ST-GRPO/J-GRPO
+          explicitly aimed at enhancing spatial-temporal reasoning for long-horizon video
+          understanding, reporting improvements.
+        scope_condition: Multimodal LLMs trained with multi-agent long-chain reasoning data plus
+          ST-GRPO/J-GRPO for long-horizon video understanding
+        classified_at: 2026-11-07
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7140198454
     score: 22
     signals:
@@ -144,6 +179,29 @@ candidates:
       Visual Anchor Collapse, ACPO generally outperforms baselines on hallucination benchmarks
       (HallusionBench, MM-IFEval) and general leaderboards (MMBench, MMStar, OCRBenchV2) while
       driving concurrent improvements in general capabilities."
+    verdicts:
+      - capability: hallucination
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: The paper proposes an asymmetric preference-optimization objective that prevents
+          likelihood displacement and reportedly reduces hallucination on multimodal benchmarks
+          relative to standard DPO.
+        scope_condition: LVLM alignment with InternVL models; DPO-style preference optimization on
+          multimodal hallucination benchmarks (HallusionBench, MM-IFEval)
+        classified_at: 2026-11-07
+        model: claude-opus-5
+      - capability: visual-grounding
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes an asymmetric DPO variant that prevents chosen-likelihood collapse and
+          reports lower hallucination on multimodal benchmarks, i.e., better grounding in visual
+          evidence.
+        scope_condition: InternVL LVLMs aligned with preference optimization; hallucination benchmarks
+          (HallusionBench, MM-IFEval) and general multimodal leaderboards
+        classified_at: 2026-11-07
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7140080908
     score: 21
     signals:
@@ -190,6 +248,25 @@ candidates:
       improves reasoning quality, a factor that is more effective than generic chain-of-thought
       prompting or supplying the ground-truth approximation ratio as posterior knowledge. We further
       provide fine-grained error analysis to characte
+    verdicts:
+      - capability: domain-knowledge
+        about_capability: true
+        direction: measures
+        confidence: medium
+        rationale: It introduces a benchmark showing frontier models fail research-level domain proofs
+          without external domain knowledge, characterizing rather than fixing the gap.
+        scope_condition: 34 research-grade approximation-ratio proof tasks in robotic path planning,
+          proprietary and open-source LLMs
+        classified_at: 2026-11-07
+        model: claude-opus-5
+      - capability: planning
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The benchmark evaluates mathematical proof of approximation ratios for path-planning
+          algorithms, not the validity or optimality of plans the model itself produces.
+        classified_at: 2026-11-07
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7140179330
     score: 21
     signals:
@@ -233,6 +310,16 @@ candidates:
       exhibits superior performance across diverse domains including multi-cloud multicast, LLM
       inference request routing, and optimizing KV cache reuse in databases with natural language
       queries."
+    verdicts:
+      - capability: long-context-degradation
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper is about an agentic architecture for system heuristic design, invoking context
+          degradation only as motivation without measuring or isolating long-context information
+          loss.
+        classified_at: 2026-11-07
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7140160147
     score: 21
     signals:
@@ -281,6 +368,16 @@ candidates:
       on GVQA. On counting, the most challenging factual reasoning task, it improves over the
       strongest baseline by 46.01 percentage points, demonstrating substantially reduced
       hallucinations and the benefit of coupling reliable scene fact"
+    verdicts:
+      - capability: hallucination
+        about_capability: false
+        direction: not_applicable
+        confidence: medium
+        rationale: The paper is an autonomous-driving QA system grounded in a scene knowledge graph,
+          evaluated by QA accuracy/SPICE, with hallucination mentioned only as a loose motivation
+          rather than measured as unsupported generation.
+        classified_at: 2026-11-07
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7154746893
     score: 21
     signals:
@@ -323,6 +420,17 @@ candidates:
       experiments reveal that state-of-the-art LLMs and memory agents still struggle with sustained
       dynamic tracking, temporal event association, and complex reasoning derived from long-term
       accumulated evidence in interactive environments.
+    verdicts:
+      - capability: long-term-memory
+        about_capability: true
+        direction: measures
+        confidence: high
+        rationale: It introduces a benchmark and metrics characterizing long-term memory performance without
+          proposing a fix.
+        scope_condition: Gamified interactive multi-session scenarios; SOTA LLMs and memory agents evaluated
+          on three-tier memory tasks
+        classified_at: 2026-11-07
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7138884840
     score: 21
     signals:
@@ -366,6 +474,19 @@ candidates:
       confirming high efficacy in domains requiring granular temporal and numerical precision.
       Groundedness scores remained robustly stable between 78.8% and 86.4% across factual-answer
       rows. While the architecture provides a robust fail-safe for misinforma'
+    verdicts:
+      - capability: hallucination
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: The paper proposes a retrieval-and-verification pipeline that reduces ungrounded
+          generation, reporting win rates up to 83.7% over zero-shot baselines.
+        supports_claim_id: grounding-generation-retrieved-documents-improves-factual-accuracy-knowledge-intensive
+        scope_condition: Factual QA across five benchmarks (TimeQA v2, FreshQA v2, HaluEval, MMLU Global
+          Facts, TruthfulQA) with a LangGraph tiered retrieval/verification pipeline vs zero-shot
+          baselines
+        classified_at: 2026-11-07
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7140214364
     score: 21
     signals:
@@ -409,6 +530,17 @@ candidates:
       (+8.24\% on average), and even improves performance on out-of-domain benchmarks (+8.06\% on
       average). We hope that our insights provide practical guidance for effective post-training
       data to enhance long-context reasoning in LLMs.
+    verdicts:
+      - capability: long-context-degradation
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: The paper proposes a pipeline synthesizing structured table data for RL post-training
+          that raises long-context reasoning accuracy by ~8% on average.
+        scope_condition: LLMs RL post-trained on synthesized structured table data, evaluated on multiple
+          long-context benchmarks and out-of-domain benchmarks
+        classified_at: 2026-11-07
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7139909821
     score: 20
     signals:
@@ -453,6 +585,20 @@ candidates:
       metric-semantic goal grounding, addressing a gap in existing language grounding evaluations.
       We also present a real-world robot demonstration showing that MAPG transfers beyond simulation
       when a structured scene representation is available.
+    verdicts:
+      - capability: multi-model-coordination
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: MAPG decomposes queries into subcomponents grounded by separate VLM queries and
+          probabilistically composed, reporting consistent improvements over strong single-VLM
+          grounding baselines.
+        supports_claim_id: splitting-task-across-several-agents-helps-long-horizon-tasks-whose
+        scope_condition: Metric-semantic language grounding for vision-language navigation in 3D scenes with
+          VLM backbones (HM-EQA, MAPG-Bench, plus a real-robot demo with structured scene
+          representation)
+        classified_at: 2026-11-07
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7139962469
     score: 20
     signals:
@@ -493,6 +639,15 @@ candidates:
       global and domestic models. In addition, it sets state-of-the-art results on Korean-specific
       benchmarks, showcasing deep linguistic and cultural understanding. Finally, Responsible AI
       evaluations validate safety against attacks, ensuring a secure prof
+    verdicts:
+      - capability: long-context-degradation
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: This is a general model release report mentioning long-context support in passing, not a
+          study of long-context degradation.
+        classified_at: 2026-11-07
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7138903331
     score: 20
     signals:
@@ -535,6 +690,15 @@ candidates:
       observed in text-only contexts. These findings expose critical fragilities where
       language-tuned safety filters fail to constrain visual processing, demonstrating the urgent
       need for multimodal safety alignment.
+    verdicts:
+      - capability: persuasion
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper studies VLM moral reasoning under visual distraction, not changes in human
+          beliefs or decisions caused by model output.
+        classified_at: 2026-11-07
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7138909315
     score: 19
     signals:
@@ -580,6 +744,26 @@ candidates:
       7.67% over the best prior system. Ablation results reveal the events calendar accounts for a
       58.9% gain on the baseline while all other components yield improvements between 15.5% and
       22.3%. Notably, Chronos Low alone s
+    verdicts:
+      - capability: multi-step-reasoning
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper is about temporal memory architecture for long-term conversational retrieval,
+          mentioning multi-hop queries only as one task category rather than isolating
+          dependent-step count.
+        classified_at: 2026-11-07
+        model: claude-opus-5
+      - capability: long-term-memory
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: Chronos proposes a temporal event-calendar memory and retrieval framework that raises
+          long-term conversational memory accuracy to state of the art over prior systems.
+        scope_condition: Multi-session dialogue QA (LongMemEvalS, 500 questions), 8 open and closed LLMs,
+          temporal/multi-hop queries
+        classified_at: 2026-11-07
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7139146751
     score: 19
     signals:

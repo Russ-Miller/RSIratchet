@@ -1,0 +1,67 @@
+id: arxiv-2603-11563
+ref: SRC-1051
+kind: paper
+title: "SVLL: Staged Vision-Language Learning for Physically Grounded Embodied
+  Task Planning"
+authors:
+  - Yuyuan Yang
+  - Junkun Hong
+  - Hongrong Wang
+  - Han Cai
+  - Xunpeng Ren
+  - Ge Wang
+year: 2026
+date: 2026-03-12
+arxiv_id: "2603.11563"
+url: https://arxiv.org/abs/2603.11563
+tags:
+  - ingested
+summary: "Embodied task planning demands vision-language models to generate
+  action sequences that are both visually grounded and causally coherent over
+  time. However, existing training paradigms face a critical trade-off: joint
+  end-to-end training often leads to premature temporal binding, while
+  standard reinforcement learning methods suffer from optimization
+  instability. To bridge this gap, we present Staged Vision-Language Learning
+  (SVLL), a unified three-stage framework for robust, physically-grounded
+  embodied planning. In the first two stages, SVLL decouples spatial grounding
+  from temporal reasoning"
+notes: "Filed as a source on planning from the classifier's judgement that the
+  paper is about it (improves, medium): The paper proposes a staged training
+  framework and a modified DPO objective that improve the validity and
+  physical groundedness of generated embodied action plans. No claim has been
+  drafted from it yet."
+ingested_at: 2026-11-08
+brief: >-
+  Training a vision-language planner on visual observations alone before ever
+  showing it action history reduces the model's tendency to repeat past
+  actions instead of reading the current scene. The claim is that joint SFT on
+  full trajectory context teaches textual shortcuts, and that standard DPO,
+  being purely relative, pushes probability mass off the expert path.
+
+
+  SVLL is a 3-stage recipe on Qwen2.5-VL-7B: history-blocked SFT, then
+  full-context SFT, then LoRA alignment with Bias-DPO, which adds a weighted
+  chosen margin, an auxiliary SFT term, and a threshold-triggered unlikelihood
+  penalty. Evaluation is on an AI2-THOR trajectory test set plus 9 real-world
+  tasks on a 6-DoF arm.
+
+
+  SVLL-Stage 3 reaches 78.35% success rate, 68.53% SPL, 89.64% valid action
+  rate, 7.22% loop rate, 26.34% constraint violation rate, against
+  Gemini-2.0-flash at 58.76% SR / 31.55% CVR, GPT-4o at 48.45% / 40.32%, and
+  RoboBrain2.0-32B at 27.84% / 52.61%. Real-world zero-shot: 55.56% SR and
+  4.35% CVR versus 22.22% and 10.94% for the 32B baseline.
+
+
+  The staging claim is isolated by a "Direct Stage 2" ablation skipping Stage
+  1 (68.04% SR, 10.31% LR). B-DPO is only compared against Stage 2 SFT, not
+  against standard DPO at matched budget, so the specific loss design is
+  argued rather than measured. 1 backbone, 1 simulator, 9 real tasks, 5 of 9
+  completed.
+
+
+  Treat the staging result as the transferable part; the Bias-DPO components
+  remain unseparated.
+brief_generated_at: 2026-11-08
+brief_model: claude-opus-5
+brief_source: full-text

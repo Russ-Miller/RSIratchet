@@ -1,0 +1,70 @@
+id: arxiv-2603-10195
+ref: SRC-1045
+kind: paper
+title: Adaptive Activation Cancellation for Hallucination Mitigation in Large
+  Language Models
+authors:
+  - Eric Yocam
+  - Varghese Mathew Vaidyan
+  - Gurcan Comert
+  - Paris Kalathas
+  - Yong Wang
+  - Judith Mwakalonge
+year: 2026
+date: 2026-03-10
+arxiv_id: "2603.10195"
+url: https://arxiv.org/abs/2603.10195
+tags:
+  - ingested
+summary: Large Language Models frequently generate fluent but factually
+  incorrect text. We propose Adaptive Activation Cancellation (AAC), a
+  real-time inference-time framework that treats hallucination-associated
+  neural activations as structured interference within the transformer
+  residual stream, drawing an explicit analogy to classical adaptive noise
+  cancellation from signal processing. The framework identifies Hallucination
+  Nodes (H-Nodes) via layer-wise linear probing and suppresses them using a
+  confidence-weighted forward hook during auto-regressive generation --
+  requiring no external knowledge, n
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, medium): The paper proposes an
+  inference-time activation-suppression hook that it reports raises factual
+  accuracy at all three model scales while leaving perplexity and MMLU
+  unchanged, cutting against the claim that per-step activation editing
+  degrades already-correct behavior. No claim has been drafted from it yet."
+ingested_at: 2026-11-08
+brief: >-
+  Suppressing hallucination-linked neurons after a forward pass changes probe
+  scores but not model outputs; only intervening during generation moves
+  downstream accuracy at all. Adaptive Activation Cancellation (AAC) trains
+  layer-wise logistic probes, picks the top K = 50 neurons by signed probe
+  weight at the best layer, and attenuates activation excess above an
+  80th-percentile grounded baseline via a confidence-weighted forward hook (α
+  = 0.9, θ = 0.45).
+
+
+  Tested on OPT-125M, Phi-3-mini, and LLaMA 3-8B over TruthfulQA (600
+  validation samples) and HaluEval, with 5 post-hoc cancellation variants
+  compared against the live hook.
+
+
+  All post-hoc variants reach selectivity > 1 (up to 5.58× on LLaMA 3-8B) yet
+  leave held-out accuracy identical at every scale; the hook gives +0.020 for
+  OPT-125M, +0.007 for Phi-3-mini and LLaMA 3-8B. Generation gains appear only
+  at 8B (MC1 +0.04, MC2 +0.003, Token-F1 +0.003); DoLA beats it on MC1 (+0.08
+  vs +0.04), while ITI is less selective (1.69× vs 5.94×). WikiText-103
+  perplexity and MMLU are unchanged at exactly 0.0%.
+
+
+  The adaptive weighting is isolated by a static c = 1.0 ablation, cutting
+  grounded drift 25.9–40.1%. Baselines run under matched conditions.
+  Generation eval uses only n = 100 with max_new_tokens=30, and OPT/Phi
+  baseline MC1 (0.24, 0.29) is near chance, so their deltas are
+  uninterpretable. Probes are in-domain; transfer to HaluEval weakens with
+  scale. Capability checks used 80 sentences and 100 MMLU questions.
+
+
+  Treat probe-space selectivity as a poor proxy for output-level effect when
+  evaluating activation interventions.
+brief_generated_at: 2026-11-08
+brief_model: claude-opus-5
+brief_source: full-text

@@ -1,0 +1,41 @@
+id: long-chain-of-thought-reasoning-models-1-5b-235b-distilled-rl-trained-terminating
+ref: CLM-0975
+capability: cutting-to-the-chase
+technique: exit-reasoning-local-entropy-spikes-above-global-baseline
+statement: >-
+  For long chain-of-thought reasoning models (1.5B-235B, distilled and
+  RL-trained), terminating reasoning when the average token entropy in a
+  recent sliding window rises sharply above the running average entropy of
+  the whole trace so far raises accuracy over vanilla CoT on math and
+  science benchmarks, while cutting fewer tokens than answer-probing or
+  fixed-budget early-exit methods.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Math and scientific reasoning benchmarks with verifiable answers; eight open-weight reasoning models; threshold and window size tuned (best at lambda=2.0, W=512); gains larger on d"
+sources:
+  - source: arxiv-2603-14251
+    stance: supports
+    note: >-
+      Validated by: Accuracy and generated token length on
+      GSM8K/AMC23/MATH500, AIME24-25/OlympiadBench, GPQA-Diamond against
+      vanilla CoT, NoThinking, ThinkLess, Dynasor-CoT and DEER; average
+      accuracy gain over vanilla CoT reported as 3.9% overall and 5.1% on
+      distilled models; ablations removing the global baseline, the window,
+      and the boundary trigger each lose accuracy.. Measured on eight models
+      across seven datasets with five baselines, reporting accuracy and
+      length. Gains are modest on strong RL-trained models (+1.8, +2.1
+      average) and larger on distilled ones (up to +7.9). [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-08
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Matching the method's
+  token reduction with a simple fixed-length truncation, or replacing the
+  entropy ratio with a random exit at the same trigger rate, yields the same
+  accuracy gain over vanilla CoT; or the gain disappears on models or
+  benchmarks outside the tuned threshold range.
+submitted_by: agent:claude-opus-5@Russ-Miller

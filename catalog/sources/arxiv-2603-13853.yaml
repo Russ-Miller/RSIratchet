@@ -1,0 +1,65 @@
+id: arxiv-2603-13853
+ref: SRC-1060
+kind: paper
+title: "APEX-Searcher: Refining Credit Assignment with Subgoaling for Agentic
+  Retrieval-Augmented Generation"
+authors:
+  - Kun Chen
+  - Qingchao Kong
+  - Zhao Feifei
+  - Wenji Mao
+year: 2026
+date: 2026-03-14
+arxiv_id: "2603.13853"
+url: https://arxiv.org/abs/2603.13853
+tags:
+  - ingested
+summary: Retrieval-augmented generation (RAG) connects large language models
+  (LLMs) to external knowledge, but single-round retrieval is often
+  insufficient for complex multi-hop questions. To enhance search capabilities
+  for complex tasks, most existing works integrate multi-round iterative
+  retrieval with reasoning processes via end-to-end training. While these
+  approaches improve problem-solving performance, they still face challenges
+  in task reasoning and model training, especially ambiguous retrieval
+  execution paths and sparse rewards in end-to-end reinforcement learning
+  (RL), which can lead to inaccu
+notes: "Filed as a source on planning from the classifier's judgement that the
+  paper is about it (improves, medium): The paper proposes decoupled credit
+  assignment (RL on plan-level reward, SFT for execution) and reports
+  consistent gains in task planning as well as multi-hop RAG. No claim has
+  been drafted from it yet."
+ingested_at: 2026-11-08
+brief: >-
+  Splitting an agentic RAG system into a planner trained with RL and an
+  executor trained with SFT beats training both end-to-end on a single
+  final-answer reward. The authors argue end-to-end training creates
+  "hierarchical credit entanglement": one sparse reward cannot separate plan
+  errors from retrieval errors.
+
+
+  APEX-Searcher trains the planner with GRPO against a Set-Equivalence Plan
+  Reward, an F1 over Hungarian-matched sub-question embeddings (threshold 0.8)
+  compared to gold decompositions, using 10,473 MuSiQue examples. The executor
+  is SFT'd on 14,604 self-instruct multi-turn retrieval trajectories.
+  Backbones are Qwen2.5-3B-Instruct and Qwen2.5-7B-Instruct, evaluated by EM
+  on HotpotQA, 2WikiMultiHopQA, MuSiQue and Bamboogle.
+
+
+  Average EM gains over Standard RAG are 0.176 (7B) and 0.183 (3B); relative
+  gains over the strongest baseline are +9.0% on 7B and +13.2% on 3B. The
+  biggest jump is 2Wiki (0.540 vs 0.500 for DecEx-RAG). On MuSiQue,
+  StepSearch-instruct still wins (0.226 vs 0.164 on 7B).
+
+
+  A 6-cell ablation isolates each component. Planning without training hurts
+  the 3B model (13.42 to 12.63); adding RL lifts it to 18.10; execution SFT
+  alone gives 23.52; all components 33.45. Compute budget across arms is not
+  matched.
+
+
+  Only 1 model family, 2 sizes, English Wikipedia-style corpora. If you build
+  multi-hop retrieval agents, this is a reason to separate planner and
+  executor training signals rather than scale one reward.
+brief_generated_at: 2026-11-08
+brief_model: claude-opus-5
+brief_source: full-text

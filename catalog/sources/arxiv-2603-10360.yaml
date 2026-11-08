@@ -1,0 +1,68 @@
+id: arxiv-2603-10360
+ref: SRC-1046
+kind: paper
+title: "One Token, Two Fates: A Unified Framework via Vision Token
+  Manipulation Against MLLMs Hallucination"
+authors:
+  - Zhan Fa
+  - Yue Duan
+  - Jian Jun Zhang
+  - Lei Qi
+  - Yinghuan Shi
+year: 2026
+date: 2026-03-11
+arxiv_id: "2603.10360"
+url: https://arxiv.org/abs/2603.10360
+tags:
+  - ingested
+summary: "Current training-free methods tackle MLLM hallucination with
+  separate strategies: either enhancing visual signals or suppressing text
+  inertia. However, these separate methods are insufficient due to critical
+  trade-offs: simply enhancing vision often fails against strong language
+  prior, while suppressing language can introduce extra image-irrelevant
+  noise. Moreover, we find their naive combination is also ineffective,
+  necessitating a unified framework. We propose such a framework by focusing
+  on the core asset: the vision token. Our design leverages two key insights:
+  (1) augmented images offer c"
+notes: "Filed as a source on visual-grounding from the classifier's judgement
+  that the paper is about it (improves, high): The paper proposes a unified
+  vision-token manipulation framework that reduces object hallucination and
+  improves POPE accuracy ~2% with minimal latency. No claim has been drafted
+  from it yet."
+ingested_at: 2026-11-08
+brief: >-
+  Combining an attention-boosting hallucination fix with a
+  contrastive-decoding one does not help, and can hurt; the two intervene at
+  different levels and send conflicting signals. Moving both interventions
+  into latent space, driven by the same vision tokens, does help.
+
+
+  The framework has 2 modules: Synergistic Visual Calibration injects
+  attention over concatenated original plus augmented (flip, Gaussian blur
+  radius 5, salt-and-pepper 0.2) vision tokens at layer 16; Causal
+  Representation Calibration builds K = 3 negative samples by pruning to N_h =
+  5 vision tokens, averages the hidden-state difference into a "hallucination
+  direction", and subtracts it in shallow layers. Tested on LLaVA-1.5,
+  MiniGPT-4, Shikra, InstructBLIP over POPE, CHAIR, MMHal-Bench, MME.
+
+
+  POPE accuracy on LLaVA-1.5 GQA reaches 81.54 vs 78.76 vanilla; InstructBLIP
+  78.11 vs 77.31. CHAIR_Sen at 64 tokens drops to 18.1 on LLaVA-1.5 and 16.7
+  on Shikra. MME LLaVA-1.5 perception 1456.28 vs 1444.23. Latency overhead is
+  1.06x vs greedy, against 2.4x for VCD.
+
+
+  An ablation separates SVC (original vs synergistic tokens) from CRC
+  (masked-image vs pruned-token negatives); masked-image negatives give 84.77
+  accuracy on COCO, below vanilla's 84.79, which supports the information-gap
+  claim. t-SNE and attention maps are illustrative, not quantitative. Gains
+  are small and inconsistent: on MiniGPT-4 MSCOCO and InstructBLIP the method
+  is not best. All results are self-reported, on 4 older open models, mostly
+  object-level hallucination.
+
+
+  Useful if you are choosing a training-free hallucination patch and care
+  about latency.
+brief_generated_at: 2026-11-08
+brief_model: claude-opus-5
+brief_source: full-text

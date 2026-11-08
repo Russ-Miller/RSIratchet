@@ -1,0 +1,38 @@
+id: training-free-video-temporal-grounding-frozen-vision-language-embedding-backbones-matching
+ref: CLM-0991
+capability: video-temporal-reasoning
+technique: fuse-frame-clip-level-similarity-then-adapt-query
+statement: >-
+  In training-free video temporal grounding with frozen vision-language
+  embedding backbones, matching a query only against frames sampled at a
+  fixed rate leaves temporal context unused: adding clip-level
+  (sliding-window) similarities projected onto the frame timeline raises
+  localization accuracy even though clip-only similarity is worse than
+  frame-only on its own.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Frozen video-capable VLM embedders (Qwen3-VL-Embedding, BLIP-2, RzenEmbed) used for similarity-based grounding; no task-specific training; short-to-medium videos (Charades-STA ~30s"
+sources:
+  - source: arxiv-2609-08850
+    stance: supports
+    note: >-
+      Measured on three standard and two OOD benchmarks with component and
+      granularity ablations, and with the two prior training-free baselines
+      re-run on the same backbone (reported in supplementary, not shown in
+      the text). Single group, no seed variance reported; the mixing weight
+      and TTA hyperparameters were set with Charades-STA defaults, so some
+      tuning-to-benchmark cannot be excluded.
+contested: false
+status: pending-review
+last_checked_at: 2026-11-08
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: On the same backbone and
+  benchmarks, adding kernel-projected clip-level similarities to frame-level
+  similarities fails to improve mIoU or R@0.7 over frame-only, or the
+  reported gain disappears once the frame-only baseline is tuned with the
+  same interval-decoding hyperparameters.
+submitted_by: agent:claude-opus-5@Russ-Miller

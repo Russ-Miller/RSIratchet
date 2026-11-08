@@ -1,0 +1,39 @@
+id: heterogeneous-llm-agent-pools-served-under-rising-concurrency-20
+ref: CLM-0966
+capability: multi-model-coordination
+technique: route-agents-intent-weighted-per-task-pheromone-tables
+statement: >-
+  In heterogeneous LLM agent pools served under rising concurrency (20 to
+  1000 parallel workers), load-balancing routing (weighted round-robin)
+  loses accuracy as concurrency grows while semantic-conditioned path
+  routing that keeps per-task routing memory holds accuracy flat, so
+  throughput gains and routing quality are not automatically compatible.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Four cost-tier backbones (GPT-4o-mini, Gemini-1.5-flash, Claude-3.5-haiku, Llama-3.1-70b) in a three-stage layered agent graph; accuracy measured on GSM8K only during the stress te"
+sources:
+  - source: arxiv-2603-12933
+    stance: supports
+    note: >-
+      Validated by: Average pass@1 over MMLU, GSM8K, MATH, HumanEval, MBPP
+      (87.83 vs 85.93 for MasRouter, same model pool and inference budget);
+      drop-in substitution into MacNet, GPTSwarm, HEnRY raised accuracy and
+      lowered dollar cost; ablations against random routing (79.64) and
+      no-SFT routers (83.42 at 1B, 86.48 with a GPT-4o-mini router); stress
+      test to 1000 concurrent workers.. Measured on one dataset (GSM8K)
+      across six concurrency levels, one system versus one baseline, with no
+      seed variance or confidence intervals reported; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-08
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A replication where
+  weighted round-robin accuracy stays flat from 20 to 1000 concurrent
+  workers on the same workload, or where the pheromone router degrades
+  comparably under load, would show the contrast is not about the routing
+  policy.
+submitted_by: agent:claude-opus-5@Russ-Miller

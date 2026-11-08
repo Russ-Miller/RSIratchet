@@ -1,0 +1,69 @@
+id: arxiv-2603-14251
+ref: SRC-1062
+kind: paper
+title: Mitigating Overthinking in Large Reasoning Language Models via
+  Reasoning Path Deviation Monitoring
+authors:
+  - 关伟鑫
+  - Liang Li
+  - Jiapeng Liu
+  - Bing Li
+  - Peng Fu
+  - Chengyang Fang
+year: 2026
+date: 2026-03-15
+arxiv_id: "2603.14251"
+url: https://arxiv.org/abs/2603.14251
+tags:
+  - ingested
+summary: Large Reasoning Language Models (LRLMs) demonstrate impressive
+  capabilities on complex tasks by utilizing long Chain-of-Thought reasoning.
+  However, they are prone to overthinking, which generates redundant reasoning
+  steps that degrade both performance and efficiency. Recently, early-exit
+  strategies are proposed to mitigate overthinking by dynamically and
+  adaptively terminating redundant reasoning. However, current early-exit
+  methods either introduce extra training overhead by relying on proxy models
+  or limit inference throughput due to the frequent content switching between
+  reasoning and gener
+notes: "Filed as a source on cutting-to-the-chase from the classifier's
+  judgement that the paper is about it (improves, high): The paper proposes an
+  early-exit method that detects and terminates redundant reasoning, reducing
+  overthinking while improving performance over vanilla CoT and prior
+  early-exit methods. No claim has been drafted from it yet."
+ingested_at: 2026-11-08
+brief: >-
+  Overthinking in reasoning models shows up as a local spike in token entropy,
+  and cutting reasoning off when that spike appears raises accuracy rather
+  than trading accuracy for tokens. RPDI-EE computes a Reasoning Path
+  Deviation Index, the ratio of average entropy in a sliding window to average
+  entropy over the whole trajectory so far, and inserts a </think> marker when
+  it exceeds a threshold. No proxy model, no answer probing.
+
+
+  Tested on 8 models (DeepSeek-R1-Distill-Qwen 1.5B/7B/14B/32B, Distill-Llama
+  8B/70B, Qwen3-30B-A3B-Thinking, Qwen3-235B-Thinking) over GSM8K, MATH500,
+  AMC23, AIME2024/2025, OlympiadBench, GPQA-Diamond, against vanilla CoT,
+  NoThinking, ThinkLess, DEER, Dynasor-CoT.
+
+
+  Average accuracy gain over vanilla CoT is 3.9%, and 5.1% on distilled
+  models. Token savings are modest: on Qwen-32B, 75.5 average accuracy at 6280
+  tokens vs 67.6 at 6814 for CoT, while Dynasor-CoT drops to 55.0 at 1857.
+  Fixed-budget baselines lose 7.7–24.4 points.
+
+
+  Ablations isolate the parts: removing the global baseline costs 3.3% on Math
+  Hard, removing the boundary-trigger mechanism costs 2.8% average. A
+  preliminary study over 45.9 million tokens supports the entropy long-tail
+  claim, with the lowest-entropy 60% of tokens contributing near zero.
+
+
+  Full baseline comparison runs on only 4 of 8 models; gains are not uniform
+  (GPQA drops 7.5 on Qwen-7B). Domains outside math and science untested.
+
+
+  If you assumed early exit is an efficiency-for-accuracy trade, this suggests
+  a signal that mostly buys accuracy instead.
+brief_generated_at: 2026-11-08
+brief_model: claude-opus-5
+brief_source: full-text
