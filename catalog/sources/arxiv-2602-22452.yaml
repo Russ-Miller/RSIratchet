@@ -1,0 +1,64 @@
+id: arxiv-2602-22452
+ref: SRC-1051
+kind: paper
+title: "CWM: Contrastive World Models for Action Feasibility Learning in
+  Embodied Agent Pipelines"
+authors:
+  - Chayan Banerjee
+year: 2026
+date: 2026-02-25
+arxiv_id: "2602.22452"
+url: https://arxiv.org/abs/2602.22452
+tags:
+  - ingested
+summary: "A reliable action feasibility scorer is a critical bottleneck in
+  embodied agent pipelines: before any planning or reasoning occurs, the agent
+  must identify which candidate actions are physically executable in the
+  current state. Existing approaches use supervised fine-tuning (SFT) to train
+  action scorers, but SFT treats each candidate independently and does not
+  explicitly teach the model to discriminate between actions that are
+  physically correct and those that are subtly wrong. We propose the
+  Contrastive World Model (CWM), which fine-tunes a large language model (LLM)
+  as an action scorer using"
+notes: "Filed as a source on embodied-control from the classifier's judgement
+  that the paper is about it (improves, low): The paper proposes a contrastive
+  (InfoNCE with hard negatives) fine-tuning objective that improves an LLM's
+  ability to score physically executable actions over SFT, both intrinsically
+  and in live filtering during task execution. No claim has been drafted from
+  it yet."
+ingested_at: 2026-11-09
+brief: >-
+  Contrastive training beats binary supervised fine-tuning for
+  action-feasibility scoring, but only where the wrong actions are physically
+  close to the right one. Where negatives are lexically obvious, the two
+  objectives tie.
+
+
+  CWM fine-tunes Qwen-2.5-7B-Instruct with LoRA using an InfoNCE loss over N =
+  16 mined hard negatives, and is compared against an SFT baseline with
+  identical architecture and data, a zero-shot vanilla model, and random
+  scoring on ScienceWorld. Training used task variations 0–6 (≈ 8,000
+  state-action pairs), with variations 7–9 held out (≈ 2,000 pairs).
+
+
+  On 605 held-out hard-negative instances, CWM reached 96.03% P@1 combined vs
+  93.55% for SFT; on 74 minimal-edit cases (one-word physics-opposing
+  substitutions) 93.24% vs 86.49% (+6.76 pp), AUC-ROC 0.929 vs 0.906. On
+  rejection-only negatives both hit 97.78%. SFT produced larger raw score gaps
+  (17.35 vs 13.10 combined) yet ranked worse, which the author reads as
+  miscalibration across the negative pool. Under OOD stress (712 and 697
+  steps), GARR@1 was 15.3% for CWM vs 19.3% for SFT, with safety margin −2.387
+  vs −3.958.
+
+
+  Measured, with a matched-data SFT baseline and category-level breakdown
+  isolating where the gain comes from. Limits: 1 model, 1 environment, 1 seed
+  implied, no agent integration, small minimal-edit set (n=74), and SFT
+  actually wins GARR@1 OOD.
+
+
+  If you are building a feasibility pre-filter, choose the objective by how
+  physically adjacent your distractors are.
+brief_generated_at: 2026-11-09
+brief_model: claude-opus-5
+brief_source: full-text

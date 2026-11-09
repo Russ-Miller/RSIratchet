@@ -1,0 +1,71 @@
+id: arxiv-2603-01814
+ref: SRC-1057
+kind: paper
+title: Architecture-Aware Multi-Design Generation for Repository-Level Feature
+  Addition
+authors:
+  - Mingwei Liu
+  - Zhenxi Chen
+  - Zheng Pei
+  - Zihao Wang
+  - Yanlin Wang
+  - Zibin Zheng
+year: 2026
+date: 2026-03-02
+arxiv_id: "2603.01814"
+url: https://arxiv.org/abs/2603.01814
+tags:
+  - ingested
+summary: Implementing new features across an entire codebase presents a
+  formidable challenge for Large Language Models (LLMs). This proactive task
+  requires a deep understanding of the global system architecture to prevent
+  unintended disruptions to legacy functionalities. Conventional pipeline and
+  agentic frameworks often fall short in this area because they suffer from
+  architectural blindness and rely on greedy single-path code generation. To
+  overcome these limitations, we propose RAIM, a multi-design and
+  architecture-aware framework for repository-level feature addition. This
+  framework introduces a lo
+notes: "Filed as a source on code-generation from the classifier's judgement
+  that the paper is about it (improves, high): RAIM's code-graph localization
+  plus multi-design generation with impact-aware selection raises success rate
+  36% relative over the strongest baseline. No claim has been drafted from it
+  yet."
+ingested_at: 2026-11-09
+brief: >-
+  Generating several distinct implementation designs and then selecting among
+  them by change-impact analysis beats single-path patching on
+  repository-level feature addition, where models otherwise edit the wrong
+  architectural layer.
+
+
+  RAIM parses a repo into a code graph (package/file/class/function nodes with
+  contains, imports, extends, calls edges), does multi-round graph search for
+  localization, generates N=5 designs and patches, then scores each patch
+  using static subgraph impact, regression tests selected from dependent test
+  nodes, and LLM-generated new-feature tests. Evaluated on NoCode-bench
+  Verified (114 manually validated tasks) against Agentless and OpenHands
+  across 7 LLMs.
+
+
+  Best configuration reaches 39.47% success with Gemini-2.5-Pro, a 36.34%
+  relative gain over Agentless at 28.95% and 55.15% over OpenHands at 25.44%.
+  DeepSeek-v3.2 under RAIM hits 34.21%, above Claude-4-Sonnet baselines. On
+  the 53 multi-file tasks, Gemini-2.5-Pro goes from 3.77% to 18.87%. Ablations
+  on DeepSeek-v3.2: removing multi-design costs 38.47% of success rate,
+  removing patch evaluation 33.32%, removing the code graph 12.83%.
+
+
+  Effects were measured, with per-component ablations and a design-count sweep
+  (3/5/7/9; accuracy falls from 88.64% to 71.74%). Budget is not matched in a
+  controlled way, though the paper notes Agentless used 40 samples per
+  instance versus 5 designs; baseline numbers for OpenHands and Agentless are
+  taken from the NoCode-bench paper, not rerun. New-feature error rates stay
+  high (57.89%–81.58%), and DeepSeek-R1 shows more regressions than the
+  baseline. Only 1 benchmark, Python repos.
+
+
+  If you build patch pipelines, spend compute on diverse designs plus
+  impact-based selection rather than more samples of one plan.
+brief_generated_at: 2026-11-09
+brief_model: claude-opus-5
+brief_source: full-text

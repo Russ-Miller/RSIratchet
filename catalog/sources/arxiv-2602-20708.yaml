@@ -1,0 +1,68 @@
+id: arxiv-2602-20708
+ref: SRC-1045
+kind: paper
+title: "ICON: Indirect Prompt Injection Defense for Agents based on
+  Inference-Time Correction"
+authors:
+  - Che Wang
+  - Fuyao Zhang
+  - Jiaming Zhang
+  - Ziqi Zhang
+  - Yinghui Wang
+  - Longtao Huang
+year: 2026
+date: 2026-02-24
+arxiv_id: "2602.20708"
+url: https://arxiv.org/abs/2602.20708
+tags:
+  - ingested
+summary: "Large Language Model (LLM) agents are susceptible to Indirect Prompt
+  Injection (IPI) attacks, where malicious instructions in retrieved content
+  hijack the agent's execution. Existing defenses typically rely on strict
+  filtering or refusal mechanisms, which suffer from a critical limitation:
+  over-refusal, prematurely terminating valid agentic workflows. We propose
+  ICON, a probing-to-mitigation framework that neutralizes attacks while
+  preserving task continuity. Our key insight is that IPI attacks leave
+  distinct over-focusing signatures in the latent space. We introduce a Latent
+  Space Trace Probe"
+notes: "Filed as a source on prompt-injection from the classifier's judgement
+  that the paper is about it (improves, high): ICON detects injection via
+  latent over-focusing signatures and steers attention, reporting 0.4% ASR
+  with large task utility gains, i.e., a defense improving injection
+  resistance. No claim has been drafted from it yet."
+ingested_at: 2026-11-09
+brief: >-
+  Indirect prompt injections leave a measurable signature in attention:
+  successful attacks collapse focus onto a few injected tokens, and
+  suppressing those attention peaks at inference time blocks the attack while
+  letting the agent finish its task instead of refusing.
+
+
+  ICON computes a Focus Intensity Score (attention entropy per head), trains a
+  small CNN+MLP prober on selected layers, then masks the top-τ attention
+  weights in flagged heads before softmax. Tested in a ReAct loop on
+  Qwen-3-8B, LLaMA-3.1-8B and Mistral-8B against Ignore Instruction, Combined
+  Attacks and TrojanTools, plus 3 vision-language models on Meta's Visual
+  Prompt Injection benchmark.
+
+
+  Average ASR 0.4% on Qwen-3-8B versus 0.2% for the Qwen3Guard detector, but
+  utility under attack of 53.8% against under 49% for the next best defense.
+  Trained only on TrojanTools, detection transfers at over 97% on AgentDojo
+  and over 80% on InjecAgent, with utility recovery above 60%. Training takes
+  under 2 minutes on 255 samples with roughly 31k parameters, against over 10
+  hours and 1.19M samples for Qwen3Guard.
+
+
+  Baselines are matched on tasks, not on compute, and the adaptive attacks
+  used for training were synthesised by the authors' own LLM-as-Optimizer, so
+  attack strength is self-defined. All backbones are 8B-class open models with
+  white-box access; no adaptive adversary aware of the steering mechanism was
+  tested.
+
+
+  If you deploy agents and have model internals, attention steering is a
+  cheaper security-utility tradeoff than refusal-based guardrails.
+brief_generated_at: 2026-11-09
+brief_model: claude-opus-5
+brief_source: full-text

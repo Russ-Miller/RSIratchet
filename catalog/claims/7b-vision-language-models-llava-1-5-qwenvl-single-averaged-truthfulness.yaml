@@ -1,0 +1,39 @@
+id: 7b-vision-language-models-llava-1-5-qwenvl-single-averaged-truthfulness
+ref: CLM-0965
+capability: visual-grounding
+technique: retrieve-semantically-matched-truthfulness-steering-vector-per-query
+statement: >-
+  In 7B vision-language models (LLaVA-1.5, QwenVL), a single averaged
+  truthfulness steering vector is weaker than retrieving a cluster-specific
+  one by input semantic similarity, because the truthful-minus-hallucinated
+  activation difference separates into distinct regions by semantic context
+  — the fixed vector even scores below the untouched model on one MME
+  subtask.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Two 7B open LVLMs; steering vectors built from AMBER and SEED split into 4 semantic clusters; evaluated on MME, POPE, CHAIR; hyperparameters grid-searched."
+sources:
+  - source: arxiv-2602-21704
+    stance: supports
+    note: >-
+      Validated by: MME total score +94.66 over the LLaVA-1.5 baseline and
+      +10.89 over ICT; CHAIR_S 51.0 to 30.8 (vs VTI 35.8); POPE accuracy and
+      F1 above most baselines; ablation shows removing either vector loses
+      ground and a fixed merged vector underperforms dynamic retrieval on
+      every MME subtask.. Measured on two 7B backbones across MME, POPE
+      (MSCOCO, GQA), CHAIR, plus ScienceQA/ViQuAE generality checks.
+      Ablation isolates the fixed-vs-dynamic comparison on MME only.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-09
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Matching a fixed steering
+  vector against the dynamic one at equal tuning budget and finding no gap,
+  or showing the t-SNE cluster separation does not predict which vector
+  helps a given query.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,71 @@
+id: arxiv-2603-05868
+ref: SRC-1064
+kind: paper
+title: "AnyCamVLA: Zero-Shot Camera Adaptation for Viewpoint Robust
+  Vision-Language-Action Models"
+authors:
+  - Hyeongjun Heo
+  - Seungyeon Woo
+  - Sang Min Kim
+  - Junho Kim
+  - Junho Lee
+  - Yonghyeon Lee
+year: 2026
+date: 2026-03-06
+arxiv_id: "2603.05868"
+url: https://arxiv.org/abs/2603.05868
+tags:
+  - ingested
+summary: Despite remarkable progress in Vision-Language-Action models (VLAs)
+  for robot manipulation, these large pre-trained models require fine-tuning
+  to be deployed in specific environments. These fine-tuned models are highly
+  sensitive to camera viewpoint changes that frequently occur in unstructured
+  environments. In this paper, we propose a zero-shot camera adaptation
+  framework without additional demonstration data, policy fine-tuning, or
+  architectural modification. Our key idea is to virtually adjust test-time
+  camera observations to match the training camera configuration in real-time.
+  For that, we
+notes: "Filed as a source on embodied-control from the classifier's judgement
+  that the paper is about it (improves, high): It proposes a plug-and-play
+  novel-view-synthesis module that renders test observations into the training
+  viewpoint, raising manipulation success under viewpoint changes versus
+  augmentation or 3D-feature baselines. No claim has been drafted from it
+  yet."
+ingested_at: 2026-11-09
+brief: >-
+  Fixing a fine-tuned VLA's viewpoint brittleness can be done entirely at the
+  input, by synthesizing the training camera's view from the test camera at
+  each control step, with the policy frozen.
+
+
+  AnyCamVLA plugs a feed-forward novel view synthesis model (LVSM, 171M
+  parameters) in front of OpenVLA-OFT and pi 0.5 on LIBERO, perturbing either
+  the agent or wrist camera at 3 levels, plus a real Franka setup with 4 tasks
+  and 20 demos each.
+
+
+  On agent-camera perturbation across all LIBERO suites, pi 0.5 falls from
+  92.4% to 39.9% at large shifts; Ours-pi averages 94.5% versus 87.2% for
+  viewpoint-augmented fine-tuning and 86.1% for GeoAwareVLA. On wrist-camera
+  perturbation on LIBERO-Long, GeoAwareVLA collapses below 10% (5.2% average)
+  while Ours-pi reaches 88.6%, near the 92.4% original-view ceiling. Latency
+  is 36.55 ms for 2 views at 256x256 on an RTX 4090.
+
+
+  Measured, with an ablation isolating the synthesis choice: homography scores
+  31.7%, ground-truth-depth reprojection 81.1%, and pre-trained LVSM without
+  simulation fine-tuning only 33.2%, so the simulation result depends on a
+  domain-adaptation step on 491 rendered scenes.
+
+
+  Boundaries: the real-world comparison is 10 rollouts per task against 1 base
+  policy, handheld-camera results are qualitative only, calibrated camera
+  parameters are assumed, and synthesis fails with single source views or
+  heavy occlusion.
+
+
+  If you are paying for viewpoint-augmented VLA fine-tuning, an input-side
+  view adapter is the cheaper comparison to beat.
+brief_generated_at: 2026-11-09
+brief_model: claude-opus-5
+brief_source: full-text

@@ -1,0 +1,67 @@
+id: arxiv-2602-21497
+ref: SRC-1049
+kind: paper
+title: "See It, Say It, Sorted: An Iterative Training-Free Framework for
+  Visually-Grounded Multimodal Reasoning in LVLMs"
+authors:
+  - Yongchang Zhang
+  - Oliver Ma
+  - Tianyi Liu
+  - GuangQuan Zhou
+  - Yang Chen
+year: 2026
+date: 2026-02-25
+arxiv_id: "2602.21497"
+url: https://arxiv.org/abs/2602.21497
+tags:
+  - ingested
+summary: 'Recent large vision-language models (LVLMs) have demonstrated
+  impressive reasoning ability by generating long chain-of-thought (CoT)
+  responses. However, CoT reasoning in multimodal contexts is highly
+  vulnerable to visual hallucination propagation: once an intermediate
+  reasoning step becomes inconsistent with the visual evidence, subsequent
+  steps-even if logically valid-can still lead to incorrect final answers.
+  Existing solutions attempt to mitigate this issue by training models to
+  "think with images" via reinforcement learning (RL). While effective, these
+  methods are costly, model-specific, a'
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, medium): The paper targets visual
+  hallucination propagation in multimodal CoT and proposes a training-free
+  iterative visual-evidence grounding framework reported to improve grounded
+  reasoning. No claim has been drafted from it yet."
+ingested_at: 2026-11-09
+brief: >-
+  Steering a frozen vision-language model's decoding with an accumulating pool
+  of textual visual evidence recovers much of what RL-trained
+  "think-with-images" systems buy, without any training. ECRD keeps the base
+  next-token distribution, builds a competing evidence-induced distribution
+  over a knee-truncated candidate set, and mixes the two with weight set by
+  the base model's top probability; when the negotiated margin stays below
+  0.08, a small grounding model (GRIT-3B) inspects the image, commits a token,
+  and writes 1 sentence into the pool.
+
+
+  Tested on TreeBench, RH-Bench, V*Bench, MathVista, ChartQA, OCRBench and
+  HallusionBench across LLaVA-OneVision (7B, 72B), Qwen2.5-VL (7B, 32B, 72B)
+  and InternVL3 (8B, 38B, 78B).
+
+
+  Qwen2.5-VL-7B goes 37.0 to 47.9 overall on TreeBench, beating DeepEyes-7B
+  (37.5) and Pixel-Reasoner-7B (39.0) and trailing TreeVGR-7B (50.4). Larger
+  backbones gain +4-8 points. RH-AUC rises 0.51 to 0.58. Training-free
+  baselines on the same base model land at 36.3-40.5, including beam search,
+  self-consistency and diverse sampling.
+
+
+  Ablations separate the parts: GRIT-3B alone scores 30.1, so the lift is not
+  a stronger perceiver; the supervisor alone gives 40.7, a generic 3B decider
+  43.7, GRIT-3B 47.9. Latency is reported as a model, t0 + l0 x calls, with l0
+  around 1.12-1.46s.
+
+
+  Gains concentrate in OCR, physical state and comparison; perspective and
+  ordering barely move, and the decider is 1 specific grounding model on 1
+  GPU. Worth trying before paying for RL grounding.
+brief_generated_at: 2026-11-09
+brief_model: claude-opus-5
+brief_source: full-text

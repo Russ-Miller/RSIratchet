@@ -1,0 +1,68 @@
+id: arxiv-2603-05828
+ref: SRC-1063
+kind: paper
+title: "HART: Data-Driven Hallucination Attribution and Evidence-Based Tracing
+  for Large Language Models"
+authors:
+  - Shize Liang
+  - Hongzhi Wang
+year: 2026
+date: 2026-03-06
+arxiv_id: "2603.05828"
+url: https://arxiv.org/abs/2603.05828
+tags:
+  - ingested
+summary: Large language models (LLMs) have demonstrated remarkable performance
+  in text generation and knowledge-intensive question answering. Nevertheless,
+  they are prone to producing hallucinated content, which severely undermines
+  their reliability in high-stakes application domains. Existing hallucination
+  attribution approaches, based on either external knowledge retrieval or
+  internal model mechanisms, primarily focus on semantic similarity matching
+  or representation-level discrimination. As a result, they have difficulty
+  establishing structured correspondences at the span level between
+  hallucination
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, medium): HART proposes a framework and
+  dataset for localizing hallucinated spans, attributing mechanisms, and
+  retrieving evidence, reporting substantial gains over retrieval baselines.
+  No claim has been drafted from it yet."
+ingested_at: 2026-11-09
+brief: >-
+  Hallucinated spans can be mapped to contradicting external evidence far more
+  reliably by combining multi-query expansion with cross-encoder reranking
+  than by dense retrieval alone. HART frames hallucination tracing as 4
+  stages: span localization, type classification, error mechanism attribution,
+  and evidence retrieval.
+
+
+  The authors built a span-level dataset from Qwen2.5-7B-Instruct and
+  Mistral-Small-24B-Instruct outputs over LongFact++ prompts, annotated by
+  Claude Sonnet 4.5 and ChatGPT 5.1 with human refinement, covering 4
+  hallucination types and 5 error mechanisms, with an evidence corpus of
+  34,943 documents indexed in FAISS.
+
+
+  Against BM25, DPR, Sentence-BERT, and a cross-encoder, HART reached Recall@1
+  of 0.8024 on Qwen and 0.7522 on Mistral, versus 0.1074 and 0.0958 for BM25.
+  Joint attribution success at k=1 was 0.6265 vs 0.0032. BERT classifiers hit
+  79.13% accuracy on type and 83.32% on mechanism. Fabrication heuristic
+  accounted for 0.8426 and 0.8436 of mechanisms in the 2 models.
+
+
+  An ablation separates the contributions: cross-encoder reranking lifts R@1
+  from 0.4133 to 0.5172, multi-query to 0.6244, both to 0.7068. The gap to
+  baselines is inflated by the fact that HART's retriever is tuned on the same
+  dataset whose evidence sets were themselves selected by an LLM; baselines
+  are zero-shot.
+
+
+  Hit judgement uses a semantic-similarity threshold against LLM-chosen gold
+  evidence, so the ceiling reflects that annotator. 2 open models, 1 domain,
+  no multi-hop evidence.
+
+
+  Treat the ablation as the useful result and the baseline comparison as
+  weakly controlled.
+brief_generated_at: 2026-11-09
+brief_model: claude-opus-5
+brief_source: full-text

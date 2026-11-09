@@ -1,0 +1,48 @@
+id: 7b-78b-open-vision-language-models-generating-long-chain-of-thought-object-grounding-errors
+ref: CLM-0961
+capability: visual-grounding
+technique: gate-grounding-call-reweighted-next-token-margin
+statement: >-
+  In 7B-78B open vision-language models generating long chain-of-thought,
+  object-grounding errors can be reduced without training by intervening
+  only at decoding steps where the base and an evidence-induced distribution
+  disagree with a small margin: calling a small grounding model there and
+  appending its one-sentence observation to a reusable textual evidence pool
+  raises TreeBench accuracy by 4-11 points across backbones, and the gain is
+  not attributable to the small model's perception, since that 3B model
+  alone scores below every base model it is attached to.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Open-source general LVLM backbones (Qwen2.5-VL 7/32/72B, LLaVA-OneVision 7/72B, InternVL3 8/38/78B) with a frozen decoder, uncertainty threshold 0.08, evaluated on TreeBench, RH-Be"
+sources:
+  - source: arxiv-2602-21497
+    stance: supports
+    note: >-
+      Validated by: TreeBench overall accuracy against each unmodified
+      backbone (e.g. Qwen2.5-VL-7B 37.0 to 47.9), against training-free
+      baselines on the same backbone (Woodpecker 36.3, ViperGPT 38.3,
+      ControlMLLM 40.5, beam 38.8, self-consistency 39.0), against RL
+      'think-with-images' models (DeepEyes-7B 37.5, Pixel-Reasoner-7B 39.0,
+      TreeVGR-7B 50.4), plus RH-AUC 0.51 to 0.58 and five general
+      benchmarks; ablation isolates supervisor (40.7), generic 3B decider
+      (43.7) and grounding decider (47.9), with the 3B decider alone at
+      30.1.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-09
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Applying the same
+  evidence-reweighting and grounding calls at every decoding step (or at
+  random steps at matched call rate) yields equal or better accuracy and
+  hallucination scores than margin-gated triggering, or the gains disappear
+  once the small grounding model's own answers are given to the base model
+  directly. Drafted stance toward
+  7b-vision-language-models-llava-1-5-7b-qwen-vl-chat-inference-time-hidden-state-steering:
+  supports -- Both find that inference-time grounding intervention must be
+  gated on a per-step uncertainty or grounding signal rather than applied at
+  every decoding step.
+submitted_by: agent:claude-opus-5@Russ-Miller

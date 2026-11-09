@@ -1,0 +1,71 @@
+id: arxiv-2602-22727
+ref: SRC-1052
+kind: paper
+title: "HulluEdit: Single-Pass Evidence-Consistent Subspace Editing for
+  Mitigating Hallucinations in Large Vision-Language Models"
+authors:
+  - Yangguang Lin
+  - Quan Fang
+  - Yufei Li
+  - Jiachen Sun
+  - Junyu Gao
+  - Jitao Sang
+year: 2026
+date: 2026-02-26
+arxiv_id: "2602.22727"
+url: https://arxiv.org/abs/2602.22727
+tags:
+  - ingested
+summary: "Object hallucination in Large Vision-Language Models (LVLMs)
+  significantly hinders their reliable deployment. Existing methods struggle
+  to balance efficiency and accuracy: they often require expensive reference
+  models and multiple forward passes, or apply static edits that risk
+  suppressing genuine visual evidence. To address this, we introduce
+  HulluEdit, a single-pass, reference-free intervention framework. Our core
+  innovation is orthogonal subspace editing: we decompose the hidden states of
+  the model into orthogonal subspaces - visual evidence, conflicting priors,
+  and residual uncertainty - e"
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, high): The paper proposes an
+  inference-time orthogonal subspace editing method that reduces object
+  hallucination on POPE/CHAIR while preserving general capability, i.e., a
+  technique making models better at not fabricating. No claim has been drafted
+  from it yet."
+ingested_at: 2026-11-09
+brief: >-
+  Object hallucination in vision-language models can be cut at inference by
+  splitting hidden states into mutually orthogonal visual-evidence,
+  anti-prior, and residual subspaces and shrinking only the latter two, with
+  no reference model and no second forward pass.
+
+
+  HulluEdit estimates the visual subspace online by weighted SVD over cached
+  visual tokens from an anchor layer (layer 26 in LLaVA-1.5-7B), builds an
+  anti-prior subspace inside its orthogonal complement from a rolling text
+  cache, and edits the final layer in closed form with strengths gated on
+  visual and prior conflict ratios. Evaluated on POPE, CHAIR over 500 MSCOCO
+  images, and MME, across LLaVA-1.5-7B/13B, Qwen-VL-Chat-7B, MiniGPT-4,
+  mPLUG-Owl2.
+
+
+  On POPE adversarial, LLaVA-1.5-7B accuracy rises from 77.6 greedy to 82.5,
+  above VAF at 80.1. CHAIRi on LLaVA-1.5 drops from 7.08 to 4.18 and on
+  mPLUG-Owl2 from 8.62 to 3.35, beating Nullu at 5.30 and 5.77. MME shifts are
+  mixed: Existence +13.33, Position +22.23, Color +7.22, Count -13.33.
+
+
+  Measured, with baselines run under identical prompts and decoding, and an
+  8-variant ablation isolating layer choice, weighted vs uniform SVD,
+  orthogonal complement, adaptive strengths and gating; removing gating raises
+  CHAIRi to 7.70. Throughput is shown as a figure only, not numbers.
+
+
+  MiniGPT-4 CHAIRs is 23.60 versus Nullu 21.40, so the gain is not uniform;
+  generations capped at 64 tokens, and counting degrades.
+
+
+  If you need hallucination reduction without extra passes, this is a
+  plausible drop-in.
+brief_generated_at: 2026-11-09
+brief_model: claude-opus-5
+brief_source: full-text

@@ -1,0 +1,72 @@
+id: arxiv-2602-20799
+ref: SRC-1046
+kind: paper
+title: Unseen-Codebases-Domain Data Synthesis and Training Based on Code Graphs
+authors:
+  - Guangsheng Ou
+  - Qiming Zhang
+  - Sirong Chen
+  - Anji Li
+  - Dong Xu
+  - Tiancheng Luo
+year: 2026
+date: 2026-02-24
+arxiv_id: "2602.20799"
+url: https://arxiv.org/abs/2602.20799
+tags:
+  - ingested
+summary: In the context of newly release software frameworks, large language
+  models (LLMs) often exhibit poor performance and a high rate of
+  hallucination, as they are not exposed to such environments during training.
+  Although inference-time augmentation techniques such as retrieval-augmented
+  generation (RAG) can partially mitigate hallucinations, knowledge injection
+  through prompting alone is insufficient to enable models to fully understand
+  the intrinsic relationships among different components of a codebase, or to
+  reason about the correct compositions and apply. Although explicit knowledge
+  injection
+notes: "Filed as a source on knowledge-updating from the classifier's
+  judgement that the paper is about it (improves, medium): The paper proposes
+  a data synthesis and two-stage post-training framework that injects
+  knowledge of unseen codebases so models can reason about and compose their
+  components, i.e., improving absorption and flexible use of new knowledge
+  rather than relying on inference-time retrieval. No claim has been drafted
+  from it yet."
+ingested_at: 2026-11-09
+brief: >-
+  Training on data synthesized from a code graph beats retrieval-augmented
+  prompting when a model has to write code against a codebase it never saw
+  during pretraining. UCD-Training parses an unseen repository into a graph of
+  files, classes, functions and globals, uses file-level dependency paths for
+  continued pretraining, then fine-tunes on 3 synthesized data types with
+  reasoning traces: single-hop relation data, compositional API data from
+  internal test cases, and codebase utilization data converted from those
+  tests.
+
+
+  Evaluation uses UnseenCodeBench, 4 repositories created after 2025-03-01 (3
+  C++, 1 Python), all post-dating the knowledge cutoffs of the evaluated
+  models, built by 5 engineers over 100 person-hours. Trained models are
+  Qwen3-8B-Base, Qwen3-14B-Base, Qwen2.5-Coder-14B-Base and
+  Qwen2.5-Coder-32B-Base; RAG baselines include GPT-5.1, Claude-Sonnet-4.5,
+  Gemini-3.0-Pro, DeepSeek-V3.1-Terminus and Qwen3-Coder-480B.
+
+
+  Reported gains are 25.5% absolute over RAG with GPT-5.1, 7.2% to 26.1% Avg.
+  pass@1 over OSS-Instruct and COTTON, and 36.0% pass@1 in a multi-codebase
+  multi-language setting, still 4.7% to 23.6% above baselines.
+
+
+  Training-based baselines were matched on data scale per codebase (35k, 20k,
+  6k samples), and an ablation over data types and filters is promised but the
+  result tables are absent from the text provided here, so the per-component
+  attribution is unverified. Contamination control is argued from creation
+  dates plus low base-model scores, not proven.
+
+
+  Scope is 4 small repositories, 2 languages, 1 trained model family, 7B-32B.
+  If you maintain a private or newly released library, this argues
+  post-training on graph-derived synthetic usage data rather than more
+  retrieval.
+brief_generated_at: 2026-11-09
+brief_model: claude-opus-5
+brief_source: full-text

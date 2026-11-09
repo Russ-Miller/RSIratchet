@@ -1,0 +1,68 @@
+id: arxiv-2603-07023
+ref: SRC-1068
+kind: paper
+title: "Hit-RAG: Learning to Reason with Long Contexts via Preference Alignment"
+authors:
+  - Junming Liu
+  - Yuqi Li
+  - Shiping Wen
+  - Zhigang Zeng
+  - Tingwen Huang
+year: 2026
+date: 2026-03-07
+arxiv_id: "2603.07023"
+url: https://arxiv.org/abs/2603.07023
+tags:
+  - ingested
+summary: Despite the promise of Retrieval-Augmented Generation in grounding
+  Multimodal Large Language Models with external knowledge, the transition to
+  extensive contexts often leads to significant attention dilution and
+  reasoning hallucinations. The surge in information density causes critical
+  evidence to be submerged by voluminous noise, which complicates the
+  discernment of relevant fragments within a dense input. In this paper, we
+  propose \textbf{Hit-RAG}, a multi-stage preference alignment framework
+  designed to resolve these cognitive bottlenecks through a progressive
+  optimization pipeline. Our app
+notes: "Filed as a source on long-context-degradation from the classifier's
+  judgement that the paper is about it (improves, medium): The paper proposes
+  a multi-stage preference alignment pipeline that counters attention dilution
+  and distractor-induced failures in long contexts, reporting consistent
+  gains. No claim has been drafted from it yet."
+ingested_at: 2026-11-09
+brief: >-
+  Putting retrieved evidence in the prompt does not mean a model will use it;
+  training the generator to prefer context-grounded answers, rather than
+  improving retrieval, recovers most of the gap. Hit-RAG stacks 3 stages on
+  top of a frozen retriever: SFT on contexts saturated to the model's token
+  limit, DPO on pairs built from the model's own correct and incorrect
+  generations, and GRPO with a reward combining answer correctness and
+  agreement with a reranker's relevance scores.
+
+
+  Backbones are Qwen3-4B/8B/32B, Llama3.1-8B/70B, and Qwen2.5-VL, evaluated on
+  7 text QA sets (PopQA, HotpotQA, TQA, Pub, ARC, Bio, ASQA) plus ScienceQA,
+  DocVQA, OK-VQA, A-OKVQA, with Top-20 BGE-M3 retrieval and roughly 10k
+  training pairs.
+
+
+  Qwen3-32B+Hit-RAG reaches 70.7 on PopQA and 69.3 EM on HotpotQA against 65.4
+  and 42.7 for RankRAG-70B. Qwen2.5-VL-7B goes 85.12 to 92.97 on ScienceQA,
+  above the 88.40 human baseline.
+
+
+  The stage ablation is run on 2 backbones and shows RAG itself supplies most
+  of the lift (Qwen3-8B PopQA 20.6 to 52.1), with SFT, DPO and GRPO adding
+  58.4, 62.4, 63.1. Baselines are copied from prior papers, not rerun, so
+  compute and retrieval setups are not matched.
+
+
+  Gains shrink on stronger bases: Qwen3-VL-32B moves only 93.48 to 94.51. GRPO
+  stalls when none of 8 samples is correct, and group sizes of 16 or 32 do not
+  help.
+
+
+  Useful if you are deciding whether to tune the generator or the retriever;
+  treat the cross-paper comparisons as indicative only.
+brief_generated_at: 2026-11-09
+brief_model: claude-opus-5
+brief_source: full-text

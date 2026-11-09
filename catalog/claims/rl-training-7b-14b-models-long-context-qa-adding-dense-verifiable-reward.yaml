@@ -1,0 +1,38 @@
+id: rl-training-7b-14b-models-long-context-qa-adding-dense-verifiable-reward
+ref: CLM-1001
+capability: long-context-degradation
+technique: reward-evidence-chunks-named-just-answer
+statement: >-
+  When RL-training 7B-14B models for long-context QA, adding a dense
+  verifiable reward for naming the correct evidence chunks before answering
+  raises long-context benchmark accuracy well above outcome-only RLVR,
+  because an answer-only reward gives the evidence-selection step almost no
+  gradient until most of the required evidence is already selected.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "7B-14B LLaMA-3.1 and Qwen2.5-1M instruct models trained with GRPO on 46K synthetic long-context QA items (8K-64K tokens) annotated with ground-truth evidence chunks; needs groundin"
+sources:
+  - source: arxiv-2603-02146
+    stance: supports
+    note: >-
+      Validated by: Accuracy on RULER-QA, LongBench v2 and LongReason
+      against SFT and outcome-only GRPO on identical data: Qwen2.5-14B-1M
+      RULER-QA 73.17 to 88.90, LongBench v2 39.8 to 46.5; ablations show
+      answer-only reward stagnates contextual recall and context-only reward
+      degrades downstream accuracy over training.. Measured on three
+      backbones against SFT and naive GRPO baselines with identical
+      synthetic data, across three benchmarks at 32K-128K. Reward-component
+      ablation separates answer-only, context-only and combined. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-09
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A matched-data
+  comparison where outcome-only RLVR reaches the same long-context benchmark
+  accuracy as the context-reward variant, or where contextual recall under
+  outcome-only training keeps rising rather than plateauing.
+submitted_by: agent:claude-opus-5@Russ-Miller

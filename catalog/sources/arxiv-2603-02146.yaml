@@ -1,0 +1,64 @@
+id: arxiv-2603-02146
+ref: SRC-1059
+kind: paper
+title: "LongRLVR: Long-Context Reinforcement Learning Requires Verifiable
+  Context Rewards"
+authors:
+  - Guanzheng Chen
+  - Michael Shieh
+  - Lidong Bing
+year: 2026
+date: 2026-03-02
+arxiv_id: "2603.02146"
+url: https://arxiv.org/abs/2603.02146
+tags:
+  - ingested
+summary: "Reinforcement Learning with Verifiable Rewards (RLVR) has
+  significantly advanced the reasoning capabilities of Large Language Models
+  (LLMs) by optimizing them against factual outcomes. However, this paradigm
+  falters in long-context scenarios, as its reliance on internal parametric
+  knowledge is ill-suited for tasks requiring contextual grounding--the
+  ability to find and reason over externally provided information. We identify
+  a key reason for this failure: a reward based solely on the final answer is
+  too sparse to effectively guide the model for identifying relevant evidence.
+  We formally prove"
+notes: "Filed as a source on long-context-degradation from the classifier's
+  judgement that the paper is about it (improves, high): The paper proposes
+  adding a dense verifiable context reward to RLVR and reports consistent
+  gains on long-context benchmarks (e.g., RULER-QA 73.17 to 88.90). No claim
+  has been drafted from it yet."
+ingested_at: 2026-11-09
+brief: >-
+  Rewarding a model for naming which context chunks it used, not just for the
+  final answer, is what makes RL work on long-context QA. Outcome-only RLVR
+  plateaus because the gradient for selecting any single required evidence
+  chunk is scaled by the probability that the rest of the prerequisite
+  evidence was already selected, which is near zero early in training.
+
+
+  LongRLVR has the model emit chunk identifiers before answering, scores them
+  against annotated ground-truth chunks with an F-beta reward blended with the
+  answer reward, and trains with GRPO on 46K synthetic grounded QA pairs
+  (8K-64K tokens) built with Qwen3-235B-A22B as generator and judge. Models:
+  LLaMA-3.1-8B, Qwen2.5-7B-1M, Qwen2.5-14B-1M; benchmarks RULER-QA, LongBench
+  v2, LongReason.
+
+
+  For the 14B model, RULER-QA average goes 73.17 to 88.90 and LongBench v2
+  39.8 to 46.5 against naive RLVR; LongBench v2 gains are 32.4 to 38.6 (7B)
+  and 32.4 to 36.2 (8B).
+
+
+  SFT and naive RLVR baselines use the same data, and a reward ablation
+  separates answer-only, context-only, and combined: context-only lifts
+  LongBench v2 early then degrades. Data ablations show best-rated samples at
+  38.6 versus 36.6 median and 34.8 worst, and that filtering hard questions
+  drops to 35.8.
+
+
+  Everything depends on chunk-level evidence annotations, context lengths stop
+  at 128K, and the claim that gains come from grounding rests on 1 self-built
+  synthetic dataset. If you do long-context post-training, annotate evidence.
+brief_generated_at: 2026-11-09
+brief_model: claude-opus-5
+brief_source: full-text

@@ -1,0 +1,67 @@
+id: arxiv-2603-03205
+ref: SRC-1061
+kind: paper
+title: "Learning When to Act or Refuse: Guarding Agentic Reasoning Models for
+  Safe Multi-Step Tool Use"
+authors:
+  - Aradhye Agarwal
+  - Gurdit Siyan
+  - Yash Pandya
+  - Joykirat Singh
+  - Akshay Nambi
+  - Ahmed Awadallah
+year: 2026
+date: 2026-03-03
+arxiv_id: "2603.03205"
+url: https://arxiv.org/abs/2603.03205
+tags:
+  - ingested
+summary: "Agentic language models operate in a fundamentally different safety
+  regime than chat models: they must plan, call tools, and execute
+  long-horizon actions where a single misstep, such as accessing files or
+  entering credentials, can cause irreversible harm. Existing alignment
+  methods, largely optimized for static generation and task completion, break
+  down in these settings due to sequential decision-making, adversarial tool
+  feedback, and overconfident intermediate reasoning. We introduce MOSAIC, a
+  post-training framework that aligns agents for safe multi-step tool use by
+  making safety decisions"
+notes: "Filed as a source on tool-use from the classifier's judgement that the
+  paper is about it (improves, medium): The paper proposes a post-training
+  framework that reduces harmful agentic tool actions while preserving or
+  improving benign multi-step tool-use performance. No claim has been drafted
+  from it yet."
+ingested_at: 2026-11-09
+brief: >-
+  Making refusal an explicit action in the agent's action space, rather than
+  an implicit product of chain-of-thought, is what produces agentic safety;
+  scale alone does not. Without a refusal mechanism, GPT-4o and GPT-5 never
+  refuse harmful tool-use tasks at all.
+
+
+  MOSAIC structures inference as plan, check, then act or refuse, with a
+  <safety_thoughts> block the model learns when to invoke and a terminal
+  refusal_tool. Training uses GRPO with an LLM judge making pairwise
+  trajectory comparisons (n = 4 rollouts, aggregated into group-relative
+  rewards) on Agent-SafetyBench, then evaluates zero-shot on AgentHarm, Agent
+  Security Bench, BFCL v3, and PrivacyLens with Qwen2.5-7B-Instruct,
+  Qwen3-4B-Thinking, and Phi-4.
+
+
+  Gains are model-adaptive rather than uniformly conservative: Qwen2.5 harm
+  0.18 to 0.09 with refusal 0.74 to 0.87; Qwen3 benign completion 0.44 to 0.85
+  and over a 4x token reduction; Phi-4 benign over-refusal 0.43 to 0.19 but
+  DPI ASR worsens 0.19 to 0.28. BFCL multi-turn accuracy rises 21.0 to 28.5;
+  PrivacyLens leakage 0.32 to 0.26 on Qwen2.5.
+
+
+  Two ablations isolate the mechanism: a think-only variant with refusal
+  available drops refusal to 0.59, and pointwise scalar rewards drop refusal
+  to 0.79 and raise DPI ASR to 0.51. Both on Qwen2.5 only. Rewards and most
+  harm scores come from LLM judges, and frontier-model comparisons are
+  scaffolding-only, not trained.
+
+
+  Treat the scaffolding, not the post-training, as the main lever.
+brief_generated_at: 2026-11-09
+brief_model: claude-opus-5
+brief_source: full-text
