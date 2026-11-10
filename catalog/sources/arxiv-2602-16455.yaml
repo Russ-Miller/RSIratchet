@@ -1,0 +1,67 @@
+id: arxiv-2602-16455
+ref: SRC-1057
+kind: paper
+title: "Visual Self-Refine: A Pixel-Guided Paradigm for Accurate Chart Parsing"
+authors:
+  - Jinsong Li
+  - Xiaoyi Dong
+  - Yuhang Zang
+  - Yuhang Cao
+  - Jiaqi Wang
+  - Dahua Lin
+year: 2026
+date: 2026-02-18
+arxiv_id: "2602.16455"
+url: https://arxiv.org/abs/2602.16455
+tags:
+  - ingested
+summary: While Large Vision-Language Models (LVLMs) have demonstrated
+  remarkable capabilities for reasoning and self-correction at the textual
+  level, these strengths provide minimal benefits for complex tasks centered
+  on visual perception, such as Chart Parsing. Existing models often struggle
+  with visually dense charts, leading to errors like data omission,
+  misalignment, and hallucination. Inspired by the human strategy of using a
+  finger as a ``visual anchor'' to ensure accuracy when reading complex
+  charts, we propose a new paradigm named Visual Self-Refine (VSR). The core
+  idea of VSR is to enable a mo
+notes: "Filed as a source on self-repair from the classifier's judgement that
+  the paper is about it (improves, medium): The paper proposes a visual
+  self-refine loop where the model inspects visualizations of its own
+  localization outputs to detect and correct perception errors, reporting
+  improved parsing accuracy. No claim has been drafted from it yet."
+ingested_at: 2026-11-10
+brief: >-
+  Rendering a model's own pixel-level predictions back onto the image lets it
+  catch perception errors that text-only self-correction misses. ChartVSR
+  splits chart parsing into a Refine Stage, where the model emits [x, y]
+  coordinates for each data point, sees them drawn as markers on the chart,
+  and corrects omissions, shifts and hallucinations, and a Decode Stage that
+  reads values off the verified anchors.
+
+
+  The model is a finetuned Qwen2.5-VL-3B trained on roughly 800K synthetic
+  Matplotlib charts from a diversity-focused data engine, evaluated with SCRM
+  average precision on ChartQA-SE-Clean, PlotQA-SE, ChartX-SE and a new
+  hand-annotated 1,200-chart ChartP-Bench.
+
+
+  On ChartP-Bench the 3B model averages 38.41 against 34.07 for Gemini-2.5-Pro
+  and 2.09 for GPT-4o; prior chart models score 1.55-5.22. Ablating VSR drops
+  the average to 36.54, and removing pixel localization too gives 36.17, with
+  the gap concentrated on the Hard subset. Round 1 of refinement detects 92.3%
+  of errors and cuts error samples from 110 to 51; later rounds stall near 52
+  despite recall above 85%. Cost rises from 1 to at least 3 forward calls.
+
+
+  The ablation isolates VSR from the pixel-anchor representation, but there is
+  no matched-compute baseline for the extra 3 calls, 1 model family, and 1
+  training-data regime. Counting and grounding transfer is illustrated
+  qualitatively only, with no numbers. Near-zero AP-Strict across all models
+  limits what the strict metric shows.
+
+
+  If you work on vision-heavy extraction, visual rather than textual feedback
+  is the lever worth trying.
+brief_generated_at: 2026-11-10
+brief_model: claude-opus-5
+brief_source: full-text

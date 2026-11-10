@@ -1,0 +1,38 @@
+id: response-level-hallucination-detection-retrieval-augmented-settings-having-model-first-convert
+ref: CLM-1014
+capability: hallucination
+technique: verify-responses-against-llm-built-sql-database-sources
+statement: >-
+  For response-level hallucination detection in retrieval-augmented
+  settings, having the model first convert the reference documents into a
+  relational SQL database and then check the response against SELECT query
+  results raises precision and macro F1 over zero-shot direct prediction,
+  over atomic-claim decomposition, and over flat JSON key-value extraction,
+  without any task-specific fine-tuning.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "RAGTruth (QA, data-to-text, summarisation) and the task-oriented portion of DiaHalu; gains largest on backbones with decent text-to-SQL ability, and absent on a small low-text-to-S"
+sources:
+  - source: arxiv-2609-05025
+    stance: supports
+    note: >-
+      Measured on two benchmarks with 900 pairs per RAGTruth task and 210
+      DiaHalu dialogues, against both unsupervised and fine-tuned baselines.
+      Multi-step non-SQL baselines control for decomposition but not for
+      token/call budget, and the main results rest on a single closed
+      backbone; open-model table shows the effect is backbone-dependent (no
+      gain for GPT-OSS, F1 slightly down for Qwen3).
+contested: false
+status: pending-review
+last_checked_at: 2026-11-10
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A replication where
+  SQL-grounded verification fails to beat atomic-claim decomposition or
+  direct prediction on RAGTruth macro F1 under matched backbones, or where
+  the gain disappears once the multi-step baselines are given comparable
+  token budgets.
+submitted_by: agent:claude-opus-5@Russ-Miller

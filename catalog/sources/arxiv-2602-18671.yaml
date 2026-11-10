@@ -1,0 +1,64 @@
+id: arxiv-2602-18671
+ref: SRC-1068
+kind: paper
+title: Spilled Energy in Large Language Models
+authors:
+  - Adrian Robert Minut
+  - Hazem Dewidar
+  - Iacopo Masi
+year: 2026
+date: 2026-02-21
+arxiv_id: "2602.18671"
+url: https://arxiv.org/abs/2602.18671
+tags:
+  - ingested
+summary: We reinterpret the final Large Language Model (LLM) softmax
+  classifier as an Energy-Based Model (EBM), decomposing the
+  sequence-to-sequence probability chain into multiple interacting EBMs at
+  inference. This principled approach allows us to track "energy spills"
+  during decoding, which we empirically show correlate with factual errors,
+  biases, and failures. Similar to Orgad et al. (2025), our method localizes
+  the exact answer token and subsequently tests for hallucinations. Crucially,
+  however, we achieve this without requiring trained probe classifiers or
+  activation ablations. Instead, we intro
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, medium): The paper proposes new
+  training-free energy-based metrics that detect hallucinations competitively
+  with probe-based detectors, i.e., a technique improving hallucination
+  detection. No claim has been drafted from it yet."
+ingested_at: 2026-11-10
+brief: >-
+  A training-free quantity read straight off the output logits detects LLM
+  errors better than trained probing classifiers once you leave the probe's
+  training distribution. Reinterpreting the final softmax as an energy-based
+  model, the authors note that two energies which the chain rule says should
+  be equal across consecutive decoding steps are not, and define that gap as
+  spilled energy, plus a single-step marginal energy.
+
+
+  Evaluation covers 9 benchmarks (HotpotQA, IMDB, Math, MNLI, Movies,
+  TriviaQA, Winobias, Winogrande) on LLaMA-3 and Mistral in base and instruct
+  form, Gemma-Instruct 1B and 4B, and synthetic 13-digit arithmetic with
+  injected errors of 3 magnitudes using Llama-3 8B, Qwen-3 8B,
+  Mistral-7B-Instruct.
+
+
+  Average AuROC for Spilled ΔE with min pooling reaches 73.16 on
+  LLaMA-Instruct and 77.49 on Mistral-Instruct, against 64.16 and 65.56 for
+  Orgad et al. probes and 54.62 and 63.44 for logit confidence. Probes
+  cross-tested off-diagonal sit near 62−64%. Restricting to exact answer
+  tokens adds +24.06 for spilled energy versus +9.23 for logits.
+
+
+  The probe comparison uses cross-dataset averages, which is the fair setting,
+  and pooling and exact-answer-span choices are ablated; variance across
+  datasets is large (±15−25 AuROC) and some scores fall well below chance,
+  e.g. 14.37 on IMDB.
+
+
+  It fails on Winogrande and Winobias (near 50) and on semantically empty
+  tokens like punctuation. Treat it as a cheap default detector where no
+  task-specific probe can be trained.
+brief_generated_at: 2026-11-10
+brief_model: claude-opus-5
+brief_source: full-text

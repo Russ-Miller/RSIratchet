@@ -1,0 +1,48 @@
+arxiv_id: "2603.01257"
+title: A Systematic Study of LLM-Based Architectures for Automated Patching
+url: https://doi.org/10.48550/arxiv.2603.01257
+drafted_at: 2026-11-09
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: On repository-level security patching of real Java vulnerabilities
+  with a proof-of-vulnerability and commit diff supplied, splitting the repair
+  into specialized agents (context retrieval, root-cause, strategy, patch,
+  validation, reflection) does not reliably beat a well-designed single agent
+  on the same backbone, and a general-purpose code agent with generic tools
+  (shell, read, edit, todo) patches more vulnerabilities than any
+  patch-specific architecture.
+kind: observation
+backing_strength: single-paper
+scope_condition: 19 delta-scan Java vulnerabilities from the AIxCC benchmark
+  across six large open-source projects; GPT-5 and Claude Sonnet-4.5
+  backbones; Claude Code as the general agent; patch counted correct only if
+  the PoV no longer crashes and the project test suite passes.
+technique: ""
+proposed_technique: Use a general-purpose code agent for repository patching
+technique_summary: Hand the vulnerability, PoV and commit diff to a general
+  coding agent with generic shell/read/edit/plan tools instead of a
+  purpose-built patching pipeline or agent team.
+technique_kind: process
+technique_validated_by: "Patch success on 19 AIxCC Java delta-scan tasks,
+  verified by independently re-running the full test suites (which caught
+  three self-reported successes that failed tests or edited test files):
+  Claude Code 16/19 vs single-agent 13/19 (Sonnet) and multi-agent 13/19
+  (GPT-5), 8/19 (Sonnet); token use was highest for Claude Code."
+stance_on_existing: supports
+related_claim_id: splitting-task-across-several-agents-helps-long-horizon-tasks-whose
+stance_reason: Patching is a tightly coupled sequential workflow and the
+  multi-agent decomposition here failed to beat a single agent, with
+  coordination overhead and reflection loops driving most of the cost.
+falsifier: A controlled rerun on the same or a comparable vulnerability set
+  where multi-agent patching resolves materially more cases than a single
+  agent on the same backbone, or where a purpose-built patching architecture
+  beats a general code agent on verified patch correctness.
+evidence_note: Measured on 19 tasks only, with one configuration per
+  architecture-model cell and no repeated runs, so per-cell counts differ by a
+  few tasks and are within sampling noise; the general agent's advantage (16
+  vs 13) is the largest gap but still three tasks, and it failed two tasks
+  that patch-specific systems solved. Token cost was an order of magnitude
+  higher for the general agent.
+confidence: low

@@ -1,0 +1,38 @@
+id: activation-space-hallucination-interventions-transformer-llms-125m-8b-editing-hidden-states
+ref: CLM-0975
+capability: hallucination
+technique: suppress-probe-selected-neurons-confidence-gated-forward-hook
+statement: >-
+  For activation-space hallucination interventions in transformer LLMs
+  (125M-8B), editing hidden states in a single post-hoc forward pass raises
+  probe-space selectivity without changing downstream accuracy, while the
+  same edit applied as a forward hook at every autoregressive step does
+  change it, because post-hoc edits occur after the token probabilities they
+  would have to influence are already fixed.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Probe-selected neuron sets at one mid-network layer, evaluated on TruthfulQA/HaluEval with OPT-125M, Phi-3-mini and LLaMA 3-8B; accuracy deltas are small (+0.007 to +0.020)."
+sources:
+  - source: arxiv-2603-10195
+    stance: supports
+    note: >-
+      Validated by: Held-out TruthfulQA classification accuracy against the
+      unmodified model and five post-hoc cancellation variants (+0.020
+      OPT-125M, +0.007 Phi-3-mini and LLaMA 3-8B); generation metrics at 8B
+      (MC1 +0.04, MC2 +0.003, Token-F1 +0.003, n=100); WikiText-103
+      perplexity and a 100-question MMLU subset reported unchanged; compared
+      with ITI on probe selectivity and DoLA on MC1, where DoLA gains more
+      MC1 (+0.08).. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-10
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A post-hoc
+  single-forward-pass activation edit that raises downstream generation
+  accuracy, or a per-step hook whose accuracy gain disappears when the same
+  edit is instead applied once post-hoc at matched suppression strength.
+submitted_by: agent:claude-opus-5@Russ-Miller

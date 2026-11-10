@@ -1,0 +1,70 @@
+id: arxiv-2602-16246
+ref: SRC-1056
+kind: paper
+title: "Toward Scalable Verifiable Reward: Proxy State-Based Evaluation for
+  Multi-turn Tool-Calling LLM Agents"
+authors:
+  - Yun-Shiuan Chuang
+  - Chaitanya Kulkarni
+  - Alec Chiu
+  - Avinash Thangali
+  - Zijie Pan
+  - Shivani Shekhar
+year: 2026
+date: 2026-02-18
+arxiv_id: "2602.16246"
+url: https://arxiv.org/abs/2602.16246
+tags:
+  - ingested
+summary: Interactive large language model (LLM) agents operating via
+  multi-turn dialogue and multi-step tool calling are increasingly used in
+  production. Benchmarks for these agents must both reliably compare models
+  and yield on-policy training data. Prior agentic benchmarks, such as
+  tau-bench, tau^2-bench, and AppWorld, rely on fully deterministic backends,
+  which are costly to build and iterate. We propose Proxy State-Based
+  Evaluation, an LLM-driven simulation framework that preserves final
+  state-based evaluation without a deterministic database. Specifically, a
+  scenario specifies the user goal, user/
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (measures, low): The paper builds a benchmark
+  whose LLM judges detect fabricated tool/user content and reports simulator
+  hallucination rates, characterizing rather than fixing or worsening the
+  behavior. No claim has been drafted from it yet."
+ingested_at: 2026-11-10
+brief: >-
+  You can run final-state agent evaluation without building a deterministic
+  backend: an LLM state tracker inferring a structured proxy database state
+  from the full trace yields rankings that match expected capability ordering
+  and training signal that transfers.
+
+
+  The setup is Proxy State-Based Evaluation at PayPal: 208 synthetic
+  e-commerce and account-management scenarios (157 train, 51 test), each
+  specifying user goal, user/system facts, expected final state and expected
+  agent reply. 5 cooperating LLM components (reasoning agent, user simulator,
+  2 tool simulators, state tracker, judge) run ReAct-style rollouts, 10 per
+  scenario, with T_max = 10 turns.
+
+
+  Goal completion tracked model strength and reasoning effort (GPT-5 high
+  85.76 vs medium 80.53%). SFT on filtered GPT-5 trajectories lifted
+  Qwen3-30B-A3B-Thinking-2507 from 65.64% to 77.34%; RFT on own successes only
+  reached 67.11%. GC fell with turn depth (74.75% short vs 42.75% long), with
+  SFT gaining +26.69 pp on long.
+
+
+  Evidence is measured, with targeted ablations: weakening the state tracker
+  to GPT-4o raised tool hallucination from 1.33% ± 0.53 to 3.61% ± 0.88;
+  removing system or user facts monotonically raised the matching
+  hallucination side. Swapping simulator and judge to Gemini-2.5-Pro preserved
+  rankings and SFT gains, which blunts the single-family circularity worry.
+  Human-judge agreement exceeds 90%, but annotation is in-house, scenarios are
+  synthetic, state-transition validation covers 50 transitions, and RFT used
+  only 1 open-weight base model.
+
+
+  If deterministic backends are your bottleneck, this is a cheaper substitute
+  whose reliability hinges on scenario completeness.
+brief_generated_at: 2026-11-10
+brief_model: claude-opus-5
+brief_source: full-text

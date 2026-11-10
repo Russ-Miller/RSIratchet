@@ -1,0 +1,66 @@
+id: arxiv-2602-16873
+ref: SRC-1059
+kind: paper
+title: "AdaptOrch: Task-Adaptive Multi-Agent Orchestration in the Era of LLM
+  Performance Convergence"
+authors:
+  - Geunbin Yu
+year: 2026
+date: 2026-02-18
+arxiv_id: "2602.16873"
+url: https://arxiv.org/abs/2602.16873
+tags:
+  - ingested
+summary: As large language models from diverse providers converge toward
+  comparable benchmark performance, the traditional paradigm of selecting a
+  single best model per task yields diminishing returns. We argue that
+  orchestration topology -- the structural composition of how multiple agents
+  are coordinated, parallelized, and synthesized -- now dominates system-level
+  performance over individual model capability. We present AdaptOrch, a formal
+  framework for task-adaptive multi-agent orchestration that dynamically
+  selects among four canonical topologies (parallel, sequential, hierarchical,
+  and hybrid) bas
+notes: "Filed as a source on multi-model-coordination from the classifier's
+  judgement that the paper is about it (improves, medium): The paper proposes
+  task-adaptive topology routing and reports 12-23% gains over static
+  single-topology multi-agent baselines with the same models, attributing
+  improvement to how agents are combined. No claim has been drafted from it
+  yet."
+ingested_at: 2026-11-10
+brief: >-
+  Most of the claimed benefit from task-adaptive agent topology selection is
+  also obtained by simply sampling 1 strong model repeatedly at the same token
+  budget. AdaptOrch decomposes a task into a dependency DAG, computes
+  parallelism width, critical path depth and coupling density, then routes to
+  1 of 4 topologies (parallel, sequential, hierarchical, hybrid) in O(|V|+|E|)
+  time, with a synthesis protocol that re-routes on low consistency.
+
+
+  Evaluation uses 5 near-matched models (GPT-4o-mini, Claude 3.5 Haiku, Gemini
+  2.0 Flash, Llama 3.3 70B, Qwen 2.5 72B) on SWE-bench Verified, GPQA Diamond
+  and HotpotQA, 3 runs each.
+
+
+  AdaptOrch reaches 52.6 on SWE-bench, 53.1 on GPQA, 76.4 F1 on HotpotQA,
+  versus 42.8/46.2/68.3 for Single Best. A compute-matched Self-MoA baseline
+  gets 51.5/52.3/75.5, recovering 89% of the gains. Static-Parallel falls
+  below Single Best on GPQA, so wrong topology hurts. Router agrees with an
+  exhaustive oracle on 81.2% of 698 instances.
+
+
+  The matched-budget Self-MoA comparison and component ablations (synthesis
+  -5.5, routing -2.8) do isolate the contribution, but the ablation magnitudes
+  in the appendix (4.7-8.3 points) do not match Table 4, thresholds were tuned
+  on a 15% dev split by the authors, and all results are self-reported from 1
+  group.
+
+
+  No gain on atomic or fully coupled tasks; untested on creative writing,
+  long-form and multimodal work.
+
+
+  If you are choosing between orchestration engineering and more samples from
+  1 model, the cheap option captures most of the win here.
+brief_generated_at: 2026-11-10
+brief_model: claude-opus-5
+brief_source: full-text

@@ -1,0 +1,40 @@
+id: frozen-model-wrapped-evaluator-editor-loop-critiques-rewrites-own-answer
+ref: CLM-0986
+capability: self-repair
+technique: critique-rewrite-sensitive-spans-instead-refusing
+statement: >-
+  When a frozen model is wrapped in an evaluator-editor loop that critiques
+  and rewrites its own answer to remove context-dependent sensitive content,
+  the resulting safety gain is bought differently by model capacity: large
+  reasoning models rewrite and expand the answer while keeping utility,
+  whereas smaller and mid-sized open models cut most of the text and lose
+  most of their utility.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "13 models on SemSI-Bench open-ended questions, three leakage categories (sensitive identity attributes, reputation-harmful content, incorrect hazardous information), up to 3 refine"
+sources:
+  - source: arxiv-2602-21496
+    stance: supports
+    note: >-
+      Validated by: On SemSI-Bench across 13 models, mean leakage occurrence
+      fell from 0.78 (no protection) to 0.51 and toxicity from 0.85 to 0.45,
+      with mean utility (LLM-judged relevance/correctness/completeness,
+      0-10) falling 6.04 to 5.45; compared against no-protection and a
+      single-pass prompt-only control, plus LlamaGuard 4 and
+      GPT-OSS-Safeguard-20B output filters, which scored 0.01 and 0.17 F1 at
+      detecting the same leakage. Most of the gain is already present at the
+      prompt-only control (0.55), so the loop itself adds only ~0.04
+      occurrence on average.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-10
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A small model (<10B) run in
+  the same loop that cuts leakage comparably while keeping answer length and
+  utility near baseline, or a large reasoning model that achieves its
+  leakage reduction mainly by truncation.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,67 @@
+id: arxiv-2602-15400
+ref: SRC-1052
+kind: paper
+title: "One Agent to Guide Them All: Empowering MLLMs for Vision-and-Language
+  Navigation via Explicit World Representation"
+authors:
+  - Zerui Li
+  - Hezheng Zheng
+  - Fangguo Zhao
+  - Aidan Chan
+  - Jian Zhou
+  - Sihao Lin
+year: 2026
+date: 2026-02-17
+arxiv_id: "2602.15400"
+url: https://arxiv.org/abs/2602.15400
+tags:
+  - ingested
+summary: A navigable agent needs to understand both high-level semantic
+  instructions and precise spatial perceptions. Building navigation agents
+  centered on Multimodal Large Language Models (MLLMs) demonstrates a
+  promising solution due to their powerful generalization ability. However,
+  the current tightly coupled design dramatically limits system performance.
+  In this work, we propose a decoupled design that separates low-level spatial
+  state estimation from high-level semantic planning. Unlike previous methods
+  that rely on predefined, oversimplified textual maps, we introduce an
+  interactive metric world
+notes: "Filed as a source on embodied-control from the classifier's judgement
+  that the paper is about it (improves, high): The paper proposes decoupling
+  spatial state estimation from MLLM semantic planning with an interactive
+  metric world representation, raising zero-shot navigation success rates and
+  transferring to real robots. No claim has been drafted from it yet."
+ingested_at: 2026-11-10
+brief: >-
+  Giving a frozen multimodal LLM an external metric map to query, rather than
+  asking it to infer layout from egocentric frames, raises zero-shot
+  navigation success more than switching to a larger backbone does. GTA keeps
+  spatial state estimation (TSDF volumetric map plus a topological visit
+  graph) outside the model, serializes it into a BEV image with an integer
+  coordinate grid plus 4 egocentric views, and adds counterfactual branch
+  reasoning: the model states an expectation per branch, checks it against
+  later observations, and backtracks to a stored checkpoint when they
+  disagree.
+
+
+  With GPT-5.1 as reasoner, GTA reaches 48.8% SR and 41.8% SPL on the full
+  1,839-episode R2R-CE val-unseen split and 46.2% SR on a 260-episode English
+  RxR-CE subset, versus 41.0/25.4 for BZS-VLN. A distilled InternVL3-8B
+  interpreter (GTA-Light, trained, so not zero-shot) holds 45.1% SR. Backbone
+  scaling moves SR 37.2 to 47.2 across Qwen3-VL-235B, Gemini-2.5 Pro, GPT-5.1
+  on a 180-episode subset.
+
+
+  Evidence is mostly measured with matched-episode controls: STRIDER re-run
+  with GPT-5.1 on the same 100 episodes gets 40.0/36.5 against GTA's
+  47.0/38.8, and an incremental ablation attributes +6.0, +2.0, +8.0 SR to
+  loop-alert backtracking, checkpoints/blocking, and expectation checks.
+  Main-table comparisons use different backbones; RxR-CE comparisons are not
+  episode-matched; spread is ±0.8 SR over 3 runs.
+
+
+  It assumes accurate depth and pose and static scenes. If you build MLLM
+  agents, this argues the representation, not the model, is the binding
+  constraint.
+brief_generated_at: 2026-11-10
+brief_model: claude-opus-5
+brief_source: full-text

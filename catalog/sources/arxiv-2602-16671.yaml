@@ -1,0 +1,69 @@
+id: arxiv-2602-16671
+ref: SRC-1058
+kind: paper
+title: "SPARC: Scenario Planning and Reasoning for Automated C Unit Test Generation"
+authors:
+  - Jaid Monwar Chowdhury
+  - Chi-An Fu
+  - Reyhaneh Jabbarvand
+year: 2026
+date: 2026-02-18
+arxiv_id: "2602.16671"
+url: https://arxiv.org/abs/2602.16671
+tags:
+  - ingested
+summary: Automated unit test generation for C remains a formidable challenge
+  due to the semantic gap between high-level program intent and the rigid
+  syntactic constraints of pointer arithmetic and manual memory management.
+  While Large Language Models (LLMs) exhibit strong generative capabilities,
+  direct intent-to-code synthesis frequently suffers from the leap-to-code
+  failure mode, where models prematurely emit code without grounding in
+  program structure, constraints, and semantics. This will result in
+  non-compilable tests, hallucinated function signatures, low branch coverage,
+  and semantically irrelev
+notes: "Filed as a source on code-generation from the classifier's judgement
+  that the paper is about it (improves, high): SPARC's structure-grounded,
+  iteratively validated pipeline raises line/branch coverage and mutation
+  score substantially over vanilla prompting, a clear improvement in
+  generating working test code. No claim has been drafted from it yet."
+ingested_at: 2026-11-10
+brief: >-
+  Feeding a C function's control-flow paths to an LLM one at a time, with a
+  retrieved pool of validated helper functions, raises test coverage far more
+  than asking the model for a full test suite in one prompt. The gain comes
+  from the pipeline rather than the model: cost-efficient models match a
+  frontier one inside it.
+
+
+  SPARC runs 4 stages (statement-level CFG path extraction, an RAG-grounded
+  operation map of helpers, per-path test synthesis, compiler/AddressSanitizer
+  repair loop capped at 3 iterations) over 59 C subjects from TheAlgorithms C
+  and Rustine, compared against vanilla DeepSeek V3.2 prompting and KLEE.
+
+
+  SPARC beats vanilla prompting by 31.36% line coverage, 26.01% branch
+  coverage and 20.78% mutation score, and the branch-coverage gap widens with
+  complexity (14% at ≤10 paths to about 30% above 30 paths). 94.3% of tests
+  survive repair. Cost is 12,152 tokens per test on average, growing roughly
+  quadratically with path count.
+
+
+  Attribution is partial: no matched-token-budget baseline for the
+  single-prompt comparison, and the 4 stages were never ablated individually.
+  The model-portability check uses only 10 projects. Repair fixes how tests
+  fail, not what they cover; helper API hallucination still causes about
+  two-thirds of the 304 permanently dropped tests, and memory errors repair at
+  only 25%.
+
+
+  I/O functions, static functions and anything needing mocking were excluded,
+  so the real legacy-C case is untested. The developer study (n=10, 150 paired
+  comparisons) favours SPARC on all 4 dimensions but has weak inter-rater
+  agreement (α = 0.32 and below).
+
+
+  If you build test-generation tooling, the result argues for spending
+  engineering on structure extraction rather than on a bigger model.
+brief_generated_at: 2026-11-10
+brief_model: claude-opus-5
+brief_source: full-text

@@ -1,0 +1,40 @@
+id: 3b-8b-instruct-models-trained-grpo-verifiable-length-reward-adding
+ref: CLM-0959
+capability: procedure-following
+technique: train-counting-your-own-output-length-alongside-length
+statement: >-
+  For 3B-8B instruct models trained with GRPO on a verifiable length reward,
+  adding an auxiliary supervised task that asks the model to count the words
+  of its own sampled outputs raises length-constraint adherence beyond
+  reward-only RL, and the gain depends on the two objectives being trained
+  jointly on a decaying schedule rather than the awareness task being used
+  only as initialization.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Four open 3B-8B instruct backbones (Qwen2.5, Llama-3), word-count constraints from 10 to 4,000 words, three length-following benchmarks; not tested on other constraint types."
+sources:
+  - source: arxiv-2603-19255
+    stance: supports
+    note: >-
+      Validated by: Length Score, Length Deviation, MAE and quality metrics
+      on LIFEBench, LongBench and Lenctrl-Bench across four backbones versus
+      untuned, SFT, GRPO-only, SFT+RL, Ruler and PositionID; reported +20.92
+      average over base models and +4.59 over the best RL baseline, with
+      -1.45 on four general benchmarks. Ablations: awareness-SFT alone
+      barely moved length following (46.0 to 46.8 on one model),
+      awareness-then-RL beat plain RL by 3.93 but trailed joint training by
+      2.95, and removing the cosine schedule dropped LIFEBench LS from 80.57
+      to 73.44.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-10
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An equal-compute run
+  where the awareness loss is removed (or replaced by an unrelated auxiliary
+  loss) matches joint training on length adherence, or where awareness-only
+  initialization followed by RL matches joint training.
+submitted_by: agent:claude-opus-5@Russ-Miller

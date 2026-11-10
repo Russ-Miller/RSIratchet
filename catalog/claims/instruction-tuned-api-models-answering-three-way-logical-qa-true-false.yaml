@@ -1,0 +1,40 @@
+id: instruction-tuned-api-models-answering-three-way-logical-qa-true-false
+ref: CLM-0991
+capability: abstention-and-self-knowledge
+technique: resolve-hypothesis-negation-against-negation-map
+statement: >-
+  For instruction-tuned API models answering three-way logical QA
+  (True/False/Unknown) under a strict no-chain-of-thought schema, querying
+  both a hypothesis and its mechanically negated form and resolving the pair
+  through the deterministic negation map recovers determinate cases the
+  single-call classifier had abstained on, lowering epistemic Unknown
+  without lowering accuracy on the answers it does give.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "FOLIO validation, 204 examples, first-order-logic formula inputs where negation can be applied mechanically; two API models (GPT-5.2, Claude Sonnet 4.5); temperature 0, structured "
+sources:
+  - source: arxiv-2604-06196
+    stance: supports
+    note: >-
+      Validated by: Accuracy on FOLIO FOL validation rose 63.7 to 68.1
+      (GPT-5.2, paired bootstrap CI +1.5 to +7.4) and 42.2 to 49.0 (Claude,
+      CI +3.4 to +10.3) against a single-call baseline using the same prompt
+      family; epistemic Unknown fell 41.5 to 36.3 and 72.6 to 53.3; answered
+      accuracy rose on both models, so abstentions were not swapped for weak
+      guesses. No matched-call self-consistency baseline was run.. Measured
+      on one 204-example validation split, two proprietary models, one
+      prompt family, FOL-formula inputs only. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-10
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Running the same wrapper
+  against a self-consistency baseline at matched call budget (4-5 calls) and
+  finding equal or higher accuracy and lower epistemic Unknown for plain
+  resampling, or finding the gain disappears on natural-language FOLIO
+  inputs where negation must be interpreted.
+submitted_by: agent:claude-opus-5@Russ-Miller

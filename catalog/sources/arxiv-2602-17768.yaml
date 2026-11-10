@@ -1,0 +1,66 @@
+id: arxiv-2602-17768
+ref: SRC-1064
+kind: paper
+title: "KPM-Bench: A Kinematic Parsing Motion Benchmark for Fine-grained
+  Motion-centric Video Understanding"
+authors:
+  - Boda Lin
+  - Yongjie Zhu
+  - Xiaocheng Gong
+  - Wenyu Qin
+  - Meng Wang
+year: 2026
+date: 2026-02-19
+arxiv_id: "2602.17768"
+url: https://arxiv.org/abs/2602.17768
+tags:
+  - ingested
+summary: Despite recent advancements, video captioning models still face
+  significant limitations in accurately describing fine-grained motion details
+  and suffer from severe hallucination issues. These challenges become
+  particularly prominent when generating captions for motion-centric videos,
+  where precise depiction of intricate movements and limb dynamics is crucial
+  yet often neglected. To alleviate this gap, we introduce an automated
+  annotation pipeline that integrates kinematic-based motion computation with
+  linguistic parsing, enabling detailed decomposition and description of
+  complex human motions.
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (measures, medium): The paper builds a benchmark
+  and a motion-attribute extraction metric to evaluate hallucination in
+  fine-grained motion captions, characterizing rather than fixing model
+  behavior. No claim has been drafted from it yet."
+ingested_at: 2026-11-10
+brief: >-
+  Fine-tuning a 7B VLM on captions built from 3D pose estimates and kinematic
+  features produces large gains on the matching in-domain benchmark but almost
+  nothing on external motion benchmarks. KPM-Bench is built by running
+  RTMPose3D on clips, computing joint velocities, angular velocities and FFT
+  energy/high-frequency ratios, then feeding those numbers plus frames to
+  GPT-4.1 through 6-stage prompting to get structured PaMoR tuples and dense
+  captions: 75k caption pairs, 38k QA pairs, 215 manually annotated
+  hallucination videos over 20 movement types, at 22.21 words per second and
+  171.39 words per video.
+
+
+  Qwen2.5-VL-7B fine-tuned on this data reaches BLEU-1 43.64 and GPT-Acc
+  67.83% versus GPT-4.1 at 38.78 and 62.41%, and 94.05 overall QA accuracy
+  versus 84.41 for GPT-4.1 and 85.95 for InternVideo-2.5. Adding the MoPE
+  reward in GRPO cuts GPT-Hall from 2.03 to 1.92 and raises Mo-Hall from 0.607
+  to 0.619, with small NLG losses; Tarsier2-Recap still has the lowest
+  hallucination at 1.87.
+
+
+  On MVBench, FAVOR and MotionBench the same model moves 68.94 to 69.03, 40.76
+  to 41.25, 46.23 to 47.41, differences within noise, which undercuts the
+  generalization claim. Caption quality is judged partly by GPT-4.1, the same
+  model that generated the training labels and the hallucination metric's
+  reference annotations, so the headline margin over GPT-4.1 is not clean. 1
+  model family, 1 SFT recipe, no matched-data baseline using captions without
+  kinematic inputs in the main tables.
+
+
+  Treat the numbers as evidence that pose-derived features change caption
+  style and in-distribution scoring, not that motion understanding improved.
+brief_generated_at: 2026-11-10
+brief_model: claude-opus-5
+brief_source: full-text
