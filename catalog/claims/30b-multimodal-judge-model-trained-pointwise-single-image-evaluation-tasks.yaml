@@ -1,0 +1,40 @@
+id: 30b-multimodal-judge-model-trained-pointwise-single-image-evaluation-tasks
+ref: CLM-0957
+capability: critique
+technique: train-one-judge-across-all-judging-tasks-rl
+statement: >-
+  For a 30B multimodal judge model trained on pointwise (single-image)
+  evaluation tasks, multi-task supervised fine-tuning does not transfer to
+  an unseen pairwise comparison format even when the underlying criteria are
+  the same — on MJ-Bench safety judging it falls to 49.40 Macro-F1, below
+  the untuned backbone's 73.07 — whereas multi-task GRPO with a
+  reasoning-first format reward on the identical data reaches 82.23.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "One backbone (Qwen3-VL-30B-A3B-Instruct), six binary pointwise judging datasets for training, one held-out pairwise benchmark; in-distribution scores of SFT-Unified and MT-RL-Judge"
+sources:
+  - source: arxiv-2603-11665
+    stance: supports
+    note: >-
+      Validated by: Macro-F1 on six in-distribution judging datasets
+      (alignment, safety, image quality) against off-the-shelf prompting,
+      single-task SFT, unified SFT and single-task RL, plus
+      out-of-distribution Macro-F1 on MJ-Bench pairwise alignment and
+      safety.. Measured, single paper, one backbone, one out-of-distribution
+      benchmark with two task types; no seeds, confidence intervals, or
+      ablation of the reasoning-format reward separately from the RL
+      objective, so format-overfitting versus reasoning-internalization is
+      argued rather than isolated. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-11
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A unified-SFT judge that
+  holds its in-distribution accuracy and also matches multi-task RL on an
+  unseen pairwise format, or multi-task RL judges that collapse below the
+  untuned backbone on held-out formats, on other backbones and task sets.
+submitted_by: agent:claude-opus-5@Russ-Miller

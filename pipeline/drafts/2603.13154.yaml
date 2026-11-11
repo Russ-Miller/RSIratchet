@@ -1,0 +1,47 @@
+arxiv_id: "2603.13154"
+title: "ESG-Bench: Benchmarking Long-Context ESG Reports for Hallucination
+  Mitigation"
+url: https://arxiv.org/abs/2603.13154
+drafted_at: 2026-11-08
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: For 2-7B open instruct models answering questions grounded in long
+  retrieved passages (ESG reports, HaluEval, BioASQ), fine-tuning on answers
+  alone is not reliably better than no fine-tuning at avoiding unsupported
+  answers, while fine-tuning on staged rationales that first name the queried
+  topic, locate relevant passage text, and then judge answerability raises
+  balanced accuracy over both.
+kind: observation
+backing_strength: single-paper
+scope_condition: 2-7B LLaMA/Gemma/Mistral instruct models; document-grounded
+  QA test sets balanced between answerable and unanswerable items; rationale
+  steps supplied from human answerability labels plus GPT-4o-generated topics.
+technique: ""
+proposed_technique: Fine-tune on staged answerability rationales, not answers alone
+technique_summary: Supervise the model on four explicit intermediate steps —
+  identify the question's topic, quote relevant report text, decide whether
+  the passage answers it, then answer or say 'Not provided' — instead of on
+  the final answer only.
+technique_kind: training
+technique_validated_by: Balanced accuracy and F1 on 300-400-item balanced test
+  splits of ESG-Bench, HaluEval and BioASQ against no-fine-tuning and
+  answer-only SFT baselines across three backbones; 4-step CoT best in 8 of 9
+  dataset-model cells (e.g. ESG-Bench Gemma 63.3 SFT vs 92.0; BioASQ Gemma
+  74.5 vs 99.5), while answer-only SFT fell below no fine-tuning in several
+  cells.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On matched data budgets and backbones, answer-only SFT matching or
+  beating four-step rationale fine-tuning on balanced answerable/unanswerable
+  splits, or four-step rationale fine-tuning failing to beat no fine-tuning on
+  most dataset-model cells.
+evidence_note: Measured across 3 backbones x 3 datasets x 4 training settings,
+  with WA/WoA accuracy reported separately so abstention is not hidden. Only
+  one run per cell, no seed variance, and ESG-Bench correctness is scored by
+  the same human annotators who produced the training labels; the four-step
+  topic field comes from GPT-4o, so the comparison does not isolate the
+  staging from the extra teacher-supplied content.
+confidence: medium

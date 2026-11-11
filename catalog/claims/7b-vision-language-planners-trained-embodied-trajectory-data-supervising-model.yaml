@@ -1,0 +1,39 @@
+id: 7b-vision-language-planners-trained-embodied-trajectory-data-supervising-model
+ref: CLM-0974
+capability: embodied-control
+technique: train-spatial-grounding-before-unlocking-action-history
+statement: >-
+  For 7B vision-language planners trained on embodied trajectory data,
+  supervising the model first on frames with the action history blocked and
+  only then on full-context sequences yields higher valid-action and
+  task-success rates and a lower repetitive-loop rate than joint end-to-end
+  fine-tuning on the full trajectory context from the start.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Qwen2.5-VL-7B backbone, AI2-THOR expert-demonstration trajectories with egocentric observations and textual action history; stage-1 data filtered to steps whose next action is dete"
+sources:
+  - source: arxiv-2603-11563
+    stance: supports
+    note: >-
+      Validated by: On a sampled AI2-THOR test set: staged Stage-2 scored
+      74.23% success, 84.16% valid-action rate and 8.25% loop rate versus a
+      'Direct Stage 2' joint-SFT baseline at 68.04%, 78.37% and 10.31%; same
+      backbone, data and metrics.. Measured on one benchmark (AI2-THOR,
+      sampled test episodes) with one backbone and a single seed; no
+      reported variance, and the staged arm sees stage-1 filtered data as
+      additional training so total exposure is not matched to the Direct
+      Stage 2 baseline. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-11
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A matched-compute
+  comparison on the same backbone and data where joint full-context
+  fine-tuning equals or beats the staged schedule on valid-action rate and
+  loop rate, or where the staged gain disappears once the stage-1 data
+  filter is applied to the joint baseline too.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,67 @@
+id: arxiv-2602-15460
+ref: SRC-1066
+kind: paper
+title: On the Out-of-Distribution Generalization of Reasoning in Multimodal
+  LLMs for Simple Visual Planning Tasks
+authors:
+  - Yannic Neuhaus
+  - Nicolas Flammarion
+  - Matthias Hein
+  - Francesco Croce
+year: 2026
+date: 2026-02-17
+arxiv_id: "2602.15460"
+url: https://arxiv.org/abs/2602.15460
+tags:
+  - ingested
+summary: Integrating reasoning in large language models and large
+  vision-language models has recently led to significant improvement of their
+  capabilities. However, the generalization of reasoning models is still
+  vaguely defined and poorly understood. In this work, we present an
+  evaluation framework to rigorously examine how well chain-of-thought (CoT)
+  approaches generalize on a simple planning task. Specifically, we consider a
+  grid-based navigation task in which a model is provided with a map and must
+  output a sequence of moves that guides a player from a start position to a
+  goal while avoiding obstac
+notes: "Filed as a source on planning from the classifier's judgement that the
+  paper is about it (measures, high): The paper benchmarks validity of move
+  sequences produced under different CoT and input representations, finding
+  limited OOD generalization, without proposing a new method. No claim has
+  been drafted from it yet."
+ingested_at: 2026-11-11
+brief: >-
+  Chain-of-thought format, not just its presence, determines whether a
+  fine-tuned model generalizes beyond its training distribution on a simple
+  planning task. Interleaving a natural-language discussion of the next move
+  with a compact ASCII grid of the map after that move is the only setup that
+  survives real distribution shift.
+
+
+  The testbed is FrozenLake grid navigation: a map with holes, a player and a
+  treasure, output is a move sequence. Qwen2.5-VL-7B-Instruct is supervised
+  fine-tuned for 10 epochs on 1,000 maps of size up to 6×6, with 4 input
+  formats (image, description, table, grid) crossed with CoT formats, and
+  tested on 7×7-10×10 maps, start-goal distance, and optimal solution length.
+
+
+  Zero-shot accuracy is 0.06 average in-distribution. All CoT variants beat
+  no-CoT in-distribution, best 91%. On OOD maps where start-goal distance d∞ ≥
+  6, most models fall below 10% at 7×7; description-only CoT drops to 7%. Grid
+  input with grid + description CoT holds 41% average and 20% at 10×10. With
+  map size fixed at 10×10 to isolate distance, no-CoT and description CoT go
+  near 0% at d∞ = 6, while grid + description reaches 29% OOD.
+
+
+  Evidence is measured, with matched training data across formats, a
+  200-maps-per-cell OOD test set, an epochs ablation (20, 30), and a
+  retraining ablation removing the 10 training maps with solution length > 10.
+  Mirage's continuous-space reasoning is retrained and matched by a plain
+  no-CoT image model; shuffling its helper images changes nothing.
+
+
+  Only 1 base model and 1 task family; image inputs lag text throughout and
+  VPRL could not be tested OOD. Treat CoT format as a tunable variable rather
+  than a fixed design choice.
+brief_generated_at: 2026-11-11
+brief_model: claude-opus-5
+brief_source: full-text

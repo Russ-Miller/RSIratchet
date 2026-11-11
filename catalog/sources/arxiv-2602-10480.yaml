@@ -1,0 +1,67 @@
+id: arxiv-2602-10480
+ref: SRC-1052
+kind: paper
+title: Neuro-Symbolic Synergy for World Modeling
+authors:
+  - Hongyu Zhao
+  - Siyu Zhou
+  - Haolin Yang
+  - Zengyi Qin
+  - Tianyi Zhou
+year: 2026
+date: 2026-02-11
+arxiv_id: "2602.10480"
+url: https://arxiv.org/abs/2602.10480
+tags:
+  - ingested
+summary: Large language models (LLMs) exhibit strong general-purpose reasoning
+  capabilities, yet they frequently hallucinate when used as world models
+  (WMs), where strict compliance with deterministic transition
+  rules--particularly in corner cases--is essential. In contrast, Symbolic WMs
+  provide logical consistency but lack semantic expressivity. To bridge this
+  gap, we propose Neuro-Symbolic Synergy (NeSyS), a framework that integrates
+  the probabilistic semantic priors of LLMs with executable symbolic rules to
+  achieve both expressivity and robustness. NeSyS alternates training between
+  the two models us
+notes: "Filed as a source on state-tracking from the classifier's judgement
+  that the paper is about it (improves, medium): The paper proposes a
+  neuro-symbolic framework that raises world-model transition prediction
+  accuracy and downstream agent reward over SFT baselines. No claim has been
+  drafted from it yet."
+ingested_at: 2026-11-11
+brief: >-
+  Scoring candidate next-states with executable Python rules beats injecting
+  those rules into an LLM's prompt, and lets you fine-tune the neural world
+  model on roughly half the data while matching or beating full supervised
+  fine-tuning. NeSyS pairs an LLM world model with a weighted rule set,
+  combining them by log-linear reranking over candidate next-state/reward
+  pairs, and alternates training so each component learns from the other's
+  residual errors.
+
+
+  Backbones are Llama-3.2-1B-Instruct and Qwen3-4B; GPT-5-mini is used only
+  offline for rule induction. Environments are ScienceWorld, WebShop, and
+  PlanCraft, with training splits of 14,789 / 13,488 / 6,083 (s,a,s') pairs.
+
+
+  On ScienceWorld, NeSyS reaches 68.3% with 45% of the data versus 64.4% for
+  full SFT (Llama) and 71.0% versus 68.3% (Qwen). WebShop Phase 2 hits 92.2% /
+  92.6% against SFT's 47.5% / 47.3%; PlanCraft 87.7% / 88.4% with 35% of data.
+  WALL-E prompt injection trails NeSyS by 8.8 and 2.9 points in Phase 2 on
+  ScienceWorld. One-step lookahead raises WebShop agent reward from 0.2755 to
+  0.3276 over 100 sessions.
+
+
+  Controls isolate the mechanism: linear interpolation matches log-linear
+  (82.4/84.5 vs 82.7/83.7), fixed gamma=1 drops to 70.1/73.9, and a GPT-5-nano
+  or same-backbone rule generator still beats SFT, weakening the
+  teacher-transfer explanation. Rules are selected on the development set with
+  no second held-out split, rules are environment-specific, and open-ended
+  testing covers 1 environment and 1-step lookahead only.
+
+
+  If you are deploying small world models in rule-bound environments,
+  score-level rule integration is the lever, not prompting.
+brief_generated_at: 2026-11-11
+brief_model: claude-opus-5
+brief_source: full-text

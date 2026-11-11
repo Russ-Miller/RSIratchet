@@ -1,0 +1,41 @@
+id: rl-fine-tuning-frontier-model-triton-gpu-kernel-generation-verifiable
+ref: CLM-1014
+capability: code-generation
+technique: shape-kernel-rl-reward-speedup-correctness-scarce-reward
+statement: >-
+  When RL fine-tuning a frontier model for Triton GPU kernel generation with
+  a verifiable reward that is mostly saturated by correctness (logistic
+  reward shifted so a TorchInductor-parity kernel already earns about half
+  the maximum), functional correctness rises far more than speed: GPT-5 went
+  from 43.7% to 77.0% correct single-attempt while geometric mean speedup
+  over TorchInductor moved only 0.73x to 0.81x.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Triton kernel generation on a 264-problem extended KernelBench evaluation set, H100 GPUs, single-attempt setting, reward shift parameter 1.8; base model already competent at Triton"
+sources:
+  - source: arxiv-2602-11000
+    stance: supports
+    note: >-
+      Validated by: Single-attempt KernelBench: correctness 43.7% to 77.0%,
+      fraction beating TorchInductor 14.8% to 21.8%, geometric mean speedup
+      0.73x to 0.81x against the unmodified GPT-5 baseline and several
+      frontier models; the speedup/correctness split is attributed by the
+      authors to the shift value, not ablated.. Measured on 264
+      extended-KernelBench problems against base GPT-5 and several frontier
+      models, single and three-attempt settings. The reward-shift
+      explanation is argued from the reward's functional form, not isolated
+      by an ablation over shift values; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-11
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Training the same setup
+  with a much larger shift parameter (requiring high speedup before reward
+  saturates) yields no greater gain in geometric mean speedup than the
+  shift-1.8 run, or a run that rewards only correctness produces comparable
+  speedup gains.
+submitted_by: agent:claude-opus-5@Russ-Miller

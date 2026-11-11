@@ -1,0 +1,39 @@
+id: rl-post-training-1-5b-4b-reasoning-model-shorten-chains-thought
+ref: CLM-1016
+capability: cutting-to-the-chase
+technique: rectify-length-pruning-only-accuracy-drops-below-frozen
+statement: >-
+  When RL post-training a 1.5B-4B reasoning model to shorten chains of
+  thought, alternating between a length-minimizing update and an
+  accuracy-restoring update gated on falling below a frozen reference
+  policy's minibatch accuracy preserves accuracy better than mixing length
+  and accuracy into one scalar reward, which degrades correctness on roughly
+  a third of the problems it shortens.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Math reasoning (GSM8K/MATH training, in- and out-domain math benchmarks), DeepSeek-R1-Distill-Qwen-1.5B and Qwen3-4B backbones, verifier-checkable answers."
+sources:
+  - source: arxiv-2602-12526
+    stance: supports
+    note: >-
+      Validated by: Accuracy and average token count on GSM8K, MATH500 and
+      four out-domain math benchmarks against ThinkPrune, L1, O1-Pruner,
+      ShorterBetter and ACPO, plus a per-problem breakdown of accuracy
+      decrease/preserve/improve conditioned on length reduction (CRT 12.5%
+      decrease on SAT Math vs 37.5% ThinkPrune-1k, 27.3% ACPO), and
+      ablations against single-stage and primal-dual variants.. Measured on
+      two backbones and six math benchmarks against five published
+      efficiency baselines; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-11
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A length-aware
+  scalar-reward baseline tuned at matched average token count showing equal
+  or lower rate of accuracy loss on length-reduced problems than the
+  reference-gated alternation, on the same backbones and benchmarks.
+submitted_by: agent:claude-opus-5@Russ-Miller

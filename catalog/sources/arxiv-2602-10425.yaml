@@ -1,0 +1,68 @@
+id: arxiv-2602-10425
+ref: SRC-1049
+kind: paper
+title: "HII-DPO: Eliminate Hallucination via Accurate Hallucination-Inducing
+  Counterfactual Images"
+authors:
+  - Yilin Yang
+  - Zhenghui Guo
+  - Yuke Wang
+  - Omprakash D. Gnawali
+  - Sheng Di
+  - Chengming Zhang
+year: 2026
+date: 2026-02-11
+arxiv_id: "2602.10425"
+url: https://arxiv.org/abs/2602.10425
+tags:
+  - ingested
+summary: "Large Vision-Language Models (VLMs) have achieved remarkable success
+  across diverse multimodal tasks but remain vulnerable to hallucinations
+  rooted in inherent language bias. Despite recent progress, existing
+  hallucination mitigation methods often overlook the underlying hallucination
+  patterns driven by language bias. In this work, we design a novel pipeline
+  to accurately synthesize Hallucination-Inducing Images (HIIs). Using
+  synthesized HIIs, we reveal a consistent scene-conditioned hallucination
+  pattern: models tend to mention objects that are highly typical of the scene
+  even when visual evi"
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, high): The paper constructs preference
+  data from synthesized hallucination-inducing images and reports up to 38%
+  improvement over SOTA on hallucination benchmarks while preserving general
+  capability. No claim has been drafted from it yet."
+ingested_at: 2026-11-11
+brief: >-
+  Vision-language models will assert that an object is present when it has
+  been erased from the image, if the surrounding scene usually contains it.
+  Removing the object and asking for a description is enough to trigger the
+  claim.
+
+
+  The pipeline uses GroundingDINO over the 80 MS-COCO categories plus a
+  synonym dictionary, iterative detect-and-mask cycles until full occlusion,
+  and keeps an image as a Hallucination-Inducing Image if the target model
+  asserts the masked object in at least 5 out of 10 sampled descriptions. The
+  intersection across Qwen-VL variants and LLaVA-1.5 forms the ~800-image MOH
+  benchmark, split into 10 scene types. HIIs then seed sentence-level DPO
+  preference pairs sharing an identical prefix.
+
+
+  On MOH with LLaVA-v1.5-7B, baseline hallucination rate is 52.2
+  discriminative and 68.6 generative; existing alignment methods still average
+  47.8% and 49.4%. HII-DPO reaches 28.1 and 18.8, and on Object HalBench cuts
+  CHAIR_s from 52.7 to 4.0 versus 5.5 for SENTINEL, with ScienceQA at 68.6 vs
+  66.8.
+
+
+  Evidence: measured against 9 reproduced baselines on 2 model sizes, with
+  ablations on detection threshold (0.25/0.35/0.45) and iterative masking.
+  Backbones are LLaVA-v1.5 only; no proprietary or larger VLMs trained. Using
+  HIIs as vision-contrastive signals inside SENTINEL drives MOH HR_G to 8.6
+  but drops VQAv2 and TextVQA.
+
+
+  If you evaluate hallucination, counterfactual object removal is a sharper
+  probe than existing benchmarks.
+brief_generated_at: 2026-11-11
+brief_model: claude-opus-5
+brief_source: full-text

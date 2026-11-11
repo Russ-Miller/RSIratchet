@@ -1,0 +1,70 @@
+id: arxiv-2602-09367
+ref: SRC-1046
+kind: paper
+title: "CAPER: Constrained and Procedural Reasoning for Robotic Scientific
+  Experiments"
+authors:
+  - Jinghan Yang
+  - Jingyi Hou
+  - Xinbo Yu
+  - Wei He
+  - Yifan Wu
+year: 2026
+date: 2026-02-10
+arxiv_id: "2602.09367"
+url: https://arxiv.org/abs/2602.09367
+tags:
+  - ingested
+summary: Robotic assistance in scientific laboratories requires procedurally
+  correct long-horizon manipulation, reliable execution under limited
+  supervision, and robustness in low-demonstration regimes. Such conditions
+  greatly challenge end-to-end vision-language-action (VLA) models, whose
+  assumptions of recoverable errors and data-driven policy learning often
+  break down in protocol-sensitive experiments. We propose CAPER, a framework
+  for Constrained And ProcEdural Reasoning for robotic scientific experiments,
+  which explicitly restricts where learning and reasoning occur in the
+  planning and control pip
+notes: "Filed as a source on long-horizon-execution from the classifier's
+  judgement that the paper is about it (improves, medium): The paper proposes
+  a layered constrained-reasoning architecture that raises success rate and
+  procedural correctness over end-to-end VLA baselines especially in
+  long-horizon settings. No claim has been drafted from it yet."
+ingested_at: 2026-11-11
+brief: >-
+  Keeping procedural reasoning out of the action policy, rather than inside
+  it, raises success on protocol-sensitive long-horizon lab manipulation.
+  CAPER splits the stack: Meta-Llama-3.1-8B-Instruct does symbolic
+  chain-of-thought subtask decomposition with a verification-correction loop
+  and no visual input, a conditional diffusion predictor plus GPT-4o grounds
+  each subtask into 4 primitives (move, grasp, pour, stir), and DDPG handles
+  joint-level control.
+
+
+  Evaluation uses a CoppeliaSim UR3 lab benchmark (1,000 trials per task from
+  20 prompts x 50 scenes), real-world trials, and 5 RLBench tasks.
+
+
+  On the simulated benchmark CAPER reaches 80.3 on pick_place, 52.3 on mix and
+  30.1 on crystallize, against 43.2 and 21.0 for VLM+RL (GPT-4o) and near-zero
+  for DDPG alone. On RLBench it leads on put knife (73.2 vs 26.4 for
+  MoLe-CogAct) but trails on pick cup (48.0 vs 86.0 for CoT-VLA).
+
+
+  The module ablation is real and graded, isolating the task-level planner as
+  the component that matters mainly for long-horizon tasks. But no compute- or
+  data-matched baseline is reported, CoT-VLA was re-implemented by the authors
+  rather than run from official code, and training sets are tiny (25-88
+  samples per task).
+
+
+  Boundaries: 1 arm, 1 simulator, 7 tasks; real-world results come from 10-40
+  trials each and drop to 25.0% on crystallize; online latency is 15ms only
+  because LLM and predictor calls run offline.
+
+
+  If you are building lab automation, this argues for explicit symbolic plans
+  over end-to-end VLAs, with the caveat that the comparison favors the
+  authors' domain.
+brief_generated_at: 2026-11-11
+brief_model: claude-opus-5
+brief_source: full-text

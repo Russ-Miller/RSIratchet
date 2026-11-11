@@ -1,0 +1,41 @@
+id: 3b-vision-language-model-fine-tuned-chart-parsing-re-presenting-model-s
+ref: CLM-0961
+capability: self-repair
+technique: render-model-s-own-localizations-back-image
+statement: >-
+  For a 3B vision-language model fine-tuned on chart parsing, re-presenting
+  the model's own predicted data-point coordinates as markers drawn on the
+  original chart image and asking it to inspect them corrects most
+  structural perception errors (omissions, duplicates, mislocalizations)
+  that the same model does not detect when asked to review its output in
+  text, with gains concentrated on visually dense charts and almost entirely
+  in the first refinement round.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Chart parsing with a 3B Qwen2.5-VL model fine-tuned on synthetic chart data with a two-stage localize-then-decode format; the feedback is a rendering of the model's own output, not"
+sources:
+  - source: arxiv-2602-16455
+    stance: supports
+    note: >-
+      Validated by: SCRM average precision on ChartP-Bench against the same
+      model without the visual-feedback loop (38.41 vs 36.54 average, with
+      the hard subset 37.66 vs 35.14), plus per-round counts: 110 error
+      charts fall to 51 after one round with 92.3% error recall and 88.2%
+      precision on confirming already-correct localizations; later rounds
+      leave the error count roughly flat. Cost rises from 1 to at least 3
+      forward passes.. Measured on one benchmark the authors built (1,200
+      charts) with a single 3B backbone and one ablation arm; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-11
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A matched condition in
+  which the same model is given its coordinates as text (or a textual list
+  of flagged discrepancies) recovers the same error rate, or in which the
+  visual-feedback loop gives no advantage on charts with high data-point
+  density.
+submitted_by: agent:claude-opus-5@Russ-Miller
