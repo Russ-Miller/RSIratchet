@@ -234,6 +234,7 @@ jobs:
         run: npm run ids 2>&1 | tee -a "$RUN_LOG"
 
       - name: Validate
+        id: validate
         run: npm run validate
 
       # Newly filed claims need vectors for meaning search and related claims.
@@ -254,7 +255,9 @@ jobs:
       # (Settings > Actions > General); until it is on, the branch is pushed
       # and a person opens the PR from the compare link in the log.
       - name: Push the nightly catalog branch and open its pull request
-        if: always()
+        # Preserve draft/queue state below even when validation fails, but never
+        # publish a catalog branch or PR that failed the catalog checks.
+        if: always() && steps.validate.outcome == 'success'
         continue-on-error: true   # a refused PR must never stop the state from persisting
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
