@@ -1,0 +1,51 @@
+arxiv_id: "2602.20799"
+title: Unseen-Codebases-Domain Data Synthesis and Training Based on Code Graphs
+url: https://doi.org/10.48550/arxiv.2602.20799
+drafted_at: 2026-11-09
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: knowledge-updating
+statement: For 7B-32B open base models that must use a codebase absent from
+  pretraining, injecting the codebase by post-training on data synthesized
+  from a parsed code graph (dependency-ordered continued pretraining plus
+  reasoning-augmented SFT on relation, API-composition and test-derived usage
+  data) yields higher pass@1 on held-out code generation for that codebase
+  than retrieval-augmented prompting of much larger frontier models or than
+  generic code data-synthesis fine-tuning.
+kind: observation
+backing_strength: single-paper
+scope_condition: Codebases created after every evaluated model's knowledge
+  cutoff; C++ and Python; source code plus the project's own internal test
+  cases available as the only usage signal; 7B-32B Qwen backbones fully
+  fine-tuned.
+technique: ""
+proposed_technique: Synthesize unseen-codebase training data from a code graph
+technique_summary: Parse an unfamiliar codebase into a graph of entities and
+  dependency/call edges, use it to order files for dependency-preserving
+  continued pretraining, and to synthesize reasoning-augmented SFT data
+  covering single-hop relations, test-derived API compositions, and
+  test-converted usage tasks.
+technique_kind: training
+technique_validated_by: Compilation@1 and pass@1 on UnseenCodeBench (four
+  post-cutoff repos, 4 x ~60-64 hand-checked tasks) against RAG with five
+  frontier models and against OSS-Instruct and COTTON fine-tuning at matched
+  data scale; reported 25.5 absolute points over RAG with GPT-5.1 and 7.2-26.1
+  points over synthesis baselines, plus 36.0% pass@1 in a multi-codebase
+  single-model setting.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On codebases verified absent from pretraining, RAG with a strong
+  model matching or exceeding code-graph post-training at equal evaluation, or
+  the gain disappearing once the baselines are given the same
+  test-case-derived usage examples.
+evidence_note: Measured on a self-built benchmark of four repositories, with
+  contamination controlled by creation date and low base-model scores.
+  Benchmark tasks were LLM-generated then human-checked by the same authors,
+  so benchmark and method share design assumptions; general-domain data mixing
+  and data scale are matched for training baselines but RAG baselines differ
+  in model as well as method, so the 25.5-point figure confounds training with
+  model identity. Per-component ablations are announced but not in the
+  supplied text.
+confidence: low

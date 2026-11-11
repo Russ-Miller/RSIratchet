@@ -1,0 +1,66 @@
+id: arxiv-2602-12526
+ref: SRC-1059
+kind: paper
+title: Constraint-Rectified Training for Efficient Chain-of-Thought
+authors:
+  - Qinhang Wu
+  - Sen Lin
+  - Ming Zhang
+  - Yingbin Liang
+  - Ness B. Shroff
+year: 2026
+date: 2026-02-13
+arxiv_id: "2602.12526"
+url: https://arxiv.org/abs/2602.12526
+tags:
+  - ingested
+summary: Chain-of-Thought (CoT) has significantly enhanced the reasoning
+  capabilities of Large Language Models (LLMs), especially when combined with
+  reinforcement learning (RL) based post-training methods. While longer
+  reasoning traces can improve answer quality and unlock abilities such as
+  self-correction, they also incur high inference costs and often introduce
+  redundant steps, known as overthinking. Recent research seeks to develop
+  efficient reasoning strategies that balance reasoning length and accuracy,
+  either through length-aware reward design or prompt-based calibration.
+  However, these heuristic
+notes: "Filed as a source on cutting-to-the-chase from the classifier's
+  judgement that the paper is about it (improves, high): CRT is a constrained
+  post-training method that reduces redundant reasoning tokens while
+  preserving accuracy, improving output conciseness relative to what the task
+  needs. No claim has been drafted from it yet."
+ingested_at: 2026-11-11
+brief: >-
+  Treating correctness as a hard constraint relative to a frozen reference
+  model, rather than as a term mixed into a length reward, prunes
+  chain-of-thought without the accuracy erosion that length-reward methods
+  show.
+
+
+  Constraint-Rectified Training (CRT) alternates between minimizing normalized
+  response length and restoring accuracy only when minibatch accuracy drops
+  below the reference policy's, plus a second stage that maximizes accuracy
+  under a length budget inherited from stage 1. Trained with GRPO-style
+  rollouts in Verl on GSM8K+MATH, using DeepSeek-R1-Distilled-Qwen-1.5B and
+  Qwen3-4B, evaluated on GSM8K, MATH500, SAT Math, AMC23, AIME24, OLYMPIAD
+  Bench against ThinkPrune, L1, O1-Pruner, ShorterBetter, ACPO.
+
+
+  On DeepSeek-1.5B in-domain, CRT reaches 85.35 average accuracy at 2499.2
+  tokens versus the base model's 84.81 at 3428.0, with AES2 0.2901 against
+  0.1261 for ACPO and 0.0811 for ThinkPrune-1k. Conditioned on length
+  reduction, accuracy degrades in 12.5% of SAT Math cases versus 37.5% for
+  ThinkPrune-1k. A gzip compression ratio metric shows 0.423 for CRT versus
+  0.388 for ThinkPrune-1k at comparable length.
+
+
+  Evidenced by measured comparison against 6 reproduced baselines plus an
+  ablation separating stage 2 and a primal-dual variant; baselines were
+  reproduced by the authors, and accuracy is not uniformly better (AIME24
+  28.54 vs 30.42 base).
+
+
+  Math only, 2 models, 1.5B-4B. The reference-guard framing is worth adopting
+  if you tune length rewards.
+brief_generated_at: 2026-11-11
+brief_model: claude-opus-5
+brief_source: full-text

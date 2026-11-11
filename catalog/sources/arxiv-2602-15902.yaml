@@ -1,0 +1,76 @@
+id: arxiv-2602-15902
+ref: SRC-1068
+kind: paper
+title: "Doc-to-LoRA: Learning to Instantly Internalize Contexts"
+authors:
+  - Rujikorn Charakorn
+  - Edoardo Cetin
+  - Shinnosuke Uesaka
+  - Robert Tjarko Lange
+year: 2026
+date: 2026-02-13
+arxiv_id: "2602.15902"
+url: https://arxiv.org/abs/2602.15902
+tags:
+  - ingested
+summary: Long input sequences are central to in-context learning, document
+  understanding, and multi-step reasoning of Large Language Models (LLMs).
+  However, the quadratic attention cost of Transformers makes inference
+  memory-intensive and slow. While context distillation (CD) can transfer
+  information into model parameters, per-prompt distillation is impractical
+  due to training costs and latency. To address these limitations, we propose
+  Doc-to-LoRA (D2L), a lightweight hypernetwork that meta-learns to perform
+  approximate CD within a single forward pass. Given an unseen prompt, D2L
+  generates a LoRA adapt
+notes: "Filed as a source on long-context-degradation from the classifier's
+  judgement that the paper is about it (improves, medium): The paper proposes
+  a hypernetwork that internalizes long contexts into LoRA adapters, achieving
+  near-perfect needle retrieval at lengths exceeding the model's context
+  window, i.e., mitigating long-context degradation. No claim has been drafted
+  from it yet."
+ingested_at: 2026-11-11
+brief: >-
+  A hypernetwork can be meta-trained to emulate context distillation in a
+  single forward pass, producing a context-specific LoRA adapter that lets a
+  model answer queries without the context in its window. Doc-to-LoRA (D2L)
+  uses a Perceiver cross-attention module over the frozen target LLM's
+  per-layer activations, plus chunking that concatenates per-chunk adapters
+  along the rank dimension to handle inputs longer than the base context
+  window.
+
+
+  Base model is gemma-2-2b-it with an 8K context; D2L has 309M trainable
+  parameters and emits rank-8 LoRAs on MLP down projections. Evaluated on a
+  RULER-style needle-in-a-haystack task and 6 QA benchmarks (SQuAD, DROP,
+  ROPES, 2WikiMultihopQA, MultiFieldQA, QASPER).
+
+
+  On NIAH, trained only on 32-256 token contexts, accuracy stays near-perfect
+  to 40 chunks (40K tokens), with under 50 MB extra inference memory versus
+  more than 12 GB for 128K-token in-context. On SQuAD, D2L reaches 82.5% of
+  the in-context upper bound and internalizes in under 1 second, against about
+  40 seconds for oracle CD and over 100 seconds for vanilla CD. On
+  2WikiMultihopQA: 0.857 (batched) vs 0.901 oracle CD and 0.745 for CD with 25
+  generated queries, which needs 59.925 GB and 465 seconds.
+
+
+  Comparisons include matched in-parameter baselines (oracle CD, CD with
+  varying query counts, T2L) and LLMLingua-2 compression, with latency and
+  memory reported, so the efficiency claim is measured rather than argued.
+  Query-count sweeps on 100 SQuAD samples (0.506 at 20 queries to 0.650 at
+  100, vs D2L 0.866) support the "emulates many-query CD" explanation, though
+  oracle CD still wins on accuracy.
+
+
+  Boundaries: 1 main base model (2 others only in appendix), small 2B scale,
+  QA-style extraction tasks, and a swapped query-internalization test where
+  precision collapses to 0.044. A VLM encoder transfers visual information
+  zero-shot at 75.03% on Imagenette but degrades text QA.
+
+
+  If you need frequent, low-latency knowledge updates, amortized distillation
+  is a real alternative to per-prompt finetuning, but not yet an accuracy win
+  over direct distillation.
+brief_generated_at: 2026-11-11
+brief_model: claude-opus-5
+brief_source: full-text

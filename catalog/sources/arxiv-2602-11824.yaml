@@ -1,0 +1,67 @@
+id: arxiv-2602-11824
+ref: SRC-1056
+kind: paper
+title: "Revis: Sparse Latent Steering to Mitigate Object Hallucination in
+  Large Vision-Language Models"
+authors:
+  - Jialin Wu
+  - Wei Shi
+  - Han Shen
+  - Peigui Qi
+  - Kunsheng Tang
+  - Zhicong Huang
+year: 2026
+date: 2026-02-12
+arxiv_id: "2602.11824"
+url: https://arxiv.org/abs/2602.11824
+tags:
+  - ingested
+summary: Despite the advanced capabilities of Large Vision-Language Models
+  (LVLMs), they frequently suffer from object hallucination. One reason is
+  that visual features and pretrained textual representations often become
+  intertwined in the deeper network layers. To address this, we propose REVIS,
+  a training-free framework designed to explicitly re-activate this suppressed
+  visual information. Rooted in latent space geometry, REVIS extracts the pure
+  visual information vector via orthogonal projection and employs a calibrated
+  strategy to perform sparse intervention only at the precise depth where
+  suppress
+notes: "Filed as a source on visual-grounding from the classifier's judgement
+  that the paper is about it (improves, high): The paper proposes a
+  training-free latent steering method that reduces object hallucination rates
+  ~19% over baselines while preserving general reasoning. No claim has been
+  drafted from it yet."
+ingested_at: 2026-11-11
+brief: >-
+  Steering a vision-language model's activations along a visual direction only
+  works if that direction is first orthogonalized against the model's language
+  prior; otherwise high steering strengths collapse generation and gut general
+  reasoning.
+
+
+  Revis builds a raw visual vector as the mean difference between hidden
+  states with and without the image (100 paired examples from Nullu), projects
+  out a "language prior" vector (hallucinated minus refusal response with no
+  image) via Gram-Schmidt, picks a single intervention layer by calibration on
+  100 COCO images, and fires only when cosine-similarity risk crosses a
+  percentile threshold. Evaluated on POPE, CHAIR, MME, MM-Vet and MMMU-Pro
+  across Qwen2.5-VL-7B/32B, Qwen3-VL-8B, LLaVA-1.5, LLaVA-NeXT, InternVL3 and
+  InternVL3.5, against VCD, M3ID, ONLY, AGLA and VTI.
+
+
+  On Qwen2.5-VL, CHAIR_S falls from 31.00 to 25.00 while MM-Vet rises from
+  70.18 to 72.16; VTI cuts hallucination too but drops MM-Vet to 56.38.
+  LLaVA-1.5 CHAIR_S goes 54.00 to 30.00. Time per token stays at 0.025s versus
+  ~0.05s for contrastive decoding.
+
+
+  Ablations isolate the three components: shallow-layer steering (Layer 23)
+  hurts both CHAIR_S (37.00%) and MM-Vet (60.37); removing the threshold
+  collapses LLaVA-1.5 into repetition loops. The orthogonality claim rests on
+  cosine-similarity observations plus the collapse contrast, not a direct
+  causal test. Only 7B/8B and 32B models; no 70B+.
+
+
+  If you steer activations, orthogonalize first and gate on risk.
+brief_generated_at: 2026-11-11
+brief_model: claude-opus-5
+brief_source: full-text

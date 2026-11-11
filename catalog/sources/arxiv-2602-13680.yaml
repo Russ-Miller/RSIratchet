@@ -1,0 +1,67 @@
+id: arxiv-2602-13680
+ref: SRC-1062
+kind: paper
+title: "AllMem: A Memory-centric Recipe for Efficient Long-context Modeling"
+authors:
+  - Ziming Wang
+  - Xiang Xiang Wang
+  - Kailong Peng
+  - Lang Qin
+  - Juan Gabriel Kostelec
+  - Christos Sourmpis
+year: 2026
+date: 2026-02-14
+arxiv_id: "2602.13680"
+url: https://arxiv.org/abs/2602.13680
+tags:
+  - ingested
+summary: Large Language Models (LLMs) encounter significant performance
+  bottlenecks in long-sequence tasks due to the computational complexity and
+  memory overhead inherent in the self-attention mechanism. To address these
+  challenges, we introduce \textsc{AllMem}, a novel and efficient hybrid
+  architecture that integrates Sliding Window Attention (SWA) with non-linear
+  Test-Time Training (TTT) memory networks. \textsc{AllMem} enables models to
+  effectively scale to ultra-long contexts while mitigating catastrophic
+  forgetting. This approach not only overcomes the representation constraints
+  typical of linear
+notes: "Filed as a source on long-context-degradation from the classifier's
+  judgement that the paper is about it (improves, medium): The paper proposes
+  an architecture that retains or exceeds full-attention long-context accuracy
+  at 128k while cutting cost, i.e., a technique improving long-context
+  performance. No claim has been drafted from it yet."
+ingested_at: 2026-11-11
+brief: >-
+  Replacing full attention with a 4k sliding window plus a non-linear
+  test-time-training memory module, then distilling from the original model,
+  keeps most long-context accuracy and recovers more than a Mamba-2 memory in
+  the same slot. AllMem adds a parallel memory branch to each decoder layer,
+  freezes the SWA and MLP weights, and trains only the memory meta-parameters
+  via forward-KL distillation from the base Qwen3 teacher.
+
+
+  Tested on Qwen3-0.6B and Qwen3-1.7B, with short-task benchmarks (C-Eval,
+  MMLU-Redux, MATH-500, LiveCodeBench) and long-context LongBench (6 subtasks,
+  average length 37052), InfiniteBench and LV-Eval at 128k.
+
+
+  On LongBench the 0.6B AllMem scores 27.33 against 28.16 for full attention,
+  a 0.83 drop, while SWA-with-sinks gets 25.71 and the Mamba variant 27.01. At
+  128k on LV-Eval the 1.7B variant reaches 5.56 versus 5.29 full attention; on
+  InfiniteBench longbook_qa_cn it reaches 12.74 versus 2.42. Added parameters
+  are 66M (9.9%) and 126M (6.8%). FLOPs and cache fall to about 1/9 of full
+  attention at 128k.
+
+
+  Matched baselines exist: the Mamba arm swaps only the memory module with
+  parameters held constant, which isolates the non-linear memory. Training
+  budgets are small (3M and 5M tokens) and only 1 model family at 0.6B-1.7B
+  was tested; absolute long-context scores are low enough that gains over full
+  attention may reflect noise suppression on near-floor tasks. Decoding
+  hyperparameters were not tuned for the memory model.
+
+
+  If you want constant-cache long context from an existing checkpoint, this is
+  a cheap conversion path worth replicating at larger scale.
+brief_generated_at: 2026-11-11
+brief_model: claude-opus-5
+brief_source: full-text

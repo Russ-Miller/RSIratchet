@@ -1,0 +1,48 @@
+arxiv_id: "2604.06196"
+title: Compositional Consistency-Guided Decoding for Three-Way Logical
+  Question Answering
+url: https://doi.org/10.48550/arxiv.2604.06196
+drafted_at: 2026-11-08
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: abstention-and-self-knowledge
+statement: For instruction-tuned API models answering three-way logical QA
+  (True/False/Unknown) under a strict no-chain-of-thought schema, querying
+  both a hypothesis and its mechanically negated form and resolving the pair
+  through the deterministic negation map recovers determinate cases the
+  single-call classifier had abstained on, lowering epistemic Unknown without
+  lowering accuracy on the answers it does give.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: FOLIO validation, 204 examples, first-order-logic formula
+  inputs where negation can be applied mechanically; two API models (GPT-5.2,
+  Claude Sonnet 4.5); temperature 0, structured output, no chain-of-thought;
+  costs 4-5 model calls per example instead of 1.
+technique: ""
+proposed_technique: Resolve a hypothesis and its negation against the negation map
+technique_summary: Classify both H and NOT-H three ways, accept pairs
+  consistent with the fixed negation map, re-query only the abstaining side,
+  fall back to binary entailment probes when both abstain, and adjudicate
+  decisive contradictions.
+technique_kind: decoding
+technique_validated_by: Accuracy on FOLIO FOL validation rose 63.7 to 68.1
+  (GPT-5.2, paired bootstrap CI +1.5 to +7.4) and 42.2 to 49.0 (Claude, CI
+  +3.4 to +10.3) against a single-call baseline using the same prompt family;
+  epistemic Unknown fell 41.5 to 36.3 and 72.6 to 53.3; answered accuracy rose
+  on both models, so abstentions were not swapped for weak guesses. No
+  matched-call self-consistency baseline was run.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Running the same wrapper against a self-consistency baseline at
+  matched call budget (4-5 calls) and finding equal or higher accuracy and
+  lower epistemic Unknown for plain resampling, or finding the gain disappears
+  on natural-language FOLIO inputs where negation must be interpreted.
+evidence_note: Measured on one 204-example validation split, two proprietary
+  models, one prompt family, FOL-formula inputs only. The compute-matched
+  baseline is absent, so part of the gain may come from extra calls rather
+  than from the negation constraint. On Claude the method also over-resolved
+  genuine Unknowns (gold-Unknown kept 81.2 to 69.6), so the net gain hides a
+  reliability loss on underspecified items.
+confidence: low

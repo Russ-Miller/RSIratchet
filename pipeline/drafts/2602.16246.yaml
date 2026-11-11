@@ -1,0 +1,46 @@
+arxiv_id: "2602.16246"
+title: "Toward Scalable Verifiable Reward: Proxy State-Based Evaluation for
+  Multi-turn Tool-Calling LLM Agents"
+url: https://doi.org/10.48550/arxiv.2602.16246
+drafted_at: 2026-11-10
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: "In LLM-simulated agent environments where a user simulator and
+  tool simulators are conditioned on a written scenario, fabrication rates
+  track the completeness of that scenario rather than the simulator model
+  alone: randomly deleting system facts raises tool hallucination and deleting
+  user facts raises user hallucination, monotonically with the fraction
+  removed, while a fully specified scenario holds both near 1%."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: 208 synthetic e-commerce/account-management scenarios;
+  simulators, state tracker and judges instantiated with a frontier model at
+  medium reasoning effort; hallucination measured by a separate LLM judge
+  against the scenario text.
+technique: ""
+proposed_technique: Fully specify every fact a simulator will need in the scenario
+technique_summary: Write the scenario object to contain all user facts and
+  initial system-state facts the user and tool simulators could need, and
+  forbid the simulators from asserting anything not grounded in those facts or
+  the agent's subquery.
+technique_kind: process
+technique_validated_by: "Ablation randomly removing fractions of system or
+  user facts: tool hallucination rate and user hallucination rate rise
+  monotonically with removal; the complete specification yields 1.33% tool and
+  0.67% user hallucination, and a weaker state tracker (GPT-4o) raises tool
+  hallucination to 3.61%."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Deleting scenario facts leaves simulator hallucination rates flat,
+  or a fully specified scenario still produces high fabrication rates,
+  indicating the driver is the simulator model rather than the specification.
+evidence_note: Measured on 51 test scenarios, 10 rollouts each, with
+  hallucination labelled by an LLM judge reported at >90% agreement with two
+  human experts. The ablation shows direction and monotonicity but no effect
+  sizes are quoted in the text, and the judge shares a model family with the
+  simulators in the default setup, so judge-simulator correlation is not fully
+  isolated.
+confidence: medium

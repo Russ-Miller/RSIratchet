@@ -1947,6 +1947,26 @@ candidates:
       turn-take rate (78.0\%); and the Cascaded baseline, despite a perfect turn-take rate, incurs
       the highest latency (10.12~s). Across all systems, self-correction handling and multi-step
       reasoning under hard scenarios remain the most consistent failure modes.
+    verdicts:
+      - capability: tool-use
+        about_capability: true
+        direction: measures
+        confidence: high
+        rationale: It introduces a benchmark and reports accuracy/latency/turn-taking of existing systems on
+          multi-step tool use without proposing or breaking a technique.
+        scope_condition: Spoken/full-duplex voice agents (GPT-Realtime, Gemini Live, Grok, Ultravox,
+          cascaded) on chained API-call tasks with real disfluent human audio
+        classified_at: 2026-11-07
+        model: claude-opus-5
+      - capability: self-repair
+        about_capability: false
+        direction: not_applicable
+        confidence: medium
+        rationale: The paper benchmarks full-duplex voice agents' tool use and turn-taking, mentioning
+          self-correction handling (of user speech disfluencies) only as a failure mode, not
+          studying models repairing their own wrong answers.
+        classified_at: 2026-11-07
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7150736206
     score: 16
     signals:
@@ -1986,6 +2006,16 @@ candidates:
       overhead, convergence at moderate complexity, and a structural advantage on computational
       queries requiring parallel data gathering. Beyond latency, the separation enforces behavioural
       guarantees that ReAct cannot match throug"
+    verdicts:
+      - capability: planning
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper proposes an execution kernel/security architecture for agent tool-calling,
+          evaluated on latency and behavioral guarantees, not on the validity or optimality of
+          model-produced plans.
+        classified_at: 2026-11-07
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7161948647
     score: 16
     signals:
@@ -2026,6 +2056,18 @@ candidates:
       consistently outperforms strong baselines with reduced computational overhead. Furthermore,
       models trained with ProxyCoT generalize their long-context reasoning capabilities to
       out-of-domain tasks.
+    verdicts:
+      - capability: long-context-degradation
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: The paper documents a performance gap between short proxy and full long contexts and
+          proposes a training framework that reduces it, improving long-context reasoning accuracy.
+        supports_claim_id: holding-task-fixed-only-lengthening-input-degrades-reasoning
+        scope_condition: LLMs fine-tuned with ProxyCoT (RL/distilled CoT on short proxy contexts, then SFT
+          grounded in full long contexts) on long-context reasoning datasets
+        classified_at: 2026-11-07
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7149018500
     score: 16
     signals:
@@ -2066,6 +2108,15 @@ candidates:
       benign prompt benchmarks, multiple LLMs, and state-of-the-art guardrail baselines demonstrate
       that SelfGrader achieves strong robustness with low false positive rates, memory overhead, and
       latency.
+    verdicts:
+      - capability: prompt-injection
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper is about jailbreak detection of malicious user queries, not instructions hidden
+          in retrieved data or tool outputs.
+        classified_at: 2026-11-07
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7148253449
     score: 16
     signals:
@@ -2103,6 +2154,17 @@ candidates:
       heuristic UE metrics as direct indicators of uncertainty about factual correctness, and
       position our TAC as a principled step toward more reliable uncertainty estimation for LLMs.
       The code repository is available at https://github.com/ponhvoan/TruthAnchor/.
+    verdicts:
+      - capability: abstention-and-self-knowledge
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes Truth AnChoring, a post-hoc calibration mapping that improves
+          alignment of uncertainty scores with factual correctness.
+        scope_condition: Post-hoc calibration of UE scores for LLM factual correctness, including
+          noisy/few-shot supervision
+        classified_at: 2026-11-07
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7148745736
     score: 16
     signals:
@@ -2147,6 +2209,17 @@ candidates:
       269.65 average tracking frames, significantly outperforming existing baselines. Furthermore,
       it demonstrates robust zero-shot generalization in unseen environments and reduces single-step
       inference latency by 33.4\% (to 0.0571s) compared to the origina
+    verdicts:
+      - capability: embodied-control
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: The paper proposes architectural changes (temporal compression, dual-branch
+          grounding+flow-matching decoder) that raise closed-loop UAV tracking success and reduce
+          inference latency.
+        scope_condition: VLA-based UAV embodied visual tracking in CARLA simulation, built on the π0.5 architecture
+        classified_at: 2026-11-07
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7150754923
     score: 16
     signals:
@@ -2185,6 +2258,18 @@ candidates:
       showing that supervised fine-tuning effectively limits the adversarial attack abilities
       enabled by WO, without drastically affecting hallucination rates or natural language
       performance.
+    verdicts:
+      - capability: hallucination
+        about_capability: true
+        direction: degrades
+        confidence: medium
+        rationale: The paper reports that jailbreak-tuning-based unalignment leaves models substantially
+          more prone to hallucination than weight-orthogonalization unalignment, i.e. an
+          intervention that worsens factual reliability as a side effect.
+        scope_condition: Six popular LLMs of various sizes subjected to safety unalignment via
+          jailbreak-tuning vs weight orthogonalization, evaluated on malicious and benign tasks
+        classified_at: 2026-11-07
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7148512853
     score: 24
     signals:

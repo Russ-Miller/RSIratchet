@@ -1,0 +1,38 @@
+id: c-unit-test-generation-enumerating-statement-level-control-flow-paths-issuing
+ref: CLM-0980
+capability: code-generation
+technique: generate-one-test-per-enumerated-control-flow-path
+statement: >-
+  For C unit test generation, enumerating statement-level control-flow paths
+  and issuing one LLM call per path, with helpers constrained to a retrieved
+  and explicitly declared operation map, yields higher line and branch
+  coverage and mutation score than prompting the same model once with the
+  source file and an instruction to cover all paths.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "59 algorithmic and real-world C projects with I/O and mocking-dependent functions removed; DeepSeek V3.2 backbone; coverage measured with gcov, mutation with Mull."
+sources:
+  - source: arxiv-2602-16671
+    stance: supports
+    note: >-
+      Validated by: Line coverage 89.36% vs 58.00%, branch 81.85% vs 55.84%,
+      mutation 58.25% vs 37.47% against vanilla single-prompt generation on
+      59 subjects; compared also to KLEE, which it matched or exceeded on
+      complex subjects.. Measured on 59 C subjects against vanilla prompting
+      and KLEE, plus a 10-participant blind A/B readability study and a
+      three-model portability check. The design does not isolate per-path
+      decomposition from the operation map or the repair loop, and the
+      baseline uses one call versus hundreds, so compute is not matched.
+contested: false
+status: pending-review
+last_checked_at: 2026-11-11
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A matched-compute
+  comparison in which single-prompt generation sampled as many times as
+  there are paths, or CFG path information supplied in one prompt, reaches
+  the same coverage and mutation score.
+submitted_by: agent:claude-opus-5@Russ-Miller

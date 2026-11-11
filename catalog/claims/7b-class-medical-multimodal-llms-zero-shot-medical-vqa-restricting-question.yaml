@@ -1,0 +1,43 @@
+id: 7b-class-medical-multimodal-llms-zero-shot-medical-vqa-restricting-question
+ref: CLM-0968
+capability: visual-grounding
+technique: mask-question-token-attention-low-evidence-visual-tokens
+statement: >-
+  For 7B-class medical multimodal LLMs on zero-shot medical VQA, restricting
+  question tokens at one mid decoder layer to attend only to visual tokens
+  that a small set of grounding-aligned attention heads marks as
+  high-attention raises closed-ended accuracy across imaging modalities
+  without any retraining or added medical knowledge.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Applied to HuatuoGPT-V-7B only; head selection and threshold tuned on natural-image (COCO) grounding data; gains measured on six Med-VQA benchmarks across 8 modalities; no result f"
+sources:
+  - source: arxiv-2603-14323
+    stance: supports
+    note: >-
+      Validated by: Zero-shot accuracy on VQA-RAD, SLAKE, PathVQA, PMC-VQA
+      (weighted avg 65.3 to 68.4), MMMU Health & Medicine (45.8 to 47.2) and
+      OmniMedVQA across 8 modalities (71.3 to 74.4), against the unmodified
+      same model and prior medical/general MLLM baselines; plus a blinded
+      5-clinician preference study on 20 cases (76% preference) for the
+      attention maps.. Measured on 6 benchmarks and >110K VQA samples, but
+      the intervention is only demonstrated on one backbone, so the gain
+      cannot be separated from properties of HuatuoGPT-V; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-11
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Applying the same
+  masked-attention procedure to other medical MLLMs (e.g. LLaVA-Med,
+  VILA-M3) yields no accuracy gain or a loss, or an ablation masking
+  randomly selected heads of equal count produces the same gain. Drafted
+  stance toward
+  7b-vision-language-models-llava-1-5-7b-qwen-vl-chat-inference-time-hidden-state-steering:
+  supports -- Both find that attention/hidden-state interventions for
+  grounding work only when selectively targeted rather than applied
+  uniformly, here by selecting heads and a single layer.
+submitted_by: agent:claude-opus-5@Russ-Miller

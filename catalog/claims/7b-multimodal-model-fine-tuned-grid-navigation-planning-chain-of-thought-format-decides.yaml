@@ -1,0 +1,42 @@
+id: 7b-multimodal-model-fine-tuned-grid-navigation-planning-chain-of-thought-format-decides
+ref: CLM-0970
+capability: planning
+technique: interleave-move-rationale-redrawn-compact-grid-cot
+statement: >-
+  When a 7B multimodal model is fine-tuned on grid-navigation planning,
+  chain-of-thought format decides whether anything survives a distribution
+  shift: traces that interleave a natural-language step justification with a
+  re-drawn compact ASCII grid of the post-move map keep non-trivial success
+  on maps larger and with longer start-goal distance than training (41%
+  average on out-of-distribution maps with start-goal distance >= 6, 20% on
+  10x10), while no-CoT and narration-only CoT fall to near 0% at the first
+  shift.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen2.5-VL-7B-Instruct supervised fine-tuned on 1,000 FrozenLake maps up to 6x6 with start-goal distance <= 5; out-of-distribution means larger maps, larger start-goal distance, or"
+sources:
+  - source: arxiv-2602-15460
+    stance: supports
+    note: >-
+      Validated by: Move-sequence validity simulated in the environment (no
+      hole entered, ends on treasure), against same-model no-CoT,
+      description-only, grid-only and table-only CoT variants, plus
+      image-input and Mirage latent-reasoning baselines, on in-distribution
+      3x3-6x6 maps and out-of-distribution 7x7-10x10 maps with and without
+      controlled start-goal distance.. Measured on one base model and one
+      task family, with three separately controlled shift axes (map size,
+      start-goal distance at fixed 10x10 size, optimal solution length) and
+      200 test maps per cell. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-11
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A model fine-tuned with
+  the combined grid-plus-description traces scores no better than
+  narration-only or no-CoT traces on maps whose size and start-goal distance
+  both exceed the training range, under matched data and training budget.
+submitted_by: agent:claude-opus-5@Russ-Miller

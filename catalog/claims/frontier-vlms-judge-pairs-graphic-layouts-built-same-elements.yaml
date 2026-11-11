@@ -1,0 +1,38 @@
+id: frontier-vlms-judge-pairs-graphic-layouts-built-same-elements
+ref: CLM-0988
+capability: critique
+technique: train-layout-judge-tie-admitting-four-class-preference
+statement: >-
+  When frontier VLMs judge pairs of graphic layouts built from the same
+  elements, their accuracy on picking the better one (binary ~0.69-0.72) far
+  overstates their agreement with humans once the label set admits 'both
+  good' and 'both bad' (Macro F1 ~0.27-0.30, Cohen's kappa ~0.13-0.16),
+  because they misallocate clear preferences and ties.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Pairwise layout preference judging where both layouts contain identical elements in different spatial arrangements; 1,000-pair held-out test split plus out-of-distribution PrismLay"
+sources:
+  - source: arxiv-2602-23438
+    stance: supports
+    note: >-
+      Validated by: Against open-source reward models (ImageReward, HPSv3,
+      PickScore) and proprietary VLM judges on 1,000 held-out
+      human-annotated pairs: Macro F1 0.456 vs 0.295 best baseline, binary
+      accuracy 0.732 vs 0.719; ablation removing perturbation augmentation
+      drops Macro F1 to 0.406; downstream, swapping it in as the RL judge
+      raised AesthetiQ win rate 14.27%->17.97% (GPT-4o judge) and best-of-10
+      selection raised win rate 16.6%->20.2% (GPT-5 judge, 20% of Crello
+      test).. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-11
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Frontier VLMs scoring on
+  layout-pair preference with four-class Macro F1 and kappa proportionate to
+  their binary accuracy (e.g. kappa above 0.4 at binary ~0.72), or the gap
+  disappearing when ties are scored under a different aggregation.
+submitted_by: agent:claude-opus-5@Russ-Miller

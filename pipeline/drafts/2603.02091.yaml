@@ -1,0 +1,48 @@
+arxiv_id: "2603.02091"
+title: Learning from Synthetic Data Improves Multi-hop Reasoning
+url: https://doi.org/10.48550/arxiv.2603.02091
+drafted_at: 2026-11-09
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-step-reasoning
+statement: For 0.6-4B Qwen and Phi models, RL fine-tuning with outcome-only
+  verifiable rewards on rule-generated synthetic multi-hop data (fictional
+  entities, template-generated questions) raises F1 on real-world multi-hop QA
+  benchmarks (HotpotQA, 2WikiMultihopQA, MuSiQue, CofCA, SynthWorlds-RM), with
+  the largest relative gains for the smallest models, while supervised
+  fine-tuning on the same synthetic solution traces raises synthetic-task
+  accuracy and leaves real-world accuracy flat.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Small models (0.6-4B) evaluated in-context with distractor
+  paragraphs; synthetic data shares zero factual overlap with the benchmarks;
+  RL fine-tuning on in-domain real-world data still beats synthetic-to-real
+  transfer.
+technique: ""
+proposed_technique: RL fine-tune on rule-generated synthetic multi-hop data
+technique_summary: Train with GRPO and exact-match or F1 rewards on template-
+  and logic-program-generated questions over fictional worlds, instead of
+  curating human or LLM-generated reasoning data.
+technique_kind: training
+technique_validated_by: F1 on 500-sample subsets of five real-world multi-hop
+  benchmarks, versus the untuned base model and versus a format-reward-only
+  control; Qwen3 and Phi already formatted answers correctly, so their gains
+  cannot be format learning. SFT compared on GSM-inf accuracy and HotpotQA F1.
+  Held-out fictional worlds and out-of-domain hop counts used to rule out
+  memorization. Two training seeds per cell.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Matched-compute RL fine-tuning on synthetic data showing no gain
+  over the base model on real-world multi-hop benchmarks for models whose
+  output format is already correct, or showing the gain disappears once
+  answer-format and length effects are controlled.
+evidence_note: Measured across four model families/sizes, four synthetic
+  generators and five real benchmarks, with a format-only reward ablation that
+  isolates formatting from composition, and held-out-world plus OOD-complexity
+  tests against the memorization-surfacing hypothesis. Scale is small
+  (0.6-4B); larger-model figures are relegated to appendix. Relative gains
+  cited (56-131%) come off a weak 0.6B base. SFT-vs-RL comparison is on one
+  dataset (GSM-inf) and two models, and does not match compute.
+confidence: medium

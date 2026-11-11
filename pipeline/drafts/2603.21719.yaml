@@ -1,0 +1,45 @@
+arxiv_id: "2603.21719"
+title: Probing How Scalable Table Data Enhances General Long-Context Reasoning
+url: https://doi.org/10.48550/arxiv.2603.21719
+drafted_at: 2026-11-07
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: long-context-degradation
+statement: For 14B-32B open reasoning and instruct backbones, RL post-training
+  on synthesized multi-table SQL tasks (verifiable execution answers, filtered
+  to 0<pass rate<1) raises accuracy on held-out long-context benchmarks by
+  roughly 5-9 points on average and lifts needle-in-a-haystack retrieval
+  sharply, with gains that transfer to math, code and science benchmarks.
+kind: observation
+backing_strength: single-paper
+scope_condition: Four 14B-32B backbones (Qwen2.5-32B-Instruct, Qwen3-32B,
+  DeepSeek-R1-Distill-Qwen 14B/32B); training inputs up to 16k tokens;
+  evaluation on seven long-context benchmarks plus four OOD ones.
+technique: ""
+proposed_technique: RL on synthesized multi-table SQL tasks for long context
+technique_summary: Aggregates 10,000+ real tables into SQLite environments,
+  has an LLM generate retrieval, aggregation and JOIN queries with
+  natural-language phrasings, executes them for ground-truth answers, keeps
+  only items with intermediate pass rates, and trains with GRPO.
+technique_kind: training
+technique_validated_by: "Average accuracy across seven long-context benchmarks
+  (LongBench-v2, Loong, BrowseCompLong, GSM-Infinite, Oolong, RULER, MRCR)
+  against the untrained backbone: +8.24 for DS-R1-Distill-32B, +8.93 for 14B,
+  +4.94 and +4.79 for the Qwen backbones; NIAH retrieval 87.95 to 99.40 (32B)
+  and 69.30 to 91.20 (14B); OOD gains on GPQA, AIME 2025, MultiChallenge,
+  LiveCodeBench."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Training the same backbones on an equal-token,
+  equal-difficulty-filtered corpus of non-tabular verifiable long-context
+  tasks yields the same or larger benchmark gains, showing the tabular
+  structure is not what produced them.
+evidence_note: Measured across four backbones and eleven benchmarks against
+  untrained baselines, with ablations on cell count, table count, semantics
+  and delimiters. No matched-token non-table control condition, so the gain
+  cannot be attributed to the periodic tabular structure rather than to
+  verifiable long-context RL in general; the mutual-information argument is
+  theoretical, resting on stated column-distribution assumptions.
+confidence: medium

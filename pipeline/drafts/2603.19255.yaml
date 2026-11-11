@@ -1,0 +1,49 @@
+arxiv_id: "2603.19255"
+title: "LARFT: Closing the Cognition-Action Gap for Length Instruction
+  Following in Large Language Models"
+url: https://doi.org/10.48550/arxiv.2603.19255
+drafted_at: 2026-11-09
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: procedure-following
+statement: For 3B-8B instruct models trained with GRPO on a verifiable length
+  reward, adding an auxiliary supervised task that asks the model to count the
+  words of its own sampled outputs raises length-constraint adherence beyond
+  reward-only RL, and the gain depends on the two objectives being trained
+  jointly on a decaying schedule rather than the awareness task being used
+  only as initialization.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Four open 3B-8B instruct backbones (Qwen2.5, Llama-3),
+  word-count constraints from 10 to 4,000 words, three length-following
+  benchmarks; not tested on other constraint types.
+technique: ""
+proposed_technique: Train on counting your own output length alongside length RL
+technique_summary: During length-reward GRPO, replay the policy's own rollouts
+  relabelled as 'count the words in the text above' with the measured length
+  as the target, and add that supervised loss to the RL loss under a
+  cosine-decaying weight.
+technique_kind: training
+technique_validated_by: "Length Score, Length Deviation, MAE and quality
+  metrics on LIFEBench, LongBench and Lenctrl-Bench across four backbones
+  versus untuned, SFT, GRPO-only, SFT+RL, Ruler and PositionID; reported
+  +20.92 average over base models and +4.59 over the best RL baseline, with
+  -1.45 on four general benchmarks. Ablations: awareness-SFT alone barely
+  moved length following (46.0 to 46.8 on one model), awareness-then-RL beat
+  plain RL by 3.93 but trailed joint training by 2.95, and removing the cosine
+  schedule dropped LIFEBench LS from 80.57 to 73.44."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An equal-compute run where the awareness loss is removed (or
+  replaced by an unrelated auxiliary loss) matches joint training on length
+  adherence, or where awareness-only initialization followed by RL matches
+  joint training.
+evidence_note: Measured on four backbones and three length benchmarks with six
+  baselines, plus a probing analysis arguing the model internalizes length.
+  The schedule and ordering ablations are reported on a single backbone
+  (Qwen2.5-7B), so the mechanism claim about joint-vs-sequential rests on
+  narrower evidence than the headline gain. No matched-compute control for the
+  extra supervised loss.
+confidence: medium

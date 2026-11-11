@@ -1,0 +1,67 @@
+id: arxiv-2602-12311
+ref: SRC-1057
+kind: paper
+title: Perceptual Self-Reflection in Agentic Physics Simulation Code Generation
+authors:
+  - Prashant Shende
+  - Bradley Camburn
+year: 2026
+date: 2026-02-12
+arxiv_id: "2602.12311"
+url: https://arxiv.org/abs/2602.12311
+tags:
+  - ingested
+summary: "We present a multi-agent framework for generating physics simulation
+  code from natural language descriptions, featuring a novel perceptual
+  self-reflection mechanism for validation. The system employs four
+  specialized agents: a natural language interpreter that converts user
+  requests into physics-based descriptions; a technical requirements generator
+  that produces scaled simulation parameters; a physics code generator with
+  automated self-correction; and a physics validator that implements
+  perceptual self-reflection. The key innovation is perceptual validation,
+  which analyzes rendered animation"
+notes: "Filed as a source on code-generation from the classifier's judgement
+  that the paper is about it (improves, medium): The paper proposes a
+  perceptual self-reflection validation loop that reportedly improves
+  physics-accuracy of generated simulation code over single-shot generation
+  baselines. No claim has been drafted from it yet."
+ingested_at: 2026-11-11
+brief: >-
+  Feeding rendered animation frames back to a vision model, rather than
+  inspecting the code, catches physics errors that execution-based testing
+  cannot see. The claim is supported here only by a small qualitative
+  demonstration, and the headline accuracy number comes from the system
+  grading itself.
+
+
+  The setup is a 4-agent pipeline on Claude Sonnet 4.5 and Haiku 4.5: a
+  language interpreter, a requirements generator that rescales physical
+  parameters, a matplotlib code generator with a 5-attempt self-correction
+  loop (syntax, runtime, 30-second timeout, silent failure), and a validator
+  that executes the animation, captures 8 PNG frames at uniform intervals, and
+  asks the vision model for per-criterion PASS/FAIL/UNCERTAIN. Up to 10
+  iterations, with plateau stopping after 3 non-improving rounds. 10 scenarios
+  across 7 domains, from FDTD electromagnetics to Gray-Scott
+  reaction-diffusion plus 1 non-physics population-growth plot.
+
+
+  Across 7 scenarios the perceptual validator rated the pipeline at 91%
+  average physics accuracy, with 86% of scenarios clearing the ≥85% threshold.
+  Cost was roughly $0.20 per animation. The comparison baseline is not run
+  here: it is GPT-4's approximately 40% single-shot success rate reported by
+  Ali-Dib and Menou, plus 4 side-by-side figures where single-shot failed in
+  3.
+
+
+  Evidence is weak by design. The judge and the generator share a model
+  family, there is no matched-budget single-shot run, no human physics expert
+  scoring, and n is single digits. Gray-Scott failed because the validator
+  applied energy conservation to a dissipative system, and slow-evolving
+  scenes were misread as static.
+
+
+  Treat this as an architecture proposal, not as measured evidence that visual
+  self-reflection fixes the oracle gap.
+brief_generated_at: 2026-11-11
+brief_model: claude-opus-5
+brief_source: full-text
