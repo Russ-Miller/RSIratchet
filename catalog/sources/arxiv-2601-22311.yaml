@@ -1,0 +1,73 @@
+id: arxiv-2601-22311
+ref: SRC-1051
+kind: paper
+title: "Why Reasoning Fails to Plan: A Planning-Centric Analysis of
+  Long-Horizon Decision Making in LLM Agents"
+authors:
+  - Zehong Wang
+  - Fang Wu
+  - Hongru Wang
+  - Xiangru Tang
+  - Bolian Li
+  - Zhenfei Yin
+year: 2026
+date: 2026-01-29
+arxiv_id: "2601.22311"
+url: https://arxiv.org/abs/2601.22311
+tags:
+  - ingested
+summary: "Large language model (LLM)-based agents exhibit strong step-by-step
+  reasoning capabilities over short horizons, yet often fail to sustain
+  coherent behavior over long planning horizons. We argue that this failure
+  reflects a fundamental mismatch: step-wise reasoning induces a form of
+  step-wise greedy policy that is adequate for short horizons but fails in
+  long-horizon planning, where early actions must account for delayed
+  consequences. From this planning-centric perspective, we study LLM-based
+  agents in deterministic, fully structured environments with explicit state
+  transitions and evaluation s"
+notes: "Filed as a source on long-horizon-execution from the classifier's
+  judgement that the paper is about it (improves, high): The paper diagnoses
+  myopic step-wise reasoning as a long-horizon failure mode and introduces
+  FLARE (lookahead + value propagation) that consistently improves
+  long-horizon task performance. No claim has been drafted from it yet."
+ingested_at: 2026-11-12
+brief: >-
+  Widening search does not fix long-horizon failure; only explicit lookahead
+  with backward value propagation does. Step-wise reasoning acts as a greedy
+  policy over local scores, and beam search preserves that same scoring
+  mechanism.
+
+
+  The setup is knowledge-graph QA (CWQ, WebQSP, GrailQA) with oracle subgraphs
+  guaranteeing a valid path, deterministic transitions, and evaluation signals
+  available at planning time. 4 selection strategies (single step, beam
+  search, lookahead, Flare, an MCTS planner with receding-horizon commitment)
+  are swapped inside ToG and PoG with LLaMA 8B/70B and GPT-4o/GPT-4o-mini
+  fixed.
+
+
+  Flare averages 71.8 on CWQ, 89.9 on WebQSP, 87.8 on GrailQA versus
+  59.8/78.2/76.5 for single step. Mechanism metrics: first-step trap selection
+  falls from 55.6% (single step) and 71.9% (beam search) to 17.8%; first-error
+  position moves 1.6 to 3.2; recovery after first error rises 5.4% to 29.7%.
+  On ALFWorld, ReAct+Flare reaches 77.8% vs 61.3% for ReAct and 77.4% for an
+  RL "think" policy.
+
+
+  Evidence is measured with planning strategy as the only varied factor,
+  across 2 frameworks and 4 backbones, plus token-budget curves and
+  performance- and token-aligned ablations of pruning and trajectory memory.
+  Causal interventions forcing a correct or trap first action support the
+  myopia claim.
+
+
+  Boundary: deterministic, fully observable sandboxes with an available
+  evaluator; ALFWorld is the only non-KGQA test. Residual Flare failures shift
+  to exploration and termination.
+
+
+  If you are scaling reasoning width to fix agent drift, this argues the
+  budget is better spent on lookahead.
+brief_generated_at: 2026-11-12
+brief_model: claude-opus-5
+brief_source: full-text

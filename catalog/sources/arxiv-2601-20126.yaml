@@ -1,0 +1,64 @@
+id: arxiv-2601-20126
+ref: SRC-1047
+kind: paper
+title: Rewarding Intellectual Humility Learning When Not To Answer In Large
+  Language Models
+authors:
+  - Abha Jha
+  - Akanksha Mahajan
+  - Ashwath Vaithinathan Aravindan
+  - Praveen Saravanan
+  - Sai Sailaja Policharla
+  - Sonal Chaturbhuj Gehlot
+year: 2026
+date: 2026-01-27
+arxiv_id: "2601.20126"
+url: https://arxiv.org/abs/2601.20126
+tags:
+  - ingested
+summary: Large Language Models (LLMs) often produce hallucinated or
+  unverifiable content, undermining their reliability in factual domains. This
+  work investigates Reinforcement Learning with Verifiable Rewards (RLVR) as a
+  training paradigm that explicitly rewards abstention ("I don't know")
+  alongside correctness to promote intellectual humility. We fine-tune and
+  evaluate Granite-3.3-2B-Instruct and Qwen-3-4B-Instruct on the MedMCQA and
+  Hendrycks Math benchmarks using a ternary reward structure ($-1$, r_abs, 1)
+  under varying abstention reward structures. We further study the effect of
+  combining RLVR wit
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, medium): The paper shows rewarding
+  abstention via RLVR reduces incorrect/unverifiable responses without severe
+  accuracy loss, presenting a hallucination-mitigation technique. No claim has
+  been drafted from it yet."
+ingested_at: 2026-11-12
+brief: >-
+  Making "I don't know" a rewarded action in RLVR gives a tunable knob over
+  hallucination, but the trade-off against accuracy is steep and the knob is
+  sharply nonlinear in small models.
+
+
+  Granite-3.3-2B-Instruct and Qwen-3-4B-Instruct were trained with GRPO (TRL,
+  LoRA, 500 steps, ~8k training samples, ~100 held-out test samples) on
+  MedMCQA and Hendrycks MATH, using a ternary reward of 1 for correct, -1 for
+  wrong, and a swept r_abs for abstention, with and without a prior SFT stage
+  that teaches abstention (random 30% of labels, or R-Tuning on items the base
+  model got wrong).
+
+
+  On MedMCQA, Qwen at r_abs=0.3 cut incorrect answers from 32.5% to 10.3%
+  while correct fell from 67.5% to 48.0%, with 41.0% abstentions. Granite
+  collapsed: 0.0% abstention at r_abs=-0.5, 100% abstention at r_abs=0.3. On
+  MATH with RL-RTuning, abstention went from 5.4% at r_abs=-0.95 to 98.2% at
+  0.25, with correctness dropping to 0.7%.
+
+
+  The reward sweeps are proper ablations and isolate r_abs. But the test set
+  is ~100 samples, there are 2 models and 2 datasets, no confidence intervals,
+  and no external baseline such as confidence-threshold abstention.
+
+
+  Treat abstention reward as a dial that must be tuned per model and per task,
+  not a setting that transfers.
+brief_generated_at: 2026-11-12
+brief_model: claude-opus-5
+brief_source: full-text

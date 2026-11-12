@@ -1,0 +1,68 @@
+id: arxiv-2602-03719
+ref: SRC-1058
+kind: paper
+title: "BranPO: Scalable Contrastive Branch Sampling for Long-Horizon Agentic
+  Reinforcement Learning"
+authors:
+  - Yubao Zhao
+  - Weiquan Huang
+  - Sudong Wang
+  - Ruochen Zhao
+  - Chen Chen
+  - Yao Shu
+year: 2026
+date: 2026-02-03
+arxiv_id: "2602.03719"
+url: https://arxiv.org/abs/2602.03719
+tags:
+  - ingested
+summary: Agentic reinforcement learning enables large language models to
+  perform multi-turn planning and tool use, but long-horizon training remains
+  challenging under sparse trajectory-level rewards, where a single outcome is
+  uniformly assigned to all decisions. Prior methods introduce finer-grained
+  supervision via tree-based exploration or process-level evaluation, but
+  often incur high cost or produce noisy credit signals. In agentic
+  trajectories, early mistakes may still be corrected by later actions, while
+  seemingly promising intermediate states can fail due to poor subsequent
+  decisions. We call thi
+notes: "Filed as a source on long-horizon-execution from the classifier's
+  judgement that the paper is about it (improves, medium): The paper proposes
+  BranPO, a branch-contrastive credit assignment method that improves
+  long-horizon agentic task performance over baselines. No claim has been
+  drafted from it yet."
+ingested_at: 2026-11-12
+brief: >-
+  Credit assignment in long-horizon search agents works better when you
+  contrast alternative continuations from the same prefix than when you score
+  intermediate states. The premise is non-monotonic correctness: early
+  mistakes get fixed later, promising prefixes still fail, so state values
+  mislead.
+
+
+  BranPO truncates a trajectory at a late-stage point, resamples
+  continuations, and keeps only branches whose outcomes diverge from the
+  original, then applies prefix-level and branch-level group-relative
+  advantages. Difficulty-aware branch sampling allocates budget by task
+  accuracy; Redundant Step Masking zeroes advantages on superfluous tail
+  search steps. Trained on Search-R1 and ASearcher with Qwen2.5-7B-Instruct
+  and Qwen3-4B-Instruct.
+
+
+  On 4 multi-hop QA benchmarks under Search-R1, BranPO averages 42.2% EM and
+  53.2% F1, ahead of the strongest prior method by 3.3% EM and 4.5% F1. On
+  ASearcher it beats GRPO on both backbones, where Tree-GRPO, ARPO and AEPO do
+  not. On ALFWorld with a segment-level variant it reaches 93.6 vs 90.8 for
+  GiGPO.
+
+
+  Evidence is reasonable: ablations remove DBS (52.7 avg F1) and RSM (53.7 vs
+  54.6), all RL methods warm-start from the same SFT model, and wall-clock
+  training time is reported as comparable. Some baseline numbers are copied
+  from original papers rather than rerun.
+
+
+  Limited to Qwen models and search/embodied tasks; the sparse-reward rollout
+  cost remains.
+brief_generated_at: 2026-11-12
+brief_model: claude-opus-5
+brief_source: full-text

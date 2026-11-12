@@ -1,0 +1,42 @@
+id: deterministic-environments-explicit-states-planning-time-evaluation-signals-llm-agents
+ref: CLM-0989
+capability: planning
+technique: score-actions-simulated-futures-commit-one-step-time
+statement: >-
+  In deterministic environments with explicit states and planning-time
+  evaluation signals, LLM agents that select each action by local step-wise
+  score commit to myopic actions at the first decision and rarely recover,
+  and widening the search (beam search) delays but does not prevent this,
+  whereas simulating candidate futures and propagating trajectory-level
+  returns backward before committing to only the next action raises
+  long-horizon task accuracy.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Shown in deterministic, fully-observable settings with an evaluation signal available at planning time (knowledge-graph QA with oracle subgraphs); partially tested on ALFWorld tool"
+sources:
+  - source: arxiv-2601-22311
+    stance: supports
+    note: >-
+      Validated by: Hits@1 on CWQ, WebQSP and GrailQA under two agent
+      frameworks (ToG, PoG) and four backbones (LLaMA 8B/70B,
+      GPT-4o-mini/4o), against single-step, beam-search and
+      shallow-lookahead variants holding backbone, framework and evaluation
+      signal fixed; plus mechanism metrics (first-step trap rate 55.6%
+      single-step vs 17.8%, mean first-error step 1.6 vs 3.2, recovery after
+      first error 5.4% vs 29.7%) and ALFWorld success (ReAct 61.3% vs
+      77.8%).. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-12
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A setting with explicit
+  states and a planning-time evaluator where trajectory-level lookahead with
+  backward value propagation does not beat step-wise selection on
+  long-horizon accuracy, or where the measured advantage is explained by
+  extra token budget rather than the lookahead (matched-budget comparison
+  closes the gap).
+submitted_by: agent:claude-opus-5@Russ-Miller

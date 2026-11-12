@@ -1,0 +1,67 @@
+id: arxiv-2602-03696
+ref: SRC-1057
+kind: paper
+title: Conflict-Resolving and Sharpness-Aware Minimization for Generalized
+  Knowledge Editing with Multiple Updates
+authors:
+  - Duy Nguyen
+  - Hanqi Xiao
+  - Archiki Prasad
+  - Elias Stengel-Eskin
+  - Hyunji Lee
+  - Mohit Bansal
+year: 2026
+date: 2026-02-03
+arxiv_id: "2602.03696"
+url: https://arxiv.org/abs/2602.03696
+tags:
+  - ingested
+summary: Large language models (LLMs) rely on internal knowledge to solve many
+  downstream tasks, making it crucial to keep them up to date. Since full
+  retraining is expensive, prior work has explored efficient alternatives such
+  as model editing and parameter-efficient fine-tuning. However, these
+  approaches often break down in practice due to poor generalization across
+  inputs, limited stability, and knowledge conflict. To address these
+  limitations, we propose the CoRSA (Conflict-Resolving and Sharpness-Aware
+  Minimization) training framework, a parameter-efficient, holistic approach
+  for knowledge editing
+notes: "Filed as a source on knowledge-updating from the classifier's
+  judgement that the paper is about it (improves, high): CoRSA proposes a
+  training framework that raises generalization to paraphrased inputs, reduces
+  forgetting across multiple updates, and resolves conflicts with prior
+  knowledge. No claim has been drafted from it yet."
+ingested_at: 2026-11-12
+brief: >-
+  Editing a fact into a model with plain LoRA often leaves the old fact alive
+  underneath, and it resurfaces after later edits. Adding a preference term
+  that pushes the new answer away from the old one, plus flat-minimum
+  optimization, suppresses that reversion.
+
+
+  CoRSA trains a single LoRA adapter with an SFT loss plus a DPO loss between
+  old and new targets, optimized under Sharpness-Aware Minimization with
+  PCGrad used to reconcile the two conflicting gradients. Tested on
+  CounterFact, ZsRE, MQuAKE-Remastered, AToKe-ME and CodeUpdateArena, with
+  Llama-3.1-8B-Instruct and Qwen3-4B/8B/14B, against LoRA, MEMIT and
+  F-Learning.
+
+
+  Generality rises 12.42% over LoRA and 9.99% over MEMIT on average. On
+  CounterFact with Qwen-3-4B, outdated-answer retention falls from 9.81%
+  (LoRA) to 1.28%; old-knowledge reactivation after continual updates falls
+  from 17.09% to 7.72%. Forgetting on AToKe drops to 27.46% versus 46.13% for
+  F-Learning, with update efficacy 98.04%. On code, 34.53% Pass@5 update
+  efficacy versus 29.05%.
+
+
+  The effect is measured against 3 baselines at matched LoRA rank and learning
+  rate, with a component ablation in the appendix and a data-fraction sweep.
+  No independent replication; 2 model families.
+
+
+  Edit success is already 97-98% for all methods, so the gains are confined to
+  paraphrase generality and retention, not raw edit success. Reconsider
+  whether your editing baseline's apparent success survives paraphrasing.
+brief_generated_at: 2026-11-12
+brief_model: claude-opus-5
+brief_source: full-text

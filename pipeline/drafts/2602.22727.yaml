@@ -1,0 +1,47 @@
+arxiv_id: "2602.22727"
+title: "HulluEdit: Single-Pass Evidence-Consistent Subspace Editing for
+  Mitigating Hallucinations in Large Vision-Language Models"
+url: https://doi.org/10.48550/arxiv.2602.22727
+drafted_at: 2026-11-09
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: "In 7-13B open vision-language models, editing hidden states to
+  suppress language-prior components lowers object hallucination only if the
+  edit is skipped when visual certainty is already high: removing the
+  per-token certificate gate from an otherwise identical orthogonal-subspace
+  edit raises CHAIR_i from 4.18 to 7.70, worse than the unedited greedy
+  baseline (7.08)."
+kind: observation
+backing_strength: single-paper
+scope_condition: LLaVA-1.5-7B captioning on 500 MSCOCO images; anchor layer
+  26, edit at final layer, subspace ranks r=8, q=5
+technique: ""
+proposed_technique: Edit only the prior-orthogonal components, and only when gated
+technique_summary: At the final decoder layer, decompose each hidden state
+  into an online weighted-SVD visual-evidence subspace, an anti-prior subspace
+  built in its orthogonal complement, and a residual, then shrink the latter
+  two with strengths set by visual and prior energy ratios — but only on
+  tokens where visual certainty is low or prior conflict is high.
+technique_kind: decoding
+technique_validated_by: POPE accuracy/F1 on LLaVA-1.5-7B/13B and Qwen-VL-Chat
+  against greedy, VCD, ICD, VAF, DeCo; CHAIR_i/CHAIR_s on MSCOCO against
+  Nullu, HALC, OPERA, LURE; MME subtask scores; tokens-per-second throughput;
+  component ablations (gating, orthogonal complement, weighted vs uniform SVD,
+  fixed strengths).
+stance_on_existing: supports
+related_claim_id: 7b-vision-language-models-llava-1-5-7b-qwen-vl-chat-inference-time-hidden-state-steering
+stance_reason: Both find that unconditional per-step hidden-state intervention
+  degrades output while gating the same intervention on a grounding signal
+  lowers hallucination.
+falsifier: An ablation on the same models showing the ungated variant matches
+  or beats the gated one on CHAIR and POPE, or that gating contributes less
+  than the orthogonality construction.
+evidence_note: "Measured: one ablation table on LLaVA-1.5-7B over 500 MSCOCO
+  images, CHAIR_i/CHAIR_s only, three seeds reported for main results. Gating
+  removal is the largest single ablation loss (7.70 vs 4.18 CHAIR_i), larger
+  than removing the orthogonal complement (5.60) or adaptive strengths (5.20).
+  Single model and single dataset for the ablation; no coverage/recall metric
+  reported, so part of the gain may be reduced informativeness."
+confidence: medium

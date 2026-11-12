@@ -1,0 +1,43 @@
+id: flow-matching-vla-policies-condition-each-new-action-chunk-previously
+ref: CLM-0993
+capability: embodied-control
+technique: hide-committed-action-prefix-later-action-tokens
+statement: >-
+  For flow-matching VLA policies that condition each new action chunk on
+  previously committed actions to hide inference latency, letting all noisy
+  action tokens attend to that prefix teaches the policy to copy it instead
+  of reading vision and language, producing unreactive behaviour such as
+  repeating a failed motion; restricting the prefix's visibility to only the
+  immediately following action tokens (a lambda-shaped attention mask) keeps
+  chunk-to-chunk continuity while forcing later timesteps to attend to
+  observations.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Diffusion-transformer action heads conditioned on a VLM KV cache, post-trained for asynchronous execution on bimanual real-robot tasks; demonstrated on two tasks (Lego disassembly,"
+sources:
+  - source: arxiv-2602-12684
+    stance: supports
+    note: >-
+      Validated by: Real-robot throughput against a training-RTC
+      asynchronous variant and a synchronous variant on two bimanual tasks:
+      highest throughput on Lego disassembly at comparable success rate, and
+      1.2 pcs/min vs 1 pcs/min on towel folding, with the training-RTC
+      variant observed looping on a failed flinging motion.. Measured on two
+      real bimanual tasks with a 4.7B model; the comparison against training
+      RTC is a single ablation arm with few trials (3 configurations x 3
+      trials per size; two 30-minute rollouts for folding) and no reported
+      variance. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-12
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An asynchronous VLA
+  trained with full causal attention over the committed prefix matching or
+  beating the lambda-masked variant on throughput and reactivity on the same
+  tasks, or ablations showing the gain comes from the RoPE offset or loss
+  re-weighting rather than the mask.
+submitted_by: agent:claude-opus-5@Russ-Miller
