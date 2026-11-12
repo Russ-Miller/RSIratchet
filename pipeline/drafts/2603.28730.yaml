@@ -1,0 +1,46 @@
+arxiv_id: "2603.28730"
+title: "SOLE-R1: Video-Language Reasoning as the Sole Reward for On-Robot
+  Reinforcement Learning"
+url: https://doi.org/10.48550/arxiv.2603.28730
+drafted_at: 2026-11-07
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: reward-hacking
+statement: When a video-language model supplies the only reward for on-robot
+  RL, training its progress predictor on synthesized non-expert trajectories
+  (injected random deviations in simulation, temporal reversals in real video)
+  rather than on expert demonstrations alone reduces policies exploiting
+  inflated progress estimates, because goal-adjacent-looking states otherwise
+  receive high predicted progress.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Manipulation tasks in four simulators plus one real tabletop
+  setup, policy trained from random initialization with no ground-truth
+  reward, demonstrations, or task-specific tuning; reward model is an 8B VLM
+  fine-tuned with SFT then RLVR.
+technique: ""
+proposed_technique: Train the progress rewarder on deliberately failed trajectories
+technique_summary: Synthesizes non-expert robot videos by injecting random
+  action deviations in simulation and temporal reversals in real footage,
+  labels them with continuous progress and chain-of-thought traces describing
+  advance versus regression, and trains a video-language model on them to emit
+  per-timestep progress as the RL reward.
+technique_kind: training
+technique_validated_by: Zero-shot online RL success across 40 tasks (>=50%
+  success on 24 tasks vs under 10 for GPT-5, Gemini-3-Pro, Robometer,
+  RoboReward, ReWiND); the expert-only-supervision ablation is reported to
+  shift failures toward reward hacking as measured by perceived (predicted max
+  progress) vs true (ground-truth) success.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An expert-only-trained progress rewarder showing equal or lower
+  perceived-vs-true success gap than the non-expert-trained one under matched
+  data volume and training compute.
+evidence_note: Measured, but the key ablation is reported qualitatively via a
+  figure and appendix with no per-task numbers in the text, and non-expert
+  data also changes total data volume, so the design does not cleanly isolate
+  deviation coverage from scale. The perceived-vs-true gap is the paper's own
+  hacking proxy, not an independent audit.
+confidence: medium

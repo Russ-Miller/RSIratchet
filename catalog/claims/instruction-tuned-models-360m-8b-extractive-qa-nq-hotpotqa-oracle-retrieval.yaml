@@ -1,0 +1,40 @@
+id: instruction-tuned-models-360m-8b-extractive-qa-nq-hotpotqa-oracle-retrieval
+ref: CLM-1001
+capability: retrieval-utilization
+statement: >-
+  For instruction-tuned models of 360M-8B on extractive QA (NQ, HotpotQA),
+  oracle retrieval whose passage is guaranteed to contain the answer still
+  yields only 0-14.6% exact match on questions the model cannot answer
+  unaided, and adding any context destroys 42-64% of answers it previously
+  got right, with the harm from oracle and noisy context statistically
+  indistinguishable below 7B.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "English Wikipedia-domain extractive QA scored by exact match; five instruction-tuned decoder-only models from three families, four of them 4-bit quantized; 756 corpus-matched quest"
+sources:
+  - source: arxiv-2603-11513
+    stance: supports
+    note: >-
+      Measured: 1,000 questions (756 oracle-matched), four retrieval
+      conditions, per-model parametric Known/Unknown split, bootstrap CIs
+      and McNemar with Bonferroni correction; replicated across three prompt
+      templates, three retrieval methods and an FP16 API model. Weak points:
+      the 360M Known set is 11 questions, exact match penalizes paraphrase
+      (relaxed EM adds ~6pp), and the error taxonomy is heuristic with 89%
+      agreement on 96 reviewed samples. Design isolates utilization from
+      retrieval quality but not from quantization in four of five models.
+contested: false
+status: pending-review
+last_checked_at: 2026-11-12
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafter linked technique "retrieval-augmented-generation", which does not
+  list this capability in addresses -- recorded, not asserted. Drafted
+  confidence: medium. Falsifier as drafted: A sub-7B instruction-tuned model
+  that, given oracle passages, reaches high exact match on questions it
+  cannot answer parametrically, or that retains most of its correct
+  parametric answers when context is added, would break this.
+submitted_by: agent:claude-opus-5@Russ-Miller

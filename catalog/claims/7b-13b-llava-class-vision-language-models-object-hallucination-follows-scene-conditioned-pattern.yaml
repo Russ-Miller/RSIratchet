@@ -1,0 +1,44 @@
+id: 7b-13b-llava-class-vision-language-models-object-hallucination-follows-scene-conditioned-pattern
+ref: CLM-0968
+capability: visual-grounding
+technique: build-dpo-pairs-object-masked-counterfactual-images
+statement: >-
+  In 7B-13B LLaVA-class vision-language models, object hallucination follows
+  a scene-conditioned pattern: when a salient object is masked out of a
+  natural image, the model still asserts its presence in a majority of
+  sampled descriptions, and which object is hallucinated is predicted by the
+  scene (boat at waterfronts, train on railroads, sink in bathrooms) rather
+  than by residual visual evidence.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Shown on masked COCO/Visual-Genome images restricted to the 80 MS-COCO categories, with masking verified by GroundingDINO; images selected as the intersection of hallucination-indu"
+sources:
+  - source: arxiv-2602-10425
+    stance: supports
+    note: >-
+      Validated by: On LLaVA-v1.5-7B/13B, lower CHAIR_s/CHAIR_i on Object
+      HalBench and lower Hal/Cog on AMBER than SENTINEL, RLAIF-V, TPO, mDPO,
+      Re-Align and HA-DPO, with VQAv2/TextVQA/ScienceQA/MM-Vet held near
+      baseline; also lowest hallucination rate on the authors' own MOH
+      benchmark. Ablations cover detection threshold and iterative masking.
+      No independent replication; the benchmark is authored by the same
+      group.. Measured on two LLaVA checkpoints plus a model-specific HII
+      filter run over Qwen-VL and LLaVA-1.5; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-12
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Masked-object assertion
+  rates that do not cluster by scene category, or that are explained by
+  residual unmasked pixels of the target object rather than scene context;
+  or HII-DPO failing to beat the same-pipeline baselines on an independently
+  held benchmark. Drafted stance toward
+  current-7-8b-open-vision-language-models-object-existence-accuracy-falls-fixed:
+  supports -- Both find that co-occurrence and instruction-carried scene
+  priors, rather than visual backbone failure, drive object hallucination on
+  absent objects.
+submitted_by: agent:claude-opus-5@Russ-Miller

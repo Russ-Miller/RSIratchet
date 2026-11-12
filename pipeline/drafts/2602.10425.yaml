@@ -1,0 +1,50 @@
+arxiv_id: "2602.10425"
+title: "HII-DPO: Eliminate Hallucination via Accurate Hallucination-Inducing
+  Counterfactual Images"
+url: https://doi.org/10.48550/arxiv.2602.10425
+drafted_at: 2026-11-11
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: "In 7B-13B LLaVA-class vision-language models, object hallucination
+  follows a scene-conditioned pattern: when a salient object is masked out of
+  a natural image, the model still asserts its presence in a majority of
+  sampled descriptions, and which object is hallucinated is predicted by the
+  scene (boat at waterfronts, train on railroads, sink in bathrooms) rather
+  than by residual visual evidence."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Shown on masked COCO/Visual-Genome images restricted to the
+  80 MS-COCO categories, with masking verified by GroundingDINO; images
+  selected as the intersection of hallucination-inducing sets across Qwen-VL
+  and LLaVA-1.5 models.
+technique: ""
+proposed_technique: Build DPO pairs from object-masked counterfactual images
+technique_summary: Iteratively mask a detected object out of a natural image
+  until occlusion is complete, keep only images where the target model still
+  asserts the object in at least 5 of 10 samples, then DPO on same-prefix
+  sentence pairs where the rejected sentence names the absent object.
+technique_kind: training
+technique_validated_by: On LLaVA-v1.5-7B/13B, lower CHAIR_s/CHAIR_i on Object
+  HalBench and lower Hal/Cog on AMBER than SENTINEL, RLAIF-V, TPO, mDPO,
+  Re-Align and HA-DPO, with VQAv2/TextVQA/ScienceQA/MM-Vet held near baseline;
+  also lowest hallucination rate on the authors' own MOH benchmark. Ablations
+  cover detection threshold and iterative masking. No independent replication;
+  the benchmark is authored by the same group.
+stance_on_existing: supports
+related_claim_id: current-7-8b-open-vision-language-models-object-existence-accuracy-falls-fixed
+stance_reason: Both find that co-occurrence and instruction-carried scene
+  priors, rather than visual backbone failure, drive object hallucination on
+  absent objects.
+falsifier: Masked-object assertion rates that do not cluster by scene
+  category, or that are explained by residual unmasked pixels of the target
+  object rather than scene context; or HII-DPO failing to beat the
+  same-pipeline baselines on an independently held benchmark.
+evidence_note: Measured on two LLaVA checkpoints plus a model-specific HII
+  filter run over Qwen-VL and LLaVA-1.5; the scene-conditioning claim rests on
+  a top-5 object distribution across ten manually assigned scene domains in an
+  ~800-image benchmark the authors built, so the pattern is descriptive rather
+  than causally isolated. Training gains are compared against reproduced
+  baselines but on benchmarks partly co-designed with the method.
+confidence: medium

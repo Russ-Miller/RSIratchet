@@ -1,0 +1,41 @@
+id: 7-8b-open-vision-language-models-llava-1-5-minigpt-4-mplug-owl2-qwen2
+ref: CLM-0967
+capability: visual-grounding
+technique: scale-layer-editing-strength-truthful-vs-hallucinated-attention
+statement: >-
+  In 7-8B open vision-language models (LLaVA-1.5, MiniGPT-4, mPLUG-Owl2,
+  Qwen2/3-VL), susceptibility to object hallucination is not uniform across
+  decoder layers — the divergence between truthful and hallucinated
+  attention distributions peaks at mid-depth and is lowest at early and late
+  layers — so scaling null-space weight editing per layer by that divergence
+  lowers CHAIR hallucination rates further than applying the same full
+  projection to every layer.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Captioning and perception benchmarks (CHAIR on MSCOCO, MME, LLaVA-Bench) with contrastive truthful/hallucinated caption pairs from LURE used to estimate the editing subspace; 7-8B "
+sources:
+  - source: arxiv-2602-18711
+    stance: supports
+    note: >-
+      Validated by: CHAIR_s/CHAIR_i and BLEU on MSCOCO across LLaVA-1.5,
+      MiniGPT-4, mPLUG-Owl2 (e.g. LLaVA-1.5 CHAIR_s 15.20 for
+      uniform-projection Nullu vs 13.80), plus MME perception sub-scores and
+      GPT-4V-aided accuracy/detailedness on LLaVA-Bench; an ablation removes
+      the per-layer weighting.. Measured on three LVLM backbones plus two
+      Qwen-VL models against decoding-time and editing baselines, with the
+      uniform-projection method (Nullu) as the direct control and an
+      ablation on the weighting. Variance reported over three runs.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-12
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Applying the same
+  null-space projection uniformly at full strength to all layers matches or
+  beats the divergence-weighted version on CHAIR and MME, or the measured
+  per-layer divergence profile does not recur across backbones.
+submitted_by: agent:claude-opus-5@Russ-Miller

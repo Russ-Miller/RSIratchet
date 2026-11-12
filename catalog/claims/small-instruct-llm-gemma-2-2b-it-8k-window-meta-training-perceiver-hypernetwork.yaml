@@ -1,0 +1,41 @@
+id: small-instruct-llm-gemma-2-2b-it-8k-window-meta-training-perceiver-hypernetwork
+ref: CLM-1041
+capability: long-context-degradation
+technique: generate-context-specific-lora-hypernetwork-instead-distilling-per
+statement: >-
+  For a small instruct LLM (gemma-2-2b-it, 8K window), meta-training a
+  Perceiver hypernetwork to map context activations into a LoRA adapter —
+  with long inputs split into chunks whose per-chunk adapters are
+  concatenated along the rank dimension — lets the model answer
+  needle-in-a-haystack queries with the context removed at near-perfect
+  accuracy out to about 40K tokens, far past both the base model's window
+  and the 256-token maximum seen in hypernetwork training.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "One 2B base model; synthetic single-needle retrieval plus six QA benchmarks up to 32K tokens; chunk size 1024 for NIAH, 8K for QA; hypernetwork trained on English document corpora "
+sources:
+  - source: arxiv-2602-15902
+    stance: supports
+    note: >-
+      Validated by: Needle retrieval accuracy versus the in-context base
+      model across haystack lengths to 128K; ROUGE-L F1 relative to
+      in-context upper bound on SQuAD, DROP, ROPES, 2WikiMultihopQA,
+      MultiFieldQA, QASPER against per-prompt context distillation
+      (oracle-query and 5/25/100 generated-query variants), T2L, LLMLingua-2
+      compression, and a no-context base model; plus update latency and peak
+      update/inference memory.. Measured on one 2B base model. NIAH accuracy
+      stays near perfect to ~40 chunks then degrades gracefully; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-12
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Needle accuracy
+  collapsing once the haystack exceeds the base window or the training chunk
+  count, or the generated adapter failing to beat a no-context baseline on
+  held-out documents, would show the hypernetwork is not internalizing the
+  context.
+submitted_by: agent:claude-opus-5@Russ-Miller

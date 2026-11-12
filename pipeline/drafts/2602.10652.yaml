@@ -1,0 +1,48 @@
+arxiv_id: "2602.10652"
+title: "UMEM: Unified Memory Extraction and Management Framework for
+  Generalizable Memory"
+url: https://doi.org/10.48550/arxiv.2602.10652
+drafted_at: 2026-11-11
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: harness-self-improvement
+statement: "For self-evolving agents with a frozen executor and an external
+  memory bank, training the step that distills experience into memory entries
+  matters more than training the step that decides how to update the bank:
+  ablating extraction optimization cost about 4.7 points on average across
+  five benchmarks versus about 0.7 points for ablating management
+  optimization."
+kind: observation
+backing_strength: single-paper
+scope_condition: 1B-4B Llama/Qwen memory-optimizer policies trained by GRPO on
+  ~2,000 MMLU queries, with frozen Qwen3-8B, GPT-5.1 or Gemini-2.5-Flash
+  executors, evaluated on AIME, GPQA-Diamond, HLE, HotpotQA and ALFWorld under
+  a streaming no-reset protocol.
+technique: ""
+proposed_technique: Score memory edits by their gain on neighbouring queries
+technique_summary: Train one model to both extract memory entries and choose
+  the bank update operation, rewarding each candidate edit by the average
+  correctness gain and token reduction it produces across a cluster of
+  semantically nearest-neighbour queries rather than on the source query
+  alone.
+technique_kind: training
+technique_validated_by: Accuracy and ALFWorld success/progress rate against
+  No-Memory, Self-RAG, Memp and ReMem baselines across three frozen executors,
+  with ablations removing extraction optimization, management optimization,
+  and neighbourhood modeling, plus a neighbourhood-size sweep (N=1,3,5) and a
+  10-epoch continual-evolution run.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation under the same training budget where removing
+  management optimization costs as much as or more than removing extraction
+  optimization, or where a frozen prompted extractor paired with a trained
+  manager matches the jointly trained system.
+evidence_note: Measured, single paper. Ablation reports per-benchmark drops
+  for two executors; the 4.7 vs 0.7 average is the authors' aggregate and some
+  cells move the other way (HLE and HotpotQA improve slightly without
+  management optimization). No seed variance or confidence intervals reported,
+  and the ablation masks gradients rather than substituting an independently
+  strong manager, so it does not isolate the manager's achievable ceiling.
+confidence: low

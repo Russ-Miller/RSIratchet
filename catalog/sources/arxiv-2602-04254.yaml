@@ -1,0 +1,70 @@
+id: arxiv-2602-04254
+ref: SRC-1059
+kind: paper
+title: Scaling Agentic Verifier for Competitive Coding
+authors:
+  - Zeyao Ma
+  - Jing Zhang
+  - Xiaokang Zhang
+  - Jiaxi Yang
+  - Zongmeng Zhang
+  - Jiajun Zhang
+year: 2026
+date: 2026-02-04
+arxiv_id: "2602.04254"
+url: https://arxiv.org/abs/2602.04254
+tags:
+  - ingested
+summary: Large language models (LLMs) have demonstrated strong coding
+  capabilities but still struggle to solve competitive programming problems
+  correctly in a single attempt. Execution-based re-ranking offers a promising
+  test-time scaling strategy, yet existing methods are constrained by either
+  difficult test case generation or inefficient random input sampling. To
+  address this limitation, we propose Agentic Verifier, an execution-based
+  agent that actively reasons about program behaviors and searches for highly
+  discriminative test inputs that expose behavioral discrepancies among
+  candidate solutions. T
+notes: "Filed as a source on error-detection from the classifier's judgement
+  that the paper is about it (improves, medium): The paper trains an agentic
+  verifier that searches for discriminative test inputs exposing incorrect
+  candidate programs, improving Best@K selection by 10-15% over
+  execution-based baselines. No claim has been drafted from it yet."
+ingested_at: 2026-11-12
+brief: >-
+  For best-of-N selection in competitive programming, the bottleneck is the
+  discriminative quality of test inputs, not how many you sample. Random input
+  generators rarely hit the corner cases that separate correct from incorrect
+  solutions, even at hundreds of executions.
+
+
+  Agentic Verifier is a Qwen3-30B-A3B model trained to take a problem plus a
+  pair of candidate solutions and, through multi-turn tool calls into a
+  Python/C++ sandbox, iteratively refine an input generator until it produces
+  a valid input on which the two solutions disagree. Training used synthesized
+  test suites (average 60 test cases per problem), ~60K rejection-fine-tuned
+  trajectories from Qwen3-235B-A22B-Thinking-2507, then GRPO for 400 steps on
+  10K hard queries. Evaluation covers USACO (307 problems), LiveCodeBench
+  (175), OJBench (232), ICPC-Eval (118), and a new CodeForces set (64
+  problems), with 2 policy models.
+
+
+  Against MBR-Exec, CodeT, CodeRM, and a random generator baseline, all at a
+  matched 512 test input/case budget, the verifier wins everywhere: Best@64 on
+  USACO rises 62.8 to 74.5, on CodeForces 33.2 to 46.4 with the 30B policy,
+  and on OJBench 37.1 to 48.6 with the 235B policy. On OJBench hard problems
+  with the 235B policy it reaches 44.0 versus 24.7 for the random generator. A
+  zero-shot 235B verifier gains less than the trained 30B one.
+
+
+  The comparison is budget-matched and includes a training-versus-zero-shot
+  ablation, but all policy and verifier models are Qwen, and no component
+  ablation separates rejection fine-tuning from RL. Gains are near-saturated
+  on easy problems. The paper also shows benchmark test suites themselves
+  admit false positives that the verifier can expose.
+
+
+  If you rerank sampled code by output agreement, training the input generator
+  is where the remaining headroom is.
+brief_generated_at: 2026-11-12
+brief_model: claude-opus-5
+brief_source: full-text

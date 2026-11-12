@@ -1,0 +1,42 @@
+id: simulated-real-laboratory-manipulation-removing-symbolic-task-level-planner-layered
+ref: CLM-1038
+capability: long-horizon-execution
+technique: separate-symbolic-procedure-visual-grounding-control-into-distinct
+statement: >-
+  In simulated and real laboratory manipulation, removing the symbolic
+  task-level planner from a layered LLM-planner / visual-predictor /
+  RL-controller stack costs almost nothing on short-horizon tasks
+  (pick-and-place 79.3 vs 80.3%, pour 62.4 vs 64.5%) but a large amount on
+  multi-step procedures (mixing 43.6 vs 52.3%, crystallization 21.5 vs
+  30.1%), so explicit pre-execution procedural reasoning only pays off once
+  the task has many ordered dependent steps.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Protocol-sensitive laboratory manipulation tasks with few demonstrations; one simulation benchmark (CoppeliaSim, UR3) plus RLBench and a small real-robot transfer; GPT-4o as the mi"
+sources:
+  - source: arxiv-2602-09367
+    stance: supports
+    note: >-
+      Validated by: Success rate on a 5-task scientific-experiment
+      simulation benchmark (1,000 trials per task) against LLM+RL, VLM+RL
+      and MP+VLM+RL ablations, plus 5 long-horizon RLBench tasks against
+      PerAct, OpenVLA, a re-implemented CoT-VLA and MoLe-CogAct, plus 10-40
+      real-robot trials per task.. Measured, but all component ablations
+      come from one group's own simulation benchmark with its own
+      data-collection and reward design; the strongest comparison (CoT-VLA)
+      is a re-implementation because no code was released, and the
+      real-world arm uses only 10-40 trials per task. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-12
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An ablation on the same
+  benchmark showing the task-level planner gives no greater gain on
+  long-horizon tasks than on short-horizon ones, or showing an end-to-end
+  VLA trained on the same small dataset matching the layered stack on mixing
+  and crystallization.
+submitted_by: agent:claude-opus-5@Russ-Miller

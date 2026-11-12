@@ -1,0 +1,40 @@
+id: small-pretrained-qwen3-models-0-6b-1-7b-converted-distillation
+ref: CLM-1042
+capability: long-context-degradation
+technique: add-test-time-trained-nonlinear-memory-beside-sliding
+statement: >-
+  For small pretrained Qwen3 models (0.6B-1.7B) converted by distillation
+  into a sliding-window-attention layer augmented with a nonlinear
+  test-time-trained memory module, long-context accuracy stays within about
+  a point of full attention on 37k-token LongBench with a 4k window and
+  exceeds full attention on 128k-token InfiniteBench and LV-Eval with an 8k
+  window, at roughly one ninth the FLOPs and a constant-size cache.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "0.6B and 1.7B Qwen3 backbones converted by response-only knowledge distillation on 3-5M tokens, evaluated on LongBench, InfiniteBench and LV-Eval; absolute scores on the 128k bench"
+sources:
+  - source: arxiv-2602-13680
+    stance: supports
+    note: >-
+      Validated by: Accuracy against the unmodified Qwen3 teacher,
+      sliding-window-plus-sink attention, and a Mamba-2 memory variant at
+      matched parameters on LongBench (6 subtasks, avg 37k tokens),
+      InfiniteBench and LV-Eval at 128k, plus short-sequence benchmarks
+      (C-Eval, MMLU-Redux, MATH-500, LiveCodeBench) and measured FLOPs and
+      cache size.. Measured on two model sizes against three baselines
+      across three long-context suites plus ten short-sequence benchmarks,
+      with FLOPs and cache measured analytically. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-12
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Converting a larger
+  backbone, or evaluating on long-context benchmarks where absolute scores
+  are high enough to discriminate, shows the converted model falling clearly
+  below full attention; or an ablation shows the sliding window plus sinks
+  alone matches the memory-augmented variant.
+submitted_by: agent:claude-opus-5@Russ-Miller

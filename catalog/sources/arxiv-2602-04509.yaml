@@ -1,0 +1,67 @@
+id: arxiv-2602-04509
+ref: SRC-1061
+kind: paper
+title: "Model-Dowser: Data-Free Importance Probing to Mitigate Catastrophic
+  Forgetting in Multimodal Large Language Models"
+authors:
+  - Hyeontaek Hwang
+  - Nguyen Dinh Son
+  - Daeyoung Kim
+year: 2026
+date: 2026-02-04
+arxiv_id: "2602.04509"
+url: https://arxiv.org/abs/2602.04509
+tags:
+  - ingested
+summary: Fine-tuning Multimodal Large Language Models (MLLMs) on task-specific
+  data is an effective way to improve performance on downstream applications.
+  However, such adaptation often leads to a degradation in generalization on
+  pretrained tasks, a phenomenon known as Catastrophic Forgetting. Existing
+  methods that aim to mitigate this issue either become ineffective when
+  fine-tuning deeper layers of the language decoder or scale poorly with
+  increasing model size. To address these limitations, we propose
+  Model-Dowser, a novel sparse fine-tuning approach for MLLMs. Model-Dowser
+  measures a principled imp
+notes: "Filed as a source on fine-tuning-retention from the classifier's
+  judgement that the paper is about it (improves, high): The paper proposes
+  data-free importance probing to freeze generalization-critical parameters
+  during MLLM fine-tuning, reducing catastrophic forgetting of pretrained
+  abilities. No claim has been drafted from it yet."
+ingested_at: 2026-11-12
+brief: >-
+  Freezing the parameters whose perturbation most shifts a multimodal model's
+  outputs, chosen before any downstream training and without any real data,
+  retains more pretrained ability than merging-based or gradient-history-based
+  forgetting mitigation, especially when fine-tuning reaches early decoder
+  layers.
+
+
+  Model-Dowser scores each weight as the product of Jacobian norm (estimated
+  with Hutchinson/Rademacher probes), weight magnitude, and input activation,
+  probing with prompts the model itself generates from random vocabulary
+  tokens. It then freezes the top-scoring weights and trains the rest. Tested
+  on LLaVA-1.5-7B and NVILA-Lite-2B fine-tuned on COCO-Caption, Flickr30k,
+  ImageNet-R, IconQA, with upstream retention on TextVQA, OKVQA, OCRVQA, MMB,
+  MMB (CN), GQA.
+
+
+  At 20 fine-tuned layers and ρ = 0.1, H-scores reach 85.7 and 71.2 on
+  COCO-Caption and ImageNet-R for NVILA, 79.9 and 69.7 for LLaVA, above SPIDER
+  (78.3, 60.5, 75.2, 62.8). Memory stays at O(|P|) versus O(3|P|) for SPIDER,
+  which cannot train LLaVA-7B beyond L > 20.
+
+
+  Evidence includes a matched random-selection baseline over 3 seeds (at ρ =
+  0.5, H-score 62.7 vs 55.0 ± 0.8, p = 0.004), a ρ sweep, and a depth sweep.
+  Data-free scores correlate 0.891 ± 0.003 with real-data scores.
+
+
+  Only 2 models, 1 training recipe (10k samples, 5 epochs), vision-language
+  tasks only; no text-only LLM test.
+
+
+  If you fine-tune deep into an MLLM decoder, a one-time static mask may beat
+  dynamic gradient-based selection at a third of the memory.
+brief_generated_at: 2026-11-12
+brief_model: claude-opus-5
+brief_source: full-text

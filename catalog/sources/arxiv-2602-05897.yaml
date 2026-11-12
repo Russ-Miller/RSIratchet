@@ -1,0 +1,68 @@
+id: arxiv-2602-05897
+ref: SRC-1066
+kind: paper
+title: "Stop Rewarding Hallucinated Steps: Faithfulness-Aware Step-Level
+  Reinforcement Learning for Small Reasoning Models"
+authors:
+  - Shuo Nie
+  - Hexuan Deng
+  - Chao Wang
+  - Ruiyu Fang
+  - Xuebo Liu
+  - Shuangyong Song
+year: 2026
+date: 2026-02-05
+arxiv_id: "2602.05897"
+url: https://arxiv.org/abs/2602.05897
+tags:
+  - ingested
+summary: As large language models become smaller and more efficient, small
+  reasoning models (SRMs) are crucial for enabling chain-of-thought (CoT)
+  reasoning in resource-constrained settings. However, they are prone to
+  faithfulness hallucinations, especially in intermediate reasoning steps.
+  Existing mitigation methods based on online reinforcement learning rely on
+  outcome-based rewards or coarse-grained CoT evaluation, which can
+  inadvertently reinforce unfaithful reasoning when the final answer is
+  correct. To address these limitations, we propose Faithfulness-Aware
+  Step-Level Reinforcement Learning (Fai
+notes: "Filed as a source on reward-hacking from the classifier's judgement
+  that the paper is about it (improves, medium): The paper proposes FaithRL,
+  which adds step-level faithfulness rewards plus truncated resampling
+  explicitly to stop outcome-only rewards from reinforcing unfaithful
+  reasoning and to mitigate reward hacking of the step-level reward. No claim
+  has been drafted from it yet."
+ingested_at: 2026-11-12
+brief: >-
+  Training small reasoning models with outcome-only rewards makes their chains
+  of thought less faithful even as final answers get more faithful. On NewsQA
+  with DeepSeek-R1-Distill-Qwen-1.5B, only 6.00% of CoTs are free of
+  unfaithful sentences while 67.40% of answers are judged faithful;
+  restricting to the key reasoning path still gives 39.11%.
+
+
+  FaithRL adds step-level supervision to GRPO: HHEM-2.1 as a process reward
+  model scores each CoT sentence for groundedness in the context, trajectories
+  are truncated at the first unfaithful step and resampled from the faithful
+  prefix, plus an information-gain penalty and an n-gram repetition penalty.
+  Evaluated on DPSK-1.5B, Qwen3-0.6B, and Qwen3-1.7B across SQuAD, NewsQA,
+  TriviaQA, NQ, HotpotQA against SFT, KD, Self-Refine, GRPO, FSPO.
+
+
+  Average gains over the best baseline: 7.29% accuracy and 1.73% faithfulness.
+  Hallucination rate on the key reasoning path for DPSK-1.5B drops from 19.28
+  to 5.04 on correct answers and 35.75 to 10.21 on incorrect ones. Training
+  cost is lower than GRPO: 29.28 vs 35.59 GPU hours for Qwen3-1.7B.
+
+
+  Evidence is measured, with 5 runs and standard deviations, and component
+  ablations: removing resampling cuts average Faith by 15.77%. Faithfulness
+  judging relies on Qwen3-32B as judge, and attack questions come from
+  GPT-5.2, so the metric and the method share a notion of faithfulness.
+
+
+  Limited to open-book QA and models under 2B; larger models and open-ended
+  tasks untested. Useful if you treat answer correctness as a sufficient RL
+  signal.
+brief_generated_at: 2026-11-12
+brief_model: claude-opus-5
+brief_source: full-text

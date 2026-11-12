@@ -1,0 +1,45 @@
+id: several-sampled-reasoning-chains-merged-into-one-graph-canonicalized-step
+ref: CLM-1037
+capability: multi-step-reasoning
+technique: merge-sampled-chains-into-graph-then-keep-persistent
+statement: >-
+  When several sampled reasoning chains are merged into one graph by
+  canonicalized-step equivalence, the lifespan of one-dimensional
+  persistent-homology features (loops) in that graph separates correct from
+  incorrect final answers at AUROC roughly 0.70-0.78 across arithmetic,
+  symbolic, multi-hop and long-context benchmarks, and selecting the
+  reasoning path along the persistent skeleton is more stable under
+  paraphrase of steps than selecting the highest-confidence path.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Reported for GPT-4o-mini, Qwen-Turbo and DeepSeek-V3 at temperature 0.7 with up to 16 sampled paths per problem and a fixed embedding model; accuracy gains over the strongest struc"
+sources:
+  - source: arxiv-2602-09794
+    stance: supports
+    note: >-
+      Validated by: Exact match on eight benchmarks against nine baselines
+      including CoT-SC, ToT, GoT, FoT, AoT and AFlow on three backbones
+      (average EM 68.0/67.6/68.3 vs 66.9/66.8/67.3 for AoT); path-selection
+      comparison on MATH against shortest, max-confidence and human-selected
+      paths; paraphrase perturbation changing 2.9% of answers versus 7.4%
+      for max-confidence; weight ablation showing the semantic distance term
+      is load-bearing; LLM calls fixed at 19 and tokens about 27-36% below
+      ToT and AoT.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-12
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: H1 persistence computed the
+  same way shows AUROC near 0.5 on held-out benchmarks, or skeleton-selected
+  paths lose accuracy and robustness relative to max-confidence selection
+  under a matched sampling and call budget. Drafted stance toward
+  0-6b-8b-qwen3-models-math-logic-multiple-choice-reasoning-quantifying:
+  supports -- Both find that a graph built by merging semantically
+  equivalent steps across sampled chains yields a structural signal that
+  separates correct from incorrect generations better than confidence-style
+  scores.
+submitted_by: agent:claude-opus-5@Russ-Miller

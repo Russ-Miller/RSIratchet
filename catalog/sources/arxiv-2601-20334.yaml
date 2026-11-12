@@ -1,0 +1,67 @@
+id: arxiv-2601-20334
+ref: SRC-1049
+kind: paper
+title: Demonstration-Free Robotic Control via LLM Agents
+authors:
+  - Brian Tsui
+  - Alan Y. Fang
+  - Tiffany J. Hwu
+year: 2026
+date: 2026-01-28
+arxiv_id: "2601.20334"
+url: https://arxiv.org/abs/2601.20334
+tags:
+  - ingested
+summary: Robotic manipulation has increasingly adopted vision-language-action
+  (VLA) models, which achieve strong performance but typically require
+  task-specific demonstrations and fine-tuning, and often generalize poorly
+  under domain shift. We investigate whether general-purpose large language
+  model (LLM) agent frameworks, originally developed for software engineering,
+  can serve as an alternative control paradigm for embodied manipulation. We
+  introduce FAEA (Frontier Agent as Embodied Agent), which applies an LLM
+  agent framework directly to embodied manipulation without modification.
+  Using the same ite
+notes: "Filed as a source on embodied-control from the classifier's judgement
+  that the paper is about it (improves, high): The paper shows an unmodified
+  LLM agent framework can control simulated manipulators to high success
+  without demonstrations or fine-tuning, a technique that improves
+  demonstration-free embodied control. No claim has been drafted from it yet."
+ingested_at: 2026-11-12
+brief: >-
+  An off-the-shelf coding-agent loop, given privileged simulator state and
+  Cartesian control, can discover manipulation programs by trial and error
+  without any demonstrations or fine-tuning. The capability at issue is
+  iterative program synthesis transferred to embodied control, and the result
+  cuts against the assumption that manipulation requires task-specific
+  demonstration data.
+
+
+  FAEA wraps the unmodified Claude Agent SDK (Claude Opus 4.5) around LIBERO
+  (120 tasks, Franka Panda), ManiSkill3 (14 tasks x 5 seeds, domain
+  randomization), and MetaWorld (50 tasks, Sawyer). The agent writes and
+  reruns Python scripts, observing success signals and state, averaging 2–26
+  attempts per task.
+
+
+  Success rates: 84.9% on LIBERO (88.2% with human coaching tips), 85.7% on
+  ManiSkill3, 96% on MetaWorld versus SmolVLA's 68.2%. A 10-trial pilot
+  reached only 70.6%, and removing the cap recovered 17/35 failed tasks;
+  coaching recovered 21/35.
+
+
+  Evidence is measured but the comparison is not controlled: VLA baselines are
+  quoted from other papers and use RGB observations, while FAEA reads
+  ground-truth object poses. 1 SDK, 1 model, simulation only. One clean
+  negative control exists: LIBERO-derived coaching applied to ManiSkill
+  dropped success to 81.4% and raised cost 47% ($150 to $220).
+
+
+  Sub-centimeter tasks fail outright (PegInsertionSide 0%), and task discovery
+  takes 2.0–24.6 minutes, ruling out reactive control.
+
+
+  Treat this as evidence for agents as simulation trajectory generators, not
+  as robot controllers.
+brief_generated_at: 2026-11-12
+brief_model: claude-opus-5
+brief_source: full-text

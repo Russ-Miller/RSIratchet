@@ -1,0 +1,69 @@
+id: arxiv-2602-03595
+ref: SRC-1056
+kind: paper
+title: "Refer-Agent: A Collaborative Multi-Agent System with Reasoning and
+  Reflection for Referring Video Object Segmentation"
+authors:
+  - Haichao Jiang
+  - Tianming Liang
+  - Wei-Shi Zheng
+  - Jian-Fang Hu
+year: 2026
+date: 2026-02-03
+arxiv_id: "2602.03595"
+url: https://arxiv.org/abs/2602.03595
+tags:
+  - ingested
+summary: Referring Video Object Segmentation (RVOS) aims to segment objects in
+  videos based on textual queries. Current methods mainly rely on large-scale
+  supervised fine-tuning (SFT) of Multi-modal Large Language Models (MLLMs).
+  However, this paradigm suffers from heavy data dependence and limited
+  scalability against the rapid evolution of MLLMs. Although recent zero-shot
+  approaches offer a flexible alternative, their performance remains
+  significantly behind SFT-based methods, due to the straightforward workflow
+  designs. To address these limitations, we propose \textbf{Refer-Agent}, a
+  collaborative mu
+notes: "Filed as a source on multi-model-coordination from the classifier's
+  judgement that the paper is about it (improves, medium): The paper proposes
+  decomposing RVOS into collaborating agents with a questioner-responder
+  reflection chain and reports beating single-pass zero-shot and SFT
+  baselines. No claim has been drafted from it yet."
+ingested_at: 2026-11-12
+brief: >-
+  A training-free agent pipeline with explicit self-verification beats
+  supervised fine-tuned models on referring video object segmentation, using a
+  9B open-source MLLM. The gain comes mostly from reflection, not from the
+  base model.
+
+
+  Refer-Agent decomposes RVOS into frame selection, intent analysis, object
+  grounding, and mask generation, with Ovis2.5-9B as the reasoning model and
+  SAM2 for masks. A Chain-of-Reflection stage runs a Questioner-Responder pair
+  to check target existence in the selected keyframe and consistency between
+  predicted objects and query attributes, feeding failures back for up to 4
+  rounds. Tested on ReVOS, Ref-YouTube-VOS, MeViS, ReasonVOS, GroundMoRe.
+
+
+  It reaches 69.8 J&F on ReasonVOS, 61.3 overall on ReVOS, 71.3 on
+  Ref-YouTube-VOS, 54.7 on MeViS, 33.4 on GroundMoRe, versus 65.5 for CoT-RVS
+  with GPT-4o on ReasonVOS. Removing both reflection stages drops ReasonVOS to
+  64.5; each stage alone costs more than 3%. Dynamic Focus Layout adds 2.8%
+  over a single keyframe and 2.1% over uniform frame integration.
+
+
+  Ablations isolate reflection, layout, agent merging, and reflection count,
+  with per-sample latency reported: 99s at MAX_TURN 0 versus 195s at 4. That
+  is the honest cost comparison; prior methods are quoted from their papers,
+  not rerun at matched compute.
+
+
+  Most ablations are on ReasonVOS only. Swapping in Qwen2.5-VL-7B gives 55.5,
+  above RGA3's 53.6 but far below the Ovis2.5 result, so model choice still
+  dominates absolute numbers.
+
+
+  If you were assuming RVOS needs SFT, this says a verification loop closes
+  the gap at roughly 2x inference time.
+brief_generated_at: 2026-11-12
+brief_model: claude-opus-5
+brief_source: full-text
