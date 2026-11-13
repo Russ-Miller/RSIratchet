@@ -1,0 +1,43 @@
+id: 2b-4b-instruct-models-fine-tuned-grpo-ternary-reward-correct-1
+ref: CLM-0956
+capability: abstention-and-self-knowledge
+technique: reward-abstention-tuned-ternary-rlvr-reward
+statement: >-
+  For 2B-4B instruct models fine-tuned with GRPO on a ternary reward
+  (correct +1, wrong -1, 'I don't know' r_abs), abstention rate rises and
+  accuracy falls monotonically as r_abs goes from -0.5 toward 0, so r_abs is
+  a tunable knob rather than a setting that buys hallucination reduction for
+  free, and the usable band is narrow (around -0.25 to 0.3 on
+  multiple-choice, where small models collapse to 100% abstention at
+  r_abs=0.3 while a 4B model still answers).
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Granite-3.3-2B-Instruct and Qwen-3-4B-Instruct, GRPO with LoRA, ~8k training samples, ~100-sample test sets, MedMCQA multiple-choice and Hendrycks MATH; open-ended MATH behaves wor"
+sources:
+  - source: arxiv-2601-20126
+    stance: supports
+    note: >-
+      Validated by: Correct/incorrect/IDK response distributions on held-out
+      ~100-sample MedMCQA and MATH sets, compared against the base model
+      with and without an IDK option; r_abs swept from -0.95 to 0.3..
+      Measured, but on ~100-sample held-out test sets with single runs and
+      no confidence intervals; two models, two datasets. The monotone trend
+      is consistent across all tables, but the specific optimal r_abs values
+      differ by model and dataset, so the band is weakly established.
+contested: false
+status: pending-review
+last_checked_at: 2026-11-13
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A sweep of r_abs on the
+  same models and datasets showing abstention rate not monotone in r_abs, or
+  a setting where incorrect answers fall substantially with no accuracy loss
+  at all. Drafted stance toward
+  grpo-trained-multi-hop-search-agents-qwen2-5-7b-instruct-constant-reward-abstaining:
+  supports -- Both find that a constant abstention reward trades accuracy
+  against refusal and can collapse the policy into near-total refusal at the
+  wrong setting.
+submitted_by: agent:claude-opus-5@Russ-Miller

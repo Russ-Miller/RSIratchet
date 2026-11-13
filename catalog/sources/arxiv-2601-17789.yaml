@@ -1,0 +1,69 @@
+id: arxiv-2601-17789
+ref: SRC-1068
+kind: paper
+title: Neuro-Symbolic Verification on Instruction Following of LLMs
+authors:
+  - Yiming Su
+  - Kunzhao Xu
+  - Yanjie Gao
+  - Fan Yang
+  - Cheng Ji Li
+  - Mao Yang
+year: 2026
+date: 2026-01-25
+arxiv_id: "2601.17789"
+url: https://arxiv.org/abs/2601.17789
+tags:
+  - ingested
+summary: A fundamental problem of applying Large Language Models (LLMs) to
+  important applications is that LLMs do not always follow instructions, and
+  violations are often hard to observe or check. In LLM-based agentic
+  workflows, such violations can propagate and amplify along reasoning chains,
+  causing task failures and system incidents. This paper presents NSVIF, a
+  neuro-symbolic framework for verifying whether an LLM's output follows the
+  instructions used to prompt the LLM. NSVIF is a universal, general-purpose
+  verifier; it makes no assumption about the instruction or the LLM. NSVIF
+  formulates instruc
+notes: "Filed as a source on procedure-following from the classifier's
+  judgement that the paper is about it (improves, medium): NSVIF decomposes
+  instructions into checkable constraints, verifies outputs more accurately
+  than LLM judges, and its feedback raises instruction-following without
+  post-training. No claim has been drafted from it yet."
+ingested_at: 2026-11-13
+brief: >-
+  Decomposing an instruction into individual constraints and checking each
+  with generated code or a targeted LLM prompt, then combining verdicts with
+  an SMT solver, verifies instruction following far better than asking an LLM
+  to judge the whole instruction at once. The gain depends on the LLM being
+  strong enough to classify constraints correctly; with a small model the
+  pipeline is worse than the plain judge.
+
+
+  Nsvif formulates verification as a constraint-satisfaction problem, uses
+  agents to extract constraints into a first-order logic formula, classify
+  each as logic or semantic, generate Python checkers or zero-shot prompts,
+  and solve with Z3. VifBench supplies 820 labeled <instruction, output,
+  result> tuples from English writing tasks, 391 (47.68%) sat and 429 (52.32%)
+  unsat, with 8 logic and 2 semantic constraint types and 2–10 constraints per
+  instruction.
+
+
+  F1 rose from 69.1% to 94.8% on GPT-4.1 and from 71.6% to 94.8% on Qwen3-Max,
+  up to 25.7% absolute. With GPT-4o-mini, Nsvif scored 37.3% F1 versus the
+  baseline's 66.6%; it identified all constraints in 734 of 820 instructions
+  but misclassified constraints in 508. False positives fell from 42.32% (347)
+  to 2.80% (23).
+
+
+  Ablations isolate the parts: GEPA-CoT 67.1%, Conv-CoT 78.9%, Nsvif-Neu (CSP
+  without logic checkers) 84.0%, full Nsvif 94.8%, all on GPT-4.1. The
+  feedback study is thin, 9 instructions, all reaching sat within 5 iterations
+  versus boolean feedback failing on 3 within 15.
+
+
+  Benchmark is self-built, English writing only, no tool use, planning, or
+  multilingual tasks. Treat the result as evidence that symbolic composition
+  beats monolithic judging only above a capability threshold.
+brief_generated_at: 2026-11-13
+brief_model: claude-opus-5
+brief_source: full-text

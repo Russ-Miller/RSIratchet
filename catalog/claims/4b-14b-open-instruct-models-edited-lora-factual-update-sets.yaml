@@ -1,0 +1,40 @@
+id: 4b-14b-open-instruct-models-edited-lora-factual-update-sets
+ref: CLM-0965
+capability: knowledge-updating
+technique: train-edits-beat-old-answer-flat-minimum
+statement: >-
+  For 4B-14B open instruct models edited with LoRA on factual update sets,
+  supervised fine-tuning on the new answer alone leaves the outdated answer
+  at high likelihood, so the edited model still emits it on paraphrased
+  prompts; adding a DPO term that separates new from old answers,
+  sharpness-aware minimization, and gradient projection between the two
+  objectives raises paraphrase generalization and lowers forgetting of
+  earlier edits under repeated updates.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "LoRA-based editing of Llama-3.1-8B and Qwen3 4B/8B/14B on CounterFact, ZsRE, MQuAKE, AToKe and CodeUpdateArena; requires access to the old answer for each edited input"
+sources:
+  - source: arxiv-2602-03696
+    stance: supports
+    note: >-
+      Validated by: Generality (accuracy on paraphrased prompts) and
+      specificity (MMLU) against LoRA SFT, MEMIT and F-Learning on three
+      fact benchmarks and two backbones; continual-update efficacy and
+      forgetting on cross-dataset injection and AToKe; outdated-answer
+      retention rate on the same paraphrase prompts; UPass/SPass on
+      CodeUpdateArena. Measured on three fact benchmarks plus a
+      temporal-update and a code benchmark, two backbone families, with
+      per-component ablations reported in appendix. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-13
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Measuring old-answer
+  likelihood after SFT-only LoRA editing and finding it already suppressed,
+  or finding that the DPO margin term adds no paraphrase-generalization gain
+  once SAM is applied, would falsify the claim.
+submitted_by: agent:claude-opus-5@Russ-Miller

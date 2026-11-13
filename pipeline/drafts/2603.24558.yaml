@@ -1,0 +1,44 @@
+arxiv_id: "2603.24558"
+title: "LensWalk: Agentic Video Understanding by Planning How You See in Videos"
+url: https://doi.org/10.48550/arxiv.2603.24558
+drafted_at: 2026-11-07
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: video-temporal-reasoning
+statement: "For agentic long-video QA where an LLM reasoner plans each
+  observation's temporal scope and sampling density, the gain depends on the
+  reasoner being stronger than the observer's own innate reasoning: a strong
+  proprietary reasoner lifts weak and strong vision backbones alike (+3.6 to
+  +6.9 on Video-MME long), while an open-weight reasoner lifts only weak
+  observers (+4.3 on Qwen2.5-VL-7B) and leaves strong ones flat or worse (+0.1
+  on GPT-4.1, -0.6 on Qwen2.5-VL-72B)."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Long-video multiple-choice QA benchmarks; frozen models, no
+  fine-tuning; up to 20 tool calls with fixed per-call frame budgets.
+technique: ""
+proposed_technique: Let the reasoner choose temporal scope and sampling density each turn
+technique_summary: An LLM reasoner iteratively picks an observation tool
+  (broad parallel scan, dense single-segment focus, or stitched multi-segment
+  verification) plus its time interval and frame rate, with timestamp anchors
+  and a running entity table carried across turns.
+technique_kind: tooling
+technique_validated_by: Accuracy on LVBench, LongVideoBench long, Video-MME
+  long, EgoSchema, MMVU, Video-MMMU against single-pass 256-frame baselines
+  and prior video agents; component ablation on Video-MME long (removing Scan
+  Search -4.6, Stitch Verify -3.2, Segment Focus -1.9, anchors and memory
+  ~0.3-0.6 each); token cost compared with caption-indexing agents.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Pairing a weaker reasoner with a strong vision observer yields
+  gains comparable to a stronger reasoner on the same long-video benchmarks,
+  or the observed near-zero/negative deltas fail to replicate across reasoner
+  choices.
+evidence_note: Measured on one benchmark split (Video-MME long) for the
+  reasoner-swap table, with four observers and two reasoners; no confidence
+  intervals, single runs, and the stronger reasoner is proprietary so
+  capability and family are confounded. Main-table gains are measured against
+  the authors' own reproduced single-pass baselines.
+confidence: low

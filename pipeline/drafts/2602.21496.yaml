@@ -1,0 +1,52 @@
+arxiv_id: "2602.21496"
+title: "Beyond Refusal: Probing the Limits of Agentic Self-Correction for
+  Semantic Sensitive Information"
+url: https://doi.org/10.48550/arxiv.2602.21496
+drafted_at: 2026-11-09
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: self-repair
+statement: "When a frozen model is wrapped in an evaluator-editor loop that
+  critiques and rewrites its own answer to remove context-dependent sensitive
+  content, the resulting safety gain is bought differently by model capacity:
+  large reasoning models rewrite and expand the answer while keeping utility,
+  whereas smaller and mid-sized open models cut most of the text and lose most
+  of their utility."
+kind: observation
+backing_strength: single-paper
+scope_condition: 13 models on SemSI-Bench open-ended questions, three leakage
+  categories (sensitive identity attributes, reputation-harmful content,
+  incorrect hazardous information), up to 3 refinement iterations,
+  LLM-as-judge scoring of leakage and utility with GPT-5 as judge
+technique: ""
+proposed_technique: Critique and rewrite sensitive spans instead of refusing
+technique_summary: An evaluator agent emits structured per-category leakage
+  verdicts on a draft answer and an editor agent rewrites only the flagged
+  spans, looping until the evaluator reports clean or a 3-iteration budget
+  runs out.
+technique_kind: process
+technique_validated_by: On SemSI-Bench across 13 models, mean leakage
+  occurrence fell from 0.78 (no protection) to 0.51 and toxicity from 0.85 to
+  0.45, with mean utility (LLM-judged relevance/correctness/completeness,
+  0-10) falling 6.04 to 5.45; compared against no-protection and a single-pass
+  prompt-only control, plus LlamaGuard 4 and GPT-OSS-Safeguard-20B output
+  filters, which scored 0.01 and 0.17 F1 at detecting the same leakage. Most
+  of the gain is already present at the prompt-only control (0.55), so the
+  loop itself adds only ~0.04 occurrence on average.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A small model (<10B) run in the same loop that cuts leakage
+  comparably while keeping answer length and utility near baseline, or a large
+  reasoning model that achieves its leakage reduction mainly by truncation.
+evidence_note: Measured on 13 models, one benchmark, one judge family. Length
+  deltas range -50% to -73% for small and mid models (Llama-3.3-70B 1479 to
+  394 chars) versus +110 chars for GPT-5; convergence plots show Gemma-3-4B
+  exhausting the 3-iteration budget while staying near 90% occurrence. Utility
+  is LLM-judged, not human-rated, and a 400-response human audit checks the
+  leakage judge rather than the utility judge. Capacity and model family are
+  confounded, so 'scale' is not isolated. The prompt-only control already
+  captures most of the leakage reduction, so the loop's marginal contribution
+  is small relative to the headline 34.6%.
+confidence: low

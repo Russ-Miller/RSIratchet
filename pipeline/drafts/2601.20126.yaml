@@ -1,0 +1,44 @@
+arxiv_id: "2601.20126"
+title: Rewarding Intellectual Humility Learning When Not To Answer In Large
+  Language Models
+url: https://doi.org/10.48550/arxiv.2601.20126
+drafted_at: 2026-11-12
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: abstention-and-self-knowledge
+statement: For 2B-4B instruct models fine-tuned with GRPO on a ternary reward
+  (correct +1, wrong -1, 'I don't know' r_abs), abstention rate rises and
+  accuracy falls monotonically as r_abs goes from -0.5 toward 0, so r_abs is a
+  tunable knob rather than a setting that buys hallucination reduction for
+  free, and the usable band is narrow (around -0.25 to 0.3 on multiple-choice,
+  where small models collapse to 100% abstention at r_abs=0.3 while a 4B model
+  still answers).
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Granite-3.3-2B-Instruct and Qwen-3-4B-Instruct, GRPO with
+  LoRA, ~8k training samples, ~100-sample test sets, MedMCQA multiple-choice
+  and Hendrycks MATH; open-ended MATH behaves worse because the base model
+  rarely samples abstention.
+technique: ""
+proposed_technique: Reward abstention with a tuned ternary RLVR reward
+technique_summary: Train with GRPO on a reward of +1 correct, -1 wrong, and a
+  tuned scalar r_abs for emitting 'I don't know', optionally preceded by SFT
+  that converts some answers to abstentions.
+technique_kind: training
+technique_validated_by: Correct/incorrect/IDK response distributions on
+  held-out ~100-sample MedMCQA and MATH sets, compared against the base model
+  with and without an IDK option; r_abs swept from -0.95 to 0.3.
+stance_on_existing: supports
+related_claim_id: grpo-trained-multi-hop-search-agents-qwen2-5-7b-instruct-constant-reward-abstaining
+stance_reason: Both find that a constant abstention reward trades accuracy
+  against refusal and can collapse the policy into near-total refusal at the
+  wrong setting.
+falsifier: A sweep of r_abs on the same models and datasets showing abstention
+  rate not monotone in r_abs, or a setting where incorrect answers fall
+  substantially with no accuracy loss at all.
+evidence_note: Measured, but on ~100-sample held-out test sets with single
+  runs and no confidence intervals; two models, two datasets. The monotone
+  trend is consistent across all tables, but the specific optimal r_abs values
+  differ by model and dataset, so the band is weakly established.
+confidence: medium

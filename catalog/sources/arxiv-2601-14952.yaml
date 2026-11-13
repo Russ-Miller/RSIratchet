@@ -1,0 +1,65 @@
+id: arxiv-2601-14952
+ref: SRC-1053
+kind: paper
+title: "CorpusQA: A 10 Million Token Benchmark for Corpus-Level Analysis and
+  Reasoning"
+authors:
+  - Zhiyuan Lu
+  - Chenliang Li
+  - Yingcheng Shi
+  - Weizhou Shen
+  - Ming Yan
+  - Fei Huang
+year: 2026
+date: 2026-01-21
+arxiv_id: "2601.14952"
+url: https://arxiv.org/abs/2601.14952
+tags:
+  - ingested
+summary: While large language models now handle million-token contexts, their
+  capacity for reasoning across entire document repositories remains largely
+  untested. Existing benchmarks are inadequate, as they are mostly limited to
+  single long texts or rely on a "sparse retrieval" assumption-that answers
+  can be derived from a few relevant chunks. This assumption fails for true
+  corpus-level analysis, where evidence is highly dispersed across hundreds of
+  documents and answers require global integration, comparison, and
+  statistical aggregation. To address this critical gap, we introduce
+  CorpusQA, a new bench
+notes: "Filed as a source on long-context-degradation from the classifier's
+  judgement that the paper is about it (measures, high): The paper introduces
+  a benchmark showing state-of-the-art long-context models degrade as input
+  length grows and RAG collapses, primarily characterizing rather than fixing
+  the issue. No claim has been drafted from it yet."
+ingested_at: 2026-11-13
+brief: >-
+  Retrieval-augmented generation collapses when the evidence a question needs
+  is spread across every document in a corpus, while memory-buffer agents
+  degrade more gracefully. CorpusQA tests this: 10M-token corpora of real
+  finance, education and real-estate PDFs, with queries (comparison, ranking,
+  filtering, aggregation) whose ground truth is computed programmatically by
+  extracting a schema from each document, aggregating a global table, and
+  executing NL2SQL against it, then handing the model only the raw
+  concatenated text.
+
+
+  At 128K tokens frontier models do reasonably well: GPT-5 82.02,
+  Gemini-2.5-Pro 80.19, Qwen3-235B-Thinking 78.08. At 1M, Gemini-2.5-Pro falls
+  to 50.73 and MiniMax-M1-80k to 11.63. On the same Gemini-2.5-Pro backbone,
+  Memory Agent beats RAG 67.58 vs 55.85 at 128K, 44.95 vs 17.38 at 1M, 22.14
+  vs 2.43 at 4M, and 11.13 vs 1.20 at 10M. A human expert scored 75.0% at 128K
+  and 0.0% at 4M and 10M, timing out on all tasks.
+
+
+  The RAG-vs-memory comparison holds the base model fixed, which isolates the
+  architecture. Schema extraction was checked by hand on 1,000 samples per
+  domain (94.13% and 98.97% agreement). Weaker: scoring is LLM-as-a-Judge with
+  DeepSeek-V3; the human study used 12 pairs per scale and 1 expert; the
+  training result is 480 samples, 25 GRPO steps, 1 model (Qwen3-4B-Thinking),
+  reported only as a figure. Deep-research agents were not tested.
+
+
+  If you are planning retrieval over large document sets for aggregate
+  questions, expect it to fail outright.
+brief_generated_at: 2026-11-13
+brief_model: claude-opus-5
+brief_source: full-text

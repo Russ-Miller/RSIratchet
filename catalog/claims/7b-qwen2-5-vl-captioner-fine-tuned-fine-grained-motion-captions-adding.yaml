@@ -1,0 +1,40 @@
+id: 7b-qwen2-5-vl-captioner-fine-tuned-fine-grained-motion-captions-adding
+ref: CLM-0977
+capability: hallucination
+technique: reward-parsed-action-order-direction-against-reference-caption
+statement: >-
+  For a 7B Qwen2.5-VL captioner fine-tuned on fine-grained motion captions,
+  adding a GRPO reward computed from parsed motion attributes (action-set
+  F1, pairwise temporal order, direction agreement against the reference
+  caption) lowers measured motion hallucination while costing a fraction of
+  a point on surface-overlap caption metrics.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "One 7B backbone, motion-centric human-action videos under ~30 seconds, reference captions produced by the paper's own kinematic annotation pipeline; reward and evaluation metric sh"
+sources:
+  - source: arxiv-2602-17768
+    stance: supports
+    note: >-
+      Validated by: On a 215-video hand-annotated hallucination set,
+      GPT-4.1-judged hallucination count fell 2.03 to 1.92 and the
+      parser-based Mo-Hall score rose 0.607 to 0.619 versus the same SFT
+      model without the reward, with GPT-Acc rising 67.83% to 71.80% and
+      BLEU-1 falling 43.64 to 43.25; QA accuracy was essentially unchanged
+      (94.03 to 94.05).. Measured on the authors' own benchmark against
+      their own SFT baseline; single backbone, single seed, no confidence
+      intervals. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-13
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Training the same backbone
+  with this reward and evaluating hallucination with a parser-independent
+  protocol (human annotation, or a differently built extractor) shows no
+  reduction, or shows the gain comes from shorter/less specific captions
+  rather than better grounding. Automatic check flagged: figures not in the
+  source: 0.11.
+submitted_by: agent:claude-opus-5@Russ-Miller

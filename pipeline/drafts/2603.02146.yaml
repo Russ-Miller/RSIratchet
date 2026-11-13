@@ -1,0 +1,47 @@
+arxiv_id: "2603.02146"
+title: "LongRLVR: Long-Context Reinforcement Learning Requires Verifiable
+  Context Rewards"
+url: https://doi.org/10.48550/arxiv.2603.02146
+drafted_at: 2026-11-09
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: long-context-degradation
+statement: When RL-training 7B-14B models for long-context QA, adding a dense
+  verifiable reward for naming the correct evidence chunks before answering
+  raises long-context benchmark accuracy well above outcome-only RLVR, because
+  an answer-only reward gives the evidence-selection step almost no gradient
+  until most of the required evidence is already selected.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: 7B-14B LLaMA-3.1 and Qwen2.5-1M instruct models trained with
+  GRPO on 46K synthetic long-context QA items (8K-64K tokens) annotated with
+  ground-truth evidence chunks; needs grounding annotations to compute the
+  reward.
+technique: ""
+proposed_technique: Reward the evidence chunks named, not just the answer
+technique_summary: During RL, the model first emits identifiers of the context
+  chunks it is grounding on, and receives an F-beta reward against annotated
+  gold chunks blended with the answer-correctness reward, alongside the usual
+  outcome reward.
+technique_kind: training
+technique_validated_by: "Accuracy on RULER-QA, LongBench v2 and LongReason
+  against SFT and outcome-only GRPO on identical data: Qwen2.5-14B-1M RULER-QA
+  73.17 to 88.90, LongBench v2 39.8 to 46.5; ablations show answer-only reward
+  stagnates contextual recall and context-only reward degrades downstream
+  accuracy over training."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched-data comparison where outcome-only RLVR reaches the same
+  long-context benchmark accuracy as the context-reward variant, or where
+  contextual recall under outcome-only training keeps rising rather than
+  plateauing.
+evidence_note: Measured on three backbones against SFT and naive GRPO
+  baselines with identical synthetic data, across three benchmarks at
+  32K-128K. Reward-component ablation separates answer-only, context-only and
+  combined. The mechanism (vanishing grounding gradient) is argued
+  analytically under an additive-reward assumption, not measured directly;
+  gains are confounded with the data pipeline only partly, since baselines
+  share the same data.
+confidence: medium

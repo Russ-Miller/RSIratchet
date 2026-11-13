@@ -1,0 +1,63 @@
+id: arxiv-2601-15724
+ref: SRC-1059
+kind: paper
+title: "VideoThinker: Building Agentic VideoLLMs with LLM-Guided Tool Reasoning"
+authors:
+  - Chenglin Li
+  - Qianglong Chen
+  - Feng Han
+  - Yikun Wang
+  - Xingxi Yin
+  - Yan Gong
+year: 2026
+date: 2026-01-22
+arxiv_id: "2601.15724"
+url: https://arxiv.org/abs/2601.15724
+tags:
+  - ingested
+summary: Long-form video understanding remains a fundamental challenge for
+  current Video Large Language Models. Most existing models rely on static
+  reasoning over uniformly sampled frames, which weakens temporal localization
+  and leads to substantial information loss in long videos. Agentic tools such
+  as temporal retrieval, spatial zoom, and temporal zoom offer a natural way
+  to overcome these limitations by enabling adaptive exploration of key
+  moments. However, constructing agentic video understanding data requires
+  models that already possess strong long-form video comprehension, creating a
+  circular dep
+notes: "Filed as a source on tool-use from the classifier's judgement that the
+  paper is about it (improves, medium): The paper trains a video model on
+  synthetic multi-step tool-use trajectories and reports improved multi-step
+  tool use and benchmark accuracy over baselines. No claim has been drafted
+  from it yet."
+ingested_at: 2026-11-13
+brief: >-
+  A video model can be taught to use video tools without any teacher that
+  understands long video, by having a text-only LLM plan tool calls over
+  captions and then swapping the captions for real frames. VideoThinker builds
+  10k video-interleaved chain-of-thought samples from CG-Bench, with
+  Qwen3-235B-A22B acting as the planning agent over caption proxies and
+  Qwen2.5-VL-7B fine-tuned on the result for 3 epochs. Tools cover clip and
+  subtitle retrieval, subtitle summary, and frame/subtitle/caption zoom, plus
+  a confidence gate that only triggers tool reasoning when answer confidence
+  falls below a threshold.
+
+
+  Against the Qwen2.5VL-7B base, it gains +6.8 on MLVU (54.8 vs 48.0), +10.6
+  on LVBench (48.9 vs 38.3), +3.7 on VideoMME long (53.7) and +3.0 on
+  LongVideoBench (59.7), matching GPT-4o on MLVU (54.9) and LVBench (48.9). It
+  beats the Qwen-235B language agent using the same tools by about 3 points,
+  but trails VideoExplorer (58.6 MLVU, 51.4 LVBench).
+
+
+  Evidence is measured across 4 benchmarks with ablations on frame count (8 to
+  64: 56.5 to 59.7 on LongVideoBench), confidence threshold (peaks near 0.8,
+  drops at 1.0), and retrieval top-k. Gains vanish on videos under 2 minutes
+  and the method is tested on 1 backbone only, with no matched-compute
+  baseline and no RL comparison.
+
+
+  If you need long-video agents, caption-space trajectory synthesis is a cheap
+  substitute for proprietary teachers.
+brief_generated_at: 2026-11-13
+brief_model: claude-opus-5
+brief_source: full-text

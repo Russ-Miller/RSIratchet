@@ -1,0 +1,50 @@
+arxiv_id: "2601.21841"
+title: Embodied Task Planning via Graph-Informed Action Generation with Large
+  Language Models
+url: https://doi.org/10.48550/arxiv.2601.21841
+drafted_at: 2026-11-12
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: planning
+statement: For LLM embodied planners on symbolic benchmarks with concurrency
+  and prerequisites (Robotouille, ALFWorld), replacing the appended
+  interaction history with a persistently updated scene graph nested in an
+  action-linked state-transition graph raises Pass@1 and holds it stable under
+  injected observation noise, while history-appending planners (ReAct, ReCAP)
+  lose 5-12 points as noise is injected every 5-10 steps.
+kind: observation
+backing_strength: single-paper
+scope_condition: Symbolic/text embodied benchmarks where observations can be
+  parsed deterministically into entities and relations; Qwen3-235B,
+  DeepSeek-R1 and Gemini-2.5-Flash backbones; noise injected as random
+  added/removed items in raw text observations.
+technique: ""
+proposed_technique: Keep agent state in a two-tier scene/transition graph, not history
+technique_summary: Parse each observation into a scene graph that is updated
+  in place, encode it with a GAT into an embedding, link those embeddings by
+  the actions taken into a session transition graph used for loop detection
+  and retrieval of structurally similar past successful traces, and prompt the
+  LLM on that state rather than on accumulated dialogue.
+technique_kind: process
+technique_validated_by: Pass@1 on Robotouille Synchronous/Asynchronous and
+  ALFWorld against ReCAP, ReAct, ExpeL and CoT with matched system prompts (up
+  to +19/+37/+15 points); noise ablation at 0, 1-per-10-step and 1-per-5-step
+  injection rates; per-step prefill token counts (12k vs 41k vs 57k) and
+  FLOPs.
+stance_on_existing: supports
+related_claim_id: single-agent-procedural-tasks-where-relevant-state-fits-fixed-schema
+stance_reason: Both find that rewriting a structured state each step, instead
+  of appending the transcript, holds accuracy as the horizon grows while
+  history-appending runtimes degrade.
+falsifier: An evaluation on the same benchmarks where a history-appending
+  agent with matched prompt and backbone matches the graph-state agent's
+  Pass@1 and shows no larger drop under the same injected observation noise.
+evidence_note: Measured on three benchmarks across five backbones with Pass@1,
+  step counts, prefill tokens and a noise sweep; baselines were given the same
+  system prompt. The noise comparison is the cleanest isolation. The headline
+  gains bundle the graph memory, loop detection and bounded lookahead
+  together, though an ablation separates them (BL 80, LD 90, Exp 95, all 97).
+  Experience bank is seeded from 50 trajectories collected with the largest
+  model, and the Gemini backbone shows no gain on Robotouille Synchronous.
+confidence: medium

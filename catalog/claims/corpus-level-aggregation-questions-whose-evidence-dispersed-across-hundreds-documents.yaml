@@ -1,0 +1,39 @@
+id: corpus-level-aggregation-questions-whose-evidence-dispersed-across-hundreds-documents
+ref: CLM-0992
+capability: long-context-degradation
+technique: consolidate-corpus-into-fixed-size-memory-chunk-chunk
+statement: >-
+  On corpus-level aggregation questions whose evidence is dispersed across
+  hundreds of documents (comparison, ranking, filtering, counting over
+  128K-10M token corpora), top-k retrieval degrades far faster with corpus
+  size than iterative chunk-wise memory consolidation, because the number of
+  chunks needed to cover the evidence exceeds the retrieval budget, while
+  both approaches lose most of their accuracy by 10M tokens.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Questions requiring global aggregation over many documents, not single-fact lookup; one backbone (Gemini-2.5-Pro) used for both the RAG and memory pipelines; four domains (finance "
+sources:
+  - source: arxiv-2601-14952
+    stance: supports
+    note: >-
+      Validated by: Accuracy judged by an LLM judge against programmatically
+      derived SQL ground truth on CorpusQA, compared against a RAG pipeline
+      on the same backbone: 67.58 vs 55.85 at 128K, 44.95 vs 17.38 at 1M,
+      22.14 vs 2.43 at 4M, 11.13 vs 1.20 at 10M. No matched-token-cost
+      baseline reported.. Measured on a synthetic benchmark whose ground
+      truth is computed by SQL over schemas extracted from the documents, so
+      answers are verifiable; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-13
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A retrieval pipeline
+  that, at 4M-10M tokens on dispersed-evidence aggregation questions,
+  matches or exceeds chunk-wise memory consolidation on the same backbone;
+  or a memory pipeline that collapses as sharply as RAG as corpus size
+  grows.
+submitted_by: agent:claude-opus-5@Russ-Miller

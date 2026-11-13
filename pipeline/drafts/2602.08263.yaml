@@ -1,0 +1,46 @@
+arxiv_id: "2602.08263"
+title: Specification Vibing for Automated Program Repair
+url: https://doi.org/10.48550/arxiv.2602.08263
+drafted_at: 2026-11-12
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: debugging
+statement: For LLM-based repair of Java bugs with failing tests available,
+  having the model first translate the buggy function into a structured
+  natural-language behavior specification, repair that specification against
+  failing-test feedback, and then regenerate code from it fixes more bugs than
+  code-centric patch generation with the same backbone, at a far smaller
+  candidate-patch budget.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Java bugs with perfect fault localization and failing tests
+  (Defects4J v1.2/v2.0, RWB); GPT-4o, GPT-4, GPT-3.5, DeepSeek-Coder
+  backbones; max 15 candidate patches per bug.
+technique: ""
+proposed_technique: Repair the behavior specification, then regenerate the code
+technique_summary: Convert the buggy function into a templated behavior
+  specification, infer intended behavior and repair the specification using
+  failing-test feedback, then synthesize the patch strictly from the corrected
+  specification, with an on-demand reasoning agent invoked only when the
+  default path fails.
+technique_kind: prompting
+technique_validated_by: Correct and plausible patch counts on Defects4J v1.2
+  (174 correct vs 146 for ReinFix-GPT4o) and v2.0 (178 vs 145), with 41 unique
+  fixes on each, under a 5x3 patch budget versus hundreds to thousands for
+  baselines; generalization checked on post-cutoff RWB sets across three other
+  LLMs.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched-budget, matched-backbone comparison in which direct
+  code-centric patch generation with the same iterative test feedback repairs
+  as many or more bugs, or in which the specification stage's gain disappears
+  once correct-patch judgements are made by independent blind annotators.
+evidence_note: Measured on two Defects4J versions plus two small (27-bug) RWB
+  sets, against baseline numbers reused from prior papers rather than re-run,
+  so backbone and harness differences are only partly controlled. Correctness
+  is judged by manual inspection. Internal contrast with the no-reasoning
+  variant is clean; the comparison to ReinFix fixes the backbone (GPT-4o) but
+  not the scaffolding budget.
+confidence: medium

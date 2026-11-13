@@ -1,0 +1,52 @@
+arxiv_id: "2602.15902"
+title: "Doc-to-LoRA: Learning to Instantly Internalize Contexts"
+url: https://doi.org/10.48550/arxiv.2602.15902
+drafted_at: 2026-11-11
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: long-context-degradation
+statement: For a small instruct LLM (gemma-2-2b-it, 8K window), meta-training
+  a Perceiver hypernetwork to map context activations into a LoRA adapter —
+  with long inputs split into chunks whose per-chunk adapters are concatenated
+  along the rank dimension — lets the model answer needle-in-a-haystack
+  queries with the context removed at near-perfect accuracy out to about 40K
+  tokens, far past both the base model's window and the 256-token maximum seen
+  in hypernetwork training.
+kind: observation
+backing_strength: single-paper
+scope_condition: One 2B base model; synthetic single-needle retrieval plus six
+  QA benchmarks up to 32K tokens; chunk size 1024 for NIAH, 8K for QA;
+  hypernetwork trained on English document corpora with self-generated
+  queries.
+technique: ""
+proposed_technique: Generate a context-specific LoRA with a hypernetwork
+  instead of distilling per prompt
+technique_summary: A Perceiver-style hypernetwork, meta-trained on the
+  context-distillation KL objective across many documents, reads a context's
+  per-layer activations in one forward pass and emits a LoRA adapter so later
+  queries can be answered with the context dropped from the window.
+technique_kind: architecture
+technique_validated_by: Needle retrieval accuracy versus the in-context base
+  model across haystack lengths to 128K; ROUGE-L F1 relative to in-context
+  upper bound on SQuAD, DROP, ROPES, 2WikiMultihopQA, MultiFieldQA, QASPER
+  against per-prompt context distillation (oracle-query and 5/25/100
+  generated-query variants), T2L, LLMLingua-2 compression, and a no-context
+  base model; plus update latency and peak update/inference memory.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Needle accuracy collapsing once the haystack exceeds the base
+  window or the training chunk count, or the generated adapter failing to beat
+  a no-context baseline on held-out documents, would show the hypernetwork is
+  not internalizing the context.
+evidence_note: "Measured on one 2B base model. NIAH accuracy stays near
+  perfect to ~40 chunks then degrades gracefully; QA reaches 82.5% of the
+  in-context upper bound on SQuAD and 0.857 normalized on 2WikiMultihopQA
+  against 0.901 for oracle-query CD and 0.704-0.745 for generated-query CD,
+  with sub-second updates versus 40-465 seconds. The low-budget comparison is
+  the authors' chosen operating point: they state CD with hundreds or
+  thousands of queries would likely surpass D2L, so the win is over a
+  compute-constrained baseline, not over CD in general. No replication on
+  other base models in the main text."
+confidence: medium

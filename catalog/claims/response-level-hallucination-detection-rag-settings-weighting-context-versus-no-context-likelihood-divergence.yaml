@@ -1,0 +1,37 @@
+id: response-level-hallucination-detection-rag-settings-weighting-context-versus-no-context-likelihood-divergence
+ref: CLM-1039
+capability: hallucination
+technique: weight-context-uptake-signal-toward-entity-tokens
+statement: >-
+  For response-level hallucination detection in RAG settings, weighting a
+  context-versus-no-context likelihood divergence toward named-entity and
+  numeric tokens, rather than over all answer tokens uniformly, is the
+  single most discriminative of a small hand-designed feature set fed to a
+  sub-1M-parameter classifier.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Question-context-answer triples with binary hallucination labels; evaluated on a 200-sample balanced HaluBench subset with tree-based and small neural classifiers; not tested on op"
+sources:
+  - source: arxiv-2601-15652
+    stance: supports
+    note: >-
+      Validated by: AUROC on a 200-item balanced HaluBench subset: 0.8669
+      for Random Forest on the 8-feature improved set vs 0.8274 on the
+      5-feature base set and 0.8017 for the unsupervised theory-guided
+      aggregation; gains of +3 to +9% reported across four classifier
+      architectures, with feature-importance analysis ranking entity-focused
+      uptake first.. Measured, but on only 200 examples with no reported
+      confidence intervals or cross-dataset test; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-13
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: On a larger held-out
+  hallucination benchmark, removing the entity weighting from the uptake
+  feature leaves AUROC unchanged, or a uniformly-weighted uptake feature
+  ranks at or above the entity-weighted one in importance.
+submitted_by: agent:claude-opus-5@Russ-Miller
