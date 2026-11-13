@@ -1,0 +1,40 @@
+id: algorithmic-execution-tasks-requiring-long-multi-step-state-tracking-sorting
+ref: CLM-0985
+capability: multi-model-coordination
+technique: executor-verifier-coordinator-loop-state-stack-backtracking
+statement: >-
+  On algorithmic execution tasks requiring long multi-step state tracking
+  (sorting, Turing-machine simulation, constraint puzzles), wrapping an LLM
+  in an executor/verifier/coordinator loop with per-step constraint checking
+  and backtracking raises exact-match accuracy far above single-pass
+  prompting, and the per-step verification rather than the role
+  decomposition is what the ablation credits.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Tasks with machine-checkable per-step constraints and no partial credit; 8B-120B open models; baseline is a single-pass prompt with no matched token or compute budget."
+sources:
+  - source: arxiv-2602-11170
+    stance: supports
+    note: >-
+      Validated by: Average accuracy over a self-built 86-task benchmark
+      reported as 26.8% to 93.8% versus single-pass prompting; component
+      ablation on the N-Queens case study shows removing the verification
+      procedure costs the most (24.9 points at 8B, 8.1 at 120B). No
+      matched-compute or matched-token baseline, and the main text reports
+      detailed results only for N-Queens.. Measured but weakly controlled.
+      Headline 26.8%->93.8% is over a benchmark the authors built and whose
+      per-task results sit in appendices not present in the source text;
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-13
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Running the single-pass
+  baseline at the same token/compute budget as the loop, or running the loop
+  with the verifier replaced by a no-op of equal cost, closes most of the
+  reported gap.
+submitted_by: agent:claude-opus-5@Russ-Miller

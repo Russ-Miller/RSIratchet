@@ -1,0 +1,55 @@
+arxiv_id: "2602.09794"
+title: Learning Global Hypothesis Space for Enhancing Synergistic Reasoning Chain
+url: https://doi.org/10.48550/arxiv.2602.09794
+drafted_at: 2026-11-10
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-step-reasoning
+statement: When several sampled reasoning chains are merged into one graph by
+  canonicalized-step equivalence, the lifespan of one-dimensional
+  persistent-homology features (loops) in that graph separates correct from
+  incorrect final answers at AUROC roughly 0.70-0.78 across arithmetic,
+  symbolic, multi-hop and long-context benchmarks, and selecting the reasoning
+  path along the persistent skeleton is more stable under paraphrase of steps
+  than selecting the highest-confidence path.
+kind: observation
+backing_strength: single-paper
+scope_condition: Reported for GPT-4o-mini, Qwen-Turbo and DeepSeek-V3 at
+  temperature 0.7 with up to 16 sampled paths per problem and a fixed
+  embedding model; accuracy gains over the strongest structured baseline are
+  small (about 0.7-1.1 EM on average).
+technique: ""
+proposed_technique: Merge sampled chains into a graph, then keep the persistent-homology skeleton
+technique_summary: Samples several reasoning paths, merges semantically
+  equivalent steps into one hypothesis graph, embeds nodes with semantic plus
+  structural plus uncertainty features, and keeps only the long-lifespan
+  connected components and loops as the reasoning chain to answer from.
+technique_kind: prompting
+technique_validated_by: Exact match on eight benchmarks against nine baselines
+  including CoT-SC, ToT, GoT, FoT, AoT and AFlow on three backbones (average
+  EM 68.0/67.6/68.3 vs 66.9/66.8/67.3 for AoT); path-selection comparison on
+  MATH against shortest, max-confidence and human-selected paths; paraphrase
+  perturbation changing 2.9% of answers versus 7.4% for max-confidence; weight
+  ablation showing the semantic distance term is load-bearing; LLM calls fixed
+  at 19 and tokens about 27-36% below ToT and AoT.
+stance_on_existing: supports
+related_claim_id: 0-6b-8b-qwen3-models-math-logic-multiple-choice-reasoning-quantifying
+stance_reason: Both find that a graph built by merging semantically equivalent
+  steps across sampled chains yields a structural signal that separates
+  correct from incorrect generations better than confidence-style scores.
+falsifier: H1 persistence computed the same way shows AUROC near 0.5 on
+  held-out benchmarks, or skeleton-selected paths lose accuracy and robustness
+  relative to max-confidence selection under a matched sampling and call
+  budget.
+evidence_note: "Measured: eight benchmarks, three backbones, nine baselines,
+  fixed 16-call budget; persistence-correctness link supported by Spearman
+  0.349, logistic odds ratio ~3.48, pooled AUC 0.74 and per-dataset AUCs
+  0.703-0.778. Weaknesses: EM margins over AoT are under about 1 point with no
+  reported variance despite a stated paired t-test, interpretability scores
+  come from three annotators with the inter-annotator agreement not reported
+  in the text, the robustness table's prose (2.4-point drop) disagrees with
+  its own numbers (83.9 to 81.5), and the design does not isolate the
+  topological selection from the extra path merging and aggregation that
+  precede it."
+confidence: low

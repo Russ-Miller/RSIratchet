@@ -1,0 +1,46 @@
+id: verifying-whether-llm-output-satisfies-multi-constraint-instruction-decomposing-instruction
+ref: CLM-1066
+capability: error-detection
+technique: check-each-instruction-constraint-separately-code-logic-llm
+statement: >-
+  For verifying whether an LLM output satisfies a multi-constraint
+  instruction, decomposing the instruction into individual constraints,
+  routing lexical/format ones to generated code checkers and topic/tone ones
+  to LLM judging, then composing verdicts with an SMT solver, detects
+  violations more accurately than LLM-as-judge on the whole instruction —
+  but only with strong backbones, since a small model that misclassifies
+  constraint types scores below the plain judge.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "English writing tasks with 2-10 composed constraints (word count, keyword inclusion, structure, writing topic, writing tone); requires a backbone able to extract constraints, class"
+sources:
+  - source: arxiv-2601-17789
+    stance: supports
+    note: >-
+      Validated by: On VifBench (820 labeled <instruction, output, result>
+      tuples, 47.7% sat), F1 94.8% vs 69.1% for a two-shot LLM-as-judge with
+      GPT-4.1, with gains of 7.0-25.7 F1 points across five models;
+      ablations show removing per-constraint code checkers (Nsvif-Neu) drops
+      F1 to 84.0% and prompt-optimized judges (GEPA-CoT 67.1%, Conv-CoT
+      78.9%) stay below; false positives fall from 42.3% to 2.8%. With
+      GPT-4o-mini the method scores 37.3% F1, below its 66.6% baseline,
+      because constraints are misclassified in 508 of 820 instructions..
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-13
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A prompted LLM judge
+  matching or beating the decomposed constraint-solving verifier on
+  multi-constraint instruction-following verification at equal backbone, or
+  ablation showing the per-constraint code checkers contribute nothing
+  beyond the decomposition itself. Drafted stance toward
+  generated-checklists-make-instruction-requirements-individually-checkable:
+  supports -- Decomposing an instruction into separately checkable
+  constraints beats holistic judging, and the margin is on multi-constraint
+  instructions.
+submitted_by: agent:claude-opus-5@Russ-Miller

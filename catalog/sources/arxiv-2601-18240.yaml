@@ -1,0 +1,64 @@
+id: arxiv-2601-18240
+ref: SRC-1069
+kind: paper
+title: "V-Loop: Visual Logical Loop Verification for Hallucination Detection
+  in Medical Visual Question Answering"
+authors:
+  - Mengyuan Jin
+  - Zehui Liao
+  - Yong Xia
+year: 2026
+date: 2026-01-26
+arxiv_id: "2601.18240"
+url: https://arxiv.org/abs/2601.18240
+tags:
+  - ingested
+summary: Multimodal Large Language Models (MLLMs) have shown remarkable
+  capability in assisting disease diagnosis in medical visual question
+  answering (VQA). However, their outputs remain vulnerable to hallucinations
+  (i.e., responses that contradict visual facts), posing significant risks in
+  high-stakes medical scenarios. Recent introspective detection methods,
+  particularly uncertainty-based approaches, offer computational efficiency
+  but are fundamentally indirect, as they estimate predictive uncertainty for
+  an image-question pair rather than verifying the factual correctness of a
+  specific answer. To a
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, medium): The paper proposes a
+  bidirectional verification loop that detects hallucinated answers better
+  than uncertainty-based introspective baselines. No claim has been drafted
+  from it yet."
+ingested_at: 2026-11-13
+brief: >-
+  Asking a medical vision-language model to re-derive the question from its
+  own answer, while forcing it to reuse the same visual attention, detects
+  hallucinations better than measuring its predictive uncertainty. V-Loop
+  extracts a semantic unit from the question and one from the answer, builds
+  an inverted verification question, re-queries the image with the primary
+  stage's aggregated text-to-image attention added back in at weight alpha =
+  0.7, and flags a mismatch as hallucination. It is training-free and uses
+  DeepSeek-V3.2-Exp as a text-only question generator and judge.
+
+
+  Tested on VQA-RAD, VQA-Med-2019 and SLAKE with MedGemma-4B-it, Lingshu-7B
+  and InternVL3-8B, with hallucination labels assigned automatically by GREEN.
+  On VQA-Med-2019 open-ended questions with Lingshu-7B, AUC goes from 51.80
+  (Semantic Entropy) to 71.93. Added on top of VASE, SE and RadFlag it
+  improves every cell, by + 1.37 to + 20.71 AUC.
+
+
+  The ablation isolates both parts: removing verification question generation
+  drops VQA-RAD open-ended AUC from 70.00 to 56.89; removing attention
+  consistency drops it to 66.79. Labels come from an automated metric, not
+  clinicians, and the generator/judge is a single external LLM.
+
+
+  Gains shrink on full test splits, since closed-ended questions lack dual
+  semantic units and fall back to rephrasing. Performance also tracks backbone
+  quality, with low AUC on LLaVA-Med-v1.5-7B.
+
+
+  If you run uncertainty-based detectors, this is a cheap single-pass addition
+  rather than a replacement.
+brief_generated_at: 2026-11-13
+brief_model: claude-opus-5
+brief_source: full-text

@@ -1,0 +1,52 @@
+arxiv_id: "2603.22165"
+title: "ACPO: Counteracting Likelihood Displacement in Vision-Language
+  Alignment with Asymmetric Constraints"
+url: https://doi.org/10.48550/arxiv.2603.22165
+drafted_at: 2026-11-07
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: When aligning 8B-14B vision-language models with DPO on multimodal
+  preference pairs whose chosen and rejected responses share many tokens, the
+  standard symmetric objective lowers the chosen response's implicit reward
+  along with the rejected one and degrades object-hallucination scores below
+  the pre-alignment checkpoint, while scaling only the rejected-reward term by
+  a stop-gradient coefficient that decays once a length-scaled target margin
+  is met keeps the chosen reward stable and raises hallucination scores above
+  the base model.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: InternVL3-Instruct 8B/14B fine-tuned on ~320K proprietary
+  preference pairs built partly from visually-degraded rejected responses;
+  language backbone trained, vision encoder frozen
+technique: ""
+proposed_technique: Scale only the rejected reward, by a decaying coefficient
+technique_summary: Multiplies the rejected response's implicit reward by a
+  per-batch stop-gradient coefficient, derived so it shrinks toward zero once
+  the chosen-minus-rejected margin exceeds a target that scales with combined
+  response length, thereby attenuating gradient pressure on the rejected term
+  only.
+technique_kind: training
+technique_validated_by: POPE, AMBER, HallusionBench, MM-IFEval plus seven
+  general multimodal benchmarks against DPO, IPO, SimPO, beta-DPO and
+  DPO-Shift on the same data; POPE 86.89 (DPO) vs 89.22 (ACPO) vs 88.48 base
+  at 14B; ablation forcing the coefficient to 1 returns POPE to 86.89;
+  reward-trajectory plots and bootstrap test (p<0.01) on hallucination
+  benchmarks.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Training the same models with the asymmetric coefficient and
+  observing chosen implicit reward still drifting down, or hallucination
+  benchmark scores no better than symmetric DPO; or showing that the DPO
+  degradation on POPE disappears under matched hyperparameter tuning.
+evidence_note: Measured on two model sizes against five alignment baselines on
+  11 benchmarks, with reward-trajectory evidence for the proposed mechanism
+  and a one-variable ablation. Margins on several general benchmarks are
+  within a point and some 8B results favour baselines. Preference data is
+  proprietary, so neither the DPO degradation nor the gain can be checked by
+  others; the coefficient is also empirically clipped to [0.3,0.95] rather
+  than the derived [0,1], which is an untested deviation. Attention-decay
+  evidence is a single case study.
+confidence: low

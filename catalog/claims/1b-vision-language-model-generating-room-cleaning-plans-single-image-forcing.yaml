@@ -1,0 +1,38 @@
+id: 1b-vision-language-model-generating-room-cleaning-plans-single-image-forcing
+ref: CLM-0953
+capability: planning
+technique: emit-plans-uml-state-activity-diagrams-then-grpo
+statement: >-
+  For a 1B vision-language model generating room-cleaning plans from a
+  single image, forcing the plan into UML class-diagram state plus
+  activity-diagram control flow (SFT then outcome-reward GRPO) raises recall
+  of required actions and semantic similarity over text chain-of-thought,
+  while precision falls slightly below the text baseline, so the structured
+  format buys coverage rather than correctness per step.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "InternVL2.5-1B backbone on the authors' own MRoom-30k benchmark; plans scored by embedding similarity against GPT-4o-written reference plans, never executed in a simulator or on a "
+sources:
+  - source: arxiv-2604-09580
+    stance: supports
+    note: >-
+      Validated by: On 1,000 held-out MRoom-30k instances, similarity
+      0.5694, recall 0.6744, F1 0.5904 versus text-CoT baseline 0.5498 /
+      0.6280 / 0.5811 and Graph-of-Thoughts 0.5383 / 0.5579 / 0.5371; text
+      baseline retained the highest precision (0.5489 vs 0.5326). Ablation:
+      skipping SFT and running GRPO alone fails to converge at all..
+      Measured on one benchmark the authors built, one 1B backbone, one
+      reference-similarity metric with a 0.5 threshold; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-13
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A matched comparison in
+  which the UML-structured pipeline raises precision as much as recall, or
+  in which text-CoT with equal SFT and GRPO compute matches its recall,
+  would show the format is not what shifts the coverage/precision balance.
+submitted_by: agent:claude-opus-5@Russ-Miller

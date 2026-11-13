@@ -1,0 +1,48 @@
+arxiv_id: "2604.09580"
+title: "OOWM: Structuring Embodied Reasoning and Planning via Object-Oriented
+  Programmatic World Modeling"
+url: https://doi.org/10.48550/arxiv.2604.09580
+drafted_at: 2026-11-09
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: planning
+statement: For a 1B vision-language model generating room-cleaning plans from
+  a single image, forcing the plan into UML class-diagram state plus
+  activity-diagram control flow (SFT then outcome-reward GRPO) raises recall
+  of required actions and semantic similarity over text chain-of-thought,
+  while precision falls slightly below the text baseline, so the structured
+  format buys coverage rather than correctness per step.
+kind: observation
+backing_strength: single-paper
+scope_condition: InternVL2.5-1B backbone on the authors' own MRoom-30k
+  benchmark; plans scored by embedding similarity against GPT-4o-written
+  reference plans, never executed in a simulator or on a robot.
+technique: ""
+proposed_technique: Emit plans as UML state and activity diagrams, then GRPO
+technique_summary: The model outputs PlantUML class-diagram state abstraction
+  inside <think> and a PlantUML activity-diagram plan inside <answer>,
+  initialized by SFT on 1k expert diagrams and then refined by GRPO whose
+  reward is the partition-wise embedding similarity of the activity diagram to
+  a reference plan.
+technique_kind: training
+technique_validated_by: "On 1,000 held-out MRoom-30k instances, similarity
+  0.5694, recall 0.6744, F1 0.5904 versus text-CoT baseline 0.5498 / 0.6280 /
+  0.5811 and Graph-of-Thoughts 0.5383 / 0.5579 / 0.5371; text baseline
+  retained the highest precision (0.5489 vs 0.5326). Ablation: skipping SFT
+  and running GRPO alone fails to converge at all."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched comparison in which the UML-structured pipeline raises
+  precision as much as recall, or in which text-CoT with equal SFT and GRPO
+  compute matches its recall, would show the format is not what shifts the
+  coverage/precision balance.
+evidence_note: Measured on one benchmark the authors built, one 1B backbone,
+  one reference-similarity metric with a 0.5 threshold; margins over the text
+  baseline are small (about 1-5 points) with no seeds or confidence intervals,
+  and the reference plans and the text-to-UML conversion used at scoring time
+  both come from GPT-4o, so the metric partly rewards matching that
+  annotator's structure. Generalization tests on cooking and painting show the
+  pattern does not hold (text baseline wins recall on painting).
+confidence: low

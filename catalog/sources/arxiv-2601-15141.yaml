@@ -1,0 +1,63 @@
+id: arxiv-2601-15141
+ref: SRC-1054
+kind: paper
+title: "CLEANER: Self-Purified Trajectories Boost Agentic Reinforcement Learning"
+authors:
+  - Tianshi Xu
+  - Yihan Chen
+  - Meng Li
+year: 2026
+date: 2026-01-21
+arxiv_id: "2601.15141"
+url: https://arxiv.org/abs/2601.15141
+tags:
+  - ingested
+summary: "Agentic Reinforcement Learning (RL) has empowered Large Language
+  Models (LLMs) to utilize tools like Python interpreters for complex
+  problem-solving. However, for parameter-constrained models (e.g., 4B--7B),
+  the exploration phase is often plagued by frequent execution failures,
+  creating noisy trajectories that hinder policy optimization. Under standard
+  outcome-based reward settings, this noise leads to a critical credit
+  assignment issue, where erroneous actions are inadvertently reinforced
+  alongside successful outcomes. Existing mitigations face a dilemma: dense
+  rewards often trigger reward ha"
+notes: "Filed as a source on self-repair from the classifier's judgement that
+  the paper is about it (improves, medium): CLEANER harvests the model's own
+  successful self-corrections to replace failed steps during rollout
+  collection, yielding 3-6% accuracy gains over baselines, i.e., leveraging
+  self-repair to improve training. No claim has been drafted from it yet."
+ingested_at: 2026-11-13
+brief: >-
+  Editing failed tool calls out of RL rollouts before the policy update,
+  rather than letting the model learn from its own error-recovery loops,
+  improves small-model agentic reasoning. The claim cuts against the idea that
+  leaving error traces in context teaches useful self-correction.
+
+
+  CLEANER adds Similarity-Aware Adaptive Rollback (SAAR): when generated
+  Python fails, the agent is allowed to retry in a temporary context, then the
+  trajectory is rewritten so the successful code replaces the failed turn.
+  Code similarity (difflib SequenceMatcher) against a threshold decides
+  whether only the code is swapped or the whole reasoning segment. Trained
+  with DAPO on Qwen3-4B-Instruct-2507 and Qwen2.5-7B-Instruct, evaluated on
+  AIME24/25, GPQA, LiveCodeBench-v6.
+
+
+  CLEANER-4B reaches 72.7 AIME24, 67.1 AIME25, 60.2 GPQA, 26.8 LCB at 250 RL
+  steps, versus DAPO-baseline 66.7/59.4/56.9/26.6 at the same steps, and
+  matches DemyAgent-4B (750 steps). Qwen2.5-7B gains about 4% average.
+
+
+  The DAPO baseline is matched on configuration except for SAAR, which
+  isolates the mechanism. An ablation deactivating SAAR at inference shows
+  only 0.6–2.5% Pass@1 drops, suggesting internalization. No
+  matched-token-budget comparison against supersampling; 2 model families,
+  both Qwen; Python interpreter only; a 70/30 curriculum mix was used for the
+  7B model but not ablated.
+
+
+  If you train tool-use agents under outcome-only rewards, rewriting rollouts
+  may buy 3x step efficiency.
+brief_generated_at: 2026-11-13
+brief_model: claude-opus-5
+brief_source: full-text

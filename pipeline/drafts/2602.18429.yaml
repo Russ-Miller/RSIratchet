@@ -1,0 +1,46 @@
+arxiv_id: "2602.18429"
+title: "VIRAASAT: Traversing Novel Paths for Indian Cultural Reasoning"
+url: https://doi.org/10.48550/arxiv.2602.18429
+drafted_at: 2026-11-11
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-step-reasoning
+statement: For 3B-7B open instruct models fine-tuned on 2-hop cultural QA over
+  a knowledge graph, supervision made of explicit retrieval actions and
+  returned observations raises final-answer accuracy far more than
+  chain-of-thought rationales, which mostly fix the intermediate bridge step
+  and leave the second hop unresolved.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: 2-hop template questions (anchor artifact -> bridge state ->
+  target artifact) over a curated Indian-culture knowledge graph; English
+  only; PEFT SFT with ~2.3k training traces
+technique: ""
+proposed_technique: Train on verifier-corrected graph traversal traces, not CoT
+technique_summary: Generates supervision in which an actor model emits
+  explicit THOUGHT/ACTION/OBSERVATION steps that are atomic knowledge-graph
+  operations, with a mid-step symbolic verifier correcting any action that
+  leaves the intended path, and fine-tunes on those traces instead of
+  free-form chain-of-thought.
+technique_kind: training
+technique_validated_by: "Exact-match State/Answer/Full Match on a 643-item
+  test split: Qwen2.5-7B Full Match 36.70% with CoT-SFT vs 57.54% with
+  trace-SFT; 3B 34.26% vs 50.70%; ablations on 1k train/100 test show removing
+  the verifier drops Full Match 52->36 and stripping ACTION/OBSERVATION spans
+  drops it 52->9; OOD multiple-choice on a SANSKRITI subset is unchanged or
+  slightly better."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Fine-tuning the same backbones on CoT traces matched to the
+  action-trace length and token budget reaches comparable Answer/Full Match,
+  or stripping the ACTION/OBSERVATION spans leaves final-answer accuracy
+  roughly intact.
+evidence_note: Measured on one benchmark built by the authors, three backbones
+  (Qwen2.5-3B/7B, Phi-4-mini), single seed, no token-budget-matched CoT
+  control, so part of the gain may come from trace length rather than the
+  symbolic structure; the ablation stripping action/observation spans is the
+  closest control and shows a large collapse. Gains in the ablation are on 100
+  test items.
+confidence: medium

@@ -1,0 +1,49 @@
+arxiv_id: "2602.09367"
+title: "CAPER: Constrained and Procedural Reasoning for Robotic Scientific
+  Experiments"
+url: https://doi.org/10.48550/arxiv.2602.09367
+drafted_at: 2026-11-11
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: long-horizon-execution
+statement: In simulated and real laboratory manipulation, removing the
+  symbolic task-level planner from a layered LLM-planner / visual-predictor /
+  RL-controller stack costs almost nothing on short-horizon tasks
+  (pick-and-place 79.3 vs 80.3%, pour 62.4 vs 64.5%) but a large amount on
+  multi-step procedures (mixing 43.6 vs 52.3%, crystallization 21.5 vs 30.1%),
+  so explicit pre-execution procedural reasoning only pays off once the task
+  has many ordered dependent steps.
+kind: observation
+backing_strength: single-paper
+scope_condition: Protocol-sensitive laboratory manipulation tasks with few
+  demonstrations; one simulation benchmark (CoppeliaSim, UR3) plus RLBench and
+  a small real-robot transfer; GPT-4o as the mid-level VLM and LLaMA-3.1-8B as
+  the task planner.
+technique: ""
+proposed_technique: Separate symbolic procedure, visual grounding, and control
+  into distinct modules
+technique_summary: An LLM emits a procedurally validated subtask sequence in
+  language space with no visual input, a diffusion predictor plus VLM grounds
+  each subtask into fixed action primitives, and an RL controller executes
+  only those primitives.
+technique_kind: process
+technique_validated_by: Success rate on a 5-task scientific-experiment
+  simulation benchmark (1,000 trials per task) against LLM+RL, VLM+RL and
+  MP+VLM+RL ablations, plus 5 long-horizon RLBench tasks against PerAct,
+  OpenVLA, a re-implemented CoT-VLA and MoLe-CogAct, plus 10-40 real-robot
+  trials per task.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation on the same benchmark showing the task-level planner
+  gives no greater gain on long-horizon tasks than on short-horizon ones, or
+  showing an end-to-end VLA trained on the same small dataset matching the
+  layered stack on mixing and crystallization.
+evidence_note: Measured, but all component ablations come from one group's own
+  simulation benchmark with its own data-collection and reward design; the
+  strongest comparison (CoT-VLA) is a re-implementation because no code was
+  released, and the real-world arm uses only 10-40 trials per task. The design
+  does not separate the planner's contribution from the particular
+  prompt-template pool or from the restricted four-primitive action interface.
+confidence: low

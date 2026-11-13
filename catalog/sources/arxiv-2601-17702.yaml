@@ -1,0 +1,67 @@
+id: arxiv-2601-17702
+ref: SRC-1066
+kind: paper
+title: S$^3$-Attention:Attention-Aligned Endogenous Retrieval for
+  Memory-Bounded Long-Context Inference
+authors:
+  - Qingsen Ma
+  - Dianyun Wang
+  - Yaoye Wang
+  - Lechen Ning
+  - Sujie Zhu
+  - Xiaohang Zhang
+year: 2026
+date: 2026-01-25
+arxiv_id: "2601.17702"
+url: https://arxiv.org/abs/2601.17702
+tags:
+  - ingested
+summary: Large language models are increasingly applied to multi-document and
+  long-form inputs, yet long-context inference remains memory- and
+  noise-inefficient. Key-value (KV) caching scales linearly with context
+  length, while external retrieval methods often return lexically similar but
+  causally irrelevant passages. We present S3-Attention, a memory-first
+  inference-time framework that treats long-context processing as
+  attention-aligned endogenous retrieval. S3-Attention decodes transient key
+  and query projections into top-k sparse feature identifiers using
+  lightweight sparse autoencoders, and constru
+notes: "Filed as a source on long-context-degradation from the classifier's
+  judgement that the paper is about it (improves, medium): The paper proposes
+  an attention-aligned sparse retrieval framework that discards the KV cache
+  while matching full-context accuracy and improving robustness in
+  information-dense long-context settings. No claim has been drafted from it
+  yet."
+ingested_at: 2026-11-13
+brief: >-
+  A model's own attention states, discretized by sparse autoencoders, can
+  serve as the retriever for its long context, matching a reranked RAG
+  pipeline without an external embedding model while keeping GPU memory
+  constant. The catch is that the endogenous signal alone is weaker than BM25;
+  the gains come only from fusing the two.
+
+
+  S3-Attention trains Top-k SAEs on key projections, streams the context in
+  chunks, writes feature IDs into a CPU inverted index, and discards the KV
+  cache. Evaluated on 9 LongBench datasets (single-doc QA, multi-doc QA,
+  summarization) with Llama-3.1-8B-Instruct, Qwen2-7B-Instruct and
+  Mistral-7B-Instruct-v0.3.
+
+
+  S3-Hybrid averages 24.87 vs FullKV 25.01 on Llama-3 (99.4% retention), 23.24
+  vs 23.40 on Mistral, 18.80 vs 18.92 on Qwen2. S3-Pure is worse than BM25
+  everywhere (22.60 vs 24.25 on Llama-3). On Qasper it beats full context
+  (21.50 vs 20.56). On HotpotQA, answer recall 0.8400 and KL to full-context
+  next-token distribution 0.2154, vs 0.7700/0.3831 for RAG.
+
+
+  RAG is run at a matched token budget with reranking, and there is a
+  cumulative layer ablation (Qasper 21.41 to 22.75). Absolute scores vary
+  across environments, and the authors restrict claims to within-protocol
+  retention.
+
+
+  The prototype is slower in wall-clock than FullKV, so this buys memory, not
+  speed.
+brief_generated_at: 2026-11-13
+brief_model: claude-opus-5
+brief_source: full-text

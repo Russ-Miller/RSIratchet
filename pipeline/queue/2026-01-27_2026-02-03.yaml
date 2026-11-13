@@ -49,6 +49,26 @@ candidates:
       benchmarks-Robotouille Synchronous, Robotouille Asynchronous, and ALFWorld. Our method
       outperforms state-of-the-art baselines, achieving Pass@1 performance gains of up to 22% on
       Robotouille Synchronous, 37% on Asynchronous, and 15% on ALFWorld while maintai
+    verdicts:
+      - capability: planning
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes a graph-structured memory and symbolic lookahead framework that raises
+          Pass@1 planning performance by 15-37% over baselines.
+        scope_condition: LLM embodied agents on Robotouille (sync/async) and ALFWorld planning benchmarks,
+          using graph-structured experience memory plus symbolic bounded lookahead
+        classified_at: 2026-11-12
+        model: claude-opus-5
+      - capability: embodied-control
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: Proposes GiG graph-structured memory plus bounded lookahead that raises Pass@1 task
+          success in executed embodied benchmarks.
+        scope_condition: LLM planners executing in simulated embodied benchmarks (Robotouille sync/async, ALFWorld)
+        classified_at: 2026-11-12
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7127191024
     score: 25
     signals:
@@ -92,6 +112,16 @@ candidates:
       dimensions, diverse data with verified reasoning annotations, and a multi-level automated
       evaluation framework. Extensive experiments on mainstream reasoning MLLMs reveal insights into
       how thinking affects hallucination and reasoning capability in various multimodal tasks.
+    verdicts:
+      - capability: hallucination
+        about_capability: true
+        direction: measures
+        confidence: high
+        rationale: The paper introduces a benchmark and taxonomy to measure hallucinations in reasoning
+          MLLMs' intermediate CoTs without proposing a mitigation.
+        scope_condition: Reasoning multimodal LLMs, hallucinations within intermediate chain-of-thought
+        classified_at: 2026-11-12
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7127447297
     score: 25
     signals:
@@ -135,6 +165,16 @@ candidates:
       (TOPD), an offline method that distills tournament oracle policy from interaction logs and
       deploys it in-context at inference time. Our results show that TOPD significantly improves
       receiver robustness to persuasion.
+    verdicts:
+      - capability: persuasion
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper measures persuasion between LLM agents in a simulated game, not any change in
+          human beliefs or decisions.
+        scope_condition: LLM-to-LLM strategic communication game; no human participants
+        classified_at: 2026-11-12
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7127092014
     score: 22
     signals:
@@ -183,6 +223,29 @@ candidates:
       FLARE consistently improves task performance and planning-level behavior, frequently allowing
       LLaMA-8B with FLARE to outperform GPT-4o with standard step-by-step reasoning. These results
       establish a clear distinction between reasoning and planning."
+    verdicts:
+      - capability: long-horizon-execution
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: The paper diagnoses myopic step-wise reasoning as a long-horizon failure mode and
+          introduces FLARE (lookahead + value propagation) that consistently improves long-horizon
+          task performance.
+        scope_condition: LLM agents in deterministic, fully structured environments with explicit state
+          transitions; multiple agent frameworks and backbones incl. LLaMA-8B and GPT-4o
+        classified_at: 2026-11-12
+        model: claude-opus-5
+      - capability: planning
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper diagnoses myopic step-wise reasoning as a planning failure and introduces
+          FLARE, a lookahead/value-propagation method that improves task performance and
+          planning-level behavior.
+        scope_condition: Deterministic, fully structured environments with explicit state transitions; LLM
+          agents from LLaMA-8B to GPT-4o across multiple agent frameworks
+        classified_at: 2026-11-12
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7125961535
     score: 21
     signals:
@@ -227,6 +290,19 @@ candidates:
       reasoning benchmarks, MATA achieves the state-of-the-art results compared with monolithic and
       compositional baselines. The code and dataset are available at
       https://github.com/ControlNet/MATA.
+    verdicts:
+      - capability: multi-model-coordination
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes a trainable hierarchical multi-agent automaton that selects among
+          complementary/overlapping agents via a learned transition policy and reports
+          state-of-the-art results over monolithic and compositional baselines.
+        scope_condition: Visual reasoning benchmarks; multi-agent system with trainable hyper-agent
+          transition policy over agent states and shared memory, compared to monolithic VLM and
+          compositional single-agent/hand-crafted pipelines
+        classified_at: 2026-11-12
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7127390145
     score: 21
     signals:
@@ -274,6 +350,15 @@ candidates:
       strictly more expressive than low-rank weight update since the latter ties expressivity to
       input rank, whereas ReasonCACHE bypasses this constraint by directly injecting key-values into
       the attention mechanism. Together, our findings identify ReasonCACHE "
+    verdicts:
+      - capability: long-context-degradation
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper is about prefix-tuned KV caches for reasoning via ICL, mentioning long-context
+          degradation only as motivation rather than studying it.
+        classified_at: 2026-11-12
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7127146572
     score: 20
     signals:
@@ -319,6 +404,18 @@ candidates:
       Generation (RAG) techniques can improve functional correctness, they provide negligible
       benefits to security. Furthermore, explicitly prompting models with general security
       guidelines often leads to compilation failures, harming funct
+    verdicts:
+      - capability: code-generation
+        about_capability: true
+        direction: measures
+        confidence: high
+        rationale: The paper introduces a benchmark and empirical study of LLMs' repository-level secure
+          code generation rather than proposing a technique, though it notes RAG and security
+          prompting side effects.
+        scope_condition: Secure code generation in real-world Java repositories; 105 CodeQL-derived
+          instances, 19 CWEs, 5 LLMs evaluated with SecurePass@K
+        classified_at: 2026-11-12
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7126053219
     score: 20
     signals:
@@ -364,6 +461,28 @@ candidates:
       flexibility of verifiable reward design as a practical approach for hallucination mitigation
       in language models. Reproducible code for our abstention training framework is available here
       https://github.com/Mystic-Slice/rl-abstention.
+    verdicts:
+      - capability: hallucination
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper shows rewarding abstention via RLVR reduces incorrect/unverifiable responses
+          without severe accuracy loss, presenting a hallucination-mitigation technique.
+        scope_condition: Granite-3.3-2B-Instruct and Qwen-3-4B-Instruct fine-tuned with RLVR ternary rewards
+          on MedMCQA and Hendrycks Math; gains mainly on multiple-choice, limited on open-ended QA
+        classified_at: 2026-11-12
+        model: claude-opus-5
+      - capability: abstention-and-self-knowledge
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: The paper shows that RLVR with a moderate abstention reward reduces incorrect answers
+          without major accuracy loss, i.e., a training change that improves abstention behavior.
+        scope_condition: Granite-3.3-2B-Instruct and Qwen-3-4B-Instruct fine-tuned with RLVR ternary rewards
+          on MedMCQA and Hendrycks Math; moderate abstention reward ~-0.25 to 0.3; open-ended QA
+          needs prior SFT abstention training
+        classified_at: 2026-11-12
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7126037737
     score: 20
     signals:
@@ -406,6 +525,17 @@ candidates:
       architectures including Mistral-7B, Mistral-7B-instruct, Falcon-rw-1b, LLaMA-3.2-1b,
       LLaMA-2-13b-chat, LLaMA-2-7b-chat, LLaMA-2-13b, and LLaMA-2-7b show consistent improvements in
       AUROC and AURAC over state of the art baselines.
+    verdicts:
+      - capability: hallucination
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: The paper proposes a quantum tensor-network semantic-entropy uncertainty framework for
+          hallucination detection that improves AUROC/AURAC over prior baselines.
+        scope_condition: "Open LLMs (1B-13B: Mistral, Falcon, LLaMA families) on QA datasets (TriviaQA, NQ,
+          SVAMP, SQuAD), across generation lengths and quantization levels"
+        classified_at: 2026-11-12
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7127299851
     score: 19
     signals:
@@ -451,6 +581,17 @@ candidates:
       $\\sim$1 minute at 1M tokens). Finally, our results characterize a fundamental
       coverage--fidelity trade-off: visual code compression retains broader context coverage to
       support global dependencies, yet faces fidelity bottleneck"
+    verdicts:
+      - capability: long-context-degradation
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes rendering long code into compressed images for VLMs, reporting higher
+          accuracy and compression than a textual compression baseline on long-context code tasks.
+        scope_condition: Long-context code tasks (summarization, QA, completion) up to 1M tokens with VLMs
+          such as Glyph 9B, compared against textual compression baseline LongCodeZip
+        classified_at: 2026-11-12
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7134253765
     score: 19
     signals:
@@ -495,6 +636,15 @@ candidates:
       preserves comparable instruction following while still substantially outperforming them in
       visual consistency. Extensive ablation studies confirm that the effectiveness of CoEditor++
       benefits from its structured cognit
+    verdicts:
+      - capability: procedure-following
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper is about instruction-based image editing pipelines, not about models following
+          unfamiliar multi-step procedures or constraint sets.
+        classified_at: 2026-11-12
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7126116787
     score: 19
     signals:
@@ -538,6 +688,26 @@ candidates:
       value: FAEA can autonomously explore novel scenarios in simulation and generate successful
       trajectories for training data augmentation in embodied learning. Our results indicate that
       general-purpose agents are sufficien"
+    verdicts:
+      - capability: embodied-control
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: The paper shows an unmodified LLM agent framework can control simulated manipulators to
+          high success without demonstrations or fine-tuning, a technique that improves
+          demonstration-free embodied control.
+        scope_condition: Frontier LLM agent framework (Claude Agent SDK) with privileged environment state
+          on LIBERO, ManiSkill3, MetaWorld simulated manipulation
+        classified_at: 2026-11-12
+        model: claude-opus-5
+      - capability: persuasion
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper is about LLM agents for robotic manipulation, with no measurement of human
+          belief or decision change.
+        classified_at: 2026-11-12
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7126121778
     score: 19
     signals:
@@ -581,6 +751,17 @@ candidates:
       life. Extensive experiments on User FingerTip and general benchmarks demonstrate that Me-Agent
       achieves state-of-the-art performance in personalization while maintaining competitive
       instruction execution performance."
+    verdicts:
+      - capability: long-term-memory
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes a hierarchical long-term/app-specific preference memory plus
+          preference learning that improves personalization from past user interactions.
+        scope_condition: LLM-based mobile GUI agents with user interaction history; evaluated on the new
+          User FingerTip benchmark of ambiguous daily-life instructions
+        classified_at: 2026-11-12
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7213480164
     score: 19
     signals:

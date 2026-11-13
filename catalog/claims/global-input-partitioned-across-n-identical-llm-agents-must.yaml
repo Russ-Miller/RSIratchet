@@ -1,0 +1,47 @@
+id: global-input-partitioned-across-n-identical-llm-agents-must
+ref: CLM-1006
+capability: multi-model-coordination
+technique: measure-partial-correctness-alongside-exact-success-locate-coordination
+statement: >-
+  When global input is partitioned across N identical LLM agents that must
+  coordinate freely to compute an algorithmic answer, success falls steadily
+  as N grows from 2 to 100 and the loss comes from integration rather than
+  communication: agents form task-appropriate topologies and exchange
+  information, yet partial-correctness stays far above exact success (e.g.
+  88% vs 62% on aggregation tasks), and on global-shuffle tasks at N>=50
+  success reaches zero while a single agent given the whole input still
+  succeeds.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "30 generated algorithmic tasks at three communication-complexity levels, three protocols (P2P, broadcast, shared file system), three open-weight models (DeepSeek-V3.1, GPT-OSS-120B"
+sources:
+  - source: arxiv-2603-01045
+    stance: supports
+    note: >-
+      Validated by: Applied across 1,620 runs; the PCS-SR gap (e.g. 88.0% vs
+      62.0% on Level-I for DeepSeek, 8-16% vs 0% on Level-III at N>=50) is
+      used together with a rule-based plus two-annotator failure taxonomy
+      (Cohen's kappa 0.87) attributing failures to premature submission
+      37.2%, consensus failure 29.9%, computation error 28.6%. Not validated
+      against an independent ground-truth labelling of where failure
+      occurred.. Measured on programmatically generated tasks with exact
+      ground truth, with an N=1 full-data oracle baseline, across 54
+      configurations. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-13
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A
+  distributed-computation benchmark where multi-agent success tracks the
+  single-agent oracle as N grows, or where partial correctness and exact
+  success stay close so failures localize to information gathering rather
+  than integration. Drafted stance toward
+  splitting-task-across-several-agents-helps-long-horizon-tasks-whose:
+  supports -- Reports that coordination overhead on tightly coupled
+  global-shuffle tasks eliminates parallelization gains entirely, leaving
+  the team below a single agent with full data access.
+submitted_by: agent:claude-opus-5@Russ-Miller

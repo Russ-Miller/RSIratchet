@@ -1,0 +1,40 @@
+id: specialized-domain-whose-pretraining-corpus-thin-whose-expert-knowledge
+ref: CLM-1059
+capability: domain-knowledge
+technique: cold-start-templated-expert-traces-then-rl
+statement: >-
+  For a specialized domain whose pretraining corpus is thin but whose expert
+  knowledge is available as structured engine output (Go next-move
+  prediction), outcome-reward RL applied directly to a general instruct or
+  reasoning-distilled model plateaus below beginner-level accuracy, while
+  the same RL started from a model fine-tuned on heuristically templated
+  expert data reaches professional-level accuracy.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Qwen2.5 7B/32B and R1-distilled 7B/32B on Go next-move prediction scored against KataGo's top-10 candidate moves; expert labels come from an external engine that can score any stat"
+sources:
+  - source: arxiv-2601-16447
+    stance: supports
+    note: >-
+      Validated by: KataGo-Bench-1K prediction accuracy: 88.1% (7B) and
+      88.6% (32B) versus 34.3% for the best general model and 87.8% for
+      KataGo-HumanSL-9d; RL without cold start stayed below the 67.4%
+      beginner reference; replacing the heuristic template with direct
+      next-move prediction capped the 7B RL ceiling below 50%; general
+      benchmarks (GPQA, MATH, AIME, LiveCodeBench) held or improved..
+      Measured on one domain (Go) with one benchmark and one base-model
+      family; ablations isolate the cold start and the template separately,
+      and a reward-design ablation is reported. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-13
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Running the same GRPO on
+  an instruct model with no cold start, or with cold-start data lacking the
+  structured template, reaching comparable final accuracy on
+  KataGo-Bench-1K.
+submitted_by: agent:claude-opus-5@Russ-Miller

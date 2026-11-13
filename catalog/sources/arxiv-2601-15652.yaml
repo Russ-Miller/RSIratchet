@@ -1,0 +1,63 @@
+id: arxiv-2601-15652
+ref: SRC-1057
+kind: paper
+title: Predictive Coding and Information Bottleneck for Hallucination
+  Detection in Large Language Models
+authors:
+  - Manish Bhatt
+year: 2026
+date: 2026-01-22
+arxiv_id: "2601.15652"
+url: https://arxiv.org/abs/2601.15652
+tags:
+  - ingested
+summary: Hallucinations in Large Language Models (LLMs) -- generations that
+  are plausible but factually unfaithful -- remain a critical barrier to
+  high-stakes deployment. Current detection methods typically rely on
+  computationally expensive external retrieval loops or opaque black-box LLM
+  judges requiring 70B+ parameters. In this work, we introduce [Model Name], a
+  hybrid detection framework that combines neuroscience-inspired signal design
+  with supervised machine learning. We extract interpretable signals grounded
+  in Predictive Coding (quantifying surprise against internal priors) and the
+  Information B
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, medium): The paper proposes a
+  lightweight detection framework whose engineered features raise AUROC to
+  0.8669 over baselines, i.e. a technique that improves hallucination
+  detection. No claim has been drafted from it yet."
+ingested_at: 2026-11-13
+brief: >-
+  Checking whether a model's reasoning traces agree with each other does not
+  detect hallucination. In PCIB, a hallucination detector built from 4
+  interpretable signals, the Rationalization signal (Jaccard overlap across M
+  generated reasoning traces) failed to separate hallucinated from factual
+  answers, which the authors attribute to models generating coherent
+  explanations for false premises.
+
+
+  The setup: (Q, C, A) triples from a 200-example subset of HaluBench,
+  balanced 50% hallucination / 50% factual. Signals are Uptake (KL between
+  answer likelihood with and without context), Stress (JS divergence of
+  entailment probabilities under paraphrase), Conflict (NLI contradiction),
+  and Rationalization, fed to small classifiers (<1M parameters).
+
+
+  The unsupervised theory-guided aggregation reaches 0.8017 AUROC; supervised
+  BASE features reach 0.8274; adding 3 engineered features (Entity-Focused
+  Uptake, Context Adherence, Falsifiability) lifts a Random Forest to 0.8669
+  (+4.95%). Reported inference is 5ms vs 5s for Lynx, trained on 200 vs 15,000
+  samples.
+
+
+  Evidence is thin. n=200, no held-out split described, no confidence
+  intervals, and the Lynx/GPT-4o comparison mixes accuracy on 15K samples
+  against AUROC on 200 — not a like-for-like baseline. The BASE/IMPROVED
+  ablation is the one clean comparison.
+
+
+  Untested on multilingual data, summarization, or extrinsic hallucination.
+  Treat the Rationalization negative as a hypothesis worth replicating, not a
+  settled result.
+brief_generated_at: 2026-11-13
+brief_model: claude-opus-5
+brief_source: full-text

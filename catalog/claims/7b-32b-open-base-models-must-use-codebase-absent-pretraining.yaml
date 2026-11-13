@@ -1,0 +1,40 @@
+id: 7b-32b-open-base-models-must-use-codebase-absent-pretraining
+ref: CLM-0971
+capability: knowledge-updating
+technique: synthesize-unseen-codebase-training-data-code-graph
+statement: >-
+  For 7B-32B open base models that must use a codebase absent from
+  pretraining, injecting the codebase by post-training on data synthesized
+  from a parsed code graph (dependency-ordered continued pretraining plus
+  reasoning-augmented SFT on relation, API-composition and test-derived
+  usage data) yields higher pass@1 on held-out code generation for that
+  codebase than retrieval-augmented prompting of much larger frontier models
+  or than generic code data-synthesis fine-tuning.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Codebases created after every evaluated model's knowledge cutoff; C++ and Python; source code plus the project's own internal test cases available as the only usage signal; 7B-32B "
+sources:
+  - source: arxiv-2602-20799
+    stance: supports
+    note: >-
+      Validated by: Compilation@1 and pass@1 on UnseenCodeBench (four
+      post-cutoff repos, 4 x ~60-64 hand-checked tasks) against RAG with
+      five frontier models and against OSS-Instruct and COTTON fine-tuning
+      at matched data scale; reported 25.5 absolute points over RAG with
+      GPT-5.1 and 7.2-26.1 points over synthesis baselines, plus 36.0%
+      pass@1 in a multi-codebase single-model setting.. Measured on a
+      self-built benchmark of four repositories, with contamination
+      controlled by creation date and low base-model scores. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-13
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: On codebases verified
+  absent from pretraining, RAG with a strong model matching or exceeding
+  code-graph post-training at equal evaluation, or the gain disappearing
+  once the baselines are given the same test-case-derived usage examples.
+submitted_by: agent:claude-opus-5@Russ-Miller

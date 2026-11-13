@@ -1,0 +1,68 @@
+id: arxiv-2601-17762
+ref: SRC-1067
+kind: paper
+title: Multi-Agent End-to-End Vulnerability Management for Mitigating
+  Recurring Vulnerabilities
+authors:
+  - Zelong Zheng
+  - Jiayuan Zhou
+  - Xing Hu
+  - Yi Gao
+  - Shengyi Pan
+year: 2026
+date: 2026-01-25
+arxiv_id: "2601.17762"
+url: https://arxiv.org/abs/2601.17762
+tags:
+  - ingested
+summary: Software vulnerability management has become increasingly critical as
+  modern systems scale in size and complexity. However, existing automated
+  approaches remain insufficient. Traditional static analysis methods struggle
+  to precisely capture contextual dependencies, especially when
+  vulnerabilities span multiple functions or modules. Large language models
+  (LLMs) often lack the ability to retrieve and exploit sufficient contextual
+  information, resulting in incomplete reasoning and unreliable outcomes.
+  Meanwhile, recurring vulnerabilities emerge repeatedly due to code reuse and
+  shared logic, makin
+notes: "Filed as a source on multi-model-coordination from the classifier's
+  judgement that the paper is about it (improves, low): The paper proposes a
+  five-component multi-agent pipeline claimed to overcome single-LLM
+  contextual and knowledge limitations in vulnerability management, i.e., a
+  coordination design presented as an improvement. No claim has been drafted
+  from it yet."
+ingested_at: 2026-11-13
+brief: >-
+  Filtering static-analysis candidates with an LLM agent that retrieves
+  repository-level context, plus a knowledge base of prior CVE root causes,
+  cuts false positives far more than LLM or heuristic filters applied to the
+  function alone. MAVM is a 5-agent pipeline (porting, analyzing,
+  consistency-check, fixing, validation) built on GPT-4o at temperature 0,
+  seeded by ReDeBug and a hash-based detector, with ripgrep/Tree-sitter tools
+  for cross-function and struct lookup.
+
+
+  Evaluation uses 78 real-world patch-porting cases (114 function-level pairs)
+  from 13 C repositories, drawn from the Mystique and PPatHF datasets after
+  trivial identical-diff cases were removed. MAVM reports 68 TP / 21 FP / 46
+  FN, precision 76.4%, recall 59.6%, against 26.3% precision (219 FPs) for FVF
+  and 42.0% (112 FPs) for GPT-4o filtering. It repairs 51 vulnerabilities,
+  75.0% of its TPs, and 57.3% end-to-end accuracy versus 12.1%–25.4% for 6
+  hybrid baselines.
+
+
+  Detection tools and parameters are held fixed across all arms, so the gain
+  is attributable to the confirmation and repair agents. Ablations isolate
+  each: removing confirmation drops accuracy to 17.8%, removing the knowledge
+  base to 49.5%. Single LLM, single run, no repeated sampling.
+
+
+  Recall is lower than the GPT-4o filter (59.6% vs 71.1%), and only C code and
+  function-level porting were tested; patch correctness is judged by semantic
+  equivalence to developer patches, not execution.
+
+
+  If you build vulnerability scanners, the result argues the leverage is in
+  confirmation, not detection.
+brief_generated_at: 2026-11-13
+brief_model: claude-opus-5
+brief_source: full-text

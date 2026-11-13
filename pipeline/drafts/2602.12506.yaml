@@ -1,0 +1,45 @@
+arxiv_id: "2602.12506"
+title: On Robustness and Chain-of-Thought Consistency of RL-Finetuned VLMs
+url: https://doi.org/10.48550/arxiv.2602.12506
+drafted_at: 2026-11-10
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: explanation-faithfulness
+statement: In RL-finetuned open-source 7B VLMs on visual spatial reasoning,
+  continued GRPO training with verifiable answer-only rewards raises benchmark
+  accuracy while the share of responses whose chain-of-thought agrees with the
+  final answer declines, and adversarial caption/CoT augmentation that fixes
+  robustness does not stop that decline.
+kind: observation
+backing_strength: single-paper
+scope_condition: Qwen2.5-VL-7B-Instruct finetuned with GRPO on SAT2 +
+  Pixmo-Count (+/- Geometry3K), evaluated on five multiple-choice spatial
+  benchmarks with CoT-answer consistency judged by Qwen3-32B; seed variance
+  was large.
+technique: ""
+proposed_technique: Reward chain-of-thought/answer consistency, not just correctness
+technique_summary: Grants RL reward only when the final answer is correct and
+  an LLM judge finds the chain-of-thought consistent with it, optionally
+  combined with correct/incorrect caption and CoT augmentations during
+  rollouts.
+technique_kind: training
+technique_validated_by: Compared against accuracy-only GRPO on the same data
+  mixture; the faithfulness reward preserved CoT-answer consistency, but
+  combined with augmentation the policy collapsed onto following
+  correct-caption/correct-think augmentations and robustness gains were
+  limited.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: RL finetuning runs on the same base model and data showing
+  CoT-answer consistency rising, or staying flat within seed variance, as
+  benchmark accuracy improves across checkpoints.
+evidence_note: Measured across RL checkpoints for three data mixtures on five
+  spatial benchmarks, with faithfulness as LLM-judged CoT/answer agreement
+  (three judges, Fleiss kappa 0.81-0.88). Only consistency with the stated
+  answer is measured, not whether the CoT caused it. Authors flag seed-to-seed
+  variability sometimes exceeding dataset-composition effects, and the
+  faithfulness-reward result is reported qualitatively rather than with a full
+  ablation table.
+confidence: medium

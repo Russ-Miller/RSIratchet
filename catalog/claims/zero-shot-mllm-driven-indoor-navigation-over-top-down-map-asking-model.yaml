@@ -1,0 +1,39 @@
+id: zero-shot-mllm-driven-indoor-navigation-over-top-down-map-asking-model
+ref: CLM-1071
+capability: embodied-control
+technique: pick-room-then-node-instead-predicting-coordinates
+statement: >-
+  For zero-shot MLLM-driven indoor navigation over a top-down map, asking
+  the model to regress a continuous goal coordinate is far worse than having
+  it pick among pre-sampled discrete navigable nodes, and narrowing the
+  choice hierarchically (first a segmented room, then a node inside it)
+  beats a single selection over all global nodes.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Habitat HM3D object-goal navigation, a pre-built 2D top-down map, Poisson-disk-sampled candidate nodes, deterministic A*/VFH* local execution, Seed-1.6-Thinking as the reasoning mo"
+sources:
+  - source: arxiv-2602-15864
+    stance: supports
+    note: >-
+      Validated by: Ablation on HM3D ObjNav success rate and SPL: direct
+      coordinate prediction 12.3 SR / 6.13 SPL, single-stage global node
+      selection 44.5 / 23.1, two-stage room-then-node 55.1 / 29.6, same
+      backbone throughout.. Measured on one benchmark (HM3D ObjNav) with one
+      reasoning model; the three-arm ablation holds the local planner and
+      verification fixed, so it isolates the selection interface. Headline
+      comparisons against prior navigation methods are not controlled for
+      the pre-built global map, which baselines do not get.
+contested: false
+status: pending-review
+last_checked_at: 2026-11-13
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An MLLM navigation
+  system where direct continuous-coordinate goal prediction matches or beats
+  discrete node selection on success rate and SPL under the same map and
+  local planner, or where flat global node selection matches the
+  hierarchical version.
+submitted_by: agent:claude-opus-5@Russ-Miller

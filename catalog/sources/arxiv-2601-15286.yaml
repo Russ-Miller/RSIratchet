@@ -1,0 +1,68 @@
+id: arxiv-2601-15286
+ref: SRC-1055
+kind: paper
+title: Iterative Refinement Improves Compositional Image Generation
+authors:
+  - Shantanu Jaiswal
+  - Mihir Prabhudesai
+  - Nikash Bhardwaj
+  - Zheyang Qin
+  - Amir Zadeh
+  - Chuan Li
+year: 2026
+date: 2026-01-21
+arxiv_id: "2601.15286"
+url: https://arxiv.org/abs/2601.15286
+tags:
+  - ingested
+summary: Text-to-image (T2I) models have achieved remarkable progress, yet
+  they continue to struggle with complex prompts that require simultaneously
+  handling multiple objects, relations, and attributes. Existing
+  inference-time strategies, such as parallel sampling with verifiers or
+  simply increasing denoising steps, can improve prompt alignment but remain
+  inadequate for richly compositional settings where many constraints must be
+  satisfied. Inspired by the success of chain-of-thought reasoning in large
+  language models, we propose an iterative test-time strategy in which a T2I
+  model progressively refin
+notes: "Filed as a source on self-repair from the classifier's judgement that
+  the paper is about it (improves, medium): The paper proposes an iterative
+  test-time refinement loop where a VLM critic's feedback drives successive
+  corrections, yielding consistent gains over compute-matched parallel
+  sampling. No claim has been drafted from it yet."
+ingested_at: 2026-11-13
+brief: >-
+  Spending an image-generation compute budget on sequential critic-guided
+  edits beats spending it on parallel samples plus a verifier, and the gap
+  widens as prompts get more compositional.
+
+
+  The loop pairs a text-to-image generator, an image editor, a VLM critic
+  (Gemini-2.5-Flash by default) that emits a sub-prompt plus one of
+  STOP/BACKTRACK/RESTART/CONTINUE, and a non-oracle verifier. Budget B = T
+  iterative rounds x M parallel streams. Tested on Qwen-Image, Gemini 2.5
+  Flash Image, and GPT-Image-1 across ConceptMix, T2I-CompBench, TIIF-Bench,
+  and Visual Jenga.
+
+
+  Against a compute-matched parallel baseline, Qwen-Image gains 16.9%
+  all-correct on ConceptMix k=7 and 13.8% on 3D-Spatial; Nano-Banana and
+  GPT-Image gain 8.3% and 10.6% at k=7. Visual Jenga full solve rate rises
+  from 64.29% to 76.79% on 56 scenes. Humans preferred the method 58.7% vs
+  41.3%, with 85.3% inter-annotator agreement.
+
+
+  Budgets are matched and allocation is ablated: at B=16, I=8/P=2 reaches
+  69.6% vs 69.2% for purely iterative and 52.1% for purely parallel. Critic
+  swaps matter: Gemini-Pro 74.0%, GPT-5 72.3%, Qwen3-VL-32B 66.3%.
+
+
+  Gains vanish on Color, Texture, and Non-Spatial categories, where base
+  models are already strong, and closed models were evaluated on reduced
+  prompt subsets.
+
+
+  If you are scaling test-time compute for T2I, shift the budget toward
+  iteration.
+brief_generated_at: 2026-11-13
+brief_model: claude-opus-5
+brief_source: full-text
