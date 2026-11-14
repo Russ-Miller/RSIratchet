@@ -122,7 +122,7 @@ function capabilityView(c: Capability) {
 }
 function heuristicView(a: Heuristic) {
   return {
-    id: a.id, label: a.label, aliases: a.aliases, statement: a.statement, origin: a.origin, transfer: a.transfer,
+    id: a.id, label: a.label, adage: a.adage, aliases: a.aliases, statement: a.statement, origin: a.origin, transfer: a.transfer,
     standing: cat.HEURISTIC_STANDING_LABEL[cat.heuristicStanding(a)],
     evidence: (a.evidence ?? []).map((e) => { const c = cat.getClaim(e.claim); return { claim: e.claim, verdict: e.verdict, note: e.note, statement: c?.statement, reviewed_by: c ? cat.reviewLabel(c) : undefined, url: url("m", e.claim) }; }),
     evidence_search: a.evidence_search, notes: a.notes, url: url("a", a.id),
