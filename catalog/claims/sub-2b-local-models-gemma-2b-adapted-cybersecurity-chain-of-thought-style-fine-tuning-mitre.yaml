@@ -1,0 +1,38 @@
+id: sub-2b-local-models-gemma-2b-adapted-cybersecurity-chain-of-thought-style-fine-tuning-mitre
+ref: CLM-1075
+capability: domain-knowledge
+technique: distil-instruction-data-cloud-llm-fine-tune-locally
+statement: >-
+  For sub-2B local models (Gemma-2B) adapted to cybersecurity,
+  chain-of-thought-style fine-tuning on MITRE ATT&CK material transfers
+  domain knowledge but leaves instruction-level tasks (log analysis, open
+  QA) weak, and re-training on instruction datasets synthesized by a much
+  larger cloud-hosted model is what lifts instruction-following behaviour.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Single 2B open model, 2,398 MITRE prompt-response pairs, 4-bit quantized weights on a 24GB GPU with an effective token length of ~397; evaluation is qualitative plus a 5-query LLM-"
+sources:
+  - source: arxiv-2601-06779
+    stance: supports
+    note: >-
+      Validated by: Qualitative inspection of generated responses plus an
+      LLM-judge score over 5 MITRE queries comparing RAG, Graph+LLM and
+      GraphRAG+GNN retrieval variants; no matched baseline on
+      instruction-following accuracy before and after synthetic training..
+      Argued more than measured: the paper reports no before/after accuracy
+      numbers for the synthetic-data stage, citing only a general <20%
+      baseline for sub-2B models from a figure reproduced from prompting
+      literature. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-14
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Fine-tuning the same sub-2B
+  model directly on domain text, with no cloud-generated instruction data,
+  matching or beating the synthetic-data pipeline on held-out cybersecurity
+  instruction tasks under a measured metric.
+submitted_by: agent:claude-opus-5@Russ-Miller

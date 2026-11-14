@@ -1,0 +1,39 @@
+id: long-context-code-tasks-rendering-whole-code-context-into-compressed
+ref: CLM-1031
+capability: long-context-degradation
+technique: render-long-code-into-images-instead-filtering-tokens
+statement: >-
+  For long-context code tasks, rendering the whole code context into
+  compressed images for a VLM preserves more global dependency structure
+  than token-level selective filtering at matched compression ratio —
+  gaining most on summarization and repository-level completion while losing
+  on exact-match completion where symbol-level fidelity matters.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "8-9B open VLMs (Qwen3-VL-8B, Glyph) vs a matched text-only 8B model with LongCodeZip, compression ratios ~1.6-2x, four code benchmarks up to 1M tokens"
+sources:
+  - source: arxiv-2602-00746
+    stance: supports
+    note: >-
+      Validated by: CompScore on Long Module Summarization (87.25 vs 50.40
+      for LongCodeZip at ~1.7x), ES on RepoBench-P (50.22-60.68 vs 39.48 at
+      2.0x), LCC ES/EM, LongCodeQA accuracy at 512k-1M; compression-stage
+      latency ~1 min vs ~4.3 h at 1M tokens. Exact Match on LCC drops
+      sharply at 16k+ for Qwen3-VL-8B (EM 2.08).. Measured on four
+      benchmarks with ratio matching and a same-family text/VLM pair, but
+      the visual arm uses a different model (Qwen3-VL-8B, Glyph) than the
+      textual arm (Qwen3-8B), so backbone capability is not fully isolated;
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-14
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: At matched compression
+  ratio and matched model family, visual rendering scores no higher than
+  textual filtering on summarization and repository-level completion, or
+  shows no fidelity penalty on exact-match completion.
+submitted_by: agent:claude-opus-5@Russ-Miller

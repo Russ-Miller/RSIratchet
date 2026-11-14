@@ -1,0 +1,41 @@
+id: selecting-in-context-demonstrations-hallucination-detection-frozen-2-7b-32b-llms
+ref: CLM-1063
+capability: hallucination
+technique: select-icl-examples-prototype-distance-learned-low-dim
+statement: >-
+  When selecting in-context demonstrations for hallucination detection with
+  frozen 2.7B-32B LLMs, choosing examples nearest to class prototypes
+  learned in a compressed latent geometry beats lexical (BM25), perplexity,
+  clustering and adaptive-ICL selection on dialogue and summarization
+  judgments, while lexical retrieval stays competitive on QA items that ship
+  an explicit supporting evidence snippet.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Two-shot ICL, binary factual-consistency labels on HaluEval and FEVER, six base models plus two larger ones; requires a one-time per-dataset-per-model training of a small projectio"
+sources:
+  - source: arxiv-2601-06196
+    stance: supports
+    note: >-
+      Validated by: Accuracy on HaluEval dialogue/summarization/QA and FEVER
+      across six models versus KNN, clustering, BM25, perplexity, SA-ICL,
+      AdaICL and Top-k+Con-E baselines at equal shot count; gains up to 9.9
+      points on Mistral-7B dialogue/summarization, with BM25 ahead on some
+      QA settings at small scale. Single run, temperature 0.. Measured on
+      two benchmarks, four task splits, eight models, against seven
+      selection baselines, but single-run deterministic accuracy with no
+      variance reported, no seeds, and margins on several models are 1-2
+      points and within plausible noise; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-14
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Replicating the pipeline
+  and finding that prototype selection does not beat BM25/perplexity
+  selection on dialogue and summarization splits, or that reducing prototype
+  dimensionality below the LLM hidden size does not improve detection
+  accuracy.
+submitted_by: agent:claude-opus-5@Russ-Miller

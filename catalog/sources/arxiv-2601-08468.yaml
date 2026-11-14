@@ -1,0 +1,68 @@
+id: arxiv-2601-08468
+ref: SRC-1060
+kind: paper
+title: "JudgeRLVR: Judge First, Generate Second for Efficient Reasoning"
+authors:
+  - Jiangshan Duo
+  - Hanyu Li
+  - Hailin Zhang
+  - Yudong Wang
+  - Sujian Li
+  - Liang Zhao
+year: 2026
+date: 2026-01-13
+arxiv_id: "2601.08468"
+url: https://arxiv.org/abs/2601.08468
+tags:
+  - ingested
+summary: Reinforcement Learning with Verifiable Rewards (RLVR) has become a
+  standard paradigm for reasoning in Large Language Models. However,
+  optimizing solely for final-answer correctness often drives models into
+  aimless, verbose exploration, where they rely on exhaustive trial-and-error
+  tactics rather than structured planning to reach solutions. While heuristic
+  constraints like length penalties can reduce verbosity, they often truncate
+  essential reasoning steps, creating a difficult trade-off between efficiency
+  and verification. In this paper, we argue that discriminative capability is
+  a prerequisit
+notes: "Filed as a source on cutting-to-the-chase from the classifier's
+  judgement that the paper is about it (improves, medium): The paper proposes
+  a training paradigm that cuts generation length ~42% while improving
+  accuracy, directly addressing verbose padded reasoning. No claim has been
+  drafted from it yet."
+ingested_at: 2026-11-14
+brief: >-
+  Training a reasoning model to judge candidate solutions before training it
+  to generate them cuts generation length without a length penalty, and raises
+  accuracy. JudgeRLVR splits RLVR into a judging stage, where the policy
+  classifies candidate solution responses as correct/incorrect with a binary
+  verdict reward, then a vanilla final-answer RLVR stage initialized from the
+  judge.
+
+
+  Setup: Qwen3-30B-A3B, SFT'd first, trained with DAPO on 113k math problems.
+  Judge data came from 8 rollouts each from MiMo-7B RL and the SFT model (16
+  paths per problem), class-balanced, hard-negative-mined. Vanilla RLVR ran
+  250 steps; JudgeRLVR used 145 judging + 105 generating steps, same data and
+  hyperparameters.
+
+
+  On in-domain math (AIME24/25, MATH500, HMMT_feb_2025, BeyondAIME) accuracy
+  averaged 79.8 vs 76.1 for vanilla (+3.7pp) with -42% length. Out-of-domain
+  averaged 78.1 vs 73.7 (+4.5pp) at roughly equal length (-3.9%). Ablations:
+  Judge Only reached 75.9 in-domain with +92% length; Mixed Strategy (1:1
+  interleaved) matched in-domain (79.7) but fell to 75.0 out-of-domain with
+  +52% length.
+
+
+  Evidence is measured with matched total steps and 2 ablations isolating
+  stage ordering, but on 1 model, 1 seed, and no explicit length-penalty
+  baseline such as DAPO's. Length gains reverse on IFEval (+12%) and
+  ZebraLogic (+22%). Mechanism claims rest on perplexity drift and
+  transition-word counts, which are correlational.
+
+
+  If you are tuning for shorter reasoning, consider a discriminative
+  pretraining stage instead of a length penalty.
+brief_generated_at: 2026-11-14
+brief_model: claude-opus-5
+brief_source: full-text

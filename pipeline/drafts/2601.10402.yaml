@@ -1,0 +1,49 @@
+arxiv_id: "2601.10402"
+title: "Toward Ultra-Long-Horizon Agentic Science: Cognitive Accumulation for
+  Machine Learning Engineering"
+url: https://doi.org/10.48550/arxiv.2601.10402
+drafted_at: 2026-11-13
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: long-horizon-execution
+statement: For 24-hour autonomous machine-learning-engineering agents on
+  Kaggle-style tasks, keeping raw execution traces only for the currently
+  active exploration phase, compressing each completed phase into a short
+  knowledge summary, and distilling finished tasks into retrievable cross-task
+  wisdom raises the medal rate over appending all interaction history, with
+  peak context falling from over 200k to roughly 70k tokens on one task.
+kind: observation
+backing_strength: single-paper
+scope_condition: MLE-Bench with a DeepSeek-V3.2 backbone, 24-hour budget,
+  prior wisdom warm-started from 407 external Kaggle competitions; ablations
+  run on MLE-Bench-Lite with a single seed per configuration.
+technique: ""
+proposed_technique: Tier context by how stable it is, and promote across tiers
+technique_summary: Organizes agent context into three tiers — raw traces of
+  the active phase, LLM-written summaries of completed phases, and task-level
+  wisdom retrieved by embedding similarity at task start — with raw traces
+  evicted once promoted.
+technique_kind: process
+technique_validated_by: "MLE-Bench medal rate 56.4% averaged over 3 seeds vs
+  29.3% for the prior version of the same system and 50.7% for the best
+  reported baseline; single-seed MLE-Bench-Lite ablations dropping each tier
+  (no phase summaries: medal 59.1 vs 72.7; no cross-task wisdom: 54.5; no raw
+  traces: 22.7); one context-length trace showing peak tokens cut from >200k
+  to ~70k."
+stance_on_existing: supports
+related_claim_id: tiered-memory-system-managed-by-model-itself-sustains
+stance_reason: It is another instance of a model-managed tiered memory
+  sustaining work far beyond the context window, here on multi-hour
+  engineering tasks rather than conversation.
+falsifier: An agent run with the same backbone, budget and warm-up corpus that
+  appends full interaction history scores at or above the tiered version on
+  MLE-Bench medal rate, or multi-seed ablations show the phase-summary and
+  wisdom tiers make no difference.
+evidence_note: Main result is 3 seeds on 75 MLE-Bench tasks against published
+  baselines run with different backbones, so backbone and harness are
+  confounded with the architecture. The tier ablations are single-seed on the
+  22-task Lite split, which is thin for the ~13-point medal-rate gaps
+  reported. The context-length figure is one task. No matched-compute or
+  matched-token baseline.
+confidence: low

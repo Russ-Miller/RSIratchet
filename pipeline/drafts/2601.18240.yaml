@@ -1,0 +1,53 @@
+arxiv_id: "2601.18240"
+title: "V-Loop: Visual Logical Loop Verification for Hallucination Detection
+  in Medical Visual Question Answering"
+url: https://doi.org/10.48550/arxiv.2601.18240
+drafted_at: 2026-11-13
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: For medical visual question answering with 4-8B multimodal models,
+  detecting hallucination by generating an inverted verification question
+  (conditioned on the answer's semantic unit, re-querying the question's
+  semantic unit) and checking the model's answer under reused primary visual
+  attention separates hallucinated from grounded answers better than
+  token-probability and sampling-based uncertainty scores, but the advantage
+  holds mainly on open-ended items and shrinks on closed-ended ones where no
+  inversion exists.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Three medical VQA benchmarks (VQA-RAD, VQA-Med-2019, SLAKE)
+  with MedGemma-4B-it, Lingshu-7B, InternVL3-8B; hallucination labels assigned
+  automatically by the GREEN metric; gains depend on the backbone already
+  having decent visual grounding (weak backbones like LLaVA-Med-v1.5-7B score
+  much lower), and on an auxiliary LLM to write the verification question and
+  judge semantic match.
+technique: ""
+proposed_technique: Verify by re-querying the answer's entity back to the question's entity
+technique_summary: Extract one semantic unit from the question and one from
+  the answer, build a verification question that uses the answer unit to ask
+  for the question unit, answer it while injecting the primary stage's
+  aggregated text-to-image attention, and flag a hallucination when the
+  verification answer does not semantically match the expected unit.
+technique_kind: prompting
+technique_validated_by: AUC and AUG for hallucination detection against
+  GREEN-derived labels on three medical VQA test sets and three MLLMs,
+  compared with AvgProb/MaxProb/AvgEnt/MaxEnt, Semantic Entropy, RadFlag and
+  VASE; ablations removing the verification-question generator or the
+  attention-consistency term each lower AUC/AUG, and combining with
+  SE/RadFlag/VASE adds further gains.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On the same open-ended medical VQA splits and backbones, the
+  loop-verification score fails to beat semantic entropy and RadFlag on AUC,
+  or its advantage disappears once the auxiliary-LLM judge is replaced by a
+  matched-cost baseline judge applied to the uncertainty methods.
+evidence_note: Measured on three benchmarks x three backbones against seven
+  baselines; labels are automatic (GREEN), not human-adjudicated, and the
+  method consumes an extra frontier-LLM call for question generation and
+  matching, which the sampling baselines do not, so compute is not matched.
+  Gains on 'all' splits are smaller and in some cells the method is not best
+  (SLAKE with InternVL3-8B).
+confidence: medium

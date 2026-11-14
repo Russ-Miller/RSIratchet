@@ -1,0 +1,46 @@
+arxiv_id: "2603.01814"
+title: Architecture-Aware Multi-Design Generation for Repository-Level Feature
+  Addition
+url: https://doi.org/10.48550/arxiv.2603.01814
+drafted_at: 2026-11-09
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: code-generation
+statement: For repository-level feature addition from documentation changes,
+  generating several distinct implementation designs and selecting among the
+  resulting patches by change-impact analysis (static dependency tracing plus
+  regression and new-feature test execution) raises task success more than
+  code-graph-based localization does, and generating too many designs degrades
+  selection accuracy.
+kind: observation
+backing_strength: single-paper
+scope_condition: NoCode-bench Verified (114 manually validated Python
+  repository feature-addition tasks), seven LLM backbones, compared against
+  Agentless and OpenHands
+technique: ""
+proposed_technique: Generate several designs, then select by change-impact analysis
+technique_summary: Instead of a single patch, the system brainstorms N
+  implementation designs over a repository code graph, produces one patch per
+  design, and picks the patch whose static dependency impact and
+  regression/new-feature test outcomes score best.
+technique_kind: process
+technique_validated_by: "Success rate on NoCode-bench Verified: 39.47% with
+  Gemini-2.5-Pro vs 28.95% best baseline (Agentless); ablations removing
+  multi-design (-38.47% relative success), patch evaluation (-33.32%), code
+  graph (-12.83%); design-count sweep on DeepSeek-v3.2 peaks at N=5 (88.64%
+  selection accuracy, 34.21% success) and falls to 28.95% at N=9."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation on comparable feature-addition tasks in which removing
+  the multi-design generation or the impact-analysis-based selection costs
+  less success than removing the code-graph localization, or in which raising
+  the design count monotonically improves success.
+evidence_note: Measured on one benchmark (114 tasks) across seven backbones
+  with two baselines; ablations run on a single backbone (DeepSeek-v3.2) so
+  the component ranking is not shown to hold across models. Patch selection
+  uses LLM-generated new-feature tests and LLM summarization of logs, so the
+  selection signal is partly model-judged. Design-count sweep is a
+  single-model, four-point curve.
+confidence: medium

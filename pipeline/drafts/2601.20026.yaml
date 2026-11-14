@@ -1,0 +1,53 @@
+arxiv_id: "2601.20026"
+title: "Semantic Uncertainty Quantification of Hallucinations in LLMs: A
+  Quantum Tensor Network Based Method"
+url: https://doi.org/10.48550/arxiv.2601.20026
+drafted_at: 2026-11-12
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: For white-box LLMs up to 13B on closed-book QA, adjusting
+  token-sequence probabilities before semantic clustering — raising entropy
+  where a perturbation-based uncertainty estimate says the sequence
+  probability is locally unstable, and anchoring it where it is stable —
+  separates hallucinated from correct answers better than semantic entropy
+  computed from the raw sequence probabilities.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: "Open-weight models (1B-13B: Mistral, LLaMA-2/3.2, Falcon)
+  where token-level probabilities are accessible; short-answer QA (TriviaQA,
+  NQ, SQuAD, SVAMP); semantic clusters formed by a DeBERTa-MNLI entailment
+  check; holds across 16/8/4-bit quantization."
+technique: ""
+proposed_technique: Re-weight sequence probabilities by local uncertainty
+  before semantic clustering
+technique_summary: Estimates how unstable each generation's sequence
+  probability is under perturbation of a quantum tensor-network Hamiltonian
+  whose eigenmode is the kernel embedding of those probabilities, then solves
+  a per-sequence entropy-maximization with a KL penalty scaled inversely to
+  that instability, and computes semantic Renyi entropy over the adjusted
+  probabilities.
+technique_kind: decoding
+technique_validated_by: AUROC and AURAC pairwise win rates over 116 experiment
+  cells spanning 4 datasets, 8 models and 3 quantization levels, against naive
+  entropy, semantic entropy, discrete semantic entropy, supervised embedding
+  regression and p(True); the adjusted variant wins or matches on both metrics
+  throughout, but no absolute per-dataset numbers are given in the summary and
+  no confidence intervals are reported.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Running the same pipeline with the uncertainty term replaced by a
+  constant (plain entropy maximization with a fixed KL weight) and finding
+  equal AUROC/AURAC, which would show the perturbation-derived uncertainty
+  contributes nothing beyond the smoothing.
+evidence_note: Measured, 116 experiment cells, reported only as pairwise
+  win-rate matrices rather than effect sizes, so the magnitude of the
+  improvement is not visible. Baselines include both unsupervised entropy
+  methods and two supervised ones. No ablation isolating the
+  quantum-tensor-network uncertainty estimate from the entropy-maximization
+  step it feeds, so the mechanism claim rests on the authors' argument rather
+  than a control. All models are 13B or smaller; the authors note
+  frontier-scale behaviour may differ.
+confidence: low

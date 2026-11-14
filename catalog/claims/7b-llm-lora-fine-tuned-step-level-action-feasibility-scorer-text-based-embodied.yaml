@@ -1,0 +1,40 @@
+id: 7b-llm-lora-fine-tuned-step-level-action-feasibility-scorer-text-based-embodied
+ref: CLM-0976
+capability: embodied-control
+technique: train-action-feasibility-scorer-contrastively-against-hard-negatives
+statement: >-
+  For a 7B LLM LoRA fine-tuned as a step-level action-feasibility scorer in
+  a text-based embodied environment, an InfoNCE objective over a pool of 16
+  mined hard negatives beats binary supervised fine-tuning only where the
+  invalid actions are physically near-identical to the valid one — +6.76
+  points Precision@1 on one-word physics-reversing substitutions and +3.3 on
+  cross-task transplants, but no difference (97.8% both) on negatives the
+  environment lexically rejects.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Qwen2.5-7B with LoRA on ScienceWorld, train/test split by task variation; scorer evaluated in isolation, never in a full agent loop with task-completion measurement."
+sources:
+  - source: arxiv-2602-22452
+    stance: supports
+    note: >-
+      Validated by: 605 held-out hard-negative instances scored by
+      Precision@1, MRR, AUC-ROC against an identically-trained
+      binary-cross-entropy SFT baseline, the untuned base model, and random
+      scoring; plus gold-action retention and safety margin over 712/697
+      steps of out-of-distribution task episodes.. Measured on one model,
+      one environment, one seed per configuration, with no confidence
+      intervals; the minimal-edit split is only 74 instances, so the
+      headline +6.76 points rests on about five items. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-14
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An SFT baseline matched on
+  architecture, data and negative pool that equals or beats the contrastive
+  scorer on minimal-edit physics-reversing negatives, or a contrastive
+  scorer that also beats SFT on lexically distinct rejection negatives.
+submitted_by: agent:claude-opus-5@Russ-Miller

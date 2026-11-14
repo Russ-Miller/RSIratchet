@@ -1,0 +1,47 @@
+arxiv_id: "2601.15652"
+title: Predictive Coding and Information Bottleneck for Hallucination
+  Detection in Large Language Models
+url: https://doi.org/10.48550/arxiv.2601.15652
+drafted_at: 2026-11-13
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: For response-level hallucination detection in RAG settings,
+  weighting a context-versus-no-context likelihood divergence toward
+  named-entity and numeric tokens, rather than over all answer tokens
+  uniformly, is the single most discriminative of a small hand-designed
+  feature set fed to a sub-1M-parameter classifier.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Question-context-answer triples with binary hallucination
+  labels; evaluated on a 200-sample balanced HaluBench subset with tree-based
+  and small neural classifiers; not tested on open-ended or non-RAG
+  generation.
+technique: ""
+proposed_technique: Weight the context-uptake signal toward entity tokens
+technique_summary: Compute the KL divergence between answer likelihood with
+  and without context, then amplify it in proportion to the density of named
+  entities, numbers and technical terms in the answer, and feed that plus
+  context-adherence and confidence-weighted contradiction scores to a small
+  supervised classifier.
+technique_kind: tooling
+technique_validated_by: "AUROC on a 200-item balanced HaluBench subset: 0.8669
+  for Random Forest on the 8-feature improved set vs 0.8274 on the 5-feature
+  base set and 0.8017 for the unsupervised theory-guided aggregation; gains of
+  +3 to +9% reported across four classifier architectures, with
+  feature-importance analysis ranking entity-focused uptake first."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On a larger held-out hallucination benchmark, removing the entity
+  weighting from the uptake feature leaves AUROC unchanged, or a
+  uniformly-weighted uptake feature ranks at or above the entity-weighted one
+  in importance.
+evidence_note: Measured, but on only 200 examples with no reported confidence
+  intervals or cross-dataset test; base-vs-improved comparison is within-paper
+  and the classifier is trained and evaluated on the same small subset, so the
+  +4.95% gain is not separated from overfitting to that sample. Comparison to
+  Lynx is across different data sizes and different metrics (AUROC vs
+  accuracy) and does not support the implied ranking.
+confidence: low

@@ -1,0 +1,64 @@
+id: arxiv-2601-05939
+ref: SRC-1052
+kind: paper
+title: Context-Aware Decoding for Faithful Vision-Language Generation
+authors:
+  - Mehrdad Fazli
+  - Bowen Wei
+  - Ziwei Zhu
+year: 2026
+date: 2026-01-09
+arxiv_id: "2601.05939"
+url: https://arxiv.org/abs/2601.05939
+tags:
+  - ingested
+summary: "Hallucinations, generating responses inconsistent with the visual
+  input, remain a critical limitation of large vision-language models (LVLMs),
+  especially in open-ended tasks such as image captioning and visual
+  reasoning. In this work, we probe the layer-wise generation dynamics that
+  drive hallucinations and propose a training-free mitigation strategy.
+  Employing the Logit Lens, we examine how LVLMs construct next-token
+  distributions across decoder layers, uncovering a pronounced
+  commitment-depth gap: truthful tokens accumulate probability mass on their
+  final candidates earlier than hallucinator"
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, high): The paper proposes Context
+  Embedding Injection, a training-free decoding intervention that lowers
+  hallucination rates across LVLM benchmarks, based on a layer-wise
+  commitment-depth analysis. No claim has been drafted from it yet."
+ingested_at: 2026-11-14
+brief: >-
+  Hallucinated tokens in vision-language models commit to their final
+  candidate set later in the decoder stack than truthful ones, and that gap
+  can be used as an online signal to steer decoding. Applying the Logit Lens
+  to InstructBLIP, LLaVA-1.5 and LLaVA-NeXT, the authors show truthful tokens
+  accumulate higher top-K probability mass in mid-to-late layers (roughly
+  layers 20-30), with separation holding for K in 20-80.
+
+
+  Building on this, Context Embedding Injection reuses the hidden state of the
+  last prompt token as a grounding anchor, blended into layer 10 during
+  generation; a dynamic variant scales the blend weight by measured
+  commitment. Evaluated on CHAIR (500 MSCOCO images), AMBER generative split,
+  and MMHal-Bench (96 GPT-4-judged pairs), with 512 max new tokens.
+
+
+  Dynamic CEI cuts LLaVA-1.5 CHAIR_s from 55.2 to 34.0 and InstructBLIP from
+  55.6 to 32.2, versus 39.2 and 37.4 for the strongest baseline CAAC. AMBER
+  HAL drops to 30 for InstructBLIP and 46.6 for LLaVA-NeXT, with COVER roughly
+  unchanged.
+
+
+  Effects are measured against 5 training-free baselines at their published
+  settings, across 3 models; there is a scheduler ablation and alpha/beta
+  sweep, but no matched-compute baseline despite dynamic CEI needing 2 forward
+  passes per token. All models are 7B and COCO-style; no medical or driving
+  domains tested. Analysis depends on annotated hallucination labels, though
+  inference does not.
+
+
+  If you work on decoding-time grounding, commitment depth is a cheap signal
+  worth probing.
+brief_generated_at: 2026-11-14
+brief_model: claude-opus-5
+brief_source: full-text

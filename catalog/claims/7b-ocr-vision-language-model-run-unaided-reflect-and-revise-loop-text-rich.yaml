@@ -1,0 +1,41 @@
+id: 7b-ocr-vision-language-model-run-unaided-reflect-and-revise-loop-text-rich
+ref: CLM-0979
+capability: self-repair
+technique: filter-infeasible-fixes-keep-reflection-history
+statement: >-
+  For a 7B OCR vision-language model run in an unaided reflect-and-revise
+  loop on text-rich image tasks, plain self-refinement plateaus after one or
+  two rounds, while filtering the proposed correction steps to actions the
+  model can actually perform and carrying all prior reflections forward as
+  an explicit memory keeps accuracy rising through a third round (OCRBench
+  v2 English average 43.4 for Self-Refine vs 48.4 memory-only and 51.0 for
+  both).
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "One 7B base model (RolmOCR-7B) on OCRBench v2 English and Chinese subsets, fixed three refinement rounds, no training; feasibility filtering is done by the model itself."
+sources:
+  - source: arxiv-2602-21053
+    stance: supports
+    note: >-
+      Validated by: Ablation on OCRBench v2 against naive answering (38.4
+      English), CoT (42.0) and Self-Refine (43.4): capability filtering
+      alone 45.9, memory alone 48.4, both 51.0; Chinese 37.7 to 54.7, with
+      per-round curves showing baselines flattening after round 1-2..
+      Measured on one benchmark with one 7B base model; ablation separates
+      the two mechanisms but there is no control for the extra tokens the
+      reflection history adds, no seed variance, and the 'feasibility'
+      filter is judged by the same model, so the mechanism is argued rather
+      than isolated.
+contested: false
+status: pending-review
+last_checked_at: 2026-11-14
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Running the same loop on
+  another base model or benchmark and finding Self-Refine also improves
+  across three rounds, or that memory plus capability filtering gives no
+  advantage over Self-Refine at matched round count and token budget.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,69 @@
+id: arxiv-2601-08557
+ref: SRC-1061
+kind: paper
+title: "VideoHEDGE: Entropy-Based Hallucination Detection for Video-VLMs via
+  Semantic Clustering and Spatiotemporal Perturbations"
+authors:
+  - Sushant Gautam
+  - Cise Midoglu
+  - Vajira Lasantha Thambawita
+  - Michael Alexander Riegler
+  - Pal Halvorsen
+year: 2026
+date: 2026-01-13
+arxiv_id: "2601.08557"
+url: https://arxiv.org/abs/2601.08557
+tags:
+  - ingested
+summary: Hallucinations in video-capable vision-language models (Video-VLMs)
+  remain frequent and high-confidence, while existing uncertainty metrics
+  often fail to align with correctness. We introduce VideoHEDGE, a modular
+  framework for hallucination detection in video question answering that
+  extends entropy-based reliability estimation from images to temporally
+  structured inputs. Given a video-question pair, VideoHEDGE draws a baseline
+  answer and multiple high-temperature generations from both clean clips and
+  photometrically and spatiotemporally perturbed variants, then clusters the
+  resulting textual o
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (measures, high): The paper benchmarks
+  entropy-based uncertainty scores for detecting hallucinations in video QA,
+  comparing detection methods rather than proposing a model change. No claim
+  has been drafted from it yet."
+ingested_at: 2026-11-14
+brief: >-
+  Uncertainty signals computed from clean video samples alone barely separate
+  hallucinated from grounded answers in video VLMs; the separation only
+  appears when you compare semantic distributions from clean versus visually
+  degraded clips.
+
+
+  VideoHEDGE samples 1 low-temperature baseline answer plus n high-temperature
+  answers from both the original clip and photometrically/noise-perturbed
+  variants, clusters the text into semantic hypotheses with either NLI
+  (DeBERTa MNLI) or sentence embeddings (all-MiniLM-L6-v2), and scores
+  Semantic Entropy, RadFlag, and VASE. Tested on 490 SoccerChat clips (1,460
+  video-question-answer instances) across 3 7B models (Qwen2-VL, Qwen2.5-VL,
+  SoccerChat-finetuned), with Qwen3-30B-A3B as judge.
+
+
+  SE and RadFlag sit near chance in many settings (0.464-0.504 for Qwen2-VL on
+  EventClassification), while VASE reaches 0.654 and 0.631 for the finetuned
+  model. VASE rises with distortion budget (0.537 at 1 distortion to 0.623 at
+  10 on VideoQA, embedding clustering); SE and RadFlag stay flat at roughly
+  0.50-0.56. Finetuning cut hallucinations sharply (1,381 unsupported vs 1,539
+  supported, against 2,578 vs 342 for Qwen2-VL) but moved VASE only from 0.644
+  to 0.654.
+
+
+  Effects are measured, with matched clean/noisy sampling budgets and both
+  clustering backends as a cross-check, but sampling scale and perturbation
+  strength are coupled, so the distortion-budget gain is not cleanly isolated.
+  Labels come from an LLM judge with no human adjudication; 1 domain (soccer),
+  1 model family, short 3-6 second clips.
+
+
+  Useful if you need a post-hoc hallucination flag for video QA, with the
+  caveat that absolute AUCs stay in the 0.57-0.67 range.
+brief_generated_at: 2026-11-14
+brief_model: claude-opus-5
+brief_source: full-text

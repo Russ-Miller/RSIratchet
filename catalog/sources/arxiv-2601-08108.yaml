@@ -1,0 +1,74 @@
+id: arxiv-2601-08108
+ref: SRC-1057
+kind: paper
+title: Debiasing Large Language Models via Adaptive Causal Prompting with
+  Sketch-of-Thought
+authors:
+  - Bowen Li
+  - Ziqi Xu
+  - Jing Ren
+  - Renqiang Luo
+  - Xikun Zhang
+  - Xiuzhen Zhang
+year: 2026
+date: 2026-01-13
+arxiv_id: "2601.08108"
+url: https://arxiv.org/abs/2601.08108
+tags:
+  - ingested
+summary: Despite notable advancements in prompting methods for Large Language
+  Models (LLMs), such as Chain-of-Thought (CoT), existing strategies still
+  suffer from excessive token usage and limited generalisability across
+  diverse reasoning tasks. To address these limitations, we propose an
+  Adaptive Causal Prompting with Sketch-of-Thought (ACPS) framework, which
+  leverages structural causal models to infer the causal effect of a query on
+  its answer and adaptively select an appropriate intervention (i.e., standard
+  front-door and conditional front-door adjustments). This design enables
+  generalisable causal
+notes: "Filed as a source on cutting-to-the-chase from the classifier's
+  judgement that the paper is about it (improves, medium): The paper proposes
+  a prompting framework that replaces verbose CoT with concise sketches,
+  reducing token usage while maintaining or improving accuracy. No claim has
+  been drafted from it yet."
+ingested_at: 2026-11-14
+brief: >-
+  Picking the answer with the highest estimated causal effect, and sketching
+  rather than spelling out the reasoning, improves accuracy on multi-hop and
+  context-heavy tasks while cutting reasoning length - but the sketch itself
+  is not what does the work.
+
+
+  ACPS runs a fine-tuned DistilBERT classifier to decide between standard and
+  conditional front-door adjustment, samples diverse Sketch-of-Thought traces
+  across temperatures 0.0 to 2.0, clusters them with K-Means, and selects the
+  answer with the highest estimated causal effect. It is tested on
+  Ministral-3B, LLaMA-3.1 8B, and GPT-3.5-turbo across 7 datasets (GSM8K,
+  MATH, CommonsenseQA, StrategyQA, HotpotQA, MuSiQue, FEVER) against ICL, CoT,
+  CoT-SC, SoT, CAD, DeCoT, and Causal Prompting.
+
+
+  On GSM8K with LLaMA-3 it gains 10.04 points over CP. On HotpotQA with
+  GPT-3.5-turbo it reaches 61.31 EM / 75.97 F1 versus CP at 57.05 / 72.51 and
+  DeCoT at 53.91 / 68.35. Under shuffled evidence it leads CP by 8.9% EM and
+  8.0% F1; under injected noise only 3.1% EM and 0.8% F1. Average reasoning
+  steps drop from more than six to fewer than three.
+
+
+  The ablation is the informative part: replacing SoT with CoT scores higher
+  on MATH (52.95 vs 48.33), ComQA (77.11 vs 74.90), and FEVER (83.20 vs
+  79.48), so the gains come from causal-effect weighting (removing it drops
+  MuSiQue F1 from 67.15 to 60.71) and clustering (HotpotQA F1 75.97 to 68.92),
+  not conciseness.
+
+
+  CP still wins on GSM8K and ComQA with GPT-3.5-turbo. Models are small to
+  mid-sized; no reasoning models tested, and the authors note test sets are
+  limited in scale. Token-cost comparisons are reported as step counts in the
+  main text, with token counts deferred to an appendix.
+
+
+  If you are considering causal prompting, budget your effort on answer
+  selection rather than trace compression.
+brief_generated_at: 2026-11-14
+brief_model: claude-opus-5
+brief_source: full-text

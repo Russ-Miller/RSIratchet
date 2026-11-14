@@ -1,0 +1,66 @@
+id: arxiv-2601-04505
+ref: SRC-1050
+kind: paper
+title: "CircuitLM: A Multi-Agent LLM-Aided Design Framework for Generating
+  Circuit Schematics from Natural Language Prompts"
+authors:
+  - Khandakar Shakib Al Hasan
+  - Syed Rifat Raiyan
+  - Hasin Mahtab Alvee
+  - Md. Wahid Sadik
+year: 2026
+date: 2026-01-08
+arxiv_id: "2601.04505"
+url: https://arxiv.org/abs/2601.04505
+tags:
+  - ingested
+summary: Generating accurate circuit schematics from high-level natural
+  language descriptions remains a persistent challenge in electronic design
+  automation (EDA), as large language models (LLMs) frequently hallucinate
+  components, violate strict physical constraints, and produce
+  non-machine-readable outputs. To address this, we present CircuitLM, a
+  multi-agent pipeline that translates user prompts into structured, visually
+  interpretable $\texttt{CircuitJSON}$ schematics. The framework mitigates
+  hallucination and ensures physical viability by grounding generation in a
+  curated, embedding-powered componen
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, medium): The paper proposes a
+  retrieval-grounded multi-agent pipeline explicitly aimed at mitigating
+  component hallucination in generated circuit schematics, with rule-based and
+  semantic verification. No claim has been drafted from it yet."
+ingested_at: 2026-11-14
+brief: >-
+  Rule-based electrical checks make LLM-generated circuit schematics look far
+  better than they are: the same circuits that pass a deterministic electrical
+  rule checker 83-88% of the time pass a semantic LLM judge only 21-53% of the
+  time.
+
+
+  CircuitLM is a 5-stage agent pipeline (component identification, retrieval
+  from a ChromaDB library of 70+ canonical components with pin definitions,
+  chain-of-thought design reasoning, CircuitJSON synthesis, force-directed
+  visualization) evaluated on 100 embedded-systems prompts stratified into
+  Easy, Medium and Adversarial tiers, with gpt-5-mini, gemini-2.5-flash,
+  deepseek-v3.1, qwen3-235b-a22b-2507 and llama-3.3-70b-instruct as backends
+  at temperature 0, 3 runs each.
+
+
+  ERC Pass@1 (0 fatal, 0 major) was 88% Gemini, 87% Qwen, 86% Deepseek, 84%
+  Llama, 83% GPT. Under a Claude Sonnet 4.5 judge the same runs scored 53%,
+  38%, 40%, 21%, 23%. The judge caught UART TX/TX miswiring, non-PWM pins used
+  for PWM, and 3.3V drive of 5V inductive loads.
+
+
+  The ablation injects the full component library into a single prompt as a
+  matched strong baseline: CircuitLM gains +4 to +9 points ERC Pass@1 on 3 of
+  4 models but loses 2 points on GPT-5-mini, at ~3,000 vs ~15,000 tokens and
+  ~8s vs ~3s. Blind expert review of 25% of circuits gives Fleiss' κ = 0.82
+  for ERC and κ = 0.78 for the judge.
+
+
+  No simulator-in-the-loop check, 1 LLM judge, no analog circuits tested.
+  Treat ERC-style pass rates for generated hardware as a floor on error, not a
+  measure of function.
+brief_generated_at: 2026-11-14
+brief_model: claude-opus-5
+brief_source: full-text

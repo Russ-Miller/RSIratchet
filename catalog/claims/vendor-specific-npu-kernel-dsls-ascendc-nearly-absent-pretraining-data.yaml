@@ -1,0 +1,41 @@
+id: vendor-specific-npu-kernel-dsls-ascendc-nearly-absent-pretraining-data
+ref: CLM-1084
+capability: code-generation
+technique: train-dsl-chain-of-thought-then-rl-execution
+statement: >-
+  For vendor-specific NPU kernel DSLs (AscendC) that are nearly absent from
+  pretraining data, general-purpose 7-8B LLMs produce essentially no working
+  complex kernels zero-shot (compilation under 2% and 0% functional
+  correctness on Level-2/3 tasks), while the same base model given domain
+  chain-of-thought SFT plus execution-feedback RL reaches 95.5% Pass@10
+  compilation and 64.3% functional correctness.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Hardware-specific DSL kernel generation for Ascend NPUs, evaluated on the authors' own benchmark with compile/execute checks on real hardware; zero-shot baselines are 7-8B open mod"
+sources:
+  - source: arxiv-2601-07160
+    stance: supports
+    note: >-
+      Validated by: Compilation success and functional correctness on
+      NPUKernelBench Level-1/2/3 tasks executed on Ascend hardware, against
+      zero-shot general LLM baselines (0% functional correctness on complex
+      kernels).. Measured on the authors' own benchmark with their own
+      training data; baselines are only 7-8B open models (no frontier model
+      zero-shot numbers given in the text), and the reported gain mixes
+      Pass@10 for compilation against a zero-shot rate whose sampling budget
+      is not stated. No ablation separating SFT from RL contribution is
+      reported in this text.
+contested: false
+status: pending-review
+last_checked_at: 2026-11-14
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A general-purpose
+  frontier LLM, prompted with documentation only, reaching comparable
+  compilation and functional-correctness rates on the same Level-2/3 Ascend
+  kernel tasks; or the domain-trained model failing to beat the base model
+  once evaluated on held-out operator families.
+submitted_by: agent:claude-opus-5@Russ-Miller

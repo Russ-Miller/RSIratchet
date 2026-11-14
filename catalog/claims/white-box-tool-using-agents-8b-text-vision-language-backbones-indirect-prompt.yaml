@@ -1,0 +1,46 @@
+id: white-box-tool-using-agents-8b-text-vision-language-backbones-indirect-prompt
+ref: CLM-1090
+capability: prompt-injection
+technique: steer-over-focused-attention-instead-refusing-injected-request
+statement: >-
+  For white-box tool-using agents (8B text and vision-language backbones),
+  indirect prompt injections that successfully hijack a tool call leave an
+  over-concentrated attention signature on a few injected tokens, so a small
+  probe over per-head attention entropy can flag them and selectively
+  damping those attention peaks neutralizes the injection while the agent
+  continues its original task, where refusal-based detectors stop it.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Requires white-box access to attention weights; probe trained on synthesized adaptive attacks (255 samples) and tested on InjectAgent/AgentDojo with ReAct agents on Qwen-3-8B, LLaM"
+sources:
+  - source: arxiv-2602-20708
+    stance: supports
+    note: >-
+      Validated by: Attack success rate and utility-under-attack on
+      InjectAgent, AgentDojo and TrojanTools across three 8B backbones
+      against template defenses, MELON tool filtering, and a fine-tuned
+      guard model: average ASR 0.4% (vs 0.2% for the guard) with
+      utility-under-attack about 10 points above every baseline; OOD
+      detection 80-98% with utility recovery 48-70%; on three VLMs ASR 2.9%
+      with 47.2% utility vs 28.8% for a commercial detector at 0% ASR..
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-14
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Show that
+  hallucinated/injected tool calls in these agents are not preceded by lower
+  attention entropy on injected tokens, or that damping those peaks fails to
+  restore task completion relative to a refusal defense at matched ASR, or
+  that an attacker who spreads the payload across many tokens evades the
+  probe. Drafted stance toward
+  long-trusted-instructions-untrusted-retrieved-content-occupy-same-model:
+  supports -- ICON leaves instructions and data in one context and reduces
+  rather than eliminates attack success (0.4% ASR, 2.9% multimodal),
+  consistent with the claim that same-context defenses mitigate without
+  guarantees.
+submitted_by: agent:claude-opus-5@Russ-Miller

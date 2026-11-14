@@ -1,0 +1,49 @@
+arxiv_id: "2602.22452"
+title: "CWM: Contrastive World Models for Action Feasibility Learning in
+  Embodied Agent Pipelines"
+url: https://doi.org/10.48550/arxiv.2602.22452
+drafted_at: 2026-11-09
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: For a 7B LLM LoRA fine-tuned as a step-level action-feasibility
+  scorer in a text-based embodied environment, an InfoNCE objective over a
+  pool of 16 mined hard negatives beats binary supervised fine-tuning only
+  where the invalid actions are physically near-identical to the valid one —
+  +6.76 points Precision@1 on one-word physics-reversing substitutions and
+  +3.3 on cross-task transplants, but no difference (97.8% both) on negatives
+  the environment lexically rejects.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Qwen2.5-7B with LoRA on ScienceWorld, train/test split by
+  task variation; scorer evaluated in isolation, never in a full agent loop
+  with task-completion measurement.
+technique: ""
+proposed_technique: Train the action-feasibility scorer contrastively against hard negatives
+technique_summary: Fine-tunes an LLM scorer with an InfoNCE loss that ranks
+  one environment-valid action above a pool of 16 mined invalid actions
+  (silent failures, explicit rejections, cross-task transplants) instead of
+  classifying each state-action pair independently.
+technique_kind: training
+technique_validated_by: 605 held-out hard-negative instances scored by
+  Precision@1, MRR, AUC-ROC against an identically-trained
+  binary-cross-entropy SFT baseline, the untuned base model, and random
+  scoring; plus gold-action retention and safety margin over 712/697 steps of
+  out-of-distribution task episodes.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An SFT baseline matched on architecture, data and negative pool
+  that equals or beats the contrastive scorer on minimal-edit
+  physics-reversing negatives, or a contrastive scorer that also beats SFT on
+  lexically distinct rejection negatives.
+evidence_note: Measured on one model, one environment, one seed per
+  configuration, with no confidence intervals; the minimal-edit split is only
+  74 instances, so the headline +6.76 points rests on about five items. The
+  design isolates the loss function (same architecture, data, negative count)
+  but not the temperature or margin terms added alongside InfoNCE. A secondary
+  observation in the same tables — SFT shows larger raw positive-negative
+  score gaps while ranking worse — supports the calibration reading but is not
+  independently tested.
+confidence: low

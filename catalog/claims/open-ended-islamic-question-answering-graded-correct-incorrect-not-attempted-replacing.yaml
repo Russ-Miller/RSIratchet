@@ -1,0 +1,41 @@
+id: open-ended-islamic-question-answering-graded-correct-incorrect-not-attempted-replacing
+ref: CLM-1042
+capability: hallucination
+technique: make-retrieval-agent-loop-over-verse-level-toolset
+statement: >-
+  For open-ended Islamic question answering graded as
+  correct/incorrect/not-attempted, replacing single-shot retrieval with an
+  agentic loop in which the model issues structured tool calls (semantic
+  verse search, verse reading, metadata lookup) and revises before answering
+  raises correctness well beyond standard RAG, and the gain comes both from
+  answering previously abstained questions and from overturning previously
+  wrong answers.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Bilingual Arabic/English short-answer questions with atomic single-gold answers, graded by an LLM judge; retrieval corpus is Qur'an verses only; tested on Qwen3-4B and Fanar-2-27B."
+sources:
+  - source: arxiv-2601-07528
+    stance: supports
+    note: >-
+      Validated by: %Correct on the 3,810-item IslamicFaithQA benchmark
+      under LLM-as-judge: Qwen3-4B-2507 21.85 base, 38.85 +RAG, 48.90
+      +Agentic RAG; Fanar-2-27B 48.65 base, 51.50 +RAG, 57.30 +Agentic RAG.
+      Of 36 recovered cases, 24 were not_attempted-to-correct and 12
+      incorrect-to-correct. Cost: 502 to 1,520 tokens, 0.52s to 3.45s
+      latency, ~6 tool calls.. Measured on one benchmark the authors built,
+      graded by an LLM judge whose agreement with humans is 79% (kappa 0.51
+      among annotators) on a 200-item subset. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-14
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An agentic RAG setup
+  over the same corpus and backbones that matches single-shot RAG
+  correctness at equal retrieval quality, or whose gains are entirely
+  accounted for by fewer abstentions with no incorrect-to-correct
+  transitions.
+submitted_by: agent:claude-opus-5@Russ-Miller

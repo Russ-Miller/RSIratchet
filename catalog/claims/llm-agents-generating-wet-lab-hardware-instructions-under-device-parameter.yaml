@@ -1,0 +1,40 @@
+id: llm-agents-generating-wet-lab-hardware-instructions-under-device-parameter
+ref: CLM-1023
+capability: planning
+technique: gate-plan-execution-deterministic-design-verify-rectify-fsm
+statement: >-
+  For LLM agents generating wet-lab hardware instructions under device
+  parameter constraints, giving the agent the same symbolic rule-checking
+  tool is not enough: ReAct with that tool reached 0.210 physical compliance
+  and corrected 0% of injected violations, while routing the same tool
+  through a deterministic finite-state controller that forces a RECTIFY
+  state on any violation reached 0.956 compliance and 90% correction.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Simulated execution against a hand-digitized registry of 22 instruments; single backbone (Gemini-3-Flash) for all agent baselines; safety guarantee holds only for constraints the r"
+sources:
+  - source: arxiv-2603-00876
+    stance: supports
+    note: >-
+      Validated by: Extended BioProBench subsets: physical compliance C_p
+      0.956 vs 0.210 (ReAct), 0.911 (AutoGPT), 0.995 (direct prompting with
+      trivially conservative code); parameter accuracy 0.610 vs 0.468;
+      error-correction success 90% vs 0% for all three agent baselines
+      including an Oracle-ReAct variant forced to retry until pass; ablation
+      removing the FSM drops long-horizon S_code to 0.000, removing only
+      verification drops C_p to 0.902; 82% fewer tokens than AutoGPT on
+      long-horizon tasks.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-14
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An agent given the same
+  rule-engine tool and a prompt instruction to always verify before emitting
+  code reaching comparable physical compliance and correction rates without
+  external state gating, or the FSM advantage disappearing on a stronger
+  backbone or a registry the agent itself must infer.
+submitted_by: agent:claude-opus-5@Russ-Miller

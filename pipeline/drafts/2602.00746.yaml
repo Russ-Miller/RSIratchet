@@ -1,0 +1,44 @@
+arxiv_id: "2602.00746"
+title: Can Vision-Language Models Handle Long-Context Code? An Empirical Study
+  on Visual Compression
+url: https://doi.org/10.48550/arxiv.2602.00746
+drafted_at: 2026-11-12
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: long-context-degradation
+statement: For long-context code tasks, rendering the whole code context into
+  compressed images for a VLM preserves more global dependency structure than
+  token-level selective filtering at matched compression ratio — gaining most
+  on summarization and repository-level completion while losing on exact-match
+  completion where symbol-level fidelity matters.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: 8-9B open VLMs (Qwen3-VL-8B, Glyph) vs a matched text-only 8B
+  model with LongCodeZip, compression ratios ~1.6-2x, four code benchmarks up
+  to 1M tokens
+technique: ""
+proposed_technique: Render long code into images instead of filtering tokens
+technique_summary: Instead of pruning code units to fit a context budget,
+  render the entire code context into a sequence of compressed images and feed
+  them to a vision-language model as visual tokens.
+technique_kind: retrieval
+technique_validated_by: CompScore on Long Module Summarization (87.25 vs 50.40
+  for LongCodeZip at ~1.7x), ES on RepoBench-P (50.22-60.68 vs 39.48 at 2.0x),
+  LCC ES/EM, LongCodeQA accuracy at 512k-1M; compression-stage latency ~1 min
+  vs ~4.3 h at 1M tokens. Exact Match on LCC drops sharply at 16k+ for
+  Qwen3-VL-8B (EM 2.08).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: At matched compression ratio and matched model family, visual
+  rendering scores no higher than textual filtering on summarization and
+  repository-level completion, or shows no fidelity penalty on exact-match
+  completion.
+evidence_note: Measured on four benchmarks with ratio matching and a
+  same-family text/VLM pair, but the visual arm uses a different model
+  (Qwen3-VL-8B, Glyph) than the textual arm (Qwen3-8B), so backbone capability
+  is not fully isolated; Glyph is also larger (9B) and purpose-trained for
+  visual compression. The coverage-fidelity reading is supported by the EM
+  collapse at 16k+ and font/layout sensitivity analysis.
+confidence: medium

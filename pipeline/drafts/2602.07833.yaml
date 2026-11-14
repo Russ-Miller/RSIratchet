@@ -1,0 +1,47 @@
+arxiv_id: "2602.07833"
+title: "SPD-Faith Bench: Diagnosing and Improving Faithfulness in
+  Chain-of-Thought for Multimodal Large Language Models"
+url: https://doi.org/10.48550/arxiv.2602.07833
+drafted_at: 2026-11-12
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: explanation-faithfulness
+statement: For current MLLMs asked to compare paired images that differ in one
+  fine-grained edit, logical self-contradiction between symmetric binary
+  queries ("same?"/"different?") rises as the edited region gets smaller, and
+  on multi-difference pairs high detection of that a difference exists
+  coexists with reasoning traces that are not grounded in the actual edit, so
+  correct detection does not indicate faithful stated reasoning.
+kind: observation
+backing_strength: single-paper
+scope_condition: 12 open and proprietary MLLMs on a 3,000-pair
+  image-difference benchmark with controlled color, removal and position
+  edits; difficulty stratified by instance density
+technique: ""
+proposed_technique: Amplify visual attention and damp FFN when it overrides vision
+technique_summary: At inference, boosts attention to visual tokens
+  (adaptively, as attention decays over decoding steps), suppresses the FFN
+  residual update when it diverges from the attention update, and
+  contrastively decodes against an image masked at regions that both attention
+  and token-activation maps mark as salient.
+technique_kind: decoding
+technique_validated_by: On SPD-Faith Bench with Qwen2.5-VL-7B, contradiction
+  rate 38.2 to 43.8 and difference-reasoning faithfulness 29.5 to 33.7 versus
+  greedy, above VCD, self-consistency, self-refine, API and Zoom-Refine; also
+  higher MME totals on LLaVA-1.5-7B and Qwen2-VL-7B and lower CHAIR_s/CHAIR_i
+  on LLaVA-1.5-7B.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A model whose contradiction rate on this benchmark is flat or falls
+  as the edited region shrinks, or whose reasoning-faithfulness score tracks
+  its difference-detection score closely across the model set.
+evidence_note: "Measured: contradiction rate across easy/medium/hard for 12
+  models (e.g. Claude-4.5-Haiku 16.5 to 37.5, GPT-4o 5.0 to 22.8) and DS vs
+  DRF on the multi-difference subset (GLM-4.5V 92.5 DS, 58.3 DRF). Trend is
+  clearest in proprietary models; several open models (Qwen2.5-VL-7B,
+  MiniCPM-V-2.6, InternVL2.5-8B) show contradiction rate falling with
+  difficulty, which the paper does not reconcile. DRF is computed by the
+  authors' own semantic-alignment metric, not independently validated."
+confidence: medium

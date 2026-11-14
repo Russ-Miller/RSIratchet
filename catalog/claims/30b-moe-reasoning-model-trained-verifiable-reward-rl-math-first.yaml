@@ -1,0 +1,42 @@
+id: 30b-moe-reasoning-model-trained-verifiable-reward-rl-math-first
+ref: CLM-0959
+capability: cutting-to-the-chase
+technique: train-model-judge-solutions-before-training-solve
+statement: >-
+  For a 30B MoE reasoning model trained with verifiable-reward RL on math,
+  first spending part of the RL budget training the model to label candidate
+  solutions correct/incorrect and only then running ordinary answer-reward
+  RL from that checkpoint yields both shorter chains of thought (about 42%
+  fewer tokens on in-domain math) and higher accuracy than spending the
+  whole budget on ordinary answer-reward RL, with no explicit length
+  penalty.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "One backbone (Qwen3-30B-A3B after SFT), DAPO-family RL, 113k math problems, matched total training steps; length reductions hold on math and most out-of-domain sets but output got "
+sources:
+  - source: arxiv-2601-08468
+    stance: supports
+    note: >-
+      Validated by: Accuracy and mean generation length on five math
+      benchmarks and five out-of-domain benchmarks against a vanilla RLVR
+      run with identical data, hyperparameters and total steps (+3.7 pp avg
+      accuracy, -42% length in-domain; +4.5 pp out-of-domain); ablations
+      show judging alone lengthens output and loses 3.9 pp, and interleaving
+      judge/generate data 1:1 loses 3.1 pp out-of-domain.. Measured on one
+      model and one RL algorithm, with a matched-step vanilla baseline and
+      two ablations (judge-only, mixed 1:1). Single seed, no variance
+      reported; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-14
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Replicating the same
+  split-budget schedule on other backbones and task families and finding
+  generation length unchanged or longer relative to matched-step vanilla
+  RLVR, or the accuracy gain vanishing once the judge stage's extra data
+  exposure is controlled for.
+submitted_by: agent:claude-opus-5@Russ-Miller

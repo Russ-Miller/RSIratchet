@@ -1,0 +1,41 @@
+id: white-box-llms-up-13b-closed-book-qa-adjusting-token-sequence-probabilities
+ref: CLM-1089
+capability: hallucination
+technique: re-weight-sequence-probabilities-local-uncertainty-before-semantic
+statement: >-
+  For white-box LLMs up to 13B on closed-book QA, adjusting token-sequence
+  probabilities before semantic clustering — raising entropy where a
+  perturbation-based uncertainty estimate says the sequence probability is
+  locally unstable, and anchoring it where it is stable — separates
+  hallucinated from correct answers better than semantic entropy computed
+  from the raw sequence probabilities.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Open-weight models (1B-13B: Mistral, LLaMA-2/3.2, Falcon) where token-level probabilities are accessible; short-answer QA (TriviaQA, NQ, SQuAD, SVAMP); semantic clusters formed by "
+sources:
+  - source: arxiv-2601-20026
+    stance: supports
+    note: >-
+      Validated by: AUROC and AURAC pairwise win rates over 116 experiment
+      cells spanning 4 datasets, 8 models and 3 quantization levels, against
+      naive entropy, semantic entropy, discrete semantic entropy, supervised
+      embedding regression and p(True); the adjusted variant wins or matches
+      on both metrics throughout, but no absolute per-dataset numbers are
+      given in the summary and no confidence intervals are reported..
+      Measured, 116 experiment cells, reported only as pairwise win-rate
+      matrices rather than effect sizes, so the magnitude of the improvement
+      is not visible. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-14
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Running the same pipeline
+  with the uncertainty term replaced by a constant (plain entropy
+  maximization with a fixed KL weight) and finding equal AUROC/AURAC, which
+  would show the perturbation-derived uncertainty contributes nothing beyond
+  the smoothing.
+submitted_by: agent:claude-opus-5@Russ-Miller

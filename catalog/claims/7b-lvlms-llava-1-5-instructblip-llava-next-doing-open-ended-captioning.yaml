@@ -1,0 +1,40 @@
+id: 7b-lvlms-llava-1-5-instructblip-llava-next-doing-open-ended-captioning
+ref: CLM-0977
+capability: visual-grounding
+technique: inject-pre-generation-context-embedding-into-mid-layer
+statement: >-
+  In 7B LVLMs (LLaVA-1.5, InstructBLIP, LLaVA-NeXT) doing open-ended
+  captioning, hallucinated tokens accumulate probability mass on their final
+  top-K candidate set later across decoder layers than truthful tokens, and
+  blending the last-prompt-token hidden state into mid-layer (~layer 10)
+  hidden states during decoding lowers object-hallucination rates on CHAIR,
+  AMBER and MMHal-Bench without a large loss of object coverage.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "7B open LVLMs with white-box access to hidden states and the unembedding matrix; open-ended generation with up to 512 new tokens; COCO-style benchmarks; hyperparameters tuned per m"
+sources:
+  - source: arxiv-2601-05939
+    stance: supports
+    note: >-
+      Validated by: CHAIR_s/CHAIR_i on 500 MSCOCO images, AMBER generative
+      CHAIR/HAL/COVER, and GPT-4-judged MMHal-Bench Score/HalRate, against
+      base decoding and five training-free baselines (OPERA, VCD, AvisC,
+      M3ID, CAAC) across three LVLMs; dynamic variant lowest hallucination
+      overall, static second.. Measured on three 7B LVLMs and three
+      benchmarks with five baselines; the commitment-depth analysis relies
+      on externally annotated truthful/hallucinatory token labels from
+      AMBER. Coverage is reported but sometimes falls below base (e.g.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-14
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Logit-lens top-K mass
+  curves showing no separation between truthful and hallucinatory tokens on
+  other 7B LVLMs, or context-embedding injection failing to lower CHAIR/HAL
+  relative to base decoding at matched coverage.
+submitted_by: agent:claude-opus-5@Russ-Miller
