@@ -49,7 +49,7 @@ export function buildSearchIndex(): SearchRecord[] {
   }
   for (const a of getHeuristics()) {
     out.push({ k: "a", id: a.id, title: a.label, sub: a.statement, ...vec("a", a.id),
-      text: [a.id, a.ref, a.label, a.statement, a.origin, a.transfer, ...(a.aliases ?? [])].join(" ").toLowerCase() });
+      text: [a.id, a.ref, a.label, a.adage ?? "", a.statement, a.origin, a.transfer, ...(a.aliases ?? [])].join(" ").toLowerCase() });
   }
   return out;
 }
