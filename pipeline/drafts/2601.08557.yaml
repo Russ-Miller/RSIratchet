@@ -1,0 +1,48 @@
+arxiv_id: "2601.08557"
+title: "VideoHEDGE: Entropy-Based Hallucination Detection for Video-VLMs via
+  Semantic Clustering and Spatiotemporal Perturbations"
+url: https://doi.org/10.48550/arxiv.2601.08557
+drafted_at: 2026-11-14
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: For 7B video-VLMs answering short-clip soccer questions,
+  uncertainty scores computed only from clean-input samples (semantic entropy,
+  RadFlag) separate hallucinated from supported answers near chance, while an
+  entropy score that contrasts the semantic cluster distribution from clean
+  clips against photometrically and spatiotemporally perturbed clips detects
+  hallucination better, with the margin growing as more distorted variants are
+  sampled.
+kind: observation
+backing_strength: single-paper
+scope_condition: Three 7B Video-VLMs (Qwen2-VL, Qwen2.5-VL, a
+  SoccerChat-finetuned model) on 1,460 short soccer clip
+  QA/event-classification items, hallucination labels from an LLM judge;
+  absolute ROC-AUC stays moderate (~0.57-0.67).
+technique: ""
+proposed_technique: Score video hallucination by clean-vs-perturbed semantic entropy gap
+technique_summary: Sample answers from both the original clip and
+  photometrically/noise-perturbed variants, cluster answers into semantic
+  hypotheses by sentence embeddings, and score reliability by entropy over a
+  distribution sharpened by the clean-minus-perturbed cluster-mass gap.
+technique_kind: decoding
+technique_validated_by: ROC-AUC against LLM-judge binary hallucination labels
+  on 1,460 SoccerChat items, compared with Semantic Entropy and RadFlag
+  computed on the same samples; VASE highest or near-highest in most
+  model/task/clustering cells, rising from ~0.54 at 1 distortion to ~0.62-0.63
+  at 10.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On video QA with another benchmark and model set, clean-only
+  semantic entropy matches or beats the clean-vs-perturbed contrast score at
+  equal sample budget, or the contrast score's AUC does not rise with the
+  number of perturbed variants.
+evidence_note: Measured on one domain (soccer clips) with a single
+  perturbation family (brightness/contrast/saturation/hue plus FFmpeg noise)
+  and LLM-judge labels, no human adjudication; clean and noisy sample budgets
+  grow together so distortion-budget trends confound perturbation strength
+  with sampling scale, and trends across frame count and resolution are noisy
+  and non-monotonic.
+confidence: medium

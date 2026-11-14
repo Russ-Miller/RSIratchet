@@ -1,0 +1,48 @@
+arxiv_id: "2601.03676"
+title: Towards Compositional Generalization of LLMs via Skill Taxonomy Guided
+  Data Synthesis
+url: https://doi.org/10.48550/arxiv.2601.03676
+drafted_at: 2026-11-14
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: procedure-following
+statement: When synthesizing instruction-tuning data that composes several
+  skills at once, selecting skill combinations that maximize marginal
+  structural-entropy gain within a locally constrained region of an induced
+  skill hierarchy yields higher complex-instruction-following scores for 7-8B
+  models than random skill pairing, and unconstrained entropy maximization
+  over the whole skill space degrades already-instruction-tuned models below
+  their starting point.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: 7-8B open base and instruct models (Qwen-2.5-7B, Llama-3-8B,
+  Mistral-7B-v0.3) fine-tuned on ~4K synthetic examples, judged on WildBench,
+  MT-Bench and AlpacaEval 2.0 by LLM graders
+technique: ""
+proposed_technique: Pick skill combinations by entropy gain inside a skill hierarchy
+technique_summary: Build a hierarchical skill taxonomy by agglomerative
+  structural-entropy minimization over a skill co-occurrence graph, then
+  synthesize training instructions from k-skill tuples chosen greedily for
+  maximal conditional structural entropy within progressively widening
+  sub-trees.
+technique_kind: training
+technique_validated_by: WB-Score, MT-Bench score and AlpacaEval 2.0 LC win
+  rate against Instruct-SkillMix (random pairing, 4K), Alpaca52k (52K) and the
+  untrained base/instruct checkpoints; ablated against unconstrained entropy
+  maximization and against single-k vs mixed-k tuple budgets.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Matching the taxonomy-guided synthesis against random skill pairing
+  at equal data volume and equal judge protocol and finding no WB-Score
+  advantage, or finding that unconstrained entropy maximization does not lower
+  instruct-model scores.
+evidence_note: Measured on three 7-8B backbones in base and instruct variants
+  across three LLM-judged benchmarks; gains over the random-pairing baseline
+  are consistent (e.g. Llama-3-8B Instruct WB-Score 36.3 vs 30.8) and the
+  sweet-spot ablation shows unconstrained maximization dropping
+  Qwen-2.5-Instruct from 45.4 to 35.1. All scoring is by LLM judges, so
+  absolute levels are not independently verified, and the taxonomy induction
+  is not isolated from the prompt-based generation step.
+confidence: low

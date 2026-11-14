@@ -1,0 +1,49 @@
+arxiv_id: "2601.04505"
+title: "CircuitLM: A Multi-Agent LLM-Aided Design Framework for Generating
+  Circuit Schematics from Natural Language Prompts"
+url: https://doi.org/10.48550/arxiv.2601.04505
+drafted_at: 2026-11-14
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: For LLM circuit-schematic generation from natural-language prompts,
+  replacing full-library-in-context prompting with embedding-based retrieval
+  of only the needed component pinouts plus an explicit chain-of-thought
+  planning agent raises rule-checked pass rates by only a few points (and can
+  lower them for a small distilled model), while cutting prompt tokens roughly
+  five-fold, so the grounding's main measured benefit is context efficiency
+  rather than correctness.
+kind: observation
+backing_strength: single-paper
+scope_condition: 100 embedded-systems prompts, a ~70-component curated library
+  that fits in context, five frontier LLMs at temperature 0, pass defined as
+  zero fatal and zero major errors from a custom graph-based ERC engine.
+technique: retrieval-augmented-generation
+proposed_technique: Retrieve only the needed component pinouts, then plan before wiring
+technique_summary: A staged pipeline extracts generic component categories
+  from the prompt, retrieves canonical names and exact pin definitions from a
+  vector component database, writes a chain-of-thought wiring plan, and only
+  then emits a structured JSON schematic.
+technique_kind: retrieval
+technique_validated_by: "ERC Pass@1 and LLM-as-judge Pass@1 on 100 prompts,
+  three runs per model, against a zero-shot baseline that injects the entire
+  component library with full pin definitions into one prompt: ERC Pass@1
+  moved +4 (Gemini), +8 (Qwen), +9 (Deepseek), -2 (GPT-5 mini); tokens ~3,000
+  vs ~15,000."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched comparison on the same prompts and library showing
+  retrieval-plus-CoT grounding gives large pass-rate gains (say >20 points)
+  over full-library-in-context prompting, or showing the full-context baseline
+  hallucinates components or pin names at substantial rates while the
+  retrieval pipeline does not.
+evidence_note: Measured, single paper. 100 prompts x 3 runs x 4 models (Llama
+  excluded from the baseline because the full library overflowed its context,
+  which is itself part of the scalability argument). The comparison isolates
+  retrieval+CoT against full-context prompting but the library is small enough
+  to fit in context, so it does not test the authors' scaling claim; pass
+  criterion comes from their own ERC engine, validated against three experts
+  at Fleiss kappa 0.82 overall.
+confidence: medium

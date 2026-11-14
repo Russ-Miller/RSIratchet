@@ -1,0 +1,47 @@
+arxiv_id: "2601.04254"
+title: Scaling Trends for Multi-Hop Contextual Reasoning in Mid-Scale Language
+  Models
+url: https://doi.org/10.48550/arxiv.2601.04254
+drafted_at: 2026-11-14
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: For mid-scale open models (8B-47B) on synthetic multi-hop
+  contextual reasoning, a three-role multi-agent pipeline (analyst,
+  strategist, generator with feedback) only helps models that already have
+  non-trivial single-agent reasoning accuracy, and it can lower accuracy below
+  the single-agent baseline on single-hop extraction tasks where no reasoning
+  is needed.
+kind: observation
+backing_strength: single-paper
+scope_condition: 120 trials, 15 per condition per model, synthetic
+  contextual-inference tasks with 2-4 hops; four models (LLaMA-3 8B, LLaMA-2
+  13B, Mixtral 8x7B, DeepSeek-V2 16B); small samples and wide standard errors.
+technique: ""
+proposed_technique: Gate multi-agent decomposition on single-agent reasoning accuracy
+technique_summary: Run a three-agent analyst-strategist-generator pipeline
+  only for backbones whose single-agent accuracy on the reasoning task is
+  already well above floor, and skip it on tasks solvable by direct
+  extraction.
+technique_kind: process
+technique_validated_by: "Success rates on 15 contextual and 15 structured
+  trials per model: LLaMA-3 8B rose 33.3% to 80.0% (p<0.001) and Mixtral 40.0%
+  to 53.3% (p=0.014) on contextual tasks, while LLaMA-2 13B (6.7% to 20.0%)
+  and DeepSeek-V2 16B showed no significant gain; on structured tasks Mixtral
+  fell from 86.7% to 20.0% under multi-agent."
+stance_on_existing: supports
+related_claim_id: four-diagram-grounded-geometry-benchmarks-multi-agent-pipeline-consistently-helps-open-source
+stance_reason: Both find that multi-agent decomposition pays off conditionally
+  on the backbone and task rather than universally, though this paper reports
+  the opposite direction of the capability dependence (gains for the stronger
+  backbones).
+falsifier: A larger-sample replication in which weak-reasoning backbones gain
+  as much from the same multi-agent pipeline as strong ones, or in which the
+  multi-agent configuration does not lose accuracy on single-hop extraction
+  tasks.
+evidence_note: Measured, but on a synthetic in-house framework with only 15
+  trials per cell, so standard errors are 8-13 points and the authors
+  themselves call p-values indicative; model-family confounds (training
+  generation, dense vs MoE) are not separated from base reasoning ability.
+confidence: low
