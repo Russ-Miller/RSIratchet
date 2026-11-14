@@ -1,0 +1,45 @@
+id: multimodal-llms-reading-pure-suv-normalized-pet-slices-clinical-six-step
+ref: CLM-1039
+capability: visual-grounding
+technique: train-atomic-perception-before-diagnostic-reasoning
+statement: >-
+  For multimodal LLMs reading pure SUV-normalized PET slices, a clinical
+  six-step chain-of-thought prompt does not reliably improve diagnosis on
+  frozen models (changes ranged from -4.0 to +9.8 points across ten models,
+  several negative) while an LLM evaluator rates the rationales highly
+  plausible (0.85-0.99), and CoT only becomes a consistent gain after the
+  model is fine-tuned on lower-level PET perception tasks (tracer, quality,
+  organ, abnormality), which lifts diagnosis by up to about 15.9 points.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Pure PET (no CT overlay) multiple-choice diagnosis; 19 models evaluated zero-shot, 10 with CoT, 4 small open models fine-tuned; atomic-task training excludes the diagnosis patients"
+sources:
+  - source: arxiv-2601-02737
+    stance: supports
+    note: >-
+      Validated by: Level-5 diagnosis accuracy on patients never seen in the
+      atomic-task training split, against the same frozen backbone with and
+      without CoT: gains of +1.3 to +8.3 points without CoT and +7.6 to
+      +15.9 with CoT across MedGemma-4B, InternVL3-8B, Qwen2.5-VL-7B and
+      Lingshu-7B.. Measured on a new 9,732-study, 52,308-QA PET benchmark
+      across 8 centers and 4 tracers; CoT comparison covers 10 models, AVA
+      only 4 small open models with no matched-compute control fine-tune, so
+      the 'atomic tasks specifically' part is argued more than isolated.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-14
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: On a held-out
+  functional-imaging test set, frozen models given the same CoT prompt
+  improve diagnostic accuracy consistently, or atomic-perception fine-tuning
+  gives no larger CoT gain than an equal-token fine-tune on diagnosis-style
+  data. Drafted stance toward
+  adversarially-edited-image-tasks-chain-of-thought-prompting-moves-multimodal-models:
+  supports -- Both find chain-of-thought lowers accuracy on perception-heavy
+  multimodal items where the visual evidence is not well encoded.
+submitted_by: agent:claude-opus-5@Russ-Miller

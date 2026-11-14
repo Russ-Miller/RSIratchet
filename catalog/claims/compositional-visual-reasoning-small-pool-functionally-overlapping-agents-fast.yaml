@@ -1,0 +1,41 @@
+id: compositional-visual-reasoning-small-pool-functionally-overlapping-agents-fast
+ref: CLM-0998
+capability: multi-model-coordination
+technique: train-agent-routing-policy-scored-transition-trees
+statement: >-
+  For compositional visual reasoning with a small pool of functionally
+  overlapping agents (a fast perception agent, a one-shot program agent, a
+  stepwise program agent), routing each query with an LLM controller
+  fine-tuned on scored transition trajectories beats both random routing and
+  exhaustively running every agent and aggregating with a VLM, and the
+  exhaustive ensemble is both the least accurate and roughly four times
+  slower.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Three overlapping agents over a shared append-only memory, fixed foundation models (InternVL2.5-8B, Florence2-L), evaluated on GQA, OK-VQA and RefCOCO-family benchmarks; gains from"
+sources:
+  - source: arxiv-2601-19204
+    stance: supports
+    note: >-
+      Validated by: Accuracy on GQA, OK-VQA, RefCOCO/+/g and Ref-Adv plus
+      per-query inference time, against three ablations sharing the same
+      agents: exhaustive ensemble (avg weakest, 34.58s/query), random
+      transition, and an un-finetuned LLM router; SFT added about 6.4 points
+      on GQA over the un-finetuned router at equal latency.. Measured in one
+      ablation table across six benchmarks with the agent set, tools and
+      backbones held fixed, so the routing policy is isolated. Single paper,
+      authors' own system; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-14
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Under matched agents and
+  backbones, a random or round-robin router, or exhaustive ensembling with
+  VLM aggregation, matches the fine-tuned router's accuracy on these
+  benchmarks; or the reported gain disappears once the un-finetuned router
+  is given the same prompt budget.
+submitted_by: agent:claude-opus-5@Russ-Miller

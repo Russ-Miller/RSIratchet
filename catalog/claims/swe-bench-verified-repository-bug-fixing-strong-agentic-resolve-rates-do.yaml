@@ -1,0 +1,39 @@
+id: swe-bench-verified-repository-bug-fixing-strong-agentic-resolve-rates-do
+ref: CLM-1076
+capability: long-context-degradation
+technique: inject-gold-patch-files-isolate-long-context-patching
+statement: >-
+  On SWE-bench Verified repository bug-fixing, strong agentic resolve rates
+  do not indicate long-context ability: successful agent trajectories stay
+  under 20k-30k tokens with failed ones consuming more, and the same models
+  given all gold-patch files in a 64k single-shot prompt (perfect retrieval
+  recall) drop to single-digit or zero resolve rates with hallucinated
+  diffs, nonexistent file targets and malformed patch headers.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "SWE-bench Verified, 100-sample subsets; mini-SWE-agent bash harness vs single-shot 64k prompting; models GPT-5-nano, DeepSeek-R1-0528, Qwen3-32B, Qwen3-Coder-30B-A3B"
+sources:
+  - source: arxiv-2602-16069
+    stance: supports
+    note: >-
+      Validated by: Run on 100 SWE-bench Verified samples at 64k context
+      with sb-cli grading; Qwen3-Coder-30B-A3B 7% resolve, GPT-5-nano 0%,
+      against the same models' agentic resolve rates (GPT-5-nano 31%) as the
+      comparison point; post-processing manually checked as not the error
+      source.. Measured on 100-sample subsets (agentic resolve rates checked
+      against the public leaderboard figure for GPT-5-nano, 31% vs 34.8%).
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-14
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A model that scores
+  comparably on single-shot 64k patch generation with gold files supplied
+  and in an agentic harness on the same tasks, or evidence that the
+  single-shot collapse is an artifact of patch formatting/post-processing
+  rather than reasoning over the long context.
+submitted_by: agent:claude-opus-5@Russ-Miller

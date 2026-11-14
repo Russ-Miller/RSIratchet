@@ -1,0 +1,50 @@
+arxiv_id: "2603.28488"
+title: Courtroom-Style Multi-Agent Debate with Progressive RAG and
+  Role-Switching for Controversial Claim Verification
+url: https://doi.org/10.48550/arxiv.2603.28488
+drafted_at: 2026-11-07
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: In courtroom-style multi-agent claim verification over a biomedical
+  abstract corpus, compiling each retrieval query from the live debate state
+  and the agents' self-reported evidence gaps raises accuracy over one-pass
+  retrieval (74.2% to 81.7% on 120 Check-COVID claims), and the one-pass
+  variant shows higher inter-judge agreement than the dynamic one, so rising
+  agreement among debating agents can mark convergence on a wrong answer
+  rather than correctness.
+kind: observation
+backing_strength: single-paper
+scope_condition: Zero-shot, three-judge heterogeneous panel over a static
+  360k-abstract PubMed corpus; 120 binary Check-COVID claims plus sampled
+  HealthVer/FEVEROUS checks; ~211K tokens per claim.
+technique: ""
+proposed_technique: Compile retrieval queries from the live debate state
+technique_summary: Instead of retrieving once up front, each round builds a
+  new query from the recent debate messages, the agent's self-identified
+  evidence gap and the prior round's reflection, admitting only documents
+  above a novelty threshold against the existing pool.
+technique_kind: retrieval
+technique_validated_by: "Ablation on the same 120 Check-COVID claims: removing
+  P-RAG dropped accuracy 81.7% to 74.2% and halved the evidence pool (67.5 to
+  37.5 items) while mean inter-judge kappa rose 0.468 to 0.599; compared
+  against single-call RAG (80.0% in-domain, 63.0% on HealthVer) and standard
+  two-agent MAD (71.7%), with McNemar's test on a paired 100-claim HealthVer
+  subset (chi2=8.04, p=0.0046) against standard MAD."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation on other datasets or backbones where disabling dynamic
+  retrieval leaves accuracy unchanged or improves it, or where lower
+  inter-judge agreement does not accompany higher accuracy — i.e. agreement
+  tracks correctness.
+evidence_note: Measured on one 120-claim binary subset of a single COVID
+  benchmark, three runs with high variance (0.790-0.950), plus 100/60-claim
+  sampled cross-domain checks. The agreement-versus-accuracy inversion rests
+  on one ablation cell, with no confidence interval on kappa and no
+  replication; run-to-run variance exceeds several of the reported ablation
+  deltas, so the 7.5 pp P-RAG effect is the only one clearly above noise.
+confidence: low
+problems:
+  - "figures not in the source: 74.2%"

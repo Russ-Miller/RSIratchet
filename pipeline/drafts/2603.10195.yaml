@@ -1,0 +1,50 @@
+arxiv_id: "2603.10195"
+title: Adaptive Activation Cancellation for Hallucination Mitigation in Large
+  Language Models
+url: https://doi.org/10.48550/arxiv.2603.10195
+drafted_at: 2026-11-08
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: For activation-space hallucination interventions in transformer
+  LLMs (125M-8B), editing hidden states in a single post-hoc forward pass
+  raises probe-space selectivity without changing downstream accuracy, while
+  the same edit applied as a forward hook at every autoregressive step does
+  change it, because post-hoc edits occur after the token probabilities they
+  would have to influence are already fixed.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Probe-selected neuron sets at one mid-network layer,
+  evaluated on TruthfulQA/HaluEval with OPT-125M, Phi-3-mini and LLaMA 3-8B;
+  accuracy deltas are small (+0.007 to +0.020).
+technique: ""
+proposed_technique: Suppress probe-selected neurons with a confidence-gated forward hook
+technique_summary: Train layer-wise linear probes to find the best
+  hallucination-separating layer, take the top-50 signed-weight neurons, and
+  during generation attenuate their activation excess above an 80th-percentile
+  grounded baseline, scaled by the probe's current hallucination confidence
+  and only when that confidence exceeds a threshold.
+technique_kind: decoding
+technique_validated_by: Held-out TruthfulQA classification accuracy against
+  the unmodified model and five post-hoc cancellation variants (+0.020
+  OPT-125M, +0.007 Phi-3-mini and LLaMA 3-8B); generation metrics at 8B (MC1
+  +0.04, MC2 +0.003, Token-F1 +0.003, n=100); WikiText-103 perplexity and a
+  100-question MMLU subset reported unchanged; compared with ITI on probe
+  selectivity and DoLA on MC1, where DoLA gains more MC1 (+0.08).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A post-hoc single-forward-pass activation edit that raises
+  downstream generation accuracy, or a per-step hook whose accuracy gain
+  disappears when the same edit is instead applied once post-hoc at matched
+  suppression strength.
+evidence_note: Measured on three models and two benchmarks, but the accuracy
+  gains are a fraction of a point on a 150-sample held-out split with no
+  confidence intervals or repeated runs, and generation evaluation uses n=100
+  with baseline MC1 near chance for two of three models. The design does
+  separate post-hoc from streaming application of an otherwise identical edit,
+  which is what the mechanism claim turns on. Capability-preservation figures
+  reported as exactly 0.0% at four significant figures are suspiciously clean
+  and not independently corroborated.
+confidence: low

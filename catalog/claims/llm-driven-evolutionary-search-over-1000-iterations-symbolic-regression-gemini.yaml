@@ -1,0 +1,42 @@
+id: llm-driven-evolutionary-search-over-1000-iterations-symbolic-regression-gemini
+ref: CLM-1027
+capability: harness-self-improvement
+technique: prune-context-then-revert-stalled-improvement-momentum
+statement: >-
+  In LLM-driven evolutionary search over 1000 iterations (symbolic
+  regression, Gemini 2.5 Pro), pruning low-performing ideas and compressed
+  experiment histories from the agent's context raises the best and mean
+  outcomes but leaves the worst runs stuck, because the best-scoring idea is
+  never pruned even when it is a local minimum; adding a
+  stagnation-triggered revert to an earlier state removes the bad runs while
+  slightly lowering the best ones, and only adding cross-island transfer
+  recovers both.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Symbolic regression (LLM-SR nonlinear oscillator), 10 runs of 1000 iterations each, Gemini 2.5 Pro backbone; cumulative ablation, not factorial."
+sources:
+  - source: arxiv-2601-10657
+    stance: supports
+    note: >-
+      Validated by: Log10 NMSE distribution (best, P75, mean, worst) over 10
+      runs of 1000 iterations on LLM-SR nonlinear oscillators against uDSR,
+      LLM-SR, OpenEvolve, CodeEvolve and ShinkaEvolve; cumulative ablation
+      adding each component in turn; also per-kernel latency on 16
+      KernelBench kernels.. Measured: cumulative ablation on one task
+      (symbolic regression) with 10 runs per configuration, reported as a
+      boxplot rather than per-component deltas with intervals; components
+      are added in a fixed order so individual contributions are not
+      isolated factorially. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-14
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A replication where context
+  pruning alone also lifts the worst-run quartile, or where adding
+  stagnation-triggered backtracking does not lower the best-run score, would
+  break the stated decomposition.
+submitted_by: agent:claude-opus-5@Russ-Miller

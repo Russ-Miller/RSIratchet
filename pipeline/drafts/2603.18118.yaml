@@ -1,0 +1,44 @@
+arxiv_id: "2603.18118"
+title: "Insight-V++: Towards Advanced Long-Chain Visual Reasoning with
+  Multimodal Large Language Models"
+url: https://doi.org/10.48550/arxiv.2603.18118
+drafted_at: 2026-11-07
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: For 7B multimodal backbones (Qwen2.5-VL) split into a reasoning
+  agent and a summary agent, re-running the training set through the pair so
+  the summary agent's critique drives up to three rounds of reasoning-path
+  revision, then fine-tuning both agents on the filtered revised paths, adds a
+  few points over the RL-trained two-agent system, with larger gains on hard
+  math/logic/chart reasoning (+2.4 average) than on general image reasoning
+  (+1.6) and essentially none on perception benchmarks.
+kind: observation
+backing_strength: single-paper
+scope_condition: One 7B base model (Qwen2.5-VL) plus an earlier LLaVA-NeXT
+  instantiation; gains measured against the authors' own multi-agent RL stage,
+  not against a matched-compute single-agent control.
+technique: ""
+proposed_technique: Retrain both agents on paths the summary agent approved
+technique_summary: The reasoning agent drafts a chain, the summary agent
+  critiques it and answers, the reasoning agent revises on that feedback for
+  up to three rounds, and the surviving trajectories are filtered and used to
+  fine-tune both agents again.
+technique_kind: training
+technique_validated_by: Average scores on 10 general image benchmarks, 6
+  advanced reasoning benchmarks (53.9 vs 51.5 for the RL multi-agent stage)
+  and 6 video benchmarks (54.2 vs 52.9), all against the same base model and
+  the same multi-agent RL checkpoint.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Running the same self-evolution loop with a single agent critiquing
+  itself, or spending the same extra fine-tuning compute on more of the
+  original SFT data, matching the reported gains.
+evidence_note: Measured on three benchmark suites with a consistent
+  before/after against the authors' own prior stage. No matched-compute
+  baseline, no single-agent self-refinement control, and the component
+  ablation separating the self-evolution loop from the extra data it generates
+  is not reported in the given text.
+confidence: low

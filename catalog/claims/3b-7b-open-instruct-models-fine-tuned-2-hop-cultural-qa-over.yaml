@@ -1,0 +1,36 @@
+id: 3b-7b-open-instruct-models-fine-tuned-2-hop-cultural-qa-over
+ref: CLM-0962
+capability: multi-step-reasoning
+technique: train-verifier-corrected-graph-traversal-traces-cot
+statement: >-
+  For 3B-7B open instruct models fine-tuned on 2-hop cultural QA over a
+  knowledge graph, supervision made of explicit retrieval actions and
+  returned observations raises final-answer accuracy far more than
+  chain-of-thought rationales, which mostly fix the intermediate bridge step
+  and leave the second hop unresolved.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "2-hop template questions (anchor artifact -> bridge state -> target artifact) over a curated Indian-culture knowledge graph; English only; PEFT SFT with ~2.3k training traces"
+sources:
+  - source: arxiv-2602-18429
+    stance: supports
+    note: >-
+      Validated by: Exact-match State/Answer/Full Match on a 643-item test
+      split: Qwen2.5-7B Full Match 36.70% with CoT-SFT vs 57.54% with
+      trace-SFT; 3B 34.26% vs 50.70%; ablations on 1k train/100 test show
+      removing the verifier drops Full Match 52->36 and stripping
+      ACTION/OBSERVATION spans drops it 52->9; OOD multiple-choice on a
+      SANSKRITI subset is unchanged or slightly better.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-14
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Fine-tuning the same
+  backbones on CoT traces matched to the action-trace length and token
+  budget reaches comparable Answer/Full Match, or stripping the
+  ACTION/OBSERVATION spans leaves final-answer accuracy roughly intact.
+submitted_by: agent:claude-opus-5@Russ-Miller

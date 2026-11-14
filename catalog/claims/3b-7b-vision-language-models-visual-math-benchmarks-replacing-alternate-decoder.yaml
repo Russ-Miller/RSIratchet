@@ -1,0 +1,42 @@
+id: 3b-7b-vision-language-models-visual-math-benchmarks-replacing-alternate-decoder
+ref: CLM-0964
+capability: cutting-to-the-chase
+technique: route-each-token-between-fast-output-re-looking
+statement: >-
+  For 3B-7B vision-language models on visual math benchmarks, replacing
+  alternate decoder FFN layers with a token-level gated controller that
+  routes among a fast path, a visual re-attention path, and a
+  self-reflection path — trained by PPO with task, path-cost and
+  uncertainty-calibration rewards — cuts average response length by roughly
+  40-50% relative to the base model while holding or slightly raising
+  accuracy, and removing the visual re-attention path costs about twice as
+  much accuracy as removing the self-reflection path.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen2.5-VL 3B/7B backbones on MathVision, MathVerse, MathVista, DynaMath and MM-Vet; controller trained on ~30-40k samples mined from ~790k benchmark items with GPT-4 failure attri"
+sources:
+  - source: arxiv-2601-04442
+    stance: supports
+    note: >-
+      Validated by: Accuracy and mean token count on five multimodal
+      reasoning benchmarks against the untuned base model and against
+      slow-thinking baselines (LMM-R1, R1-OneVision, OpenVLThinker, FAST);
+      component ablations on MathVision and MathVerse; reported
+      path-activation distribution (73% fast / 17% perception / 10%
+      reasoning).. Measured on five benchmarks at two model scales with
+      length reported alongside accuracy, plus three-way component ablation
+      on two benchmarks. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-14
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A replication where the
+  gated controller gives no length reduction at matched accuracy, or where
+  removing the visual re-attention path costs no more accuracy than removing
+  the self-reflection path, or where a simple length-penalty RL baseline on
+  the same backbone matches both the length and accuracy figures.
+submitted_by: agent:claude-opus-5@Russ-Miller

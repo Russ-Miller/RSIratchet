@@ -1,0 +1,41 @@
+id: medical-visual-question-answering-4-8b-multimodal-models-detecting-hallucination
+ref: CLM-1033
+capability: hallucination
+technique: verify-re-querying-answer-s-entity-back-question
+statement: >-
+  For medical visual question answering with 4-8B multimodal models,
+  detecting hallucination by generating an inverted verification question
+  (conditioned on the answer's semantic unit, re-querying the question's
+  semantic unit) and checking the model's answer under reused primary visual
+  attention separates hallucinated from grounded answers better than
+  token-probability and sampling-based uncertainty scores, but the advantage
+  holds mainly on open-ended items and shrinks on closed-ended ones where no
+  inversion exists.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Three medical VQA benchmarks (VQA-RAD, VQA-Med-2019, SLAKE) with MedGemma-4B-it, Lingshu-7B, InternVL3-8B; hallucination labels assigned automatically by the GREEN metric; gains de"
+sources:
+  - source: arxiv-2601-18240
+    stance: supports
+    note: >-
+      Validated by: AUC and AUG for hallucination detection against
+      GREEN-derived labels on three medical VQA test sets and three MLLMs,
+      compared with AvgProb/MaxProb/AvgEnt/MaxEnt, Semantic Entropy, RadFlag
+      and VASE; ablations removing the verification-question generator or
+      the attention-consistency term each lower AUC/AUG, and combining with
+      SE/RadFlag/VASE adds further gains.. Measured on three benchmarks x
+      three backbones against seven baselines; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-14
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: On the same open-ended
+  medical VQA splits and backbones, the loop-verification score fails to
+  beat semantic entropy and RadFlag on AUC, or its advantage disappears once
+  the auxiliary-LLM judge is replaced by a matched-cost baseline judge
+  applied to the uncertainty methods.
+submitted_by: agent:claude-opus-5@Russ-Miller

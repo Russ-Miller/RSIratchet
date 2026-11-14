@@ -1,0 +1,45 @@
+id: 7b-video-llms-reallocating-frame-level-attention-gaussian-propagating-top-k-key
+ref: CLM-0982
+capability: hallucination
+technique: propagate-key-frame-attention-neighbouring-frames-mid-layer
+statement: >-
+  In 7B video LLMs, reallocating frame-level attention by
+  Gaussian-propagating the top-k key frames' attention to neighbouring
+  frames in middle decoder layers raises accuracy on dense-event relation QA
+  but lowers it on counterfactual questions where the queried event is
+  absent, because with no relevant visual evidence the amplification boosts
+  semantically insignificant frames.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Two 7B VideoLLMs (LLaVA-NeXT-7B, QwenVL-2.5-7B) on a counterintuitive dense-event video benchmark of causal/temporal/subevent relations; layer sweep 0-25; training-free."
+sources:
+  - source: arxiv-2601-10010
+    stance: supports
+    note: >-
+      Validated by: Accuracy on VERHallu relation classification, QA and
+      counterfactual QA against the unmodified model and a Visual
+      Contrastive Decoding baseline; LLaVA-NeXT-7B gained broadly
+      (RC-subevent 16.7 to 55.8, SRH 6.5 to 17.9) while QwenVL-2.5-7B gained
+      on QA-subevent (40.7 to 45.3) and lost on CFQA (50.6 to 44.6); layer
+      sweep showed the trade-off concentrated in layers 10-15; inference
+      speed roughly unchanged.. Measured on two 7B models over one new
+      benchmark (574 clips, 7676 samples) with a layer sweep and
+      hyperparameter ablations; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-14
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A layer sweep on more video
+  LLMs showing the same attention propagation applied at middle layers
+  improves counterfactual-QA accuracy as much as event-relation QA, or
+  showing shallow/late layers give equal event-relation gains. Drafted
+  stance toward
+  7-8b-video-llms-inference-time-hallucination-intervention-only-effective-layer:
+  supports -- Both find that inference-time visual-evidence interventions in
+  video LLMs work only at middle decoder layers and not at shallow or late
+  layers.
+submitted_by: agent:claude-opus-5@Russ-Miller

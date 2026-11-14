@@ -1,0 +1,40 @@
+id: adapting-small-open-model-llama3-8b-small-specialized-corpus-no
+ref: CLM-0989
+capability: domain-knowledge
+technique: generate-fine-tuning-questions-maximize-weak-strong-answer
+statement: >-
+  When adapting a small open model (LLaMA3-8B) to a small specialized corpus
+  with no labelled data, generating synthetic fine-tuning questions by
+  iteratively refining them to maximize disagreement between the target
+  model and a corpus-grounded strong model yields higher domain-task
+  accuracy than entity-extraction, paraphrase or instruction-reformulation
+  synthesis, at a fraction of the training tokens.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Three CUAD contracts within LegalBench (491 questions, 36 tasks), LLaMA3-8B target, no retrieval or tools at evaluation; a strong LLM with the full document in context supplies bot"
+sources:
+  - source: arxiv-2602-18137
+    stance: supports
+    note: >-
+      Validated by: Accuracy on three contract-specific LegalBench subsets:
+      82.7% average vs 69.5% base model, 79.6% EntiGraph (6.7M tokens vs
+      96k), 75.8% non-adversarial LLM-written questions, 71.9% paraphrase,
+      75.0% Knowledge-Instruct; a sensitivity analysis varying refinement
+      iterations shows accuracy rising with more steps.. Measured on one
+      domain (legal contracts), one target model, three documents and 491
+      questions, against four synthesis baselines at stated token counts.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-14
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Matching the token budget
+  or question count across methods, or replacing the disagreement objective
+  with a random or non-adversarial refinement loop of equal length, closes
+  the accuracy gap — showing the gain comes from extra question-generation
+  compute or the expert answers rather than from targeting disagreement.
+submitted_by: agent:claude-opus-5@Russ-Miller

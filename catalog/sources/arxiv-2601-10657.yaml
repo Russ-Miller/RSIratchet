@@ -1,0 +1,74 @@
+id: arxiv-2601-10657
+ref: SRC-1069
+kind: paper
+title: "PACEvolve: Enabling Progress-Aware Consistent Evolution"
+authors:
+  - Minghao Yan
+  - Bo Peng
+  - Benjamin Coleman
+  - Ziqi Chen
+  - Zhouhang Xie
+  - Shuo Chen
+year: 2026
+date: 2026-01-15
+arxiv_id: "2601.10657"
+url: https://arxiv.org/abs/2601.10657
+tags:
+  - ingested
+summary: Self-evolving agents powered by Large Language Models (LLMs) have
+  emerged as a promising direction across diverse domains, including code
+  optimization and scientific discovery, yet their core failure modes remain
+  underexplored. Through a comprehensive empirical study, we identify that the
+  model's reasoning becomes anchored to the local context of current
+  hypotheses, overemphasizing low-level details while neglecting the broader
+  search landscape. As a result, such agents become prone to context pollution
+  and mode collapse, repeatedly revisiting flawed hypotheses and converging on
+  suboptimal sol
+notes: "Filed as a source on harness-self-improvement from the classifier's
+  judgement that the paper is about it (improves, medium): PACEvolve proposes
+  memory/search governance mechanisms (context pruning, backtracking,
+  collaborative evolution) that let a self-evolving agent avoid context
+  pollution and mode collapse, reporting state-of-the-art results. No claim
+  has been drafted from it yet."
+ingested_at: 2026-11-14
+brief: >-
+  LLM-driven evolutionary search fails mostly for context reasons, not
+  reasoning reasons: histories saturate with failed attempts, the model
+  anchors to local hypotheses, and runs that do not find a good solution in
+  the first few iterations rarely recover. PACEvolve attacks this with
+  hierarchical context management (pruning and summarizing idea/hypothesis
+  memory, with a permanent record of failures), momentum-based backtracking
+  that reverts to an earlier state when a scale-invariant progress momentum
+  drops below threshold, and a self-adaptive multi-island policy that chooses
+  between backtracking and crossover based on absolute progress.
+
+
+  Setup: LLM-SR nonlinear oscillator symbolic regression, 16 KernelBench
+  kernels on 1 A100 40GB, and Modded NanoGPT on 8 H100s. 1000 iterations per
+  run, 10 repeats, Gemini 2.5 Pro as backbone (Gemini 3 Pro for NanoGPT),
+  against ShinkaEvolve, OpenEvolve, CodeEvolve, LLM-SR, uDSR.
+
+
+  On LLM-SR, PACEvolve-Multi reaches -8.24 best and -7.64 P75 log10 NMSE
+  versus -7.26 and -5.92 for the best baselines. On KernelBench it beats the
+  leaderboard kernel in all 16 cases; Multi beats Single in 13/16, ties or
+  beats ShinkaEvolve and CodeEvolve in 14/16, OpenEvolve in 15/16. It loses to
+  PyTorch on MatMul (0.97x). On Modded NanoGPT v40 it cuts 142.8s to 140.2s.
+
+
+  A cumulative ablation over the same 10-run distribution isolates each
+  component: context management lifts mean and best but not worst,
+  backtracking fixes the worst at slight cost to the best, crossover recovers
+  both. That is a clean attribution, but on 1 task, 1 model family, and
+  iteration-matched rather than token-matched budgets.
+
+
+  Boundaries: gains on heavily optimized dense matmul are absent, and the
+  NanoGPT result is a single run of incremental wins, not a distribution.
+
+
+  If you build evolutionary agent scaffolds, this says memory hygiene and
+  stagnation detection, not better prompts, are where the headroom is.
+brief_generated_at: 2026-11-14
+brief_model: claude-opus-5
+brief_source: full-text

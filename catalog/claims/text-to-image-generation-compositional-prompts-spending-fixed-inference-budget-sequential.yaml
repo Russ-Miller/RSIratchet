@@ -1,0 +1,39 @@
+id: text-to-image-generation-compositional-prompts-spending-fixed-inference-budget-sequential
+ref: CLM-1081
+capability: self-repair
+technique: refine-images-sequentially-under-vlm-critic-instead-resampling
+statement: >-
+  For text-to-image generation from compositional prompts, spending a fixed
+  inference budget on sequential critic-guided edits (a VLM compares image
+  to prompt, emits a sub-prompt plus continue/backtrack/restart action, an
+  editor applies it) beats spending the same budget on independent parallel
+  samples scored by the same verifier, and the margin widens as the number
+  of concept bindings in the prompt grows.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Current strong T2I generators with a capable image editor and a strong VLM critic; gains concentrate on spatial, 3D-spatial, numeracy, shape and style constraints and are near zero"
+sources:
+  - source: arxiv-2601-15286
+    stance: supports
+    note: >-
+      Validated by: Compute-matched comparison against parallel sampling
+      with the same verifier on ConceptMix (+16.9 all-correct at k=7 for
+      Qwen-Image), T2I-CompBench 3D-Spatial (+13.8), TIIF-Bench, and Visual
+      Jenga full solve rate (64.29% to 76.79%); human preference 58.7% vs
+      41.3%; budget allocation ablation across B=1..16 and an action-space
+      ablation.. Measured on three T2I families across four benchmarks with
+      a compute-matched parallel baseline and an in-loop critic weaker than
+      the benchmark evaluator; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-14
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: At matched total
+  generator/editor calls, parallel sampling with a verifier matching or
+  beating iterative refinement on high-binding compositional prompts, or the
+  iterative advantage failing to grow with the number of concept bindings.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,40 @@
+id: llm-circuit-schematic-generation-natural-language-prompts-replacing-full-library-in-context-prompting-embedding-based
+ref: CLM-1025
+capability: hallucination
+technique: retrieval-augmented-generation
+statement: >-
+  For LLM circuit-schematic generation from natural-language prompts,
+  replacing full-library-in-context prompting with embedding-based retrieval
+  of only the needed component pinouts plus an explicit chain-of-thought
+  planning agent raises rule-checked pass rates by only a few points (and
+  can lower them for a small distilled model), while cutting prompt tokens
+  roughly five-fold, so the grounding's main measured benefit is context
+  efficiency rather than correctness.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "100 embedded-systems prompts, a ~70-component curated library that fits in context, five frontier LLMs at temperature 0, pass defined as zero fatal and zero major errors from a cus"
+sources:
+  - source: arxiv-2601-04505
+    stance: supports
+    note: >-
+      Measured, single paper. 100 prompts x 3 runs x 4 models (Llama
+      excluded from the baseline because the full library overflowed its
+      context, which is itself part of the scalability argument). The
+      comparison isolates retrieval+CoT against full-context prompting but
+      the library is small enough to fit in context, so it does not test the
+      authors' scaling claim; pass criterion comes from their own ERC
+      engine, validated against three experts at Fleiss kappa 0.82 overall.
+contested: false
+status: pending-review
+last_checked_at: 2026-11-14
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A matched comparison on
+  the same prompts and library showing retrieval-plus-CoT grounding gives
+  large pass-rate gains (say >20 points) over full-library-in-context
+  prompting, or showing the full-context baseline hallucinates components or
+  pin names at substantial rates while the retrieval pipeline does not.
+submitted_by: agent:claude-opus-5@Russ-Miller

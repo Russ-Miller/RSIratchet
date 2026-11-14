@@ -1,0 +1,52 @@
+arxiv_id: "2601.17789"
+title: Neuro-Symbolic Verification on Instruction Following of LLMs
+url: https://doi.org/10.48550/arxiv.2601.17789
+drafted_at: 2026-11-13
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: error-detection
+statement: For verifying whether an LLM output satisfies a multi-constraint
+  instruction, decomposing the instruction into individual constraints,
+  routing lexical/format ones to generated code checkers and topic/tone ones
+  to LLM judging, then composing verdicts with an SMT solver, detects
+  violations more accurately than LLM-as-judge on the whole instruction — but
+  only with strong backbones, since a small model that misclassifies
+  constraint types scores below the plain judge.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: English writing tasks with 2-10 composed constraints (word
+  count, keyword inclusion, structure, writing topic, writing tone); requires
+  a backbone able to extract constraints, classify them, and write checker
+  code — fails on GPT-4o-mini.
+technique: ""
+proposed_technique: "Check each instruction constraint separately: code for
+  logic, LLM for semantics"
+technique_summary: Translates an instruction into a first-order logic formula
+  over constraints, generates a Python checker per logic constraint and a
+  targeted prompt per semantic constraint, and solves the composed formula
+  with Z3 to return a verdict plus the violated constraint.
+technique_kind: process
+technique_validated_by: On VifBench (820 labeled <instruction, output, result>
+  tuples, 47.7% sat), F1 94.8% vs 69.1% for a two-shot LLM-as-judge with
+  GPT-4.1, with gains of 7.0-25.7 F1 points across five models; ablations show
+  removing per-constraint code checkers (Nsvif-Neu) drops F1 to 84.0% and
+  prompt-optimized judges (GEPA-CoT 67.1%, Conv-CoT 78.9%) stay below; false
+  positives fall from 42.3% to 2.8%. With GPT-4o-mini the method scores 37.3%
+  F1, below its 66.6% baseline, because constraints are misclassified in 508
+  of 820 instructions.
+stance_on_existing: supports
+related_claim_id: generated-checklists-make-instruction-requirements-individually-checkable
+stance_reason: Decomposing an instruction into separately checkable
+  constraints beats holistic judging, and the margin is on multi-constraint
+  instructions.
+falsifier: A prompted LLM judge matching or beating the decomposed
+  constraint-solving verifier on multi-constraint instruction-following
+  verification at equal backbone, or ablation showing the per-constraint code
+  checkers contribute nothing beyond the decomposition itself.
+evidence_note: Measured on one self-built benchmark by the same authors, five
+  backbones plus three judge baselines and two ablations; the benchmark's
+  instructions are synthesized from the same constraint taxonomy the verifier
+  targets, so coverage of real-world instruction shapes is untested.
+  Feedback-loop claim rests on nine hand-picked instructions.
+confidence: medium

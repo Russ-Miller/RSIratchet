@@ -1,0 +1,42 @@
+id: 7-13b-open-vision-language-models-editing-hidden-states-suppress-language-prior
+ref: CLM-0969
+capability: visual-grounding
+technique: edit-only-prior-orthogonal-components-only-gated
+statement: >-
+  In 7-13B open vision-language models, editing hidden states to suppress
+  language-prior components lowers object hallucination only if the edit is
+  skipped when visual certainty is already high: removing the per-token
+  certificate gate from an otherwise identical orthogonal-subspace edit
+  raises CHAIR_i from 4.18 to 7.70, worse than the unedited greedy baseline
+  (7.08).
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "LLaVA-1.5-7B captioning on 500 MSCOCO images; anchor layer 26, edit at final layer, subspace ranks r=8, q=5"
+sources:
+  - source: arxiv-2602-22727
+    stance: supports
+    note: >-
+      Validated by: POPE accuracy/F1 on LLaVA-1.5-7B/13B and Qwen-VL-Chat
+      against greedy, VCD, ICD, VAF, DeCo; CHAIR_i/CHAIR_s on MSCOCO against
+      Nullu, HALC, OPERA, LURE; MME subtask scores; tokens-per-second
+      throughput; component ablations (gating, orthogonal complement,
+      weighted vs uniform SVD, fixed strengths).. Measured: one ablation
+      table on LLaVA-1.5-7B over 500 MSCOCO images, CHAIR_i/CHAIR_s only,
+      three seeds reported for main results. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-14
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An ablation on the same
+  models showing the ungated variant matches or beats the gated one on CHAIR
+  and POPE, or that gating contributes less than the orthogonality
+  construction. Drafted stance toward
+  7b-vision-language-models-llava-1-5-7b-qwen-vl-chat-inference-time-hidden-state-steering:
+  supports -- Both find that unconditional per-step hidden-state
+  intervention degrades output while gating the same intervention on a
+  grounding signal lowers hallucination.
+submitted_by: agent:claude-opus-5@Russ-Miller

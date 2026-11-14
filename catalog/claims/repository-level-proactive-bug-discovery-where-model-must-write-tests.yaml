@@ -1,0 +1,42 @@
+id: repository-level-proactive-bug-discovery-where-model-must-write-tests
+ref: CLM-1050
+capability: code-generation
+technique: give-test-generator-repo-exploration-instead-pasted-dependencies
+statement: >-
+  On repository-level proactive bug discovery, where a model must write
+  tests that fail on the buggy commit and pass after the fix using only
+  documentation-derived intent, current models are weak (best 16.06%
+  Fail-to-Pass) and letting an agent explore the repository with
+  file-viewing tools beats pasting the entry function's full dependency
+  context into the prompt (GPT-5-mini 12.79% plain white-box vs 17.27% with
+  SWEAgent, 29.7% at pass@5).
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "2,389 test-generation tasks from 482 Python GitHub repos with >1,000 stars, documentation synthesized by DocAgent, no issue reports or defect signals shown; six to nine models eval"
+sources:
+  - source: arxiv-2602-10471
+    stance: supports
+    note: >-
+      Validated by: Fail-to-Pass rate on TestExplora-Lite (330 PRs) against
+      the same backbone given all dependencies in context: GPT-5-mini 12.79
+      -> 17.27 (SWEAgent) and 14.55 (TraeAgent); o4-mini 5.92 -> 9.42 and
+      12.16; head-pass rate also rose, with pass@5 reaching 29.7.. Measured
+      on a new benchmark the authors built; agent-vs-plain comparison covers
+      only two backbones and does not control token budget or number of
+      model calls, so part of the agent gain may be extra compute rather
+      than exploration. The 16.06% ceiling is Claude-Sonnet-4.5 plain
+      white-box on the Lite subset.
+contested: false
+status: pending-review
+last_checked_at: 2026-11-14
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A matched-budget
+  comparison where supplying full dependency context equals or beats agentic
+  exploration on Fail-to-Pass for the same backbones, or a model reaching
+  high F2P on documentation-only proactive test generation without
+  exploration.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,48 @@
+arxiv_id: "2601.15519"
+title: "TransportAgents: a multi-agents LLM framework for traffic accident
+  severity prediction"
+url: https://doi.org/10.48550/arxiv.2601.15519
+drafted_at: 2026-11-13
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: For crash-severity prediction from mixed structured-plus-narrative
+  injury records (CPSRMS, NEISS) with GPT-3.5-turbo, GPT-4o-mini or
+  LLaMA-3.3-70B backbones, splitting the record into conceptual categories,
+  scoring each with its own LLM agent, and fusing the score vector with a
+  supervised MLP beats k-shot, chain-of-thought and AutoGen prompting on the
+  same backbone, and beats a tabular MLP or ordered logit on macro-F1, though
+  ordered logit still wins on raw accuracy on the full NEISS set.
+kind: observation
+backing_strength: single-paper
+scope_condition: Two US injury-surveillance datasets filtered to
+  micromobility/transport crashes, four-level ordinal severity label, 3:1
+  train/test split, three 2023-2024-era backbones; MLP fusion is trained on
+  labelled data while agents are frozen.
+technique: ""
+proposed_technique: Fuse category-specific agent scores with a trained MLP
+technique_summary: Filter features, group them into conceptual categories,
+  have one LLM agent emit a severity score per category, and train a small MLP
+  to map the score vector to the final label.
+technique_kind: process
+technique_validated_by: Accuracy and macro-F1 against k-shot, CoT, AutoGen,
+  MLP-on-features, MLP+feature-selection and ordered logit on CPSRMS and NEISS
+  across three backbones; ten stratified 80/20 resplits (70.69% +/- 1.76 vs
+  63.22% CoT); ablations removing feature selection, category organization, or
+  individual agents; distributional comparison of predicted vs true severity.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched-budget single-agent baseline given the same filtered
+  features and a trained MLP on its own emitted scores matching the
+  multi-agent pipeline's accuracy and macro-F1, or the gain disappearing on
+  another crash dataset or newer backbone.
+evidence_note: Measured on two datasets with three backbones and ten resplits,
+  plus component ablations. But the comparison is not budget-matched (the
+  fused system trains an MLP on labels while prompting baselines are 10-shot
+  only), and the headline 'consistently outperforms' is contradicted by its
+  own tables where ordered logit beats it on NEISS-whole accuracy for two of
+  three backbones. NEISS results are partly on a rebalanced subset. No seed
+  variance on the LLM agents themselves.
+confidence: low

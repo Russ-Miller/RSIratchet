@@ -1,0 +1,40 @@
+id: crash-severity-prediction-mixed-structured-plus-narrative-injury-records-cpsrms-neiss-gpt-3
+ref: CLM-1000
+capability: multi-model-coordination
+technique: fuse-category-specific-agent-scores-trained-mlp
+statement: >-
+  For crash-severity prediction from mixed structured-plus-narrative injury
+  records (CPSRMS, NEISS) with GPT-3.5-turbo, GPT-4o-mini or LLaMA-3.3-70B
+  backbones, splitting the record into conceptual categories, scoring each
+  with its own LLM agent, and fusing the score vector with a supervised MLP
+  beats k-shot, chain-of-thought and AutoGen prompting on the same backbone,
+  and beats a tabular MLP or ordered logit on macro-F1, though ordered logit
+  still wins on raw accuracy on the full NEISS set.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Two US injury-surveillance datasets filtered to micromobility/transport crashes, four-level ordinal severity label, 3:1 train/test split, three 2023-2024-era backbones; MLP fusion "
+sources:
+  - source: arxiv-2601-15519
+    stance: supports
+    note: >-
+      Validated by: Accuracy and macro-F1 against k-shot, CoT, AutoGen,
+      MLP-on-features, MLP+feature-selection and ordered logit on CPSRMS and
+      NEISS across three backbones; ten stratified 80/20 resplits (70.69%
+      +/- 1.76 vs 63.22% CoT); ablations removing feature selection,
+      category organization, or individual agents; distributional comparison
+      of predicted vs true severity.. Measured on two datasets with three
+      backbones and ten resplits, plus component ablations. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-14
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A matched-budget
+  single-agent baseline given the same filtered features and a trained MLP
+  on its own emitted scores matching the multi-agent pipeline's accuracy and
+  macro-F1, or the gain disappearing on another crash dataset or newer
+  backbone.
+submitted_by: agent:claude-opus-5@Russ-Miller

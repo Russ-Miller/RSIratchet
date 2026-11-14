@@ -1,0 +1,48 @@
+id: code-llms-asked-complete-code-span-under-explicit-fine-grained
+ref: CLM-0996
+capability: procedure-following
+technique: fine-tune-synthesized-instruction-plus-completion-pairs
+statement: >-
+  When code LLMs are asked to complete a code span under an explicit
+  fine-grained instruction (implementation approach, or required scope such
+  as a line count or statement block), instruction adherence lags functional
+  correctness, and the gap is widest on scope/scale instructions:
+  open-source code models score near parity with proprietary models on
+  similarity-based completion benchmarks yet far below them on instruction
+  adherence, and most frontier chat models stay low on scale-control
+  adherence.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "In-file Python completion tasks derived from HumanEval and SAFIM (2,195 cases), 40+ open and proprietary models, adherence judged by an LLM judge for implementation instructions an"
+sources:
+  - source: arxiv-2601-15879
+    stance: supports
+    note: >-
+      Validated by: SFT on 200k synthesized pairs raised the 32B model's
+      average instruction-following rate from 22.8 to 66.6 on C3-Bench
+      (scale-control adherence 16.9 to 80.7) with conventional completion
+      benchmark scores reported as maintained; gains on the
+      implementation-control side were smaller and bounded by the base
+      model's pass@1. 10-gram decontamination against the benchmark was
+      applied; no matched-data-volume control on a different objective..
+      Measured across 40+ models on a purpose-built 2,195-case benchmark;
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-14
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Re-scoring the same
+  tasks with a different adherence judge or stricter structural checker
+  shows open-source code models matching proprietary models on instruction
+  adherence, or shows scale-control adherence comparable to
+  implementation-control adherence for frontier models. Drafted stance
+  toward
+  verifiable-instructions-such-length-format-constraints-strong-models:
+  supports -- The scale-control results show frontier models failing a large
+  share of mechanically verifiable span-length and block-type constraints,
+  in the code completion setting.
+submitted_by: agent:claude-opus-5@Russ-Miller

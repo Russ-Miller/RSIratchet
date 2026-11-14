@@ -1,0 +1,46 @@
+id: 7-8b-32b-vision-language-models-latent-steering-vector-built-difference
+ref: CLM-0970
+capability: visual-grounding
+technique: steer-along-visual-vector-orthogonalized-against-guessing-prior
+statement: >-
+  In 7-8B to 32B vision-language models, a latent steering vector built as
+  the difference between image-present and image-absent hidden states is
+  entangled with the model's ungrounded-guessing direction, so amplifying it
+  past moderate strength drives degeneration (repetition, empty output);
+  projecting it orthogonal to that prior direction and injecting it at a
+  single calibrated deep layer only when a cosine risk score crosses a
+  threshold lowers object-hallucination rates while leaving general
+  reasoning scores at or above the untouched model.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Training-free inference-time intervention on LLaVA-1.5/NeXT, Qwen2.5-VL 7B/32B, Qwen3-VL, InternVL3/3.5; vectors estimated from ~100 paired captions plus ~100 calibration images; n"
+sources:
+  - source: arxiv-2602-11824
+    stance: supports
+    note: >-
+      Validated by: POPE accuracy/recall/F1 and CHAIR_S/CHAIR_I against
+      greedy decoding, VCD, M3ID, ONLY, AGLA and VTI; utility checked on
+      MME, MM-Vet, MMMU-Pro. On Qwen2.5-VL CHAIR_S 31.00 to 25.00 with
+      MM-Vet 70.18 to 72.16, where VTI reached 9.00 CHAIR_S but dropped
+      MM-Vet to 56.38. Ablations: removing the threshold caused collapse on
+      LLaVA-1.5 and raised CHAIR_S on LLaVA-NeXT; shallow-layer injection
+      was both less effective and harmful to MM-Vet. Latency 0.025s per
+      token, equal to plain decoding.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-14
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Show that the raw
+  (non-orthogonalized) difference vector steered at the same layer with the
+  same gate reaches equal hallucination reduction without degeneration, or
+  that orthogonalization gives no advantage once intensity is tuned per
+  model. Drafted stance toward
+  7b-vision-language-models-llava-1-5-7b-qwen-vl-chat-inference-time-hidden-state-steering:
+  supports -- Removing the risk gate caused model collapse on LLaVA-1.5 and
+  worse CHAIR on LLaVA-NeXT, matching the claim that hidden-state steering
+  must be gated on a grounding signal.
+submitted_by: agent:claude-opus-5@Russ-Miller

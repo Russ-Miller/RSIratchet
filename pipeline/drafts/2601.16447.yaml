@@ -1,0 +1,47 @@
+arxiv_id: "2601.16447"
+title: "Mixing Expert Knowledge: Bring Human Thoughts Back To the Game of Go"
+url: https://doi.org/10.48550/arxiv.2601.16447
+drafted_at: 2026-11-13
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: domain-knowledge
+statement: For a specialized domain whose pretraining corpus is thin but whose
+  expert knowledge is available as structured engine output (Go next-move
+  prediction), outcome-reward RL applied directly to a general instruct or
+  reasoning-distilled model plateaus below beginner-level accuracy, while the
+  same RL started from a model fine-tuned on heuristically templated expert
+  data reaches professional-level accuracy.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Qwen2.5 7B/32B and R1-distilled 7B/32B on Go next-move
+  prediction scored against KataGo's top-10 candidate moves; expert labels
+  come from an external engine that can score any state.
+technique: ""
+proposed_technique: Cold-start on templated expert traces, then RL
+technique_summary: Convert engine annotations into step-structured
+  natural-language traces (identify player, analyse candidate moves,
+  summarise, emit structured answer), mix them with general long-CoT data for
+  supervised fine-tuning, then run GRPO with a tiered reward on move rank plus
+  win-rate accuracy.
+technique_kind: training
+technique_validated_by: "KataGo-Bench-1K prediction accuracy: 88.1% (7B) and
+  88.6% (32B) versus 34.3% for the best general model and 87.8% for
+  KataGo-HumanSL-9d; RL without cold start stayed below the 67.4% beginner
+  reference; replacing the heuristic template with direct next-move prediction
+  capped the 7B RL ceiling below 50%; general benchmarks (GPQA, MATH, AIME,
+  LiveCodeBench) held or improved."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Running the same GRPO on an instruct model with no cold start, or
+  with cold-start data lacking the structured template, reaching comparable
+  final accuracy on KataGo-Bench-1K.
+evidence_note: Measured on one domain (Go) with one benchmark and one
+  base-model family; ablations isolate the cold start and the template
+  separately, and a reward-design ablation is reported. Benchmark credits any
+  move inside KataGo's top-10 list, so 'professional-level' rests on an
+  engine-defined target rather than game outcomes; the headline win-rate
+  figure against human-mimicking engines is a separate, less controlled
+  comparison.
+confidence: medium

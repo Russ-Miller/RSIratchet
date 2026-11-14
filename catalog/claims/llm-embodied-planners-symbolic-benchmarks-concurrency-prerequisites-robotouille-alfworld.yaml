@@ -1,0 +1,43 @@
+id: llm-embodied-planners-symbolic-benchmarks-concurrency-prerequisites-robotouille-alfworld
+ref: CLM-1028
+capability: planning
+technique: keep-agent-state-two-tier-scene-transition-graph
+statement: >-
+  For LLM embodied planners on symbolic benchmarks with concurrency and
+  prerequisites (Robotouille, ALFWorld), replacing the appended interaction
+  history with a persistently updated scene graph nested in an action-linked
+  state-transition graph raises Pass@1 and holds it stable under injected
+  observation noise, while history-appending planners (ReAct, ReCAP) lose
+  5-12 points as noise is injected every 5-10 steps.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Symbolic/text embodied benchmarks where observations can be parsed deterministically into entities and relations; Qwen3-235B, DeepSeek-R1 and Gemini-2.5-Flash backbones; noise inje"
+sources:
+  - source: arxiv-2601-21841
+    stance: supports
+    note: >-
+      Validated by: Pass@1 on Robotouille Synchronous/Asynchronous and
+      ALFWorld against ReCAP, ReAct, ExpeL and CoT with matched system
+      prompts (up to +19/+37/+15 points); noise ablation at 0, 1-per-10-step
+      and 1-per-5-step injection rates; per-step prefill token counts (12k
+      vs 41k vs 57k) and FLOPs.. Measured on three benchmarks across five
+      backbones with Pass@1, step counts, prefill tokens and a noise sweep;
+      baselines were given the same system prompt. The noise comparison is
+      the cleanest isolation. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-14
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An evaluation on the
+  same benchmarks where a history-appending agent with matched prompt and
+  backbone matches the graph-state agent's Pass@1 and shows no larger drop
+  under the same injected observation noise. Drafted stance toward
+  single-agent-procedural-tasks-where-relevant-state-fits-fixed-schema:
+  supports -- Both find that rewriting a structured state each step, instead
+  of appending the transcript, holds accuracy as the horizon grows while
+  history-appending runtimes degrade.
+submitted_by: agent:claude-opus-5@Russ-Miller

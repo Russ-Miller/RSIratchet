@@ -1,0 +1,43 @@
+arxiv_id: "2602.15864"
+title: "ReasonNavi: Human-Inspired Global Map Reasoning for Zero-Shot Embodied
+  Navigation"
+url: https://doi.org/10.48550/arxiv.2602.15864
+drafted_at: 2026-11-13
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: For zero-shot MLLM-driven indoor navigation over a top-down map,
+  asking the model to regress a continuous goal coordinate is far worse than
+  having it pick among pre-sampled discrete navigable nodes, and narrowing the
+  choice hierarchically (first a segmented room, then a node inside it) beats
+  a single selection over all global nodes.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Habitat HM3D object-goal navigation, a pre-built 2D top-down
+  map, Poisson-disk-sampled candidate nodes, deterministic A*/VFH* local
+  execution, Seed-1.6-Thinking as the reasoning model.
+technique: ""
+proposed_technique: Pick a room, then a node, instead of predicting coordinates
+technique_summary: Discretize a top-down map into segmented rooms and
+  Poisson-disk-sampled navigable nodes, then query the MLLM twice — first to
+  choose the target room, then the node within it — and hand that waypoint to
+  a deterministic planner.
+technique_kind: prompting
+technique_validated_by: "Ablation on HM3D ObjNav success rate and SPL: direct
+  coordinate prediction 12.3 SR / 6.13 SPL, single-stage global node selection
+  44.5 / 23.1, two-stage room-then-node 55.1 / 29.6, same backbone
+  throughout."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An MLLM navigation system where direct continuous-coordinate goal
+  prediction matches or beats discrete node selection on success rate and SPL
+  under the same map and local planner, or where flat global node selection
+  matches the hierarchical version.
+evidence_note: Measured on one benchmark (HM3D ObjNav) with one reasoning
+  model; the three-arm ablation holds the local planner and verification
+  fixed, so it isolates the selection interface. Headline comparisons against
+  prior navigation methods are not controlled for the pre-built global map,
+  which baselines do not get.
+confidence: medium

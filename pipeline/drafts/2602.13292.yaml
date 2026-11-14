@@ -1,0 +1,50 @@
+arxiv_id: "2602.13292"
+title: "Mirror: A Multi-Agent System for AI-Assisted Ethics Review"
+url: https://doi.org/10.48550/arxiv.2602.13292
+drafted_at: 2026-11-12
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: "For rule-based expedited ethics review of research dossiers,
+  grounding the assessment in a scenario-partitioned executable rule graph
+  with per-rule evidence retrieval raises violation-detection F1 far more than
+  switching to a larger general-purpose backbone: in zero-shot prompting all
+  tested models score F1 0.15-0.23, while the same models inside the
+  rule-grounded pipeline reach 0.58-0.65, and an 8B ethics-fine-tuned model
+  inside it reaches 0.84."
+kind: observation
+backing_strength: single-paper
+scope_condition: 100 de-identified real-world ethics dossiers,
+  expert-annotated violated rules; Chinese life-science review context;
+  baselines DeepSeek-V3, GPT-4.1, Qwen3-8B
+technique: ""
+proposed_technique: Match a scenario-partitioned rule graph, then check each
+  rule against retrieved evidence
+technique_summary: Regulatory texts are canonicalized into (condition,
+  subject, deontic word, action) quadruples organized into scenario-specific
+  rule subgraphs; a submission is matched to a scenario and its regulated
+  subjects, every associated rule is retained without pruning, and each rule
+  is judged separately against retrieved and reranked evidence spans from the
+  dossier.
+technique_kind: retrieval
+technique_validated_by: Expert-annotated recall/precision/F1 and a
+  professionalism rating on 100 real dossiers, compared against the same
+  models prompted zero-shot on the full dossier.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A zero-shot or plain-RAG baseline on the same 100 dossiers reaching
+  comparable F1 to the rule-graph pipeline with the same backbone, or the
+  pipeline's gain disappearing when recall-oriented expert annotation is
+  replaced by an independent label set.
+evidence_note: Measured on one 100-dossier benchmark with expert labels; the
+  pipeline-vs-zero-shot contrast is run across three backbones, which isolates
+  the harness from model identity, but the best cell also changes the backbone
+  (ethics-fine-tuned 8B), so harness and domain fine-tuning are not separated
+  at the top score. No-pruning rule matching biases toward recall, which the
+  paper's metric weights. Committee-review mode is only two qualitative cases,
+  not covered by this claim.
+confidence: medium
+problems:
+  - "figures not in the source: 0.58"
