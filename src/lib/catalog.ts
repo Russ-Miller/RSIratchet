@@ -109,7 +109,7 @@ export interface Heuristic {
    *  the heuristic rename and stays, same as CLM/TEC/SRC are opaque prefixes
    *  already decoupled from their display word. */
   ref: string;
-  id: string; label: string; aliases?: string[]; statement: string; origin: string; transfer: string;
+  id: string; label: string; adage?: string; aliases?: string[]; statement: string; origin: string; transfer: string;
   /** borrowed: imported from outside, its own origin and author. distilled:
    *  synthesized bottom-up from this catalog's own claims, no eponym. */
   provenance: HeuristicProvenance;

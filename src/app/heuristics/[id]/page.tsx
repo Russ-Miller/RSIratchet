@@ -43,7 +43,7 @@ export default async function HeuristicPage({ params }: PageProps<"/heuristics/[
         <div className="text-sm text-neutral-500"><code className="font-mono">{a.id}</code> <RefTag refId={a.ref} title={a.label} />{a.status === "retired" ? " · retired" : ""}{a.provenance === "distilled" ? " · distilled here" : ""}{` · ${a.form === "prescriptive" ? "prescriptive: says what to do" : "descriptive: says how things behave"}`}</div>
         <h1 className="text-3xl font-semibold tracking-tight">{a.label}</h1>
         <p className="text-lg text-neutral-700 dark:text-neutral-300">&ldquo;{a.statement}&rdquo;</p>
-        {a.aliases?.length ? <p className="text-sm text-neutral-500">Also: {a.aliases.join(" · ")}</p> : null}
+        {a.adage && <p className="text-xs text-neutral-500">Adage: {a.adage}</p>}
       </header>
 
       {application && <section className="application-note"><p className="eyebrow">In practice · editorial interpretation</p><h2>{application.title}</h2><p>{application.guidance}</p></section>}
@@ -51,6 +51,7 @@ export default async function HeuristicPage({ params }: PageProps<"/heuristics/[
       <section className="text-sm">
         <h2 className="mb-1 font-semibold">Origin</h2>
         <p className="text-neutral-700 dark:text-neutral-300">{a.origin}</p>
+        {a.aliases?.length ? <p className="mt-1 text-xs text-neutral-500">Also known as: {a.aliases.join(" · ")}</p> : null}
         {a.sources?.length ? (
           <p className="mt-1 text-xs text-neutral-500">
             Stated in: {a.sources.map((id, i) => (

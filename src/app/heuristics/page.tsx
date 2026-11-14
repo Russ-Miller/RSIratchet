@@ -41,12 +41,13 @@ export default function HeuristicsPage() {
           return (
             <li key={a.id} data-tags={heuristicTags(a)}
               data-vec={vecAttr("a", a.id)}
-              data-search={`${a.ref} ${a.label} ${a.statement} ${a.id} ${(a.aliases ?? []).join(" ")} ${a.origin} ${application?.title ?? ""} ${application?.guidance ?? ""}`.toLowerCase()}
+              data-search={`${a.ref} ${a.label} ${a.adage ?? ""} ${a.statement} ${a.id} ${(a.aliases ?? []).join(" ")} ${a.origin} ${application?.title ?? ""} ${application?.guidance ?? ""}`.toLowerCase()}
               className="guidance-card">
               <div className="card-top"><span className="eyebrow">{a.provenance === "distilled" ? "Distilled here" : "Borrowed"} · {a.form === "prescriptive" ? "says what to do" : "says how things behave"}</span><span className="status-chip">{HEURISTIC_STANDING_LABEL[st]}</span></div>
-              <Link href={`/heuristics/${a.id}`}><h2>{application?.title ?? a.label}</h2></Link>
+              <Link href={`/heuristics/${a.id}`}><h2>{a.label}</h2></Link>
               <p>{application?.guidance ?? a.statement}</p>
-              <div className="card-bottom"><span>{application ? `${a.label} · ` : ""}{n} linked claim{n === 1 ? "" : "s"}</span><Link aria-label={`Read evidence for ${a.label}`} href={`/heuristics/${a.id}`}>↗</Link></div>
+              {a.adage && <p className="mt-2 text-xs text-neutral-500">Adage: {a.adage}</p>}
+              <div className="card-bottom"><span>{n} linked claim{n === 1 ? "" : "s"}</span><Link aria-label={`Read evidence for ${a.label}`} href={`/heuristics/${a.id}`}>↗</Link></div>
             </li>
           );
         })}

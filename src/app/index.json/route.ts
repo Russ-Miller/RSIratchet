@@ -35,7 +35,7 @@ export function GET() {
     url: `${SITE}/sources/${s.id}`,
   }));
   const heuristics = getHeuristics().map((a) => ({
-    ref: a.ref, id: a.id, label: a.label, statement: a.statement, provenance: a.provenance, form: a.form, standing: heuristicStanding(a),
+    ref: a.ref, id: a.id, label: a.label, adage: a.adage ?? null, statement: a.statement, provenance: a.provenance, form: a.form, standing: heuristicStanding(a),
     counts: { evidence: (a.evidence ?? []).length }, url: `${SITE}/heuristics/${a.id}`,
   }));
   return NextResponse.json({

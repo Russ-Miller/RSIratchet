@@ -622,7 +622,10 @@ rather than a single agent's memory. Fields: `statement`, `origin`,
 mechanism a distilled rule rests on), `provenance`, `form` (`descriptive`: how
 systems behave, the advice inferred in `transfer`; `prescriptive`: what to
 do, so the evidence tests whether doing it pays), and `evidence` — claims
-in this catalog with a verdict of `holds`, `breaks` or `narrows`. Standing is
+in this catalog with a verdict of `holds`, `breaks` or `narrows`. `label` and
+`statement` lead with the practical heuristic. An optional `adage` records a
+familiar law, proverb, or maxim when it adds useful context; it is shown as
+secondary attribution and is not required on every heuristic. Standing is
 computed from reviewed claims only. The catalog values breaks over holds: a
 break is a finding about how models differ from people. Renamed from
 "Adages" 2026-10-20; the `ADG` ref prefix and route redirects from `/adages`
