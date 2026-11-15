@@ -1,75 +1,81 @@
 # Consolidated capability candidates. Suggestions, not capabilities.
-generated_at: 2026-11-06
-from_raw_proposals: 24
+generated_at: 2026-11-14
+from_raw_proposals: 29
 recommended:
-  - id: offensive-security
-    label: "Finding and exploiting vulnerabilities in real systems"
-    scope_note: "Covers agentic vulnerability discovery, exploit construction, and penetration testing against running targets; excludes writing secure code or spotting a bug in a given snippet."
+  - id: code-comprehension
+    label: "Understanding what unfamiliar code does"
+    scope_note: "Covers tracing execution, predicting outputs, judging behavioral equivalence, and recovering semantics from decompiled binaries; excludes writing or fixing code."
+    paper_count: 3
+    merged_from: [code-execution-semantics, code-comprehension, binary-reverse-engineering]
+    note: "Three papers converge on reading/simulating code as separable from generating or debugging it."
+  - id: spatial-reasoning
+    label: "Reasoning about 3D space and physical scale"
+    scope_note: "Covers metric distances, depth, relative position, viewpoint change and real-world size/severity estimates from visual input; excludes object presence and video temporal dynamics."
     paper_count: 2
-    merged_from: [offensive-security, offensive-security-exploitation]
-    note: "Two independent proposals and a clear complement to the existing defensive secure-coding and debugging entries."
-  - id: streaming-interaction
-    label: "Responding at the right moment while input is still arriving"
-    scope_note: "Covers acting on partially received streaming audio/video/text under latency constraints, including when to speak or stay silent; excludes offline understanding of a complete recording."
+    merged_from: [spatial-reasoning, visual-metric-estimation]
+    note: "A well-attested, distinct visual weakness that visual-grounding does not cover."
+  - id: answer-consistency-under-prompt-variation
+    label: "Giving the same answer when only the framing changes"
+    scope_note: "Covers stance, value and judgement shifts caused by prompt wording or prompt language on identical content; excludes accuracy gaps between high- and low-resource languages and excludes caving to a stated user opinion."
     paper_count: 2
-    merged_from: [streaming-response-timing, streaming-interaction]
-    note: "Converged proposals on a real-time axis that offline audio-understanding and video entries do not capture."
-  - id: spatial-and-imagery-reasoning
-    label: "Reasoning about and with spatial structure in images"
-    scope_note: "Covers geometry, scale, position and topology judgements plus internal manipulation of visual states such as mental rotation; excludes hallucinating absent objects and video temporal tracking."
+    merged_from: [value-profile-stability, cross-lingual-answer-consistency]
+    note: "Two papers hit the same invariance failure that multilingual-disparity and sycophancy both miss."
+  - id: active-experimentation
+    label: "Choosing what to test next to find the cause"
+    scope_note: "Covers model-guided selection of interventions, queries or candidates in iterative loops to identify causal structure or optimize an outcome; excludes static prediction and one-shot deduction."
     paper_count: 2
-    merged_from: [visual-spatial-reasoning, visual-imagery-reasoning]
-    note: "Recurring and distinct from visual-grounding, which is about faithfulness to a given image rather than spatial inference."
-  - id: privacy-leakage
-    label: "Leaking information it should not share"
-    scope_note: "Covers verbatim memorization and membership exposure of training data as well as violations of contextual norms about whose information may be told to whom; excludes general harmful-content refusal."
-    paper_count: 2
-    merged_from: [training-data-memorization, contextual-privacy]
-    note: "Privacy is a substantial safety axis with no existing entry, and the two proposals are two faces of the same failure."
-  - id: training-data-poisoning-robustness
-    label: "Resisting poisoned or backdoored training data"
-    scope_note: "Covers hijacking of behavior via corrupted fine-tuning data including transferred poisoned reasoning traces; excludes inference-time prompt injection and jailbreaks."
+    merged_from: [causal-diagnosis, experiment-design-and-active-selection]
+    note: "Converging evidence on a closed-loop inquiry skill not covered by planning or multi-step-reasoning."
+  - id: theory-of-mind
+    label: "Inferring others' beliefs and mental states"
+    scope_note: "Covers attributing beliefs, knowledge and perceptual access to other agents and updating them as evidence changes; excludes general commonsense reasoning."
     paper_count: 1
-    merged_from: [training-data-poisoning-robustness]
-    note: "Train-time attack surface is coherent and clearly outside the existing inference-time robustness entries."
-  - id: evaluation-awareness
-    label: "Behaving differently when it senses it is being tested"
-    scope_note: "Covers detecting evaluation, audit, or training contexts and concealing propensities that would appear in deployment; excludes ordinary deception toward a user and reward hacking against a scored metric."
+    merged_from: [theory-of-mind]
+    note: "Coherent, long-standing capability with no existing index entry, despite a single proposal here."
+  - id: clarification-seeking
+    label: "Asking for missing information before acting"
+    scope_note: "Covers recognizing underspecified requests and eliciting the needed detail instead of guessing; excludes general multi-turn tool-calling accuracy or saying \"I don't know\"."
     paper_count: 1
-    merged_from: [evaluation-awareness]
-    note: "Single paper here but a fast-growing safety concern that undercuts every other measurement in the index."
-  - id: world-model-simulation
-    label: "Predicting what an action will do before doing it"
-    scope_note: "Covers forecasting consequences of candidate actions in an environment, including rare high-impact outcomes; excludes ordering plan steps and actual execution."
+    merged_from: [clarification-seeking]
+    note: "Distinct from abstention and increasingly central to agentic deployment."
+  - id: citation-attribution
+    label: "Attaching precise, verbatim support to each claim"
+    scope_note: "Covers whether claims are cited, quotes are verbatim, and the cited span actually substantiates the claim; excludes whether the claim is true."
     paper_count: 1
-    merged_from: [environment-outcome-simulation]
-    note: "Distinct prerequisite for planning and embodied-control that neither entry currently isolates."
-  - id: temporal-reasoning
-    label: "Reasoning about time and elapsed duration"
-    scope_note: "Covers computing and applying dates, durations, and time-dependent constraints in text; excludes frame ordering in video, which the existing video entry covers."
+    merged_from: [citation-attribution]
+    note: "A concrete, measurable grounded-generation failure that retrieval-utilization and fact-verification leave out."
+  - id: output-diversity
+    label: "Covering the space of valid outputs instead of collapsing"
+    scope_note: "Covers mode collapse and breadth of valid generations across repeated samples; excludes factual correctness of any single output."
     paper_count: 1
-    merged_from: [temporal-reasoning]
-    note: "Broad, well-attested reasoning axis that the video-only entry leaves uncovered."
+    merged_from: [output-diversity]
+    note: "Well-documented generation-side failure with no existing entry, worth one slot."
 set_aside:
-  - id: user-personalization
-    note: "Plausible but thin, and in practice overlaps long-term-memory and procedure-following enough to wait for more evidence."
-  - id: language-control
-    note: "Narrow slice of multilingual-disparity rather than a separate capability."
-  - id: format-constrained-reasoning
-    note: "One-off framing of a prompting artifact, not a durable capability."
-  - id: problem-formalization
-    note: "Single paper and largely absorbed by multi-step-reasoning and formal-math."
-  - id: rule-extrapolation-ood
-    note: "One-off benchmark framing with no recurring evidence."
-  - id: data-analysis-workflow
-    note: "A task domain composed of existing entries (tool-use, code-generation, long-horizon-execution)."
-  - id: negation-understanding
-    note: "Already within logical-deduction-robustness."
-  - id: tool-availability-interference
-    note: "One-off effect sitting between tool-use and context-hygiene."
-  - id: code-semantics-over-identifiers
-    note: "A probe of code understanding rather than a separately trackable capability."
-  - id: chart-data-extraction
-    note: "Task domain under visual-grounding; not enough evidence to split out."
-  - id: image-geolocalization
-    note: "Too narrow a task to earn an index slot."
+  - id: fine-grained-visual-perception
+    note: "Single paper and largely a resolution/pipeline artifact rather than a durable capability axis."
+  - id: spatial-audio-reasoning
+    note: "Narrow one-off specialization of the existing audio-understanding entry."
+  - id: non-text-output-generation
+    note: "Real gap in the index but the two papers point at different things and evidence is too thin to name confidently yet."
+  - id: shortcut-reliance
+    note: "This is a diagnostic of benchmark quality, already within evaluation-validity."
+  - id: termination-judgment
+    note: "One-off framing that sits inside long-horizon-execution and state-tracking."
+  - id: incremental-evidence-integration
+    note: "Single paper and substantially overlapping with knowledge-updating and state-tracking."
+  - id: principal-conflict-of-interest
+    note: "Interesting but currently a single framing inside goal-conflict-safety."
+  - id: implicit-harm-detection
+    note: "A moderation task domain more than a capability, and one paper only."
+  - id: entity-free-fact-retrieval
+    note: "A narrow probe adjacent to factual-recall and reversal-curse."
+  - id: schema-design
+    note: "Task domain already spanned by software-architecture and formal-query-synthesis."
+  - id: negotiation
+    note: "One paper, and largely covered by persuasion plus multi-model-coordination."
+  - id: symbolic-and-numeric-proposal
+    note: "Reads as a technique for using models inside search loops rather than a capability to track."
+  - id: document-segmentation
+    note: "Narrow preprocessing task, not a capability axis."
+  - id: controlled-text-rewriting
+    note: "One-off framing of ordinary instruction following."

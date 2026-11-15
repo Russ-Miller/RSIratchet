@@ -1,0 +1,69 @@
+id: arxiv-2601-00659
+ref: SRC-1054
+kind: paper
+title: "CRoPS: A Training-Free Hallucination Mitigation Framework for
+  Vision-Language Models"
+authors:
+  - Neeraj Anand
+  - Samyak Jha
+  - Udbhav Bamba
+  - Rahul Rahaman
+year: 2026
+date: 2026-01-02
+arxiv_id: "2601.00659"
+url: https://arxiv.org/abs/2601.00659
+tags:
+  - ingested
+summary: "Despite the rapid success of Large Vision-Language Models (LVLMs), a
+  persistent challenge is their tendency to generate hallucinated content,
+  undermining reliability in real-world use. Existing training-free methods
+  address hallucinations but face two limitations: (i) they rely on narrow
+  assumptions about hallucination sources, and (ii) their effectiveness
+  declines toward the end of generation, where hallucinations are most likely
+  to occur. A common strategy is to build hallucinated models by completely or
+  partially removing visual tokens and contrasting them with the original
+  model. Yet, this"
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, high): The paper proposes CRoPS, a
+  training-free contrastive decoding framework that reduces hallucinated
+  content in vision-language model generations by ~20% CHAIR improvement. No
+  claim has been drafted from it yet."
+ingested_at: 2026-11-15
+brief: >-
+  Contrastive decoding for vision-language hallucination loses its grip late
+  in generation, because the model's dependence on visual tokens decays as
+  more text is generated. Removing important text tokens, not just visual
+  ones, restores the contrast signal.
+
+
+  CRoPS builds 2 hallucinated models: one that prunes high-attention visual
+  tokens (as in SID) and one that drops all visual tokens plus the most
+  important prompt and generated text tokens, retained according to an
+  exponential schedule. Both are subtracted from the original logits under a
+  generalized contrastive decoding rule, with the text-deficit weight growing
+  over time. Tested on LLaVA-1.5 7B/13B, LLaVA-NeXT 8B and Qwen2-VL 7B across
+  CHAIR on MS-COCO, AMBER, POPE, a GPT-4o-assisted benchmark, MME and
+  MathVista.
+
+
+  On CHAIR with LLaVA-1.5 7B, C_S falls from 57.0 (sampling) and 47.1 (M3ID)
+  to 39.5, C_I from 17.0 to 10.2, with recall 76.3. AMBER HAL drops from 44.3
+  to 29.3. POPE accuracy gains about 2% over the best baseline. MME rises 1601
+  to 1662.
+
+
+  Measured, with 3 seeds, 1 shared hyperparameter set across all backbones,
+  and ablations isolating the contribution: random text removal gives C_S 50.7
+  versus 43.2 for least-important removal, and swapping in M3ID as the second
+  model gives 45.1. Latency is 652s versus 215s for sampling.
+
+
+  Only training-free contrastive methods were compared; no training-based
+  baselines, and recall sometimes drops slightly.
+
+
+  If you use contrastive decoding, the late-generation decay is the failure
+  mode to target.
+brief_generated_at: 2026-11-15
+brief_model: claude-opus-5
+brief_source: full-text

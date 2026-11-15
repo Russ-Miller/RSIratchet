@@ -1,0 +1,40 @@
+id: 2-3b-vision-language-action-manipulation-policies-adding-expert-predicts-compressed-future
+ref: CLM-0957
+capability: embodied-control
+technique: predict-compressed-future-visual-latents-parallel-expert-feeding
+statement: >-
+  For 2-3B vision-language-action manipulation policies, adding an expert
+  that predicts compressed future visual latents and conditions the action
+  expert on them raises real-robot success most where the scene moves during
+  execution (conveyor sorting, picking in-motion objects) and least on
+  static tabletop tasks.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "2B-3B MoT VLA built on InternVL3/Qwen3-VL, pre-trained on 692M frames of mixed sim, real-robot and egocentric human video; 12 real-world bimanual tasks plus RoboTwin 2.0."
+sources:
+  - source: arxiv-2601-02456
+    stance: supports
+    note: >-
+      Validated by: Ablation removing the generation expert from
+      InternVLA-A1 (3B) with everything else held fixed: average success
+      over 12 real-world tasks fell from 77.0% to 57.6%, with the full model
+      better on 11 of 12 tasks and the largest drops on the two dynamic
+      tasks; against baselines, +4.4% over pi-0.5 on static tasks and +26.7%
+      on dynamic ones, 30 rollouts per task.. Measured on one model family
+      at two scales, 30 rollouts per task, with an explicit
+      generation-expert ablation and comparisons to pi-0, pi-0.5 and GR00T
+      N1.5. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-15
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An ablation on
+  comparable-scale VLA policies where removing the future-latent generation
+  expert costs as much or more on static tabletop tasks as on dynamic ones,
+  or where the gain on dynamic tasks disappears once pre-training data and
+  parameter count are matched.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,53 @@
+arxiv_id: "2603.01045"
+title: "Silo-Bench: A Scalable Environment for Evaluating Distributed
+  Coordination in Multi-Agent LLM Systems"
+url: https://doi.org/10.48550/arxiv.2603.01045
+drafted_at: 2026-11-09
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: "When global input is partitioned across N identical LLM agents
+  that must coordinate freely to compute an algorithmic answer, success falls
+  steadily as N grows from 2 to 100 and the loss comes from integration rather
+  than communication: agents form task-appropriate topologies and exchange
+  information, yet partial-correctness stays far above exact success (e.g. 88%
+  vs 62% on aggregation tasks), and on global-shuffle tasks at N>=50 success
+  reaches zero while a single agent given the whole input still succeeds."
+kind: observation
+backing_strength: single-paper
+scope_condition: 30 generated algorithmic tasks at three
+  communication-complexity levels, three protocols (P2P, broadcast, shared
+  file system), three open-weight models (DeepSeek-V3.1, GPT-OSS-120B,
+  Qwen3-Next-80B), homogeneous agents, 1,620 runs
+technique: ""
+proposed_technique: Measure partial correctness alongside exact success to
+  locate coordination failure
+technique_summary: Scores each agent's answer on a continuous per-task quality
+  measure as well as exact match, so the gap between the two isolates failure
+  at the reasoning-integration stage rather than the communication stage.
+technique_kind: process
+technique_validated_by: Applied across 1,620 runs; the PCS-SR gap (e.g. 88.0%
+  vs 62.0% on Level-I for DeepSeek, 8-16% vs 0% on Level-III at N>=50) is used
+  together with a rule-based plus two-annotator failure taxonomy (Cohen's
+  kappa 0.87) attributing failures to premature submission 37.2%, consensus
+  failure 29.9%, computation error 28.6%. Not validated against an independent
+  ground-truth labelling of where failure occurred.
+stance_on_existing: supports
+related_claim_id: splitting-task-across-several-agents-helps-long-horizon-tasks-whose
+stance_reason: Reports that coordination overhead on tightly coupled
+  global-shuffle tasks eliminates parallelization gains entirely, leaving the
+  team below a single agent with full data access.
+falsifier: A distributed-computation benchmark where multi-agent success
+  tracks the single-agent oracle as N grows, or where partial correctness and
+  exact success stay close so failures localize to information gathering
+  rather than integration.
+evidence_note: Measured on programmatically generated tasks with exact ground
+  truth, with an N=1 full-data oracle baseline, across 54 configurations.
+  Design isolates coordination cost from task difficulty (single-agent Level-I
+  to Level-III gap only ~15 points versus a much larger multi-agent gap).
+  Limited to three open-weight models, homogeneous agents, three protocols; no
+  hierarchical or gossip protocols, no closed models. The integration-stage
+  attribution rests on the PCS-SR gap plus annotated logs rather than a direct
+  intervention.
+confidence: medium

@@ -1,0 +1,52 @@
+arxiv_id: "2602.15222"
+title: Automatically Finding Reward Model Biases
+url: https://doi.org/10.48550/arxiv.2602.15222
+drafted_at: 2026-11-11
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: critique
+statement: A leading open-weight Bradley-Terry reward model
+  (Skywork-Reward-V2-Llama-3.1-8B) assigns higher scores to minimally
+  rewritten responses that add redundant whitespace between words or insert
+  plausible-sounding hallucinated details, on topic-specific synthetic prompt
+  distributions where a frontier LLM judge prefers the unmodified response.
+kind: observation
+backing_strength: single-paper
+scope_condition: One 8B Bradley-Terry reward model, synthetic prompts from 20
+  hand-written topics; biases are topic-specific (spacing bias appeared mainly
+  on conversational text-output prompts, not universally) and were measured on
+  counterfactual pairs produced by LLM rewriters.
+technique: ""
+proposed_technique: Evolve natural-language bias hypotheses against the RM-judge gap
+technique_summary: An LLM proposes candidate textual attributes from sampled
+  responses and their rewards, each attribute is scored by the average reward
+  difference over minimally rewritten counterfactual response pairs minus a
+  frontier judge's win rate, and the Pareto-best candidates are mutated over
+  several generations.
+technique_kind: process
+technique_validated_by: Recovered known format biases (bold preference, list
+  preference only on how-to prompts) consistent with prior work; 10 of 17
+  surfaced candidates stayed significant for both RM and judge on a held-out
+  test set under partial-conjunction testing at p=0.01 across three
+  independent rewriter models; recall checked by injecting three
+  regex-detectable biases with controlled signal-to-noise; depth-5/branch-4
+  evolution beat depth-3/branch-8 and best-of-N on a diversity-adjusted
+  bias-strength metric, but in a single run per configuration.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Re-running the counterfactual comparison on this reward model with
+  independently produced minimal rewrites (e.g. programmatic whitespace
+  insertion) shows no positive mean reward difference for redundant spacing or
+  hallucinated detail, or shows the difference is explained by correlated
+  edits the rewriters introduced.
+evidence_note: Measured as mean reward difference over counterfactual pairs
+  with 95% CIs and one-sided t-tests pooled over three rewriters;
+  hallucination attribute was hand-written after the pipeline surfaced a
+  related one, and scored RM strength 2.52 +/- 0.51 with judge win rate 0.156.
+  Only one reward model family was audited due to judge API cost, and the
+  design does not fully isolate the named attribute from other edits the
+  rewriters make, nor show the bias would be exploited by a policy trained
+  against this RM.
+confidence: medium

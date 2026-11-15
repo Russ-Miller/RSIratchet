@@ -1,0 +1,43 @@
+arxiv_id: "2603.05515"
+title: Enhancing Tool Calling in LLMs with the International Tool Calling Dataset
+url: https://doi.org/10.48550/arxiv.2603.05515
+drafted_at: 2026-11-13
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: tool-use
+statement: For open 3B-7B instruct and coder models doing tool calling on
+  non-English queries, fine-tuning on a multilingual corpus of real API tasks
+  yields larger gains than fine-tuning on the English subset of the same
+  corpus, so English-only tool-use training does not transfer across
+  languages.
+kind: observation
+backing_strength: single-paper
+scope_condition: Qwen2.5 3B-7B instruct/coder models, LoRA fine-tuning, tool
+  selection and invocation on a 1,750-task test set of real REST APIs across
+  29 languages and 40 countries; test APIs partly unseen in training.
+technique: ""
+proposed_technique: Fine-tune tool calling on multilingual real-API traces, not English only
+technique_summary: LoRA fine-tune an open model on tool-calling tasks whose
+  queries and APIs span many languages and regions, rather than on an
+  English-only subset of the same corpus.
+technique_kind: training
+technique_validated_by: "Fine-tuned Qwen2.5 3B/7B on the full ITC training set
+  vs its English-only subset, evaluated on non-English test queries:
+  full-multilingual training raised tool-selection recall by 42.0 points for
+  Qwen2.5-7B-Instruct vs 22.6 for English-only, and tool-invocation F1 by 34.6
+  vs 25.3 for Qwen2.5-Coder-7B; also tested out-of-domain on Nexus Raven,
+  Seal-Tools and Tool-Alpaca."
+stance_on_existing: supports
+related_claim_id: fine-tuning-large-corpus-real-api-call-traces-markedly-improves
+stance_reason: It replicates the finding that fine-tuning on real API-call
+  traces lifts tool-calling in open models, and adds the language condition.
+falsifier: A matched-token comparison in which English-only fine-tuning lifts
+  non-English tool selection and invocation as much as multilingual
+  fine-tuning on the same backbones.
+evidence_note: Measured on the authors' own benchmark with their own
+  fine-tuning; the EN subset is smaller than the full set, so the comparison
+  does not isolate language from data volume. Absolute gains (over 40 points)
+  are very large, consistent with the test set sharing format and style with
+  training data despite API-level splitting.
+confidence: medium
