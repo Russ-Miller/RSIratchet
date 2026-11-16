@@ -1,0 +1,48 @@
+arxiv_id: "2603.19464"
+title: Can LLMs Prove Robotic Path Planning Optimality? A Benchmark for
+  Research-Level Algorithm Verification
+url: https://doi.org/10.48550/arxiv.2603.19464
+drafted_at: 2026-11-07
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: domain-knowledge
+statement: On research-level approximation-ratio proofs for robotic
+  path-planning algorithms, frontier models given only the problem and
+  algorithm description produce valid proofs in at most about a quarter of
+  tasks, and supplying the task's own domain lemmas in context raises proof
+  validity more than generic chain-of-thought prompting or handing the model
+  the ground-truth approximation ratio.
+kind: observation
+backing_strength: single-paper
+scope_condition: 34 proof tasks extracted from 11 published robotics papers,
+  with problem and algorithm names anonymized to limit contamination; graded
+  by an LLM judge against the paper's proof with human verification; four
+  models (GPT 5.2, Gemini 3 Pro, Grok 4.1, Qwen3.5).
+technique: ""
+proposed_technique: Supply the proof's own lemmas in context, not a reasoning template
+technique_summary: Prepend the key lemmas invoked by the ground-truth proof to
+  the prompt alongside the problem and algorithm description, instead of (or
+  before) adding chain-of-thought instructions or the target approximation
+  ratio.
+technique_kind: prompting
+technique_validated_by: Success rate (final-answer and reasoning both >=7 on a
+  1-10 LLM-judge scale) rose from 8.82-26.47% with no context to 29.41-44.12%
+  with lemmas; the oracle-ratio-only setting reached 17.65-32.35%; adding CoT
+  alone did not raise scores and increased counted hallucination errors (216
+  to 244 in the no-context setting).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On a comparable set of research-level approximation-proof tasks,
+  models reaching high valid-proof rates from problem and algorithm
+  description alone, or chain-of-thought prompting matching or exceeding
+  in-context lemmas on reasoning-correctness and success rate.
+evidence_note: Measured on 34 tasks across 4 models and 8 prompt conditions,
+  scored 1-10 by GPT-5.2 as judge against the paper's own proof, with 4 human
+  annotators verifying extraction and judging quality. The judge is the same
+  model family as one evaluated system, which is a self-preference risk the
+  design does not isolate. 34 tasks is small, success thresholds are set by
+  the authors, and lemmas were hand-curated per task so the gain does not show
+  that retrievable lemmas would work.
+confidence: medium

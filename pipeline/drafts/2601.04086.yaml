@@ -1,0 +1,47 @@
+arxiv_id: "2601.04086"
+title: "KDCM: Reducing Hallucination in LLMs through Explicit Reasoning Structures"
+url: https://doi.org/10.48550/arxiv.2601.04086
+drafted_at: 2026-11-14
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: For chain-of-thought distillation pipelines on knowledge-graph QA
+  and math word problems, embedding executable knowledge-graph traversal code
+  inside the reasoning prompt so intermediate steps are constrained by
+  external structured knowledge raises HIT@1/3/5 over the same chain without
+  the code module, with the reported gains largest when prompts are ambiguous
+  or underspecified.
+kind: observation
+backing_strength: single-paper
+scope_condition: Reported on WebQSP, CWQ, GSM8K, MWP and Dr. SPIDER with GPT-4
+  and LLaMA-3.3 backbones; requires an available structured knowledge source
+  and a code representation of traversal, and adds inference cost.
+technique: ""
+proposed_technique: Embed executable knowledge-graph traversal code in the reasoning prompt
+technique_summary: Adds a programmable module to a chain-of-thought
+  distillation prompt that issues code-controlled traversals over an external
+  knowledge graph, so each intermediate reasoning step is constrained by
+  retrieved entities and relations rather than the model's internal knowledge
+  alone.
+technique_kind: prompting
+technique_validated_by: HIT@1/HIT@3/HIT@5 on WebQSP, CWQ, GSM8K, MWP and Dr.
+  SPIDER against the same distillation chain without the code module and
+  against KG-LLM-PR, LLM-SubKG-Sum, RAG and Self-Check; no error bars, no
+  per-dataset ablation of which component helps, and no human check of whether
+  gains are hallucination reduction rather than retrieval accuracy.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A replication where adding the code-guided knowledge-graph
+  traversal module to the same distillation chain leaves HIT@k unchanged, or
+  where matched-cost plain retrieval augmentation achieves the same gains,
+  would show the code guidance is not the active ingredient.
+evidence_note: Measured only in this paper, on five public benchmarks,
+  reporting HIT@k above 95% for the code-module variant versus roughly 80-86%
+  without it. The reported margins are implausibly uniform across very
+  different task types, there is no variance reporting, no component-level
+  ablation, and HIT@k on QA retrieval is a weak proxy for hallucination.
+  Design does not isolate hallucination reduction from ordinary
+  answer-accuracy gains from retrieval.
+confidence: low

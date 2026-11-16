@@ -1,0 +1,45 @@
+arxiv_id: "2601.07528"
+title: From RAG to Agentic RAG for Faithful Islamic Question Answering
+url: https://doi.org/10.48550/arxiv.2601.07528
+drafted_at: 2026-11-14
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: For open-ended Islamic question answering graded as
+  correct/incorrect/not-attempted, replacing single-shot retrieval with an
+  agentic loop in which the model issues structured tool calls (semantic verse
+  search, verse reading, metadata lookup) and revises before answering raises
+  correctness well beyond standard RAG, and the gain comes both from answering
+  previously abstained questions and from overturning previously wrong
+  answers.
+kind: observation
+backing_strength: single-paper
+scope_condition: Bilingual Arabic/English short-answer questions with atomic
+  single-gold answers, graded by an LLM judge; retrieval corpus is Qur'an
+  verses only; tested on Qwen3-4B and Fanar-2-27B.
+technique: ""
+proposed_technique: Make retrieval an agent loop over a verse-level toolset
+technique_summary: Instead of one retrieval pass, the model plans, calls
+  semantic search / verse read / metadata tools repeatedly, inspects the
+  retrieved verses, and revises its answer with a citation before responding.
+technique_kind: retrieval
+technique_validated_by: "%Correct on the 3,810-item IslamicFaithQA benchmark
+  under LLM-as-judge: Qwen3-4B-2507 21.85 base, 38.85 +RAG, 48.90 +Agentic
+  RAG; Fanar-2-27B 48.65 base, 51.50 +RAG, 57.30 +Agentic RAG. Of 36 recovered
+  cases, 24 were not_attempted-to-correct and 12 incorrect-to-correct. Cost:
+  502 to 1,520 tokens, 0.52s to 3.45s latency, ~6 tool calls."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An agentic RAG setup over the same corpus and backbones that
+  matches single-shot RAG correctness at equal retrieval quality, or whose
+  gains are entirely accounted for by fewer abstentions with no
+  incorrect-to-correct transitions.
+evidence_note: Measured on one benchmark the authors built, graded by an LLM
+  judge whose agreement with humans is 79% (kappa 0.51 among annotators) on a
+  200-item subset. Only two backbones got the agentic treatment, and agentic
+  RAG is not compute-matched against repeated standard RAG, so part of the
+  gain may be extra inference compute rather than the loop structure.
+  Transition counts (36 recovered cases) are small.
+confidence: medium

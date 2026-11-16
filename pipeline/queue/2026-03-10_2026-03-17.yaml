@@ -54,6 +54,27 @@ candidates:
       significantly outperforms traditional deep learning baselines in zero-shot generalization and
       few-shot adaptation tasks. Crucially, it offers transparent, physically consistent reasoning
       reports, marking a paradigm shift from black-box fitting
+    verdicts:
+      - capability: forecasting
+        about_capability: false
+        direction: not_applicable
+        confidence: medium
+        rationale: The paper is about physics/PDE spatiotemporal simulation and reasoning grounding, with
+          weather forecasting only as one benchmark domain, not about calibrated prediction of
+          future events.
+        classified_at: 2026-11-08
+        model: claude-opus-5
+      - capability: domain-knowledge
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes a neuro-symbolic alignment and physics-guided CoT scaffold that lets
+          general frozen multimodal LLMs reason about physical dynamics better than domain-specific
+          baselines, i.e., improving specialist-domain competence without domain fine-tuning.
+        scope_condition: Frozen multimodal LLMs applied to PDE/fluid-dynamics and weather tasks, without
+          domain-specific fine-tuning
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7135223756
     score: 25
     signals:
@@ -101,6 +122,18 @@ candidates:
       understanding and quantitative interpretation of materials science figures. In many cases,
       correct answers are obtained by relying on memorized domain knowledge rather than by reading
       the provided images. MaterialFigBench highlights persistent weakne
+    verdicts:
+      - capability: domain-knowledge
+        about_capability: true
+        direction: measures
+        confidence: medium
+        rationale: The paper introduces a benchmark and evaluates existing multimodal models'
+          materials-science problem solving without proposing an improvement, finding they often
+          rely on memorized domain knowledge rather than reading figures.
+        scope_condition: 137 free-response college-level materials science figure-dependent problems;
+          GPT/ChatGPT multimodal models
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7135016122
     score: 25
     signals:
@@ -146,6 +179,27 @@ candidates:
       benchmark accuracy does not predict governability, that correction capacity varies
       independently of detection, and that identical governance scaffolds produce opposite effects
       across models — improving one, having no effect "
+    verdicts:
+      - capability: procedure-following
+        about_capability: true
+        direction: measures
+        confidence: low
+        rationale: The paper characterizes and measures whether models signal detectable conflicts in
+          instruction-following before committing output, without proposing a general improvement or
+          reporting a regression.
+        scope_condition: Six LLMs across twelve reasoning domains; conflict-detection evaluable on three
+          instruction-following models; preliminary cohort, no prevalence claims
+        classified_at: 2026-11-08
+        model: claude-opus-5
+      - capability: reward-hacking
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper measures runtime detectability of model errors ('governability') and silent
+          commitment failure, not exploitation of a misspecified reward or monitor-gaming during
+          training.
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7135188088
     score: 24
     signals:
@@ -195,6 +249,24 @@ candidates:
       continuous pre-training on these reconstructed trajectories significantly enhances
       Llama-3-8B's performance across diverse benchmarks, including long-context understanding,
       coding proficiency, and agentic capabilities."
+    verdicts:
+      - capability: debugging
+        about_capability: false
+        direction: not_applicable
+        confidence: medium
+        rationale: The paper proposes a pretraining data synthesis paradigm evaluated on general coding,
+          long-context, and agentic benchmarks, mentioning debugging only as part of reconstructed
+          trajectories rather than measuring fault localization or repair of third-party code.
+        classified_at: 2026-11-08
+        model: claude-opus-5
+      - capability: planning
+        about_capability: false
+        direction: not_applicable
+        confidence: medium
+        rationale: The paper is about synthesizing agentic trajectories for code pretraining and reports
+          coding/agentic benchmark gains, not measuring plan validity or revision.
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7135097744
     score: 23
     signals:
@@ -242,6 +314,20 @@ candidates:
       while achieving probe-space selectivity 5.94x - 3.5x higher than the ITI baseline --
       demonstrating that targeted neuron-level suppression can simultaneously improve factual
       accuracy and preserve model capability."
+    verdicts:
+      - capability: hallucination
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes an inference-time activation-suppression hook that it reports raises
+          factual accuracy at all three model scales while leaving perplexity and MMLU unchanged,
+          cutting against the claim that per-step activation editing degrades already-correct
+          behavior.
+        contradicts_claim_id: 1b-8b-open-llms-hallucination-correction-methods-edit-activations-or-logits
+        scope_condition: OPT-125M, Phi-3-mini, LLaMA 3-8B on TruthfulQA and HaluEval with probe-selected
+          hallucination neurons suppressed by a confidence-weighted forward hook at inference
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7137802262
     score: 22
     signals:
@@ -287,6 +373,26 @@ candidates:
       cross-backbone compatibility. This work bridges the perception-to-generation gap in MLLM video
       understanding, providing an interpretable, faithful reasoning paradigm for high-stakes VideoQA
       applications."
+    verdicts:
+      - capability: video-temporal-reasoning
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: Proposes ClueNet, a clue-aware two-stage fine-tuning framework that raises accuracy on
+          temporal-causal VideoQA benchmarks over prior state of the art.
+        scope_condition: MLLM-based VideoQA with two-stage SFT for clue extraction and filtering; NExT-QA,
+          STAR, MVBench
+        classified_at: 2026-11-08
+        model: claude-opus-5
+      - capability: hallucination
+        about_capability: false
+        direction: not_applicable
+        confidence: medium
+        rationale: The paper proposes a clue-aware VideoQA reasoning framework evaluated on accuracy
+          benchmarks, mentioning hallucination mitigation only as a side benefit rather than
+          measuring or explaining unsupported generation.
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7136617192
     score: 22
     signals:
@@ -332,6 +438,19 @@ candidates:
       asynchronous update mechanism to decouple inference from learning, optimizing routing without
       increasing latency. Extensive experiments on five public benchmarks and high-concurrency
       stress tests demonstrate that AMRO-S con"
+    verdicts:
+      - capability: multi-model-coordination
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes a routing framework for selecting among heterogeneous agents and
+          reports improved quality-cost routing performance over LLM-based selectors and static
+          policies.
+        scope_condition: Heterogeneous LLM agent pools routed per query by an ACO-style pheromone memory
+          with an SFT small-model intent classifier, on five public benchmarks and high-concurrency
+          stress tests
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7138308002
     score: 22
     signals:
@@ -381,6 +500,29 @@ candidates:
       side effects. Our findings underscore that current agents are not yet ready for autonomous
       enterprise deployment. More broadly, EnterpriseOps-Gym provides a concrete testbed to advance
       the robustness of agentic pla"
+    verdicts:
+      - capability: tool-use
+        about_capability: true
+        direction: measures
+        confidence: high
+        rationale: It introduces a benchmark and measures frontier-model success (top 37.4%), with
+          oracle-plan ablations identifying planning as the bottleneck, without proposing a fix.
+        supports_claim_id: simulated-retail-airline-domains-tools-policy-documents-frontier
+        scope_condition: "14 frontier models on EnterpriseOps-Gym: containerized enterprise sandbox, 164 DB
+          tables, 512 tools, 1,150 tasks across eight verticals"
+        classified_at: 2026-11-08
+        model: claude-opus-5
+      - capability: planning
+        about_capability: true
+        direction: measures
+        confidence: medium
+        rationale: It benchmarks agentic task success but isolates planning via an oracle-human-plan
+          ablation (14-35 pt gain), characterizing strategic plan generation as the bottleneck
+          without proposing a fix.
+        scope_condition: 14 frontier LLM agents on 1,150 enterprise tool-use tasks in a stateful sandbox;
+          oracle-plan ablation
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7138316912
     score: 21
     signals:
@@ -428,6 +570,28 @@ candidates:
       reasoning benchmarks and enables effective real-world multi-robot manipulation with calibrated
       multi-camera rigs, demonstrating cross-view localization and successful grasp-and-place
       execution. Together, E2W and CoRL provide a princ"
+    verdicts:
+      - capability: multi-model-coordination
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper trains a single vision-language model to fuse multiple ego-centric views,
+          rather than comparing a system of several coordinating models against a single-model
+          baseline.
+        classified_at: 2026-11-08
+        model: claude-opus-5
+      - capability: embodied-control
+        about_capability: true
+        direction: improves
+        confidence: low
+        rationale: The proposed CoRL training improves cross-view spatial grounding and is reported to
+          enable successful real-world multi-robot grasp-and-place execution, though the bulk of
+          evaluation is benchmark reasoning rather than closed-loop control.
+        scope_condition: VLMs fusing multiple ego-centric views in embodied multi-agent settings; CoT SFT +
+          GRPO with a cross-view spatial reward, evaluated on the E2W benchmark and a real
+          multi-robot grasp-and-place rig with calibrated cameras
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7135237305
     score: 21
     signals:
@@ -475,6 +639,36 @@ candidates:
       the expert manifold and mitigating causal misalignment, SVLL, powered by Bias-DPO, ensures
       strict adherence to environmental affordances and effectively suppresses physically impossible
       shortcuts. Finally, extensive experiments o"
+    verdicts:
+      - capability: planning
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes a staged training framework and a modified DPO objective that improve
+          the validity and physical groundedness of generated embodied action plans.
+        scope_condition: Vision-language models generating action sequences for embodied task planning,
+          trained with staged grounding/temporal curriculum plus Bias-DPO
+        classified_at: 2026-11-08
+        model: claude-opus-5
+      - capability: embodied-control
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes a three-stage training framework with a modified DPO objective that
+          improves grounded, affordance-respecting action sequence generation for embodied planning.
+        scope_condition: Vision-language models generating action sequences for embodied task planning,
+          trained with staged spatial/temporal decoupling plus Bias-DPO alignment
+        classified_at: 2026-11-08
+        model: claude-opus-5
+      - capability: hallucination
+        about_capability: false
+        direction: not_applicable
+        confidence: medium
+        rationale: The paper is about embodied task planning and alignment, using "hallucination" loosely
+          for physically implausible action shortcuts rather than measuring or mitigating
+          unsupported factual generation.
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7135181967
     score: 21
     signals:
@@ -517,6 +711,15 @@ candidates:
       the generalizability of the perception-logic separation strategy for visual question
       answering. VisDoT leverages human-like perception to enhance visual grounding, achieving
       state-of-the-art chart understanding and interpretable visual reasoning.
+    verdicts:
+      - capability: procedure-following
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper is about chart perception grounding and decomposed reasoning for visual QA, not
+          about following unfamiliar multi-step procedures or constraints.
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7139069079
     score: 19
     signals:
@@ -561,6 +764,27 @@ candidates:
       execution. Our evaluations of leading vision language models show that performance drops
       sharply without visual input, revealing weaknesses in visual grounding and state tracking that
       ultimately undermine interactive planning. Our benchma
+    verdicts:
+      - capability: planning
+        about_capability: true
+        direction: measures
+        confidence: high
+        rationale: The paper introduces a benchmark isolating plan generation and revision under visual
+          feedback and reports VLM weaknesses, without proposing a fix.
+        scope_condition: Vision-language models on 108 interactive, visually grounded high-level planning
+          tasks in a simulator with minimal success/failure feedback
+        classified_at: 2026-11-08
+        model: claude-opus-5
+      - capability: embodied-control
+        about_capability: true
+        direction: measures
+        confidence: medium
+        rationale: The paper introduces a benchmark and evaluates existing VLMs, reporting sharp drops
+          without visual input and weaknesses in grounding/state tracking, without proposing a fix.
+        scope_condition: Leading VLMs as high-level interactive planners in a simulator with image,
+          action-history and success/failure feedback only; 108 task instances, 12 task types
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7138171633
     score: 19
     signals:
@@ -607,6 +831,16 @@ candidates:
       decision-making and post-action self-evaluation, limiting their reliability in real-world
       interactions. We hope GUI-CEval provides a comprehensive and interpretable benchmark to guide
       capability diagnosis and advance the development of Chinese mobil"
+    verdicts:
+      - capability: multi-model-coordination
+        about_capability: false
+        direction: not_applicable
+        confidence: medium
+        rationale: The paper is a Chinese mobile GUI agent benchmark evaluating MLLM capabilities;
+          multi-agent systems are only among the evaluated entries, not the subject of
+          combination-attributed comparison.
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7139147743
     score: 19
     signals:
@@ -652,6 +886,15 @@ candidates:
       points on SWE-QA-Pro and substantially narrows the gap to state-of-the-art proprietary models,
       demonstrating both the validity of our evaluation and the effectiveness of our agentic
       training workflow."
+    verdicts:
+      - capability: code-generation
+        about_capability: false
+        direction: not_applicable
+        confidence: medium
+        rationale: The paper benchmarks and trains agents for repository-level code *understanding* question
+          answering, not for writing or editing working code.
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7138442435
     score: 18
     signals:
@@ -694,6 +937,36 @@ candidates:
       counterparts (mean pAUROC improvement of +0.097), with the largest gains on subtle,
       long-horizon deception that leaves minimal behavioral footprints. We empirically characterize
       a transparency-detectability trade-off: as agents learn to suppress ove"
+    verdicts:
+      - capability: goal-conflict-safety
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes CoT-aware and activation-probe monitors that substantially outperform
+          black-box monitors at detecting agent deception, improving oversight of goal-driven
+          deceptive behavior.
+        scope_condition: LLM agents in sandboxed agentic environments; monitors with access to
+          chain-of-thought or hidden-state activations vs. black-box action-only monitors
+        classified_at: 2026-11-08
+        model: claude-opus-5
+      - capability: reward-hacking
+        about_capability: false
+        direction: not_applicable
+        confidence: medium
+        rationale: The paper evaluates monitors for deceptive agent behavior absent any reward/training
+          signal being exploited, which the capability's scope boundary explicitly excludes.
+        classified_at: 2026-11-08
+        model: claude-opus-5
+      - capability: strategic-deception
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: The paper proposes CoT-aware and activation-probe monitors that substantially outperform
+          black-box deception monitors (+0.097 mean pAUROC), improving detection of deception.
+        scope_condition: LLM agents in sandboxed agentic environments; monitors trained on 4,800 synthetic
+          trajectories and evaluated on 9,200 held-out DeceptArena samples
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7138390970
     score: 18
     signals:
@@ -736,6 +1009,15 @@ candidates:
       and more semantically diverse range of failure modes. Critically, this diversity translates
       directly into more effective safety hardening: when integrated into an RLHF-based
       safety-tuning pipeline, PDPS-generated unsafe response"
+    verdicts:
+      - capability: prompt-injection
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper concerns jailbreak/safety long-tail failures via diverse response sampling, not
+          instructions embedded in retrieved data or tool outputs.
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7139144401
     score: 18
     signals:
@@ -779,6 +1061,17 @@ candidates:
       be substantially reduced by using strong VLMs as filters while employing recent VLMs as
       caption generators. Our project page is available at
       https://dahlian00.github.io/HalDec-Bench-Page/.
+    verdicts:
+      - capability: hallucination
+        about_capability: true
+        direction: measures
+        confidence: high
+        rationale: The paper introduces a benchmark characterizing how well VLMs detect unsupported content
+          in captions, without proposing a mitigation technique.
+        scope_condition: VLM-based hallucination detectors on image captions, with human annotations of
+          hallucination type and segment-level labels
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7138460110
     score: 18
     signals:
@@ -826,6 +1119,18 @@ candidates:
       refines attention distribution to improve visual grounding in medical settings. Our approach
       achieves SOTA performance across 6 diverse Med-VQA benchmarks (over 110K VQA samples from 8
       imaging modalities) wi
+    verdicts:
+      - capability: visual-grounding
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: The paper measures that medical MLLMs fail to ground answers in clinically relevant
+          regions and proposes an inference-time attention-refinement method (VGRefine) that
+          improves grounding and VQA performance.
+        scope_condition: Eight SOTA medical MLLMs on medical imaging VQA (VGMED plus 6 Med-VQA benchmarks, 8
+          modalities); contrasted with natural-scene MLLMs
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7135167629
     score: 18
     signals:
@@ -867,6 +1172,16 @@ candidates:
       model achieves the best average performance among Polish and multilingual models,
       significantly outperforming competitive solutions in long-context tasks while maintaining
       comparable quality on short texts.
+    verdicts:
+      - capability: long-context-degradation
+        about_capability: false
+        direction: not_applicable
+        confidence: medium
+        rationale: The paper builds a Polish long-context encoder and benchmarks it on
+          classification/regression tasks, without characterizing accuracy loss with input length or
+          positional (middle-of-context) degradation.
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7138190091
     score: 18
     signals:
@@ -912,6 +1227,26 @@ candidates:
       experiments across multiple benchmarks using LRLMs of different types and scales, and the
       results indicate that our method delivers the largest performance improvement over vanilla CoT
       compared to existing early-exit methods."
+    verdicts:
+      - capability: cutting-to-the-chase
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: The paper proposes an early-exit method that detects and terminates redundant reasoning,
+          reducing overthinking while improving performance over vanilla CoT and prior early-exit
+          methods.
+        scope_condition: Large reasoning language models of various types/scales on reasoning benchmarks,
+          using entropy-based path deviation monitoring for early exit
+        classified_at: 2026-11-08
+        model: claude-opus-5
+      - capability: reward-hacking
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper concerns early-exit monitoring of overthinking in chain-of-thought reasoning,
+          not exploitation of a misspecified reward or monitor.
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7134988083
     score: 18
     signals:
@@ -954,6 +1289,15 @@ candidates:
       agentic coding systems in which neural debuggers serve as a world model for simulated
       debugging environments, providing execution feedback or enabling agents to interact with real
       debugging tools. This capability lays the foundation"
+    verdicts:
+      - capability: debugging
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper models execution state prediction (neural interpreter/debugger emulation on
+          CruxEval), not fault localisation or repair of existing buggy code.
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7136798764
     score: 18
     signals:
@@ -998,6 +1342,28 @@ candidates:
       where Visual-ERM at 8B decisively outperforms Qwen3-VL-235B-Instruct and approaches leading
       closed-source models. Our results suggest that fine-grained visual reward supervision is both
       necessary and sufficient for vision-to-code RL, regardless of task specificity.
+    verdicts:
+      - capability: critique
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper trains a generative reward model that judges fine-grained image-to-image
+          discrepancies, outperforming much larger models on a judging benchmark and improving
+          downstream generation quality via RL.
+        scope_condition: 8B multimodal generative reward models judging vision-to-code (chart/table/SVG)
+          outputs in rendered visual space, used as RL reward and as judge on VC-RewardBench
+        classified_at: 2026-11-08
+        model: claude-opus-5
+      - capability: reward-hacking
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes a fine-grained visual reward model explicitly to replace
+          rule/embedding rewards that are vulnerable to reward hacking, reporting RL gains.
+        scope_condition: Vision-to-code RL (chart/table/SVG) with Qwen3-VL-8B, using a generative multimodal
+          reward model operating in rendered visual space
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7135429014
     score: 17
     signals:
@@ -1038,6 +1404,17 @@ candidates:
       is irrelevant generation where the model ignores the provided context entirely. These patterns
       hold across multiple prompt templates and retrieval methods. The results indicate that for
       models below 7B parameters the main "
+    verdicts:
+      - capability: retrieval-utilization
+        about_capability: true
+        direction: measures
+        confidence: high
+        rationale: It benchmarks whether small models use oracle-correct retrieved passages, isolating
+          utilization failure without proposing a fix.
+        scope_condition: Open-domain QA with models 360M-8B across SmolLM2, Qwen2.5, Llama 3.1 under
+          no/BM25/dense/oracle retrieval
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7152648354
     score: 17
     signals:
@@ -1080,6 +1457,19 @@ candidates:
       simple logical composition at inference time can help evaluate and improve LLM reasoning
       reliability; they do not, by themselves, establish robustness beyond this formal benchmark
       setting."
+    verdicts:
+      - capability: abstention-and-self-knowledge
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The method reduces unwarranted 'Unknown' abstentions and negation inconsistency,
+          improving accuracy on deciding when a hypothesis is genuinely undetermined versus
+          entailed.
+        scope_condition: Three-way (True/False/Unknown) first-order logic QA on a FOLIO validation split
+          with GPT-5.2 and Claude Sonnet 4.5, using a training-free test-time negation-consistency
+          projection plus entailment probes
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7138824738
     score: 17
     signals:
@@ -1125,6 +1515,27 @@ candidates:
       ESG-Bench using CoT-annotated rationales. Our experiments show that these CoT-based methods
       substantially outperform standard prompting and direct fine-tuning in reducing hallucinations,
       and that the gains transfer to existing QA benchmarks beyond the ESG domain."
+    verdicts:
+      - capability: long-context-degradation
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper is a domain ESG QA/hallucination benchmark that merely mentions long documents;
+          it does not study accuracy degradation with input length or position.
+        classified_at: 2026-11-08
+        model: claude-opus-5
+      - capability: hallucination
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: The paper both benchmarks hallucination in ESG report QA and reports that task-specific
+          CoT prompting and CoT-rationale fine-tuning substantially reduce hallucinations relative
+          to standard prompting and direct fine-tuning.
+        scope_condition: Long-context ESG report QA with human-annotated supported/hallucinated labels; CoT
+          prompting and CoT-rationale fine-tuning of several SOTA LLMs, with transfer to general QA
+          benchmarks
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7138516009
     score: 17
     signals:
@@ -1167,6 +1578,16 @@ candidates:
       Our framework, Geo-ADAPT, learns an adaptive reasoning policy, achieves state-of-the-art
       performance across multiple geo-localization benchmarks, and substantially reduces
       hallucinations by reasoning both adaptively and efficiently.
+    verdicts:
+      - capability: hallucination
+        about_capability: false
+        direction: not_applicable
+        confidence: medium
+        rationale: The paper targets geo-localization accuracy and only mentions hallucination reduction
+          loosely as a side benefit of adaptive reasoning depth, without measuring or explaining
+          unsupported generation.
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7135429155
     score: 17
     signals:
@@ -1204,6 +1625,26 @@ candidates:
       demonstrate that MT-RL-Judge outperforms strong baselines in both judgment consistency and
       correlation with human preferences. Furthermore, our approach exhibits robust generalization
       on out-of-distribution tasks, further validating its effectiveness.
+    verdicts:
+      - capability: critique
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: The paper proposes multi-task RL training that raises judgment consistency and
+          correlation with human preferences over baselines.
+        scope_condition: MLLM judge models trained with multi-task RL, evaluated on in- and
+          out-of-distribution multimodal judging tasks
+        classified_at: 2026-11-08
+        model: claude-opus-5
+      - capability: judge-position-bias
+        about_capability: false
+        direction: not_applicable
+        confidence: medium
+        rationale: The paper proposes multi-task RL to improve general multimodal judge accuracy and
+          generalization, without specifically measuring or addressing position, verbosity, or
+          self-enhancement bias.
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7135184680
     score: 17
     signals:
@@ -1250,6 +1691,27 @@ candidates:
       factors of generative reward models. This work advances intelligent informatics for
       personalized healthcare by establishing a framework for reward model assessment in mental
       health dialogues. Evaluation code and datasets are publicly availab
+    verdicts:
+      - capability: long-horizon-execution
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper benchmarks reward models for preference alignment in multi-session counseling
+          dialogue, not an agent's ability to execute tasks over many steps with completion measured
+          against horizon length.
+        classified_at: 2026-11-08
+        model: claude-opus-5
+      - capability: critique
+        about_capability: true
+        direction: measures
+        confidence: medium
+        rationale: The paper builds a benchmark and analyzes existing reward models' agreement with
+          preferred therapeutic responses, revealing generalization defects without proposing a
+          training change.
+        scope_condition: State-of-the-art scalar and generative reward models judging multi-session CBT
+          counseling dialogues (6 sessions, 21 scenarios), pairwise and Best-of-N
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7135220684
     score: 17
     signals:
@@ -1295,6 +1757,25 @@ candidates:
       success rates in real-world tasks. These results show that tightly coupled perception and
       execution, when trained with decoupled yet coordinated strategies, enable efficient and
       generalizable active manipulation. Project page: https://lmzpai.github.io/SaPaVe"
+    verdicts:
+      - capability: embodied-control
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: The paper proposes a VLA framework decoupling camera and manipulation actions with staged
+          training, reporting up to 31.25% higher real-world success rates.
+        scope_condition: VLA manipulation with active camera control, simulation and real-robot tasks;
+          compared to GR00T N1 and pi_0
+        classified_at: 2026-11-08
+        model: claude-opus-5
+      - capability: persuasion
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper is about robotic vision-language-action manipulation, unrelated to persuading
+          humans.
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7136658978
     score: 17
     signals:
@@ -1340,6 +1821,18 @@ candidates:
       prompting strategies (e.g., chain-of-thought or caption-based hints) provide limited
       improvement, whereas structured integration approaches, including Mask-Guided Fusion and
       Spatio-Temporal Textual Cognitive Map (ST-TCM), si
+    verdicts:
+      - capability: video-temporal-reasoning
+        about_capability: true
+        direction: measures
+        confidence: medium
+        rationale: The paper introduces a benchmark and probes existing MLLMs on spatio-temporal reasoning
+          and dynamic object grounding, characterizing failures rather than proposing a primary
+          training change.
+        scope_condition: "Dyn-Bench: 1k videos, 7k VQA pairs, 3k dynamic object grounding pairs; general,
+          spatial, and region-level MLLMs"
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7137998953
     score: 16
     signals:
@@ -1379,6 +1872,29 @@ candidates:
       Assignment paradigm: planning is optimized by RL with a plan-level reward, while execution is
       learned by SFT. Extensive experiments show consistent gains in both multi-hop RAG and task
       planning across benchmarks."
+    verdicts:
+      - capability: planning
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes decoupled credit assignment (RL on plan-level reward, SFT for
+          execution) and reports consistent gains in task planning as well as multi-hop RAG.
+        supports_claim_id: llm-agents-must-compose-then-execute-domain-tool-workflows
+        scope_condition: LLM agentic RAG for multi-hop QA and task planning benchmarks, trained with
+          plan-level RL reward plus SFT for execution
+        classified_at: 2026-11-08
+        model: claude-opus-5
+      - capability: multi-step-reasoning
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes separating plan-level RL reward from SFT-trained execution to fix
+          credit entanglement, reporting consistent gains on multi-hop retrieval reasoning
+          benchmarks.
+        supports_claim_id: agentic-retrieval-augmented-multi-hop-qa-7b-class-policy-models-scoring-each
+        scope_condition: LLM agents trained for multi-round agentic RAG on multi-hop QA and task-planning benchmarks
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7155197691
     score: 16
     signals:
@@ -1416,6 +1932,16 @@ candidates:
       Notably, our approach achieves state-of-the-art performance on PutnamBench among publicly
       reported $\\sim$8B and $\\sim$32B parameter models under comparable test-time budgets,
       offering a scalable paradigm for next-generation verifier-guided reasoning."
+    verdicts:
+      - capability: error-detection
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper uses external compiler feedback to refine the model's own proof attempts, which
+          is repair/generation rather than measuring a model's ability to spot errors in given
+          artifacts.
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7138287487
     score: 16
     signals:
@@ -1456,6 +1982,18 @@ candidates:
       in retail order fulfillment, where nine cycles targeting an SRE incident management agent
       produce a reusable knowledge base of 46 entities. Finally, we propose a scaling architecture
       for enterprise adoption with s"
+    verdicts:
+      - capability: domain-knowledge
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper attributes agent failures to missing enterprise domain knowledge and proposes a
+          failure-driven context curation methodology intended to make agents succeed on such tasks.
+        scope_condition: "LLM agents on enterprise-specific tasks (worked example: retail order fulfillment
+          SRE incident management); methodology demonstrated on nine cycles, no benchmark
+          evaluation"
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7135241713
     score: 16
     signals:
@@ -1499,6 +2037,16 @@ candidates:
       detection accuracy. Evaluations demonstrate that HD-Guard achieves a superior trade-off
       between latency and performance, while our analysis identifies critical bottlenecks in current
       VLM-based safety detection.
+    verdicts:
+      - capability: embodied-control
+        about_capability: false
+        direction: not_applicable
+        confidence: medium
+        rationale: The benchmark evaluates VLMs on classifying/detecting unsafe actions in generated
+          household videos, where success is detection accuracy and latency rather than an achieved
+          physical world state from model-driven actuation.
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7137919423
     score: 16
     signals:
@@ -1542,6 +2090,16 @@ candidates:
       for deployment on resource-constrained robots. Results show good zero-shot return estimation
       on models with differing VLM backbones on in-distribution and out-of-distribution scenarios in
       multi-agent team settings
+    verdicts:
+      - capability: multi-model-coordination
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper replaces a learned centralized critic in multi-agent RL with a fine-tuned VLM,
+          a training/value-estimation method rather than a measurement of a multi-model system
+          against a single-model baseline attributed to how members are combined.
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7135243329
     score: 16
     signals:
@@ -1580,6 +2138,18 @@ candidates:
       state-of-the-art methods in operator discovery as well as operator learning in continuous
       robotic domains.Our webpage and code can be access here:
       https://helenlu66.github.io/hybridLLMguided/"
+    verdicts:
+      - capability: planning
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes using an LLM to discover missing operators so a symbolic planner can
+          again produce valid plans under novelty, reporting better operator discovery and learning
+          than prior methods.
+        scope_condition: Neuro-symbolic agents in continuous open-world robotic domains facing novel
+          objects, where the symbolic domain lacks needed operators
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7135011248
     score: 16
     signals:
@@ -1625,6 +2195,43 @@ candidates:
       roles, our framework effectively restores the vision-language balance, significantly reducing
       object hallucinations, improving POPE accuracy by an average of 2% absolute on LLaVA-1.5
       across multiple benchmarks with only a 1.06x inference latency overhead."
+    verdicts:
+      - capability: abstention-and-self-knowledge
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper is about reducing object hallucination in MLLMs via vision-token manipulation,
+          improving answer accuracy, not about abstention or self-knowledge of unanswerable queries.
+        classified_at: 2026-11-08
+        model: claude-opus-5
+      - capability: visual-grounding
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: The paper proposes a unified vision-token manipulation framework that reduces object
+          hallucination and improves POPE accuracy ~2% with minimal latency.
+        scope_condition: Training-free inference-time intervention on MLLMs such as LLaVA-1.5, evaluated on
+          POPE and object-hallucination benchmarks
+        classified_at: 2026-11-08
+        model: claude-opus-5
+      - capability: persuasion
+        about_capability: false
+        direction: not_applicable
+        confidence: high
+        rationale: The paper is about reducing multimodal hallucination via vision token manipulation, with
+          no measurement of human belief or decision change.
+        classified_at: 2026-11-08
+        model: claude-opus-5
+      - capability: hallucination
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes a unified vision-token manipulation framework that reduces object
+          hallucinations and raises POPE accuracy by ~2% absolute with minor latency cost.
+        scope_condition: Training-free decoding/latent-space intervention on MLLMs (LLaVA-1.5) evaluated on
+          object-hallucination benchmarks such as POPE
+        classified_at: 2026-11-08
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7136308952
     score: 16
     signals:
@@ -1663,6 +2270,17 @@ candidates:
       of state-of-the-art MLLMs under extractive and abstractive settings, exposing their
       limitations on abstractive tasks and providing a fine-grained analysis of the underlying
       bottlenecks. The dataset will be released soon.
+    verdicts:
+      - capability: video-temporal-reasoning
+        about_capability: true
+        direction: measures
+        confidence: high
+        rationale: The paper introduces VAEX-BENCH to benchmark and analyze MLLM limitations in integrating
+          dispersed spatiotemporal evidence over time, without proposing a fix.
+        scope_condition: State-of-the-art MLLMs on synthetic egocentric videos, extractive vs abstractive
+          spatiotemporal reasoning tasks (object-, room-, floor-plan-level)
+        classified_at: 2026-11-09
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7135238873
     score: 16
     signals:
@@ -1707,6 +2325,27 @@ candidates:
       token generation, SCS-Code steers LLMs' internal representations toward secure and functional
       code output, enabling a lightweight and modular mechanism that can be integrated into existing
       code models. Our approach achieves superior performance c
+    verdicts:
+      - capability: secure-coding
+        about_capability: true
+        direction: improves
+        confidence: high
+        rationale: The paper proposes SCS-Code, an activation-steering mechanism that pushes CodeLLM
+          generations toward secure code, reporting superior security and functionality performance.
+        scope_condition: Open-weight CodeLLMs with access to internal activations; steering during token
+          generation on security/functionality code benchmarks
+        classified_at: 2026-11-09
+        model: claude-opus-5
+      - capability: code-generation
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes SCS-Code, an internal-representation steering method that improves
+          secure and functional code generation over prior approaches.
+        scope_condition: Open CodeLLMs generating code with security-relevant requirements; activation
+          steering at inference time
+        classified_at: 2026-11-09
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7155068324
     score: 16
     signals:
@@ -1746,6 +2385,18 @@ candidates:
       frameworks (AutoGen, CrewAI, LangGraph) and four enterprise scenarios demonstrates that SCF is
       the only approach to achieve 100% workflow completion--compared to 25.1% for the next-best
       baseline--while detecting 65.2% of semantic conflicts w"
+    verdicts:
+      - capability: multi-model-coordination
+        about_capability: true
+        direction: improves
+        confidence: medium
+        rationale: The paper proposes a shared process-context/conflict-detection middleware and reports it
+          raises workflow completion to 100% versus 25.1% for the next-best coordination baseline,
+          attributing the gain to how agents share state and resolve intent conflicts.
+        scope_condition: Enterprise multi-agent LLM workflows across AutoGen, CrewAI, LangGraph in four
+          enterprise scenarios (600 runs)
+        classified_at: 2026-11-09
+        model: claude-opus-5
   - openalex_id: https://openalex.org/W7135242154
     score: 28
     signals:
