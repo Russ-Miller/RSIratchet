@@ -1,0 +1,50 @@
+arxiv_id: "2602.04254"
+title: Scaling Agentic Verifier for Competitive Coding
+url: https://doi.org/10.48550/arxiv.2602.04254
+drafted_at: 2026-11-12
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: error-detection
+statement: "For best-of-N selection among candidate competitive-programming
+  solutions by output-agreement voting on generated test inputs, the selection
+  accuracy is governed by whether the inputs are discriminative rather than
+  how many there are: randomly sampled valid inputs rarely hit the small
+  fraction of inputs that separate correct from incorrect programs, so scaling
+  random inputs saturates well below ground-truth test suites, while a
+  verifier trained to search for counterexamples closes most of that gap."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Competitive programming problems with large valid input
+  spaces, input-only execution verification (no ground-truth outputs),
+  Qwen3-30B/235B thinking policy models, five benchmarks (USACO,
+  LiveCodeBench, OJBench, ICPC-Eval, CodeForces).
+technique: ""
+proposed_technique: Train a verifier to search for discriminative test inputs
+technique_summary: An agent interacts with a code sandbox over multiple turns
+  on a pair of candidate solutions, iteratively refining an input-generator
+  program until it emits a valid input on which the two solutions disagree;
+  trained by rejection fine-tuning on successful teacher trajectories plus
+  GRPO with a sparse validity/discrimination reward.
+technique_kind: training
+technique_validated_by: Best@8 and Best@64 on five competitive-programming
+  benchmarks against vanilla sampling, a grading reward model, MBR-Exec,
+  CodeT, CodeRM and a random input generator at a matched 512-input budget;
+  reported gains up to +10-15 absolute points, largest on the hardest
+  benchmarks and hard difficulty tiers, and the trained 30B verifier beat a
+  zero-shot 235B verifier.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Scaling random input generators to a large budget matching the
+  trained verifier's input count closes the gap to ground-truth test inputs on
+  these benchmarks, or the trained verifier's advantage disappears once
+  baselines are given equal total execution compute.
+evidence_note: "Measured, not argued: Figure 1 shows 16 ground-truth inputs
+  beating 64 random inputs on USACO, and Table 1 shows the trained verifier
+  beating the random-generator baseline at a matched 512-input budget across
+  five benchmarks and two policy models. The design does not isolate how much
+  of the gain comes from the agentic search versus the RL training data
+  distribution, and verifier inputs still trail ground-truth inputs on
+  LiveCodeBench and OJBench."
+confidence: medium

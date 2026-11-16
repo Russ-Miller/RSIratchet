@@ -1,0 +1,68 @@
+id: arxiv-2601-01271
+ref: SRC-1058
+kind: paper
+title: "CatchAll: Repository-Aware Exception Handling with Knowledge-Guided LLMs"
+authors:
+  - Qingxiao Tao
+  - Xiaodong Gu
+  - Hao Zhong
+  - Beijun Shen
+year: 2026
+date: 2026-01-03
+arxiv_id: "2601.01271"
+url: https://arxiv.org/abs/2601.01271
+tags:
+  - ingested
+summary: Exception handling is a vital forward error-recovery mechanism in
+  many programming languages, enabling developers to manage runtime anomalies
+  through structured constructs (e.g., try-catch blocks). Improper or missing
+  exception handling often leads to severe consequences, including system
+  crashes and resource leaks. While large language models (LLMs) have
+  demonstrated strong capabilities in code generation, they struggle with
+  exception handling at the repository level, due to complex dependencies and
+  contextual constraints. In this work, we propose CatchAll, a novel LLM-based
+  approach for repo
+notes: "Filed as a source on code-generation from the classifier's judgement
+  that the paper is about it (improves, high): The paper proposes augmenting
+  LLM prompts with API-exception mappings, repository call-trace context, and
+  mined handling patterns, reporting improved repository-aware
+  exception-handling code generation. No claim has been drafted from it yet."
+ingested_at: 2026-11-16
+brief: >-
+  LLMs write poor exception-handling code at repository scale, and the biggest
+  missing ingredient is not retrieval of similar code but a mined mapping from
+  APIs to the exceptions they actually throw. CatchAll builds that mapping
+  from 3,200 Android Java repositories, adds a depth-bounded cross-file call
+  trace around the target try block, and abstracts handling patterns from the
+  top-20 retrieved historical try-catch blocks.
+
+
+  Evaluation uses 2 new benchmarks: RepoExEval (120,000 blocks mined, 1,000
+  sampled for test, average call trace depth 7.2, cross-file span 5.7) and
+  RepoExEval-Exec (4 repositories, 100 instances, 174 unit tests). Backbones
+  are GPT-4o and DeepSeek-V3, against 6 baselines including RepoCoder, Seeker,
+  KPC, Nexgen, ExAssist.
+
+
+  With GPT-4o, CatchAll reaches CodeBLEU 0.31, IntentAcc 60.1%, Pass@1 29%,
+  versus RepoCoder at 0.27, 48.0%, 25%. Exception type accuracy is 53.6%
+  versus 41.1% for KPC. DeepSeek-V3 gives 0.29, 53.9%, 26%.
+
+
+  The ablation isolates the components: removing the API-Exception mapping
+  drops Pass@1 from 29% to 9%, call traces to 23%, handling patterns to 21%.
+  Token cost is reported (about 1,800 input tokens per query) but there is no
+  matched-token-budget baseline, and the executable Pass@1 rests on 100
+  instances from 4 repositories.
+
+
+  Scope is Java/Android try-catch only; no other languages, no
+  try-with-resources or preventive handling. Contamination was checked by date
+  filtering and a 4.4% CodeSearchNet overlap.
+
+
+  If you are building repo-level code tools, treat mined API-to-exception
+  statistics as the lever, not more context.
+brief_generated_at: 2026-11-16
+brief_model: claude-opus-5
+brief_source: full-text

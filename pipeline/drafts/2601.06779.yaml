@@ -1,0 +1,43 @@
+arxiv_id: "2601.06779"
+title: "CyberLLM-FINDS 2025: Instruction-Tuned Fine-tuning of Domain-Specific
+  LLMs with Retrieval-Augmented Generation and Graph Integration for MITRE
+  Evaluation"
+url: https://doi.org/10.48550/arxiv.2601.06779
+drafted_at: 2026-11-14
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: domain-knowledge
+statement: For sub-2B local models (Gemma-2B) adapted to cybersecurity,
+  chain-of-thought-style fine-tuning on MITRE ATT&CK material transfers domain
+  knowledge but leaves instruction-level tasks (log analysis, open QA) weak,
+  and re-training on instruction datasets synthesized by a much larger
+  cloud-hosted model is what lifts instruction-following behaviour.
+kind: observation
+backing_strength: single-paper
+scope_condition: Single 2B open model, 2,398 MITRE prompt-response pairs,
+  4-bit quantized weights on a 24GB GPU with an effective token length of
+  ~397; evaluation is qualitative plus a 5-query LLM-judge comparison.
+technique: ""
+proposed_technique: Distil instruction data from a cloud LLM, fine-tune locally
+technique_summary: Use a >175B hosted model to generate instruction-style
+  MITRE ATT&CK examples, then fine-tune a sub-2B local model on them because
+  the small model cannot be tuned to instruction-following directly.
+technique_kind: training
+technique_validated_by: Qualitative inspection of generated responses plus an
+  LLM-judge score over 5 MITRE queries comparing RAG, Graph+LLM and
+  GraphRAG+GNN retrieval variants; no matched baseline on
+  instruction-following accuracy before and after synthetic training.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Fine-tuning the same sub-2B model directly on domain text, with no
+  cloud-generated instruction data, matching or beating the synthetic-data
+  pipeline on held-out cybersecurity instruction tasks under a measured
+  metric.
+evidence_note: "Argued more than measured: the paper reports no before/after
+  accuracy numbers for the synthetic-data stage, citing only a general <20%
+  baseline for sub-2B models from a figure reproduced from prompting
+  literature. The one quantitative table is a 5-query LLM-judge comparison of
+  retrieval variants, which does not isolate the fine-tuning claim."
+confidence: low

@@ -1,0 +1,47 @@
+arxiv_id: "2603.17024"
+title: "HopChain: Multi-Hop Data Synthesis for Generalizable Vision-Language
+  Reasoning"
+url: https://doi.org/10.48550/arxiv.2603.17024
+drafted_at: 2026-11-07
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-step-reasoning
+statement: For VLMs trained with RLVR, adding synthesized multi-hop visual
+  queries whose hops are logically dependent — each later hop identifiable
+  only from instances established earlier, with a single verifiable numeric
+  answer — raises scores on most benchmarks the data was not built for, and
+  truncating the chains to their last hop or latter half gives back most of
+  the gain.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Two Qwen3.5 MoE models (35B-A3B, 397B-A17B) post-SFT, SAPO
+  RLVR, 24 image and video benchmarks; multi-hop data synthesized only from
+  images with SAM3-segmentable instances
+technique: ""
+proposed_technique: Synthesize logically dependent multi-hop visual queries for RLVR
+technique_summary: Enumerate image categories with a VLM, segment instances
+  with SAM3, generate queries chaining 3-6 instances so each hop depends on
+  earlier-established instances and ends in one unambiguous number, then
+  verify by four independent annotators agreeing and drop queries a weaker
+  model always solves.
+technique_kind: training
+technique_validated_by: "RLVR on original data plus multi-hop data vs original
+  data alone: 20 of 24 benchmarks improved on both models; hop-structure
+  ablation on five benchmarks averaged 70.4 (full) vs 66.7 (half) vs 64.3
+  (single hop); gains largest in the longest response-length bins."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched run where the same number of synthesized queries with
+  independent single-hop structure (or simply more original RLVR data at equal
+  token budget) yields the same cross-benchmark gains, showing the chain
+  dependency is not what matters.
+evidence_note: "Measured on two models across 24 benchmarks with a shared
+  pre-RLVR starting point and a three-way hop-structure ablation. Confounded
+  by data volume: the multi-hop arm adds ~6-8k samples on top of the original
+  data, and no equal-volume non-multi-hop control is reported. Error-type
+  attribution rests on 20 sampled wrong answers per benchmark judged by
+  annotators. Original RLVR data and SFT data are internal pre-final
+  versions."
+confidence: medium
