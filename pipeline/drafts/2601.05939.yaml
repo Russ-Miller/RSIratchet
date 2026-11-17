@@ -1,0 +1,46 @@
+arxiv_id: "2601.05939"
+title: Context-Aware Decoding for Faithful Vision-Language Generation
+url: https://doi.org/10.48550/arxiv.2601.05939
+drafted_at: 2026-11-14
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: In 7B LVLMs (LLaVA-1.5, InstructBLIP, LLaVA-NeXT) doing open-ended
+  captioning, hallucinated tokens accumulate probability mass on their final
+  top-K candidate set later across decoder layers than truthful tokens, and
+  blending the last-prompt-token hidden state into mid-layer (~layer 10)
+  hidden states during decoding lowers object-hallucination rates on CHAIR,
+  AMBER and MMHal-Bench without a large loss of object coverage.
+kind: observation
+backing_strength: single-paper
+scope_condition: 7B open LVLMs with white-box access to hidden states and the
+  unembedding matrix; open-ended generation with up to 512 new tokens;
+  COCO-style benchmarks; hyperparameters tuned per model.
+technique: ""
+proposed_technique: Inject the pre-generation context embedding into mid-layer hidden states
+technique_summary: Extract the final-layer hidden state at the last prompt
+  token before generation and blend it, with a fixed or
+  commitment-mass-dependent weight, into each generated token's hidden state
+  at a chosen mid decoder layer.
+technique_kind: decoding
+technique_validated_by: CHAIR_s/CHAIR_i on 500 MSCOCO images, AMBER generative
+  CHAIR/HAL/COVER, and GPT-4-judged MMHal-Bench Score/HalRate, against base
+  decoding and five training-free baselines (OPERA, VCD, AvisC, M3ID, CAAC)
+  across three LVLMs; dynamic variant lowest hallucination overall, static
+  second.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Logit-lens top-K mass curves showing no separation between truthful
+  and hallucinatory tokens on other 7B LVLMs, or context-embedding injection
+  failing to lower CHAIR/HAL relative to base decoding at matched coverage.
+evidence_note: Measured on three 7B LVLMs and three benchmarks with five
+  baselines; the commitment-depth analysis relies on externally annotated
+  truthful/hallucinatory token labels from AMBER. Coverage is reported but
+  sometimes falls below base (e.g. LLaVA-NeXT COVER 60.6 to 57.8 for static
+  CEI), so the grounding/informativeness trade-off is only partly isolated;
+  the injection layer and alpha/beta were tuned per model, and no
+  matched-compute control for the dynamic variant's second forward pass is
+  reported.
+confidence: medium

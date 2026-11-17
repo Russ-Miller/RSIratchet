@@ -1,0 +1,44 @@
+arxiv_id: "2602.21053"
+title: "OCR-Agent: Agentic OCR with Capability and Memory Reflection"
+url: https://doi.org/10.48550/arxiv.2602.21053
+drafted_at: 2026-11-09
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: self-repair
+statement: For a 7B OCR vision-language model run in an unaided
+  reflect-and-revise loop on text-rich image tasks, plain self-refinement
+  plateaus after one or two rounds, while filtering the proposed correction
+  steps to actions the model can actually perform and carrying all prior
+  reflections forward as an explicit memory keeps accuracy rising through a
+  third round (OCRBench v2 English average 43.4 for Self-Refine vs 48.4
+  memory-only and 51.0 for both).
+kind: observation
+backing_strength: single-paper
+scope_condition: One 7B base model (RolmOCR-7B) on OCRBench v2 English and
+  Chinese subsets, fixed three refinement rounds, no training; feasibility
+  filtering is done by the model itself.
+technique: ""
+proposed_technique: Filter infeasible fixes and keep a reflection history
+technique_summary: Each revision round discards proposed correction steps the
+  model cannot execute (e.g. 'enhance the image') and conditions the rewrite
+  on the accumulated list of all previous reflections so earlier failed
+  strategies are not retried.
+technique_kind: prompting
+technique_validated_by: "Ablation on OCRBench v2 against naive answering (38.4
+  English), CoT (42.0) and Self-Refine (43.4): capability filtering alone
+  45.9, memory alone 48.4, both 51.0; Chinese 37.7 to 54.7, with per-round
+  curves showing baselines flattening after round 1-2."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Running the same loop on another base model or benchmark and
+  finding Self-Refine also improves across three rounds, or that memory plus
+  capability filtering gives no advantage over Self-Refine at matched round
+  count and token budget.
+evidence_note: Measured on one benchmark with one 7B base model; ablation
+  separates the two mechanisms but there is no control for the extra tokens
+  the reflection history adds, no seed variance, and the 'feasibility' filter
+  is judged by the same model, so the mechanism is argued rather than
+  isolated.
+confidence: low

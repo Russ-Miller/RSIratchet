@@ -1,0 +1,53 @@
+arxiv_id: "2603.19166"
+title: "Meanings and Measurements: Multi-Agent Probabilistic Grounding for
+  Vision-Language Navigation"
+url: https://doi.org/10.48550/arxiv.2603.19166
+drafted_at: 2026-11-07
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: For grounding metric-semantic spatial instructions ("two meters to
+  the right of the fridge") into 3D navigation goals, decomposing the query
+  into anchor, spatial predicate and metric distance, grounding each with a
+  separate VLM query, and composing the results as analytic probability
+  kernels over free space yields far lower metric and angular goal error than
+  prompting one VLM or scene-graph QA agent for a single target, because a
+  one-shot answer tends to pick the nearest region satisfying the direction
+  without enforcing the stated distance.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Holds when a persistent 3D scene graph and free-space map are
+  available; gains do not extend to commonsense or multiple-choice semantic
+  QA, and failures are dominated by scene-graph incompleteness rather than the
+  grounding pipeline.
+technique: ""
+proposed_technique: Decompose spatial queries into kernels and compose probabilistically
+technique_summary: An orchestrator splits a spatial instruction into anchor,
+  predicate and metric clauses, separate agents resolve the anchor against a
+  3D scene graph and fit von Mises-Fisher directional and radial Gaussian
+  distance kernels whose parameters a VLM supplies, and the log-densities are
+  summed into a goal distribution a planner samples.
+technique_kind: process
+technique_validated_by: "On MAPG-Bench (30 HM3D scenes, 100 annotated
+  queries), object-to-world error fell from 5.82 m for the GraphEQA
+  scene-graph baseline to 0.07 m, yaw 13.5 to 1.9 degrees, pitch 27.9 to 4.4,
+  task success 0.78 to 0.98; object-to-object error 0.50 m for SRGPT vs 0.07
+  m. Ablation: replacing the explicit spatial reasoner with curated
+  chain-of-thought dropped object-selection success from 0.42 to 0.20 (0.50 to
+  0.30 under occlusion)."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A single VLM or scene-graph agent prompted once, given the same
+  scene graph and asked for an allocentric waypoint, matching the decomposed
+  pipeline's metric and angular error on the same queries; or a decomposition
+  ablation showing the gain comes from the extra VLM calls rather than from
+  kernel composition.
+evidence_note: Measured on one new 100-query benchmark the authors built plus
+  HM-EQA, with two ablations (prompting-only, occlusion) isolating the spatial
+  reasoner. Baselines are a modified GraphEQA and SRGPT, not a matched-compute
+  single-agent variant, so extra inference calls are not controlled;
+  object-selection scoring also credits MAPG's top-2 predictions against
+  baselines' top-1. Real-robot evidence is three queries.
+confidence: low

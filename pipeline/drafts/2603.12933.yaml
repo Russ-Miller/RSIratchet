@@ -1,0 +1,47 @@
+arxiv_id: "2603.12933"
+title: Efficient and Interpretable Multi-Agent LLM Routing via Ant Colony
+  Optimization
+url: https://doi.org/10.48550/arxiv.2603.12933
+drafted_at: 2026-11-08
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: In heterogeneous LLM agent pools served under rising concurrency
+  (20 to 1000 parallel workers), load-balancing routing (weighted round-robin)
+  loses accuracy as concurrency grows while semantic-conditioned path routing
+  that keeps per-task routing memory holds accuracy flat, so throughput gains
+  and routing quality are not automatically compatible.
+kind: observation
+backing_strength: single-paper
+scope_condition: Four cost-tier backbones (GPT-4o-mini, Gemini-1.5-flash,
+  Claude-3.5-haiku, Llama-3.1-70b) in a three-stage layered agent graph;
+  accuracy measured on GSM8K only during the stress test.
+technique: ""
+proposed_technique: Route agents by intent-weighted per-task pheromone tables
+technique_summary: A fine-tuned ~1B router predicts a task-mixture
+  distribution per query, which fuses separate per-task pheromone matrices
+  into transition probabilities over a layered agent graph, with reinforcement
+  applied asynchronously only to trajectories a judge gates as acceptable.
+technique_kind: process
+technique_validated_by: Average pass@1 over MMLU, GSM8K, MATH, HumanEval, MBPP
+  (87.83 vs 85.93 for MasRouter, same model pool and inference budget);
+  drop-in substitution into MacNet, GPTSwarm, HEnRY raised accuracy and
+  lowered dollar cost; ablations against random routing (79.64) and no-SFT
+  routers (83.42 at 1B, 86.48 with a GPT-4o-mini router); stress test to 1000
+  concurrent workers.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A replication where weighted round-robin accuracy stays flat from
+  20 to 1000 concurrent workers on the same workload, or where the pheromone
+  router degrades comparably under load, would show the contrast is not about
+  the routing policy.
+evidence_note: Measured on one dataset (GSM8K) across six concurrency levels,
+  one system versus one baseline, with no seed variance or confidence
+  intervals reported; the baseline comparison does not isolate which part of
+  the proposed routing (intent router, per-task memory, availability/load
+  filtering in the candidate set) prevents the degradation, and the
+  candidate-set load filter alone could explain it. Main-table gains are
+  modest (1.90 average points) and reported without variance.
+confidence: low

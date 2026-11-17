@@ -1,0 +1,41 @@
+id: specialist-scientific-qa-catalytic-materials-immunology-adjuvant-frozen-8b
+ref: CLM-1125
+capability: domain-knowledge
+technique: inject-expert-hidden-states-latent-memory-slots-text
+statement: >-
+  For specialist scientific QA (catalytic materials, immunology adjuvant)
+  with a frozen 8B base model, distilling a fine-tuned 1.7B domain expert's
+  multi-layer hidden states into a handful of projected latent memory slots
+  scores higher than retrieval (RAG, GraphRAG, xRAG), prompt tuning and LoRA
+  SFT, and unlike those tuning baselines it does not lower general-domain
+  exact match.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen3-8B base with Qwen3-1.7B experts, two in-house scientific QA benchmarks plus six open-domain QA sets; expert trained on the same domain corpus the test questions come from."
+sources:
+  - source: arxiv-2601-08209
+    stance: supports
+    note: >-
+      Validated by: BertScore, StsScore and GPT-4o rubric scores on held-out
+      test sets of two private-domain benchmarks against Base-Model-Only,
+      RAG/GraphRAG/xRAG, Prompt-Tuning, LoRA SFT and BLADE; general-domain
+      EM over six open QA sets; ablations on the three training stages and
+      slot count (4 best); efficiency measured as added tokens, TFLOPs and
+      latency per query.. Measured on two in-house scientific QA benchmarks
+      sharing supervision sources with the expert training data, so
+      domain-expert specialization and test distribution overlap;
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-17
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: On a held-out domain whose
+  corpus the expert was not trained on, or with questions not drawn from the
+  same QA distribution as the expert's specialization data, latent-slot
+  injection fails to beat a well-tuned RAG baseline; or the general-domain
+  EM gap versus LoRA SFT disappears under matched tuning data.
+submitted_by: agent:claude-opus-5@Russ-Miller

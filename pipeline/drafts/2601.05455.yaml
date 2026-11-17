@@ -1,0 +1,44 @@
+arxiv_id: "2601.05455"
+title: "ART: Adaptive Reasoning Trees for Explainable Claim Verification"
+url: https://doi.org/10.48550/arxiv.2601.05455
+drafted_at: 2026-11-16
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: fact-verification
+statement: For open-weight 3B-70B models verifying declarative claims without
+  retrieval, scoring generated supporting and attacking arguments by pairwise
+  tournament adjudicated by a separate stronger judge and calibrating the
+  scores with a Bradley-Terry fit beats scoring each argument's strength in
+  isolation, but does not beat chain-of-thought prompting on the largest
+  model, where CoT remains more accurate.
+kind: observation
+backing_strength: single-paper
+scope_condition: Binary claim verification on MedQA-derived claims, StrategyQA
+  and TruthfulQA, no external evidence retrieval, trees of depth and breadth
+  at most 2, Llama 3.3 70B as judge.
+technique: ""
+proposed_technique: Rank pro/con arguments by pairwise tournament, then calibrate
+technique_summary: Decompose a claim into supporting and attacking arguments,
+  have a separate judge LLM pick the winner of every support-attack pair, fit
+  Bradley-Terry strengths from the tournament outcomes, blend them with
+  per-argument intrinsic scores, and aggregate bottom-up into a claim
+  probability.
+technique_kind: prompting
+technique_validated_by: Accuracy on three 500-item balanced claim sets against
+  Direct prompting, CoT, and ArgLLM (the same tree without pairwise comparison
+  or calibration), across five open models and two judge configurations;
+  blending BT with intrinsic strength reported ~3% relative gain over BT
+  alone.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Running the same pipeline with the calibration step removed
+  (lambda=0) and finding equal or higher accuracy, or finding CoT beats the
+  tournament method on small models too.
+evidence_note: "Measured on three datasets x five models x several
+  configurations, with ArgLLM as a clean ablation (lambda=0). Gains are mostly
+  a few accuracy points and are not uniform: CoT wins on Llama 3.3 70B on
+  StrategyQA and TruthfulQA, and self-judging collapses the advantage.
+  Explainability advantage is argued, not measured."
+confidence: medium

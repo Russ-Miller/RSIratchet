@@ -1,0 +1,44 @@
+arxiv_id: "2602.10480"
+title: Neuro-Symbolic Synergy for World Modeling
+url: https://doi.org/10.48550/arxiv.2602.10480
+drafted_at: 2026-11-11
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: state-tracking
+statement: For small world-model LLMs (1B-4B) predicting next states in
+  rule-governed text environments, applying symbolic rule outputs as scores
+  that rerank candidate next states raises prediction accuracy more than
+  injecting the same rules as natural-language text into the model's context,
+  because score-level application does not depend on the model following
+  prompt instructions.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Multiple-choice next-state prediction in ScienceWorld,
+  WebShop and PlanCraft with Llama-3.2-1B and Qwen3-4B backbones; rules
+  authored offline by a larger model.
+technique: ""
+proposed_technique: Rerank candidate next states with executable rule scores
+technique_summary: A weighted set of Python rule functions scores each
+  candidate next-state/reward pair, and the scores multiply the LLM's
+  candidate likelihoods in a log-linear reranker rather than entering the
+  prompt.
+technique_kind: decoding
+technique_validated_by: Next-state prediction accuracy on three environments
+  against standalone neural WM, full-data SFT, GPT-5-mini, and WALL-E context
+  injection; Phase 2 reranking beat WALL-E by 8.8 points (Llama) and 2.9
+  points (Qwen) on ScienceWorld, and a WALL-E-2.0-style executable-feedback
+  control averaged 49.0/56.5 versus 82.7/83.7.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A setup where prompt-injected rules match or beat score-level
+  reranking at equal rule quality on small backbones, or where the reranking
+  advantage disappears once the injected rules are formatted better.
+evidence_note: Measured across 3 environments x 2 backbones with matched rule
+  sets; gap is largest on the 1B model, consistent with the stated
+  instruction-following mechanism. Ablation shows the combiner algebra is not
+  the source of the gain (linear interpolation matches log-linear), but
+  candidate-adaptive scaling matters. Rules were selected on the development
+  set with no second held-out split, so rule quality may be slightly overfit.
+confidence: medium

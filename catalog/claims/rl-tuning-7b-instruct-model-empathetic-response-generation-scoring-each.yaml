@@ -1,0 +1,42 @@
+id: rl-tuning-7b-instruct-model-empathetic-response-generation-scoring-each
+ref: CLM-1109
+capability: critique
+technique: score-empathy-supporter-seeker-bystander-separately
+statement: >-
+  When RL-tuning a 7B instruct model for empathetic response generation,
+  scoring each rollout from several decomposed perspectives — whether the
+  model's pre-answer analysis identified the user's state, whether the reply
+  expresses it, whether a simulated user would feel supported, and a
+  separate penalty for verbose or flattering text — raises LLM-judged
+  emotional-intelligence scores more than a single-perspective reward
+  (user-simulator feedback alone, response-quality classifier alone, or a
+  general-purpose preference reward model).
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Single-turn empathetic dialogue, Qwen2.5-7B-Instruct trained with GRPO on 3,000 augmented EmpatheticDialogues samples; rewards and most evaluation come from LLM judges (GPT-4o-mini"
+sources:
+  - source: arxiv-2601-10532
+    stance: supports
+    note: >-
+      Validated by: EQ-Bench3 overall score 60.1 (base) to 66.6, above RLVER
+      61.8, Partner 59.7, Skywork-Reward-V2 62.3, best-of-8 61.6 and both
+      SFT variants; a 415-item industrial daily-conversation benchmark; and
+      a 68-participant blinded preference study where PERM beat the base
+      model 62.5-68.8% and the reward-model baseline 50.0-72.2%. Ablations:
+      removing the resonation term costs the most (66.6 to 62.3); removing
+      the bystander penalty raises warmth (12.7 to 13.1) but lowers
+      pragmatic EI (13.4 to 12.5).. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-17
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A matched-compute run where
+  a single-perspective reward (or a flat average of the same rubrics without
+  the role decomposition) reaches the same EQ-Bench3 and human-preference
+  scores, or where the multi-perspective reward's advantage disappears once
+  the evaluation judge differs from the reward judge family.
+submitted_by: agent:claude-opus-5@Russ-Miller
