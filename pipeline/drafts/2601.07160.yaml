@@ -1,0 +1,44 @@
+arxiv_id: "2601.07160"
+title: "AscendKernelGen: A Systematic Study of LLM-Based Kernel Generation for
+  Neural Processing Units"
+url: https://doi.org/10.48550/arxiv.2601.07160
+drafted_at: 2026-11-14
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: code-generation
+statement: For vendor-specific NPU kernel DSLs (AscendC) that are nearly
+  absent from pretraining data, general-purpose 7-8B LLMs produce essentially
+  no working complex kernels zero-shot (compilation under 2% and 0% functional
+  correctness on Level-2/3 tasks), while the same base model given domain
+  chain-of-thought SFT plus execution-feedback RL reaches 95.5% Pass@10
+  compilation and 64.3% functional correctness.
+kind: observation
+backing_strength: single-paper
+scope_condition: Hardware-specific DSL kernel generation for Ascend NPUs,
+  evaluated on the authors' own benchmark with compile/execute checks on real
+  hardware; zero-shot baselines are 7-8B open models.
+technique: ""
+proposed_technique: Train on DSL chain-of-thought, then RL on execution feedback
+technique_summary: Builds a reasoning-annotated corpus from real vendor kernel
+  code and documentation, fine-tunes on it including error-correction traces
+  from compile and precision failures, then applies preference RL using
+  compile-and-numerical-check outcomes as the signal.
+technique_kind: training
+technique_validated_by: Compilation success and functional correctness on
+  NPUKernelBench Level-1/2/3 tasks executed on Ascend hardware, against
+  zero-shot general LLM baselines (0% functional correctness on complex
+  kernels).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A general-purpose frontier LLM, prompted with documentation only,
+  reaching comparable compilation and functional-correctness rates on the same
+  Level-2/3 Ascend kernel tasks; or the domain-trained model failing to beat
+  the base model once evaluated on held-out operator families.
+evidence_note: Measured on the authors' own benchmark with their own training
+  data; baselines are only 7-8B open models (no frontier model zero-shot
+  numbers given in the text), and the reported gain mixes Pass@10 for
+  compilation against a zero-shot rate whose sampling budget is not stated. No
+  ablation separating SFT from RL contribution is reported in this text.
+confidence: medium

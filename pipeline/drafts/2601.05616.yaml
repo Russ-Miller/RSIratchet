@@ -1,0 +1,45 @@
+arxiv_id: "2601.05616"
+title: "Dual-Phase LLM Reasoning: Self-Evolved Mathematical Frameworks"
+url: https://doi.org/10.48550/arxiv.2601.05616
+drafted_at: 2026-11-16
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: self-repair
+statement: For a 7B instruct model on math reasoning, supervised fine-tuning
+  on its own two-turn answer-then-correct traces (balanced 1:1 between traces
+  whose first answer was right and wrong) raises accuracy over the untuned
+  model and over self-rewarding and think-twice baselines, while remaining
+  well below fine-tuning on chains distilled from a much larger reasoning
+  model.
+kind: observation
+backing_strength: single-paper
+scope_condition: Qwen2.5-7B-Instruct, ~15k DeepScaleR math problems, evaluated
+  on GSM8K, MATH500, AIME24, AMC23, SVAMP, TabMWP, Gaokao2023en;
+  self-generated data only, two dialogue turns.
+technique: ""
+proposed_technique: Fine-tune on self-generated answer-then-correct traces, balanced
+technique_summary: Prompt the base model to produce a first answer, a
+  self-evaluation, a revised answer and a summary, keep the traces under
+  rule-based filters with a 1:1 ratio of correct to incorrect first answers,
+  then supervised-fine-tune on the concatenated trace; a second round adds
+  difficulty-aware rejection sampling that re-samples unsolved problems with
+  exponentially more attempts.
+technique_kind: training
+technique_validated_by: Accuracy on seven math benchmarks against the untuned
+  Qwen2.5-7B-Instruct, a self-rewarding baseline, a think-twice baseline, and
+  a 15k-sample distillation from r1-distilled-32B; AIME24 6.70 to 16.70,
+  MATH500 74.20 to 76.60, while distillation reached 26.70 and 84.20.
+  Response-token counts reported alongside.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Fine-tuning the same backbone on self-generated two-turn correction
+  traces with the same budget yields no gain over the untuned model, or
+  matches distillation on AIME24/MATH500.
+evidence_note: Measured on one backbone and one data source, single seed per
+  cell, with AIME24/AMC23 sampled 8 times and other benchmarks once; AIME24
+  has 30 problems so the headline 6.70 to 16.70 is a handful of items. The
+  distilled baseline uses a different (larger-teacher) data source at matched
+  15k size. No ablation isolating the 1:1 balance from the trace format.
+confidence: low

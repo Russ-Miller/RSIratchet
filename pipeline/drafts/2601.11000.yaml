@@ -1,0 +1,47 @@
+arxiv_id: "2601.11000"
+title: "When Personalization Misleads: Understanding and Mitigating
+  Hallucinations in Personalized LLMs"
+url: https://doi.org/10.48550/arxiv.2601.11000
+drafted_at: 2026-11-14
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: long-term-memory
+statement: When user history is injected into a prompt for personalization
+  (profile-augmented or retrieval-augmented), factual QA accuracy on questions
+  whose answers are independent of the user degrades, and the degradation
+  grows as the proportion of history included grows.
+kind: observation
+backing_strength: single-paper
+scope_condition: Prompting-based personalization (PAG, DPL, RAG, LLM-TRSR) on
+  7-14B open instruct backbones; factual multi-hop QA paired with long-term
+  user histories; LLM-as-judge scoring.
+technique: ""
+proposed_technique: Steer hidden states away from personalization when it distorts facts
+technique_summary: At a selected personalization-sensitive layer, a logistic
+  probe on the final-token hidden state estimates whether personalization is
+  corrupting factual reasoning, and the hidden state is either shifted along a
+  fact-minus-personalization steering vector or has the personalization offset
+  subtracted outright.
+technique_kind: decoding
+technique_validated_by: On PFQABench (1,000 items, 500 users) across three
+  backbones and four personalization methods, the mixed variant raised factual
+  accuracy (e.g. PAG on LLaMA3.1-8B from 17.2% to 75.2%) while keeping
+  personalized-question accuracy near baseline; ablations replacing the probe
+  or the steering vector with random alternatives lost most of the gain.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Measuring factual accuracy with and without user history on the
+  same factual questions and finding no drop, or finding the drop does not
+  grow with the amount of history included.
+evidence_note: Measured on a purpose-built benchmark the authors made (factual
+  half of PFQABench), scored by LLM judge, across 3 backbones x 4
+  personalization methods; history-length sweep shown for the RAG variant
+  only. The factual items are constructed to be user-invariant, so the design
+  does isolate personalization as the cause, but the benchmark is new and
+  unreplicated and the judge is not validated against humans here. A secondary
+  simulation of LLM 'users' learning from personalized teachers shows a 10.5%
+  accuracy drop (n=100, paired t-test p=0.016) but uses models as proxies for
+  people.
+confidence: medium

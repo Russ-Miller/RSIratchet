@@ -1,0 +1,64 @@
+id: arxiv-2601-01580
+ref: SRC-1061
+kind: paper
+title: "The Two-Stage Decision-Sampling Hypothesis: Understanding the
+  Emergence of Self-Reflection in RL-Trained LLMs"
+authors:
+  - Zibo Zhao
+  - Yuanting Zha
+  - Haipeng Zhang
+  - Xingcheng Xu
+year: 2026
+date: 2026-01-04
+arxiv_id: "2601.01580"
+url: https://arxiv.org/abs/2601.01580
+tags:
+  - ingested
+summary: Self-reflection capabilities emerge in Large Language Models after RL
+  post-training, with multi-turn RL achieving substantial gains over SFT
+  counterparts. Yet the mechanism of how a unified optimization objective
+  gives rise to functionally distinct capabilities of generating solutions and
+  evaluating when to revise them remains opaque. To address this question, we
+  introduce the Gradient Attribution Property to characterize how reward
+  gradients distribute across policy components, formalized through the
+  Two-Stage Decision-Sampling (DS) Hypothesis, which decomposes the policy
+  into sampling ($π_{s
+notes: "Filed as a source on self-repair from the classifier's judgement that
+  the paper is about it (measures, medium): The paper offers a theoretical and
+  empirical characterization of why self-reflection emerges under RL versus
+  SFT, attributing gains to the decision/verification component, rather than
+  proposing a new fix or reporting a regression. No claim has been drafted
+  from it yet."
+ingested_at: 2026-11-17
+brief: >-
+  RL's advantage over SFT on out-of-distribution reasoning comes mostly from
+  learning when to reject a wrong answer, not from generating better answers.
+  The authors split a single LLM policy analytically into a sampling policy
+  (generate a candidate with reasoning) and a decision policy (STOP or
+  RESAMPLE), and prove that trajectory-level surrogate rewards weight both
+  components by the same scalar advantage, while a token-level KL penalty
+  charges sampling O(L_k) per step and decisions O(1), leaving the decision
+  policy under-regularized.
+
+
+  Empirically: Qwen2.5-7B-Instruct trained on 4x5 and 5x4 multiplication,
+  evaluated on 3x3 through 3x9, all OOD. RL and SFT-with-reflection tie on
+  easy tasks (96–98% on 3x3), then diverge: at 3x6, RL 90% vs SFT 49%; at 3x9,
+  RL 34% vs SFT 0%. A 3-parameter calibration (p_s, p_d|C, p_d|W) fits
+  observed accuracy; for RL, p_d|W holds 40 60% far OOD while p_s falls from
+  about 80% to below 20%. For SFT, p_d|W collapses toward zero.
+
+
+  Evidence is 1 model family, 1 task family, n=100 per cell, with decision
+  actions detected by lexical markers like "Let me recompute" rather than by
+  any architectural separation. The theory is proved under abstractions that
+  drop clipping and trust regions, and assumes binary correctness rewards.
+  Supporting numbers for code, vision and language come from cited work (SFT
+  degrades OOD 8–80%, RL improves 3–61%), not from new experiments here.
+
+
+  If you are deciding whether reflection-rich SFT data buys real
+  self-correction, this argues it buys first-answer accuracy instead.
+brief_generated_at: 2026-11-17
+brief_model: claude-opus-5
+brief_source: full-text
