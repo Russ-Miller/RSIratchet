@@ -1,0 +1,49 @@
+arxiv_id: "2603.26034"
+title: "AgentCollab: A Self-Evaluation-Driven Collaboration Paradigm for
+  Efficient LLM Agents"
+url: https://doi.org/10.48550/arxiv.2603.26034
+drafted_at: 2026-11-07
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: long-horizon-execution
+statement: In multi-step agent frameworks mixing a small and a large model,
+  letting the small model emit a binary self-assessment of whether the
+  trajectory is progressing and escalating to the large model only on
+  stagnation recovers most of the large-model accuracy at a fraction of its
+  latency, and escalating earlier (checking every step rather than every 3-5)
+  matters more than the cost of the check itself.
+kind: observation
+backing_strength: single-paper
+scope_condition: Two open agent frameworks (DDV2, WebSailor) with 3B-38B model
+  pairs on web research, math and long-form writing benchmarks; depends on the
+  small model's self-assessment being reliable (3% false-progress in DDV2 vs
+  7% in WebSailor, with weaker gains in the latter).
+technique: ""
+proposed_technique: Escalate to a stronger model on the agent's own stagnation signal
+technique_summary: The small model emits a binary progress indicator alongside
+  each reasoning step; on FALSE, control passes to the large model for a
+  bounded number of steps whose budget grows with consecutive failures, then
+  returns.
+technique_kind: process
+technique_validated_by: Accuracy, average reasoning steps and end-to-end
+  speedup against small-only, large-only, random switching and five routing
+  baselines (RouteLLM, FrugalGPT, TRiM, Miroflow, WeDAS) on BrowseComp_zh,
+  HLE-math and WritingBench; e.g. DDV2 BrowseComp_zh 18.3 (small) / 34.6
+  (large) / 33.9 at 1.36x speedup; ablations on budget growth k, check
+  frequency, role assignment and cross-family pairings.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched comparison showing that escalation triggered by the
+  model's own progress signal does no better on the accuracy-latency frontier
+  than escalation triggered at random or on a fixed schedule at the same
+  large-model token share, or that reducing check frequency leaves accuracy
+  unchanged.
+evidence_note: Measured on three benchmarks (289/866/1000 questions) across
+  two agent frameworks with eight baselines and local vLLM-Ascend inference,
+  so latency is controlled. Accuracy judged by GPT-4o. The design does not
+  isolate the self-reflection signal from the large-model warm-up phase that
+  precedes it, and the frequency ablation varies check frequency and
+  large-model intervention timing together.
+confidence: medium

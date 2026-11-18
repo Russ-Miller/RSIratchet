@@ -1,0 +1,44 @@
+arxiv_id: "2601.04055"
+title: "Modular Prompt Optimization: Optimizing Structured Prompts with
+  Section-Local Textual Gradients"
+url: https://doi.org/10.48550/arxiv.2601.04055
+drafted_at: 2026-11-16
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: harness-self-improvement
+statement: For 7-8B open instruct solvers (LLaMA-3 8B-Instruct,
+  Mistral-7B-Instruct) on multiple-choice reasoning benchmarks, having a
+  critic rewrite each fixed prompt section (role, context, task, constraints,
+  output format) separately and then de-duplicating raises accuracy over both
+  an untuned structured prompt and whole-prompt textual-gradient optimization,
+  which can itself fall below the untuned prompt.
+kind: observation
+backing_strength: single-paper
+scope_condition: Two 7-8B open instruct models, two multiple-choice reasoning
+  benchmarks (ARC-Challenge, MMLU); no reported variance, seeds, or ablation
+  of the de-duplication step.
+technique: ""
+proposed_technique: Rewrite each prompt section separately, then de-duplicate
+technique_summary: Holds a fixed prompt schema (role, context, task,
+  constraints, output format) and has a critic model emit natural-language
+  improvements per section independently, appending them and running an LLM
+  de-duplication pass before reassembly.
+technique_kind: prompting
+technique_validated_by: Exact-match accuracy on 1,172 ARC-Challenge test items
+  and 1,400 held-out MMLU items, against an untuned same-schema prompt and
+  TextGrad; MPO best in all four cells (e.g. ARC LLaMA-3 79.10 vs 75.6
+  TextGrad vs 75.0 untuned; MMLU LLaMA-3 61.50 vs 56.40 vs 57.21).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Running section-local and global textual-gradient optimization
+  under matched critic calls and several seeds on these benchmarks and finding
+  no reliable accuracy difference, or finding the gain disappears once the
+  de-duplication step is applied to the global method too.
+evidence_note: "Measured: four model-benchmark cells, two baselines, single
+  run each, no confidence intervals or seed variation reported. No ablation
+  separating the section-local gradients from the de-duplication step, and no
+  matched-compute control, so the attribution to section locality is argued
+  rather than isolated."
+confidence: low

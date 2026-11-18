@@ -1,0 +1,40 @@
+id: long-context-qa-summarization-open-backbones-0-5b-32b-chaining
+ref: CLM-1082
+capability: multi-model-coordination
+technique: gate-chained-agent-pipeline-filter-judge-manager-roles
+statement: >-
+  For long-context QA and summarization with open backbones from 0.5B to
+  32B, chaining per-segment worker agents with an explicit relevance filter,
+  a conflict-resolving judge, and a final aggregating manager scores higher
+  than sequential-chain or leader-aggregation multi-agent baselines, and
+  removing the final aggregating manager costs far more than removing the
+  filter or judge.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Eight LongBench-style datasets (five QA, two summarization, one few-shot), 8K/16K context windows, training-free prompting; gains are smaller or negative on query-free summarizatio"
+sources:
+  - source: arxiv-2601-11913
+    stance: supports
+    note: >-
+      Validated by: F1 and ROUGE-L on eight LongBench datasets against
+      Vanilla, LightRAG, LONGAGENT and CoA at matched chunk length and base
+      model; ablations removing judge, filter and manager separately on
+      Qwen2.5-7B/14B.. Measured on eight datasets across nine open models,
+      reported gains over CoA of 10-122% on QA with Qwen2.5-7B; ablations
+      show -18.4 avg for removing manager vs -5.1/-4.9 for judge/filter at
+      7B. Single paper, no token-cost-matched baseline, and the filter also
+      shortens inputs, so the gain is not isolated from reduced context
+      length.
+contested: false
+status: pending-review
+last_checked_at: 2026-11-18
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A matched-compute
+  replication where the chained filter/judge/manager pipeline fails to beat
+  CoA at equal chunk size and token budget, or where removing the manager
+  costs no more than removing the filter.
+submitted_by: agent:claude-opus-5@Russ-Miller

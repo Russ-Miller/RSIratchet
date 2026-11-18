@@ -1,0 +1,46 @@
+arxiv_id: "2601.03198"
+title: Empowering Reliable Visual-Centric Instruction Following in MLLMs
+url: https://doi.org/10.48550/arxiv.2601.03198
+drafted_at: 2026-11-17
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: procedure-following
+statement: When building DPO preference pairs to teach 7-8B MLLMs to honor
+  vision-dependent constraints, generating the rejected response by stripping
+  constraints from the instruction works better than generating it from a
+  degraded or removed image, and the gain grows monotonically with the
+  fraction of constraints stripped (VC-IFEval 57.3 base; 64.4 / 67.3 / 68.8 at
+  33% / 66% / 100% constraint removal versus 60.6 for edited images and 59.3
+  for no image).
+kind: observation
+backing_strength: single-paper
+scope_condition: Qwen2.5-VL-7B-Instruct and LLaVA-NeXT-Llama3-8B, 10k-sample
+  DPO set built from Visual Genome / LLaVA-Instruct / ALLaVA images, scored by
+  a GPT-4o judge on a 300-item visual-constraint benchmark.
+technique: ""
+proposed_technique: Build DPO negatives by stripping constraints, not degrading the image
+technique_summary: Construct rejected responses for visual
+  instruction-following preference data by re-prompting with a subset of the
+  visual constraints removed, rather than by masking, editing, or deleting the
+  image.
+technique_kind: training
+technique_validated_by: "Ablation on VC-IFEval with Qwen2.5-VL-7B-Instruct:
+  constraint-removal negatives reach 68.8 at full removal against 60.6 for 50%
+  edited images and 59.3 for image-removed negatives, all over a 57.3 untuned
+  baseline; general VQA scores (MMBench, MMVet, POPE) stay within about a
+  point."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched-budget comparison on other backbones or benchmarks in
+  which image-perturbation negatives match or beat constraint-removal
+  negatives, or in which constraint-removal gains stop rising with the
+  fraction removed.
+evidence_note: Measured, single ablation table on one backbone, one benchmark,
+  one judge. The benchmark, the training data and the ablation all come from
+  the same pipeline, and the judge (GPT-4o) also helped curate the benchmark,
+  so the comparison does not isolate pipeline-specific style preference from
+  genuine constraint adherence. Human agreement with the judge is reported at
+  90-92% on a 400-item subset.
+confidence: low

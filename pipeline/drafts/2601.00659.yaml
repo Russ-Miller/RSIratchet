@@ -1,0 +1,46 @@
+arxiv_id: "2601.00659"
+title: "CRoPS: A Training-Free Hallucination Mitigation Framework for
+  Vision-Language Models"
+url: https://doi.org/10.48550/arxiv.2601.00659
+drafted_at: 2026-11-15
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: In 7-13B LVLMs generating long captions, the output distribution's
+  sensitivity to removing visual tokens falls as decoding proceeds, so
+  contrastive-decoding mitigations built on vision-ablated hallucinated models
+  lose their contrast signal exactly where hallucinations concentrate;
+  contrasting additionally against a model stripped of its highest-attention
+  text tokens keeps the signal non-vanishing and lowers object-hallucination
+  rates.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Open LVLMs (LLaVA-1.5 7B/13B, LLaVA-NeXT, Qwen2-VL) on
+  open-ended captioning; effect is smaller in short yes/no VQA where few
+  output tokens are generated.
+technique: ""
+proposed_technique: Contrast against both a vision-stripped and a text-stripped model
+technique_summary: At each decoding step, subtract logits from two
+  hallucinated variants of the same model — one with important visual tokens
+  pruned, one with all visual tokens plus the highest-attention text tokens
+  pruned — with the text-deficit weight growing over generation time.
+technique_kind: decoding
+technique_validated_by: CHAIR on MS-COCO (C_S 47.1->39.5 vs M3ID on
+  LLaVA-1.5-7B at comparable recall), AMBER, POPE, GPT-4o SHR, MME/MathVista,
+  across four backbones, 3 seeds; ablations show random text removal and
+  stacking M3ID+SID are worse.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Measuring the distributional shift from removing visual tokens
+  across decoding steps shows no decay, or a text-deficit contrast term gives
+  no hallucination reduction over a vision-only contrast at matched strength
+  on long captions.
+evidence_note: "Measured: Hellinger-distance dependency curves over generation
+  step plus CHAIR/AMBER/POPE across three model families and 4 backbones, with
+  ablations isolating random vs least-important text removal and the choice of
+  second hallucinated model. Hyperparameters shared across backbones. Does not
+  isolate how much of the gain is the time-growing weight schedule versus the
+  text-deficit model itself; latency ~3x sampling."
+confidence: medium

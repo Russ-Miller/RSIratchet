@@ -1,0 +1,44 @@
+arxiv_id: "2603.11563"
+title: "SVLL: Staged Vision-Language Learning for Physically Grounded Embodied
+  Task Planning"
+url: https://doi.org/10.48550/arxiv.2603.11563
+drafted_at: 2026-11-08
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: For 7B vision-language planners trained on embodied trajectory
+  data, supervising the model first on frames with the action history blocked
+  and only then on full-context sequences yields higher valid-action and
+  task-success rates and a lower repetitive-loop rate than joint end-to-end
+  fine-tuning on the full trajectory context from the start.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Qwen2.5-VL-7B backbone, AI2-THOR expert-demonstration
+  trajectories with egocentric observations and textual action history;
+  stage-1 data filtered to steps whose next action is determinable from the
+  current frame alone.
+technique: ""
+proposed_technique: Train spatial grounding before unlocking action history
+technique_summary: Fine-tune the planner first with the action-history channel
+  blocked so it must read the current frame, then resume full fine-tuning with
+  history restored from that checkpoint.
+technique_kind: training
+technique_validated_by: "On a sampled AI2-THOR test set: staged Stage-2 scored
+  74.23% success, 84.16% valid-action rate and 8.25% loop rate versus a
+  'Direct Stage 2' joint-SFT baseline at 68.04%, 78.37% and 10.31%; same
+  backbone, data and metrics."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched-compute comparison on the same backbone and data where
+  joint full-context fine-tuning equals or beats the staged schedule on
+  valid-action rate and loop rate, or where the staged gain disappears once
+  the stage-1 data filter is applied to the joint baseline too.
+evidence_note: Measured on one benchmark (AI2-THOR, sampled test episodes)
+  with one backbone and a single seed; no reported variance, and the staged
+  arm sees stage-1 filtered data as additional training so total exposure is
+  not matched to the Direct Stage 2 baseline. The loop-rate mechanism (history
+  shortcutting) is argued from the stage-1-only arm having the highest loop
+  rate, not from an attention or ablation analysis.
+confidence: low
