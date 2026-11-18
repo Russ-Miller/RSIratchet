@@ -1,0 +1,51 @@
+arxiv_id: "2601.06453"
+title: "ConSensus: Multi-Agent Collaboration for Multimodal Sensing"
+url: https://doi.org/10.48550/arxiv.2601.06453
+drafted_at: 2026-11-16
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: For training-free LLM multimodal sensor classification with one
+  agent per sensor modality, LLM semantic aggregation of the agents'
+  rationales and majority voting over their predictions fail under opposite
+  conditions — semantic fusion overweights modalities its prior knowledge
+  treats as authoritative, while majority voting collapses as modalities go
+  missing — so a final agent that arbitrates between the two outputs degrades
+  far less under missing sensors than voting alone.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Five classification benchmarks (WESAD, SleepEDF, ActionSense,
+  MMFit, PAMAP2) with hand-crafted sensor features, text-only 1-shot prompts,
+  open backbones 8B-120B; classification only, feasible subsets rather than
+  full datasets.
+technique: ""
+proposed_technique: Arbitrate between semantic and majority-vote fusion of per-modality agents
+technique_summary: Run one LLM agent per sensor modality, then have a semantic
+  fusion agent reason over all rationales, a statistical fusion agent justify
+  the majority-voted label, and a final agent pick between the two in a single
+  round.
+technique_kind: process
+technique_validated_by: Accuracy on five sensing benchmarks against a
+  single-agent concatenated-feature prompt (+7.1% average), self-consistency,
+  self-refine, and four multi-agent debate methods (matches best debate
+  baseline ReConcile, 72.3% vs 72.7%, at 12.7x fewer fusion tokens);
+  robustness measured under 10/30/50% random modality omission, where hybrid
+  beats statistical-only fusion by 9.1 and 18.4 points at 30% and 50%.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Show that under increasing modality missingness the hybrid
+  arbitration tracks the majority-vote branch rather than the semantic one, or
+  that a single fusion strategy matches hybrid accuracy across both the clean
+  and the high-missingness regimes on the same benchmarks.
+evidence_note: Measured on five benchmarks with four backbones. The headline
+  average gain over hybrid's own components is small (ConSensus 72.3 vs
+  statistical-only 72.2 and semantic-only 70.7), and per-dataset the hybrid is
+  not always best; the durable evidence is the divergence under missingness
+  and the opposite per-dataset wins (WESAD statistical +10.2, PAMAP2 semantic
+  +2.5). On gpt-oss-120B the hybrid did not beat ReConcile. No matched-token
+  single-agent control for the modality decomposition itself.
+confidence: medium
+problems:
+  - "figures not in the source: 72.2, 70.7"

@@ -1,0 +1,50 @@
+arxiv_id: "2601.00675"
+title: "RoboReward: General-Purpose Vision-Language Reward Models for Robotics"
+url: https://doi.org/10.48550/arxiv.2601.00675
+drafted_at: 2026-11-16
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: critique
+statement: When judging whether a real-robot episode accomplished its stated
+  instruction on a 1-5 progress scale, frontier general-purpose VLMs disagree
+  with human-verified labels substantially and unevenly across embodiments and
+  viewpoints, and a 4-8B model fine-tuned on episode-reward pairs with
+  synthetically generated failure and near-miss examples scores closer to the
+  human labels than much larger proprietary models.
+kind: observation
+backing_strength: single-paper
+scope_condition: Short-horizon manipulation episodes from Open X-Embodiment
+  and RoboArena, end-of-episode discrete progress scoring, 22 models evaluated
+  by mean absolute error against human-verified labels.
+technique: ""
+proposed_technique: Build reward-model negatives by relabeling and clipping successes
+technique_summary: Turn a success-heavy robot demonstration corpus into
+  reward-model training data by holding the video fixed while swapping in
+  counterfactual instructions the video only partly satisfies, and by
+  truncating successful rollouts to earlier endpoints to create
+  partial-progress labels, with a VLM rubric check discarding invalid
+  examples.
+technique_kind: training
+technique_validated_by: "Ablations on the 4B model against the human-verified
+  RoboRewardBench: removing all negative augmentation raised overall MAE from
+  0.845 to 1.450, removing only the clipped negatives raised it to 1.075,
+  while MAE on the organic RoboArena subset barely moved (0.806 / 0.797 /
+  0.813); the 8B model trained on the full mixture also raised real-robot RL
+  success over a frontier embodied-reasoning VLM reward (50% vs 10% and 80% vs
+  45% on two tasks, 20 trials each)."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A frontier general-purpose VLM prompted zero-shot matching or
+  beating the fine-tuned 4-8B models' MAE on the same human-verified episodes,
+  or the fine-tuned models failing to transfer once evaluated on held-out
+  embodiments scored by independent annotators.
+evidence_note: Measured on 2,831 human-verified test episodes with disjoint
+  task descriptions across splits; 22 models compared by MAE. Fine-tuned
+  models are trained on the same distribution the benchmark is drawn from, so
+  the margin over zero-shot frontier models partly reflects distribution match
+  rather than general reward-judging skill. Training labels are themselves
+  VLM-generated and filtered; only the test split is human-verified.
+  Downstream RL evidence is two tasks on one robot platform, 20 trials each.
+confidence: medium

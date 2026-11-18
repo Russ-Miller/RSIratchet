@@ -1,0 +1,56 @@
+id: arxiv-2601-02972
+ref: SRC-1072
+kind: paper
+title: "Correct, Concise and Complete: Multi-stage Training For Adaptive Reasoning"
+year: 2026
+date: 2026-01-06
+arxiv_id: "2601.02972"
+url: https://arxiv.org/abs/2601.02972
+tags:
+  - ingested
+summary: The reasoning capabilities of large language models (LLMs) have
+  improved substantially through increased test-time computation, typically in
+  the form of intermediate tokens known as chain-of-thought (CoT). However,
+  CoT often becomes unnecessarily long, increasing computation cost without
+  actual accuracy gains or sometimes even degrading performance, a phenomenon
+  known as ``overthinking''. We propose a multi-stage efficient reasoning
+  method that combines supervised fine-tuning -- via rejection sampling or
+  reasoning trace reformatting -- with reinforcement learning using an
+  adaptive length penal
+ingested_at: 2026-11-18
+brief: >-
+  Penalizing only the tokens a reasoning model generates after its first
+  correct answer cuts chain-of-thought length more cleanly than imposing a
+  fixed thinking budget. The penalty is zero when no correct answer appears,
+  so self-correction survives while redundant self-verification is
+  discouraged.
+
+
+  The method pairs SFT (either rejection sampling for the shortest correct
+  trace, or reformatting to drop the post-think summary) with GRPO using that
+  adaptive penalty. Training used 13K math problems from DeepScaleR;
+  evaluation covered MATH-500, AIME 24, AIME 25, GPQA-Diamond, CommonsenseQA,
+  LiveCodeBenchv6 and LongBenchv2 on Qwen3-1.7B/8B/32B and
+  DeepSeek-R1-Qwen-7B-Distill.
+
+
+  Response length fell 28% on Qwen3-8B and 40% on Qwen3-32B, with accuracy
+  drops of 1.6 and 2.5 points. On the area under the Overthinking-Adjusted
+  Accuracy curve, Format-Adaptive-Answer scored 76.6 against 71.6 for the base
+  model and 74.0 for the best baseline.
+
+
+  Measured against 6 efficient-reasoning baselines at matched max output
+  length, with component ablations separating SFT from RL: RL without SFT
+  reached 73.2 AUC, below both full variants. Gains do not hold everywhere. On
+  Qwen3-1.7B AUC dropped from 65.4 to 62.1, and on DeepSeek-R1-7B from 62.1 to
+  59.6, despite shorter traces. Hard-Length and SFT baselines beat it on
+  LiveCodeBench and LongBenchv2. Training was math-only, 1 dense architecture
+  family, no non-reasoning tasks tested.
+
+
+  If you are trimming overthinking, target the post-answer tail rather than a
+  global budget.
+brief_generated_at: 2026-11-18
+brief_model: claude-opus-5
+brief_source: full-text

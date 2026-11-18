@@ -1,0 +1,41 @@
+id: 7-13b-lvlms-generating-long-captions-output-distribution-s-sensitivity
+ref: CLM-0982
+capability: visual-grounding
+technique: contrast-against-both-vision-stripped-text-stripped-model
+statement: >-
+  In 7-13B LVLMs generating long captions, the output distribution's
+  sensitivity to removing visual tokens falls as decoding proceeds, so
+  contrastive-decoding mitigations built on vision-ablated hallucinated
+  models lose their contrast signal exactly where hallucinations
+  concentrate; contrasting additionally against a model stripped of its
+  highest-attention text tokens keeps the signal non-vanishing and lowers
+  object-hallucination rates.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Open LVLMs (LLaVA-1.5 7B/13B, LLaVA-NeXT, Qwen2-VL) on open-ended captioning; effect is smaller in short yes/no VQA where few output tokens are generated."
+sources:
+  - source: arxiv-2601-00659
+    stance: supports
+    note: >-
+      Validated by: CHAIR on MS-COCO (C_S 47.1->39.5 vs M3ID on LLaVA-1.5-7B
+      at comparable recall), AMBER, POPE, GPT-4o SHR, MME/MathVista, across
+      four backbones, 3 seeds; ablations show random text removal and
+      stacking M3ID+SID are worse.. Measured: Hellinger-distance dependency
+      curves over generation step plus CHAIR/AMBER/POPE across three model
+      families and 4 backbones, with ablations isolating random vs
+      least-important text removal and the choice of second hallucinated
+      model. Hyperparameters shared across backbones. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-18
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Measuring the
+  distributional shift from removing visual tokens across decoding steps
+  shows no decay, or a text-deficit contrast term gives no hallucination
+  reduction over a vision-only contrast at matched strength on long
+  captions.
+submitted_by: agent:claude-opus-5@Russ-Miller

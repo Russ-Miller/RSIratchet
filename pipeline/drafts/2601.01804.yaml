@@ -1,0 +1,47 @@
+arxiv_id: "2601.01804"
+title: "V-CORE: Temporally Consistent Video Understanding for Video-LLM"
+url: https://doi.org/10.48550/arxiv.2601.01804
+drafted_at: 2026-11-15
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: video-temporal-reasoning
+statement: For parameter-efficient Video-LLMs that compress frames through a
+  lightweight projector before a frozen 7B LLM, replacing the projector's
+  unconstrained bidirectional attention with a block-causal mask that permits
+  intra-frame but not future-to-past inter-frame attention raises NExT-QA
+  accuracy, with the gain concentrated in temporal and causal sub-categories
+  rather than descriptive ones.
+kind: observation
+backing_strength: single-paper
+scope_condition: Zero-shot VideoQA, CLIP ViT-L/14 + frozen Vicuna-7B with
+  4-bit QLoRA, 16 frames, trained only on Video-ChatGPT-100K; measured on
+  NExT-QA with an LLM-judge protocol.
+technique: ""
+proposed_technique: Enforce block-causal frame ordering in the video projector
+technique_summary: The video-to-LLM projector uses a block-causal attention
+  mask that allows attention within a frame and to earlier frames only, with a
+  learnable summary token appended at the end of the sequence to aggregate the
+  whole ordered history.
+technique_kind: architecture
+technique_validated_by: "Ablation on NExT-QA with the same backbone and data:
+  mean-pool+linear 53.8%, LSA+linear 55.6%, LSA+bidirectional transformer
+  58.0%, LSA+causal mask 60.2%, plus terminal summary token 61.2%;
+  sub-category breakdown shows +3.5 temporal and +5.2 causal over the
+  bidirectional variant versus +0.9 descriptive. Placing the summary token at
+  the front instead of the end drops accuracy to 57.1%."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Swapping the block-causal mask for bidirectional attention in the
+  same projector, with everything else fixed, leaves temporal and causal
+  sub-category accuracy unchanged or higher; or the reported gain survives
+  equally on descriptive questions, indicating generic capacity rather than
+  ordering.
+evidence_note: Measured on one backbone and one training corpus, with a
+  progressive ablation isolating the mask (+2.2 points) and the terminal token
+  (+1.0) and a sub-category breakdown. Single paper, one benchmark for the
+  causal claim, scores judged by GPT-3.5-turbo rather than exact match; no
+  seed variance or confidence intervals reported, and the mask change is not
+  isolated from the positional-encoding change that accompanies it.
+confidence: low

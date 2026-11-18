@@ -1,0 +1,67 @@
+id: arxiv-2601-00269
+ref: SRC-1051
+kind: paper
+title: "FaithSCAN: Model-Driven Single-Pass Hallucination Detection for
+  Faithful Visual Question Answering"
+authors:
+  - Chaodong Tong
+  - Qi Zhang
+  - Chen Li
+  - Lei Jiang
+  - Yanbing Liu
+year: 2026
+date: 2026-01-01
+arxiv_id: "2601.00269"
+url: https://arxiv.org/abs/2601.00269
+tags:
+  - ingested
+summary: "Faithfulness hallucinations in VQA occur when vision-language models
+  produce fluent yet visually ungrounded answers, severely undermining their
+  reliability in safety-critical applications. Existing detection methods
+  mainly fall into two categories: external verification approaches relying on
+  auxiliary models or knowledge bases, and uncertainty-driven approaches using
+  repeated sampling or uncertainty estimates. The former suffer from high
+  computational overhead and are limited by external resource quality, while
+  the latter capture only limited facets of model uncertainty and fail to
+  sufficientl"
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, high): The paper proposes a
+  lightweight detector using internal VLM signals that outperforms existing
+  hallucination detection methods, improving the ability to catch ungrounded
+  answers. No claim has been drafted from it yet."
+ingested_at: 2026-11-18
+brief: >-
+  Hallucination in VQA can be detected from a single forward pass of the model
+  itself, without repeated sampling or external verifiers, and a small
+  supervised head on internal signals beats sampling-based uncertainty
+  estimators at a fraction of the inference cost.
+
+
+  FaithSCAN extracts 3 internal signal families from a frozen VLM: token-level
+  log-likelihood and entropy, decoder hidden states, raw visual patch
+  embeddings, and cross-modal aligned tokens. These are compressed by branch
+  encoders to 64 dimensions and fused by uncertainty-aware attention. Labels
+  come from a Visual-NLI judge (Qwen2.5-VL-32B-Instruct, T = 0.1) rather than
+  human annotation. Backbones are IB-T5-XL, LLaVA-8B, Qwen3-VL-8B; datasets
+  are HalLoc-VQA, POPE, HaloQuest, VQA v2, with 2,000 train and 1,000 eval
+  instances sampled per split and 3 seeds.
+
+
+  In-distribution AUROC gains reach up to 8% over baselines including semantic
+  entropy, SelfCheckGPT and P(True). Inference costs 0.605–1.191 s per 100
+  samples versus 78.613–367.522 s for SelfCheckGPT. Judge labels agree with
+  human spot-checks (100 samples per dataset) at 0.950–0.990, Cohen's Kappa
+  0.798–0.947.
+
+
+  Ablations isolate signal types, fusion methods and decoder layers;
+  intermediate layers work best. Out-of-distribution transfer is weak —
+  several cross-dataset AUROCs fall below 0.5, and FaithSCAN sometimes loses
+  to logistic regression. F1@Best is often no better than baselines.
+
+
+  Treat this as an efficiency result for in-domain detection, not a
+  general-purpose hallucination detector.
+brief_generated_at: 2026-11-18
+brief_model: claude-opus-5
+brief_source: full-text
