@@ -1,0 +1,41 @@
+id: fine-tuning-language-decoder-2b-7b-multimodal-llm-narrow-downstream-task
+ref: CLM-1047
+capability: fine-tuning-retention
+technique: freeze-parameters-ranked-data-free-output-sensitivity-probing
+statement: >-
+  When fine-tuning the language decoder of a 2B-7B multimodal LLM on a
+  narrow downstream task, freezing the parameters that score highest on a
+  data-free output-sensitivity measure (Jacobian norm x weight magnitude x
+  input activation, estimated before training with synthetic prompts)
+  retains more upstream zero-shot ability than post-merging or
+  gradient-history sparse methods, and the advantage grows as fine-tuning
+  extends from the last few layers to the earlier decoder layers.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "LLaVA-1.5-7B and NVILA-Lite-2B fine-tuned on captioning, classification and VQA datasets (10k samples), update ratio around 0.1, upstream measured on TextVQA/OKVQA/OCRVQA/MMB/GQA."
+sources:
+  - source: arxiv-2602-04509
+    stance: supports
+    note: >-
+      Validated by: Harmonic mean of upstream zero-shot accuracy and
+      downstream accuracy against Full-FT, DARE, Grafting, ModelTailor and
+      SPIDER across four downstream datasets and fine-tuning depths from 4
+      to 32 layers; also compared against random masking at matched update
+      ratios over three seeds, and score ranking compared to a
+      real-data-estimated ranking by Spearman correlation (0.891).. Measured
+      on two architectures and four downstream datasets with five baselines,
+      including a random-mask control with seed variance and significance
+      tests. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-19
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A run where freezing
+  top-sensitivity-scored parameters retains no more upstream accuracy than
+  random masking at the same update ratio, or where post-merging methods
+  match it when all decoder layers are fine-tuned.
+submitted_by: agent:claude-opus-5@Russ-Miller

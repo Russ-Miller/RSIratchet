@@ -1,0 +1,69 @@
+id: arxiv-2601-01156
+ref: SRC-1057
+kind: paper
+title: "DHI: Leveraging Diverse Hallucination Induction for Enhanced
+  Contrastive Factuality Control in Large Language Models"
+authors:
+  - Jiani Guo
+  - Xiangke Zeng
+  - Jie Wu
+  - Zuchao Li
+year: 2026
+date: 2026-01-03
+arxiv_id: "2601.01156"
+url: https://arxiv.org/abs/2601.01156
+tags:
+  - ingested
+summary: Large language models (LLMs) frequently produce inaccurate or
+  fabricated information, known as "hallucinations," which compromises their
+  reliability. Existing approaches often train an "Evil LLM" to deliberately
+  generate hallucinations on curated datasets, using these induced
+  hallucinations to guide contrastive decoding against a reliable "positive
+  model" for hallucination mitigation. However, this strategy is limited by
+  the narrow diversity of hallucinations induced, as Evil LLMs trained on
+  specific error types tend to reproduce only these particular patterns,
+  thereby restricting their overal
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, high): The paper proposes a
+  training/decoding framework (DHI) that induces diverse hallucinations for
+  contrastive decoding and reports improved factuality. No claim has been
+  drafted from it yet."
+ingested_at: 2026-11-19
+brief: >-
+  Training a deliberately unfactual "Evil" model by penalizing correct tokens
+  on factual data works better as a contrastive signal than fine-tuning it on
+  pre-annotated hallucination examples. DHI reverses the loss sign at
+  answer-token positions, masks those tokens out of the causal attention for
+  later positions, and restricts contrastive subtraction to steps where the
+  positive model is not already confident.
+
+
+  Setup: Llama2-7B-Base trained with LoRA as the Evil model, contrasted
+  against 7B-Chat at inference. Training data came from the HaluEval QA
+  subset, expanded by GPT-4o into declarative sentences and filtered to 9,196
+  entries. Evaluation on TruthfulQA (817 questions, MC1/MC2/MC3) and FactScore
+  biographies.
+
+
+  Results: DHI reaches 41.9 MC1, 72.6 MC2, 45.0 MC3, average 53.2, against ICD
+  at 50.5 and 70B-Chat greedy at 42.2. On FactScore it scores 68.1 versus ICD
+  66.3, with 49.9 facts per response.
+
+
+  Evidence: measured, with a 3-way component ablation (removing selective
+  contrast drops average to 51.7, mask adaptation to 52.5, loss modification
+  to 51.4) and an alpha sweep showing an inverted U peaking at 0.05 (53.2)
+  versus 49.8 at 0.00 and 50.4 at 0.20.
+
+
+  Boundary: 1 model family, 1 size, 2 benchmarks, no compute-matched baseline,
+  and FactScore response rate stays low at 41.2%. Note the inconsistency
+  between the reported alpha of 0.05 in the sweep and 0.0 in the TruthfulQA
+  implementation details.
+
+
+  If you build contrastive decoding, the signal source matters more than
+  scale.
+brief_generated_at: 2026-11-19
+brief_model: claude-opus-5
+brief_source: full-text

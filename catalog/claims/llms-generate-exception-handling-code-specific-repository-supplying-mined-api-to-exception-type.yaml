@@ -1,0 +1,38 @@
+id: llms-generate-exception-handling-code-specific-repository-supplying-mined-api-to-exception-type
+ref: CLM-1090
+capability: code-generation
+technique: prompt-exception-handling-mined-api-exception-mappings
+statement: >-
+  When LLMs generate exception-handling code for a specific repository,
+  supplying a mined API-to-exception-type mapping matters more than
+  supplying cross-file call traces or abstracted handling patterns: removing
+  the mapping drops execution pass rate far more than removing either of the
+  other two.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Java/Android repositories, try-catch synthesis, GPT-4o backbone, benchmark built from 3,200 GitHub Android repos with a 100-instance executable subset"
+sources:
+  - source: arxiv-2601-01271
+    stance: supports
+    note: >-
+      Validated by: Compared against six baselines (Direct-Prompting,
+      RepoCoder, ExAssist, Nexgen, Seeker, KPC) on RepoExEval (CodeBLEU 0.31
+      vs 0.27; intent accuracy 60.1% vs 48.0%) and RepoExEval-Exec (Pass@1
+      29% vs 25%), with a one-at-a-time ablation of the three knowledge
+      components.. Measured: ablation on GPT-4o over RepoExEval reports
+      Pass@1 falling 29%->9% without the mapping versus 29%->23% (call
+      traces) and 29%->21% (patterns). Single backbone, single ablation run,
+      no variance reported; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-19
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An ablation on other
+  repositories or backbones in which removing the call-trace or
+  handling-pattern component costs as much or more execution pass rate than
+  removing the API-exception mapping.
+submitted_by: agent:claude-opus-5@Russ-Miller

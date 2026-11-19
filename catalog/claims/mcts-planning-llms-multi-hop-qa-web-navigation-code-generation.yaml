@@ -1,0 +1,41 @@
+id: mcts-planning-llms-multi-hop-qa-web-navigation-code-generation
+ref: CLM-1097
+capability: multi-model-coordination
+technique: expand-mcts-nodes-different-model-families
+statement: >-
+  In MCTS planning with LLMs on multi-hop QA, web navigation and code
+  generation, expanding each search node with different model families
+  rather than repeated calls to one model raises the share of nodes whose
+  candidate branches are all distinct and the final task accuracy, because
+  repeated sampling from one model reproduces its dominant reasoning
+  pattern.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Tested with three 7-8B open models (Qwen2.5, Mistral, Llama-3.1) and three API models (GPT-4, Qwen-Max, DeepSeek-V3) at expansion width 4 on HotpotQA, WebShop, MBPP; heterogeneity "
+sources:
+  - source: arxiv-2601-22623
+    stance: supports
+    note: >-
+      Validated by: Branch-uniqueness counts at fixed expansion width 4
+      (over 80% all-distinct branches on MBPP with the full trio vs under
+      20% single-agent) plus task metrics against single-agent and
+      single-model search baselines (HotpotQA EM 0.79, WebShop SR 0.72, MBPP
+      pass@1 0.965 for the API configuration), with fewer node expansions
+      than ToT/RAP/LATS; temperature scaling and adversarial prompting
+      reported as weaker diversity sources.. Measured on three benchmarks
+      with two model pools; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-19
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A controlled comparison
+  holding scheduling, memory and scoring fixed in which swapping a single
+  model for a heterogeneous pool of equally capable models raises branch
+  uniqueness without raising task accuracy, or in which
+  temperature/prompt-perturbed single-model sampling matches the pool's
+  accuracy at equal compute.
+submitted_by: agent:claude-opus-5@Russ-Miller
