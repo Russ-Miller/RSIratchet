@@ -1,0 +1,38 @@
+id: 7-8b-open-models-longbench-qa-summarization-retrieval-driven-only
+ref: CLM-0989
+capability: long-context-degradation
+technique: index-attention-states-sparse-features-fuse-bm25
+statement: >-
+  For 7-8B open models on LongBench QA and summarization, retrieval driven
+  only by sparse-autoencoder features decoded from the model's own key/query
+  projections scores below BM25 and below full context (e.g. 22.60 vs 24.25
+  and 25.01 on Llama-3.1-8B), and only recovers near-full-context accuracy
+  when unioned with BM25 and lead/tail spans.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Nine LongBench datasets, three 7-8B instruct models, one unified prompt/decoding protocol; SAEs trained on general corpora, base LLM not fine-tuned."
+sources:
+  - source: arxiv-2601-17702
+    stance: supports
+    note: >-
+      Validated by: LongBench scores against a full-KV upper bound and
+      BM25/RAG/KV-compression baselines under one protocol: hybrid retains
+      99.4% of full-context average on Llama-3.1-8B and ~99% on Mistral; the
+      SAE-only ablation falls 2-3 points below BM25 on all three models.
+      Also HotpotQA answer recall (0.84 hybrid vs 0.78 pure vs 0.77
+      BM25/RAG) and KL to full-context next-token distribution.. Measured on
+      nine LongBench datasets across Llama-3.1-8B, Qwen2-7B and Mistral-7B
+      with a stated unified protocol and an explicit full-KV internal
+      baseline. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-19
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: SAE-feature-only
+  retrieval matching or exceeding BM25 and full-context accuracy on the same
+  benchmarks and models without lexical fusion.
+submitted_by: agent:claude-opus-5@Russ-Miller

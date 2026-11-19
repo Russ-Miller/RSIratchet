@@ -1,0 +1,67 @@
+id: arxiv-2601-01580
+ref: SRC-1061
+kind: paper
+title: "The Two-Stage Decision-Sampling Hypothesis: Understanding the
+  Emergence of Self-Reflection in RL-Trained LLMs"
+authors:
+  - Zibo Zhao
+  - Yuanting Zha
+  - Haipeng Zhang
+  - Xingcheng Xu
+year: 2026
+date: 2026-01-04
+arxiv_id: "2601.01580"
+url: https://arxiv.org/abs/2601.01580
+tags:
+  - ingested
+summary: Self-reflection capabilities emerge in Large Language Models after RL
+  post-training, with multi-turn RL achieving substantial gains over SFT
+  counterparts. Yet the mechanism of how a unified optimization objective
+  gives rise to functionally distinct capabilities of generating solutions and
+  evaluating when to revise them remains opaque. To address this question, we
+  introduce the Gradient Attribution Property to characterize how reward
+  gradients distribute across policy components, formalized through the
+  Two-Stage Decision-Sampling (DS) Hypothesis, which decomposes the policy
+  into sampling ($π_{s
+notes: "Filed as a source on self-repair from the classifier's judgement that
+  the paper is about it (measures, medium): The paper offers a theoretical and
+  empirical characterization of why self-reflection emerges under RL versus
+  SFT, attributing gains to the decision/verification component, rather than
+  proposing a new fix or reporting a regression. No claim has been drafted
+  from it yet."
+ingested_at: 2026-11-19
+brief: >-
+  RL-trained models generalize better than SFT-trained ones not because they
+  sample better answers but because they learn when to reject a wrong answer;
+  SFT models produce reflection text while almost never flipping a wrong
+  answer to a right one.
+
+
+  The authors split a single LLM policy analytically into a sampling policy
+  (generate a candidate solution) and a decision policy (STOP vs RESAMPLE),
+  then fit 3 parameters from model outputs: first-attempt accuracy p_s,
+  probability of stopping when correct p_d|C, and probability of resampling
+  when wrong p_d|W. Experiments use Qwen2.5-7B-Instruct trained on 4x5 and 5x4
+  multiplication and evaluated out-of-distribution on 3x3 through 3x9
+  multiplication, n=100 per task.
+
+
+  At 3x6, RL holds 90% accuracy while SFT with reflection data drops to 49%;
+  at 3x9 it is 34% vs 0%. Calibration shows p_d|C near ceiling for both, but
+  p_d|W sustaining 40–60% far OOD for RL and collapsing toward 0 for SFT.
+  Cited work finds p(F→T) flat at 3–5% for SFT regardless of corrective data
+  share, and SFT degrading OOD by 8–80% where RL improves 3–61%.
+
+
+  The theory is argued, not tested: theorems rest on an O(L_k) vs O(1) scale
+  separation in the token-level KL penalty, with clipping and trust regions
+  abstracted away. The empirical part is 1 model, 1 task family, binary
+  rewards, decision actions detected via lexical markers like "Let me
+  recompute", with no ablation separating the KL term from the reward term.
+
+
+  Use it as a mechanism story for why reflection-rich SFT data buys
+  first-answer accuracy but not self-correction.
+brief_generated_at: 2026-11-19
+brief_model: claude-opus-5
+brief_source: full-text

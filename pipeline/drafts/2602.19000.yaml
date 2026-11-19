@@ -1,0 +1,45 @@
+arxiv_id: "2602.19000"
+title: "MagicAgent: Towards Generalized Agent Planning"
+url: https://doi.org/10.48550/arxiv.2602.19000
+drafted_at: 2026-11-10
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: planning
+statement: For 30-32B open agent models trained on synthesized planning
+  trajectories, splitting multi-task post-training into supervised fine-tuning
+  followed by per-domain RL with one unified rule-based reward that scores
+  output format and task-specific semantic correctness separately raises
+  scores across heterogeneous planning benchmarks (task decomposition,
+  scheduling, tool use) rather than trading one against another.
+kind: observation
+backing_strength: single-paper
+scope_condition: Qwen3-based 32B dense and 30B-A3B MoE backbones; five
+  synthetic planning task families; benchmarks WorfBench, NaturalPlan,
+  tau2-Bench, BFCL-v3, ACEBench plus in-house evals.
+technique: ""
+proposed_technique: Unified multi-task reward plus staged SFT-then-RL for planning
+technique_summary: Train a planning agent by SFT on balanced synthetic
+  trajectories across five planning task families, then run per-domain RL with
+  a single reward that sums a format term and task-specific semantic terms
+  (plan step match, tool list exact match, schedule constraint parse, workflow
+  node/graph F1).
+technique_kind: training
+technique_validated_by: Reported benchmark accuracies (75.1% WorfBench, 86.9%
+  BFCL-v3, 80.3% F1-chain, 55.9% NaturalPlan, 57.5% tau2-Bench, 81.2%
+  ACEBench) compared against sub-100B open models and several larger closed
+  models; no per-component ablation of the reward is reported in the given
+  text.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation or replication showing that the same data with naive
+  joint multi-task RL (no per-domain staging, single undifferentiated reward)
+  matches these benchmark scores, or that gains on one planning family come
+  with equal losses on another.
+evidence_note: Reported benchmark numbers only; the source text argues for the
+  design (seesaw effect, format-plus-semantics reward) but the excerpt
+  contains no ablation isolating the staged training or the unified reward
+  from the synthetic data itself, and comparisons are across models rather
+  than matched-data arms.
+confidence: low

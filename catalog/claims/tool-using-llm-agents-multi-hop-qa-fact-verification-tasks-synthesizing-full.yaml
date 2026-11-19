@@ -1,0 +1,41 @@
+id: tool-using-llm-agents-multi-hop-qa-fact-verification-tasks-synthesizing-full
+ref: CLM-1174
+capability: planning
+technique: synthesize-pseudocode-plan-control-flow-then-execute
+statement: >-
+  For tool-using LLM agents on multi-hop QA and fact-verification tasks,
+  synthesizing a full pseudocode plan with explicit control-flow primitives
+  (conditionals, bounded loops, termination conditions, data dependencies)
+  before any action, and then executing each step with only step-local
+  context plus the global constraints, yields higher task accuracy than
+  reactive ReAct or depth-first-search agents, whose failures are unbounded
+  query reformulation after the needed evidence has already been found.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Two text benchmarks (FEVER, HotpotQA) plus five hand-built power-grid scenarios; benchmark gold labels were manually recalibrated by the authors; no ablation isolating which part o"
+sources:
+  - source: arxiv-2602-23668
+    stance: supports
+    note: >-
+      Validated by: Accuracy and F1 on FEVER (88.24% / 83.35% vs DFSDT
+      67.31% / 64.16% and ReAct 60.78% / 62.63%) and accuracy on HotpotQA
+      (82.14% vs DFSDT 73.21%, ReAct 46.40%), plus qualitative traces
+      showing DFSDT emitting 60+ tool calls and hitting a recursion error
+      where the planned agent terminates.. Measured on two benchmarks
+      against two reactive baselines with one backbone, plus five
+      qualitative engineering scenarios with no baseline comparison.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-19
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Running the same backbone
+  with a plain ReAct or DFSDT loop plus only a deterministic step/iteration
+  cap matching the plan's k_max closes most of the accuracy gap on
+  uncalibrated FEVER and HotpotQA, showing the gain comes from bounded
+  termination rather than from the structured plan.
+submitted_by: agent:claude-opus-5@Russ-Miller
