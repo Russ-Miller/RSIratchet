@@ -1,0 +1,37 @@
+id: 7-8b-open-instruct-models-acting-long-horizon-text-environments-alfworld
+ref: CLM-0989
+capability: state-tracking
+technique: reward-semantic-match-observed-next-state-tokens
+statement: >-
+  For 7-8B open instruct models acting in long-horizon text environments
+  (ALFWorld, tau2-Bench), mid-training the policy itself with RL on a
+  semantic next-state-prediction reward beats supervised next-state token
+  prediction on the same transition data, which collapses because it rewards
+  exact wording rather than semantic equivalence.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Text-state agent environments; self-collected rollouts converted to (history, action, next-state) triplets; requires a base model with enough reasoning/agentic ability — a weaker Q"
+sources:
+  - source: arxiv-2602-05842
+    stance: supports
+    note: >-
+      Validated by: Task success on ALFWorld and tau2-Bench against the base
+      model, world-model SFT on identical data, task-success-reward RL, and
+      expert-data baselines (IWM, SR, imitation learning), 3 runs each;
+      reported +19.6 and +6.9 points over base, and +6.9/+5.7 over direct
+      policy RL when stacked before it; ablations swap the embedding reward
+      for LLM-as-a-judge (real-valued and binarized), drop subsampling, and
+      add a format-only-reward control.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-20
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Under matched compute
+  and data, supervised next-state token prediction matching or exceeding
+  embedding-reward RL on downstream task success, or the embedding reward
+  giving no gain over a format-only reward control.
+submitted_by: agent:claude-opus-5@Russ-Miller

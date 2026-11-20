@@ -1,0 +1,53 @@
+arxiv_id: "2602.20708"
+title: "ICON: Indirect Prompt Injection Defense for Agents based on
+  Inference-Time Correction"
+url: https://doi.org/10.48550/arxiv.2602.20708
+drafted_at: 2026-11-09
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: prompt-injection
+statement: For white-box tool-using agents (8B text and vision-language
+  backbones), indirect prompt injections that successfully hijack a tool call
+  leave an over-concentrated attention signature on a few injected tokens, so
+  a small probe over per-head attention entropy can flag them and selectively
+  damping those attention peaks neutralizes the injection while the agent
+  continues its original task, where refusal-based detectors stop it.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Requires white-box access to attention weights; probe trained
+  on synthesized adaptive attacks (255 samples) and tested on
+  InjectAgent/AgentDojo with ReAct agents on Qwen-3-8B, LLaMA-3.1-8B,
+  Mistral-8B and three VLMs.
+technique: ""
+proposed_technique: Steer over-focused attention instead of refusing the injected request
+technique_summary: A probe over per-head attention-entropy features flags
+  injected context, then the top-fraction attention weights in the flagged
+  heads are multiplicatively damped before softmax so focus redistributes to
+  the benign task context.
+technique_kind: decoding
+technique_validated_by: "Attack success rate and utility-under-attack on
+  InjectAgent, AgentDojo and TrojanTools across three 8B backbones against
+  template defenses, MELON tool filtering, and a fine-tuned guard model:
+  average ASR 0.4% (vs 0.2% for the guard) with utility-under-attack about 10
+  points above every baseline; OOD detection 80-98% with utility recovery
+  48-70%; on three VLMs ASR 2.9% with 47.2% utility vs 28.8% for a commercial
+  detector at 0% ASR."
+stance_on_existing: supports
+related_claim_id: long-trusted-instructions-untrusted-retrieved-content-occupy-same-model
+stance_reason: ICON leaves instructions and data in one context and reduces
+  rather than eliminates attack success (0.4% ASR, 2.9% multimodal),
+  consistent with the claim that same-context defenses mitigate without
+  guarantees.
+falsifier: Show that hallucinated/injected tool calls in these agents are not
+  preceded by lower attention entropy on injected tokens, or that damping
+  those peaks fails to restore task completion relative to a refusal defense
+  at matched ASR, or that an attacker who spreads the payload across many
+  tokens evades the probe.
+evidence_note: Measured on three 8B text backbones and three VLMs under three
+  attack families, with a fine-tuned guard model and MELON as baselines and an
+  OOD transfer test from TrojanTools. Absolute utility numbers are low
+  (10-54%), the attack data is self-synthesized by the same authors'
+  LLM-as-optimizer, and no adaptive attacker is run against the probe itself,
+  so robustness to attacks designed to flatten attention is untested.
+confidence: low

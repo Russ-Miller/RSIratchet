@@ -1,0 +1,54 @@
+arxiv_id: "2603.26348"
+title: "Reflect to Inform: Boosting Multimodal Reasoning via
+  Information-Gain-Driven Verification"
+url: https://doi.org/10.48550/arxiv.2603.26348
+drafted_at: 2026-11-07
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: In 7B multimodal models on long-form visual reasoning, attention to
+  image tokens decays as the output lengthens and the answer drifts onto
+  textual priors, and training the model on its own rollouts to emit a
+  mid-generation reflection block — keeping only traces that add new visual
+  evidence rather than paraphrase — restores a spike of visual attention
+  inside that block and raises fine-grained perception scores.
+kind: observation
+backing_strength: single-paper
+scope_condition: Qwen2.5-VL-7B base, trained on ~80k cold-start reflection
+  samples plus GRPO with a reflection reward; benchmarks are visual math,
+  high-resolution perception, chart and OCR tasks; RL must be stopped early
+  (around 100 steps) or performance collapses.
+technique: ""
+proposed_technique: Train reflection blocks filtered by information gain, from own rollouts
+technique_summary: The model re-feeds its own first-pass reasoning plus the
+  original image back into itself to generate a reflection block, keeps only
+  reflections that add corrective or new visual evidence, fine-tunes on those,
+  then runs RL with a reward for reflection information gain.
+technique_kind: training
+technique_validated_by: "Benchmark gains over the Qwen2.5-VL-7B base: V*-Bench
+  76.4 to 83.8, ChartQA 83.7 to 88.8, OCRBench_v2 en 56.3 to 62.6, MathVerse
+  49.2 to 53.1; staged ablation showing SFT alone lifts perception but barely
+  moves MathVerse (+0.4) while RL adds +2.9; attention heatmaps showing a
+  spike on visual tokens inside the reflection block; lower KL to the base
+  policy and higher conditional entropy than GPT-5-distilled or Semantic-back
+  reflections."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched-data run where reflection traces distilled from a
+  stronger teacher, or reflection traces admitted without the information-gain
+  filter, reach the same or better benchmark scores and the same attention
+  resurgence; or attention probes showing the spike is not accompanied by
+  reduced ungrounded claims.
+evidence_note: Measured on one 7B backbone across six benchmarks with a staged
+  ablation (base, SFT, SFT+RL, full) and attention/KL/entropy analyses.
+  Hallucination reduction is asserted rather than measured on a hallucination
+  benchmark — gains are reported on accuracy benchmarks, and the trace-type
+  counts (No Gain dropping to near zero) come from 100 sampled trajectories
+  judged by an LLM scorer that is also the RL reward, so the
+  reflection-quality metric is not independent of the training signal. The
+  teacher-distillation comparison is only on KL/entropy, not on end-task
+  accuracy, so the central self-vs-teacher design choice is not validated
+  against downstream scores. One chart drop (ChartQA Aug -4.5) is unexplained.
+confidence: low

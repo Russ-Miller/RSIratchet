@@ -1,0 +1,45 @@
+arxiv_id: "2601.08884"
+title: "Bridging the Gap: Empowering Small Models in Reliable OpenACC-based
+  Parallelization via GEPA-Optimized Prompting"
+url: https://doi.org/10.48550/arxiv.2601.08884
+drafted_at: 2026-11-16
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: harness-self-improvement
+statement: For small 'nano'-scale LLMs generating OpenACC pragmas for C
+  kernels, evolving the prompt from structured clause- and parameter-level
+  mismatches against expert-curated gold pragmas raises compilation success
+  sharply (GPT-4.1 Nano 66.7% to 93.3%, GPT-5 Nano 86.7% to 100% on 30
+  PolyBench kernels) while leaving peak kernel speedups flat or slightly
+  lower, because the optimizer selects safer, more portable directives over
+  aggressive hardware-mapping clauses.
+kind: observation
+backing_strength: single-paper
+scope_condition: Single-file PolyBench kernels with no inter-procedural data
+  dependencies; four OpenAI model variants; NVIDIA nvc on one RTX 4070; gold
+  pragmas hand-tuned with Nsight.
+technique: ""
+proposed_technique: Evolve prompts from normalized pragma clause mismatches
+technique_summary: Normalizes predicted and gold OpenACC pragmas into
+  order-independent canonical clause maps, scores clause- and parameter-level
+  F1, and feeds the structured mismatch report to a reflective prompt
+  optimizer (GEPA) that mutates the student model's prompt each round.
+technique_kind: prompting
+technique_validated_by: Compilation success over 120 model-benchmark pairs
+  (78.3% to 95.8% aggregate, zero regressions) and count of benchmarks with
+  speedup >1x (67 to 81); mean speedup on the commonly-compiling subset
+  reported separately and mixed by model.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Running the same GEPA loop with an uninformative or random feedback
+  signal (not clause-level mismatch) producing equal compilation gains, or the
+  optimized prompts failing to transfer to a held-out kernel set.
+evidence_note: "Measured: 30 PolyBench kernels x 4 models, best-of-5 runs,
+  initial vs optimized prompt. No ablation separating the structured clause
+  feedback from the GEPA search itself, and no held-out benchmark suite —
+  prompts were optimized on 64 curated gold examples and evaluated on
+  PolyBench, which was excluded from the gold corpus. Speedup direction varies
+  by model (GPT-4.1 up, GPT-5 Nano down)."
+confidence: medium

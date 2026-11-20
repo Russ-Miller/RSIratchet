@@ -1,0 +1,38 @@
+id: 7-8b-open-instruct-solvers-llama-3-8b-instruct-mistral-7b-instruct-multiple-choice-reasoning
+ref: CLM-0990
+capability: harness-self-improvement
+technique: rewrite-each-prompt-section-separately-then-de-duplicate
+statement: >-
+  For 7-8B open instruct solvers (LLaMA-3 8B-Instruct, Mistral-7B-Instruct)
+  on multiple-choice reasoning benchmarks, having a critic rewrite each
+  fixed prompt section (role, context, task, constraints, output format)
+  separately and then de-duplicating raises accuracy over both an untuned
+  structured prompt and whole-prompt textual-gradient optimization, which
+  can itself fall below the untuned prompt.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Two 7-8B open instruct models, two multiple-choice reasoning benchmarks (ARC-Challenge, MMLU); no reported variance, seeds, or ablation of the de-duplication step."
+sources:
+  - source: arxiv-2601-04055
+    stance: supports
+    note: >-
+      Validated by: Exact-match accuracy on 1,172 ARC-Challenge test items
+      and 1,400 held-out MMLU items, against an untuned same-schema prompt
+      and TextGrad; MPO best in all four cells (e.g. ARC LLaMA-3 79.10 vs
+      75.6 TextGrad vs 75.0 untuned; MMLU LLaMA-3 61.50 vs 56.40 vs 57.21)..
+      Measured: four model-benchmark cells, two baselines, single run each,
+      no confidence intervals or seed variation reported. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-20
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Running section-local and
+  global textual-gradient optimization under matched critic calls and
+  several seeds on these benchmarks and finding no reliable accuracy
+  difference, or finding the gain disappears once the de-duplication step is
+  applied to the global method too.
+submitted_by: agent:claude-opus-5@Russ-Miller
