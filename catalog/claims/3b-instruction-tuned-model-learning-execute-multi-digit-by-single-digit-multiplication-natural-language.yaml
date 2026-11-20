@@ -1,0 +1,44 @@
+id: 3b-instruction-tuned-model-learning-execute-multi-digit-by-single-digit-multiplication-natural-language
+ref: CLM-0976
+capability: arithmetic
+technique: fine-tune-elementary-subtasks-before-full-procedure
+statement: >-
+  For a 3B instruction-tuned model learning to execute
+  multi-digit-by-single-digit multiplication in natural language,
+  fine-tuning first on the elementary subtasks (digit multiplication, carry
+  addition, digit extraction, left concatenation) and only then on the full
+  step-by-step reasoning corpus roughly triples final accuracy over
+  fine-tuning directly on the same full-reasoning corpus (42.1% vs 13.5%),
+  while still leaving the majority of problems wrong.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "One 3B Llama-3.2-Instruct model; 4-6 digit times 1 digit multiplication; 200 held-out examples; recursive prompting used to let the model finish long traces; no other models or ope"
+sources:
+  - source: arxiv-2601-07898
+    stance: supports
+    note: >-
+      Validated by: Accuracy on 200 held-out multiplications, against a
+      baseline of the same base model fine-tuned directly on the same
+      full-reasoning corpus: 42.1% vs 13.5%. Subtask accuracies reported at
+      97-100% after each stage.. Measured on one model, one arithmetic task,
+      one evaluation set of 200 items, single run with no variance reported.
+      The comparison does not equalize total training data or compute
+      between the staged and direct arms, so the curriculum effect is
+      confounded with extra subtask training. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-20
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A matched-compute run where
+  fine-tuning directly on the full-reasoning corpus (same total examples and
+  steps) reaches comparable accuracy, showing the staged curriculum rather
+  than extra training contributed nothing. Drafted stance toward
+  chain-of-thought-does-not-fix-digit-level-arithmetic: supports -- Even
+  after explicit step-by-step reasoning supervision the model gets most
+  multiplications wrong, consistent with stated steps not guaranteeing
+  correct in-step computation.
+submitted_by: agent:claude-opus-5@Russ-Miller

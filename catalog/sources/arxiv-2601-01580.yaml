@@ -1,0 +1,62 @@
+id: arxiv-2601-01580
+ref: SRC-1061
+kind: paper
+title: "The Two-Stage Decision-Sampling Hypothesis: Understanding the
+  Emergence of Self-Reflection in RL-Trained LLMs"
+authors:
+  - Zibo Zhao
+  - Yuanting Zha
+  - Haipeng Zhang
+  - Xingcheng Xu
+year: 2026
+date: 2026-01-04
+arxiv_id: "2601.01580"
+url: https://arxiv.org/abs/2601.01580
+tags:
+  - ingested
+summary: Self-reflection capabilities emerge in Large Language Models after RL
+  post-training, with multi-turn RL achieving substantial gains over SFT
+  counterparts. Yet the mechanism of how a unified optimization objective
+  gives rise to functionally distinct capabilities of generating solutions and
+  evaluating when to revise them remains opaque. To address this question, we
+  introduce the Gradient Attribution Property to characterize how reward
+  gradients distribute across policy components, formalized through the
+  Two-Stage Decision-Sampling (DS) Hypothesis, which decomposes the policy
+  into sampling ($π_{s
+notes: "Filed as a source on self-repair from the classifier's judgement that
+  the paper is about it (measures, medium): The paper offers a theoretical and
+  empirical characterization of why self-reflection emerges under RL versus
+  SFT, attributing gains to the decision/verification component, rather than
+  proposing a new fix or reporting a regression. No claim has been drafted
+  from it yet."
+ingested_at: 2026-11-20
+brief: >-
+  RL's advantage over SFT on out-of-distribution reasoning comes from the
+  decision of when to retry, not from better generation. The authors split a
+  single policy analytically into a sampling policy (produce a candidate
+  answer and trace) and a decision policy (STOP or RESAMPLE), and argue the
+  token-level KL penalty scales as O(L) for sampling but O(1) for decisions,
+  so regularization constrains generation while leaving the stop/retry
+  judgment free to move.
+
+
+  Validation is on Qwen2.5-7B-Instruct trained on 4x5 and 5x4 multiplication
+  and tested on 3x3 through 3x9, all OOD, n=100 per cell. RL and
+  reflection-SFT tie on easy cells (96-98% on 3x3), diverge at 3x6 (RL 90% vs
+  SFT 49%) and at 3x9 (RL 34% vs SFT 0%). A 3-parameter calibration fits
+  observed accuracy: both models keep p_d|C near ceiling, but RL sustains
+  p_d|W at 40-60% far OOD while SFT's collapses toward zero.
+
+
+  The theory is proved under simplifying assumptions, with clipping and trust
+  regions abstracted away; the empirical side is 1 model, 1 task family, and
+  decision actions are detected by lexical markers like "Let me recompute".
+  Supporting evidence from Kang et al. (p(F→T) flat at 3-5%) and Chu et al.
+  (SFT degrades OOD 8-80%, RL improves 3-61%) is cited, not replicated.
+
+
+  If you attribute RL gains to better reasoning, this suggests measuring the
+  verification decision separately.
+brief_generated_at: 2026-11-20
+brief_model: claude-opus-5
+brief_source: full-text

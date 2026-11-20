@@ -1,0 +1,45 @@
+arxiv_id: "2601.02439"
+title: "WebGym: Scaling Training Environments for Visual Web Agents with
+  Realistic Tasks"
+url: https://doi.org/10.48550/arxiv.2601.02439
+drafted_at: 2026-11-16
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: tool-use
+statement: When training an 8B vision-language web agent with positive-only
+  filtered-BC RL on a large task pool, biasing sampling toward hard tasks
+  plateaus and then degrades out-of-distribution success after tens of
+  thousands of rollouts, while sampling uniformly (which draws mostly from the
+  far larger pool of easy, website-diverse tasks) and capping per-episode
+  steps keeps improving, raising peak success on unseen websites from 34.5% to
+  42.9%.
+kind: observation
+backing_strength: single-paper
+scope_condition: Qwen3-VL-8B-Instruct trained with REINFORCE/filtered behavior
+  cloning on binary rubric rewards over a ~292k-task live-website environment;
+  test tasks drawn from websites absent from training.
+technique: ""
+proposed_technique: Sample web-agent RL tasks uniformly and cap episode steps
+technique_summary: Draw RL training tasks uniformly from the full difficulty
+  distribution rather than upweighting hard ones, and lower the per-episode
+  interaction cap (15/30/45 to 10/20/30 steps) to concentrate credit on early
+  decisions.
+technique_kind: training
+technique_validated_by: "Out-of-distribution success rate on 1,167 held-out
+  tasks from unseen websites: exclude-domains 31.0%, hard-biased 34.5%,
+  easy-only 36.9%, uniform 38.2%, uniform+short horizon 42.9%, against
+  untrained base 26.2% and GPT-4o 27.1%, GPT-5-Thinking 29.8%."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched run where hard-biased sampling matches or exceeds uniform
+  sampling at equal rollout budget on unseen-website tasks, or where
+  shortening the horizon lowers final success rate.
+evidence_note: Measured on one base model and one task set, with ablation
+  curves over roughly 36-42k collected trajectories; only two seeds averaged
+  on one condition, and the difficulty labels are LLM-generated fact counts
+  rather than independently validated. Size, breadth, depth and horizon are
+  varied in sequence rather than factorially, so their contributions are not
+  cleanly separated.
+confidence: medium

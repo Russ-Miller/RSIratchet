@@ -1,0 +1,41 @@
+id: reasoning-models-1-7b-32b-trained-only-math-problems-rl
+ref: CLM-1137
+capability: cutting-to-the-chase
+technique: penalize-only-tokens-after-first-correct-answer
+statement: >-
+  For reasoning models of 1.7B-32B trained only on math problems, RL with a
+  reward that penalizes the fraction of tokens generated after the trace's
+  first correct answer, preceded by a short SFT warm-up on shortest-correct
+  or summary-stripped traces, cuts average response length by 22-41% at
+  under 2.5 points accuracy loss, and the length saving grows with model
+  size.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen3 1.7B/8B/32B and DeepSeek-R1-Qwen-7B-distill; training data is math only; evaluation on math, science QA, code, commonsense and long-context benchmarks; length reductions are "
+sources:
+  - source: arxiv-2601-02972
+    stance: supports
+    note: >-
+      Validated by: Average accuracy, mean token count and area under the
+      Overthinking-Adjusted Accuracy curve across seven benchmarks, against
+      the base model, no-thinking, shortest-correct SFT, and four RL
+      length-penalty baselines (hard, soft, normalized, TWYN); best method
+      scores 76.6 AUC_OAA vs 71.6 base and 74.0 second-best, with per-stage
+      ablations.. Measured on seven benchmarks with N=10-64 samples per
+      question, with component ablations separating SFT and RL contributions
+      and a four-model size sweep. Weaknesses: training is math-only so
+      cross-domain gains are small; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-20
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Replicating the same SFT
+  plus post-first-correct-answer penalty on another reasoning model family
+  and finding either no length reduction over the base model, or an accuracy
+  drop larger than a fixed-budget truncation baseline at matched token
+  count.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,67 @@
+id: arxiv-2601-00659
+ref: SRC-1054
+kind: paper
+title: "CRoPS: A Training-Free Hallucination Mitigation Framework for
+  Vision-Language Models"
+authors:
+  - Neeraj Anand
+  - Samyak Jha
+  - Udbhav Bamba
+  - Rahul Rahaman
+year: 2026
+date: 2026-01-02
+arxiv_id: "2601.00659"
+url: https://arxiv.org/abs/2601.00659
+tags:
+  - ingested
+summary: "Despite the rapid success of Large Vision-Language Models (LVLMs), a
+  persistent challenge is their tendency to generate hallucinated content,
+  undermining reliability in real-world use. Existing training-free methods
+  address hallucinations but face two limitations: (i) they rely on narrow
+  assumptions about hallucination sources, and (ii) their effectiveness
+  declines toward the end of generation, where hallucinations are most likely
+  to occur. A common strategy is to build hallucinated models by completely or
+  partially removing visual tokens and contrasting them with the original
+  model. Yet, this"
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, high): The paper proposes CRoPS, a
+  training-free contrastive decoding framework that reduces hallucinated
+  content in vision-language model generations by ~20% CHAIR improvement. No
+  claim has been drafted from it yet."
+ingested_at: 2026-11-20
+brief: >-
+  Contrastive decoding against a vision-stripped model loses force as
+  generation proceeds, because the model's dependence on image tokens falls
+  while dependence on its own generated text rises. CRoPS adds a second
+  hallucinated model that deletes the most-attended text tokens, and contrasts
+  against both at once.
+
+
+  The setup: LLaVA-1.5 7B and 13B, LLaVA-NeXT 8B, Qwen2-VL 7B, evaluated on
+  CHAIR over MS-COCO, AMBER, POPE, a GPT-4o-assisted benchmark, MME and
+  MathVista, against VCD, ICD, OPERA, ClearSight, SID and M3ID. Nucleus
+  sampling, top-p 0.9, temperature 1, 3 seeds.
+
+
+  On LLaVA-1.5 7B CHAIR, C_S falls from 57.0 (sampling) and 47.1 (M3ID) to
+  39.5, C_I from 17.0 to 10.2, with recall 76.3 vs 74.8. AMBER HAL drops from
+  44.3 to 29.3. POPE accuracy gains are about 2%. MME rises to 1662, 1779 and
+  2184 across backbones.
+
+
+  Ablations isolate the pieces: removing text at random instead of by
+  attention gives C_S 50.7 vs 43.2; swapping the second model for M3ID gives
+  45.1 vs 39.5; the exponential token-retention schedule beats constant,
+  all-but-one and linear. 1 shared hyperparameter set across all backbones.
+  Baselines are re-run by the authors, not independently replicated.
+
+
+  Cost is real: 652s vs 215s for sampling, roughly 3x. Nothing is tested
+  outside training-free contrastive decoding.
+
+
+  If you use contrastive decoding, the late-generation decay is the thing to
+  fix.
+brief_generated_at: 2026-11-20
+brief_model: claude-opus-5
+brief_source: full-text

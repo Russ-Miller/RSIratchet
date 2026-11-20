@@ -1,0 +1,49 @@
+arxiv_id: "2601.19204"
+title: "MATA: A Trainable Hierarchical Automaton System for Multi-Agent Visual
+  Reasoning"
+url: https://doi.org/10.48550/arxiv.2601.19204
+drafted_at: 2026-11-12
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: For compositional visual reasoning with a small pool of
+  functionally overlapping agents (a fast perception agent, a one-shot program
+  agent, a stepwise program agent), routing each query with an LLM controller
+  fine-tuned on scored transition trajectories beats both random routing and
+  exhaustively running every agent and aggregating with a VLM, and the
+  exhaustive ensemble is both the least accurate and roughly four times
+  slower.
+kind: observation
+backing_strength: single-paper
+scope_condition: Three overlapping agents over a shared append-only memory,
+  fixed foundation models (InternVL2.5-8B, Florence2-L), evaluated on GQA,
+  OK-VQA and RefCOCO-family benchmarks; gains from adding the third agent were
+  marginal (64.5 to 64.9 on GQA).
+technique: ""
+proposed_technique: Train the agent-routing policy on scored transition trees
+technique_summary: Expand a bounded tree of possible next-agent transitions
+  per image-query, score leaves by task metric, propagate the max upward, and
+  fine-tune an LLM on (memory snapshot -> best next agent) pairs to serve as
+  the router.
+technique_kind: training
+technique_validated_by: "Accuracy on GQA, OK-VQA, RefCOCO/+/g and Ref-Adv plus
+  per-query inference time, against three ablations sharing the same agents:
+  exhaustive ensemble (avg weakest, 34.58s/query), random transition, and an
+  un-finetuned LLM router; SFT added about 6.4 points on GQA over the
+  un-finetuned router at equal latency."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Under matched agents and backbones, a random or round-robin router,
+  or exhaustive ensembling with VLM aggregation, matches the fine-tuned
+  router's accuracy on these benchmarks; or the reported gain disappears once
+  the un-finetuned router is given the same prompt budget.
+evidence_note: Measured in one ablation table across six benchmarks with the
+  agent set, tools and backbones held fixed, so the routing policy is
+  isolated. Single paper, authors' own system; the exhaustive baseline
+  aggregates with a VLM rather than an oracle, so it is not an upper bound.
+  Agent-count ablation shows most of the gain comes from having two agents,
+  not three, which weakens the case that fine-grained routing among many
+  overlapping agents is what matters.
+confidence: low

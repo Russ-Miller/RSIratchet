@@ -1,0 +1,42 @@
+arxiv_id: "2601.18771"
+title: "Dep-Search: Learning Dependency-Aware Reasoning Traces with Persistent
+  Memory"
+url: https://doi.org/10.48550/arxiv.2601.18771
+drafted_at: 2026-11-18
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-step-reasoning
+statement: For 3B-7B Qwen2.5-Instruct models trained with GRPO on multi-hop
+  QA, giving the policy an explicit DAG-style question decomposition plus a
+  capacity-bounded persistent fact memory it can write to and query raises
+  EM/F1 over search-RL baselines, with the memory contributing more than the
+  dependency decomposition (removing it costs 5.25 vs 3.32 average points).
+kind: observation
+backing_strength: single-paper
+scope_condition: Multi-hop and single-hop Wikipedia QA benchmarks; 3B and 7B
+  Qwen2.5-Instruct; memory is within-episode, reset per question during
+  training.
+technique: ""
+proposed_technique: Decompose into a dependency DAG and reuse facts from a bounded memory
+technique_summary: The policy emits control tokens to decompose a question
+  into dependency-ordered sub-questions, retrieve documents, summarize
+  retrieved evidence into natural-language facts in an LRU memory buffer, and
+  query that memory later, all trained jointly with trajectory-level GRPO.
+technique_kind: training
+technique_validated_by: "Average EM/F1 over seven QA datasets against ten
+  baselines (Search-R1, R1-Searcher, HierSearch, O2-Searcher, ZeroSearch and
+  others): 39.29 vs 36.31 best baseline at 3B, 49.77 vs 46.66 at 7B; component
+  ablations on the 3B model."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An equal-compute GRPO baseline without the decomposition and memory
+  tokens matching these scores, or an ablation where removing the memory
+  module costs no more than removing decomposition.
+evidence_note: Measured on seven QA datasets at two model scales with ten
+  baselines and a three-way ablation. No matched-compute or
+  matched-retrieval-budget control is reported, and the memory's benefit is
+  not separated from the extra summarization compute it introduces. Single
+  paper, authors' own implementation of baselines.
+confidence: low

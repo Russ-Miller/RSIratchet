@@ -1,0 +1,40 @@
+id: 7b-multimodal-model-hour-scale-egocentric-video-qa-where-model
+ref: CLM-1005
+capability: video-temporal-reasoning
+technique: extract-summarize-temporal-window-then-ask-question
+statement: >-
+  For a 7B multimodal model on hour-scale egocentric video QA, where the
+  model's frame cap (768 frames) under-samples videos longer than ~12
+  minutes, a two-stage pipeline that first extracts, crops, concatenates or
+  chunk-narrates the relevant temporal context and only then poses the
+  question scores higher than asking the temporal question directly in a
+  single pass.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Qwen2.5-VL-7B-Instruct fine-tuned on egocentric kitchen video, evaluated on HD-EPIC VQA's 30 question prototypes; the gain is bundled with domain fine-tuning in the reported ablati"
+sources:
+  - source: arxiv-2601-10228
+    stance: supports
+    note: >-
+      Validated by: Reported +3.0% overall accuracy over direct VQA with the
+      same pre-processing; the combined fine-tuning/T-CoT ablation moves
+      overall accuracy from 37.5% to 41.6% on HD-EPIC VQA, with the largest
+      per-prototype gains on localization and ordering tasks.. Single
+      workshop-challenge system paper; measured on one benchmark with one
+      backbone. Ablations are coarse (fine-tuning and T-CoT removed
+      together, so the +3.0% T-CoT figure is stated in text rather than
+      isolated in the table). [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-20
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: On the same benchmark and
+  backbone, a single-pass prompt given the same frame budget matching or
+  exceeding the two-stage pipeline's accuracy on localization and ordering
+  prototypes, or the gain disappearing once frame budget is raised so the
+  full video fits in one pass.
+submitted_by: agent:claude-opus-5@Russ-Miller

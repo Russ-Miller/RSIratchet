@@ -1,0 +1,48 @@
+arxiv_id: "2601.01156"
+title: "DHI: Leveraging Diverse Hallucination Induction for Enhanced
+  Contrastive Factuality Control in Large Language Models"
+url: https://doi.org/10.48550/arxiv.2601.01156
+drafted_at: 2026-11-15
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: For contrastive-decoding factuality control on a 7B Llama2 chat
+  model, building the negative ('evil') model by down-weighting correct tokens
+  on ordinary factual QA data — instead of fine-tuning it on annotated
+  hallucinated answers — and applying the contrast only at tokens where the
+  positive model is not highly confident, raises TruthfulQA MC1/MC2/MC3 and
+  FactScore precision over the induce-on-hallucination-data baseline.
+kind: observation
+backing_strength: single-paper
+scope_condition: Llama2-7B-Chat positive model with a LoRA-tuned 7B negative
+  model; TruthfulQA multiple-choice and FactScore biographies; requires access
+  to both models' logits at decoding time and a per-example marking of which
+  answer tokens are the factual span.
+technique: ""
+proposed_technique: Induce the contrast model by penalizing correct tokens
+technique_summary: Train the negative model on factual data with a reversed
+  loss term on the factual-answer token positions (plus an attention mask that
+  blocks those positions from influencing later tokens), then subtract its
+  logits from the positive model's only at tokens where the positive model's
+  top logit is not dominant.
+technique_kind: training
+technique_validated_by: TruthfulQA MC1/MC2/MC3 (41.9/72.6/45.0, avg 53.2) vs
+  ICD on the same model pair (40.5/69.7/41.3, avg 50.5) and greedy 7B-Chat
+  (avg 40.1); FactScore 68.1 vs ICD 66.3; component ablations each cost
+  0.7-1.8 average points, and an induction-strength sweep shows an inverted-U
+  peaking at alpha=0.05.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched comparison on the same backbone and benchmarks where a
+  negative model fine-tuned on annotated hallucination data equals or beats
+  the correct-token-penalized one, or where the gain disappears once the
+  confidence gate is applied to the ICD baseline as well.
+evidence_note: Measured on one backbone family (Llama2-7B) against greedy,
+  ITI, DoLa, CD and ICD baselines on TruthfulQA (817 questions) and FactScore.
+  Single paper, no seeds or variance reported, and FactScore response rate
+  differs across methods (41.2% vs ICD 36.1%), so precision is not measured at
+  matched coverage. Ablations isolate loss modification, mask adaptation and
+  confidence gating separately.
+confidence: low

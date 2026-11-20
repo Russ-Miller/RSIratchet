@@ -1,0 +1,50 @@
+arxiv_id: "2602.23438"
+title: "DesignSense: A Human Preference Dataset and Reward Modeling Framework
+  for Graphic Layout Generation"
+url: https://doi.org/10.48550/arxiv.2602.23438
+drafted_at: 2026-11-09
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: critique
+statement: When frontier VLMs judge pairs of graphic layouts built from the
+  same elements, their accuracy on picking the better one (binary ~0.69-0.72)
+  far overstates their agreement with humans once the label set admits 'both
+  good' and 'both bad' (Macro F1 ~0.27-0.30, Cohen's kappa ~0.13-0.16),
+  because they misallocate clear preferences and ties.
+kind: observation
+backing_strength: single-paper
+scope_condition: Pairwise layout preference judging where both layouts contain
+  identical elements in different spatial arrangements; 1,000-pair held-out
+  test split plus out-of-distribution PrismLayers and LayoutNUWA sets;
+  zero-shot and few-shot prompting of GPT-4o, GPT-5, o3, Gemini 2.5.
+technique: ""
+proposed_technique: Train a layout judge on tie-admitting four-class preference labels
+technique_summary: Fine-tune a VLM classifier on human layout-pair preferences
+  annotated as left / right / both good / both bad, augmented with
+  synthetically perturbed layouts labelled as bad, and use it as the reward
+  signal for layout generation.
+technique_kind: training
+technique_validated_by: "Against open-source reward models (ImageReward,
+  HPSv3, PickScore) and proprietary VLM judges on 1,000 held-out
+  human-annotated pairs: Macro F1 0.456 vs 0.295 best baseline, binary
+  accuracy 0.732 vs 0.719; ablation removing perturbation augmentation drops
+  Macro F1 to 0.406; downstream, swapping it in as the RL judge raised
+  AesthetiQ win rate 14.27%->17.97% (GPT-4o judge) and best-of-10 selection
+  raised win rate 16.6%->20.2% (GPT-5 judge, 20% of Crello test)."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Frontier VLMs scoring on layout-pair preference with four-class
+  Macro F1 and kappa proportionate to their binary accuracy (e.g. kappa above
+  0.4 at binary ~0.72), or the gap disappearing when ties are scored under a
+  different aggregation.
+evidence_note: Measured on one 1,000-pair test split from a single dataset
+  (DesignSense-10k, Crello-derived) plus two smaller generalization sets;
+  inter-human agreement is itself only 56% four-way vs 81% binary, so part of
+  the gap is label noise in the tie classes rather than judge failure, and the
+  paper does not separate these. The trained model is fine-tuned on this
+  distribution so its advantage over zero/few-shot baselines is partly
+  in-distribution fit, though PrismLayers and LayoutNUWA results argue against
+  pure overfitting.
+confidence: medium
