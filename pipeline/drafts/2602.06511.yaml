@@ -1,0 +1,49 @@
+arxiv_id: "2602.06511"
+title: "EvoMAS: Evolutionary Generation of Multi-Agent Systems"
+url: https://doi.org/10.48550/arxiv.2602.06511
+drafted_at: 2026-11-20
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: When automatically generating multi-agent systems for reasoning,
+  software-engineering and tool-use tasks, having an LLM emit a declarative
+  configuration (agent prompts, tool sets, backbone models, communication
+  topology) executed by a fixed runtime yields far higher execution rates than
+  having it emit executable multi-agent code (above 96% vs 71.5% on BBEH and
+  1.2% on SWE-Bench-Lite for a code-generating baseline), and the resulting
+  systems also score higher on task accuracy.
+kind: observation
+backing_strength: single-paper
+scope_condition: Collaborative (non-adversarial) hierarchical or peer-to-peer
+  MAS, seeded from human-designed systems; evaluated on BBEH, WorkBench and
+  SWE-Bench with Claude and Qwen3 backbones; reward supplied by an
+  LLM-as-judge.
+technique: ""
+proposed_technique: Evolve structured MAS configurations, not generated code
+technique_summary: Represent a multi-agent system as a declarative
+  configuration (roles, prompts, tools, per-agent backbone, topology) and
+  evolve it per task with feedback-conditioned mutation and crossover, keeping
+  high-reward configurations in a pool and consolidated traces in memory.
+technique_kind: process
+technique_validated_by: Task accuracy and issue-resolution rate against single
+  agents, seven human-designed MAS, and four automatic MAS generators across
+  three backbones, plus execution rate; budget-matched controls (looped single
+  agent, Best-of-6/10 with selection) at equal or larger token budgets, and
+  meta-model, pool-quality, depth and judge-model ablations.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A code-generating MAS generator that reaches comparable execution
+  rates and task scores under the same backbones and benchmarks, or
+  configuration-based generation whose advantage disappears once the code
+  baseline is given a repair loop for syntax and runtime failures.
+evidence_note: Measured on four benchmarks across three backbones, three
+  trials per query, with budget-matched and ablation controls; the comparison
+  confounds representation with the evolutionary search procedure, since the
+  code baselines are not evolved under the same loop, and the sequential
+  protocol lets this method accumulate pool and memory across queries while
+  non-evolutionary baselines do not (the paper reports an isolating ablation
+  in an appendix not shown here). Rewards come from an LLM-as-judge the same
+  vendor family supplies.
+confidence: medium

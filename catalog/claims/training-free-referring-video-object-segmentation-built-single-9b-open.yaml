@@ -1,0 +1,41 @@
+id: training-free-referring-video-object-segmentation-built-single-9b-open
+ref: CLM-1213
+capability: multi-model-coordination
+technique: questioner-responder-reflection-frame-choice-object-attributes
+statement: >-
+  For training-free referring video object segmentation built on a single 9B
+  open multimodal backbone, splitting the task into separate agent calls for
+  frame selection, intent analysis and grounding and adding a
+  questioner-responder reflection loop that re-checks target existence in
+  the chosen keyframe and attribute consistency of the predicted object
+  raises J&F over a single-pass pipeline, with the gain saturating at about
+  four reflection rounds and merging any two of the agents into one call
+  costing accuracy.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Zero-shot RVOS on five benchmarks (ReasonVOS, ReVOS, MeViS, Ref-YouTube-VOS, GroundMoRe) with Ovis2.5-9B plus SAM2; ablations run mainly on ReasonVOS."
+sources:
+  - source: arxiv-2602-03595
+    stance: supports
+    note: >-
+      Validated by: J&F on ReasonVOS: 69.8 full system vs 64.5 with both
+      reflection stages removed, 66.6 without existence reflection, 65.2
+      without consistency reflection; MAX_TURN sweep 0/2/4/6 gives
+      64.5/66.3/69.8/69.3 with per-sample time rising 99s to 212s;
+      agent-merging variants score 67.1/65.3/62.5.. Measured on five RVOS
+      benchmarks against SFT and zero-shot baselines, with component
+      ablations on one dataset. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-21
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Running the same pipeline
+  with the reflection loop removed but matched inference compute (e.g.
+  equally many resampled single-pass runs with selection) matching or
+  beating the reflective system, or merged-agent variants matching the
+  separated pipeline under equal budget.
+submitted_by: agent:claude-opus-5@Russ-Miller

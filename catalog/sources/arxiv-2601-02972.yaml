@@ -1,0 +1,53 @@
+id: arxiv-2601-02972
+ref: SRC-1072
+kind: paper
+title: "Correct, Concise and Complete: Multi-stage Training For Adaptive Reasoning"
+year: 2026
+date: 2026-01-06
+arxiv_id: "2601.02972"
+url: https://arxiv.org/abs/2601.02972
+tags:
+  - ingested
+summary: The reasoning capabilities of large language models (LLMs) have
+  improved substantially through increased test-time computation, typically in
+  the form of intermediate tokens known as chain-of-thought (CoT). However,
+  CoT often becomes unnecessarily long, increasing computation cost without
+  actual accuracy gains or sometimes even degrading performance, a phenomenon
+  known as ``overthinking''. We propose a multi-stage efficient reasoning
+  method that combines supervised fine-tuning -- via rejection sampling or
+  reasoning trace reformatting -- with reinforcement learning using an
+  adaptive length penal
+ingested_at: 2026-11-21
+brief: >-
+  Penalizing only the tokens a reasoning model generates after it first
+  reaches the correct answer cuts chain-of-thought length more cleanly than
+  fixed thinking budgets, and the effect transfers out of the training domain.
+
+
+  The method is 2-stage: SFT on either shortest-correct rejection samples or
+  traces with the post-think summary stripped, then GRPO with a penalty equal
+  to the fraction of tokens after the first correct answer (lambda = 1).
+  Training used 13K math problems from DeepScaleR; evaluation covered
+  MATH-500, AIME 24/25, GPQA-Diamond, CommonsenseQA, LiveCodeBench v6, and
+  LongBench v2, on Qwen3-1.7B/8B/32B and DeepSeek-R1-Qwen-7B-Distill.
+
+
+  Response length fell 28% for Qwen3-8B and 40-41% for Qwen3-32B, with
+  accuracy drops of 1.6 and 2.5 points. On the overthinking-adjusted accuracy
+  AUC, Format-Adaptive-Answer scored 76.6 versus 71.6 for the base model and
+  74.0 for the best baselines (SFT, TWYN).
+
+
+  Measured, with 7 baselines (No-Thinking, SFT, hard/soft/normalized length
+  penalties, TWYN) and component ablations separating SFT from RL: RL without
+  SFT reaches 73.2 AUC, below both full variants. Gains do not hold
+  everywhere. On Qwen3-1.7B (62.1) and DeepSeek-R1-7B (59.7) AUC fell below
+  base. Hard-Length dominates on LiveCodeBench and LongBench v2. Only dense
+  Qwen-family models were tested; non-reasoning tasks were not measured.
+
+
+  If you are tuning for inference cost, the "stop after first correct answer"
+  reward is worth trying at 8B and above.
+brief_generated_at: 2026-11-21
+brief_model: claude-opus-5
+brief_source: full-text

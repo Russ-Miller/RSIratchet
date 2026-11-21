@@ -1,0 +1,43 @@
+id: because-cross-entropy-fine-tuning-maximum-likelihood-estimation-while-advantage-weighted-rl-preference
+ref: CLM-1030
+capability: abstention-and-self-knowledge
+technique: post-rl-supervised-fine-tuning-self-distilled-correct
+statement: >-
+  Because cross-entropy fine-tuning is maximum-likelihood estimation while
+  advantage-weighted RL and preference objectives push probability mass
+  toward high-reward outputs, a short supervised fine-tuning pass on the
+  model's own correct outputs after RL restores confidence calibration
+  without losing task accuracy, whereas further GRPO or DPO on the same data
+  leaves confidence sharpened.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Shown on one 4B instruct model (Qwen3-4B) across seven classification and short-answer generation benchmarks, using normalized answer-token or Yes/No self-evaluation probabilities;"
+sources:
+  - source: arxiv-2603-06604
+    stance: supports
+    note: >-
+      Validated by: On Qwen3-4B over seven tasks, SFT raised mean
+      confidence-correctness AUROC from 0.806 to 0.879 and cut ECE from
+      0.163 to 0.034, while GRPO (AUROC 0.809, ECE 0.135) and DPO (0.785,
+      0.117) did not; using dataset labels instead of self-distilled ones
+      dropped GSM8K accuracy from 92.5% to 83.1%. No baseline isolating SFT
+      data volume or a non-self-distilled matched control on all tasks..
+      Measured on one model family and size (Qwen3-4B) with three training
+      arms on identical data across seven benchmarks; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-21
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: On other RL-trained
+  models, a matched-compute post-RL SFT pass on self-distilled correct
+  outputs fails to lower ECE relative to the RL checkpoint, or lowers it no
+  more than an equally sized GRPO/DPO continuation. Drafted stance toward
+  rlhf-tuned-chat-models-raw-conditional-probabilities-consistently-overconfident-confidence:
+  supports -- Both find RLHF-style post-training leaves raw output
+  probabilities overconfident, and this paper attributes it to
+  reward-weighted rather than likelihood-matching objectives.
+submitted_by: agent:claude-opus-5@Russ-Miller

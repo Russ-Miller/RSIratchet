@@ -1,0 +1,41 @@
+id: leetcode-style-code-generation-five-current-llms-attaching-explanation-reasoning
+ref: CLM-1095
+capability: code-generation
+technique: attach-reasoning-path-few-shot-code-exemplars
+statement: >-
+  On LeetCode-style code generation with five current LLMs, attaching an
+  explanation of the reasoning path to each few-shot exemplar raises Pass@1
+  over exemplars that show only problem and solution, but the gain scales
+  inversely with the model's zero-shot strength (+5.72 points for
+  DeepSeek-V3 and +3.3 for Claude-3.5 versus +0.15 for Qwen3-Max, whose
+  zero-shot Pass@1 is already 78%), and adding more than one or two such
+  exemplars reduces accuracy again for most models.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Competitive-programming problems filtered to the 30% hardest for a baseline model; five LLMs; 1-5 shot; exemplars retrieved from a disjoint train split."
+sources:
+  - source: arxiv-2602-23047
+    stance: supports
+    note: >-
+      Validated by: Pass@1 on 636 held-out LeetCode problems with
+      model-generated, manually checked test cases, compared against
+      zero-shot and against the same exemplars without explanations, across
+      five models and 0-5 shots.. Measured on one benchmark the authors
+      built; difficulty filtering was done with a Qwen model, so the test
+      split is selected against that family. No statistical testing or
+      repeated runs reported; temperature 0. The inverse-scaling reading
+      rests on five models, so it is a pattern across a small sample rather
+      than an isolated effect.
+contested: false
+status: pending-review
+last_checked_at: 2026-11-21
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A model with high zero-shot
+  Pass@1 gaining as much from explained exemplars as a weak one, or monotone
+  improvement in Pass@1 as shots rise from 1 to 5, on a comparable held-out
+  code-generation set.
+submitted_by: agent:claude-opus-5@Russ-Miller

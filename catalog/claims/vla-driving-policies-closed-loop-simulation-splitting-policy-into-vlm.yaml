@@ -1,0 +1,41 @@
+id: vla-driving-policies-closed-loop-simulation-splitting-policy-into-vlm
+ref: CLM-1223
+capability: embodied-control
+technique: steer-driving-vla-fine-grained-meta-actions-vlm
+statement: >-
+  For VLA driving policies in closed-loop simulation, splitting the policy
+  into a VLM that emits a reasoning trace plus a fine-grained meta-action
+  and a separate action model conditioned only on that meta-action raises
+  driving score over a single end-to-end VLA, with the larger margin on rare
+  long-tail scenarios (construction zones, accidents, blocked intersections)
+  than on routine driving.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "CARLA Bench2Drive closed-loop, single front camera, InternVL2-1B backbones for both levels, trained on SimLingo trajectories relabelled by an automatic VLM pipeline; open-loop NuSc"
+sources:
+  - source: arxiv-2602-08440
+    stance: supports
+    note: >-
+      Validated by: Closed-loop CARLA driving score on Bench2Drive: 90.71 vs
+      85.94 for SimLingo (+4.77), +8.04 on an 11-scenario long-tail subset;
+      ablation separates the hierarchy (85.94 to 88.81) from the refined
+      meta-action and reasoning labels (88.81 to 90.71).. Measured
+      closed-loop in one simulator against four VLA baselines, with a
+      two-step ablation separating architecture from label quality.
+      Confounded by inference latency (2.51 s per step, unoptimized) and by
+      the hierarchy doubling model calls; no matched-compute baseline.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-21
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A matched-compute
+  single-policy VLA trained on the same refined meta-action labels equals or
+  beats the hierarchical version, or the long-tail margin disappears when
+  the two are compared at equal inference budget or on a different
+  simulator.
+submitted_by: agent:claude-opus-5@Russ-Miller

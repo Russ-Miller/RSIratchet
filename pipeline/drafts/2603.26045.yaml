@@ -1,0 +1,49 @@
+arxiv_id: "2603.26045"
+title: H-Node Attack and Defense in Large Language Models
+url: https://doi.org/10.48550/arxiv.2603.26045
+drafted_at: 2026-11-07
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: When a hallucination defense cancels activation excess at a fixed
+  set of probe-selected hidden dimensions, its coverage is bounded by how much
+  that set overlaps the dimensions an independently trained probe selects, so
+  in 125M-8B transformers where overlap is only 14-36% single-pass
+  neutralization of an activation-space attack stays near 3-8%, and re-ranking
+  cancellation targets by residual excess across successive passes recovers
+  much more (up to 0.69).
+kind: mechanism
+backing_strength: single-paper
+scope_condition: "White-box access to open-weight decoder LLMs (OPT-125M,
+  Phi-3-mini, LLaMA-3-8B, Mistral-7B); attacker and defender train probes on
+  disjoint splits with different seeds; evaluated on TruthfulQA/HaluEval
+  activations with bare Q:/A: prompts, not on generated output quality."
+technique: ""
+proposed_technique: Re-rank cancellation targets by residual excess each pass
+technique_summary: After each forward-pass cancellation of
+  hallucination-aligned hidden dimensions, re-score all dimensions by
+  remaining activation excess above a grounded baseline and target the new
+  top-N, repeating until robustness gain falls below tolerance.
+technique_kind: decoding
+technique_validated_by: "Robustness rho = 1 - (defended/undefended attacker
+  amplification) measured against single-pass fixed-node cancellation on four
+  models: 0.082 to 0.689 (OPT), 0.078 to 0.371 (Phi-3), 0.035 to 0.125
+  (LLaMA), 0.083 to 0.339 (Mistral); perplexity impact under 5% and MMLU
+  within 3%. Not validated on generated-text hallucination rates (MC1/MC2 near
+  chance under the bare prompt format)."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Show a fixed-node cancellation defense reaching high robustness
+  against an independently-probed activation attack despite low node-set
+  overlap, or show that iterative residual re-ranking gives no robustness gain
+  over single-pass on models with comparable overlap rates.
+evidence_note: Measured on four models with matched pipeline; overlap rates
+  and robustness reported per model, with a stated ablation on stopping
+  criterion. The relation between overlap and dynamic robustness is
+  non-monotone (Phi-3 at 14% overlap beats LLaMA at 26%), so the bound is
+  argued for single-pass only. All effects are in probe-confidence space; the
+  paper explicitly declines to claim generation-level hallucination reduction,
+  so no evidence the defense changes what the model says.
+confidence: low

@@ -1,0 +1,39 @@
+id: mobile-gui-world-modeling-having-vlm-predict-next-screen
+ref: CLM-1125
+capability: state-tracking
+technique: predict-next-gui-state-renderable-web-code
+statement: >-
+  For mobile GUI world modeling, having a VLM predict the next screen as
+  executable web code that is then rendered yields higher action-conditioned
+  next-state correctness than text-image-to-image generation models, because
+  pixel generators exploit the high frame-to-frame redundancy of GUIs by
+  near-copying the current screen rather than applying the transition.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Mobile GUI screens with coordinate-space actions, evaluated on six benchmarks (four in-distribution from AitW/GUIOdyssey/AndroidControl/AMEX, two held-out); 8B and 32B Qwen3-VL fin"
+sources:
+  - source: arxiv-2602-01576
+    stance: supports
+    note: >-
+      Validated by: VLM-as-judge Instruction Accuracy averaged over three
+      judge models, plus DINO embedding similarity, against 8 frontier
+      open-weight image-gen and VLM baselines; 79.6% vs 67.4% for the best
+      baseline (106B) and 25.8% for the best image-gen model, with a
+      100-sample human ranking study (Spearman 0.806 with the automatic
+      metric) and a downstream policy test where the world model lifted M3A
+      step accuracy.. Measured on 6 benchmarks of 500 instances each.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-21
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An image-generation
+  world model that scores comparably on action-conditioned correctness (not
+  just similarity) on these transitions, or a showing that code-based
+  prediction loses to pixel generation once screens are photo-realistic or
+  layouts fall outside web-code expressible structure.
+submitted_by: agent:claude-opus-5@Russ-Miller

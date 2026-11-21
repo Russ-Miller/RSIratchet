@@ -1,0 +1,45 @@
+arxiv_id: "2603.11665"
+title: Multi-Task Reinforcement Learning for Enhanced Multimodal LLM-as-a-Judge
+url: https://arxiv.org/abs/2603.11665
+drafted_at: 2026-11-08
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: critique
+statement: For a 30B multimodal judge model trained on pointwise
+  (single-image) evaluation tasks, multi-task supervised fine-tuning does not
+  transfer to an unseen pairwise comparison format even when the underlying
+  criteria are the same — on MJ-Bench safety judging it falls to 49.40
+  Macro-F1, below the untuned backbone's 73.07 — whereas multi-task GRPO with
+  a reasoning-first format reward on the identical data reaches 82.23.
+kind: observation
+backing_strength: single-paper
+scope_condition: One backbone (Qwen3-VL-30B-A3B-Instruct), six binary
+  pointwise judging datasets for training, one held-out pairwise benchmark;
+  in-distribution scores of SFT-Unified and MT-RL-Judge are near-identical.
+technique: ""
+proposed_technique: Train one judge across all judging tasks with RL, not SFT
+technique_summary: Jointly optimizes a single multimodal judge over several
+  evaluation datasets with GRPO using a weighted
+  accuracy-plus-reasoning-format reward instead of supervised fine-tuning on
+  aggregated labels.
+technique_kind: training
+technique_validated_by: Macro-F1 on six in-distribution judging datasets
+  (alignment, safety, image quality) against off-the-shelf prompting,
+  single-task SFT, unified SFT and single-task RL, plus out-of-distribution
+  Macro-F1 on MJ-Bench pairwise alignment and safety.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A unified-SFT judge that holds its in-distribution accuracy and
+  also matches multi-task RL on an unseen pairwise format, or multi-task RL
+  judges that collapse below the untuned backbone on held-out formats, on
+  other backbones and task sets.
+evidence_note: Measured, single paper, one backbone, one out-of-distribution
+  benchmark with two task types; no seeds, confidence intervals, or ablation
+  of the reasoning-format reward separately from the RL objective, so
+  format-overfitting versus reasoning-internalization is argued rather than
+  isolated. In-distribution the method is not clearly ahead of single-task RL
+  or unified SFT (it wins 2 of 6 tasks); the distinctive result is the
+  out-of-distribution contrast.
+confidence: low

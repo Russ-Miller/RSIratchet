@@ -1,0 +1,66 @@
+id: arxiv-2601-01804
+ref: SRC-1062
+kind: paper
+title: "V-CORE: Temporally Consistent Video Understanding for Video-LLM"
+authors:
+  - Zhengjian Kang
+  - Qi Chen
+  - Rui Liu
+  - Kangtong Mo
+  - Xingyu Zhang
+  - Xiaoyu Deng
+year: 2026
+date: 2026-01-05
+arxiv_id: "2601.01804"
+url: https://arxiv.org/abs/2601.01804
+tags:
+  - ingested
+summary: Recent Video Large Language Models (Video-LLMs) have shown strong
+  multimodal reasoning capabilities, yet remain challenged by video
+  understanding tasks that require consistent temporal ordering and causal
+  coherence. Many parameter-efficient Video-LLMs rely on unconstrained
+  bidirectional projectors to model inter-frame interactions, which can blur
+  temporal ordering by allowing later frames to influence earlier
+  representations, without explicit architectural mechanisms to respect the
+  directional nature of video reasoning. To address this limitation, we
+  propose V-CORE, a parameter-efficient frame
+notes: "Filed as a source on video-temporal-reasoning from the classifier's
+  judgement that the paper is about it (improves, high): The paper proposes a
+  block-causal temporal projector that enforces unidirectional frame ordering
+  and reports gains concentrated in temporal question categories. No claim has
+  been drafted from it yet."
+ingested_at: 2026-11-21
+brief: >-
+  Masking future frames in the video-to-LLM projector, rather than letting
+  attention run bidirectionally, is where the temporal-reasoning gain comes
+  from. V-CORE adds a block-causal temporal projector (CATP) plus a terminal
+  learnable summary token acting as a causal sink, with Learnable Spatial
+  Aggregation picking K=16 salient tokens per frame.
+
+
+  The setup is a frozen CLIP ViT-L/14 encoder and frozen Vicuna-7B v1.5, 4-bit
+  QLoRA (r=64) on query/value projections only, T=16 frames, trained on
+  Video-ChatGPT-100K for 3 epochs on 1 RTX 4090 in roughly 20 hours, evaluated
+  zero-shot with GPT-3.5-turbo as judge on MSVD-QA, MSRVTT-QA, TGIF-QA and
+  NExT-QA.
+
+
+  NExT-QA accuracy is 61.2%, above VISTA-LLaMA (60.7) and near VideoChat2
+  (61.7) which used 2M training samples. Elsewhere: MSVD-QA 67.2, MSRVTT-QA
+  57.8, TGIF-QA 57.2, all above Video-ChatGPT at matched 100K data but below
+  Video-LLaVA on TGIF-QA (70.0).
+
+
+  The causal mechanism is isolated by ablation: swapping bidirectional for
+  causal attention gives +2.2%, the summary token adds the rest; against the
+  bidirectional variant the gains sit in causal (+5.2%) and temporal (+3.5%)
+  subsets while descriptive accuracy barely moves (64.2 to 65.1). Prepending
+  the summary query instead drops accuracy to 57.1.
+
+
+  One LLM backbone, one data scale, VideoQA only; open-ended dialogue
+  untested, and the judge is GPT-3.5-turbo. If you build parameter-efficient
+  video connectors, directional masking is a cheap thing to try.
+brief_generated_at: 2026-11-21
+brief_model: claude-opus-5
+brief_source: full-text

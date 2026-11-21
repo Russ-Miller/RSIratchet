@@ -1,0 +1,39 @@
+id: long-context-code-question-answering-over-32k-1m-token-contexts-python
+ref: CLM-1114
+capability: long-context-degradation
+statement: >-
+  In long-context code question answering over 32k-1M token contexts
+  (Python, Java, and COBOL), multiple-choice accuracy overstates
+  comprehension: removing the answer options and scoring open-ended answers
+  drops accuracy by roughly 15-35 points on Python and 30-60 points on
+  COBOL, while the gap is smallest on Java, so recognition from supplied
+  candidates substitutes for reconstructive reasoning most in the
+  least-represented language.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Frontier and open models (GPT-4o, Gemini 2.5, Claude 4.5, Llama, Mistral, Qwen, Granite) on LongCodeBench Python plus newly built COBOL (public Medicare Pricer, internal IBM) and J"
+sources:
+  - source: arxiv-2602-17183
+    stance: supports
+    note: >-
+      Measured: accuracy tables for 6-12 models per language across
+      32k-512k/1024k buckets, with and without options. Gap is consistent
+      across every model and bucket reported. Design does not isolate grader
+      strictness: the open-ended condition is scored by an LLM judge against
+      ground truth while the MC condition is exact-match, so some of the gap
+      may be grading severity rather than model ability. Question sets per
+      language are small (114 Java items) and differ in construction, so
+      cross-language gap sizes are only loosely comparable.
+contested: false
+status: pending-review
+last_checked_at: 2026-11-21
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: On the same questions
+  and contexts, open-ended accuracy matching multiple-choice accuracy within
+  a few points for most models, or the COBOL gap being no larger than the
+  Java gap, would refute it.
+submitted_by: agent:claude-opus-5@Russ-Miller

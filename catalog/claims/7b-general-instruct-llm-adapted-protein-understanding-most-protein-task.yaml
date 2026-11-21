@@ -1,0 +1,39 @@
+id: 7b-general-instruct-llm-adapted-protein-understanding-most-protein-task
+ref: CLM-1002
+capability: domain-knowledge
+technique: pipe-frozen-protein-encoder-through-q-former-into
+statement: >-
+  For a 7B general instruct LLM adapted to protein understanding, most of
+  the protein-task competence comes from the frozen protein encoder plus
+  cross-modal projector rather than from biomedical continual pre-training:
+  removing the encoder/projector and feeding raw amino-acid sequences as
+  text costs far more accuracy (e.g. metal-ion binding 0.76 to 0.33) than
+  removing the domain pre-training stage (0.76 to 0.66).
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Qwen2.5-7B-Instruct base, ESM2 encoder with a Q-Former projector, evaluated on three PFMBench tasks (binary localization, metal-ion binding, material production); no downstream tas"
+sources:
+  - source: arxiv-2602-17680
+    stance: supports
+    note: >-
+      Validated by: Accuracy/F1/Spearman on 16 PFMBench protein tasks
+      against nine specialist PLMs and the untouched Qwen base, plus
+      MMLU/RACE/AGIEval/OpenBookQA for retained general ability, plus two
+      ablations removing pre-training or the encoder+projector.. Measured,
+      but on only three of the sixteen tasks, one backbone, single run, no
+      seeds or confidence intervals; the two ablations are not fully crossed
+      (no variant with encoder but no SFT, no variant isolating the Q-Former
+      from the encoder), so the attribution is coarse. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-21
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Feeding raw amino-acid
+  sequences as plain text to the same biomedically continual-pre-trained LLM
+  matches the encoder+projector pipeline on these tasks, or the pre-training
+  ablation costs more than the encoder ablation.
+submitted_by: agent:claude-opus-5@Russ-Miller
