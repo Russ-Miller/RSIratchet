@@ -1,0 +1,68 @@
+id: arxiv-2601-00623
+ref: SRC-1053
+kind: paper
+title: "DA-DPO: Cost-efficient Difficulty-aware Preference Optimization for
+  Reducing MLLM Hallucinations"
+authors:
+  - Longtian Qiu
+  - Shan Ning
+  - Chuyu Zhang
+  - Sun Jiaxuan
+  - Xuming He
+year: 2026
+date: 2026-01-02
+arxiv_id: "2601.00623"
+url: https://arxiv.org/abs/2601.00623
+tags:
+  - ingested
+summary: Direct Preference Optimization (DPO) has shown strong potential for
+  mitigating hallucinations in Multimodal Large Language Models (MLLMs).
+  However, existing multimodal DPO approaches often suffer from overfitting
+  due to the difficulty imbalance in preference data. Our analysis shows that
+  MLLMs tend to overemphasize easily distinguishable preference pairs, which
+  hinders fine-grained hallucination suppression and degrades overall
+  performance. To address this issue, we propose Difficulty-Aware Direct
+  Preference Optimization (DA-DPO), a cost-effective framework designed to
+  balance the learning pro
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, high): The paper proposes
+  difficulty-aware reweighting of preference pairs in DPO and reports reduced
+  hallucination and better generalization in MLLMs. No claim has been drafted
+  from it yet."
+ingested_at: 2026-11-21
+brief: >-
+  Multimodal DPO degrades general vision-language ability because preference
+  pairs are not equally hard: models overfit the easy pairs where chosen and
+  rejected responses are obviously different, and learn little from the subtle
+  ones. Reweighting by estimated difficulty recovers much of the lost general
+  capability while cutting hallucination further.
+
+
+  DA-DPO scores each pair with a frozen CLIP ViT-L/14@336 (image-text
+  similarity gap) and a frozen LLaVA v1.5 7B (log-likelihood gap),
+  Gaussian-normalizes both, fuses them by each model's
+  preference-classification accuracy, and uses the result as a per-sample
+  beta. Training uses the 180k-pair BPO dataset on LLaVA v1.5 7B/13B and
+  LLaVA-OneVision 7B, evaluated on AMBER, ObjectHalBench, MMHal, POPE plus
+  GQA, SeedBench, MME, LLaVA-Bench.
+
+
+  On LLaVA v1.5 7B, AMBER generative HalRate falls from 35.7 under DPO to
+  28.0, LLaVA-Bench rises from 70.5 to 75.4, GQA from 45.3 to 59.8 (base
+  62.0), SeedBench from 57.8 to 64.8 (base 66.1).
+
+
+  Evidence is measured with matched DPO baselines on the same data, 3 seeds in
+  the reward-dynamics analysis, an ablation separating CLIP from MLLM signals
+  (4.7 vs 4.6 vs 4.3 CHAIR_s), swaps to EVA-CLIP 8B and LLaVA-OV 7B, and a
+  hard-filtering baseline at 10%/25%/50% removal that DA-DPO beats.
+  Replication is across datasets (VLFeedback, LLaVA-RLHF) but 1 model family
+  only; MME perception still drops below base, and difficulty estimators may
+  not transfer outside VLM pretraining domains.
+
+
+  If you run multimodal DPO, treat easy-pair overfitting as the default
+  failure and reweight rather than filter.
+brief_generated_at: 2026-11-21
+brief_model: claude-opus-5
+brief_source: full-text

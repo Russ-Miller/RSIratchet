@@ -1,0 +1,44 @@
+id: 7b-class-video-llms-under-fixed-per-frame-token-budget-first
+ref: CLM-1001
+capability: video-temporal-reasoning
+technique: ground-query-segment-then-resample-densely
+statement: >-
+  For 7B-class video LLMs under a fixed per-frame token budget, first
+  grounding the query-relevant temporal segment and then densely resampling
+  only that segment, with frame positions encoded as discrete temporal
+  tokens, raises fine-grained temporal grounding and reasoning far above
+  uniform low-frequency sampling, and the gain saturates once about 20
+  high-frequency frames are drawn.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Vicuna-7B-based Vid-LLM, 64 tokens per frame, fine-grained action videos (FineAction-CGR); requires a training stage that teaches temporal boundary prediction and a stage adapting "
+sources:
+  - source: arxiv-2602-03589
+    stance: supports
+    note: >-
+      Validated by: On FineAction-CGR against VideoLLaMA, Video-ChatGPT,
+      LLaMA-VID and VTimeLLM, plus a LLaMA-VID baseline retrained on the
+      same stage-3 data: mIoU 66.68 vs 22.38 for that matched baseline,
+      reasoning accuracy 53.10 vs 24.81. Component ablation: low-frequency
+      only 32.54 mIoU / 30.25 acc; adding dense sampling +8.87 acc; adding
+      the temporal encoder +22.45 mIoU; raising high-frequency frames 10->20
+      +7.66 mIoU, 20->40 near-flat; mixing attention +1.42 acc.
+      Coarse-grained video QA stays comparable to prior models.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-21
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A matched-token-budget
+  comparison in which uniform dense sampling, or query-conditioned selection
+  without the grounding step, equals the two-stage ground-then-resample
+  pipeline on fine-grained temporal grounding and reasoning; or ablations
+  showing the temporal position tokens contribute nothing. Drafted stance
+  toward frozen-7-8b-multimodal-models-long-video-qa-under-fixed-frame:
+  supports -- Both find that allocating a fixed frame budget by query
+  relevance rather than uniformly raises accuracy on temporally demanding
+  video questions.
+submitted_by: agent:claude-opus-5@Russ-Miller

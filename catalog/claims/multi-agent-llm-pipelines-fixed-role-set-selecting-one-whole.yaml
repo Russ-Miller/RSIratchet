@@ -1,0 +1,40 @@
+id: multi-agent-llm-pipelines-fixed-role-set-selecting-one-whole
+ref: CLM-1129
+capability: multi-model-coordination
+technique: score-whole-topologies-candidates-per-edge
+statement: >-
+  In multi-agent LLM pipelines with a fixed role set, selecting one whole
+  communication topology per query from a pool of pre-generated random DAGs
+  with a trained graph classifier gives higher accuracy than averaging
+  outputs over randomly sampled topologies, and filling every role with the
+  single strongest model instead of a learned heterogeneous mixture does not
+  reliably raise accuracy while costing roughly 1.7-3x more.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Reasoning, coding and knowledge QA benchmarks (HumanEval++, MATH, MMLU-Redux) with a pool of 8B-80B open and small proprietary models; roles and intra-supernode propose-synthesize "
+sources:
+  - source: arxiv-2602-20229
+    stance: supports
+    note: >-
+      Validated by: Ablation on MATH and MMLU-Redux against the same system
+      with the graph classifier removed (three random graphs averaged):
+      -3.45 and -3.36 points accuracy; and against all-nodes-GPT-5-Mini,
+      which gained 1.1 points on MATH at $2.56 vs $1.52 and lost 0.8 points
+      on MMLU-Redux at $3.92 vs $1.29. Main table reports 94.61% average vs
+      92.78% for full-graph and 92.69% for AFlow.. Measured on three
+      benchmarks under two backbone settings against ten baselines, with
+      component ablations and dollar-cost reporting. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-21
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Under matched model pools
+  and token budgets, a per-edge-optimized topology learner matching or
+  beating candidate-pool graph classification, or assigning the strongest
+  model to every role matching the learned mixture's accuracy at comparable
+  cost. Automatic check flagged: figures not in the source: 1.7.
+submitted_by: agent:claude-opus-5@Russ-Miller

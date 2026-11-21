@@ -1,0 +1,47 @@
+arxiv_id: "2602.18693"
+title: "Contradiction to Consensus: Dual Perspective, Multi Source Retrieval
+  Based Claim Verification with Source Level Disagreement using LLM"
+url: https://doi.org/10.48550/arxiv.2602.18693
+drafted_at: 2026-11-20
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: fact-verification
+statement: For zero-shot LLM claim verification, retrieving evidence for both
+  the claim and an explicitly negated form of it, and merging evidence across
+  Wikipedia, PubMed and Google, raises accuracy and macro-F1 over
+  single-source, claim-only retrieval on most dataset-model pairs, but merging
+  loses to the single best source when one source already dominates the domain
+  (Google on political claims).
+kind: observation
+backing_strength: single-paper
+scope_condition: Zero-shot prompting, no fine-tuning; five LLMs (Llama
+  70B/405B, Phi-4, Qwen 2.5, Mistral) on SciFact, Averitec, LIAR, PubHealth;
+  three fixed knowledge sources.
+technique: ""
+proposed_technique: Retrieve evidence for the claim and its negation across sources
+technique_summary: Generate an explicit negation of each claim, retrieve and
+  rank sentence-level evidence for both forms from Wikipedia, PubMed and
+  Google, deduplicate and merge into one evidence set, then verify with a
+  zero-shot LLM and report per-source label log-probabilities as a
+  disagreement signal.
+technique_kind: retrieval
+technique_validated_by: Accuracy, precision, recall and macro-F1 on four
+  benchmarks against claim-only retrieval and against each single source;
+  reported relative gains of roughly 2-10% accuracy from negation and
+  double-digit relative F1 gains from merging over weak sources, with merging
+  below Google alone on LIAR.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A controlled replication where adding negated-claim retrieval or
+  cross-source merging leaves accuracy and macro-F1 unchanged or lower across
+  most dataset-model pairs, or where the gain is explained entirely by the
+  extra evidence volume rather than the negation/aggregation.
+evidence_note: Measured across 4 datasets x 5 LLMs x 3 sources with per-cell
+  accuracy/P/R/F1 tables. Gains are small in absolute terms (many F1 values
+  under 0.4) and several cells are neutral or negative. No control for
+  retrieved-evidence quantity, so the negation effect is not isolated from
+  simply having more candidate sentences. Disagreement visualizations are
+  qualitative KDE plots with no quantitative calibration result.
+confidence: low

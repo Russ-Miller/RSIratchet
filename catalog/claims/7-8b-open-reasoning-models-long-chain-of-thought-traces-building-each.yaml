@@ -1,0 +1,39 @@
+id: 7-8b-open-reasoning-models-long-chain-of-thought-traces-building-each
+ref: CLM-0995
+capability: hallucination
+technique: pool-only-within-step-tokens-weighted-toward-last
+statement: >-
+  For 7-8B open reasoning models on long chain-of-thought traces, building
+  each step's probe input by exponentially weighting only the tokens inside
+  that step (rather than additively pooling all tokens in the prefix) raises
+  step-level hallucination detection AUC by roughly 3-6 points, because
+  prefix-wide additive pooling saturates as the chain grows and
+  under-weights the later tokens that summarize the step.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "White-box access to hidden states; long CoT with explicit sentence-level steps; LLaMA-3.1-8B, Qwen2.5-7B, DeepSeek-R1-Distill-8B; labels from an LLM annotator with partial human va"
+sources:
+  - source: arxiv-2601-02170
+    stance: supports
+    note: >-
+      Validated by: Step-level probe AUC/ACC/F1 against LLM-annotated step
+      hallucination labels on three base models, versus TTPD, SAPLMA and a
+      global-mean aggregation baseline trained with identical supervision
+      (AUC 87.8 vs 82.3 on LLaMA, 86.7 vs 81.0 on Qwen, 93.3 vs 90.4 on
+      DeepSeek).. Measured on 10k+ trajectories and 200k+ steps across three
+      7-8B models, with matched supervision and probe capacity across arms,
+      so the comparison isolates the representation. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-21
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A probe trained on
+  prefix-wide mean-pooled hidden states matching or beating within-step
+  exponential weighting at step-level hallucination detection under
+  identical supervision on these or comparable models, or the gap
+  disappearing once step length is controlled.
+submitted_by: agent:claude-opus-5@Russ-Miller

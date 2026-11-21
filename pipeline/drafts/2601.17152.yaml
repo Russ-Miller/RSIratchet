@@ -1,0 +1,50 @@
+arxiv_id: "2601.17152"
+title: Dynamic Role Assignment for Multi-Agent Debate
+url: https://doi.org/10.48550/arxiv.2601.17152
+drafted_at: 2026-11-18
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: "In heterogeneous multi-agent debate with explicitly defined roles
+  (argument sides or reasoning methods), which model fills which role matters:
+  a model's single-agent accuracy does not predict its usefulness in a given
+  role, and selecting the model per role per question (each candidate drafts a
+  role-specific proposal, all candidates score them against role- and
+  domain-specific criteria, highest average wins) beats both filling every
+  role with one model and random model-to-role assignment."
+kind: observation
+backing_strength: single-paper
+scope_condition: Three commercial/open models (Claude 3.5, Nova Premier,
+  Pixtral-Large) on GPQA, MathVision and RealWorldQA, applied on top of the
+  MAD and DMAD debate frameworks; no labelled data used for selection; added
+  token cost from the extra proposal and scoring round.
+technique: ""
+proposed_technique: Pick the model for each debate role by peer-reviewed proposals
+technique_summary: Before the actual debate, every candidate model writes a
+  role-specific draft answer for each role, all candidates score every draft
+  against auto-generated role- and domain-specific criteria, and each role
+  goes to the model with the highest average score for that question.
+technique_kind: process
+technique_validated_by: Accuracy on GPQA (full 448 items), MathVision testmini
+  (190 closed-form items) and RealWorldQA (437 items) against uniform
+  assignment (one model in all roles) and three random model-to-role
+  assignments, inside MAD and DMAD; on GPQA the method reached 59.15% (MAD)
+  and 66.29% (DMAD) versus best uniform 54.24%/58.93% and best random
+  55.58%/60.27%.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Under matched token budget (e.g. giving the uniform-assignment
+  baseline the same extra compute as extra debate rounds or self-consistency
+  samples), per-question peer-reviewed role assignment fails to beat the best
+  uniform or random assignment; or the selected assignment is shown to track a
+  fixed per-benchmark ordering rather than varying usefully per question.
+evidence_note: "Measured on three benchmarks with two debate frameworks and
+  three models, temperature 0. Headline 'up to 74.8% / 29.7%' are relative
+  improvements over the weakest comparators. Weaknesses: no compute-matched
+  baseline (the meta-debate adds a full proposal+scoring round that the
+  baselines do not get), only three random assignments sampled, and the full
+  per-benchmark table is reported only for GPQA; the per-question gain over a
+  single best fixed assignment chosen with oracle knowledge is not isolated."
+confidence: low

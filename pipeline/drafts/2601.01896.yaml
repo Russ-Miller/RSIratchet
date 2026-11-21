@@ -1,0 +1,48 @@
+arxiv_id: "2601.01896"
+title: Tackling the Inherent Difficulty of Noise Filtering in RAG
+url: https://doi.org/10.48550/arxiv.2601.01896
+drafted_at: 2026-11-15
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: retrieval-utilization
+statement: When LoRA fine-tuning 7-8B instruct models (Llama-3.1, Qwen2.5,
+  Mistral) to ignore distracting retrieved documents, passing the
+  attention-score update through a saturating non-linear rectification
+  (xi*tanh, reverting to identity for large updates) before adding it to the
+  base attention raises answer accuracy over plain LoRA at equal
+  trainable-parameter count across five QA benchmarks.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: 7-8B instruct decoder models, LoRA rank 64,
+  retrieval-augmented QA where 3 non-gold distractor passages are mixed with
+  gold passages; xi chosen to match the base model's existing attention-score
+  margin (~3-10); not tested with training from scratch
+technique: ""
+proposed_technique: Rectify the attention update, don't add it linearly
+technique_summary: During fine-tuning, the LoRA attention-score delta is
+  passed through a saturating function that sharply separates irrelevant from
+  relevant tokens while capping boosts to relevant ones, with the saturation
+  scale ramped from zero over the first 80% of training steps.
+technique_kind: training
+technique_validated_by: Accuracy (answer-contains-ground-truth; short-answer
+  coverage for ASQA) on NQ, TriviaQA, HotpotQA, 2WikiMultiHopQA, ASQA with
+  DPR-retrieved distractors, against vanilla prompting and plain LoRA at
+  matched rank; mean across datasets 50.2 vanilla, 72.0 LoRA, 74.2 at xi=5.
+  Ablations against xi*tanh alone, xi*tanh+x, and a sigmoid variant.
+  Attention-gap analysis shows widened score margin on answer-bearing tokens.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched-parameter comparison on the same benchmarks in which
+  plain LoRA fine-tuning equals or beats the rectified-attention variant, or
+  in which the gain disappears once distractor proportion, retriever, or xi is
+  varied.
+evidence_note: Measured on five QA datasets with 3000 test samples each (948
+  for ASQA), three backbones, LoRA and full fine-tuning, plus activation-shape
+  ablations. Baseline is plain LoRA at identical rank, so parameter count is
+  controlled. Gains are modest (1-4 points over LoRA) and single-lab; no
+  comparison against prior noise-robustness fine-tuning methods (authors argue
+  the comparison would be unfair), so the claim isolates the attention-update
+  form but not its value relative to data-side noise-robustness training.
+confidence: medium

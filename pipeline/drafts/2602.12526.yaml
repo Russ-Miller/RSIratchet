@@ -1,0 +1,47 @@
+arxiv_id: "2602.12526"
+title: Constraint-Rectified Training for Efficient Chain-of-Thought
+url: https://doi.org/10.48550/arxiv.2602.12526
+drafted_at: 2026-11-11
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: cutting-to-the-chase
+statement: When RL post-training a 1.5B-4B reasoning model to shorten chains
+  of thought, alternating between a length-minimizing update and an
+  accuracy-restoring update gated on falling below a frozen reference policy's
+  minibatch accuracy preserves accuracy better than mixing length and accuracy
+  into one scalar reward, which degrades correctness on roughly a third of the
+  problems it shortens.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Math reasoning (GSM8K/MATH training, in- and out-domain math
+  benchmarks), DeepSeek-R1-Distill-Qwen-1.5B and Qwen3-4B backbones,
+  verifier-checkable answers.
+technique: ""
+proposed_technique: Rectify length pruning only when accuracy drops below a frozen reference
+technique_summary: Post-training alternates between minimizing normalized
+  response length and taking an accuracy-restoring gradient step, switching to
+  the latter only when the current policy's minibatch accuracy falls below the
+  frozen reference policy's by more than a tolerance; a second stage then
+  maximizes accuracy under the stage-one length profile.
+technique_kind: training
+technique_validated_by: Accuracy and average token count on GSM8K, MATH500 and
+  four out-domain math benchmarks against ThinkPrune, L1, O1-Pruner,
+  ShorterBetter and ACPO, plus a per-problem breakdown of accuracy
+  decrease/preserve/improve conditioned on length reduction (CRT 12.5%
+  decrease on SAT Math vs 37.5% ThinkPrune-1k, 27.3% ACPO), and ablations
+  against single-stage and primal-dual variants.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A length-aware scalar-reward baseline tuned at matched average
+  token count showing equal or lower rate of accuracy loss on length-reduced
+  problems than the reference-gated alternation, on the same backbones and
+  benchmarks.
+evidence_note: Measured on two backbones and six math benchmarks against five
+  published efficiency baselines; the headline accuracy-stability numbers come
+  from two datasets only and baselines are reproductions, so the comparison
+  depends on how the baselines' length-pressure hyperparameters were set.
+  Composite AES metric is from a prior paper. No matched-compute control
+  reported.
+confidence: medium

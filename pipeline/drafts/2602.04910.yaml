@@ -1,0 +1,50 @@
+arxiv_id: "2602.04910"
+title: Reducing the Costs of Proof Synthesis on Rust Systems by Scaling Up a
+  Seed Training Set
+url: https://doi.org/10.48550/arxiv.2602.04910
+drafted_at: 2026-11-12
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: formal-math
+statement: "For a 32B code model fine-tuned to write Verus proofs for Rust,
+  synthetic data scaled by self-synthesis plus tutorial-guided feature
+  coverage and long agent-trajectory CoT data improve different task classes:
+  the bulk synthetic data carries small algorithmic proof tasks while the few
+  thousand agent CoT traces carry real-world system proof tasks, and neither
+  part alone matches the combination."
+kind: observation
+backing_strength: single-paper
+scope_condition: Qwen2.5-Coder-32B-Instruct fine-tuned on VeruSyn data,
+  evaluated on VerusBench (150 small programs) and VeruSAGE-Bench (560 system
+  tasks) with direct prompting and up to 5 debugging rounds, no coding agent
+  at inference.
+technique: ""
+proposed_technique: Combine self-synthesis, tutorial-guided coverage, and
+  agent CoT for proof data
+technique_summary: Generate verified Rust+Verus programs by letting a
+  fine-tuned model continue-write programs and proofs from scratch, steer
+  coverage with per-knowledge-point tutorial seed programs, deduplicate and
+  machine-verify them, and add a few thousand successful coding-agent proof
+  trajectories as long chain-of-thought training data.
+technique_kind: training
+technique_validated_by: Accuracy@100 and @600 (with 5 debugging rounds) on
+  VeruSAGE-Bench and VerusBench against the raw Qwen model and Qwen fine-tuned
+  on SAFE and AlphaVerus data, plus o4-mini and Claude Sonnet 4.5;
+  VeruSAGE-Bench total 39%/49% vs 15%/20% for Part-1 only and 35%/41% for
+  Part-2 only, while on VerusBench Part-1 only (79%/84%) exceeded the combined
+  data (75%/83%).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A replication where fine-tuning on the bulk self-synthesis plus
+  tutorial data alone matches the combined dataset on VeruSAGE-Bench system
+  tasks, or where the agent-CoT data alone matches it on small algorithmic
+  benchmarks.
+evidence_note: Measured on two held-out benchmarks with data-leakage exclusion
+  of the three systems used for CoT collection; ablations drop one part at a
+  time but do not control for the data volume gap (6.9M vs 4,557 examples) or
+  for the CoT data being drawn from the same benchmark family as the system
+  tasks, so the attribution to data kind rather than domain proximity is not
+  isolated. Single pipeline, single base model.
+confidence: medium

@@ -1,0 +1,48 @@
+arxiv_id: "2601.16987"
+title: Evaluating Reward Model Generalization via Pairwise Maximum Discrepancy
+  Competitions
+url: https://doi.org/10.48550/arxiv.2601.16987
+drafted_at: 2026-11-16
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: critique
+statement: When reward models are re-ranked on prompt-response pairs actively
+  selected to maximize their pairwise score disagreement and then adjudicated
+  by an oracle judge, the resulting ordering differs substantially from static
+  preference-benchmark rankings, and some models that score well on the static
+  benchmark fall sharply on the contentious cases.
+kind: observation
+backing_strength: single-paper
+scope_condition: 10 open reward models (3B-27B), open-domain prompts rewritten
+  from six LLM benchmarks, 450 maximum-discrepancy pairs, Claude-Sonnet-4 as
+  oracle; rankings compared against RewardBench2
+technique: ""
+proposed_technique: Rank reward models on their maximum-disagreement pairs
+technique_summary: For every pair of reward models, pick the prompt-response
+  pairs where their normalized preference gaps differ most, have an oracle
+  judge adjudicate only those, and aggregate the outcomes with a Bradley-Terry
+  model into a global ranking.
+technique_kind: process
+technique_validated_by: Produced a global BT ranking and oracle-agreement
+  rates over 450 selected pairs; ranking stable across five random seeds and
+  across k from 5 to 100 (Spearman above 0.95), while randomly sampled pairs
+  gave unstable rankings; three LLM judges agreed 94.5-96% with each other and
+  92.5-94.5% with a three-researcher human majority vote. No measurement of
+  whether the new ranking better predicts downstream alignment outcomes.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Re-running the selection with a different prompt pool or oracle and
+  finding the resulting reward-model ordering matches the static-benchmark
+  ordering closely (e.g. Spearman above 0.9 with no model moving more than one
+  rank), or showing the reshuffling is driven by oracle idiosyncrasy rather
+  than the models' behavior on contentious cases.
+evidence_note: Measured on 10 reward models over 450 selected pairs; the
+  reshuffling is shown qualitatively in a rank-comparison figure with one
+  named large mover (Skywork-Reward-V2-Llama-3.1-8B), not quantified as a rank
+  correlation against RewardBench2. The design isolates selection method
+  (adaptive vs random pairs) and oracle identity, but does not establish which
+  ranking is more predictive of real alignment quality, so 'more faithful' is
+  asserted rather than shown.
+confidence: medium

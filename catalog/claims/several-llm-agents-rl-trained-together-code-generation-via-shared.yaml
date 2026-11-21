@@ -1,0 +1,38 @@
+id: several-llm-agents-rl-trained-together-code-generation-via-shared
+ref: CLM-1181
+capability: multi-model-coordination
+technique: give-each-collaborating-agent-own-parameters-shared-policy
+statement: >-
+  When several LLM agents are RL-trained together on code generation via a
+  shared tree search (8B-32B backbones), giving each agent independent
+  parameters raises both individual Pass@1 and system-level search accuracy
+  above parameter-sharing multi-role training, which peaks early and then
+  stagnates or declines as the shared policy's reward variance collapses.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Code generation (LiveCodeBench v6) with verifiable test-case rewards, 8B-32B open models, two or three agents, equal training-data budget; not tested outside code."
+sources:
+  - source: arxiv-2602-07848
+    stance: supports
+    note: >-
+      Validated by: Pass@1 and Pass@1(MCTS) on LiveCodeBench v6 against
+      vanilla GRPO single-agent and parameter-sharing multi-role training at
+      matched data; Qwen3-8B Pass@1 +8.0 over base, +4.4 over GRPO, +2.9
+      over the homogeneous peak; Pass@1(MCTS) 62.3% vs 59.4% homogeneous and
+      58.3% GRPO; homogeneous reward standard deviation falls late in
+      training.. Measured on one benchmark (LiveCodeBench v6) across five
+      backbones and several pairings, with GRPO and homogeneous baselines
+      matched on data and RL tricks. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-21
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: At matched compute and
+  data, independent-parameter agents show no advantage over
+  parameter-sharing multi-role training, or the homogeneous run keeps
+  improving past the point where its reward variance collapses.
+submitted_by: agent:claude-opus-5@Russ-Miller
