@@ -1,0 +1,69 @@
+id: arxiv-2601-01156
+ref: SRC-1057
+kind: paper
+title: "DHI: Leveraging Diverse Hallucination Induction for Enhanced
+  Contrastive Factuality Control in Large Language Models"
+authors:
+  - Jiani Guo
+  - Xiangke Zeng
+  - Jie Wu
+  - Zuchao Li
+year: 2026
+date: 2026-01-03
+arxiv_id: "2601.01156"
+url: https://arxiv.org/abs/2601.01156
+tags:
+  - ingested
+summary: Large language models (LLMs) frequently produce inaccurate or
+  fabricated information, known as "hallucinations," which compromises their
+  reliability. Existing approaches often train an "Evil LLM" to deliberately
+  generate hallucinations on curated datasets, using these induced
+  hallucinations to guide contrastive decoding against a reliable "positive
+  model" for hallucination mitigation. However, this strategy is limited by
+  the narrow diversity of hallucinations induced, as Evil LLMs trained on
+  specific error types tend to reproduce only these particular patterns,
+  thereby restricting their overal
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, high): The paper proposes a
+  training/decoding framework (DHI) that induces diverse hallucinations for
+  contrastive decoding and reports improved factuality. No claim has been
+  drafted from it yet."
+ingested_at: 2026-11-22
+brief: >-
+  You can train a hallucination-generating "Evil" model from purely factual
+  data by flipping the loss sign on correct-answer tokens, and the resulting
+  contrastive decoder beats one trained on annotated hallucination data. DHI
+  adds a causal-mask change that strips hallucination-targeted tokens'
+  influence on later tokens, plus an inference-time rule that only applies
+  contrastive subtraction where the positive model is uncertain.
+
+
+  Setup: Llama2-7B-Chat as positive model, a LoRA-finetuned 7B as the Evil
+  model, trained on 9,196 GPT-4o-expanded sentences derived from HaluEval QA.
+  Evaluation on TruthfulQA multiple-choice (817 questions, MC1/MC2/MC3) and
+  FACTSCORE biographies.
+
+
+  DHI reaches 41.9/72.6/45.0 (avg 53.2) on TruthfulQA against ICD's
+  40.5/69.7/41.3 (avg 50.5), greedy 7B-Chat at 40.1, and 70B-Chat at 42.2. On
+  FACTSCORE, 68.1 vs ICD's 66.3, with 49.9 facts per response.
+
+
+  Measured against 5 baselines including ITI, DoLa, CD and ICD, with a 3-way
+  component ablation (removing selective contrast drops avg to 51.7, mask
+  adaptation to 52.5, loss modification to 51.4) and an α sweep showing an
+  inverted U peaking at 0.05. Gains over ICD are 1.4-3.7 points, within a
+  range where seed variance matters and no variance is reported.
+
+
+  One model family, one scale, 2 benchmarks; no test of whether the method
+  survives on instruction-tuned larger models or non-English tasks. Also note
+  the stated α for TruthfulQA (0.0) conflicts with the ablation's best value
+  (0.05).
+
+
+  Worth reading if you build decoding-time factuality methods and want to drop
+  the annotated-hallucination data requirement.
+brief_generated_at: 2026-11-22
+brief_model: claude-opus-5
+brief_source: full-text

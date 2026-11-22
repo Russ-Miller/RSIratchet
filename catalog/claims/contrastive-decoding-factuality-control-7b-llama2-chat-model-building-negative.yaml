@@ -1,0 +1,39 @@
+id: contrastive-decoding-factuality-control-7b-llama2-chat-model-building-negative
+ref: CLM-1051
+capability: hallucination
+technique: induce-contrast-model-penalizing-correct-tokens
+statement: >-
+  For contrastive-decoding factuality control on a 7B Llama2 chat model,
+  building the negative ('evil') model by down-weighting correct tokens on
+  ordinary factual QA data — instead of fine-tuning it on annotated
+  hallucinated answers — and applying the contrast only at tokens where the
+  positive model is not highly confident, raises TruthfulQA MC1/MC2/MC3 and
+  FactScore precision over the induce-on-hallucination-data baseline.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Llama2-7B-Chat positive model with a LoRA-tuned 7B negative model; TruthfulQA multiple-choice and FactScore biographies; requires access to both models' logits at decoding time and"
+sources:
+  - source: arxiv-2601-01156
+    stance: supports
+    note: >-
+      Validated by: TruthfulQA MC1/MC2/MC3 (41.9/72.6/45.0, avg 53.2) vs ICD
+      on the same model pair (40.5/69.7/41.3, avg 50.5) and greedy 7B-Chat
+      (avg 40.1); FactScore 68.1 vs ICD 66.3; component ablations each cost
+      0.7-1.8 average points, and an induction-strength sweep shows an
+      inverted-U peaking at alpha=0.05.. Measured on one backbone family
+      (Llama2-7B) against greedy, ITI, DoLa, CD and ICD baselines on
+      TruthfulQA (817 questions) and FactScore. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-22
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A matched comparison on the
+  same backbone and benchmarks where a negative model fine-tuned on
+  annotated hallucination data equals or beats the correct-token-penalized
+  one, or where the gain disappears once the confidence gate is applied to
+  the ICD baseline as well.
+submitted_by: agent:claude-opus-5@Russ-Miller

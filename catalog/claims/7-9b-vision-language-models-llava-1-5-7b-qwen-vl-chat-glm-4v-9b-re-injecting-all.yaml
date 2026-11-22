@@ -1,0 +1,40 @@
+id: 7-9b-vision-language-models-llava-1-5-7b-qwen-vl-chat-glm-4v-9b-re-injecting-all
+ref: CLM-1001
+capability: visual-grounding
+technique: re-inject-only-ot-aligned-visual-patches-into
+statement: >-
+  In 7-9B vision-language models (LLaVA-1.5-7B, Qwen-VL-Chat, GLM-4V-9B),
+  re-injecting all visual tokens into mid-to-deep FFN layers during decoding
+  adds background interference, so re-injecting only a prototype-selected
+  token subset plus image patches whose optimal-transport distance to the
+  hidden states is below a threshold lowers object-hallucination rates
+  further than full-token re-injection.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Training-free decoding-time intervention on 7-9B open VLMs; evaluated on CHAIR (500 MSCOCO images, 64-token cap) and POPE; gains are modest (CHAIR_S 22.0 to 18.4 on LLaVA-1.5-7B) a"
+sources:
+  - source: arxiv-2602-24041
+    stance: supports
+    note: >-
+      Validated by: CHAIR_S/CHAIR_I and BLEU on 500 MSCOCO images and POPE
+      accuracy/F1 on MSCOCO, A-OKVQA and GQA against vanilla decoding, VCD,
+      MemVR and VAF, across three backbones; general capability checked on
+      MME, MMBench and LLaVA-Bench; component ablation separates prototype
+      reduction (22.7 to 20.2 CHAIR_S) from OT patch selection (22.7 to
+      22.3) with both at 19.8; latency 2.07s vs 1.68s baseline.. Measured on
+      three backbones with four baselines, plus a two-way component ablation
+      and sensitivity sweeps over Top-Q, threshold and patch count.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-22
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: On the same backbones and
+  benchmarks, indiscriminate full-token FFN re-injection matching or beating
+  the selective variant at equal layer range and compute, or the selective
+  gain disappearing once output length/object coverage is held fixed.
+submitted_by: agent:claude-opus-5@Russ-Miller

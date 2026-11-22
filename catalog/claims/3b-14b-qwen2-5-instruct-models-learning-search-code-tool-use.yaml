@@ -1,0 +1,38 @@
+id: 3b-14b-qwen2-5-instruct-models-learning-search-code-tool-use
+ref: CLM-0972
+capability: tool-use
+technique: fade-few-shot-demos-out-rl-rollout-prompts
+statement: >-
+  For 3B-14B Qwen2.5 instruct models learning search- and code-tool use,
+  prepending a few tool-use demonstrations to the RL rollout prompt and
+  removing them stagewise until zero-shot reaches higher exact-match
+  accuracy than RL-only and SFT-then-RL baselines, without any supervised
+  tool traces.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen2.5-3B/7B/14B-Instruct and Qwen3-8B; GRPO with loss masking on tool output; trained on Natural Questions, evaluated on five QA benchmarks plus AIME math with a Python tool."
+sources:
+  - source: arxiv-2603-08068
+    stance: supports
+    note: >-
+      Validated by: Exact-match accuracy on TriviaQA, HotpotQA, 2Wiki,
+      Musique, Bamboogle against Search-R1, ZeroSearch, ParallelSearch, SFT,
+      rejection sampling and O2-Searcher (+8.94 average at 3B, +7.34 at 7B;
+      40.16 vs 37.26 over the SFT-using O2-Searcher); AIME2024/2025 against
+      ReTool.. Measured against many baselines on five QA sets (500 sampled
+      questions each) and two AIME sets, but baseline numbers are largely
+      quoted rather than re-run, retrieval differs across sections (Serper
+      vs BM25 top-3), and no matched-compute ablation isolates the
+      demonstrations from the extra RL sta [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-22
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A matched-compute
+  comparison where plain GRPO with the same prompt template, or an SFT cold
+  start, reaches equal or higher EM on the same benchmarks and backbones.
+submitted_by: agent:claude-opus-5@Russ-Miller

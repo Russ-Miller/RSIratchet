@@ -1,0 +1,64 @@
+id: arxiv-2601-01580
+ref: SRC-1061
+kind: paper
+title: "The Two-Stage Decision-Sampling Hypothesis: Understanding the
+  Emergence of Self-Reflection in RL-Trained LLMs"
+authors:
+  - Zibo Zhao
+  - Yuanting Zha
+  - Haipeng Zhang
+  - Xingcheng Xu
+year: 2026
+date: 2026-01-04
+arxiv_id: "2601.01580"
+url: https://arxiv.org/abs/2601.01580
+tags:
+  - ingested
+summary: Self-reflection capabilities emerge in Large Language Models after RL
+  post-training, with multi-turn RL achieving substantial gains over SFT
+  counterparts. Yet the mechanism of how a unified optimization objective
+  gives rise to functionally distinct capabilities of generating solutions and
+  evaluating when to revise them remains opaque. To address this question, we
+  introduce the Gradient Attribution Property to characterize how reward
+  gradients distribute across policy components, formalized through the
+  Two-Stage Decision-Sampling (DS) Hypothesis, which decomposes the policy
+  into sampling ($π_{s
+notes: "Filed as a source on self-repair from the classifier's judgement that
+  the paper is about it (measures, medium): The paper offers a theoretical and
+  empirical characterization of why self-reflection emerges under RL versus
+  SFT, attributing gains to the decision/verification component, rather than
+  proposing a new fix or reporting a regression. No claim has been drafted
+  from it yet."
+ingested_at: 2026-11-22
+brief: >-
+  RL-trained models generalize better than SFT models not because they
+  generate better candidate answers, but because they learn when to reject a
+  wrong one. The paper decomposes an LLM's policy into a sampling component
+  (generate a candidate solution) and a decision component (stop or resample),
+  and argues that trajectory-level surrogate rewards weight both equally while
+  token-level KL penalties scale with sequence length, constraining sampling
+  by O(L) and leaving the decision policy nearly unregularized.
+
+
+  The empirical test uses Qwen2.5-7B-Instruct trained on 4x5 and 5x4
+  multiplication, evaluated out-of-distribution on 3x3 through 3x9, n=100 per
+  cell. SFT with reflection data and RL are near-equal on easy tasks (96-98%
+  on 3x3), then diverge: at 3x6, RL 90% vs SFT 49%; at 3x9, RL 34% vs SFT 0%.
+  A 3-parameter calibration fits observed accuracy; RL keeps p(resample |
+  wrong) at 40-60% far OOD while SFT's collapses toward zero, with p(stop |
+  correct) high in both.
+
+
+  The mechanism claim is proved under a simplified objective with clipping and
+  trust regions abstracted away. The empirical side is 1 model, 1 task family,
+  arithmetic only, with no ablation separating reward structure from KL
+  weighting; supporting evidence for SFT's failure is cited from others (p(F
+  to T) flat at 3-5%; SFT degrades OOD 8-80% while RL improves 3-61%).
+
+
+  If you are diagnosing why reflection-tuned SFT models echo their first
+  answer, measure the rejection rate on wrong answers rather than first-pass
+  accuracy.
+brief_generated_at: 2026-11-22
+brief_model: claude-opus-5
+brief_source: full-text

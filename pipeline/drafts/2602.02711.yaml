@@ -1,0 +1,50 @@
+arxiv_id: "2602.02711"
+title: Dynamic Mixed-Precision Routing for Efficient Multi-step LLM Interaction
+url: https://doi.org/10.48550/arxiv.2602.02711
+drafted_at: 2026-11-19
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: long-horizon-execution
+statement: In multi-step text-agent episodes run on post-training-quantized
+  LLMs, the loss from low-bit decoding is concentrated in a small minority of
+  steps — low and high precision pick different actions at roughly 15% of
+  steps and only about 7% of those flip a success into a failure — so
+  selecting decoding precision per step from the prefill hidden state recovers
+  most of the fixed-low-precision success gap while keeping most of the
+  speedup.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Small-batch, memory-bandwidth-bound local decoding of
+  weight-only-quantized 4B-7B models on text agent benchmarks (ALFWorld,
+  ScienceWorld, TextWorld); prompts grow by append so the KV cache is reusable
+  across steps.
+technique: ""
+proposed_technique: Route decoding precision per agent step with a hidden-state probe
+technique_summary: At each agent step, prefill at the top precision tier and
+  feed the final-norm hidden state to a two-head linear probe that predicts
+  action divergence times conditional criticality; decode the step at low
+  precision unless the predicted criticality is high, reusing the shared
+  high-precision KV cache.
+technique_kind: decoding
+technique_validated_by: Task success rate and per-task decode time against
+  fixed-precision, random routing matched on low-bit token share, and
+  first-k-steps schedules, on three agent benchmarks; DMR recovered 81% of the
+  fixed-low-precision success gap on average at 2.44x FP16 decode speedup,
+  versus at most 48% for heuristics; on ALFWorld+GPTQ 86.9% vs 87.2% FP16 at
+  1.71x. Ablations compare router factorizations and a position-feature router
+  (AUC 0.530 vs 0.745).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Showing that quantization-induced agent failures are spread roughly
+  evenly across steps rather than concentrated in a small subset, or that a
+  per-step hidden-state router does no better than a random or position-based
+  schedule at matched low-precision token share.
+evidence_note: Measured on three text-agent benchmarks with two quantization
+  schemes and two model sizes, with matched-budget baselines and task-grouped
+  cross-validation. Single lab, single-round label collection, text-only
+  environments; critical-step position distribution differs sharply across the
+  three benchmarks, so the 1% figure is benchmark-specific. Latency is partly
+  estimated from measured per-token times rather than fully wall-clock.
+confidence: medium
