@@ -1,0 +1,68 @@
+id: arxiv-2601-00659
+ref: SRC-1054
+kind: paper
+title: "CRoPS: A Training-Free Hallucination Mitigation Framework for
+  Vision-Language Models"
+authors:
+  - Neeraj Anand
+  - Samyak Jha
+  - Udbhav Bamba
+  - Rahul Rahaman
+year: 2026
+date: 2026-01-02
+arxiv_id: "2601.00659"
+url: https://arxiv.org/abs/2601.00659
+tags:
+  - ingested
+summary: "Despite the rapid success of Large Vision-Language Models (LVLMs), a
+  persistent challenge is their tendency to generate hallucinated content,
+  undermining reliability in real-world use. Existing training-free methods
+  address hallucinations but face two limitations: (i) they rely on narrow
+  assumptions about hallucination sources, and (ii) their effectiveness
+  declines toward the end of generation, where hallucinations are most likely
+  to occur. A common strategy is to build hallucinated models by completely or
+  partially removing visual tokens and contrasting them with the original
+  model. Yet, this"
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, high): The paper proposes CRoPS, a
+  training-free contrastive decoding framework that reduces hallucinated
+  content in vision-language model generations by ~20% CHAIR improvement. No
+  claim has been drafted from it yet."
+ingested_at: 2026-11-22
+brief: >-
+  Contrastive decoding for vision-language hallucination weakens as generation
+  proceeds, because the model's dependence on visual tokens falls off;
+  building a hallucinated model by dropping important text tokens instead
+  restores the contrast signal late in a caption.
+
+
+  CRoPS combines 2 hallucinated models -- one with visual tokens pruned, one
+  stripped of visual tokens and of the highest-attention text tokens -- under
+  a generalized contrastive decoding that subtracts several hallucinated logit
+  streams at once, with the text-side weight growing over time. Tested on
+  LLaVA-1.5 7B/13B, LLaVA-NeXT 8B and Qwen2-VL 7B against VCD, ICD, OPERA,
+  ClearSight, SID and M3ID.
+
+
+  On MS-COCO CHAIR with LLaVA-1.5 7B, C_S falls from 47.1 (M3ID) to 39.5 and
+  C_I from 12.8 to 10.2, recall 76.3. AMBER CHAIR drops 9.0 to 6.3, Hal 40.0
+  to 29.3. POPE accuracy rises to 83.9/89.4/86.1. MME and MathVista also
+  improve (1662, 28.9 on LLaVA-1.5).
+
+
+  Evidence is measured, 3 seeds, 1 shared hyperparameter setting across all
+  backbones, with ablations isolating text-token removal (random removal gives
+  50.7 C_S) and the retention schedule. Swapping in M3ID as the second model
+  gives 45.1 C_S.
+
+
+  Only training-free contrastive methods are compared, and CRoPS is about 3x
+  slower than sampling (652s vs 215s). ClearSight beats it on Qwen2-VL C_S but
+  collapses recall to 38.2.
+
+
+  If you use contrastive decoding, the late-generation failure mode is the
+  part worth fixing.
+brief_generated_at: 2026-11-22
+brief_model: claude-opus-5
+brief_source: full-text

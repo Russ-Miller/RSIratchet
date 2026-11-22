@@ -1,0 +1,50 @@
+arxiv_id: "2602.19715"
+title: "Pixels Don't Lie (But Your Detector Might): Bootstrapping
+  MLLM-as-a-Judge for Trustworthy Deepfake Detection and Reasoning
+  Supervision"
+url: https://doi.org/10.48550/arxiv.2602.19715
+drafted_at: 2026-11-21
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: critique
+statement: For judging whether a deepfake explanation is grounded in the
+  image, a 3B-7B vision-language judge fine-tuned on bootstrapped graded
+  reasoning data agrees with human ratings more closely than prompted models
+  up to 30x larger (pairwise accuracy 96.2% vs 93.2%, pointwise RMSE 0.61 vs
+  1.01), while n-gram and embedding text metrics (BLEU, ROUGE, METEOR,
+  BERTScore) against reference rationales do not separate the generators at
+  all.
+kind: observation
+backing_strength: single-paper
+scope_condition: Image deepfake detection rationales; judge trained on
+  in-distribution human-annotated data from the same pipeline that produced
+  the graded test data; baselines are prompted zero-shot.
+technique: ""
+proposed_technique: Bootstrap a graded-rationale judge from human artifact annotations
+technique_summary: Human bounding-box artifact annotations are turned into
+  gold rationales, a generator writes rationales at each of five quality
+  levels which an evaluator re-scores and refines until the intended and
+  predicted ratings match, and the paraphrased graded corpus fine-tunes a
+  small VLM to score reasoning pointwise and pairwise directly from the image.
+technique_kind: training
+technique_validated_by: RMSE/MSE and Spearman/Pearson correlation against
+  human pointwise ratings, and pairwise agreement with human preferences, on a
+  100-sample two-annotator subset (Cohen's kappa ~0.80) plus a
+  1,000/2,000-sample held-out split, against 15 prompted VLM baselines; plus a
+  10-participant user study preferring the pipeline rationales 70% of the
+  time.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On a meta-evaluation set built by a different pipeline and
+  annotator pool, the fine-tuned 3B/7B judges fail to beat large prompted VLMs
+  on human-agreement, or reference-based text metrics are shown to rank
+  generators consistently with human reasoning-quality judgements.
+evidence_note: Measured on the authors' own benchmark where train and
+  meta-evaluation data come from the same bootstrapping pipeline, so part of
+  the judge's advantage may be format familiarity rather than better reasoning
+  assessment; the human-agreement subset is only 100 samples with two
+  annotators, and the baselines are zero-shot prompted rather than fine-tuned
+  on any graded data.
+confidence: low

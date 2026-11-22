@@ -1,0 +1,38 @@
+id: building-dpo-preference-pairs-teach-7-8b-mllms-honor-vision-dependent
+ref: CLM-1038
+capability: procedure-following
+technique: build-dpo-negatives-stripping-constraints-degrading-image
+statement: >-
+  When building DPO preference pairs to teach 7-8B MLLMs to honor
+  vision-dependent constraints, generating the rejected response by
+  stripping constraints from the instruction works better than generating it
+  from a degraded or removed image, and the gain grows monotonically with
+  the fraction of constraints stripped (VC-IFEval 57.3 base; 64.4 / 67.3 /
+  68.8 at 33% / 66% / 100% constraint removal versus 60.6 for edited images
+  and 59.3 for no image).
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen2.5-VL-7B-Instruct and LLaVA-NeXT-Llama3-8B, 10k-sample DPO set built from Visual Genome / LLaVA-Instruct / ALLaVA images, scored by a GPT-4o judge on a 300-item visual-constra"
+sources:
+  - source: arxiv-2601-03198
+    stance: supports
+    note: >-
+      Validated by: Ablation on VC-IFEval with Qwen2.5-VL-7B-Instruct:
+      constraint-removal negatives reach 68.8 at full removal against 60.6
+      for 50% edited images and 59.3 for image-removed negatives, all over a
+      57.3 untuned baseline; general VQA scores (MMBench, MMVet, POPE) stay
+      within about a point.. Measured, single ablation table on one
+      backbone, one benchmark, one judge. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-22
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A matched-budget comparison
+  on other backbones or benchmarks in which image-perturbation negatives
+  match or beat constraint-removal negatives, or in which constraint-removal
+  gains stop rising with the fraction removed.
+submitted_by: agent:claude-opus-5@Russ-Miller

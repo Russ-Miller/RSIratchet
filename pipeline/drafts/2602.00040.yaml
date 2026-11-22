@@ -1,0 +1,50 @@
+arxiv_id: "2602.00040"
+title: Enhancing few-shot time series forecasting with LLM-guided diffusion
+url: https://doi.org/10.48550/arxiv.2602.00040
+drafted_at: 2026-11-17
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: forecasting
+statement: For multivariate time series forecasting with a diffusion decoder,
+  conditioning the denoiser on representations from a LoRA-adapted pretrained
+  GPT-2 encoder lowers MSE/MAE more than conditioning on an Autoformer encoder
+  or on retrieved few-shot exemplars, and after pretraining on a source
+  dataset, fine-tuning on 1% of a target dataset reaches nearly the same error
+  as fine-tuning on 100%.
+kind: observation
+backing_strength: single-paper
+scope_condition: Seven standard benchmarks (ETT, Weather, ECL, Traffic), input
+  length 96, horizons 96-720; ablation reported on Weather only; few-shot
+  transfer reported only between ETTm1 and ETTm2 and only for the authors' own
+  model with no baseline transfer curve.
+technique: ""
+proposed_technique: Condition the diffusion forecaster on an LLM temporal memory
+technique_summary: A LoRA-adapted first-six-layer GPT-2 encoder, pretrained
+  with an autoregressive MSE loss, produces sequence representations that
+  condition a UViT diffusion model trained to denoise history and future
+  jointly with independently sampled timesteps.
+technique_kind: architecture
+technique_validated_by: MSE/MAE against LLM-based (TimeLLM, GPT4TS, CALF),
+  Transformer (PatchTST, iTransformer, Crossformer) and diffusion (TMDM,
+  TimeGrad, TimeDiff) baselines on seven datasets; a four-way Weather ablation
+  swapping the conditioning source (LLM only, Autoformer+diffusion 0.357 MSE,
+  RAG+diffusion 0.531, full 0.248); a GPT-2 layer-depth sweep; and a
+  1/5/50/100% fine-tuning sweep on two ETT transfer pairs.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On the same benchmarks and budget, swapping the GPT-2 encoder for a
+  comparably sized non-pretrained or non-language encoder yields equal or
+  lower error, or the 1%-vs-100% few-shot gap widens to the size seen in
+  baseline forecasters once transfer pairs beyond ETTm1/ETTm2 are tested.
+evidence_note: "Measured, single paper, small scale. Full-data wins are narrow
+  over CALF and iTransformer (e.g. Electricity 0.172 vs 0.176) with no seeds
+  or variance reported. The conditioning ablation is one dataset and one
+  configuration each, and it does not isolate language pretraining from
+  encoder capacity. The few-shot result is the weakest link: identical MSE to
+  three decimals at 1% and 5% on both transfer pairs suggests fine-tuning
+  changes almost nothing, which is as consistent with the target task being
+  insensitive to the fine-tuning data as with robust transfer, and no baseline
+  is run under the same protocol."
+confidence: low

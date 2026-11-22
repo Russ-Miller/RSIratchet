@@ -1,0 +1,38 @@
+id: llm-generated-unit-test-suites-used-verifiers-training-generator-rl-whose
+ref: CLM-1114
+capability: error-detection
+technique: reward-only-tests-kill-mutants-earlier-tests-missed
+statement: >-
+  For LLM-generated unit-test suites used as verifiers, training the
+  generator with RL whose per-test reward counts only mutants not already
+  killed by earlier tests in the same suite, plus a growing penalty for
+  tests that kill nothing new, yields shorter suites with higher mutation
+  scores than quantity-oriented test generators.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "8B Llama backbone on function-level Python benchmarks (HumanEval+, MBPP+, DS-1000) with an AST-based mutation engine supplying the reward; not shown at repository scale."
+sources:
+  - source: arxiv-2603-01409
+    stance: supports
+    note: >-
+      Validated by: Mutant kill rate and average suite length on HumanEval+,
+      MBPP+, DS-1000 against Llama-3-8B-Instruct, CodeRM-8B and Qwen3-14B
+      (HumanEval+ 74.03% vs 45.53% kill rate, suite length 6.14 vs 7.61),
+      plus Pass@1 code reranking on HumanEval+ (48.78% vs 45.73% at N=10);
+      ablations remove the incremental term (kill rate 74.03 to 65.1) and
+      the penalty (length 6.14 to 14.20).. Measured on three benchmarks with
+      one backbone and two baselines plus a larger general model; ablations
+      isolate the incremental term and the penalty separately. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-22
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A replication where the
+  incremental-history reward gives no mutation-score or suite-length
+  advantage over the same GRPO run with a total-coverage reward, or where
+  the shorter suites do not improve downstream reranking.
+submitted_by: agent:claude-opus-5@Russ-Miller

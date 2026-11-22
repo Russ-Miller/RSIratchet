@@ -1,0 +1,51 @@
+arxiv_id: "2601.15141"
+title: "CLEANER: Self-Purified Trajectories Boost Agentic Reinforcement Learning"
+url: https://doi.org/10.48550/arxiv.2601.15141
+drafted_at: 2026-11-17
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: self-repair
+statement: When 4B-7B models are trained with outcome-only agentic RL over a
+  Python interpreter, retroactively rewriting each rollout so a failed tool
+  call is replaced by the model's own later successful correction — discarding
+  the error and traceback before the policy update — raises benchmark accuracy
+  over the same RL run on raw trajectories and reaches comparable scores in
+  about a third of the training steps.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Parameter-constrained (4B-7B) instruct models,
+  Python-interpreter tool use, sparse outcome-only reward (DAPO/GRPO),
+  math/science/code benchmarks; requires the model to already self-correct
+  within a rollout.
+technique: ""
+proposed_technique: Replace failed steps with the model's own later fix before training
+technique_summary: During rollout collection, when code execution fails and a
+  subsequent retry succeeds, roll the trajectory back to the failure point and
+  graft in the corrected code — keeping the original reasoning when the two
+  code versions are textually similar, and swapping in the correction's
+  reasoning when they are not — then recompute log-probabilities under the
+  purified context.
+technique_kind: training
+technique_validated_by: Compared against a DAPO baseline with identical
+  configuration minus the mechanism, on AIME24/25, GPQA and LiveCodeBench v6
+  with Qwen3-4B-Instruct and Qwen2.5-7B-Instruct; reported average gains ~6%
+  on AIME, 3-4% on GPQA, 5% on LiveCodeBench, and parity with DemyAgent-4B at
+  250 vs 750 RL steps. Tracked per-trajectory erroneous tool-call counts
+  during training.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An RL run at matched compute where trajectory purification yields
+  no accuracy gain over raw trajectories, or where the gain is reproduced by
+  simply discarding error-containing successful trajectories (cheap filtering)
+  rather than by the rollback-and-graft step.
+evidence_note: "Measured on two backbones and four benchmarks against a
+  configuration-matched baseline, with an ablation isolating tool use from the
+  rollback mechanism and a deactivation test showing the behavior is
+  internalized (only 0.6-2.5 point drop without the mechanism at inference).
+  Not isolated: the similarity-threshold adaptive granularity is not ablated
+  against a fixed shallow or deep replacement, so the adaptivity itself is
+  unvalidated; the 7B run also mixes in 30% unpurified trajectories,
+  confounding that arm. Single paper, no independent replication."
+confidence: medium

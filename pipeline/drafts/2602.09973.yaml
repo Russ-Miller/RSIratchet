@@ -1,0 +1,44 @@
+arxiv_id: "2602.09973"
+title: "RoboInter: A Holistic Intermediate Representation Suite Towards
+  Robotic Manipulation"
+url: https://doi.org/10.48550/arxiv.2602.09973
+drafted_at: 2026-11-11
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: For plan-then-execute manipulation policies that condition a
+  diffusion action head on intermediate representations, coarse stage-level
+  labels (subtask, primitive skill) add little over no conditioning, while
+  spatially and temporally grounded representations — object and gripper
+  boxes, affordance, and especially the dense 2D end-effector trace — carry
+  nearly all of the open-loop action-prediction gain.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Open-loop evaluation on real teleoperated manipulation data
+  (Droid/RH20T-derived), Qwen2.5-VL backbone with a DiT action head,
+  conditioning on ground-truth annotations rather than predicted ones.
+technique: ""
+proposed_technique: Condition the action head on dense traces, not subtask labels
+technique_summary: Supply the low-level action generator with per-frame
+  grounded intermediate representations (object/gripper boxes, affordance,
+  end-effector trace) instead of, or in addition to, stage-level subtask and
+  skill text.
+technique_kind: training
+technique_validated_by: "Cumulative ablation on a 25k-episode open-loop split:
+  mean Open-Loop Score rose 0.3086 (no conditioning) to 0.3146 with subtask,
+  0.3159 adding primitive skill, 0.3289 adding object box, 0.3391 adding
+  gripper box, 0.3435 adding affordance, and 0.3861 adding trace; ground-truth
+  representations were used, so predicted-representation performance is
+  lower."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation on comparable data where subtask/skill conditioning
+  matches or exceeds trace conditioning on action-prediction error, or where
+  adding the trace gives no gain over box-level conditioning.
+evidence_note: Measured as a single cumulative ablation ladder on one dataset
+  and one executor architecture, using oracle annotations; the ordering is
+  confounded with the order of addition, and closed-loop real-robot runs (15
+  ID + 15 OOD trials per task) were not used to test this ablation.
+confidence: medium

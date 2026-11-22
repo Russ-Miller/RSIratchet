@@ -1,0 +1,40 @@
+id: 3b-video-multimodal-models-video-anomaly-understanding-training-teacher-generated
+ref: CLM-0982
+capability: self-repair
+technique: train-think-reflect-rethink-traces-flip-scored-reflection
+statement: >-
+  For 3B video multimodal models on video anomaly understanding, training on
+  teacher-generated think-reflect-rethink traces with SFT followed by GRPO
+  rewards that score whether reflection flips a wrong answer to right raises
+  QA accuracy and temporal grounding over the same backbone trained with
+  plain GRPO, while simply emitting two consecutive reasoning blocks without
+  explicit reflection markers gives little or no gain.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen2.5-VL-3B base, teacher-distilled reflection data (~4.6k samples), evaluated on UCF-Crime, MSAD and ECVA via VAU-Bench; gains reported by the method's authors against their own"
+sources:
+  - source: arxiv-2602-01004
+    stance: supports
+    note: >-
+      Validated by: Multiple-choice QA accuracy and VAU-Eval judge scores on
+      UCF-Crime and MSAD, plus temporal mIoU and R@0.3/0.5/0.7 on MSAD and
+      ECVA, against frozen Qwen/InternVL baselines, VAU-R1, HolmesVAU, plain
+      GRPO without reflection data, SFT-only, RL-only, and a
+      two-step-thinking variant.. Measured on three VAU datasets with one 3B
+      backbone; ablations isolate reflection data (91.63 vs 96.81 on
+      UCF-Crime), SFT-only vs RL-only, data scale, and teacher identity
+      (InternVL3-38B gives similar gains). Single paper, authors' own
+      framework, no independent replication; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-22
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A replication where plain
+  GRPO on the same data volume, or a two-step-thinking variant, matches the
+  reflection-trained model's QA accuracy and mIoU, showing the gain comes
+  from extra teacher-distilled tokens rather than the reflection structure.
+submitted_by: agent:claude-opus-5@Russ-Miller
