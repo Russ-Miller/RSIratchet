@@ -1,0 +1,45 @@
+arxiv_id: "2602.15400"
+title: "One Agent to Guide Them All: Empowering MLLMs for Vision-and-Language
+  Navigation via Explicit World Representation"
+url: https://doi.org/10.48550/arxiv.2602.15400
+drafted_at: 2026-11-21
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: "For frozen MLLM zero-shot vision-and-language navigation in
+  continuous environments, recovery from a wrong turn improves most when the
+  agent commits a natural-language expectation to each branch and rejects it
+  on observation mismatch: on a 100-episode R2R-CE set, loop-alert
+  backtracking plus checkpoints with blocked-direction memory raised success
+  from 31% to 39%, and adding the expectation check raised it further to 47%."
+kind: observation
+backing_strength: single-paper
+scope_condition: Zero-shot GPT-5.1-driven agent with an external metric TSDF
+  map and topological graph; static indoor simulator scenes; 100-episode
+  R2R-CE subset.
+technique: ""
+proposed_technique: Commit an expectation per branch, backtrack on mismatch
+technique_summary: At each junction the model writes what it expects to see
+  down each viable direction, pushes a checkpoint, and if later observations
+  contradict the stored expectation it retraces to the checkpoint, blocks that
+  branch, and re-decides among untried ones.
+technique_kind: process
+technique_validated_by: "Incremental ablation on the same 100-episode R2R-CE
+  val-unseen set: greedy 31.0 SR, +loop-alert backtrack 37.0, +checkpoints and
+  blocking 39.0, +expectation checks 47.0 SR / 38.8 SPL; no variance reported
+  for the ablation rows."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On a comparable continuous-navigation set, an agent with
+  checkpoints and blocked-branch memory but no stored expectations matches the
+  expectation-checking variant in success rate, or the gap disappears once run
+  variance is reported across seeds.
+evidence_note: Single-paper, one ablation table on 100 episodes with one
+  backbone; main-table runs report +/-0.8 pp SR spread over three runs but the
+  ablation rows report no spread, so the 8-point step is larger than observed
+  noise on the main split yet not independently replicated. Design isolates
+  the expectation check from backtracking and blocking, but not from prompt
+  length changes.
+confidence: low

@@ -1,0 +1,53 @@
+arxiv_id: "2603.05868"
+title: "AnyCamVLA: Zero-Shot Camera Adaptation for Viewpoint Robust
+  Vision-Language-Action Models"
+url: https://doi.org/10.48550/arxiv.2603.05868
+drafted_at: 2026-11-22
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: For RGB-based VLA manipulation policies fine-tuned at a fixed
+  camera setup, rendering test-time observations back into the training
+  viewpoint with a feed-forward novel-view-synthesis module, while the policy
+  stays frozen, retains task success under extrinsic and intrinsic camera
+  shifts better than fine-tuning the policy on viewpoint-augmented
+  demonstrations or swapping in 3D-aware visual features.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: RGB-input VLAs with known calibrated train and test camera
+  parameters; validated on LIBERO (agent and wrist camera perturbations up to
+  15 cm / 60 degrees) and on a Franka real-robot setup with four
+  pick-and-place tasks; the synthesis module needed in-domain fine-tuning for
+  simulation images.
+technique: ""
+proposed_technique: Render test-time views back into the training camera viewpoint
+technique_summary: At each control step a feed-forward novel-view-synthesis
+  model converts images from the current camera configuration into images as
+  seen from the training cameras, which are then fed unchanged to the frozen
+  VLA policy.
+technique_kind: architecture
+technique_validated_by: "LIBERO success rates across four suites and three
+  perturbation levels: Ours-pi 94.5% average on agent-camera shifts vs 69.9%
+  for base pi0.5, 87.2% for viewpoint-augmented fine-tuning, 86.1% for
+  GeoAwareVLA; on wrist-camera shifts (LIBERO-Long) 88.6% vs 28.6% base, 83.1%
+  augmented, 5.2% GeoAwareVLA. Ablation vs homography (31.7%) and depth
+  reprojection (81.1%), and vs no synthesis-model fine-tuning (33.2%).
+  Real-robot: 10 trials per task on four tasks, progress and binary success
+  near training-viewpoint levels."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A controlled comparison where view-synthesis input adaptation fails
+  to beat viewpoint-augmented policy fine-tuning or geometry-feature policies
+  at matched camera shifts, or where the synthesized views degrade
+  frozen-policy success below the unadapted baseline.
+evidence_note: Measured in simulation across four LIBERO suites with three
+  perturbation magnitudes and two camera positions, against four baselines
+  including two policy-retraining and one representation-centric method; plus
+  a small real-robot study (4 tasks, 10 trials each, single novel viewpoint)
+  and a qualitative handheld-camera demo. Design isolates input adaptation
+  since policy weights are frozen, but the synthesis module itself was
+  fine-tuned on simulation multi-view data, and real-world evidence is thin
+  with no baseline other than the unadapted policy.
+confidence: medium

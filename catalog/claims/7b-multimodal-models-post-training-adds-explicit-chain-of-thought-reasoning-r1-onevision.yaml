@@ -1,0 +1,42 @@
+id: 7b-multimodal-models-post-training-adds-explicit-chain-of-thought-reasoning-r1-onevision
+ref: CLM-1018
+capability: hallucination
+technique: prune-low-value-cot-tokens-then-preference-tune
+statement: >-
+  For 7B multimodal models, post-training that adds explicit
+  chain-of-thought reasoning (R1-Onevision, MM-Eureka, Orsta-R1, MM-R1,
+  ThinkLite) raises object-hallucination rates above their non-reasoning
+  Qwen2.5-VL base, and the reasoning variants allocate less attention mass
+  to visual tokens and more to text tokens than the base.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "7B Qwen2.5-VL-derived reasoning models on caption-generation and yes/no object-existence benchmarks (CHAIR, POPE, AMBER); attention measured on 300 MSCOCO samples"
+sources:
+  - source: arxiv-2602-03380
+    stance: supports
+    note: >-
+      Validated by: CHAIR, POPE, AMBER and GPT-4-assisted SHR across five 7B
+      MLRMs against vanilla, RLAIF-V and OPA-DPO baselines; e.g. Orsta-R1
+      CHAIR_S 40.7 to 35.3 and SHR down 14.05%, with MME/MMBench general
+      scores preserved; ablations remove each loss term and the
+      hallucination-inducing negatives.. Measured: attention distributions
+      on 300 MSCOCO images and hallucination scores for five reasoning
+      models against one shared base. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-23
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Measuring the same
+  reasoning-tuned 7B models and their shared base on CHAIR/POPE/AMBER and
+  finding the reasoning variants hallucinate no more than the base, or
+  finding their visual-token attention share is equal or higher. Drafted
+  stance toward
+  adversarially-edited-image-tasks-chain-of-thought-prompting-moves-multimodal-models:
+  supports -- Both find that adding chain-of-thought to multimodal models
+  can increase rather than reduce hallucination relative to a non-reasoning
+  baseline.
+submitted_by: agent:claude-opus-5@Russ-Miller

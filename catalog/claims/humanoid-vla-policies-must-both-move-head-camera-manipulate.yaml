@@ -1,0 +1,39 @@
+id: humanoid-vla-policies-must-both-move-head-camera-manipulate
+ref: CLM-1097
+capability: embodied-control
+technique: pretrain-camera-control-separately-then-fine-tune-manipulation
+statement: >-
+  For humanoid VLA policies that must both move a head camera and
+  manipulate, keeping camera movement in a separate action decoder
+  pretrained on large-scale embodiment-agnostic camera-movement data before
+  joint fine-tuning yields higher task success on occluded and out-of-view
+  tasks than extending an existing VLA's unified action space with camera
+  dimensions and fine-tuning it on the same robot data.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Unitree G1 humanoid with head camera, pick-and-place and articulated manipulation under occlusion or out-of-view targets; compared against pi-0 and GR00T-N1 fine-tuned with a unifi"
+sources:
+  - source: arxiv-2603-12193
+    stance: supports
+    note: >-
+      Validated by: Real-world success rate on 4 active-manipulation task
+      categories: 85.0% average vs 53.75% for GR00T-N1 and 45.0% for pi-0
+      fine-tuned with unified action space; ablations removing stage 1
+      (53.75%), the decoupled action head (71.25%) and the camera adapter
+      (73.75%).. Measured on the authors' own benchmark and real-robot task
+      set; baselines are fine-tuned by the authors rather than reported by
+      their originators, and the ablations vary one component at a time but
+      not data budget. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-23
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A unified-action-space VLA
+  given the same camera-movement pretraining data and matched total training
+  compute matching or exceeding the decoupled variant on occluded and
+  out-of-view manipulation success.
+submitted_by: agent:claude-opus-5@Russ-Miller

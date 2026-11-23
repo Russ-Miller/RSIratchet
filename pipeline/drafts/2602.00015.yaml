@@ -1,0 +1,47 @@
+arxiv_id: "2602.00015"
+title: "G-MemLLM: Gated Latent Memory Augmentation for Long-Context Reasoning
+  in Large Language Models"
+url: https://doi.org/10.48550/arxiv.2602.00015
+drafted_at: 2026-11-16
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-step-reasoning
+statement: For frozen LLM backbones from 124M to 8B parameters on multi-hop QA
+  and zero-shot relation extraction, attaching a small trainable latent memory
+  bank (under 3% extra parameters) whose slots are updated through a GRU-style
+  gate raises answer and supporting-fact F1 over the unmodified backbone, with
+  the gain concentrated in supporting-fact identification rather than
+  final-answer exact match at the larger scale.
+kind: observation
+backing_strength: single-paper
+scope_condition: Reported on HotpotQA distractor setting and ZsRE with GPT-2
+  (124M) and Llama 3.1-8B; backbone weights frozen, only memory module
+  trained; no comparison against other memory architectures (Gist Tokens, RMT,
+  MemoryLLM) was run.
+technique: ""
+proposed_technique: Gate latent memory slot updates with a GRU-style gate
+technique_summary: Adds a trainable fixed-size latent memory bank beside a
+  frozen LLM, where cross-attention proposes a new slot state and a learned
+  gate interpolates between the old and proposed state, with sparsity and
+  entropy penalties on slot usage.
+technique_kind: architecture
+technique_validated_by: HotpotQA EM/F1 (answer, supporting fact, joint) and
+  ZsRE accuracy against the vanilla same-backbone model; GPT-2 answer F1 45.52
+  to 54.08, Llama 3.1-8B supporting-fact F1 76.53 to 83.42, ZsRE score 55.63
+  to 63.03; plus a slot-count ablation (512/1024/2048) showing saturation at
+  1024.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A controlled rerun showing the same gains from an ungated memory
+  bank of equal parameter count, or from simply training any adapter of
+  similar size on the same task data, would show the gating mechanism is not
+  what produces the improvement.
+evidence_note: "Measured, but thinly: two benchmarks, two backbones, one
+  baseline (the untouched vanilla model). No comparison to the recurrent and
+  compression baselines the paper positions against, no ablation removing the
+  gate itself or the sparsity/entropy terms, no seeds or variance, no held-out
+  task. The design does not isolate gating from the mere addition of trainable
+  task-adapted parameters. Self-described as a course project."
+confidence: low

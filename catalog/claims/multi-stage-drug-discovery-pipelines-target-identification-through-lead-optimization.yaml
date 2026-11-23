@@ -1,0 +1,41 @@
+id: multi-stage-drug-discovery-pipelines-target-identification-through-lead-optimization
+ref: CLM-1164
+capability: long-horizon-execution
+technique: run-discovery-stages-stateful-skill-graphs-data-contracts
+statement: >-
+  For multi-stage drug discovery pipelines (target identification through
+  lead optimization) run by LLM agents, encoding each stage as a stateful
+  graph with validated input/output data contracts contains tool crashes
+  locally — failed nodes are bypassed and the offending candidates penalized
+  — rather than forcing a pipeline restart, whereas code-generating agents
+  that re-derive each stage's procedure stall on backend tool failures.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Observed in three end-to-end case studies (Crohn's, Parkinson's, sepsis) on one system with open-weight and mid-tier backends; no matched-architecture control, and docking failure "
+sources:
+  - source: arxiv-2603-03655
+    stance: supports
+    note: >-
+      Validated by: PharmaBench (88 tasks): classification accuracy 33/54 vs
+      20/54 for Biomni at Qwen3-235B, regression SMAPE 1.169 vs 1.599; HLE
+      drug-discovery subset 6/28 best. Plus three end-to-end runs reporting
+      docking failure counts and wall-clock times, and an AlphaFold3 ipTM
+      comparison of generated LRRK2 binders against a Phase II clinical
+      compound.. Weakly evidenced. The benchmark numbers are small-sample
+      (26 MCQ, 54 classification, 8 regression tasks) and mix tool-use with
+      prior knowledge, which the authors acknowledge conflates orchestration
+      with model priors. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-23
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A controlled comparison
+  holding backbone, tool server and task fixed, where a flat code-generating
+  agent recovers from mid-pipeline tool crashes as often as the skill-graph
+  version, or where removing the data contracts and HITL gates leaves
+  end-to-end completion rates unchanged.
+submitted_by: agent:claude-opus-5@Russ-Miller

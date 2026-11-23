@@ -1,0 +1,38 @@
+id: 8b-70b-open-backbones-doing-retrieval-augmented-qa-over-20-retrieved
+ref: CLM-1029
+capability: long-context-degradation
+technique: stage-long-context-rag-training-ground-then-discriminate
+statement: >-
+  For 8B-70B open backbones doing retrieval-augmented QA over ~20 retrieved
+  documents, a staged pipeline of supervised fine-tuning on saturated
+  contexts, then DPO on preference pairs contrasting the model's own correct
+  and incorrect answers under correct and distractor-laden evidence, then
+  GRPO with an answer-correctness plus reranker-agreement reward, raises
+  accuracy on knowledge-intensive benchmarks, with the gains falling off
+  sharply after the first two stages.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "8B-70B Qwen3/Llama3.1 and Qwen2.5-VL backbones; Top-20 retrieval; 32k max sequence; evaluated zero-shot on eight text and four multimodal QA benchmarks with disjoint training pools"
+sources:
+  - source: arxiv-2603-07023
+    stance: supports
+    note: >-
+      Validated by: Cumulative ablation on Qwen3-8B and Llama3.1-8B across
+      seven QA datasets against no-retrieval and retrieval-only baselines;
+      e.g. Qwen3-8B PopQA 20.6 (no RAG) to 52.1 (RAG) to 58.4 (+SFT) to 62.4
+      (+DPO) to 63.1 (+GRPO). No matched-compute or data-volume control for
+      the staging itself.. Measured on eight text and four multimodal
+      benchmarks with per-stage ablation on two 8B backbones. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-23
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An ablation at matched
+  token/compute budget showing single-stage SFT on the same data reaches the
+  same accuracy as the three-stage pipeline, or showing the DPO stage
+  contributes nothing once SFT data volume is equalized.
+submitted_by: agent:claude-opus-5@Russ-Miller

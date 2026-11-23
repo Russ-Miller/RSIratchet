@@ -1,0 +1,57 @@
+id: arxiv-2601-02972
+ref: SRC-1072
+kind: paper
+title: "Correct, Concise and Complete: Multi-stage Training For Adaptive Reasoning"
+year: 2026
+date: 2026-01-06
+arxiv_id: "2601.02972"
+url: https://arxiv.org/abs/2601.02972
+tags:
+  - ingested
+summary: The reasoning capabilities of large language models (LLMs) have
+  improved substantially through increased test-time computation, typically in
+  the form of intermediate tokens known as chain-of-thought (CoT). However,
+  CoT often becomes unnecessarily long, increasing computation cost without
+  actual accuracy gains or sometimes even degrading performance, a phenomenon
+  known as ``overthinking''. We propose a multi-stage efficient reasoning
+  method that combines supervised fine-tuning -- via rejection sampling or
+  reasoning trace reformatting -- with reinforcement learning using an
+  adaptive length penal
+ingested_at: 2026-11-23
+brief: >-
+  Penalizing tokens generated after a reasoning trace first reaches a correct
+  answer cuts chain-of-thought length more cleanly than fixed thinking
+  budgets, and larger models shrink more than small ones.
+
+
+  The method is 2-stage: supervised fine-tuning either on the shortest of 8
+  sampled correct continuations (Adaptive-Answer) or on traces with the
+  post-think summary stripped (Format-Adaptive-Answer), then GRPO with a
+  reward that subtracts the fraction of tokens after the first correct answer.
+  Training used 13K DeepScaleR math problems; evaluation spanned MATH-500,
+  AIME 24, AIME 25, GPQA-Diamond, CommonsenseQA, LiveCodeBenchv6 and
+  LongBenchv2, on Qwen3-1.7B/8B/32B and DeepSeek-R1-Qwen-7B-Distill.
+
+
+  Responses shortened 28% for Qwen3-8B and 40% for Qwen3-32B, with accuracy
+  drops of 1.6 and 2.5 points. AUC OAA reached 76.6 on Qwen3-8B, 5 points
+  above the base model and 2.5 above the next-best method (SFT and TWYN at
+  74.0).
+
+
+  Measured, with 6 competing efficiency methods trained under the same
+  16,384-token cap, and component ablations separating SFT from RL: RL without
+  SFT gives 73.2 AUC OAA versus 76.6 for the full pipeline.
+
+
+  Gains do not hold everywhere. On Qwen3-1.7B and DeepSeek-R1-7B, AUC OAA
+  falls below the base model, and on LiveCodeBench and LongBenchv2 plain SFT
+  or hard truncation wins. Training was math-only, dense Qwen models, no
+  non-reasoning tasks.
+
+
+  If you are paying for overthinking at 8B+, this reward is a cheap
+  intervention worth trying.
+brief_generated_at: 2026-11-23
+brief_model: claude-opus-5
+brief_source: full-text

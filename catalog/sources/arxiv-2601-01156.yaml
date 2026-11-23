@@ -1,0 +1,64 @@
+id: arxiv-2601-01156
+ref: SRC-1057
+kind: paper
+title: "DHI: Leveraging Diverse Hallucination Induction for Enhanced
+  Contrastive Factuality Control in Large Language Models"
+authors:
+  - Jiani Guo
+  - Xiangke Zeng
+  - Jie Wu
+  - Zuchao Li
+year: 2026
+date: 2026-01-03
+arxiv_id: "2601.01156"
+url: https://arxiv.org/abs/2601.01156
+tags:
+  - ingested
+summary: Large language models (LLMs) frequently produce inaccurate or
+  fabricated information, known as "hallucinations," which compromises their
+  reliability. Existing approaches often train an "Evil LLM" to deliberately
+  generate hallucinations on curated datasets, using these induced
+  hallucinations to guide contrastive decoding against a reliable "positive
+  model" for hallucination mitigation. However, this strategy is limited by
+  the narrow diversity of hallucinations induced, as Evil LLMs trained on
+  specific error types tend to reproduce only these particular patterns,
+  thereby restricting their overal
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, high): The paper proposes a
+  training/decoding framework (DHI) that induces diverse hallucinations for
+  contrastive decoding and reports improved factuality. No claim has been
+  drafted from it yet."
+ingested_at: 2026-11-23
+brief: >-
+  Training a deliberately unfactual "Evil" model by penalizing correct tokens
+  on ordinary factual data produces a better contrastive signal than
+  fine-tuning it on curated hallucination examples. DHI adds a causal
+  attention mask that cuts the penalized positions out of later tokens'
+  context, plus a decoding rule that only applies contrastive subtraction when
+  the positive model is uncertain.
+
+
+  The setup is Llama2-7B-Chat as positive model contrasted against a
+  LoRA-finetuned 7B, trained on 9,196 HaluEval QA items expanded into
+  declarative sentences by GPT-4o, evaluated on TruthfulQA (817 questions,
+  MC1/MC2/MC3) and FactScore biographies.
+
+
+  DHI reaches 41.9 MC1, 72.6 MC2, 45.0 MC3, average 53.2, against ICD at 50.5,
+  greedy 7B-Chat at 40.1 and 70B-Chat at 42.2. On FactScore it scores 68.1
+  versus ICD's 66.3, with 49.9 facts per response.
+
+
+  The three components are ablated separately: removing selective contrast
+  drops the average to 51.7, mask adaptation to 52.5, loss modification to
+  51.4. An α sweep shows an inverted U, 49.8 at 0.00 and 50.4 at 0.20 against
+  53.2 at 0.05. All numbers come from the authors; no independent replication,
+  1 model family, 1 base size, and no decoding-cost comparison against the
+  2-model-forward-pass baselines.
+
+
+  Gains over ICD are 1.8–2.7 points, so treat this as a refinement of
+  induce-then-contrast rather than a new regime.
+brief_generated_at: 2026-11-23
+brief_model: claude-opus-5
+brief_source: full-text

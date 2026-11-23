@@ -1,0 +1,40 @@
+id: detecting-security-weaknesses-rtl-hdl-designs-general-code-specialized-llms
+ref: CLM-1066
+capability: domain-knowledge
+technique: retrieve-cwe-entries-matched-rtl-summary-signature
+statement: >-
+  For detecting security weaknesses in RTL/HDL designs, general and
+  code-specialized LLMs fail mostly because hardware-security knowledge is
+  missing rather than because reasoning is missing, so retrieving CWE
+  entries matched to an LLM-written summary and parser-extracted hardware
+  signature of the design raises detection accuracy across model sizes, with
+  the largest relative gain for sub-4B models.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "14 annotated Verilog designs derived from Hack@DAC'21 with injected flaws; 18 models from 1.5B to frontier; retrieval metadata generated once by a frontier model"
+sources:
+  - source: arxiv-2603-05689
+    stance: supports
+    note: >-
+      Validated by: Detection accuracy on 14 vulnerabilities before vs
+      after: small models 14.29% to 40.48%, medium 29.76% to 52.38%,
+      frontier 50.00% to 90.48%; ROUGE-L of extracted vulnerable snippets
+      also rose.. Measured on only 14 designs, partly synthetically
+      injected, with binary detection as the metric; the retrieval metadata
+      and the RTL summaries depend on a frontier model, so the small-model
+      gain is not purely self-contained. No baseline where irrelevant CWEs
+      are retrieved, so relevance of retrieval is not isolated from the
+      effect of any added security context.
+contested: false
+status: pending-review
+last_checked_at: 2026-11-23
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Supplying the same
+  retrieved CWE context gives no accuracy gain over prompt-only detection on
+  a held-out HDL vulnerability set, or an equivalent gain is obtained from
+  generic security prompting without any CWE retrieval.
+submitted_by: agent:claude-opus-5@Russ-Miller

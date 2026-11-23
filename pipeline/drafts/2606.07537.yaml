@@ -1,0 +1,47 @@
+arxiv_id: "2606.07537"
+title: "From Architecture to Output: Structural Origins of Hallucination in
+  Large Language Models and the Amplifying Role of Data"
+url: https://doi.org/10.13140/rg.2.2.13596.45445
+drafted_at: 2026-11-16
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: retrieval-utilization
+statement: When a false statement is planted in the context alongside a
+  factual question, attention-based transformers (Pythia 410M-2.8B, Qwen2.5,
+  SmolLM2) repeat the planted falsehood on nearly every item (>=94% of 31-line
+  conflict items) including facts they answer correctly without context, while
+  matched-data state-space (Mamba) models of the same scale repeat it far less
+  (29-76%) and keep their own answer instead, even though they can read
+  planted facts they did not already know.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Base models up to 3B, synthetic English filler texts, 111
+  well-known facts, greedy decoding; architectures differ in more than the
+  mixer, and the smallest pair fails a reading control.
+technique: ""
+proposed_technique: Swap the context mixer at matched data to attribute errors
+technique_summary: Compare models trained on identical data and tokenizer that
+  differ only in the context-mixing component, with controls for prior
+  knowledge and ability to read the planted line, to attribute a
+  context-conflict error to the mixer.
+technique_kind: architecture
+technique_validated_by: Five Pythia/Mamba pairs on 999 probe items each;
+  paired exact McNemar tests on all 666 conflict items and restricted to facts
+  both models knew (p <= 2.3e-10 at every scale from 410M up); free-recall
+  control on 200 SimpleQA items showed no mixer effect (3/200 for both 2.8B
+  models).
+stance_on_existing: supports
+related_claim_id: first-evidence-dominance-is-representational-not-decoding
+stance_reason: Both locate context-over-prior deference in how the model
+  represents and mixes the prompt rather than in decoding.
+falsifier: A matched-data comparison at the same scales where state-space and
+  attention models repeat planted falsehoods at indistinguishable rates on
+  facts both know, or where the state-space advantage disappears once reading
+  ability is equalized.
+evidence_note: Measured on 14 models, 999 items each, with two explicit
+  controls (support items on unknown facts; restriction to commonly known
+  facts). Confounded by architecture families differing in more than the
+  mixer, synthetic English stimuli, string-match scoring, and a 2.8B reading
+  control resting on 8 facts.
+confidence: medium
