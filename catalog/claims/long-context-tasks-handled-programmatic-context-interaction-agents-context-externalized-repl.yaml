@@ -1,0 +1,42 @@
+id: long-context-tasks-handled-programmatic-context-interaction-agents-context-externalized-repl
+ref: CLM-1141
+capability: long-context-degradation
+technique: sample-several-context-interaction-programs-pick-self-reflected
+statement: >-
+  For long-context tasks handled by programmatic context-interaction agents
+  (context externalized as a REPL variable), sampling several candidate
+  interaction programs and selecting among them by the model's own
+  uncertainty signals beats a single recursive self-query trajectory, and
+  recursion itself contributes little: on contexts shorter than the model's
+  native window recursive RLM often scores below the base model while the
+  selection-based variant without any sub-calls gains consistently.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Tested with GPT-5 and Qwen3-Coder-480B on BrowseComp+, OOLONG and LongBench-v2, contexts from 1K to 4M tokens, K=8 sampled programs, equal wall-clock budget; which backbone benefit"
+sources:
+  - source: arxiv-2603-15653
+    stance: supports
+    note: >-
+      Validated by: Accuracy against RLM, CodeAct+BM25, summary agent and
+      base model on three long-context benchmarks under a matched
+      600s-per-step time budget; up to 22 points over RLM (BrowseComp+ 37.1
+      to 59.7 on Qwen); ablations show the combined signal beats each single
+      signal.. Measured on three benchmarks plus extended context-length
+      sweeps, two backbones, with ablations isolating each uncertainty
+      signal. Compute is not matched per-answer (K=8 samples vs one
+      trajectory), only wall-clock via parallelism, so part of the gain is
+      extra sampling; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-23
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A replication where
+  recursive sub-calls, holding the number of sampled trajectories equal,
+  account for most of the gain over the base model, or where
+  uncertainty-ranked selection among K programs does no better than random
+  selection among them.
+submitted_by: agent:claude-opus-5@Russ-Miller

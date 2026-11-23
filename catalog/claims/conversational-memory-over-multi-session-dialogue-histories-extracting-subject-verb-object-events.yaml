@@ -1,0 +1,41 @@
+id: conversational-memory-over-multi-session-dialogue-histories-extracting-subject-verb-object-events
+ref: CLM-1058
+capability: long-term-memory
+technique: index-dated-event-tuples-alongside-raw-dialogue-turns
+statement: >-
+  For conversational memory over multi-session dialogue histories,
+  extracting subject-verb-object events with resolved ISO datetime ranges
+  into a separate index alongside raw turns raises question-answering
+  accuracy over turn-only retrieval, and the size of that gain depends on
+  backbone strength: removing the event index cost 34.5 points with a GPT-4o
+  agent but only 2.6 points with a Claude Opus 4.6 agent on the same
+  116-question LongMemEval sample.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "LongMemEval-S, 500 questions (ablations on a 116-question stratified subset); agent has dense search, reranking and grep over both indexes; one benchmark only."
+sources:
+  - source: arxiv-2603-16862
+    stance: supports
+    note: >-
+      Validated by: Accuracy on LongMemEval-S: 92.60% with GPT-4o (vs 86.00%
+      for the strongest GPT-4o baseline) and 95.60% with Claude Opus 4.6;
+      leave-one-out ablation on 116 questions isolates the event index as
+      the largest single contributor.. Measured on one benchmark against
+      published numbers from other systems rather than reimplemented
+      baselines, so backbone, embedding model and harness differ across
+      rows; the ablation is internally controlled but run on a 116-question
+      subset, and the event-index effect is confounded with the agent's
+      extra search tools over that index.
+contested: false
+status: pending-review
+last_checked_at: 2026-11-23
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A matched comparison
+  where adding a dated-event index to a turn-level retrieval system gives no
+  accuracy gain on temporal and multi-session questions, or where the gain
+  does not shrink as backbone capability rises.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,45 @@
+arxiv_id: "2603.05828"
+title: "HART: Data-Driven Hallucination Attribution and Evidence-Based Tracing
+  for Large Language Models"
+url: https://doi.org/10.48550/arxiv.2603.05828
+drafted_at: 2026-11-22
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: When retrieving external counter-evidence for an already-localized
+  hallucinated span, generating several queries from the span plus surrounding
+  context windows and pooling their dense-retrieval candidates raises recall
+  more than adding a cross-encoder reranker to a single-query dense retrieval.
+kind: observation
+backing_strength: single-paper
+scope_condition: Span-level hallucinated fragments from Qwen2.5-7B-Instruct
+  and Mistral-Small-24B-Instruct long-form generations, retrieving over a
+  ~35k-document evidence corpus with annotated gold evidence and
+  semantic-equivalence hit scoring.
+technique: ""
+proposed_technique: Query a hallucinated span with several context windows, then rerank
+technique_summary: For each hallucinated span, build multiple queries from the
+  span and different surrounding context windows, pool their FAISS
+  dense-retrieval candidates, and rerank the union with a cross-encoder.
+technique_kind: retrieval
+technique_validated_by: "Ablation on the authors' own hallucination-tracing
+  test split: dense embedding alone R@1 0.4133; plus cross-encoder 0.5172;
+  plus multi-query 0.6244; full method 0.7068. Full method also beat BM25,
+  DPR, Sentence-BERT and cross-encoder-only on Recall@k, nDCG@k and MRR on
+  both model-derived datasets."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On a held-out hallucination-span evidence-retrieval set with the
+  same encoder, cross-encoder reranking of single-query candidates matches or
+  beats multi-query pooling at equal candidate budget.
+evidence_note: Measured on the authors' own newly constructed dataset, built
+  by LLM annotation with human refinement, with no independent replication;
+  the gold evidence was itself selected by an LLM with web search, so
+  retrieval targets and retrieval method share an LLM-semantic prior.
+  Baselines are generic retrievers not tuned for this corpus, and the huge
+  HART-vs-baseline gaps in Table 3 are not separable from the multi-query
+  design being matched to how queries were built. Ablation does isolate
+  multi-query vs reranker contributions.
+confidence: low

@@ -1,0 +1,46 @@
+arxiv_id: "2601.11039"
+title: "SonicBench: Dissecting the Physical Perception Bottleneck in Large
+  Audio Language Models"
+url: https://doi.org/10.48550/arxiv.2601.11039
+drafted_at: 2026-11-14
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: audio-understanding
+statement: "In current large audio language models, near-chance accuracy on
+  physical audio attributes (pitch, loudness, duration, spatial direction) is
+  not an encoding failure: linear probes on the frozen audio encoders of the
+  same models recover those attributes at 60% or better while the end-to-end
+  models sit near 50%, locating the loss in the alignment and decoding
+  stages."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Measured on 2,400 synthetically generated binary
+  recognition/comparison items across 12 physical attributes, 36 audio-capable
+  systems, 8 encoders probed with a two-layer probe on a 50/50 split;
+  attribute differences were constructed well above human just-noticeable
+  thresholds, and text instructions were English only.
+technique: ""
+proposed_technique: Probe frozen audio encoders to locate the perception bottleneck
+technique_summary: Attach a small linear probe to the frozen audio encoder of
+  an audio LLM and train it per attribute, comparing its accuracy against the
+  full end-to-end model's answer accuracy on the same items.
+technique_kind: process
+technique_validated_by: Across eight model families, probe accuracy was at or
+  above 0.60 on every encoder while the corresponding end-to-end models
+  clustered near 0.50 chance; Qwen2.5-Omni and Qwen3-Omni were exceptions
+  whose E2E accuracy reached or exceeded their probe.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Probes on frozen encoders scoring near chance on the same
+  attributes where the end-to-end model fails, or an alignment/decoding-only
+  intervention (no encoder change) failing to raise end-to-end accuracy toward
+  probe level.
+evidence_note: "Measured: 36 systems on a purpose-built benchmark plus 8
+  encoder probing experiments against a 91% human baseline. The probe-vs-E2E
+  gap is suggestive but not causal — no intervention on the alignment layer
+  was run, and the probe is trained supervised on the task while the model is
+  zero-shot, which inflates the comparison. Stimuli are toolbox-generated
+  rather than in the wild."
+confidence: medium

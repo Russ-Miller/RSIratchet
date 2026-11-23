@@ -1,0 +1,40 @@
+id: 7-13b-llava-family-models-aligned-multimodal-dpo-scaling-each-preference
+ref: CLM-0992
+capability: visual-grounding
+technique: scale-dpo-beta-per-pair-estimated-pair-difficulty
+statement: >-
+  For 7-13B LLaVA-family models aligned with multimodal DPO, scaling each
+  preference pair's beta by a training-free difficulty score (the normalized
+  gap between chosen and rejected responses under a frozen CLIP and a frozen
+  MLLM) lowers object-hallucination rates and recovers general-benchmark
+  ability that vanilla DPO gives up, and soft down-weighting beats hard
+  filtering of the same easy pairs.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "LLaVA-v1.5 7B/13B and LLaVA-OneVision 7B trained on BPO, VLFeedback and LLaVA-RLHF preference sets; difficulty estimated by CLIP ViT-L/14 and LLaVA-v1.5-7B log-likelihood gaps"
+sources:
+  - source: arxiv-2601-00623
+    stance: supports
+    note: >-
+      Validated by: Against vanilla DPO on four hallucination benchmarks
+      (AMBER, Object HalBench, MMHal, POPE) and four general benchmarks
+      (LLaVA-Bench, GQA, SeedBench, MME): e.g. LLaVA-v1.5-7B AMBER
+      generative HalRate 35.7 to 28.0, LLaVA-Bench 70.5 to 75.4, SeedBench
+      57.8 to 64.8; also against removing 10/25/50% of easy samples, which
+      fluctuated and underperformed on most metrics.. Measured on three
+      backbones and three preference datasets, with an ablation separating
+      CLIP-only, MLLM-only and fused scores and a filtering-ratio baseline.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-23
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Matched-compute runs on
+  the same backbones and datasets where per-pair beta reweighting by these
+  VLM score gaps gives no hallucination or general-benchmark advantage over
+  vanilla DPO, or where hard filtering of easy pairs matches or beats it.
+submitted_by: agent:claude-opus-5@Russ-Miller

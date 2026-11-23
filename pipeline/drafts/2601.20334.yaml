@@ -1,0 +1,50 @@
+arxiv_id: "2601.20334"
+title: Demonstration-Free Robotic Control via LLM Agents
+url: https://doi.org/10.48550/arxiv.2601.20334
+drafted_at: 2026-11-12
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: For simulated tabletop manipulation with privileged object-state
+  access and absolute Cartesian end-effector control, an unmodified
+  software-engineering agent loop (reason, write a script, execute, inspect
+  result, revise) can discover task programs with no demonstrations or
+  fine-tuning, reaching 84.9% on LIBERO, 85.7% on ManiSkill3 and 96% on
+  MetaWorld, but failing near-totally on sub-centimeter insertion tasks.
+kind: observation
+backing_strength: single-paper
+scope_condition: One agent SDK (Claude Agent SDK) and one model (Claude Opus
+  4.5); simulation only; ground-truth state observations rather than RGB;
+  shared absolute end-effector position control across the three benchmarks;
+  VLA baselines compared were run under different observation modalities so
+  the comparison is contextual.
+technique: ""
+proposed_technique: Let a coding-agent loop synthesize robot scripts by trial and error
+technique_summary: Hand an off-the-shelf software-engineering agent framework
+  the simulator API and a task instruction, and let its existing
+  reason-act-observe loop write, run and revise Python control scripts until
+  the environment's own success check passes.
+technique_kind: process
+technique_validated_by: Success rate over 120 LIBERO tasks, 14 ManiSkill3
+  tasks x 5 seeds, and 50 MetaWorld tasks, against published VLA baselines
+  trained with ~100 demonstrations (SmolVLA, pi0, OpenVLA, Diffusion Policy);
+  traces post-hoc screened by an automated reviewer for hardcoded coordinates
+  or brute-force search, with two MetaWorld successes excluded.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Running the same unmodified agent loop and prompt with privileged
+  state and Cartesian control on these benchmarks and getting success rates
+  near the low-level-manipulation figures reported for single-pass MLLM
+  control (~30%), or showing the reported successes come from exploiting
+  simulator internals rather than legitimate manipulation programs.
+evidence_note: Measured across three benchmarks and 419 task executions, but
+  with one SDK and one model, no seed-level variance for LIBERO/MetaWorld, and
+  privileged state rather than pixels. The VLA comparison is not matched on
+  observations or protocol, and the pi0.5 aggregate uses a different task
+  suite. Trace auditing was automated with no reported false-negative rate on
+  unflagged traces, so some success may still be simulator exploitation. Does
+  not isolate how much of the result comes from the SDK's infrastructure
+  versus the base model.
+confidence: medium

@@ -1,0 +1,50 @@
+arxiv_id: "2601.16596"
+title: "Attention-MoA: Enhancing Mixture-of-Agents via Inter-Agent Semantic
+  Attention and Deep Residual Synthesis"
+url: https://doi.org/10.48550/arxiv.2601.16596
+drafted_at: 2026-11-13
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: In layered mixture-of-agents pipelines over open-ended instruction
+  benchmarks, having agents within a layer exchange natural-language critiques
+  of each other's drafts and feeding every prior layer's output into the
+  synthesis step makes added depth keep paying off up to 5 layers, where plain
+  concatenation-based MoA peaks at layer 3 and then degrades and a
+  residual-only variant plateaus.
+kind: observation
+backing_strength: single-paper
+scope_condition: Open-ended instruction-following benchmarks (AlpacaEval 2.0,
+  MT-Bench, FLASK) scored by LLM judges, with 5 heterogeneous frontier or
+  12B-32B open models as collaborators and a single strong aggregator; depth
+  varied 1-5.
+technique: ""
+proposed_technique: Have agents critique each other in natural language, then
+  synthesize over all prior layers
+technique_summary: Within each layer, every agent writes an explicit
+  natural-language refinement instruction for each peer's draft (and for its
+  own), agents revise on the collected instructions, and a synthesis agent
+  combines the current layer's summary with the stack of all previous layers'
+  outputs, emitting a stop signal when a further layer adds nothing.
+technique_kind: process
+technique_validated_by: Length-controlled win rate on AlpacaEval 2.0 (91.15%
+  vs 88.56% MoA, 78.20% RMoA), MT-Bench average (9.32 vs 9.13/8.82), FLASK win
+  on 10 of 12 dimensions, and a depth sweep from 1 to 5 layers; early stopping
+  cut tokens about 11%. All quality scores come from LLM judges; no
+  per-component ablation separating the attention module from the residual
+  module.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Running the same agent set and aggregator at depths 1-5 and finding
+  the critique-plus-residual variant also peaks and declines, or finding its
+  depth-5 advantage disappears under human or non-LLM scoring.
+evidence_note: Measured on three LLM-judged benchmarks against MoA and RMoA
+  with matched collaborator and aggregator models; the depth curve is the
+  direct evidence. The design does not isolate the semantic-attention step
+  from the residual stack, so which of the two produces the monotone curve is
+  unresolved, and all outcome scores are judge-produced on benchmarks where
+  verbosity and judge preference are known confounds (LC win rate controls
+  only for length).
+confidence: low

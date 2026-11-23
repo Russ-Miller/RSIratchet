@@ -1,0 +1,51 @@
+arxiv_id: "2602.06090"
+title: "SVRepair: Structured Visual Reasoning for Automated Program Repair"
+url: https://doi.org/10.48550/arxiv.2602.06090
+drafted_at: 2026-11-20
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: debugging
+statement: For multimodal program repair and visually-grounded code
+  generation, converting a bug screenshot or control-flow diagram into a
+  serialized scene graph of elements and their hierarchical relations helps
+  the downstream coding model more than passing the raw image or a
+  natural-language caption of it, with the gain largest where the visual
+  artifact encodes program logic rather than decoration.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Shown for HTML/webpage renderings and control-flow graphs
+  with an 8B VLM fine-tuned on 177k artifact-to-graph pairs; other artifact
+  types (sequence, architecture diagrams) untested, and on repository-level
+  APR the gain over a strong baseline was within noise.
+technique: ""
+proposed_technique: Convert bug screenshots into a scene graph before repair
+technique_summary: Fine-tune a vision-language model to emit a
+  Mermaid-serialized semantic scene graph of GUI elements and their
+  hierarchy/control-flow edges, and feed that graph, not the image or a
+  caption, to the repair agent; on validation failure, crop the artifact to
+  the bug-centred region and regenerate the graph.
+technique_kind: tooling
+technique_validated_by: "Pass@1 ablation: on MMCode, image-plus-caption 16.33%
+  vs scene-graph 38.02%; CodeVision 89.02% vs 95.73%. On SWE-Bench M (517
+  instances) the full system resolved 186 (35.98%), tied with GUIRepair under
+  the same GPT-o3 coder; OmniGIRL visual subset 4/19 vs 0/19, n too small for
+  a firm read. Scene-graph fidelity measured separately by Mermaid rendering
+  accuracy (94.29%) and SSIM (0.7892) vs the 8B base (81.14%, 0.6868)."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation under a fixed coding model where feeding the raw image
+  or an LLM-written caption matches or beats the structured scene graph on
+  visually-grounded code generation, or where the graph's advantage disappears
+  once caption length/detail is matched.
+evidence_note: "Measured, single paper, ablation at three levels (no vision /
+  vision+caption / vision+scene graph) on two code-reasoning benchmarks plus
+  two APR benchmarks. The mechanism claim rests mainly on the MMCode contrast,
+  where captions gave no gain over text alone and graphs more than doubled
+  accuracy. Repository-level APR evidence is weak: the headline SWE-Bench M
+  number ties the baseline and the OmniGIRL gap (4/19 vs 0/19) is confounded
+  with a workflow difference in validation. Not disentangled: whether the gain
+  comes from the structure or from the fine-tuning making the VLM describe
+  code-relevant content at all."
+confidence: medium

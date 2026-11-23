@@ -1,0 +1,38 @@
+id: 7-13b-open-llms-doing-context-grounded-generation-hallucinated-tokens-carry
+ref: CLM-0994
+capability: hallucination
+technique: score-attention-instability-high-frequency-energy
+statement: >-
+  In 7-13B open LLMs doing context-grounded generation, hallucinated tokens
+  carry more high-frequency energy in the per-head attention distribution
+  over context tokens than grounded tokens, so a linear classifier over
+  high-pass-filtered attention signals detects contextual hallucination
+  better than attention mass, variance or entropy summaries of the same
+  attention.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Context-based generation (RAG QA, data-to-text, summarization) with token-level hallucination labels; white-box access to attention weights; LLaMA-2-7B/13B-Chat and Mistral-7B-Inst"
+sources:
+  - source: arxiv-2602-18145
+    stance: supports
+    note: >-
+      Validated by: Token- and span-level F1/AUROC on RAGTruth (QA, D2T,
+      Summ) and HalluRAG across three models, against SelfCheckGPT,
+      RefChecker, EigenScore, ReDeEP, Lookback-Lens, attention-variance and
+      attention-entropy; Fourier-high averaged 0.8052/0.8198/0.8532 AUROC vs
+      Lookback-Lens 0.7871/0.8031/0.8478; ablation shows high-pass beats
+      low-pass and full-spectrum features.. Measured on two benchmarks and
+      three open models with token- and span-level supervision; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-23
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: On the same benchmarks
+  and models, high-pass attention-energy features fail to beat attention
+  entropy/mass baselines, or the high-pass ablation shows low-pass or
+  full-spectrum features matching high-pass performance.
+submitted_by: agent:claude-opus-5@Russ-Miller

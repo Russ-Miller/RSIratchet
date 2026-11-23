@@ -1,0 +1,48 @@
+arxiv_id: "2601.22623"
+title: "SYMPHONY: Synergistic Multi-agent Planning with Heterogeneous Language
+  Model Assembly"
+url: https://doi.org/10.48550/arxiv.2601.22623
+drafted_at: 2026-11-18
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: In MCTS planning with LLMs on multi-hop QA, web navigation and code
+  generation, expanding each search node with different model families rather
+  than repeated calls to one model raises the share of nodes whose candidate
+  branches are all distinct and the final task accuracy, because repeated
+  sampling from one model reproduces its dominant reasoning pattern.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Tested with three 7-8B open models (Qwen2.5, Mistral,
+  Llama-3.1) and three API models (GPT-4, Qwen-Max, DeepSeek-V3) at expansion
+  width 4 on HotpotQA, WebShop, MBPP; heterogeneity is bundled with UCB agent
+  scheduling, shared reflection memory and entropy-modulated scoring.
+technique: ""
+proposed_technique: Expand MCTS nodes with different model families
+technique_summary: At each search-tree expansion, a different language model
+  from a heterogeneous pool is selected (by UCB over its past rollout returns)
+  to generate the candidate action, instead of resampling one model.
+technique_kind: process
+technique_validated_by: Branch-uniqueness counts at fixed expansion width 4
+  (over 80% all-distinct branches on MBPP with the full trio vs under 20%
+  single-agent) plus task metrics against single-agent and single-model search
+  baselines (HotpotQA EM 0.79, WebShop SR 0.72, MBPP pass@1 0.965 for the API
+  configuration), with fewer node expansions than ToT/RAP/LATS; temperature
+  scaling and adversarial prompting reported as weaker diversity sources.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A controlled comparison holding scheduling, memory and scoring
+  fixed in which swapping a single model for a heterogeneous pool of equally
+  capable models raises branch uniqueness without raising task accuracy, or in
+  which temperature/prompt-perturbed single-model sampling matches the pool's
+  accuracy at equal compute.
+evidence_note: Measured on three benchmarks with two model pools; the
+  diversity-accuracy link is correlational across pool configurations, and the
+  headline scores cannot separate heterogeneity from the three co-introduced
+  components, though ablations removing scheduling, memory and EMCS each cost
+  3-14 points and the diversity sweep varies pool composition alone. Baselines
+  are taken from prior work rather than re-run, and no matched-compute
+  single-model control at equal total calls is reported.
+confidence: medium

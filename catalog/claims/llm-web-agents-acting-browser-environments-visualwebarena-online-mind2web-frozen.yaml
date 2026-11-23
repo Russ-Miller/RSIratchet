@@ -1,0 +1,40 @@
+id: llm-web-agents-acting-browser-environments-visualwebarena-online-mind2web-frozen
+ref: CLM-1134
+capability: tool-use
+technique: regenerate-action-simulated-outcomes-all-score-low
+statement: >-
+  For LLM web agents acting in browser environments (VisualWebArena,
+  Online-Mind2Web) with a frozen VLM backbone, simulating each candidate
+  action's outcome with a world model and regenerating the action when a
+  judge scores every candidate below a confidence threshold raises task
+  success by a small margin over simulate-then-select, and starting from a
+  single proposal plus refinement matches sampling many candidates.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Tuning-free prompted agents, Qwen3-VL-Plus and GLM-4.5v/4.6v backbones, world-model simulation horizon of 1, success rates all below 40%; gains are 1.8 and 1.3 absolute points on t"
+sources:
+  - source: arxiv-2602-15384
+    stance: supports
+    note: >-
+      Validated by: Task success rate against reimplemented ReAct and
+      WebDreamer baselines on the same backbone: 24.5 vs 22.7 on
+      VisualWebArena (233 human-verified tasks) and 16.0 vs 14.7 on
+      Online-Mind2Web; on the 56-task Classifieds subset, adding refinement
+      alone moved 32.1 to 33.9 and adding collaborative generation reached
+      35.7; the single-proposal variant also scored 35.7.. Measured, but
+      thinly: full-benchmark gains are 1.8 and 1.3 points with no variance
+      reported and no matched-compute baseline, so the extra model calls in
+      the refinement loop are not controlled for. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-23
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A matched-compute
+  comparison in which simulate-then-select with the same total number of
+  sampled candidates and judge calls equals or beats the refinement loop, or
+  the gain disappearing on a larger task set or under repeated runs.
+submitted_by: agent:claude-opus-5@Russ-Miller

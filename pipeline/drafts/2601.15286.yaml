@@ -1,0 +1,47 @@
+arxiv_id: "2601.15286"
+title: Iterative Refinement Improves Compositional Image Generation
+url: https://doi.org/10.48550/arxiv.2601.15286
+drafted_at: 2026-11-13
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: self-repair
+statement: For text-to-image generation from compositional prompts, spending a
+  fixed inference budget on sequential critic-guided edits (a VLM compares
+  image to prompt, emits a sub-prompt plus continue/backtrack/restart action,
+  an editor applies it) beats spending the same budget on independent parallel
+  samples scored by the same verifier, and the margin widens as the number of
+  concept bindings in the prompt grows.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Current strong T2I generators with a capable image editor and
+  a strong VLM critic; gains concentrate on spatial, 3D-spatial, numeracy,
+  shape and style constraints and are near zero on color/texture where base
+  models are already strong; a weaker open critic (Qwen3-VL-32B) loses ~3
+  points.
+technique: ""
+proposed_technique: Refine images sequentially under a VLM critic instead of resampling
+technique_summary: Under a fixed compute budget, repeatedly feed the current
+  image and prompt to a VLM critic that emits a targeted sub-prompt and an
+  action (continue, backtrack, restart, stop), applying each edit to the
+  previous image rather than drawing independent samples.
+technique_kind: process
+technique_validated_by: Compute-matched comparison against parallel sampling
+  with the same verifier on ConceptMix (+16.9 all-correct at k=7 for
+  Qwen-Image), T2I-CompBench 3D-Spatial (+13.8), TIIF-Bench, and Visual Jenga
+  full solve rate (64.29% to 76.79%); human preference 58.7% vs 41.3%; budget
+  allocation ablation across B=1..16 and an action-space ablation.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: At matched total generator/editor calls, parallel sampling with a
+  verifier matching or beating iterative refinement on high-binding
+  compositional prompts, or the iterative advantage failing to grow with the
+  number of concept bindings.
+evidence_note: "Measured on three T2I families across four benchmarks with a
+  compute-matched parallel baseline and an in-loop critic weaker than the
+  benchmark evaluator; budget-allocation ablation shows iteration-heavy
+  allocations dominate at B>=4. Closed-model runs use reduced prompt subsets,
+  and the editor is a confound the design does not isolate: parallel sampling
+  uses only the generator while the iterative arm also gets an editing model."
+confidence: medium

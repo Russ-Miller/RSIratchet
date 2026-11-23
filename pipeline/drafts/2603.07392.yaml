@@ -1,0 +1,46 @@
+arxiv_id: "2603.07392"
+title: Can Large Language Models Keep Up? Benchmarking Online Adaptation to
+  Continual Knowledge Streams
+url: https://doi.org/10.48550/arxiv.2603.07392
+drafted_at: 2026-11-22
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: knowledge-updating
+statement: When a model is asked the same question repeatedly as a long
+  context is revealed chunk by chunk, accuracy falls as the number of times
+  the underlying fact changes increases, and the dominant error is changing
+  the answer at intervals where the fact did not change rather than missing a
+  genuine update.
+kind: observation
+backing_strength: single-paper
+scope_condition: 14 open and proprietary models on two streaming datasets
+  (synthetic BABILong-derived, 128k tokens; novels averaging 150k tokens),
+  questions stratified by how often their answer changes; context supplied as
+  accumulated chunks, RAG, or agentic memory.
+technique: ""
+proposed_technique: Score streaming updates by phase-miss, lag and distraction separately
+technique_summary: Re-ask a fixed question at every interval of a streaming
+  context and decompose errors into delay before first correct answer,
+  incorrect answers after a correct one within a stable phase, and phases
+  never answered correctly.
+technique_kind: process
+technique_validated_by: Applied to five model configurations on OAKS-BABI;
+  models with near-identical accuracy (Gemma 3 27B 37.8, GPT-OSS 120B 37.5)
+  separated sharply on phase-miss (30.3 vs 15.1) and distraction (26.5 vs
+  38.8), showing the decomposition distinguishes behaviours accuracy hides.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A model whose accuracy does not decline from sparse to frequent
+  answer-change subsets, or whose errors on unchanged intervals are rarer than
+  its missed genuine transitions, measured on the same stratified stream.
+evidence_note: "Measured: average accuracy 39.4% (synthetic) and 57.5%
+  (novel), falling to 33.3% and 53.0% on the frequent-change subset.
+  Behavioural table averaged over five configurations gives volatility
+  (unnecessary change, wrong) 32.1% of no-transition intervals vs adaptability
+  38.1% of true-transition intervals. RAG averaged slightly below plain
+  concatenation on the frequent subset (-0.8%). Design does not separate
+  long-context degradation from update tracking; accuracy also falls at later
+  intervals."
+confidence: medium

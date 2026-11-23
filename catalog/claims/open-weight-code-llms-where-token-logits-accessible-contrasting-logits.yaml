@@ -1,0 +1,40 @@
+id: open-weight-code-llms-where-token-logits-accessible-contrasting-logits
+ref: CLM-1178
+capability: code-generation
+technique: amplify-intent-contrasting-intent-masked-logits
+statement: >-
+  For open-weight code LLMs where token logits are accessible, contrasting
+  logits computed with and without the user intent and adding the scaled
+  difference back during beam search raises multi-constraint satisfaction
+  and pass@1 over greedy decoding, and ensembling several fixed
+  amplification strengths beats any single strength without per-model
+  tuning.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Open-source code LLMs (1.5B-34B: CodeLlama, DeepSeek-Coder, Qwen2.5-Coder, base and instruction-tuned) where per-token logits are exposed; natural-language-to-function code generat"
+sources:
+  - source: arxiv-2602-00066
+    stance: supports
+    note: >-
+      Validated by: Accuracy on a purpose-built CodeConstraints benchmark
+      (constraints combinatorially composed into levels 2-4) and IFEvalCode,
+      plus pass@1 on HumanEval and LiveCodeBench, against greedy, beam
+      search, nucleus sampling, AdapT and Selective Prompt Anchoring; up to
+      71% relative gain on CodeConstraints and 29.3% pass@1 gain, including
+      at beam size 1; a fixed-alpha sweep shows the optimal strength varies
+      by model while the ensemble matches or beats it.. Measured across
+      three 7B backbones on four benchmarks plus size sweeps 1.5B-33B and
+      instruction-tuned variants; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-23
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: On the same benchmarks
+  and models, the multi-strength ensemble scoring at or below the best fixed
+  amplification strength, or at or below greedy decoding on constraint
+  satisfaction once beam size is matched.
+submitted_by: agent:claude-opus-5@Russ-Miller

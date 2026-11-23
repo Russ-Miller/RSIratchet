@@ -1,0 +1,62 @@
+id: arxiv-2601-00269
+ref: SRC-1051
+kind: paper
+title: "FaithSCAN: Model-Driven Single-Pass Hallucination Detection for
+  Faithful Visual Question Answering"
+authors:
+  - Chaodong Tong
+  - Qi Zhang
+  - Chen Li
+  - Lei Jiang
+  - Yanbing Liu
+year: 2026
+date: 2026-01-01
+arxiv_id: "2601.00269"
+url: https://arxiv.org/abs/2601.00269
+tags:
+  - ingested
+summary: "Faithfulness hallucinations in VQA occur when vision-language models
+  produce fluent yet visually ungrounded answers, severely undermining their
+  reliability in safety-critical applications. Existing detection methods
+  mainly fall into two categories: external verification approaches relying on
+  auxiliary models or knowledge bases, and uncertainty-driven approaches using
+  repeated sampling or uncertainty estimates. The former suffer from high
+  computational overhead and are limited by external resource quality, while
+  the latter capture only limited facets of model uncertainty and fail to
+  sufficientl"
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, high): The paper proposes a
+  lightweight detector using internal VLM signals that outperforms existing
+  hallucination detection methods, improving the ability to catch ungrounded
+  answers. No claim has been drafted from it yet."
+ingested_at: 2026-11-23
+brief: >-
+  Hallucinated VQA answers can be flagged from a single forward pass, without
+  resampling, by training a small classifier on the model's own internal
+  signals. FaithSCAN pools token-level log-likelihood and entropy, decoder
+  hidden states, raw visual patch embeddings, and cross-modal aligned
+  features, encodes each branch separately, and fuses them with attention.
+  Training labels come from a Visual-NLI judge (Qwen2.5-VL-32B-Instruct, T =
+  0.1) rather than human annotation.
+
+
+  Evaluated on HalLoc-VQA, POPE, HaloQuest, and VQA v2 with 3 backbones
+  (IB-T5-XL, LLaVA-8B, Qwen3-VL-8B), 2,000 train and 1,000 eval samples per
+  split, 3 seeds. Reported gains reach up to 8% AUROC over baselines including
+  semantic entropy, SelfCheckGPT, P(True), and logistic regression, with
+  inference latency of 0.605–1.191 s per 100 samples versus 340.683 s for
+  SelfCheckGPT. Auto-labels agreed with 100 human-checked samples per dataset
+  at 0.950–0.990 agreement.
+
+
+  Ablations isolate the sources: token-level signals carry most of the signal;
+  visual patch features help on POPE (object hallucination) but little on
+  reasoning-heavy sets. Cross-dataset transfer is weak, with several AUROC
+  values below 0.5, including HalLoc-VQA to HaloQuest at 0.393.
+
+
+  Use this if you want cheap in-distribution hallucination gating; do not
+  expect it to transfer across hallucination types.
+brief_generated_at: 2026-11-23
+brief_model: claude-opus-5
+brief_source: full-text

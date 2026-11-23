@@ -1,0 +1,41 @@
+id: novel-object-makes-symbolic-planning-domain-incomplete-relying-rl
+ref: CLM-1174
+capability: planning
+technique: prompt-llm-missing-pddl-operator-during-symbolic-search
+statement: >-
+  When a novel object makes a symbolic planning domain incomplete, relying
+  on RL exploration to stumble into a plannable state and infer the missing
+  operator works only where random exploration can reach that state, whereas
+  prompting an LLM to propose the missing PDDL operator at each searched
+  state recovers a valid plan across easy and hard continuous manipulation
+  domains alike.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Continuous robotic manipulation (mimicgen: kitchen, nut assembly, coffee box/drawer), one injected novel object, predicates assumed sufficient to express the missing operator, obje"
+sources:
+  - source: arxiv-2603-11351
+    stance: supports
+    note: >-
+      Validated by: 10 runs per domain against an RL Operator-Discovery
+      baseline (10 PPO seeds, 1M timesteps cap): 10/10 successes in three
+      domains and 7/10 in the hardest, versus 10/10 for OD only in the easy
+      kitchen domain and 0/10 elsewhere (>7h each); planner wall-clock
+      45-682 sec.. Measured on four hand-built domains with one novelty
+      each, single LLM (GPT-o3, temp 0.3), 10 runs per domain. Design
+      isolates operator identification from policy learning, but domains are
+      few and all involve everyday objects likely in LLM pretraining;
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-23
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An RL operator-discovery
+  agent that reliably finds plannable states in the harder domains (drawer,
+  peg, box) within comparable budget, or an LLM prompting pipeline that
+  fails to name the missing operator on novel objects outside common
+  household categories.
+submitted_by: agent:claude-opus-5@Russ-Miller
