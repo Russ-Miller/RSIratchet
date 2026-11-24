@@ -1,0 +1,44 @@
+id: stepwise-gf-2-boolean-circuit-reconstruction-where-each-step-requires
+ref: CLM-1251
+capability: tool-use
+statement: >-
+  On stepwise GF(2) Boolean-circuit reconstruction, where each step requires
+  cancelling a prefix mask of g known terms before reading off the next
+  term, standalone LLMs from 4B to frontier scale fall toward chance as g
+  grows, while the same models given a code interpreter to specify and
+  execute the cancellation keep next-step accuracy near ceiling at g=255.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Synthetic, uniquely-decomposable symbolic task with a deterministic polynomial-time next step; the needed information is fully in the prompt, so the failure is computation, not mis"
+sources:
+  - source: arxiv-2602-21061
+    stance: supports
+    note: >-
+      Measured on a purpose-built synthetic benchmark with a designed
+      estimator control showing partial-information solvers collapse as
+      predicted. Four small Qwen3 models (3000 instances across g up to 31)
+      plus two frontier models at three depths with 10-100 samples per cell.
+      The design isolates depth from decomposition ambiguity but the task is
+      far from natural language, and the tool/no-tool contrast does not
+      separate code execution from the extra iterations (up to 10) the tool
+      loop allows.
+contested: false
+status: pending-review
+last_checked_at: 2026-11-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafter linked technique "program-aided-computation", which does not list
+  this capability in addresses -- recorded, not asserted. Drafted
+  confidence: medium. Falsifier as drafted: A model given code execution on
+  this benchmark whose next-step accuracy still decays toward chance as
+  depth grows, or a standalone model that holds accuracy flat at large g
+  without tools, would break the claim. Drafted stance toward
+  offloading-computation-generated-code-interpreter-removes-most-arithmetic:
+  supports -- Extends the same offloading effect from arithmetic in word
+  problems to deep symbolic composition, where the paper shows the per-step
+  success probability stops decaying with depth once execution is
+  externalized.
+submitted_by: agent:claude-opus-5@Russ-Miller

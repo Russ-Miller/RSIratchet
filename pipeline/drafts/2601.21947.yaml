@@ -1,0 +1,47 @@
+arxiv_id: "2601.21947"
+title: "ToolWeaver: Weaving Collaborative Semantics for Scalable Tool Use in
+  Large Language Models"
+url: https://doi.org/10.48550/arxiv.2601.21947
+drafted_at: 2026-11-18
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: tool-use
+statement: For generative tool-selection models fine-tuned over large tool
+  libraries (~47,000 APIs), assigning each tool a unique new vocabulary token
+  both degrades the base model's general language ability and limits
+  multi-tool performance, while representing each tool as a short hierarchical
+  sequence of shared discrete codes learned with co-usage regularization keeps
+  vocabulary growth logarithmic, preserves language modelling, and raises
+  complex multi-tool task completion.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Llama-3-8B (and Qwen) fine-tuned on ToolBench with 46,985
+  APIs; measured on tool retrieval NDCG, StableToolBench SoPR/SoWR, WikiText-2
+  perplexity and summarization.
+technique: ""
+proposed_technique: Give each tool a hierarchical code sequence, not one token
+technique_summary: Quantize tool-description embeddings with a residual VAE
+  regularized by a tool co-occurrence graph, so each tool becomes a short
+  sequence of shared codes the LLM is fine-tuned to generate under
+  trie-constrained decoding.
+technique_kind: training
+technique_validated_by: NDCG@1/3/5 on ToolBench I1-I3 against BM25, EmbSim,
+  ToolRetriever and the one-token-per-tool ToolGen (I3 NDCG@1 88.00 vs 81.00);
+  end-to-end SoPR on I3 52.19 vs 36.34; WikiText-2 PPL 25.36 vs 104.54 for
+  ToolGen against a 6.34 base; ablations on the collaborative weight,
+  components, and four alternative tokenization schemes.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A controlled comparison at equal training data and compute where
+  atomic per-tool tokens match or beat hierarchical codes on multi-tool task
+  completion and show no larger perplexity or summarization loss on held-out
+  general text.
+evidence_note: Measured on one benchmark family (ToolBench/StableToolBench)
+  with one main backbone; the comparison against ToolGen conflates
+  tokenization scheme with the full training pipeline, and the
+  general-capability result is only three datasets. Ablations do isolate
+  semantic initialization versus collaborative regularization, with the
+  collaborative term's gain growing with task complexity.
+confidence: medium

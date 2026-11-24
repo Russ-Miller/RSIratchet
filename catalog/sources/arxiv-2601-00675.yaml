@@ -1,0 +1,64 @@
+id: arxiv-2601-00675
+ref: SRC-1055
+kind: paper
+title: "RoboReward: General-Purpose Vision-Language Reward Models for Robotics"
+authors:
+  - Tony Lee
+  - Andrew Wagenmaker
+  - Karl Pertsch
+  - Percy Liang
+  - Sergey Levine
+  - Chelsea Finn
+year: 2026
+date: 2026-01-02
+arxiv_id: "2601.00675"
+url: https://arxiv.org/abs/2601.00675
+tags:
+  - ingested
+summary: A well-designed reward is critical for effective reinforcement
+  learning-based policy improvement. In real-world robotics, obtaining such
+  rewards typically requires either labor-intensive human labeling or brittle,
+  handcrafted objectives. Vision-language models (VLMs) have shown promise as
+  automatic reward models, yet their effectiveness on real robot tasks is
+  poorly understood. In this work, we aim to close this gap by introducing (1)
+  RoboReward, a robotics reward dataset and benchmark built on large-scale
+  real-robot corpora from Open X-Embodiment (OXE) and RoboArena, and (2)
+  vision-language r
+notes: "Filed as a source on critique from the classifier's judgement that the
+  paper is about it (improves, medium): The paper benchmarks VLM judgements
+  against human-labeled robot task outcomes and trains 4B/8B reward models
+  with negative-example augmentation that outperform much larger VLMs at
+  assigning rewards. No claim has been drafted from it yet."
+ingested_at: 2026-11-24
+brief: >-
+  Frontier VLMs are unreliable at scoring how well a robot completed a task,
+  and a 8B model finetuned on targeted reward data beats all of them.
+  RoboRewardBench asks a model to watch a full rollout video plus a task
+  instruction and output a 1-5 progress score, scored by mean absolute error
+  against human-verified labels. The test set is 2,831 episodes across 14
+  embodiment types, drawn from Open X-Embodiment and RoboArena, with negatives
+  synthesized by counterfactually relabeling successful videos with wrong or
+  near-miss instructions and by clipping videos to earlier endpoints.
+
+
+  Across 22 models, RoboReward 8B scores 0.665 MAE, ahead of GPT-5 mini
+  (0.691), GPT-5 (0.811), Gemini 3 Pro Preview (0.851) and Gemini Robotics-ER
+  1.5 (0.906, rank 11). Finetuning gains are isolated at fixed architecture:
+  0.892 to 0.665 for 8B, 1.032 to 0.845 for 4B. On a WidowX arm with DSRL,
+  RoboReward 8B lifted a base policy from 5% to 50% and 10% to 80% over 20
+  trials per task, versus 75% and 90% with human rewards and 10% and 45% with
+  Gemini Robotics-ER 1.5.
+
+
+  Ablations attribute the gain to the augmentation: dropping negatives moves
+  overall MAE from 0.845 to 1.450 while leaving RoboArena nearly unchanged
+  (0.797 vs 0.806). Per-subset errors swing widely for every model, including
+  the authors' own (1.394 on UTokyo xArm Bimanual). Real-robot evidence is 2
+  short-horizon tasks, 1 platform, no long-horizon test.
+
+
+  Treat reward modeling, not RL algorithms, as the binding constraint on
+  real-robot policy improvement.
+brief_generated_at: 2026-11-24
+brief_model: claude-opus-5
+brief_source: full-text

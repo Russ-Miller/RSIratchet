@@ -1,0 +1,45 @@
+arxiv_id: "2603.14323"
+title: How Do Medical MLLMs Fail? A Study on Visual Grounding in Medical Images
+url: https://doi.org/10.48550/arxiv.2603.14323
+drafted_at: 2026-11-08
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: For 7B-class medical multimodal LLMs on zero-shot medical VQA,
+  restricting question tokens at one mid decoder layer to attend only to
+  visual tokens that a small set of grounding-aligned attention heads marks as
+  high-attention raises closed-ended accuracy across imaging modalities
+  without any retraining or added medical knowledge.
+kind: observation
+backing_strength: single-paper
+scope_condition: Applied to HuatuoGPT-V-7B only; head selection and threshold
+  tuned on natural-image (COCO) grounding data; gains measured on six Med-VQA
+  benchmarks across 8 modalities; no result for larger or non-CLIP-backboned
+  medical MLLMs.
+technique: ""
+proposed_technique: Mask question-token attention to low-evidence visual tokens
+technique_summary: Aggregate attention from the top-K heads that best align
+  with annotated regions, binarize it by suppressing the lowest-magnitude
+  half, and apply that mask to question-to-image attention at one mid decoder
+  layer during inference.
+technique_kind: decoding
+technique_validated_by: Zero-shot accuracy on VQA-RAD, SLAKE, PathVQA, PMC-VQA
+  (weighted avg 65.3 to 68.4), MMMU Health & Medicine (45.8 to 47.2) and
+  OmniMedVQA across 8 modalities (71.3 to 74.4), against the unmodified same
+  model and prior medical/general MLLM baselines; plus a blinded 5-clinician
+  preference study on 20 cases (76% preference) for the attention maps.
+stance_on_existing: supports
+related_claim_id: 7b-vision-language-models-llava-1-5-7b-qwen-vl-chat-inference-time-hidden-state-steering
+stance_reason: Both find that attention/hidden-state interventions for
+  grounding work only when selectively targeted rather than applied uniformly,
+  here by selecting heads and a single layer.
+falsifier: Applying the same masked-attention procedure to other medical MLLMs
+  (e.g. LLaVA-Med, VILA-M3) yields no accuracy gain or a loss, or an ablation
+  masking randomly selected heads of equal count produces the same gain.
+evidence_note: Measured on 6 benchmarks and >110K VQA samples, but the
+  intervention is only demonstrated on one backbone, so the gain cannot be
+  separated from properties of HuatuoGPT-V; the paper reports head-count and
+  threshold ablations but no random-head control, so head selection is not
+  isolated from the masking itself.
+confidence: medium

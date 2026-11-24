@@ -1,0 +1,40 @@
+id: small-open-instruction-tuned-models-1-7b-8b-gap-between-sparse-autoencoder
+ref: CLM-1244
+capability: explanation-faithfulness
+technique: score-internal-vs-stated-truth-alignment-sae-space
+statement: >-
+  For small open instruction-tuned models (1.7B-8B), the gap between a
+  sparse-autoencoder truth-probe score on a neutral prompt and the same
+  truth direction projected onto the model's pressured explanation tokens
+  detects sycophantic agreement better than a teacher-forced log-probability
+  margin between the two verdict strings, but the detection is weak and
+  model-dependent (AUROC about 0.73 on Gemma-2B-IT, near chance on
+  Qwen3-1.7B, and in one reported table below the baseline on Llama-3.1-8B).
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Requires white-box access and a pretrained SAE at a fixed layer; one English factual-QA sycophancy benchmark, one sample per prompt, binary forced verdict, several hundred usable e"
+sources:
+  - source: arxiv-2602-02496
+    stance: supports
+    note: >-
+      Validated by: AUROC for predicting whether the model's final verdict
+      agrees with the wrong user claim, on Anthropic's sycophancy answer
+      split, against a teacher-forced log-probability margin baseline
+      (0.41-0.50 AUROC), with 1,000-resample bootstrap intervals across
+      Gemma-2B-IT, Qwen3-1.7B and Llama-3.1-8B-Instruct.. Measured AUROC on
+      one benchmark, three models, one SAE hook each, one sample per prompt
+      at temperature 0.7, with bootstrap CIs. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A replication where the
+  hypocrisy gap fails to exceed the log-probability margin baseline on
+  Gemma-class models, or where the probe direction is shown to track
+  prompt-template surface features rather than claim truth (e.g. the score
+  transfers to templates with no truth variation).
+submitted_by: agent:claude-opus-5@Russ-Miller

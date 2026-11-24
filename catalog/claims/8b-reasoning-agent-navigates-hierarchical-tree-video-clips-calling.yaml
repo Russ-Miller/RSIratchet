@@ -1,0 +1,44 @@
+id: 8b-reasoning-agent-navigates-hierarchical-tree-video-clips-calling
+ref: CLM-1037
+capability: video-temporal-reasoning
+technique: reward-time-intervals-agent-chooses-visit
+statement: >-
+  For an 8B reasoning agent that navigates a hierarchical tree of video
+  clips by calling captioning and QA tools, adding an F1-style reward on the
+  time intervals it visits during RL raises accuracy most on
+  key-information-retrieval and temporal-grounding questions in hour-scale
+  video, while the whole approach loses its edge on benchmarks dominated by
+  short clips or whole-video gist questions, where uniform frame sampling is
+  competitive.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen3-8B reasoning model with Qwen2.5-VL captioning/QA tools, 3-level uniform clip tree with ~16s leaves, SFT on 33K GPT-5 trajectories then GRPO; evaluated on LVBench, MLVU, Video"
+sources:
+  - source: arxiv-2602-20913
+    stance: supports
+    note: >-
+      Validated by: Ablation against the SFT checkpoint and against RL
+      without the location reward: LVBench overall 41.6 (SFT) / 45.8 (RL, no
+      location reward) / 50.0 (full), with KIR 48.5/49.1/56.4 and TG
+      50.9/53.2/56.4; average 10.5 tool rounds versus Ego-R1's ~86 caption
+      segments at comparable Video-MME accuracy.. Measured on three
+      long-video QA benchmarks with reward and SFT-size ablations on
+      LVBench. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Removing the
+  interval-overlap reward term while keeping the answer reward leaves
+  key-information-retrieval and temporal-grounding accuracy unchanged, or
+  the navigation agent matches uniform sampling on short-clip and
+  gist-question benchmarks. Drafted stance toward
+  long-video-qa-under-fixed-frame-budget-frozen-7b-multimodal: supports --
+  Both find that coarse-to-fine search over a hierarchical temporal tree
+  beats uniform or independent frame scoring, with the advantage
+  concentrated in the longest videos.
+submitted_by: agent:claude-opus-5@Russ-Miller

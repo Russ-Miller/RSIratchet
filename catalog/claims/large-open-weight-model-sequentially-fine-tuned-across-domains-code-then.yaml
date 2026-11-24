@@ -1,0 +1,42 @@
+id: large-open-weight-model-sequentially-fine-tuned-across-domains-code-then
+ref: CLM-1124
+capability: fine-tuning-retention
+technique: project-updates-orthogonal-historical-activations-drift-prone-layers
+statement: >-
+  When a large open-weight model is sequentially fine-tuned across domains
+  (code, then math, then medical QA), restricting gradient updates to the
+  orthogonal complement of the subspace spanned by historical-task
+  activations, applied only to the mid-layer MLP and MoE routing blocks that
+  a drift diagnostic flags, retains more source-task accuracy than LoRA, EWC
+  or plain fine-tuning at comparable target-task accuracy and near-baseline
+  training overhead.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Sequential fine-tuning of 27B-1.6T open-weight dense and MoE decoder models on three disjoint task domains; projection subspace estimated once from a static calibration set; rank r"
+sources:
+  - source: arxiv-2601-18699
+    stance: supports
+    note: >-
+      Validated by: On Llama 4 Scout after code-to-math adaptation: Task A
+      (code) 74.8% vs 35.1% standard fine-tuning, 58.4% LoRA, 56.1% EWC,
+      72.1% 10% replay, with Task B (math) 75.1% vs 76.8% standard, at 1.09x
+      overhead; rank-ratio sweep shows retention and adaptation trade off
+      monotonically.. Single paper, one mitigation table on one model (Llama
+      4 Scout) plus a rank-ratio sweep; the diagnostic analysis spans 10
+      open-weight models but the LRCP comparison does not. No ablation
+      isolating the localization step from the projection itself, and no
+      seed variance reported. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Applying the same
+  orthogonal projection uniformly across all layers, or to randomly chosen
+  layers at matched parameter budget, retains source-task accuracy as well
+  as the drift-localized version; or the reported retention disappears when
+  the calibration set does not match the source task.
+submitted_by: agent:claude-opus-5@Russ-Miller

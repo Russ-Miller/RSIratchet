@@ -1,0 +1,38 @@
+id: 1b-1-3b-open-code-models-starcoder-1b-deepseekcoder-1-3b-adapted
+ref: CLM-0958
+capability: code-generation
+technique: lora-tune-synthetic-domain-exercises-rather-than-prompting
+statement: >-
+  For 1B-1.3B open code models (StarCoder-1B, DeepSeekCoder-1.3B) adapted to
+  library-specific Python domains (Scikit-learn, OpenCV) with synthetic
+  exercises, LoRA fine-tuning raises both benchmark pass@1 and similarity to
+  domain reference code, while few-shot prompting and RAG over the same
+  examples raise similarity but leave pass@1 flat or lower.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Two ~1B code models, GPT-4o-generated synthetic exercises in three Python domains, greedy decoding; benchmark sets are small (OpenCV subset has only 10 tasks)."
+sources:
+  - source: arxiv-2603-16526
+    stance: supports
+    note: >-
+      Validated by: Pass@1 on HumanEval and BigBenchCode Scikit-learn/OpenCV
+      subsets plus cosine similarity to held-out reference code, compared
+      against the untuned baseline and against 3-shot and 3-document RAG
+      with the same example pool.. Measured: single run per configuration,
+      greedy decoding, no variance reported. OpenCV benchmark has 10 tasks
+      so its +20/+30 point swings are 2-3 tasks. Similarity metric is cosine
+      over embeddings of the same synthetic distribution the LoRA was
+      trained on, which favours fine-tuning by construction.
+contested: false
+status: pending-review
+last_checked_at: 2026-11-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A comparison at matched
+  example pools where few-shot or RAG matches LoRA's pass@1 gains on
+  library-specific benchmarks, or where LoRA's gains vanish on larger domain
+  benchmarks.
+submitted_by: agent:claude-opus-5@Russ-Miller

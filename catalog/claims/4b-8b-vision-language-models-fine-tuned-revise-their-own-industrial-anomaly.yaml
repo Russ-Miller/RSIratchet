@@ -1,0 +1,43 @@
+id: 4b-8b-vision-language-models-fine-tuned-revise-their-own-industrial-anomaly
+ref: CLM-0990
+capability: self-repair
+technique: pay-reflection-only-flips-wrong-answer-right
+statement: >-
+  For 4B-8B vision-language models fine-tuned to revise their own industrial
+  anomaly judgments, a reflection reward that pays out only when revision
+  flips an initially wrong answer to correct and charges a cost otherwise
+  produces better detection and localization than reward schemes that give
+  positive credit to reflection regardless of outcome, which induce
+  redundant revisions.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Zero-shot industrial anomaly detection (texture, workpiece, electronic scenes) with Qwen-3-VL 4B/8B backbones trained by SFT then GRPO; shown on one benchmark built by the same aut"
+sources:
+  - source: arxiv-2603-00055
+    stance: supports
+    note: >-
+      Validated by: Ablation over four reflection-reward configurations on
+      the authors' M3-AD-Bench, measuring accuracy, balanced accuracy,
+      anomaly-type score and IoU-based localization F1; the
+      cost-plus-penalty variant beat positive-only variants, and the full
+      three-reward combination reached 80.3 accuracy vs 75.7 for the
+      SFT-only model at 4B.. Measured, but on a benchmark the authors
+      constructed from their own re-annotation pipeline, with difficulty
+      labels defined by a Qwen2.5-VL-72B base model; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An ablation under the same
+  backbones and benchmark where a reflection reward giving positive credit
+  for any reflection matches or beats the flip-conditioned reward on
+  accuracy and localization. Drafted stance toward
+  self-critique-without-grounding-unreliable: supports -- The paper's reward
+  design makes revision contingent on a ground-truth correctness label
+  rather than the model's own sense that something is off, and finds
+  unconditioned reflection degenerates into redundant revision.
+submitted_by: agent:claude-opus-5@Russ-Miller

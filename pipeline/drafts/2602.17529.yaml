@@ -1,0 +1,46 @@
+arxiv_id: "2602.17529"
+title: Enhancing Large Language Models (LLMs) for Telecom using Dynamic
+  Knowledge Graphs and Explainable Retrieval-Augmented Generation
+url: https://doi.org/10.48550/arxiv.2602.17529
+drafted_at: 2026-11-20
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: For telecom QA over a retrieval system built on 3GPP/O-RAN
+  documents, retrieving ontology-aligned triples from a knowledge graph
+  instead of text passages lowers reported hallucination rates and raises
+  accuracy over passage RAG, and keeping the graph incrementally updated from
+  live configuration and telemetry events is what prevents answers that
+  reflect superseded network state.
+kind: observation
+backing_strength: single-paper
+scope_condition: GPT-4o-mini as the generator, four telecom benchmarks
+  (SPEC5G, Tspec-LLM, TeleQnA, ORAN-Bench-13K), with a simulated stream of
+  configuration/telemetry events for the dynamic comparison
+technique: ""
+proposed_technique: Retrieve ontology-aligned triples from an incrementally updated KG
+technique_summary: Parses standards documents into provenance-tagged triples
+  in a telecom ontology, retrieves and verbalizes the query-relevant triples
+  into the prompt instead of text chunks, and applies incremental graph
+  updates as configuration and telemetry events arrive.
+technique_kind: retrieval
+technique_validated_by: Compared against LLM-only, passage RAG, self-RAG and
+  RAPTOR on summarization (ROUGE/BLEU/METEOR) and QA accuracy, with a four-way
+  hallucination-type breakdown; the static-vs-dynamic KG comparison reports
+  post-change QA accuracy 72.1% to 84.0% and staleness rate 37.8% to 11.4%,
+  with median event-to-answer delay 5.2 s.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched comparison in which passage RAG with an equally refreshed
+  document store matches the triple-based pipeline on post-change accuracy and
+  staleness, showing the gain comes from refresh cadence rather than graph
+  structure.
+evidence_note: "Measured, but weakly isolated: the hallucination-type
+  breakdown is reported only as a figure with no counts or annotation
+  protocol, the static-vs-dynamic arms differ in both refresh and nothing else
+  but the baselines are not given equivalent refresh, and the headline
+  14.3%/21.6% averages are not broken out per dataset in the text. Single
+  backbone, no seeds or confidence intervals."
+confidence: low

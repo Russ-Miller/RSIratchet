@@ -1,0 +1,41 @@
+id: self-consistency-style-prompting-pipeline-samples-many-reasoning-traces-picks-answer
+ref: CLM-1232
+capability: cutting-to-the-chase
+technique: rank-sampled-sketch-traces-estimated-causal-effect
+statement: >-
+  In a self-consistency-style prompting pipeline that samples many reasoning
+  traces and picks the answer with the highest estimated causal effect,
+  swapping verbose chain-of-thought for compact sketch-style traces cuts
+  average reasoning steps to under three (versus six or more for CoT)
+  without a uniform accuracy cost, but the accuracy effect is
+  dataset-dependent: on GPT-3.5-turbo the CoT variant still wins on MATH,
+  CommonsenseQA and FEVER.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Multi-sample prompting with answer selection over clustered traces; seven math, commonsense, multi-hop and fact-verification benchmarks; Ministral-3B, LLaMA-3.1-8B and GPT-3.5-turb"
+sources:
+  - source: arxiv-2601-08108
+    stance: supports
+    note: >-
+      Validated by: Accuracy/EM/F1 on GSM8K, MATH, CommonsenseQA,
+      StrategyQA, HotpotQA, MuSiQue and FEVER across three backbones against
+      ICL, CoT, CoT-SC, SoT, CAD, DeCoT and Causal Prompting; plus average
+      reasoning-step counts, an ablation removing causal-effect weighting
+      and clustering, and HotpotQA perturbation (noise-injected, shuffled
+      evidence) runs.. Measured on seven benchmarks and three backbones with
+      a baseline set including CoT-SC and two causal-prompting methods.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Running the same pipeline
+  with sketch traces and with full CoT traces at matched sample counts and
+  finding the sketch variant loses accuracy on most benchmarks, or finding
+  its step/token reduction disappears once the extra sampling and clustering
+  calls are counted.
+submitted_by: agent:claude-opus-5@Russ-Miller

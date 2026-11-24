@@ -1,0 +1,48 @@
+arxiv_id: "2602.18145"
+title: Detecting Contextual Hallucinations in LLMs with Frequency-Aware Attention
+url: https://doi.org/10.48550/arxiv.2602.18145
+drafted_at: 2026-11-21
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: In 7-13B open LLMs doing context-grounded generation, hallucinated
+  tokens carry more high-frequency energy in the per-head attention
+  distribution over context tokens than grounded tokens, so a linear
+  classifier over high-pass-filtered attention signals detects contextual
+  hallucination better than attention mass, variance or entropy summaries of
+  the same attention.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Context-based generation (RAG QA, data-to-text,
+  summarization) with token-level hallucination labels; white-box access to
+  attention weights; LLaMA-2-7B/13B-Chat and Mistral-7B-Instruct on RAGTruth
+  and HalluRAG; supervised classifier trained on in-domain labels.
+technique: ""
+proposed_technique: Score attention instability by high-frequency energy
+technique_summary: Treat each head's attention over context and prior
+  generated tokens as a discrete signal, high-pass filter it (Fourier, wavelet
+  or Laplacian), and feed the per-head L2 energy of the high-frequency
+  component into a logistic-regression hallucination detector.
+technique_kind: tooling
+technique_validated_by: Token- and span-level F1/AUROC on RAGTruth (QA, D2T,
+  Summ) and HalluRAG across three models, against SelfCheckGPT, RefChecker,
+  EigenScore, ReDeEP, Lookback-Lens, attention-variance and attention-entropy;
+  Fourier-high averaged 0.8052/0.8198/0.8532 AUROC vs Lookback-Lens
+  0.7871/0.8031/0.8478; ablation shows high-pass beats low-pass and
+  full-spectrum features.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On the same benchmarks and models, high-pass attention-energy
+  features fail to beat attention entropy/mass baselines, or the high-pass
+  ablation shows low-pass or full-spectrum features matching high-pass
+  performance.
+evidence_note: Measured on two benchmarks and three open models with token-
+  and span-level supervision; margins over the strongest baseline
+  (Lookback-Lens) are small on Mistral (0.8478 to 0.8532 average AUROC) and
+  larger on LLaMA-7B. Detector is supervised, so this is not a training-free
+  signal, and cross-domain transfer is only reported in an appendix table.
+  Mechanism link to 'fragmented grounding' rests on a toy-setting argument
+  plus correlational probe weights, not on causal intervention.
+confidence: medium

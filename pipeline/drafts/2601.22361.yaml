@@ -1,0 +1,45 @@
+arxiv_id: "2601.22361"
+title: "MERMAID: Memory-Enhanced Retrieval and Reasoning with Multi-Agent
+  Iterative Knowledge Grounding for Veracity Assessment"
+url: https://doi.org/10.48550/arxiv.2601.22361
+drafted_at: 2026-11-19
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: fact-verification
+statement: In multi-claim veracity assessment pipelines, writing retrieved
+  evidence into a persistent entity-keyed memory that is recalled for later
+  related claims cuts external search calls roughly in half and raises
+  macro-F1 by a few points, with the efficiency gain largest where claims
+  share entities and the accuracy gain not tracking the efficiency gain.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Five fact-checking/claim-verification datasets processed as a
+  sequence of claims; GPT-5-mini backbone for the memory ablation; gains
+  depend on topical overlap across claims.
+technique: ""
+proposed_technique: Carry an entity-keyed evidence memory across claims
+technique_summary: Index evidence retrieved while verifying each claim under
+  the subject/object entities extracted from it, and recall it by BM25 plus
+  semantic re-ranking to warm-start verification of later claims.
+technique_kind: retrieval
+technique_validated_by: "With vs without memory on five benchmarks with
+  GPT-5-mini: total tool calls 1,840 to 948 (-48.5%, per-dataset -26.0% to
+  -76.1%) and Macro-F1 up on all five (+0.02 to +0.06); memory built by
+  GPT-5-mini also lifted LLaMA-3.1-8B from 0.54 to 0.65 and OSS-20B from 0.67
+  to 0.71 on FactCheck-Bench."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A controlled run where carrying evidence memory across a claim
+  stream leaves retrieval call counts unchanged, or lowers macro-F1, on
+  datasets with substantial cross-claim entity overlap.
+evidence_note: Measured, single paper, one backbone for the key ablation;
+  datasets are 100-example stratified samples for the natural-claim sets. The
+  design does not separate the memory's effect from the Decomposer's entity
+  extraction that keys it, and the accuracy comparison is against the same
+  framework without memory rather than against a matched-budget retrieval
+  baseline. Authors also report 166 manually adjudicated disagreements where
+  the model was judged right about half the time, so the absolute F1 figures
+  carry annotation noise.
+confidence: medium

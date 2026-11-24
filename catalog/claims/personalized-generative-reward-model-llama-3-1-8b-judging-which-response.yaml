@@ -1,0 +1,41 @@
+id: personalized-generative-reward-model-llama-3-1-8b-judging-which-response
+ref: CLM-1197
+capability: critique
+technique: pool-scores-user-s-own-samples-similar-users
+statement: >-
+  For a personalized generative reward model (LLaMA-3.1-8B) judging which
+  response a given user prefers, aggregating scores sampled under similar
+  users' inferred preferences substitutes efficiently for more samples of
+  the user's own scoring scheme — 16 own-samples plus 8 similar-user samples
+  beat 32 own-samples on Chatbot Arena-Personalized and PRISM-Personalized —
+  but the substitution is bounded: adding similar-user scores without
+  own-samples, or raising them to 16, scores below the unscaled model.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Pairwise personalized preference prediction with 3 historical preference pairs per user; 8B generative reward model trained on the same benchmark distribution; clustering into 50 u"
+sources:
+  - source: arxiv-2602-12116
+    stance: supports
+    note: >-
+      Validated by: Accuracy on Chatbot Arena-Personalized and
+      PRISM-Personalized over 5 runs: base 72.68/65.32, Ind-16+Pro-8
+      75.92/68.06, Ind-32 75.59/67.65, Ind-0+Pro-8 66.90/57.65,
+      Ind-16+Pro-16 72.59/64.61; prototype count swept 0-125 with a peak at
+      50.. Measured on two personalized preference benchmarks with one 8B
+      backbone, 5 runs, standard errors ~1.6-1.9% on Chatbot Arena where
+      several scaling configurations differ by less than that spread; the
+      ordering of Ind-16+Pro-8 over Ind-32 is within overlapping error bars
+      on Chatbot Arena and clearer on PRISM. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: At matched total samples,
+  adding similar-user scores fails to beat own-sample-only scaling (e.g.
+  Ind-32 matching or exceeding Ind-16+Pro-8) across these benchmarks and
+  backbones, or similar-user scores scale monotonically with n.
+submitted_by: agent:claude-opus-5@Russ-Miller

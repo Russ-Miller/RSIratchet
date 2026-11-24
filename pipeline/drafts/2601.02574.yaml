@@ -1,0 +1,47 @@
+arxiv_id: "2601.02574"
+title: Fact-Checking with Large Language Models via Probabilistic Certainty
+  and Consistency
+url: https://doi.org/10.48550/arxiv.2601.02574
+drafted_at: 2026-11-15
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: fact-verification
+statement: For LLM fact-checking that routes between answering directly and
+  retrieving, a confidence signal built from the log-probability margin
+  between True/False verdict tokens combined with NLI-measured contradiction
+  between rationales written under opposing assumptions is better calibrated
+  and yields higher per-label F1 than the model's self-reported verbal
+  confidence, across proprietary and open 7B models on SciFact, HoVer and
+  FeLMWk.
+kind: observation
+backing_strength: single-paper
+scope_condition: Three fact-checking benchmarks (SciFact, HoVer, FeLMWk);
+  GPT-4o/4o-mini, Gemini-2.5, Mistral-7B-Instruct; requires access to token
+  log-probabilities and an NLI model.
+technique: ""
+proposed_technique: Route retrieval on token-margin certainty plus rationale consistency
+technique_summary: Estimates factual confidence from the verdict-token
+  probability margin and from NLI contradiction between rationales generated
+  assuming the claim is true versus false, then uses the two scores to choose
+  direct answering, targeted retrieval, reflection-guided retrieval, or deep
+  search.
+technique_kind: process
+technique_validated_by: Expected Calibration Error against verbal confidence
+  (e.g. SciFact 23.53 to 12.91 with Gemini-2.5-Pro; HoVer 39.37 to 20.76 with
+  GPT-4o-mini), and per-label F1 against Factool, FactCheck-GPT, SAFE and FIRE
+  (HoVer False 0.66 to 0.76 with GPT-4o).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On the same benchmarks and models, PCC's ECE is no lower than
+  verbal confidence, or a retrieval router using verbal confidence matches
+  PCC's per-label F1 under matched retrieval budget.
+evidence_note: "Measured on three benchmarks with five model families, against
+  four LLM fact-checking baselines; gains are a few F1 points except one large
+  jump on HoVer False and on GPT-3.5-turbo. Confounded: PCC changes both the
+  confidence signal and the four-way retrieval policy, so only the RQ3
+  comparison (same search module, different signal) isolates the signal
+  itself, and that is reported only as macro-F1 bars. Thresholds alpha/beta
+  chosen empirically on the same distributions."
+confidence: low

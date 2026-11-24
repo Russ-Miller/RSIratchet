@@ -1,0 +1,41 @@
+id: 7b-vision-language-models-estimating-progress-long-horizon-egocentric-task-videos
+ref: CLM-1031
+capability: video-temporal-reasoning
+technique: carry-updated-chain-of-thought-across-video-snippets
+statement: >-
+  For 7B vision-language models estimating progress on long-horizon
+  egocentric task videos, feeding only the latest short video snippet
+  together with a carried-forward chain-of-thought that records task
+  decomposition and per-step completion gives lower progress error than
+  feeding the full video so far, and the gap widens as the video gets longer
+  while inference time stays flat rather than growing linearly.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "7B Qwen2.5-VL backbone fine-tuned (SFT then PPO) on auto-generated ALFRED and Ego4D progress data; snippets of 2-4s with 4 sampled frames; full-video baseline trained identically b"
+sources:
+  - source: arxiv-2603-17312
+    stance: supports
+    note: >-
+      Validated by: Progress MAE, increment MAE, bin accuracy and completion
+      accuracy on held-out ALFRED (669 items) and Ego4D (529 items)
+      benchmarks versus API models, open-source VLMs, LIV, ROVER and
+      GVL-SFT; plus an ablation comparing an identically trained
+      full-video-input variant on MAE and inference time binned by video
+      duration.. Measured on two benchmarks with four metrics; the headline
+      comparison is against a matched full-video variant in one ablation
+      figure reported qualitatively (curves, no numbers in the text given).
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An identically trained
+  full-video-input variant matching or beating the snippet-plus-CoT variant
+  on progress MAE at long durations, or the snippet variant's advantage
+  disappearing once the full-video baseline is given a longer context
+  budget.
+submitted_by: agent:claude-opus-5@Russ-Miller

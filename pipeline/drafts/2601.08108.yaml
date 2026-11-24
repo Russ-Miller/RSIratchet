@@ -1,0 +1,50 @@
+arxiv_id: "2601.08108"
+title: Debiasing Large Language Models via Adaptive Causal Prompting with
+  Sketch-of-Thought
+url: https://doi.org/10.48550/arxiv.2601.08108
+drafted_at: 2026-11-17
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: cutting-to-the-chase
+statement: "In a self-consistency-style prompting pipeline that samples many
+  reasoning traces and picks the answer with the highest estimated causal
+  effect, swapping verbose chain-of-thought for compact sketch-style traces
+  cuts average reasoning steps to under three (versus six or more for CoT)
+  without a uniform accuracy cost, but the accuracy effect is
+  dataset-dependent: on GPT-3.5-turbo the CoT variant still wins on MATH,
+  CommonsenseQA and FEVER."
+kind: observation
+backing_strength: single-paper
+scope_condition: Multi-sample prompting with answer selection over clustered
+  traces; seven math, commonsense, multi-hop and fact-verification benchmarks;
+  Ministral-3B, LLaMA-3.1-8B and GPT-3.5-turbo.
+technique: ""
+proposed_technique: Rank sampled sketch traces by estimated causal effect
+technique_summary: Sample many short sketch-style reasoning traces at varied
+  temperature, cluster their embeddings, build a similarity-ranked in-context
+  prompt per cluster representative, and return the answer with the highest
+  front-door-estimated causal effect rather than the majority vote.
+technique_kind: prompting
+technique_validated_by: Accuracy/EM/F1 on GSM8K, MATH, CommonsenseQA,
+  StrategyQA, HotpotQA, MuSiQue and FEVER across three backbones against ICL,
+  CoT, CoT-SC, SoT, CAD, DeCoT and Causal Prompting; plus average
+  reasoning-step counts, an ablation removing causal-effect weighting and
+  clustering, and HotpotQA perturbation (noise-injected, shuffled evidence)
+  runs.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Running the same pipeline with sketch traces and with full CoT
+  traces at matched sample counts and finding the sketch variant loses
+  accuracy on most benchmarks, or finding its step/token reduction disappears
+  once the extra sampling and clustering calls are counted.
+evidence_note: Measured on seven benchmarks and three backbones with a
+  baseline set including CoT-SC and two causal-prompting methods. The headline
+  comparison bundles several changes at once (sketch traces, clustering,
+  similarity-ordered demonstrations, causal-effect ranking); only the w/o-SoT
+  ablation isolates trace style, and it is reported on one backbone. The
+  largest ablation loss is from dropping causal-effect weighting, not from
+  trace brevity, so the brevity claim rests on the step-count figure plus that
+  single-backbone ablation. No cost accounting for the extra sampled traces.
+confidence: low

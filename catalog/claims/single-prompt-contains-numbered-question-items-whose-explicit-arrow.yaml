@@ -1,0 +1,37 @@
+id: single-prompt-contains-numbered-question-items-whose-explicit-arrow
+ref: CLM-1240
+capability: procedure-following
+statement: >-
+  When a single prompt contains numbered question items whose explicit arrow
+  instructions require non-sequential traversal (jump to item i+k) rather
+  than sequential order, open-weight 4B-120B models lose most of their
+  accuracy relative to the same content presented in linear order, with
+  median accuracy near zero and no recovery from parameter scaling.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Six open-weight models (Qwen3 4B/30B instruct and thinking, gpt-oss 20B/120B), factual Jeopardy-derived QA items, 10,000 linear and 10,000 jumping prompts, 10-300 questions per pro"
+sources:
+  - source: arxiv-2601-18924
+    stance: supports
+    note: >-
+      Measured: baseline single-question accuracy 55.7-84.8%, linear
+      17.8-55.1%, jumping 1.8-13.9% mean with medians 0.47-2.94. Content and
+      output format held constant across conditions, so the design does
+      isolate traversal order. Error analysis attributes 33-60% of wrong
+      answers to answering a different prompt question. Limited to one task
+      domain (factual recall) and one topology contrast; correctness judged
+      by an LLM evaluator verified at 98% agreement on 100 items.
+contested: false
+status: pending-review
+last_checked_at: 2026-11-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A model family where
+  jumping-prompt accuracy stays within a few points of linear-prompt
+  accuracy on the same item sets, or evidence that the gap closes with scale
+  within a family. Automatic check flagged: figures not in the source: 17.8,
+  1.8.
+submitted_by: agent:claude-opus-5@Russ-Miller

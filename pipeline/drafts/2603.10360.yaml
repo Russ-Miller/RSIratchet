@@ -1,0 +1,50 @@
+arxiv_id: "2603.10360"
+title: "One Token, Two Fates: A Unified Framework via Vision Token
+  Manipulation Against MLLMs Hallucination"
+url: https://doi.org/10.48550/arxiv.2603.10360
+drafted_at: 2026-11-23
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: In 7-13B open vision-language models, creating hallucination-probe
+  negative samples by pruning vision tokens in latent space (keeping ~5 of
+  576) yields an in-distribution probe whose hidden states stay close to the
+  original image's, and calibrating hidden states away from the resulting
+  difference vector lowers object hallucination more than negatives built by
+  pixel-level image masking.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Training-free inference-time intervention on LLaVA-1.5,
+  MiniGPT-4, Shikra, InstructBLIP; object-hallucination benchmarks (POPE,
+  CHAIR, MMHal-Bench); pruning must be aggressive (accuracy is robust above
+  ~20 retained tokens).
+technique: ""
+proposed_technique: Probe hallucination with pruned vision tokens, not masked images
+technique_summary: Builds latent-space negative samples by randomly pruning
+  vision tokens to a handful, averages the original-minus-negative
+  hidden-state difference into a hallucination direction, and subtracts it
+  from hidden states in shallow layers, alongside injecting augmented-image
+  vision tokens at a middle layer.
+technique_kind: decoding
+technique_validated_by: POPE accuracy/F1 across four MLLMs and three datasets
+  (LLaVA-1.5 COCO 84.79 to 86.79 accuracy), CHAIR captioning scores,
+  MMHal-Bench GPT-4 scoring, MME; ablation compares pruned-token negatives
+  (86.11 COCO acc) against masked-image negatives (84.77, below vanilla);
+  t-SNE shows pruned negatives cluster with originals while masked ones do
+  not; 1.06x latency.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation on the same models where masked-image negatives match
+  or beat pruned-token negatives at equal calibration strength, or where the
+  pruned-token negatives' hidden states are shown to be as out-of-distribution
+  as masked ones while still working.
+evidence_note: Measured on four MLLMs and three POPE splits plus
+  CHAIR/MME/MMHal-Bench; gains are modest (~2 points POPE accuracy) and
+  inconsistent on MiniGPT-4 and InstructBLIP where the method is sometimes
+  second-best. The masked-vs-pruned ablation is single-model (LLaVA-1.5, two
+  datasets). Benchmarks are the standard object-hallucination set, which other
+  work argues conflates lower hallucination with reduced informativeness; this
+  paper reports no coverage/recall control.
+confidence: medium

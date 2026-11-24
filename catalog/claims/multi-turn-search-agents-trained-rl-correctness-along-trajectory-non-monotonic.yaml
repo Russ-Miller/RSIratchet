@@ -1,0 +1,38 @@
+id: multi-turn-search-agents-trained-rl-correctness-along-trajectory-non-monotonic
+ref: CLM-1180
+capability: long-horizon-execution
+technique: resample-prefix-train-outcome-divergent-branches
+statement: >-
+  In multi-turn search agents trained by RL, correctness along a trajectory
+  is non-monotonic — the same intermediate prefix can lead to success or
+  failure depending on the continuation — so supervision that resamples
+  continuations from a shared late-stage prefix and keeps only
+  outcome-divergent pairs gives better credit assignment than uniform
+  outcome rewards or state-value process rewards.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "4B-7B Qwen backbones on multi-hop QA search tasks (Search-R1, ASearcher) and a 50-step embodied text benchmark (ALFWorld); all methods warm-started from the same SFT checkpoint and"
+sources:
+  - source: arxiv-2602-03719
+    stance: supports
+    note: >-
+      Validated by: EM/F1 and LLM-as-a-Judge on 2WikiMQA, HotpotQA, MuSiQue,
+      Bamboogle against GRPO, process-reward (GiGPO, StepSearch,
+      CriticSearch, ReasonRAG) and branch-sampling (Tree-GRPO, ARPO, AEPO)
+      baselines: +3.3 EM / +4.5 F1 average over the best prior method under
+      Search-R1; 93.6 vs 90.8 (GiGPO) on ALFWorld; ablations removing
+      difficulty-aware sampling (-1.9 F1) and redundant-step masking (-0.9
+      F1).. Measured. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Resampling 32
+  continuations from a fixed late-stage prefix yields essentially the same
+  outcome each time (Pass@32 close to Pass@1), or outcome-divergent branch
+  training fails to beat matched-cost GRPO on long-horizon agent benchmarks.
+submitted_by: agent:claude-opus-5@Russ-Miller

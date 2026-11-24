@@ -1,0 +1,41 @@
+id: 7b-multimodal-backbone-multi-session-personalized-dialogue-naive-top-5-message
+ref: CLM-1019
+capability: long-term-memory
+technique: let-model-choose-retrieval-time-window-keywords
+statement: >-
+  For a 7B multimodal backbone on multi-session personalized dialogue, naive
+  top-5 message retrieval is not uniformly better than putting the whole
+  history in context: it lowered overall accuracy at 32k context (64.84 to
+  61.20, with preference understanding down 9.33 points) and raised it at
+  128k (54.48 to 59.01), while training the same backbone to decide when and
+  over what time window to retrieve, plus an EMA-updated personality
+  profile, beat both at either length.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen2.5-VL-7B backbone on synthetic long-term persona dialogues (Persona-MME) and PERSONAMEM; retrieval baseline is top-5 semantic message retrieval; training data is synthetic and"
+sources:
+  - source: arxiv-2604-13074
+    stance: supports
+    note: >-
+      Validated by: Accuracy on Persona-MME (2,000+ cases, 200 personas) and
+      PERSONAMEM at 32k and 128k context against full-context and top-5 RAG
+      baselines on the same backbone, plus GPT-4o and InternVL3-8B/38B;
+      SFT-only and SFT+GRPO variants reported separately (e.g. 128k
+      Persona-MME 54.48 base, 59.01 RAG, 67.18 SFT, 71.05 RL).. Measured on
+      the authors' own benchmark and one external one, with a single 7B
+      backbone; training data and the benchmark come from the same synthesis
+      pipeline and persona style, so the gain is not isolated from
+      distribution match. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Rerunning the same backbone
+  with top-5 retrieval and full context across these benchmarks and finding
+  retrieval helps at short context too, or finding the trained agentic
+  retrieval does not beat tuned fixed-k retrieval at matched token budget.
+submitted_by: agent:claude-opus-5@Russ-Miller

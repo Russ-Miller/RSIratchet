@@ -1,0 +1,42 @@
+id: 4-8b-open-weight-agents-doing-multi-step-tool-use-making-safety
+ref: CLM-0987
+capability: tool-use
+technique: plan-check-then-act-or-refuse-trained-pairwise
+statement: >-
+  For 4-8B open-weight agents doing multi-step tool use, making a safety
+  check block and a refusal call explicit actions in the loop and training
+  them with RL on pairwise trajectory preferences from an LLM judge cuts
+  harmful actions and prompt-injection success while leaving benign task
+  completion equal or better, and it corrects whichever bias the base model
+  had rather than making every model more conservative.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Zero-shot transfer to out-of-distribution agentic benchmarks (AgentHarm, Agent Security Bench, BFCL v3, PrivacyLens); trained on Agent-SafetyBench; three model families (Qwen2.5-7B"
+sources:
+  - source: arxiv-2603-03205
+    stance: supports
+    note: >-
+      Validated by: Measured against the untrained base model on four
+      held-out benchmarks: harmful-task harm score and refusal rate
+      (AgentHarm), direct/indirect injection attack success and refusal
+      (ASB), multi-turn tool accuracy (BFCL v3), leakage rate (PrivacyLens).
+      Ablations replace the safety block with a generic think block and
+      replace pairwise preferences with a pointwise scalar reward; both
+      score worse on harm, refusal and injection ASR.. Measured, single
+      paper, three open models plus two frontier models used only with
+      inference-time scaffolding. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Training the same loop
+  with a pointwise scalar reward matching pairwise-preference results on
+  harm and injection ASR, or the explicit safety block giving no gain over a
+  generic reasoning block with the same refusal action available, would
+  break it; so would a replication where the trained agents' benign task
+  completion falls consistently.
+submitted_by: agent:claude-opus-5@Russ-Miller

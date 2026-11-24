@@ -1,0 +1,37 @@
+id: retrieving-external-counter-evidence-already-localized-hallucinated-span-generating-several-queries
+ref: CLM-1215
+capability: hallucination
+technique: query-hallucinated-span-several-context-windows-then-rerank
+statement: >-
+  When retrieving external counter-evidence for an already-localized
+  hallucinated span, generating several queries from the span plus
+  surrounding context windows and pooling their dense-retrieval candidates
+  raises recall more than adding a cross-encoder reranker to a single-query
+  dense retrieval.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Span-level hallucinated fragments from Qwen2.5-7B-Instruct and Mistral-Small-24B-Instruct long-form generations, retrieving over a ~35k-document evidence corpus with annotated gold"
+sources:
+  - source: arxiv-2603-05828
+    stance: supports
+    note: >-
+      Validated by: Ablation on the authors' own hallucination-tracing test
+      split: dense embedding alone R@1 0.4133; plus cross-encoder 0.5172;
+      plus multi-query 0.6244; full method 0.7068. Full method also beat
+      BM25, DPR, Sentence-BERT and cross-encoder-only on Recall@k, nDCG@k
+      and MRR on both model-derived datasets.. Measured on the authors' own
+      newly constructed dataset, built by LLM annotation with human
+      refinement, with no independent replication; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: On a held-out
+  hallucination-span evidence-retrieval set with the same encoder,
+  cross-encoder reranking of single-query candidates matches or beats
+  multi-query pooling at equal candidate budget.
+submitted_by: agent:claude-opus-5@Russ-Miller

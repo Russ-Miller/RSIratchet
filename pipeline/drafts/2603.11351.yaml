@@ -1,0 +1,44 @@
+arxiv_id: "2603.11351"
+title: Novelty Adaptation Through Hybrid Large Language Model (LLM)-Symbolic
+  Planning and LLM-guided Reinforcement Learning
+url: https://doi.org/10.48550/arxiv.2603.11351
+drafted_at: 2026-11-23
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: planning
+statement: When a novel object makes a symbolic planning domain incomplete,
+  relying on RL exploration to stumble into a plannable state and infer the
+  missing operator works only where random exploration can reach that state,
+  whereas prompting an LLM to propose the missing PDDL operator at each
+  searched state recovers a valid plan across easy and hard continuous
+  manipulation domains alike.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: "Continuous robotic manipulation (mimicgen: kitchen, nut
+  assembly, coffee box/drawer), one injected novel object, predicates assumed
+  sufficient to express the missing operator, object detectable and typed."
+technique: ""
+proposed_technique: Prompt an LLM for the missing PDDL operator during symbolic search
+technique_summary: Breadth-first search over planning states where, at each
+  state, an LLM is prompted (with self-consistency over five samples) to name
+  one missing operator and its ordered effects, and a symbolic search-ahead
+  checks whether a plan now exists.
+technique_kind: prompting
+technique_validated_by: "10 runs per domain against an RL Operator-Discovery
+  baseline (10 PPO seeds, 1M timesteps cap): 10/10 successes in three domains
+  and 7/10 in the hardest, versus 10/10 for OD only in the easy kitchen domain
+  and 0/10 elsewhere (>7h each); planner wall-clock 45-682 sec."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An RL operator-discovery agent that reliably finds plannable states
+  in the harder domains (drawer, peg, box) within comparable budget, or an LLM
+  prompting pipeline that fails to name the missing operator on novel objects
+  outside common household categories.
+evidence_note: Measured on four hand-built domains with one novelty each,
+  single LLM (GPT-o3, temp 0.3), 10 runs per domain. Design isolates operator
+  identification from policy learning, but domains are few and all involve
+  everyday objects likely in LLM pretraining; the hardest domain already shows
+  3/10 failures.
+confidence: medium
