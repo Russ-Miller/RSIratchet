@@ -1,0 +1,52 @@
+arxiv_id: "2603.00876"
+title: "BioProAgent: Neuro-Symbolic Grounding for Constrained Scientific Planning"
+url: https://doi.org/10.48550/arxiv.2603.00876
+drafted_at: 2026-11-09
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: planning
+statement: "For LLM agents generating wet-lab hardware instructions under
+  device parameter constraints, giving the agent the same symbolic
+  rule-checking tool is not enough: ReAct with that tool reached 0.210
+  physical compliance and corrected 0% of injected violations, while routing
+  the same tool through a deterministic finite-state controller that forces a
+  RECTIFY state on any violation reached 0.956 compliance and 90% correction."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Simulated execution against a hand-digitized registry of 22
+  instruments; single backbone (Gemini-3-Flash) for all agent baselines;
+  safety guarantee holds only for constraints the registry encodes.
+technique: ""
+proposed_technique: Gate plan execution on a deterministic design-verify-rectify FSM
+technique_summary: A finite state machine outside the model routes the agent
+  between design, verification and rectification states, blocking execution of
+  any generated instruction until a symbolic rule engine signals the hardware
+  constraints pass, and compressing device schemas into symbolic pointers so
+  the rectification prompt stays small.
+technique_kind: process
+technique_validated_by: "Extended BioProBench subsets: physical compliance C_p
+  0.956 vs 0.210 (ReAct), 0.911 (AutoGPT), 0.995 (direct prompting with
+  trivially conservative code); parameter accuracy 0.610 vs 0.468;
+  error-correction success 90% vs 0% for all three agent baselines including
+  an Oracle-ReAct variant forced to retry until pass; ablation removing the
+  FSM drops long-horizon S_code to 0.000, removing only verification drops C_p
+  to 0.902; 82% fewer tokens than AutoGPT on long-horizon tasks."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An agent given the same rule-engine tool and a prompt instruction
+  to always verify before emitting code reaching comparable physical
+  compliance and correction rates without external state gating, or the FSM
+  advantage disappearing on a stronger backbone or a registry the agent itself
+  must infer.
+evidence_note: Measured on one benchmark family with four subsets, one
+  backbone for all agent arms, simulation only. Design does isolate the gating
+  from tool access (baselines had the identical toolset) and from forced
+  retrying (Oracle-ReAct variant), which is the strongest part of the
+  evidence. It does not isolate the FSM from the symbolic grounding, since the
+  ablation reports them removed in different configurations and the authors
+  attribute Oracle-ReAct's failure to missing grounding rather than missing
+  gating. Compliance numbers for direct prompting are high only because that
+  arm emits trivial code, so C_p alone is not comparable across arms.
+confidence: medium

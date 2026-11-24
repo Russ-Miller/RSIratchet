@@ -1,0 +1,45 @@
+arxiv_id: "2601.10455"
+title: "SurgGoal: Rethinking Surgical Planning Evaluation via Goal-Satisfiability"
+url: https://doi.org/10.48550/arxiv.2601.10455
+drafted_at: 2026-11-17
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: evaluation-validity
+statement: "When model-generated surgical step plans are scored for clinical
+  validity, similarity to a single reference execution misranks them in both
+  directions: on an expert-rule-labelled set of 191 valid and 199 invalid
+  laparoscopic bypass plans, normalized edit distance and Jaccard similarity
+  classified only 18.8% and 40.3% of protocol-adherent variants as valid,
+  while relative-order accuracy passed valid plans at 93.2% but caught only
+  11.3% of ordering violations."
+kind: observation
+backing_strength: single-paper
+scope_condition: Laparoscopic Roux-en-Y gastric bypass step sequences from
+  MultiBypass140, with protocol rules (required/allowed steps, dependencies,
+  prohibited orderings) written by two surgeons; continuous metrics
+  thresholded at 0.7.
+technique: ""
+proposed_technique: Score plans against expert protocol rules, not a reference trajectory
+technique_summary: Replace trajectory-similarity scoring with a binary check
+  of whether a generated step sequence satisfies expert-formalized phase-level
+  constraints (required steps, allowed steps, ordering dependencies,
+  prohibited orderings).
+technique_kind: process
+technique_validated_by: Used as the labelling ground truth for a 390-sequence
+  valid/invalid meta-evaluation set, against which similarity metrics and LLM
+  judges were measured; also used to score 10 Video-LLMs across three planning
+  setups. Not independently validated against clinical outcomes.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A sequence-similarity metric against a single reference trajectory
+  that classifies both protocol-adherent variants and protocol-violating
+  orderings at high accuracy on this or a comparable expert-rule-labelled set.
+evidence_note: "Measured on one constructed set (191 valid, 199 invalid) in
+  one procedure type; invalid sequences were systematically synthesized as
+  order/content/both errors rather than observed, so the error distribution is
+  designed rather than natural. The rule set is the paper's own ground truth,
+  so the comparison is definitional in part: it shows similarity metrics do
+  not track these rules, not that the rules are the correct clinical target."
+confidence: medium

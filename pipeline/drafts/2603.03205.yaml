@@ -1,0 +1,52 @@
+arxiv_id: "2603.03205"
+title: "Learning When to Act or Refuse: Guarding Agentic Reasoning Models for
+  Safe Multi-Step Tool Use"
+url: https://doi.org/10.48550/arxiv.2603.03205
+drafted_at: 2026-11-22
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: tool-use
+statement: For 4-8B open-weight agents doing multi-step tool use, making a
+  safety check block and a refusal call explicit actions in the loop and
+  training them with RL on pairwise trajectory preferences from an LLM judge
+  cuts harmful actions and prompt-injection success while leaving benign task
+  completion equal or better, and it corrects whichever bias the base model
+  had rather than making every model more conservative.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Zero-shot transfer to out-of-distribution agentic benchmarks
+  (AgentHarm, Agent Security Bench, BFCL v3, PrivacyLens); trained on
+  Agent-SafetyBench; three model families (Qwen2.5-7B, Qwen3-4B-Thinking,
+  Phi-4) plus scaffolding-only application to GPT-4o/GPT-5.
+technique: ""
+proposed_technique: Plan, check, then act or refuse, trained on pairwise trajectory preferences
+technique_summary: Restructures the agent step as plan, optional explicit
+  safety-check block, then tool call or a terminal refusal call, and trains
+  the whole loop with GRPO where per-trajectory reward comes from an LLM judge
+  comparing pairs of rollouts for the same task.
+technique_kind: training
+technique_validated_by: "Measured against the untrained base model on four
+  held-out benchmarks: harmful-task harm score and refusal rate (AgentHarm),
+  direct/indirect injection attack success and refusal (ASB), multi-turn tool
+  accuracy (BFCL v3), leakage rate (PrivacyLens). Ablations replace the safety
+  block with a generic think block and replace pairwise preferences with a
+  pointwise scalar reward; both score worse on harm, refusal and injection
+  ASR."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Training the same loop with a pointwise scalar reward matching
+  pairwise-preference results on harm and injection ASR, or the explicit
+  safety block giving no gain over a generic reasoning block with the same
+  refusal action available, would break it; so would a replication where the
+  trained agents' benign task completion falls consistently.
+evidence_note: "Measured, single paper, three open models plus two frontier
+  models used only with inference-time scaffolding. Gains are directionally
+  consistent but uneven: Phi-4 regressed on harmful refusal (0.94 to 0.88) and
+  DPI ASR (0.19 to 0.28) while recovering benign utility, and Qwen2.5 lost
+  benign completion on ASB (0.90 to 0.84). The design does not separate the
+  inference structure from the preference-RL training except through two
+  single-model ablations, and the judge supplying the reward is the same kind
+  of model as the one evaluating safety."
+confidence: medium

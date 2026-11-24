@@ -1,0 +1,40 @@
+id: lora-fine-tuning-7-8b-instruct-models-llama-3-1-qwen2-5
+ref: CLM-1158
+capability: retrieval-utilization
+technique: rectify-attention-update-don-t-add-linearly
+statement: >-
+  When LoRA fine-tuning 7-8B instruct models (Llama-3.1, Qwen2.5, Mistral)
+  to ignore distracting retrieved documents, passing the attention-score
+  update through a saturating non-linear rectification (xi*tanh, reverting
+  to identity for large updates) before adding it to the base attention
+  raises answer accuracy over plain LoRA at equal trainable-parameter count
+  across five QA benchmarks.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "7-8B instruct decoder models, LoRA rank 64, retrieval-augmented QA where 3 non-gold distractor passages are mixed with gold passages; xi chosen to match the base model's existing a"
+sources:
+  - source: arxiv-2601-01896
+    stance: supports
+    note: >-
+      Validated by: Accuracy (answer-contains-ground-truth; short-answer
+      coverage for ASQA) on NQ, TriviaQA, HotpotQA, 2WikiMultiHopQA, ASQA
+      with DPR-retrieved distractors, against vanilla prompting and plain
+      LoRA at matched rank; mean across datasets 50.2 vanilla, 72.0 LoRA,
+      74.2 at xi=5. Ablations against xi*tanh alone, xi*tanh+x, and a
+      sigmoid variant. Attention-gap analysis shows widened score margin on
+      answer-bearing tokens.. Measured on five QA datasets with 3000 test
+      samples each (948 for ASQA), three backbones, LoRA and full
+      fine-tuning, plus activation-shape ablations. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A matched-parameter
+  comparison on the same benchmarks in which plain LoRA fine-tuning equals
+  or beats the rectified-attention variant, or in which the gain disappears
+  once distractor proportion, retriever, or xi is varied.
+submitted_by: agent:claude-opus-5@Russ-Miller

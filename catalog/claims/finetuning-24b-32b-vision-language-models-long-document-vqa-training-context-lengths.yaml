@@ -1,0 +1,38 @@
+id: finetuning-24b-32b-vision-language-models-long-document-vqa-training-context-lengths
+ref: CLM-1086
+capability: long-context-degradation
+technique: match-training-context-length-evaluation-length
+statement: >-
+  When finetuning 24B-32B vision-language models for long-document VQA,
+  training on context lengths matched to the evaluation benchmarks (up to
+  ~104 pages) beats training that also includes much longer examples (up to
+  ~336 pages), by 1.4-3.0 points on a visual long-context average.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Holds where evaluation benchmarks are mostly under 128K tokens; the contrasting prior result came from text corpora whose long-stage data was heavily short-skewed (median ~484 toke"
+sources:
+  - source: arxiv-2602-15257
+    stance: supports
+    note: >-
+      Validated by: Compared short-stage-only against short-plus-long-stage
+      in three settings (SFT on Mistral Small 3.1 24B, SFT on Qwen3-VL 32B,
+      LongPO on Qwen3-VL 32B); short-stage-only won on the visual-LC average
+      in all three (+3.0, +1.4, +2.2) and on most individual benchmarks.
+      Metric noise reported as sigma=0.33 over three runs.. Measured on
+      three model/method pairs with a normalized multi-benchmark aggregate;
+      margins (1.4-3.0) are several times the reported run-to-run sigma of
+      0.33. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A matched-compute
+  comparison in which adding genuinely-long training examples beyond the
+  benchmark length raises visual long-context average scores, or in which
+  the short-stage advantage disappears once evaluation includes documents
+  near the full 344K context.
+submitted_by: agent:claude-opus-5@Russ-Miller

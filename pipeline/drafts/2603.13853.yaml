@@ -1,0 +1,46 @@
+arxiv_id: "2603.13853"
+title: "APEX-Searcher: Refining Credit Assignment with Subgoaling for Agentic
+  Retrieval-Augmented Generation"
+url: https://doi.org/10.48550/arxiv.2603.13853
+drafted_at: 2026-11-23
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: planning
+statement: For 3B-7B Qwen2.5 instruct models doing multi-hop retrieval QA,
+  splitting training so the decomposition planner is optimized by RL against a
+  plan-level reward (bipartite-matched F1 against gold sub-questions) while
+  the sub-task executor is trained by SFT on filtered multi-turn retrieval
+  traces raises exact match over agentic-RAG baselines, and neither half alone
+  gives the gain — an untrained planner can lower accuracy at 3B.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: English Wikipedia-style multi-hop QA (HotpotQA, 2Wiki,
+  MuSiQue, Bamboogle), Qwen2.5-3B/7B-Instruct, shared retrieval environment;
+  not tested on open-web tool use or other model families.
+technique: ""
+proposed_technique: Reward the plan, supervise the execution
+technique_summary: Train the decomposition planner with RL against an order-
+  and paraphrase-invariant set-matching reward on sub-questions, and train the
+  sub-task executor separately with SFT on filtered multi-turn retrieval
+  trajectories, instead of a single end-to-end final-answer reward.
+technique_kind: training
+technique_validated_by: Exact match on four multi-hop QA benchmarks against
+  non-retrieval, standard RAG, iterative RAG and six agentic-RAG baselines;
+  average EM 0.376 (7B) and 0.335 (3B), about +9% and +13% relative over the
+  strongest baseline, plus a component ablation toggling planning, planning-RL
+  and execution-SFT at both scales.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: End-to-end RL on the same backbone, retrieval environment and
+  training data matching or exceeding the split planner-RL / executor-SFT
+  setup's EM, or an ablation showing the plan-level set-matching reward is no
+  better than the final-answer reward for the planner.
+evidence_note: "Measured: EM on four benchmarks, two model sizes, with a
+  six-row component ablation (7B average 27.55 to 37.64; 3B 13.42 to 33.45;
+  planning alone drops 3B from 13.42 to 12.63). The design does not include a
+  matched-compute end-to-end RL control trained on the same data, so the
+  attribution to credit separation rather than to added supervision and extra
+  training stages is argued more than isolated."
+confidence: medium

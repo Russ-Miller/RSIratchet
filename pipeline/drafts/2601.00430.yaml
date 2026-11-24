@@ -1,0 +1,48 @@
+arxiv_id: "2601.00430"
+title: Toward Better Temporal Structures for Geopolitical Events Forecasting
+url: https://doi.org/10.48550/arxiv.2601.00430
+drafted_at: 2026-11-15
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: forecasting
+statement: When LLMs forecast geopolitical events whose facts involve more
+  than two primary entities, keeping each multi-entity event as a single fact
+  with actor and recipient sets in the prompt gives higher relation- and
+  link-prediction accuracy and much lower inference time than reifying the
+  same event into a node plus role-specific binary edges.
+kind: observation
+backing_strength: single-paper
+scope_condition: Geopolitical event forecasting over POLECAT-derived data
+  (htkgh-polecat), 4B-20B open LLMs, 100 retrieved historical facts per query;
+  roughly a quarter of facts are multi-entity group- or set2set-type.
+technique: ""
+proposed_technique: Keep multi-entity events as one fact, not reified edges
+technique_summary: Represent a temporal fact as a set of actors, a relation, a
+  set of recipients, a timestamp and qualifiers, so events with more than two
+  primary entities stay a single prompt item instead of being reified or
+  decomposed into many binary edges.
+technique_kind: prompting
+technique_validated_by: "Relation-prediction accuracy and link-prediction
+  Jaccard against reified HTKG on the same underlying data with matched
+  information per query: +4.7 points relation accuracy and ~56.8% lower
+  inference time with Qwen3-4B-Thinking-2507; up to +21.29% link-prediction
+  performance and ~57.3% lower inference time with gemma-3-12b-it and
+  Qwen3-4B-Thinking. Fully decomposed HTKG could not be run at all, exceeding
+  the 32k context at 100 contextual facts."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched-information comparison on multi-entity event data where
+  reified or decomposed representations equal or beat the set-based
+  single-fact representation on accuracy, or where the inference-time
+  advantage disappears once context length is equalized.
+evidence_note: Measured on one dataset built by the authors, one event
+  database, and a handful of open 4B-20B models; the HTKGH-vs-reified
+  comparison is reported for relation prediction on one model and link
+  prediction on two. The design holds the underlying facts and the information
+  available per query fixed, so it isolates representation, but the
+  token-count difference confounds accuracy with effective context pressure.
+  Absolute task performance is low and often below simple frequency/recency
+  heuristics, and supervised GNNs beat all LLMs tested.
+confidence: low

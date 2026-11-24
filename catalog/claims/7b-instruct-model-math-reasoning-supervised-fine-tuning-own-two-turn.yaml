@@ -1,0 +1,39 @@
+id: 7b-instruct-model-math-reasoning-supervised-fine-tuning-own-two-turn
+ref: CLM-1016
+capability: self-repair
+technique: fine-tune-self-generated-answer-then-correct-traces
+statement: >-
+  For a 7B instruct model on math reasoning, supervised fine-tuning on its
+  own two-turn answer-then-correct traces (balanced 1:1 between traces whose
+  first answer was right and wrong) raises accuracy over the untuned model
+  and over self-rewarding and think-twice baselines, while remaining well
+  below fine-tuning on chains distilled from a much larger reasoning model.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen2.5-7B-Instruct, ~15k DeepScaleR math problems, evaluated on GSM8K, MATH500, AIME24, AMC23, SVAMP, TabMWP, Gaokao2023en; self-generated data only, two dialogue turns."
+sources:
+  - source: arxiv-2601-05616
+    stance: supports
+    note: >-
+      Validated by: Accuracy on seven math benchmarks against the untuned
+      Qwen2.5-7B-Instruct, a self-rewarding baseline, a think-twice
+      baseline, and a 15k-sample distillation from r1-distilled-32B; AIME24
+      6.70 to 16.70, MATH500 74.20 to 76.60, while distillation reached
+      26.70 and 84.20. Response-token counts reported alongside.. Measured
+      on one backbone and one data source, single seed per cell, with
+      AIME24/AMC23 sampled 8 times and other benchmarks once; AIME24 has 30
+      problems so the headline 6.70 to 16.70 is a handful of items.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Fine-tuning the same
+  backbone on self-generated two-turn correction traces with the same budget
+  yields no gain over the untuned model, or matches distillation on
+  AIME24/MATH500.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,47 @@
+arxiv_id: "2602.17072"
+title: "BankMathBench: A Benchmark for Numerical Reasoning in Banking Scenarios"
+url: https://doi.org/10.48550/arxiv.2602.17072
+drafted_at: 2026-11-10
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: domain-knowledge
+statement: On everyday retail-banking computation tasks (deposit, savings and
+  loan payouts with product-specific conditions), math-specialized and
+  finance-tuned LLMs as well as frontier closed models degrade sharply as the
+  scenario moves from single-product to multi-product comparison and
+  multi-condition cases, with the best closed model scoring about 71% on
+  single-product items and only around 10-14% on the harder tiers.
+kind: observation
+backing_strength: single-paper
+scope_condition: Korean and English synthetic banking word problems covering
+  deposits, savings and loans; models up to 8B open-weight plus three
+  2024-2025 closed models; exact-match accuracy on final numeric answer.
+technique: ""
+proposed_technique: Fine-tune for formulas, then offload each formula to a calculator
+technique_summary: Supervised fine-tuning teaches the model to emit computable
+  formulas inside <calc> tags, and an external calculator fills in each result
+  during generation so arithmetic never accumulates in the model.
+technique_kind: training
+technique_validated_by: "Exact-match accuracy on held-out BankMathBench splits
+  versus zero-shot and plain SFT with the same backbones: tool-augmented SFT
+  added roughly 21-24 points over SFT on basic and 62-73 points on
+  intermediate and advanced, with median relative numerical error falling to
+  near zero."
+stance_on_existing: supports
+related_claim_id: program-aided-computation
+stance_reason: The gain comes from moving every arithmetic step out of the
+  model into a calculator while the model supplies the formula, leaving
+  translation as the remaining error source.
+falsifier: A model family that scores comparably across basic, intermediate
+  and advanced banking tiers without tool augmentation, or where closed-model
+  accuracy on multi-condition banking items is near its single-product
+  accuracy.
+evidence_note: Measured on a synthetic, LLM-generated and expert-reviewed
+  benchmark (13,839 items, 8:2 split) across ~20 open models and 3 closed
+  models; the difficulty tiers were constructed by the authors, so the
+  degradation is partly a property of how tiers were defined, and no human
+  baseline is reported.
+confidence: medium
+problems:
+  - related_claim_id "program-aided-computation" does not exist

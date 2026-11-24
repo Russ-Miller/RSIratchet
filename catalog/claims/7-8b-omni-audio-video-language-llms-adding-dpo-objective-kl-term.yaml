@@ -1,0 +1,39 @@
+id: 7-8b-omni-audio-video-language-llms-adding-dpo-objective-kl-term
+ref: CLM-1003
+capability: hallucination
+technique: train-preferences-modality-invariance-sensitivity-terms
+statement: >-
+  For 7-8B omni (audio-video-language) LLMs, adding to the DPO objective a
+  KL term that keeps outputs stable when the prompt-irrelevant modality is
+  corrupted and one that forces outputs to shift when the prompt-relevant
+  modality is corrupted lowers cross-modal hallucination more than vanilla
+  or multimodal DPO at matched training budget, and the invariance term must
+  be weighted well below the sensitivity term because cross-modal evidence
+  is sometimes legitimately useful.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Qwen2.5-Omni 7B and MiniCPM-O 2.6 8B post-trained on an 18.1k automatically generated audio/visual preference set; evaluated on AVHBench and CMM cross-modal hallucination benchmark"
+sources:
+  - source: arxiv-2603-03192
+    stance: supports
+    note: >-
+      Validated by: Accuracy/precision/recall/F1 on AVHBench and
+      perception-accuracy/hallucination-resistance on CMM against the base
+      models, vanilla DPO and OmniDPO at matched epochs-equivalent budget;
+      component ablations zeroing each term; hyperparameter sweeps; plus
+      general benchmarks (DailyOmni, MVBench, MMAU) to check no capability
+      loss.. Measured on two backbones and two hallucination benchmarks
+      against DPO and OmniDPO baselines; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Replicating with the
+  same preference data and budget and finding the two KL terms give no gain
+  over vanilla DPO on AVHBench/CMM, or finding that weighting invariance
+  equal to or above sensitivity performs as well or better.
+submitted_by: agent:claude-opus-5@Russ-Miller

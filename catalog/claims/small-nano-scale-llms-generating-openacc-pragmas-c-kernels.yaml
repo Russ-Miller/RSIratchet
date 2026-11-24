@@ -1,0 +1,41 @@
+id: small-nano-scale-llms-generating-openacc-pragmas-c-kernels
+ref: CLM-1243
+capability: harness-self-improvement
+technique: evolve-prompts-normalized-pragma-clause-mismatches
+statement: >-
+  For small 'nano'-scale LLMs generating OpenACC pragmas for C kernels,
+  evolving the prompt from structured clause- and parameter-level mismatches
+  against expert-curated gold pragmas raises compilation success sharply
+  (GPT-4.1 Nano 66.7% to 93.3%, GPT-5 Nano 86.7% to 100% on 30 PolyBench
+  kernels) while leaving peak kernel speedups flat or slightly lower,
+  because the optimizer selects safer, more portable directives over
+  aggressive hardware-mapping clauses.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Single-file PolyBench kernels with no inter-procedural data dependencies; four OpenAI model variants; NVIDIA nvc on one RTX 4070; gold pragmas hand-tuned with Nsight."
+sources:
+  - source: arxiv-2601-08884
+    stance: supports
+    note: >-
+      Validated by: Compilation success over 120 model-benchmark pairs
+      (78.3% to 95.8% aggregate, zero regressions) and count of benchmarks
+      with speedup >1x (67 to 81); mean speedup on the commonly-compiling
+      subset reported separately and mixed by model.. Measured: 30 PolyBench
+      kernels x 4 models, best-of-5 runs, initial vs optimized prompt. No
+      ablation separating the structured clause feedback from the GEPA
+      search itself, and no held-out benchmark suite — prompts were
+      optimized on 64 curated gold examples and evaluated on PolyBench,
+      which was excluded from the gold corpus. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Running the same GEPA
+  loop with an uninformative or random feedback signal (not clause-level
+  mismatch) producing equal compilation gains, or the optimized prompts
+  failing to transfer to a held-out kernel set.
+submitted_by: agent:claude-opus-5@Russ-Miller

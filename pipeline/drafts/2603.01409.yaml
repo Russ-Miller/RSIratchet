@@ -1,0 +1,46 @@
+arxiv_id: "2603.01409"
+title: "MIST-RL: Mutation-based Incremental Suite Testing via Reinforcement
+  Learning"
+url: https://doi.org/10.48550/arxiv.2603.01409
+drafted_at: 2026-11-22
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: error-detection
+statement: For LLM-generated unit-test suites used as verifiers, training the
+  generator with RL whose per-test reward counts only mutants not already
+  killed by earlier tests in the same suite, plus a growing penalty for tests
+  that kill nothing new, yields shorter suites with higher mutation scores
+  than quantity-oriented test generators.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: 8B Llama backbone on function-level Python benchmarks
+  (HumanEval+, MBPP+, DS-1000) with an AST-based mutation engine supplying the
+  reward; not shown at repository scale.
+technique: ""
+proposed_technique: Reward only tests that kill mutants earlier tests missed
+technique_summary: Trains a test-generation policy with GRPO where each
+  generated test is scored by the weighted set of mutants it kills that were
+  not already killed by preceding tests, with an exponentially growing penalty
+  for redundant tests and immediate truncation on execution failure.
+technique_kind: training
+technique_validated_by: Mutant kill rate and average suite length on
+  HumanEval+, MBPP+, DS-1000 against Llama-3-8B-Instruct, CodeRM-8B and
+  Qwen3-14B (HumanEval+ 74.03% vs 45.53% kill rate, suite length 6.14 vs
+  7.61), plus Pass@1 code reranking on HumanEval+ (48.78% vs 45.73% at N=10);
+  ablations remove the incremental term (kill rate 74.03 to 65.1) and the
+  penalty (length 6.14 to 14.20).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A replication where the incremental-history reward gives no
+  mutation-score or suite-length advantage over the same GRPO run with a
+  total-coverage reward, or where the shorter suites do not improve downstream
+  reranking.
+evidence_note: Measured on three benchmarks with one backbone and two
+  baselines plus a larger general model; ablations isolate the incremental
+  term and the penalty separately. Mutation score is both the training reward
+  and the headline metric, so that comparison is partly self-serving; the
+  reranking result is the independent check. Single paper, no replication, no
+  error bars reported.
+confidence: medium

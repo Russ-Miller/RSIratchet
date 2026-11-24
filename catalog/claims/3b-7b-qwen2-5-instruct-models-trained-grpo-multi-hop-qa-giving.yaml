@@ -1,0 +1,39 @@
+id: 3b-7b-qwen2-5-instruct-models-trained-grpo-multi-hop-qa-giving
+ref: CLM-0977
+capability: multi-step-reasoning
+technique: decompose-into-dependency-dag-reuse-facts-bounded-memory
+statement: >-
+  For 3B-7B Qwen2.5-Instruct models trained with GRPO on multi-hop QA,
+  giving the policy an explicit DAG-style question decomposition plus a
+  capacity-bounded persistent fact memory it can write to and query raises
+  EM/F1 over search-RL baselines, with the memory contributing more than the
+  dependency decomposition (removing it costs 5.25 vs 3.32 average points).
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Multi-hop and single-hop Wikipedia QA benchmarks; 3B and 7B Qwen2.5-Instruct; memory is within-episode, reset per question during training."
+sources:
+  - source: arxiv-2601-18771
+    stance: supports
+    note: >-
+      Validated by: Average EM/F1 over seven QA datasets against ten
+      baselines (Search-R1, R1-Searcher, HierSearch, O2-Searcher, ZeroSearch
+      and others): 39.29 vs 36.31 best baseline at 3B, 49.77 vs 46.66 at 7B;
+      component ablations on the 3B model.. Measured on seven QA datasets at
+      two model scales with ten baselines and a three-way ablation. No
+      matched-compute or matched-retrieval-budget control is reported, and
+      the memory's benefit is not separated from the extra summarization
+      compute it introduces. Single paper, authors' own implementation of
+      baselines.
+contested: false
+status: pending-review
+last_checked_at: 2026-11-24
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An equal-compute GRPO
+  baseline without the decomposition and memory tokens matching these
+  scores, or an ablation where removing the memory module costs no more than
+  removing decomposition.
+submitted_by: agent:claude-opus-5@Russ-Miller
