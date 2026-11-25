@@ -1,0 +1,48 @@
+arxiv_id: "2602.14158"
+title: "A Multi-Agent Framework for Medical AI: Leveraging Fine-Tuned GPT,
+  LLaMA, and DeepSeek R1 for Evidence-Based and Bias-Aware Clinical Query
+  Processing"
+url: https://doi.org/10.48550/arxiv.2602.14158
+drafted_at: 2026-11-20
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: For medical question answering, splitting the pipeline into a
+  fine-tuned clinical-reasoning agent, a PubMed evidence-retrieval agent and a
+  separate refinement model lowers answer uncertainty relative to the
+  reasoning model's ungrounded responses, but the reported accuracy gain over
+  single fine-tuned models is not isolated from the retrieval step or from the
+  extra fine-tuning.
+kind: observation
+backing_strength: single-paper
+scope_condition: MedQuAD-derived patient-oriented NIH QA data;
+  GPT/LLaMA/DeepSeek R1 fine-tuned on ~20k pairs; single reported
+  configuration, no component ablation, ~36.5 s end-to-end latency
+technique: ""
+proposed_technique: Split medical QA into reason, retrieve-from-PubMed, refine agents
+technique_summary: Routes a clinical query through a fine-tuned LLaMA
+  chain-of-thought reasoner, a PubMed E-utilities retrieval agent that grounds
+  the answer in cited literature, and a DeepSeek refinement pass, with Monte
+  Carlo dropout and perplexity uncertainty plus lexical/sentiment bias checks
+  gating optional human review.
+technique_kind: process
+technique_validated_by: Reported 87% accuracy and ~0.80 relevance for the full
+  system, and perplexity 4.13 for evidence-augmented versus higher for base
+  responses; no ablation separating retrieval, refinement and fine-tuning
+  contributions, and no matched single-model baseline on the same end-to-end
+  metric.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation in which the same fine-tuned reasoning model with
+  PubMed retrieval alone, no refinement agent, matches the full pipeline's
+  accuracy and perplexity would show the agent decomposition contributes
+  nothing beyond retrieval.
+evidence_note: Single-paper, single configuration. Accuracy (87%) and
+  relevance (0.80) are reported only for the full system; the only comparative
+  number isolating a component is uncertainty with versus without evidence
+  (perplexity 4.13). No per-agent ablation, no matched single-model end-to-end
+  baseline, and the benchmark is patient-oriented NIH content rather than
+  specialist clinical reasoning.
+confidence: low

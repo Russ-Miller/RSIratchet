@@ -1,0 +1,40 @@
+id: llm-multi-agent-pipeline-porting-fixes-recurring-c-vulnerabilities-gain
+ref: CLM-1156
+capability: multi-model-coordination
+technique: confirm-clone-detector-hits-against-ported-analysis-points
+statement: >-
+  In an LLM multi-agent pipeline for porting fixes of recurring C
+  vulnerabilities, the gain over combining separate detection and
+  patch-porting tools comes mainly from a confirmation stage that re-checks
+  each static clone-detector hit against the historical CVE's distilled
+  analysis points using repository-level lookup tools, not from the role
+  decomposition itself.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "C code, 78 real patch-porting cases across 13 repositories, GPT-4o backbone, ReDeBug plus hash-based clone detection held fixed across all arms"
+sources:
+  - source: arxiv-2601-17762
+    stance: supports
+    note: >-
+      Validated by: Ablation on 114 function-level pairs: removing the
+      confirmation stage took false positives from 21 to 223, precision from
+      76.4% to 26.6%, and end-to-end repair accuracy from 57.3% to 17.8%;
+      removing the knowledge base instead cost only 21->32 FPs and
+      57.3%->49.5%. Full system beat six detection+repair tool combinations
+      by 31.9-45.2 points of repair accuracy.. Measured, single paper, small
+      dataset (78 cases, 114 function pairs, C only, one LLM, temperature 0,
+      one run). [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-25
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An ablation on comparable
+  recurring-vulnerability data where removing the confirmation stage leaves
+  false-positive rate and end-to-end repair accuracy roughly unchanged, or
+  where a single-agent prompt given the same analysis points and context
+  tools matches the multi-stage pipeline's precision.
+submitted_by: agent:claude-opus-5@Russ-Miller

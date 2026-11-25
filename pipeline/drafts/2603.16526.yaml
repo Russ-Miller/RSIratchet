@@ -1,0 +1,42 @@
+arxiv_id: "2603.16526"
+title: Exploring different approaches to customize language models for
+  domain-specific text-to-code generation
+url: https://doi.org/10.48550/arxiv.2603.16526
+drafted_at: 2026-11-24
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: code-generation
+statement: For 1B-1.3B open code models (StarCoder-1B, DeepSeekCoder-1.3B)
+  adapted to library-specific Python domains (Scikit-learn, OpenCV) with
+  synthetic exercises, LoRA fine-tuning raises both benchmark pass@1 and
+  similarity to domain reference code, while few-shot prompting and RAG over
+  the same examples raise similarity but leave pass@1 flat or lower.
+kind: observation
+backing_strength: single-paper
+scope_condition: Two ~1B code models, GPT-4o-generated synthetic exercises in
+  three Python domains, greedy decoding; benchmark sets are small (OpenCV
+  subset has only 10 tasks).
+technique: ""
+proposed_technique: LoRA-tune on synthetic domain exercises rather than prompting
+technique_summary: Generate and validate synthetic task-code pairs with a
+  teacher LLM for a target library, then LoRA fine-tune a small open code
+  model on them instead of inserting the same examples via few-shot or
+  retrieval.
+technique_kind: training
+technique_validated_by: Pass@1 on HumanEval and BigBenchCode
+  Scikit-learn/OpenCV subsets plus cosine similarity to held-out reference
+  code, compared against the untuned baseline and against 3-shot and
+  3-document RAG with the same example pool.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A comparison at matched example pools where few-shot or RAG matches
+  LoRA's pass@1 gains on library-specific benchmarks, or where LoRA's gains
+  vanish on larger domain benchmarks.
+evidence_note: "Measured: single run per configuration, greedy decoding, no
+  variance reported. OpenCV benchmark has 10 tasks so its +20/+30 point swings
+  are 2-3 tasks. Similarity metric is cosine over embeddings of the same
+  synthetic distribution the LoRA was trained on, which favours fine-tuning by
+  construction."
+confidence: low

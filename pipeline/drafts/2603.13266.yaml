@@ -1,0 +1,48 @@
+arxiv_id: "2603.13266"
+title: "Multi-hop Reasoning and Retrieval in Embedding Space: Leveraging Large
+  Language Models with Knowledge"
+url: https://doi.org/10.48550/arxiv.2603.13266
+drafted_at: 2026-11-21
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-step-reasoning
+statement: "For multi-hop KGQA over incomplete knowledge graphs with a
+  LLaMA2-7B backbone, generating several KG-grounded logic rules per question
+  and scoring candidate answers by fuzzy-logic path probabilities in a ComplEx
+  embedding space rather than traversing the graph raises Hits@1 over
+  traversal and embedding baselines (WebQSP 86.4, CWQ 62.9), and the two added
+  stages do different work: removing rule inference costs precision and F1,
+  while removing the LLM reranker raises recall sharply (WebQSP 76.5 to 80.5,
+  CWQ 57.4 to 66.9) and collapses precision (69.2 to 41.5, 52.5 to 14.6)."
+kind: observation
+backing_strength: single-paper
+scope_condition: Two Freebase-based KGQA datasets plus MetaQA, LLaMA2-Chat-7B
+  backbone, baseline numbers taken from the original papers rather than rerun.
+technique: ""
+proposed_technique: Score LLM-generated KG logic rules in embedding space, then rerank
+technique_summary: Mine candidate relation paths by random walks, have an
+  instruction-tuned LLM select and generate logic rules for a question, score
+  answers by multiplying ComplEx link probabilities along each rule path
+  instead of traversing the graph, then have the LLM rerank the retrieved
+  paths.
+technique_kind: retrieval
+technique_validated_by: Hits@1 on WebQSP, CWQ and MetaQA 1/2/3-hop against
+  retrieval, embedding and LLM baselines; precision/recall/F1 ablations
+  removing rule inference, removing reranking, and replacing selected rules
+  with random ones.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A controlled rerun where embedding-space rule scoring matches plain
+  graph traversal on the same incomplete KG, or where removing the reranker
+  leaves precision roughly unchanged, would break the claim.
+evidence_note: Measured on three KGQA datasets with a four-way ablation that
+  separates rule inference, reranking and random-rule controls. Baselines are
+  copied from prior papers rather than reproduced, so the headline margins are
+  not harness-matched; MetaQA is near-saturated for several baselines and does
+  not separate methods. The precision/recall split under reranker removal is
+  the best-isolated part of the design.
+confidence: low
+problems:
+  - "figures not in the source: 80.5, 57.4, 41.5, 14.6"

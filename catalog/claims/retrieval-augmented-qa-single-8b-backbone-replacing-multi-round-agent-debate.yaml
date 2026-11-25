@@ -1,0 +1,39 @@
+id: retrieval-augmented-qa-single-8b-backbone-replacing-multi-round-agent-debate
+ref: CLM-1230
+capability: multi-model-coordination
+technique: vote-queries-answers-instead-debating
+statement: >-
+  For retrieval-augmented QA with a single 8B backbone, replacing
+  multi-round agent debate with parallel majority voting over independently
+  generated queries and over independently generated answers gives roughly
+  equal accuracy at equal agent count, not better: it edges the debate
+  framework on some open-domain sets and falls below it on multi-hop and
+  commonsense sets.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Llama-3.1-8B-Instruct, E5-base-v2 retriever over a 2018 Wikipedia dump, top-3 passages, 500 sampled examples per dataset, 3 agents per stage; six QA benchmarks."
+sources:
+  - source: arxiv-2603-27253
+    stance: supports
+    note: >-
+      Validated by: EM/F1 on NQ, TriviaQA, PopQA, 2WikiMultihopQA, HotpotQA
+      and StrategyQA against Naive RAG, IRCoT, Iter-RetGen, FLARE, SuRe,
+      Self-RAG and the debate framework DRAG; voting beats Naive RAG on
+      multi-hop (2Wiki EM 28.60 vs 14.80) but trails DRAG on 2Wiki, HotpotQA
+      and StrategyQA (61.60 vs 69.20 EM), with an N=3/5/7 ablation showing
+      voting accuracy rising with agent count.. Measured on six benchmarks
+      at 500 examples each with one 8B backbone and one retriever.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-25
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A matched-budget comparison
+  on the same backbone and retriever where debate-based RAG beats parallel
+  voting across most benchmarks, or where voting beats it across most
+  benchmarks rather than splitting.
+submitted_by: agent:claude-opus-5@Russ-Miller

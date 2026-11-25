@@ -1,0 +1,43 @@
+id: 3b-8b-vlms-generating-their-own-reasoning-traces-supervised-finetuning
+ref: CLM-0985
+capability: hallucination
+technique: refine-self-generated-rationales-against-contrastive-image-pair
+statement: >-
+  For 3B-8B VLMs generating their own reasoning traces for supervised
+  finetuning, refining each trace against a paired VQA sample (a visually
+  similar image with a synonymous question) corrects more visually
+  hallucinated rationales than refining with the ground-truth answer as a
+  hint alone, and finetuning on the contrast-refined traces raises
+  hallucination, math and general benchmark scores together, where hint-only
+  self-improving raises hallucination scores while lowering math and general
+  scores.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Open 3B-8B VLMs (Qwen2.5-VL 3B/7B, InternVL2.5-8B) self-generating rationales on curated VQA pairs; pairs must be drawn from diverse task families, and only medium-difficulty items"
+sources:
+  - source: arxiv-2603-02556
+    stance: supports
+    note: >-
+      Validated by: Finetuned Qwen2.5-VL-7B on the resulting 55K-sample set
+      and scored six benchmarks (MMVP, HallusionBench, MathVista,
+      MathVision, MMStar, MME-RealWorld) against the base model, three
+      reproduced self-improving baselines (STaR, verifier-filtered,
+      self-feedback) generating rationales on the same data, and four
+      off-the-shelf reasoning datasets: average 58.1 vs 55.5 base and 55.4
+      (STaR), 54.9 (verifier), 56.4 (feedback). Ablations: easy samples
+      added hurt; negative pairs contribute more than positive on GQA; gains
+      repeated on 3B and InternVL2.5-8B.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-25
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Finetuning on rationales
+  refined with a contrastive counterpart gives no better
+  hallucination-benchmark scores than hint-only STaR rationales at matched
+  data volume, or the math/general benchmark drop seen in hint-only training
+  also appears under contrastive refinement.
+submitted_by: agent:claude-opus-5@Russ-Miller

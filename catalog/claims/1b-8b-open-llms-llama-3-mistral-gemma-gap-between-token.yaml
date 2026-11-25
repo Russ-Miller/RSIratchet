@@ -1,0 +1,40 @@
+id: 1b-8b-open-llms-llama-3-mistral-gemma-gap-between-token
+ref: CLM-0960
+capability: hallucination
+technique: score-energy-mismatch-between-consecutive-decoding-steps
+statement: >-
+  For 1B-8B open LLMs (LLaMA-3, Mistral, Gemma), the gap between a token's
+  logit at one decoding step and the log-sum-exp normalizer at the next step
+  — quantities the chain rule says should match — separates correct from
+  hallucinated answers when read over the exact-answer tokens with min
+  pooling, averaging higher AuROC than logit confidence, p(true), and
+  cross-dataset-transferred trained probes.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Requires white-box access to logits and prior localization of the exact answer span; signal is unreliable on punctuation and sentence-initial tokens, and per-dataset variance is la"
+sources:
+  - source: arxiv-2602-18671
+    stance: supports
+    note: >-
+      Validated by: AuROC on nine benchmarks (HotpotQA, IMDB, Math, MNLI,
+      Movies, TriviaQA, Winobias, Winogrande) across four LLMs plus
+      synthetic multi-digit arithmetic with graded error magnitudes;
+      baselines were logit confidence, p(true), and Orgad et al. probing
+      classifiers evaluated cross-dataset (average 73.16 vs 64.16 for probes
+      on LLaMA-3-Instruct).. Measured, not argued: AuROC tables over 9
+      datasets x 4 models plus Gemma 1B/4B, with per-dataset standard
+      deviations. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-25
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A trained probe, or
+  plain logit confidence, matching or beating spilled energy on average
+  cross-dataset AuROC over the same nine benchmarks with exact-answer
+  localization and min pooling held fixed; or spilled energy dropping to
+  chance when the probe baseline is retrained on pooled multi-dataset data.
+submitted_by: agent:claude-opus-5@Russ-Miller

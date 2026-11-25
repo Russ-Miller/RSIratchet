@@ -1,0 +1,42 @@
+id: 7b-class-vision-language-models-doing-open-ended-captioning-triggering-grounding-check
+ref: CLM-1018
+capability: visual-grounding
+technique: check-grounding-sink-tokens-then-sharpen-or-diffuse
+statement: >-
+  In 7B-class vision-language models doing open-ended captioning, triggering
+  a grounding check at punctuation and conjunction tokens (attention sinks)
+  and then sharpening or broadening visual attention lowers
+  object-hallucination rates more than applying the same modulation at fixed
+  decoding intervals, because those tokens mark segment boundaries where the
+  model switches concepts.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Long-form generative captioning (MSCOCO CHAIR, AMBER) on LLaVA-1.5, Shikra, MiniGPT-4, InstructBLIP, Qwen2-VL-7B; the authors state it does not apply to short-answer or discriminat"
+sources:
+  - source: arxiv-2603-27898
+    stance: supports
+    note: >-
+      Validated by: CHAIR_S/CHAIR_I on 500 MSCOCO images and CHAIR_I plus
+      Cover on 500 AMBER images across five VLMs, against six decoding
+      baselines (OPERA, HALC, EAH, DML-LVLM, GIFT, LVLMs-Saliency); ablation
+      replacing sink triggers with modulation every 10 tokens raised CHAIR_S
+      from 21.3 to 39.4 on LLaVA-1.5; Gemini-3-Pro judging of 100 captions;
+      10.8% decoding-time overhead.. Measured on two captioning benchmarks
+      with five backbones and six baselines; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-25
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Applying the same
+  sharpen/diffuse modulation at randomly chosen or fixed-interval decoding
+  steps matches sink-triggered modulation on CHAIR at equal intervention
+  frequency, or sink tokens show no elevated rate of subsequent
+  hallucination relative to other token positions. Drafted stance toward
+  7-13b-open-vision-language-models-amplifying-visual-attention-only-heads:
+  supports -- Both find that selective, conditioned attention amplification
+  lowers hallucination where uniform or untargeted amplification does not.
+submitted_by: agent:claude-opus-5@Russ-Miller

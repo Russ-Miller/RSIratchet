@@ -1,0 +1,48 @@
+arxiv_id: "2602.03318"
+title: "MIRROR: A Multi-Agent Framework with Iterative Adaptive Revision and
+  Hierarchical Retrieval for Optimization Modeling in Operations Research"
+url: https://doi.org/10.48550/arxiv.2602.03318
+drafted_at: 2026-11-20
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: "In a training-free multi-agent pipeline that turns
+  natural-language operations-research problems into solver code, retrieving
+  verified model-plus-code exemplars and execution-driven revision fix
+  different failures: removing retrieval mostly raises the wrong-answer rate
+  while removing the revision loop mostly raises the compile-error rate, and
+  retrieval contributes the larger share of overall accuracy."
+kind: observation
+backing_strength: single-paper
+scope_condition: Five OR modeling benchmarks (NL4Opt, Mamo-EasyLP/ComplexLP,
+  IndustryOR, ComplexOR) with a single frontier backbone (qwen-plus) and
+  Gurobi as executor; exemplar library built from the same benchmark families.
+technique: ""
+proposed_technique: Hierarchically retrieve verified model-plus-code exemplars
+technique_summary: Builds a curated library of optimization instances each
+  carrying a verified mathematical model and executable solver code, annotated
+  with problem class and subproblem type, then retrieves per query by
+  embedding-plus-MMR filtering followed by LLM reranking, handing at most two
+  exemplars each to the modeling and code-generation agents.
+technique_kind: retrieval
+technique_validated_by: "Ablation of pass@1 across five benchmarks: full
+  system 71.88 macro average vs 67.90 without retrieval, 71.14 without the
+  revision loop, 65.82 without both; error decomposition shows average
+  compile-error rate falling from 8.06% to 2.60% with revision alone and
+  wrong-answer rate rising more when retrieval is removed."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation on these or comparable OR benchmarks where removing the
+  exemplar retrieval leaves the wrong-answer rate unchanged or lower, or where
+  removing the execution-feedback revision loop does not raise the
+  compile-error rate.
+evidence_note: Measured as a four-cell ablation (full, minus retrieval, minus
+  revision, minus both) over five datasets, with errors split into
+  wrong-answer and compile-error rates; single backbone, one run at
+  temperature 0, no confidence intervals, and the exemplar library is drawn
+  from the same benchmark families as part of the test suite (Mamo-EasyLP
+  split), so retrieval's advantage may be partly distributional overlap.
+  Agent-level ablation reported on only two datasets.
+confidence: low

@@ -1,0 +1,48 @@
+arxiv_id: "2602.03595"
+title: "Refer-Agent: A Collaborative Multi-Agent System with Reasoning and
+  Reflection for Referring Video Object Segmentation"
+url: https://doi.org/10.48550/arxiv.2602.03595
+drafted_at: 2026-11-20
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: For training-free referring video object segmentation built on a
+  single 9B open multimodal backbone, splitting the task into separate agent
+  calls for frame selection, intent analysis and grounding and adding a
+  questioner-responder reflection loop that re-checks target existence in the
+  chosen keyframe and attribute consistency of the predicted object raises J&F
+  over a single-pass pipeline, with the gain saturating at about four
+  reflection rounds and merging any two of the agents into one call costing
+  accuracy.
+kind: observation
+backing_strength: single-paper
+scope_condition: Zero-shot RVOS on five benchmarks (ReasonVOS, ReVOS, MeViS,
+  Ref-YouTube-VOS, GroundMoRe) with Ovis2.5-9B plus SAM2; ablations run mainly
+  on ReasonVOS.
+technique: ""
+proposed_technique: Questioner-responder reflection on frame choice and object attributes
+technique_summary: After a step-by-step reasoning pipeline produces a keyframe
+  and a grounded object, a questioner agent asks whether the targets are
+  visible and complete in that keyframe and whether the object's attributes
+  match the query, and a responder's answers are fed back as explicit guidance
+  for another round of frame selection or intent analysis.
+technique_kind: process
+technique_validated_by: "J&F on ReasonVOS: 69.8 full system vs 64.5 with both
+  reflection stages removed, 66.6 without existence reflection, 65.2 without
+  consistency reflection; MAX_TURN sweep 0/2/4/6 gives 64.5/66.3/69.8/69.3
+  with per-sample time rising 99s to 212s; agent-merging variants score
+  67.1/65.3/62.5."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Running the same pipeline with the reflection loop removed but
+  matched inference compute (e.g. equally many resampled single-pass runs with
+  selection) matching or beating the reflective system, or merged-agent
+  variants matching the separated pipeline under equal budget.
+evidence_note: "Measured on five RVOS benchmarks against SFT and zero-shot
+  baselines, with component ablations on one dataset. No matched-compute
+  control: the reflection loop roughly doubles per-sample time, and the
+  merging comparison holds MAX_TURN but not total tokens, so the gain could
+  partly be extra sampling rather than the verification structure."
+confidence: low

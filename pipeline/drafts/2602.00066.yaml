@@ -1,0 +1,46 @@
+arxiv_id: "2602.00066"
+title: "IntentCoding: Amplifying User Intent in Code Generation"
+url: https://doi.org/10.48550/arxiv.2602.00066
+drafted_at: 2026-11-18
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: code-generation
+statement: For open-weight code LLMs where token logits are accessible,
+  contrasting logits computed with and without the user intent and adding the
+  scaled difference back during beam search raises multi-constraint
+  satisfaction and pass@1 over greedy decoding, and ensembling several fixed
+  amplification strengths beats any single strength without per-model tuning.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: "Open-source code LLMs (1.5B-34B: CodeLlama, DeepSeek-Coder,
+  Qwen2.5-Coder, base and instruction-tuned) where per-token logits are
+  exposed; natural-language-to-function code generation with explicit
+  constraints. Not applicable to closed APIs that hide logits."
+technique: ""
+proposed_technique: Amplify intent by contrasting intent-masked logits
+technique_summary: At each decoding step, compute logits with the user intent
+  masked out, scale the difference from the unmasked logits by several
+  strengths, and ensemble the resulting top tokens as beam-search candidates.
+technique_kind: decoding
+technique_validated_by: Accuracy on a purpose-built CodeConstraints benchmark
+  (constraints combinatorially composed into levels 2-4) and IFEvalCode, plus
+  pass@1 on HumanEval and LiveCodeBench, against greedy, beam search, nucleus
+  sampling, AdapT and Selective Prompt Anchoring; up to 71% relative gain on
+  CodeConstraints and 29.3% pass@1 gain, including at beam size 1; a
+  fixed-alpha sweep shows the optimal strength varies by model while the
+  ensemble matches or beats it.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On the same benchmarks and models, the multi-strength ensemble
+  scoring at or below the best fixed amplification strength, or at or below
+  greedy decoding on constraint satisfaction once beam size is matched.
+evidence_note: "Measured across three 7B backbones on four benchmarks plus
+  size sweeps 1.5B-33B and instruction-tuned variants; beam-size ablation
+  isolates amplification from wider search (gains persist at beam size 1).
+  Weaknesses: the authors built CodeConstraints themselves, gains there are
+  far larger than on HumanEval/LiveCodeBench, SPA beats the method on
+  Qwen2.5-Coder CodeConstraints (69.0 vs 65.0), and the DeepSeek-Coder 33B
+  gain is only 2.5%."
+confidence: medium

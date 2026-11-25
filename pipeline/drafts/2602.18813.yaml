@@ -1,0 +1,46 @@
+arxiv_id: "2602.18813"
+title: "Habilis-$β$: A Fast-Motion and Long-Lasting On-Device
+  Vision-Language-Action Model"
+url: https://doi.org/10.48550/arxiv.2602.18813
+drafted_at: 2026-11-21
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: For imitation-learned manipulation policies evaluated under
+  continuous repeated execution, replacing 'success-then-stop' episode data
+  with reset-free cyclic demonstrations plus unlabeled play data raises both
+  throughput and mean time between human interventions, and the gain transfers
+  across VLA architectures rather than being specific to one model.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Bimanual manipulation and humanoid logistics tasks run for 1
+  hour continuously with resets counted as interventions; shown for two public
+  VLA checkpoints fine-tuned by the authors.
+technique: ""
+proposed_technique: Train on reset-free cyclic repetitions plus unlabeled play data
+technique_summary: Pre-train the action expert language-free on unstructured
+  teleoperated play data, then post-train on continuous demonstrations where
+  the robot repeats the same task back-to-back without environment resets, so
+  the policy sees cross-cycle state drift and recovery states.
+technique_kind: training
+technique_validated_by: "Fine-tuning pi-0.5 and GR00T N1.5 under standard vs
+  Play+Cyclic data: in simulation pi-0.5 went 120.5 to 207.1 tasks/hour and
+  30.5 to 49.9 s MTBI; GR00T N1.5 1.2 to 5.0 TPH. Real-world humanoid packing:
+  pi-0.5 19 to 79 TPH and 46.1 to 94.6 s MTBI; GR00T N1.5 33 to 63 TPH and
+  53.7 to 78.2 s. Same 1-hour continuous-run protocol, same tasks."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A controlled comparison at matched demonstration hours in which
+  policies trained on cyclic plus play data score no better, or worse, on
+  tasks-per-hour and mean time between intervention than policies trained on
+  segmented single-episode data.
+evidence_note: Measured, not argued, on three RoboTwin 2.0 tasks (three seeds)
+  and one real humanoid task, with two independent baseline architectures
+  showing the same direction. Design does not separate the play-data
+  contribution from the cyclic-formatting contribution, and data volume is not
+  matched between regimes, so the mechanism attribution to distribution
+  coverage is inferred rather than isolated. Real-world results are a single
+  1-hour run per condition.
+confidence: medium

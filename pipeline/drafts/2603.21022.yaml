@@ -1,0 +1,50 @@
+arxiv_id: "2603.21022"
+title: Knowledge Boundary Discovery for Large Language Models
+url: https://doi.org/10.48550/arxiv.2603.21022
+drafted_at: 2026-11-17
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: abstention-and-self-knowledge
+statement: For 6-7B open chat models (ChatGLM2/3-6B, LLaMA-7B-Chat) on
+  unanswerable-question benchmarks, the entropy of the response's token
+  distribution separates answerable from unanswerable questions better than
+  probability-based confidence scores (min/first/product token probability,
+  prior and posterior prompting, in-context IDK, verbalized confidence), with
+  the margin concentrated in correctly flagging the unanswerable ones rather
+  than in accuracy on answerable ones.
+kind: observation
+backing_strength: single-paper
+scope_condition: Three unanswerable-question datasets (KUQ, Sware, Infeasible
+  Benchmark); small open chat models; entropy thresholds selected by the
+  authors from the observed distribution.
+technique: ""
+proposed_technique: Probe the knowledge boundary with an entropy-rewarded questioner
+technique_summary: A reinforcement-learning agent (POMDP with belief states
+  over past response entropies) iteratively generates questions to a target
+  LLM, rewarded by the change in response entropy, so as to produce matched
+  sets of confidently answerable and unanswerable questions for that model.
+technique_kind: process
+technique_validated_by: The generated question set was compared against the
+  human-curated KUQ dataset on Equal Error Rate and F1 across three target
+  models, giving similar or slightly better numbers (e.g. LLaMA-7B-Chat EER
+  0.239 vs 0.301); entropy distribution of 2,000+ generated questions was
+  bimodal with ~20% in the transition band; t-SNE showed generated questions
+  cluster distinctly from random ones; against expert and random questioning
+  baselines, KBD reached the low-entropy boundary within 50 rounds while
+  random questioning did not.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On the same datasets and models, a probability-based or
+  verbalized-confidence baseline matching or exceeding entropy's
+  unanswerable-detection rate and overall self-awareness score; or entropy's
+  advantage disappearing once its threshold is set on held-out data rather
+  than fit to the observed distribution.
+evidence_note: Measured on three unanswerable-question datasets against seven
+  reimplemented baselines, reported as K_aware/U_aware/S_aware. Entropy wins
+  S_aware on all three, driven by U_aware (e.g. 78.2 vs best baseline 61.0 on
+  KUQ) while losing on K_aware to several baselines. Thresholds (40, 170) are
+  chosen from the same entropy distribution the method produces, so the
+  separation is not fully held out, and only three small models are tested.
+confidence: low

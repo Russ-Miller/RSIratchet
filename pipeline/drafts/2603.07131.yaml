@@ -1,0 +1,47 @@
+arxiv_id: "2603.07131"
+title: Deep Expert Injection for Anchoring Retinal VLMs with Domain-Specific
+  Knowledge
+url: https://doi.org/10.48550/arxiv.2603.07131
+drafted_at: 2026-11-23
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: domain-knowledge
+statement: When a fundus-specialist visual encoder is added to a 7B general
+  vision-language model for retinal VQA, feeding its features in
+  unconditionally raises diagnostic recall but caps precision, because the
+  expert signal is also injected over healthy anatomy and grammatical tokens;
+  gating the fusion and the per-layer injection on a token-wise router
+  recovers the precision while keeping the recall gain.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: 7B Qwen2.5-VL fine-tuned with LoRA on 150K fundus
+  image-report pairs, evaluated on four retinal VQA benchmarks (TM4K, JSIEC,
+  Retina, ODIR); single ablation on TM4K closed VQA.
+technique: ""
+proposed_technique: Gate expert-encoder features per token, and re-inject them mid-LLM
+technique_summary: Fuse a domain-specialist fundus encoder with the frozen
+  general encoder through a sigmoid token-wise router, then re-inject the
+  fused features as a zero-initialized, gated residual bias at the visual
+  token positions of intermediate LLM layers.
+technique_kind: architecture
+technique_validated_by: "TM4K closed VQA macro F1/recall/precision ablation
+  against the Qwen2.5-VL fine-tuned baseline: baseline 55.72/69.12/51.22;
+  expert stream with plain addition 64.23/81.30/55.10; gated fusion
+  71.45/78.50/67.65; gated plus unconditional deep injection
+  74.12/82.15/69.80; gated plus adaptive routing 78.07/82.42/77.33. Also
+  compared to LLaVA-FT and three proprietary LVLMs on four benchmarks."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation on the same setup where unconditional addition of the
+  expert features matches or exceeds the routed version's precision, or where
+  the routed version's recall gain disappears, would show the gating is not
+  what separates the two.
+evidence_note: Measured, single paper, one four-variant ablation on one
+  dataset (TM4K closed VQA) with no seeds or intervals reported; the two
+  gating mechanisms (fusion-level and injection-level) are each ablated once,
+  so their separate contributions are only coarsely isolated. Headline
+  comparisons against proprietary models are not matched on fine-tuning data
+  and do not bear on the mechanism.
+confidence: low

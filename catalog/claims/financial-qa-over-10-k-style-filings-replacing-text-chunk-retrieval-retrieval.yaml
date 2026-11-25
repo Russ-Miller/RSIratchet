@@ -1,0 +1,44 @@
+id: financial-qa-over-10-k-style-filings-replacing-text-chunk-retrieval-retrieval
+ref: CLM-1089
+capability: hallucination
+technique: retrieve-typed-verified-variables-text-then-compute-python
+statement: >-
+  For financial QA over 10-K-style filings, replacing text-chunk retrieval
+  with retrieval of character-offset-verified typed numeric variables and
+  routing all arithmetic to executed Python lowers the rate of answers
+  containing ungrounded numbers (4.1% to 1.2%) and raises exact match, but
+  the retrieval upgrade alone, feeding a chain-of-thought generator, lowers
+  exact match (39.2% to 37.4%) and raises hallucination because the enriched
+  context is harder to synthesize from.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Financial QA on TAT-QA, FinQA and FinanceBench held-out questions; one retriever and two generator types; gains concentrated on FinanceBench and FinQA, zero on TAT-QA where baselin"
+sources:
+  - source: arxiv-2603-04663
+    stance: supports
+    note: >-
+      Validated by: 2x2 factorial over retriever and generator on held-out
+      TAT-QA/FinQA/FinanceBench questions, scored by exact match,
+      hallucination rate (incorrect answers containing an ungrounded number)
+      and first-attempt Python compile rate; best cell 49.1% EM / 1.2%
+      hallucination vs baseline RAG 39.2% / 4.1%.. Measured, single paper,
+      one 2x2 sweep on a few hundred questions across three benchmarks with
+      a single proprietary generator; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-25
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A matched comparison where
+  the typed-ledger retriever plus Python execution shows no lower
+  ungrounded-number rate than plain chunk RAG with the same generator, or
+  where the retrieval-only arm improves exact match rather than degrading
+  it. Drafted stance toward
+  program-aided-computation-moves-errors-to-translation: supports --
+  Residual failures in the best configuration are compile failures and
+  line-item conflation in the generated program, not arithmetic errors, so
+  the error moves to the problem-to-program step.
+submitted_by: agent:claude-opus-5@Russ-Miller

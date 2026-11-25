@@ -1,0 +1,46 @@
+arxiv_id: "2602.03696"
+title: Conflict-Resolving and Sharpness-Aware Minimization for Generalized
+  Knowledge Editing with Multiple Updates
+url: https://doi.org/10.48550/arxiv.2602.03696
+drafted_at: 2026-11-12
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: knowledge-updating
+statement: For 4B-14B open instruct models edited with LoRA on factual update
+  sets, supervised fine-tuning on the new answer alone leaves the outdated
+  answer at high likelihood, so the edited model still emits it on paraphrased
+  prompts; adding a DPO term that separates new from old answers,
+  sharpness-aware minimization, and gradient projection between the two
+  objectives raises paraphrase generalization and lowers forgetting of earlier
+  edits under repeated updates.
+kind: observation
+backing_strength: single-paper
+scope_condition: LoRA-based editing of Llama-3.1-8B and Qwen3 4B/8B/14B on
+  CounterFact, ZsRE, MQuAKE, AToKe and CodeUpdateArena; requires access to the
+  old answer for each edited input
+technique: ""
+proposed_technique: Train edits to beat the old answer, in a flat minimum
+technique_summary: Trains the LoRA edit with an SFT loss plus a DPO loss
+  contrasting the new answer against the model's prior answer, optimized under
+  sharpness-aware minimization with PCGrad projection to reconcile the two
+  objectives' gradients.
+technique_kind: training
+technique_validated_by: Generality (accuracy on paraphrased prompts) and
+  specificity (MMLU) against LoRA SFT, MEMIT and F-Learning on three fact
+  benchmarks and two backbones; continual-update efficacy and forgetting on
+  cross-dataset injection and AToKe; outdated-answer retention rate on the
+  same paraphrase prompts; UPass/SPass on CodeUpdateArena
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Measuring old-answer likelihood after SFT-only LoRA editing and
+  finding it already suppressed, or finding that the DPO margin term adds no
+  paraphrase-generalization gain once SAM is applied, would falsify the claim.
+evidence_note: Measured on three fact benchmarks plus a temporal-update and a
+  code benchmark, two backbone families, with per-component ablations reported
+  in appendix. Gains are averages of ~10-14 points generality over LoRA and
+  MEMIT, and outdated-answer retention falls from ~7-10% to ~1-2%. Design does
+  not separate how much of the gain comes from SAM versus the DPO margin in
+  the main tables, and all editing is done on one shared adapter.
+confidence: medium

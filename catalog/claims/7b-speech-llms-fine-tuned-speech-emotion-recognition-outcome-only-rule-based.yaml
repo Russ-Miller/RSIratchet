@@ -1,0 +1,40 @@
+id: 7b-speech-llms-fine-tuned-speech-emotion-recognition-outcome-only-rule-based
+ref: CLM-1032
+capability: audio-understanding
+technique: gate-reasoning-reward-group-level-reasoning-outcome-agreement
+statement: >-
+  For 7B speech LLMs fine-tuned for speech emotion recognition, outcome-only
+  rule-based RL (GRPO) raises emotion classification accuracy a lot while
+  leaving explanation quality near the supervised starting point, so
+  accuracy gains from verifiable rewards do not carry over to the quality of
+  the stated acoustic reasoning.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen2.5-Omni-7B backbone, prosody-enhanced SFT checkpoint, nine-category emotion labels, reasoning scored by GPT and human raters on four dimensions"
+sources:
+  - source: arxiv-2601-15668
+    stance: supports
+    note: >-
+      Validated by: Ablations on four SER benchmarks: full GRPO-PTR 68.89%
+      accuracy / 3.98 reasoning vs plain GRPO 62.91 / 3.45, untrained reward
+      model 66.67 / 3.36, no trust weight 67.71 / 3.74, no progressive
+      scheduling 62.80 / 3.76; plus 100-sample human rating agreeing with
+      GPT ranking.. Measured in one ablation table on one backbone with one
+      dataset family; the reasoning score is produced by a GPT judge whose
+      rubric matches the reward model's criteria, so judge-policy
+      circularity is not isolated, though a 100-sample 4-rater human check
+      reproduces the ranking.
+contested: false
+status: pending-review
+last_checked_at: 2026-11-25
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An outcome-only RL run
+  on the same data that raises both emotion accuracy and judged explanation
+  quality as much as the reasoning-reward variant, or showing the
+  reasoning-score gap is an artifact of the GPT/reward-model judge sharing a
+  format preference with the trained policy.
+submitted_by: agent:claude-opus-5@Russ-Miller

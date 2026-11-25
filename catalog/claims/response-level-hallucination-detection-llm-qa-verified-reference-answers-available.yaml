@@ -1,0 +1,43 @@
+id: response-level-hallucination-detection-llm-qa-verified-reference-answers-available
+ref: CLM-1227
+capability: hallucination
+technique: fit-conditional-score-distribution-then-test-threshold
+statement: >-
+  For response-level hallucination detection on LLM QA with verified
+  reference answers available offline, fitting a conditional diffusion model
+  to the distribution of question-conditioned semantic dissimilarity scores
+  and testing whether a dissimilarity threshold falls outside the resulting
+  prediction set detects hallucinations at higher power, at matched Type I
+  error, than Semantic Entropy over sampled answers or an XGBoost alignment
+  classifier.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Requires an offline calibration set of questions with human-verified reference answers; tested on 1,473 WikiQA pairs with LLaMA-3.1-8B-Instruct, split 1040/140/293, with dissimilar"
+sources:
+  - source: arxiv-2603-26349
+    stance: supports
+    note: >-
+      Validated by: Power at matched Type I error on 293 held-out WikiQA
+      test instances, compared against Semantic Entropy (10 sampled answers,
+      logistic calibration) and Conformal Alignment (XGBoost); also FDR and
+      power on MS-COCO caption selection against Conformal Alignment..
+      Measured on one corpus (WikiQA), one generator model, one
+      embedding-based score and one threshold, with a single reported
+      power-vs-alpha curve; no confidence intervals or repeated splits
+      reported, and the reference-answer requirement means it does not apply
+      to reference-free deployment. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-25
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: On a comparable
+  reference-answer QA setup, the diffusion-based prediction-set detector
+  matches or trails Semantic Entropy and an XGBoost alignment classifier in
+  power at the same Type I error, or its advantage disappears once the
+  calibration set is drawn from a different question distribution than the
+  test set.
+submitted_by: agent:claude-opus-5@Russ-Miller

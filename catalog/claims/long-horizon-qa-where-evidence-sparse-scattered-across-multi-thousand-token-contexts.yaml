@@ -1,0 +1,37 @@
+id: long-horizon-qa-where-evidence-sparse-scattered-across-multi-thousand-token-contexts
+ref: CLM-1170
+capability: long-context-degradation
+technique: store-graph-memory-latently-expose-only-budgeted-subgraph
+statement: >-
+  For long-horizon QA where evidence is sparse and scattered across
+  multi-thousand-token contexts, keeping a graph memory in latent space and
+  serializing only a fixed-budget retrieved subgraph (k=30 edges) into the
+  prompt scores higher than explicit text-graph memory systems and than a
+  full-context reasoner, across frozen reasoners from 1.5B to 8B.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Three QA benchmarks (HotpotQA, NarrativeQA, WikiHop), training on a separate corpus; memory modules are 1.5B with LoRA; reasoner frozen. Explicit-graph baselines (A-Mem, PREMem, TH"
+sources:
+  - source: arxiv-2601-03417
+    stance: supports
+    note: >-
+      Validated by: Answer accuracy and ROUGE-L on 2,600 held-out QA
+      instances versus reasoner-only, RAG, and five memory systems; average
+      accuracy 56.08/58.64/63.34% at 1.5B/3B/8B, best at every scale.
+      Ablations remove retrieval, swap in BFS retrieval, or go fully
+      explicit, all scoring lower. Inference time stays flat (12-14s) to 10k
+      tokens.. Measured on three QA sets across three backbones, with
+      structural ablations and a timing table. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-25
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: On the same benchmarks with
+  matched budgets, an explicit-graph memory system matching or beating the
+  latent-graph variant, or the latent-graph variant failing to beat a plain
+  full-context reasoner at any scale.
+submitted_by: agent:claude-opus-5@Russ-Miller
