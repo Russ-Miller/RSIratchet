@@ -1,0 +1,44 @@
+arxiv_id: "2601.10657"
+title: "PACEvolve: Enabling Progress-Aware Consistent Evolution"
+url: https://doi.org/10.48550/arxiv.2601.10657
+drafted_at: 2026-11-14
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: harness-self-improvement
+statement: In LLM-driven evolutionary search over 1000 iterations (symbolic
+  regression, Gemini 2.5 Pro), pruning low-performing ideas and compressed
+  experiment histories from the agent's context raises the best and mean
+  outcomes but leaves the worst runs stuck, because the best-scoring idea is
+  never pruned even when it is a local minimum; adding a stagnation-triggered
+  revert to an earlier state removes the bad runs while slightly lowering the
+  best ones, and only adding cross-island transfer recovers both.
+kind: observation
+backing_strength: single-paper
+scope_condition: Symbolic regression (LLM-SR nonlinear oscillator), 10 runs of
+  1000 iterations each, Gemini 2.5 Pro backbone; cumulative ablation, not
+  factorial.
+technique: ""
+proposed_technique: Prune context, then revert on stalled improvement momentum
+technique_summary: Caps and summarizes per-idea experiment history and drops
+  the weakest ideas, tracks an EWMA of scale-invariant relative progress, and
+  when that momentum falls below a threshold either reverts the trajectory to
+  an earlier sampled state or crosses over with a higher-progress parallel
+  island.
+technique_kind: process
+technique_validated_by: Log10 NMSE distribution (best, P75, mean, worst) over
+  10 runs of 1000 iterations on LLM-SR nonlinear oscillators against uDSR,
+  LLM-SR, OpenEvolve, CodeEvolve and ShinkaEvolve; cumulative ablation adding
+  each component in turn; also per-kernel latency on 16 KernelBench kernels.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A replication where context pruning alone also lifts the worst-run
+  quartile, or where adding stagnation-triggered backtracking does not lower
+  the best-run score, would break the stated decomposition.
+evidence_note: "Measured: cumulative ablation on one task (symbolic
+  regression) with 10 runs per configuration, reported as a boxplot rather
+  than per-component deltas with intervals; components are added in a fixed
+  order so individual contributions are not isolated factorially. Main-table
+  results use the same single task plus KernelBench latency."
+confidence: low

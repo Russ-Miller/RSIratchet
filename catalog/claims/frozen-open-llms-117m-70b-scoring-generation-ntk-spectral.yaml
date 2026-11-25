@@ -1,0 +1,42 @@
+id: frozen-open-llms-117m-70b-scoring-generation-ntk-spectral
+ref: CLM-1106
+capability: hallucination
+technique: score-hallucination-ntk-spectral-geometry
+statement: >-
+  For frozen open LLMs from 117M to 70B, scoring a generation by NTK
+  spectral quantities (Gram determinant, max per-step Jacobian norm,
+  condition number penalty) separates hallucinated from correct generations
+  better than uncertainty, consistency and internal-state detectors across
+  data-grounded QA, math reasoning and instruction-following benchmarks,
+  with the largest margins on reasoning-oriented sets and on smaller
+  backbones.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Off-the-shelf pre-trained backbones with white-box gradient access; detection scored by AUROC/AUPRC against ROUGE- or LLM-judge reference labels on 10 benchmarks."
+sources:
+  - source: arxiv-2601-18753
+    stance: supports
+    note: >-
+      Validated by: AUROC/AUPRC against 11 baselines (Perplexity,
+      LN-Entropy, Semantic Entropy, Energy, P(true), SelfCheckGPT, Lexical
+      Sim, FActScore, RACE, Inside, MIND) on 10 benchmarks and 9 backbones;
+      e.g. 81.76 AUROC on the reasoning set vs 80.8 for Inside, 84.59 vs
+      77.72 on RAGTruth; also used to guide beam search (MATH-500 81.0% vs
+      72.7% IO prompt).. Measured on 10 benchmarks x 9 backbones against 11
+      baselines, with ablation correlating each term to task family (det(K)
+      0.84 on SQuAD, Jacobian/condition term 0.88 on MATH-500) and a PAWS
+      fine-grained case study. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-25
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An independent
+  reimplementation finds the NTK score's AUROC within noise of, or below,
+  Inside/semantic-entropy baselines on the same benchmarks and backbones, or
+  that the reported advantage disappears once baselines are tuned on matched
+  sampling budgets.
+submitted_by: agent:claude-opus-5@Russ-Miller

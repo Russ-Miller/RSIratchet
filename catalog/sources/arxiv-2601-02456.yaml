@@ -1,0 +1,68 @@
+id: arxiv-2601-02456
+ref: SRC-1068
+kind: paper
+title: "InternVLA-A1: Unifying Understanding, Generation and Action for
+  Robotic Manipulation"
+authors:
+  - Junhao Cai
+  - Zetao Cai
+  - Jiafei Cao
+  - Yilun Chen
+  - Z. -H. He
+  - Lei Jiang
+year: 2026
+date: 2026-01-05
+arxiv_id: "2601.02456"
+url: https://arxiv.org/abs/2601.02456
+tags:
+  - ingested
+summary: Prevalent Vision-Language-Action (VLA) models are typically built
+  upon Multimodal Large Language Models (MLLMs) and demonstrate exceptional
+  proficiency in semantic understanding, but they inherently lack the
+  capability to deduce physical world dynamics. Consequently, recent
+  approaches have shifted toward World Models, typically formulated via video
+  prediction; however, these methods often suffer from a lack of semantic
+  grounding and exhibit brittleness in the presence of video prediction
+  errors. To synergize semantic understanding with dynamic predictive
+  capabilities, we present InternVLA-A1.
+notes: "Filed as a source on embodied-control from the classifier's judgement
+  that the paper is about it (improves, high): The paper proposes a unified
+  architecture combining semantic understanding and visual foresight that
+  raises real-robot manipulation success over prior VLA baselines like pi0.5.
+  No claim has been drafted from it yet."
+ingested_at: 2026-11-25
+brief: >-
+  Adding a lightweight future-frame prediction expert to a VLA policy helps
+  most where the scene is moving, not where it is static. InternVLA-A1 couples
+  3 experts, understanding, generation, and action, in a
+  Mixture-of-Transformers with a blockwise mask enforcing understanding to
+  generation to action flow, and predicts COSMOS VAE latents for frames 15
+  steps ahead by single-pass parallel decoding rather than autoregression.
+
+
+  The 2B variant uses InternVL3-1B, the 3B uses Qwen3-VL-2B. Pre-training
+  mixes 692M frames from InternData-A1 simulation, RoboTwin, AgiBot-World,
+  RoboMind, and EgoDex human video. Evaluation covers 12 real tasks on 3 robot
+  embodiments, 30 rollouts per task, plus RoboTwin 2.0.
+
+
+  On 10 static tasks the 3B reaches 75.1% average versus 70.7% for π0.5 and
+  60.6% for π0. On RoboTwin 2.0 it beats π0.5 by 2.6%. On the 2 dynamic tasks
+  it hits 80.0% on Express Sorting (+26.7% over π0.5) and 93.3% on Ingredient
+  Picking versus 66.7%.
+
+
+  Two ablations isolate the cause. Removing pre-training drops average success
+  from 77.0% to 25.4%; removing the generation expert drops it from 77.0% to
+  57.6%, with the largest losses on the dynamic tasks. Data-source ablation
+  shows sim-only reaches 88.3%/88.5% on RoboTwin but only 33.3% on Sort parts,
+  rising to 53.3% with real plus human data.
+
+
+  Baselines are not matched on inference cost or data, the dynamic evidence
+  rests on 2 task families, and the understanding expert was not trained on
+  VQA data, so semantic reasoning is untested. Useful if you care about
+  manipulation under motion rather than general instruction following.
+brief_generated_at: 2026-11-25
+brief_model: claude-opus-5
+brief_source: full-text

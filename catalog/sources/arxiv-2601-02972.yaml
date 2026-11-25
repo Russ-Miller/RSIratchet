@@ -1,0 +1,53 @@
+id: arxiv-2601-02972
+ref: SRC-1072
+kind: paper
+title: "Correct, Concise and Complete: Multi-stage Training For Adaptive Reasoning"
+year: 2026
+date: 2026-01-06
+arxiv_id: "2601.02972"
+url: https://arxiv.org/abs/2601.02972
+tags:
+  - ingested
+summary: The reasoning capabilities of large language models (LLMs) have
+  improved substantially through increased test-time computation, typically in
+  the form of intermediate tokens known as chain-of-thought (CoT). However,
+  CoT often becomes unnecessarily long, increasing computation cost without
+  actual accuracy gains or sometimes even degrading performance, a phenomenon
+  known as ``overthinking''. We propose a multi-stage efficient reasoning
+  method that combines supervised fine-tuning -- via rejection sampling or
+  reasoning trace reformatting -- with reinforcement learning using an
+  adaptive length penal
+ingested_at: 2026-11-25
+brief: >-
+  Penalizing tokens generated after the first correct answer in a reasoning
+  trace, rather than imposing a fixed thinking budget, cuts chain-of-thought
+  length while holding accuracy roughly flat. The penalty is the proportion of
+  tokens after the first correct answer, applied only when the final answer is
+  correct, so self-correction stays unpunished but redundant self-verification
+  does not.
+
+
+  The pipeline is SFT (shortest-correct rejection sampling, or reformatting
+  traces to drop the post-think summary) followed by GRPO with that penalty,
+  trained on 13K DeepScaleR math problems and evaluated on MATH-500, AIME
+  24/25, GPQA-Diamond, CommonsenseQA, LiveCodeBench v6 and LongBench v2.
+
+
+  On Qwen3-8B, Format-Adaptive-Answer cuts tokens 28% (8,298 to 5,918) with
+  accuracy 69.9 to 68.7, and AUC OAA 71.6 to 76.6, 2.5 above the next-best
+  baseline (TWYN and SFT at 74.0). Qwen3-32B drops 40% tokens for 2.5 points.
+  Reductions grow with size: 22% at 1.7B, 40% at 32B.
+
+
+  Evidence includes component ablations (RL without SFT reaches 73.2 AUC OAA,
+  below both full variants) and 6 named baselines at the same 16,384-token
+  cap. Weak spots: training is math-only, gains shrink on LiveCodeBench
+  (8-11%) and LongBench v2, and on Qwen3-1.7B and DeepSeek-R1-Qwen-7B AUC OAA
+  falls below the base model. 1 dense model family, no MoE.
+
+
+  If you are tuning for inference cost, the first-correct-answer penalty is a
+  cheap drop-in; expect it to fail on sub-8B models.
+brief_generated_at: 2026-11-25
+brief_model: claude-opus-5
+brief_source: full-text

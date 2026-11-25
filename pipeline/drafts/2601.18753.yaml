@@ -1,0 +1,48 @@
+arxiv_id: "2601.18753"
+title: "HalluGuard: Demystifying Data-Driven and Reasoning-Driven
+  Hallucinations in LLMs"
+url: https://doi.org/10.48550/arxiv.2601.18753
+drafted_at: 2026-11-17
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: For frozen open LLMs from 117M to 70B, scoring a generation by NTK
+  spectral quantities (Gram determinant, max per-step Jacobian norm, condition
+  number penalty) separates hallucinated from correct generations better than
+  uncertainty, consistency and internal-state detectors across data-grounded
+  QA, math reasoning and instruction-following benchmarks, with the largest
+  margins on reasoning-oriented sets and on smaller backbones.
+kind: observation
+backing_strength: single-paper
+scope_condition: Off-the-shelf pre-trained backbones with white-box gradient
+  access; detection scored by AUROC/AUPRC against ROUGE- or LLM-judge
+  reference labels on 10 benchmarks.
+technique: ""
+proposed_technique: Score hallucination from NTK spectral geometry
+technique_summary: Computes a per-generation score combining the NTK Gram
+  determinant (representational adequacy), the log max per-step Jacobian norm
+  (rollout amplification) and a negative log squared condition number
+  (spectral instability), using small offline-calibrated projection layers
+  over a frozen backbone.
+technique_kind: decoding
+technique_validated_by: AUROC/AUPRC against 11 baselines (Perplexity,
+  LN-Entropy, Semantic Entropy, Energy, P(true), SelfCheckGPT, Lexical Sim,
+  FActScore, RACE, Inside, MIND) on 10 benchmarks and 9 backbones; e.g. 81.76
+  AUROC on the reasoning set vs 80.8 for Inside, 84.59 vs 77.72 on RAGTruth;
+  also used to guide beam search (MATH-500 81.0% vs 72.7% IO prompt).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An independent reimplementation finds the NTK score's AUROC within
+  noise of, or below, Inside/semantic-entropy baselines on the same benchmarks
+  and backbones, or that the reported advantage disappears once baselines are
+  tuned on matched sampling budgets.
+evidence_note: Measured on 10 benchmarks x 9 backbones against 11 baselines,
+  with ablation correlating each term to task family (det(K) 0.84 on SQuAD,
+  Jacobian/condition term 0.88 on MATH-500) and a PAWS fine-grained case
+  study. Single paper, authors' own implementation of all baselines; the
+  projection layers are calibrated offline, which the design does not isolate
+  from the spectral quantities themselves. Label construction relies on ROUGE
+  and LLM judges.
+confidence: low

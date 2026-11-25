@@ -1,0 +1,44 @@
+arxiv_id: "2601.11913"
+title: "LSTM-MAS: A Long Short-Term Memory Inspired Multi-Agent System for
+  Long-Context Understanding"
+url: https://doi.org/10.48550/arxiv.2601.11913
+drafted_at: 2026-11-17
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: For long-context QA and summarization with open backbones from 0.5B
+  to 32B, chaining per-segment worker agents with an explicit relevance
+  filter, a conflict-resolving judge, and a final aggregating manager scores
+  higher than sequential-chain or leader-aggregation multi-agent baselines,
+  and removing the final aggregating manager costs far more than removing the
+  filter or judge.
+kind: observation
+backing_strength: single-paper
+scope_condition: Eight LongBench-style datasets (five QA, two summarization,
+  one few-shot), 8K/16K context windows, training-free prompting; gains are
+  smaller or negative on query-free summarization (GovReport).
+technique: ""
+proposed_technique: Gate a chained agent pipeline with filter, judge, and manager roles
+technique_summary: Split a long document into segments processed by a chain of
+  worker agents, pass a natural-language running state forward, drop segment
+  outputs judged irrelevant, reconcile contradictions against the stored
+  memory with a bounded retry loop, and have a terminal manager agent answer
+  from the retained memory.
+technique_kind: process
+technique_validated_by: F1 and ROUGE-L on eight LongBench datasets against
+  Vanilla, LightRAG, LONGAGENT and CoA at matched chunk length and base model;
+  ablations removing judge, filter and manager separately on Qwen2.5-7B/14B.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched-compute replication where the chained
+  filter/judge/manager pipeline fails to beat CoA at equal chunk size and
+  token budget, or where removing the manager costs no more than removing the
+  filter.
+evidence_note: Measured on eight datasets across nine open models, reported
+  gains over CoA of 10-122% on QA with Qwen2.5-7B; ablations show -18.4 avg
+  for removing manager vs -5.1/-4.9 for judge/filter at 7B. Single paper, no
+  token-cost-matched baseline, and the filter also shortens inputs, so the
+  gain is not isolated from reduced context length.
+confidence: low

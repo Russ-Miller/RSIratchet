@@ -1,0 +1,71 @@
+id: arxiv-2601-00269
+ref: SRC-1051
+kind: paper
+title: "FaithSCAN: Model-Driven Single-Pass Hallucination Detection for
+  Faithful Visual Question Answering"
+authors:
+  - Chaodong Tong
+  - Qi Zhang
+  - Chen Li
+  - Lei Jiang
+  - Yanbing Liu
+year: 2026
+date: 2026-01-01
+arxiv_id: "2601.00269"
+url: https://arxiv.org/abs/2601.00269
+tags:
+  - ingested
+summary: "Faithfulness hallucinations in VQA occur when vision-language models
+  produce fluent yet visually ungrounded answers, severely undermining their
+  reliability in safety-critical applications. Existing detection methods
+  mainly fall into two categories: external verification approaches relying on
+  auxiliary models or knowledge bases, and uncertainty-driven approaches using
+  repeated sampling or uncertainty estimates. The former suffer from high
+  computational overhead and are limited by external resource quality, while
+  the latter capture only limited facets of model uncertainty and fail to
+  sufficientl"
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, high): The paper proposes a
+  lightweight detector using internal VLM signals that outperforms existing
+  hallucination detection methods, improving the ability to catch ungrounded
+  answers. No claim has been drafted from it yet."
+ingested_at: 2026-11-25
+brief: >-
+  Hallucinated answers in visual question answering can be flagged from a
+  single forward pass of the model, without resampling or an external
+  verifier, by training a small classifier on the model's own internal
+  signals.
+
+
+  FaithSCAN extracts 3 signal families from a frozen VLM: token-level
+  log-likelihood and predictive entropy, decoder hidden embeddings, raw visual
+  patch embeddings, and cross-modal aligned tokens. These are compressed
+  per-branch to 64 dimensions and fused with attention. Supervision comes from
+  a Visual-NLI judge (Qwen2.5-VL-32B-Instruct) comparing generated to
+  reference answers. Tested on HalLoc-VQA, POPE, HaloQuest and VQA v2 with
+  IB-T5-XL, LLaVA-8B and Qwen3-VL-8B.
+
+
+  In-distribution AUROC gains reach up to 8% over baselines including semantic
+  entropy, SelfCheckGPT and P(True). Inference costs 0.605–1.191 s per 100
+  samples versus 340.683 s for SelfCheckGPT on LLaVA-8B. Labels agreed with
+  human annotation at 0.950–0.990, Cohen's Kappa mostly above 0.8 on 100
+  samples per dataset.
+
+
+  Ablations isolate the contributions: embeddings carry the most signal,
+  entropy next, log-likelihood marginal; visual patch features help on POPE's
+  object hallucinations but not on reasoning-heavy sets; intermediate decoder
+  layers beat early and deep ones.
+
+
+  Out-of-distribution transfer is weak. Several cross-dataset AUROCs fall
+  below 0.5, e.g. 0.393 for HalLoc-VQA to HaloQuest on LLaVA-8B. Multi-source
+  training helps but does not close the gap.
+
+
+  Use this if you need cheap in-domain hallucination gating; do not expect it
+  to transfer across hallucination types.
+brief_generated_at: 2026-11-25
+brief_model: claude-opus-5
+brief_source: full-text

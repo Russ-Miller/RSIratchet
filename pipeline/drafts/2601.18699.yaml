@@ -1,0 +1,47 @@
+arxiv_id: "2601.18699"
+title: Mechanistic Analysis of Catastrophic Forgetting in Large Language
+  Models During Continual Fine-tuning
+url: https://doi.org/10.48550/arxiv.2601.18699
+drafted_at: 2026-11-17
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: fine-tuning-retention
+statement: When a large open-weight model is sequentially fine-tuned across
+  domains (code, then math, then medical QA), restricting gradient updates to
+  the orthogonal complement of the subspace spanned by historical-task
+  activations, applied only to the mid-layer MLP and MoE routing blocks that a
+  drift diagnostic flags, retains more source-task accuracy than LoRA, EWC or
+  plain fine-tuning at comparable target-task accuracy and near-baseline
+  training overhead.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Sequential fine-tuning of 27B-1.6T open-weight dense and MoE
+  decoder models on three disjoint task domains; projection subspace estimated
+  once from a static calibration set; rank ratio around 0.2, since higher
+  ratios cost target-task accuracy.
+technique: ""
+proposed_technique: Project updates orthogonal to historical activations in drift-prone layers
+technique_summary: Locate layers with low CKA or high MoE routing drift, take
+  an SVD of their historical-task activations on a small fixed calibration
+  set, and project gradients onto the orthogonal complement of that subspace
+  during target-task training.
+technique_kind: training
+technique_validated_by: "On Llama 4 Scout after code-to-math adaptation: Task
+  A (code) 74.8% vs 35.1% standard fine-tuning, 58.4% LoRA, 56.1% EWC, 72.1%
+  10% replay, with Task B (math) 75.1% vs 76.8% standard, at 1.09x overhead;
+  rank-ratio sweep shows retention and adaptation trade off monotonically."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Applying the same orthogonal projection uniformly across all
+  layers, or to randomly chosen layers at matched parameter budget, retains
+  source-task accuracy as well as the drift-localized version; or the reported
+  retention disappears when the calibration set does not match the source
+  task.
+evidence_note: Single paper, one mitigation table on one model (Llama 4 Scout)
+  plus a rank-ratio sweep; the diagnostic analysis spans 10 open-weight models
+  but the LRCP comparison does not. No ablation isolating the localization
+  step from the projection itself, and no seed variance reported. Model names
+  and dates are not verifiable; treat magnitudes as indicative only.
+confidence: low

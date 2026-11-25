@@ -1,0 +1,39 @@
+id: 4b-7b-models-trained-outcome-only-agentic-rl-over-python-interpreter
+ref: CLM-0992
+capability: self-repair
+technique: replace-failed-steps-model-s-own-later-fix
+statement: >-
+  When 4B-7B models are trained with outcome-only agentic RL over a Python
+  interpreter, retroactively rewriting each rollout so a failed tool call is
+  replaced by the model's own later successful correction — discarding the
+  error and traceback before the policy update — raises benchmark accuracy
+  over the same RL run on raw trajectories and reaches comparable scores in
+  about a third of the training steps.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Parameter-constrained (4B-7B) instruct models, Python-interpreter tool use, sparse outcome-only reward (DAPO/GRPO), math/science/code benchmarks; requires the model to already self"
+sources:
+  - source: arxiv-2601-15141
+    stance: supports
+    note: >-
+      Validated by: Compared against a DAPO baseline with identical
+      configuration minus the mechanism, on AIME24/25, GPQA and
+      LiveCodeBench v6 with Qwen3-4B-Instruct and Qwen2.5-7B-Instruct;
+      reported average gains ~6% on AIME, 3-4% on GPQA, 5% on LiveCodeBench,
+      and parity with DemyAgent-4B at 250 vs 750 RL steps. Tracked
+      per-trajectory erroneous tool-call counts during training..
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-25
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An RL run at matched
+  compute where trajectory purification yields no accuracy gain over raw
+  trajectories, or where the gain is reproduced by simply discarding
+  error-containing successful trajectories (cheap filtering) rather than by
+  the rollback-and-graft step.
+submitted_by: agent:claude-opus-5@Russ-Miller

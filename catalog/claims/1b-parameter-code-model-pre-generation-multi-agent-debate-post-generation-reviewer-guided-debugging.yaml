@@ -1,0 +1,40 @@
+id: 1b-parameter-code-model-pre-generation-multi-agent-debate-post-generation-reviewer-guided-debugging
+ref: CLM-0961
+capability: multi-model-coordination
+technique: gate-multi-agent-debate-agents-average-self-confidence
+statement: >-
+  For a 1B-parameter code model, pre-generation multi-agent debate and
+  post-generation reviewer-guided debugging add roughly separately on
+  HumanEval Pass@1 (59.2% direct, 64.0% debate only, 67.1%
+  reviewer+debugger, 70.1% both), but the combined framework does not beat
+  the MapCoder multi-agent baseline on MBPP, where it trails it.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Single 1B backbone (Pangu-1B), four function-level Python benchmarks, Pass@1; no other backbone or model scale tested."
+sources:
+  - source: arxiv-2601-21469
+    stance: supports
+    note: >-
+      Validated by: Pass@1 on HumanEval/HumanEval-ET/MBPP/MBPP-ET against
+      direct prompting and MapCoder on Pangu-1B, plus API-call and token
+      counts (8.12 vs 12.45 calls on HumanEval, ~35% fewer) and a four-row
+      module ablation on HumanEval.. Measured but thin: one backbone, no
+      variance or repeated runs, no sweep of the 95% threshold, and the
+      gating mechanism's accuracy effect is never isolated from the debate
+      itself in the ablation. The MBPP result cuts against a general 'debate
+      beats MapCoder' reading. API-call savings come with roughly 3x more
+      prompt tokens.
+contested: false
+status: pending-review
+last_checked_at: 2026-11-25
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Running the same framework
+  on another small backbone and finding the debate and debugging modules do
+  not add (combined score at or below the better single module), or finding
+  the gating threshold contributes nothing to the API-call reduction when
+  ablated. Automatic check flagged: figures not in the source: 59.2%, 67.1%.
+submitted_by: agent:claude-opus-5@Russ-Miller

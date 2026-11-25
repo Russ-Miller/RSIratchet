@@ -1,0 +1,46 @@
+arxiv_id: "2603.08035"
+title: "CDRRM: Contrast-Driven Rubric Generation for Reliable and
+  Interpretable Reward Modeling"
+url: https://doi.org/10.48550/arxiv.2603.08035
+drafted_at: 2026-11-09
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: critique
+statement: For 8B-14B generative reward models judging preference pairs,
+  deriving rubrics from an explicit contrastive profile of the chosen and
+  rejected responses (evidence-anchored per-dimension analysis, then synthesis
+  into a short rubric set) yields higher preference accuracy than prompting
+  the teacher for rubrics in one step, with the largest margin on items built
+  to trip verbosity and position bias.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Qwen3-8B/14B backbones, pairwise preference judging on
+  RewardBench, RMBench and RMB; rubric generator trained on 3k
+  teacher-synthesized samples
+technique: ""
+proposed_technique: Derive rubrics by contrasting the response pair, then synthesize
+technique_summary: An LLM first profiles each response per relevant dimension
+  with quoted evidence spans, then a teacher synthesizes the
+  chosen-vs-rejected differences into a short rubric set used to condition the
+  preference judgment.
+technique_kind: prompting
+technique_validated_by: Accuracy on RewardBench, RMBench and RMB against a
+  direct no-rubric judge (76.4 avg) and a one-step rubric judge (79.0 avg) on
+  the same Qwen3-8B backbone with matched training config; CDRRM-8B base
+  reached 85.8 avg and 81.1 on RMBench Hard, where the best baseline was 76.1.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched-backbone, matched-data comparison where one-step rubric
+  generation equals or exceeds contrastive-profile rubrics on pairwise
+  accuracy, or where the RMBench Hard advantage disappears once rubric length
+  and judge token budget are controlled.
+evidence_note: Measured on three benchmarks with an ablation holding backbone,
+  dataset size, optimizer and epochs fixed across the three judging
+  strategies. The ablation isolates the contrastive-profiling stage, but the
+  rubric sets also differ in length and the bias-resistance claim rests on one
+  benchmark subset (RMBench Hard) plus a single qualitative case; position
+  bias is not measured separately from verbosity. Single paper, authors' own
+  data pipeline and released dataset.
+confidence: medium

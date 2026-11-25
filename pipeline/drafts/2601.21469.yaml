@@ -1,0 +1,45 @@
+arxiv_id: "2601.21469"
+title: Adaptive Confidence Gating in Multi-Agent Collaboration for Efficient
+  and Optimized Code Generation
+url: https://doi.org/10.48550/arxiv.2601.21469
+drafted_at: 2026-11-19
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: For a 1B-parameter code model, pre-generation multi-agent debate
+  and post-generation reviewer-guided debugging add roughly separately on
+  HumanEval Pass@1 (59.2% direct, 64.0% debate only, 67.1% reviewer+debugger,
+  70.1% both), but the combined framework does not beat the MapCoder
+  multi-agent baseline on MBPP, where it trails it.
+kind: observation
+backing_strength: single-paper
+scope_condition: Single 1B backbone (Pangu-1B), four function-level Python
+  benchmarks, Pass@1; no other backbone or model scale tested.
+technique: ""
+proposed_technique: Gate multi-agent debate on agents' average self-confidence
+technique_summary: Three persona agents each emit a plan plus a 0-100
+  confidence; if the mean exceeds 95 the system skips all debate rounds and
+  goes straight to plan synthesis, otherwise it runs up to three peer-review
+  rounds, then a separate reviewer writes a cause analysis and fix plan for
+  the debugger when tests fail.
+technique_kind: process
+technique_validated_by: Pass@1 on HumanEval/HumanEval-ET/MBPP/MBPP-ET against
+  direct prompting and MapCoder on Pangu-1B, plus API-call and token counts
+  (8.12 vs 12.45 calls on HumanEval, ~35% fewer) and a four-row module
+  ablation on HumanEval.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Running the same framework on another small backbone and finding
+  the debate and debugging modules do not add (combined score at or below the
+  better single module), or finding the gating threshold contributes nothing
+  to the API-call reduction when ablated.
+evidence_note: "Measured but thin: one backbone, no variance or repeated runs,
+  no sweep of the 95% threshold, and the gating mechanism's accuracy effect is
+  never isolated from the debate itself in the ablation. The MBPP result cuts
+  against a general 'debate beats MapCoder' reading. API-call savings come
+  with roughly 3x more prompt tokens."
+confidence: low
+problems:
+  - "figures not in the source: 59.2%, 67.1%"

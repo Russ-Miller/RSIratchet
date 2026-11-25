@@ -1,0 +1,46 @@
+arxiv_id: "2601.14952"
+title: "CorpusQA: A 10 Million Token Benchmark for Corpus-Level Analysis and
+  Reasoning"
+url: https://doi.org/10.48550/arxiv.2601.14952
+drafted_at: 2026-11-13
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: long-context-degradation
+statement: On corpus-level aggregation questions whose evidence is dispersed
+  across hundreds of documents (comparison, ranking, filtering, counting over
+  128K-10M token corpora), top-k retrieval degrades far faster with corpus
+  size than iterative chunk-wise memory consolidation, because the number of
+  chunks needed to cover the evidence exceeds the retrieval budget, while both
+  approaches lose most of their accuracy by 10M tokens.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Questions requiring global aggregation over many documents,
+  not single-fact lookup; one backbone (Gemini-2.5-Pro) used for both the RAG
+  and memory pipelines; four domains (finance ZH/EN, education, real estate).
+technique: ""
+proposed_technique: Consolidate the corpus into a fixed-size memory chunk by chunk
+technique_summary: Instead of retrieving top-k chunks, pass the corpus through
+  the model sequentially in chunks, updating a fixed-size memory buffer, and
+  answer only from the consolidated memory.
+technique_kind: process
+technique_validated_by: "Accuracy judged by an LLM judge against
+  programmatically derived SQL ground truth on CorpusQA, compared against a
+  RAG pipeline on the same backbone: 67.58 vs 55.85 at 128K, 44.95 vs 17.38 at
+  1M, 22.14 vs 2.43 at 4M, 11.13 vs 1.20 at 10M. No matched-token-cost
+  baseline reported."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A retrieval pipeline that, at 4M-10M tokens on dispersed-evidence
+  aggregation questions, matches or exceeds chunk-wise memory consolidation on
+  the same backbone; or a memory pipeline that collapses as sharply as RAG as
+  corpus size grows.
+evidence_note: Measured on a synthetic benchmark whose ground truth is
+  computed by SQL over schemas extracted from the documents, so answers are
+  verifiable; but the two systems differ in many respects besides
+  retrieval-vs-consolidation (prompting, passes over the corpus, token spend),
+  and no compute-matched control is reported. A small human study (12 items
+  per scale) shows humans fail entirely at 4M/10M, which supports difficulty
+  but not the mechanism.
+confidence: medium

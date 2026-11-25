@@ -1,0 +1,46 @@
+id: 3b-7b-multimodal-chain-of-thought-models-hallucinated-text-concentrated-associative-divergent
+ref: CLM-0976
+capability: visual-grounding
+technique: penalize-high-visual-entropy-tokens-only-during-divergent
+statement: >-
+  In 3B-7B multimodal chain-of-thought models, hallucinated text is
+  concentrated in associative ('divergent') reasoning steps rather than
+  spread evenly through the chain, and those steps are marked by high
+  entropy of the token's activation probability over visual tokens — so
+  penalizing high-visual-entropy tokens only at those steps lowers
+  object-hallucination rates more than applying the same penalty across the
+  whole thinking trace.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Three MCoT models (GRIT-3B, PixelReasoner-7B, R1-Onevision-7B) on Object HalBench, POPE, MMHalBench; divergent/normal segment labels came from GPT-5 annotation verified by three gr"
+sources:
+  - source: arxiv-2603-27201
+    stance: supports
+    note: >-
+      Validated by: CHAIR_S/CHAIR_I on Object HalBench, accuracy/F1 on three
+      POPE splits, MMHalBench score, plus MathVista/MMStar/VSR, against
+      DoLa, VCD, MemVR, FlexAC and against intervening on all thinking or
+      normal-only steps (PixelReasoner-7B: 22.0 to 15.4 CHAIR_S
+      divergent-only vs 16.1 all-thinking vs 21.8 normal-only, MathVista
+      62.6 to 64.0 vs 61.4 vs 62.7).. Measured on three MCoT backbones and
+      three hallucination benchmarks with four mitigation baselines, plus an
+      intervention-location ablation that isolates the divergent-only
+      choice. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-25
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: On the same models and
+  benchmarks, applying the entropy penalty uniformly across all thinking
+  tokens matches or beats the divergent-only variant on both CHAIR and
+  MathVista, or hallucination rates in annotated divergent and normal
+  segments turn out comparable. Drafted stance toward
+  7-8b-video-llms-inference-time-hallucination-intervention-only-effective-layer:
+  supports -- Both find that inference-time hallucination intervention pays
+  off only when applied selectively at high-uncertainty points rather than
+  at every decoding step.
+submitted_by: agent:claude-opus-5@Russ-Miller

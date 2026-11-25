@@ -1,0 +1,54 @@
+arxiv_id: "2603.08369"
+title: "M$^3$-ACE: Rectifying Visual Perception in Multimodal Math Reasoning
+  via Multi-Agentic Context Engineering"
+url: https://doi.org/10.48550/arxiv.2603.08369
+drafted_at: 2026-11-22
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: "For visual math reasoning with frontier multimodal models, having
+  several agents exchange structured lists of extracted visual evidence —
+  categorized into consistent, complementary and conflicting items — and
+  letting one anchor agent regenerate its answer from that pooled evidence
+  raises accuracy more than aggregating the agents' final answers, and the
+  gain splits by anchor strength: weak anchors gain most from the pooled
+  evidence while strong anchors gain most from the subsequent reflection round
+  on disputed samples."
+kind: observation
+backing_strength: single-paper
+scope_condition: Four frontier MLLM agents (Gemini-3 Pro, Gemini-2.5 Pro,
+  GPT-5, Claude-4.5 Sonnet) on MathVision, with MathVista/MathVerse results
+  deferred to an appendix; gains measured against each model's own
+  chain-of-thought inference.
+technique: ""
+proposed_technique: Share visual-evidence lists between agents, not answers
+technique_summary: Each agent emits a visual-evidence list plus an answer; a
+  summary tool sorts the lists into consistent, complementary and conflicting
+  items with a conflict ratio, the anchor agent regenerates from that pooled
+  context, and a refine tool returns only low-consensus high-conflict samples
+  for another round.
+technique_kind: process
+technique_validated_by: "MathVision accuracy against each anchor's own CoT
+  baseline: Gemini-3 Pro 85.0 to 88.1 after one regeneration and 89.1 after
+  refine-reflect; Claude-4.5 61.2 to 76.0; GPT-5 72.0 to 81.3. The paper
+  reports a comparison against answer-level aggregation only in an appendix,
+  not in the main text."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Under a matched token budget, answer-level aggregation (majority
+  vote or debate over final answers) across the same four models matches or
+  beats the visual-evidence-sharing pipeline on MathVision; or the reported
+  anchor-strength split does not replicate, with strong anchors gaining as
+  much from pooled evidence as weak ones.
+evidence_note: "Measured on 3,040 MathVision samples with four anchors, each
+  compared to its own CoT baseline, plus a sub-SOTA ensemble. The diagnostic
+  that motivates it (304 samples: visual-evidence accuracy ~60% vs trajectory
+  accuracy ~90%; supplying corrected evidence fixes ~88% of failures while
+  supplying the correct answer fixes <30% of evidence) is well designed. The
+  headline comparison against answer-level aggregation, the key control for
+  the claim, is relegated to an appendix not included here, and the
+  evidence-correctness judgements come from model-assisted annotation. No
+  matched-compute baseline for the extra agent calls."
+confidence: low

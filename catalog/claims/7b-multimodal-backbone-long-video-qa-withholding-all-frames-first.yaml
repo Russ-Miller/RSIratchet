@@ -1,0 +1,43 @@
+id: 7b-multimodal-backbone-long-video-qa-withholding-all-frames-first
+ref: CLM-1023
+capability: video-temporal-reasoning
+technique: plan-before-looking-let-agent-choose-window-frame
+statement: >-
+  For a 7B multimodal backbone on long-video QA, withholding all frames at
+  the first step and training the model (SFT cold-start, then preference
+  correction, then GRPO) to emit its own time window, frame count and
+  spatial resize before any perception raises accuracy over uniform-sampling
+  and fixed-workflow agent baselines while using far fewer visual tokens.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen2.5-VL-7B base; six video QA benchmarks (LSDBench, LongVideoBench, MLVU, VideoMME, LVBench, Video-Holmes); tool exposes start/end time, nframes and resize; requires the full th"
+sources:
+  - source: arxiv-2603-22918
+    stance: supports
+    note: >-
+      Validated by: Accuracy on six video benchmarks against
+      uniform-sampling MLLMs and prior adaptive agents (FrameThinker,
+      VideoMTR, VideoAgent), with visual-token counts reported: LSDBench
+      51.0% at 10.3K tokens vs Qwen2.5-VL 52.5% at 499K; MLVU 68.3 vs 59.1
+      for FrameThinker; LVBench 43.3 vs 36.6. Stage ablation (SFT/KTO/GRPO)
+      and GRPO data-composition ablation (multi-choice vs open-ended vs
+      mixed) reported.. Measured on six benchmarks with one backbone and one
+      seed; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-25
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A matched-token
+  uniform-sampling or fixed-workflow agent baseline on the same benchmarks
+  matching EVA-GRPO's accuracy, or the trained planning-first agent failing
+  to beat its own SFT checkpoint when frames are withheld at step 0. Drafted
+  stance toward
+  7b-multimodal-models-long-video-qa-multi-turn-agentic-exploration-harness:
+  supports -- Both find that an adaptive viewing harness only beats
+  single-pass uniform sampling once the model is trained to use it, with an
+  SFT cold start followed by trajectory-level RL.
+submitted_by: agent:claude-opus-5@Russ-Miller

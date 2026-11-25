@@ -1,0 +1,43 @@
+arxiv_id: "2601.19494"
+title: "AACR-Bench: Evaluating Automatic Code Review with Holistic
+  Repository-Level Context"
+url: https://doi.org/10.48550/arxiv.2601.19494
+drafted_at: 2026-11-18
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: error-detection
+statement: In LLM-based code review over real repositories, one-shot retrieval
+  (BM25, embedding, or no retrieval) finds fewer defects as the defect
+  requires wider context — recall falls from diff-level to file-level to
+  repository-level for every model tested — while an agent that chooses its
+  own retrieval reverses that order, scoring higher on repository-level
+  defects than on diff-level ones it can see directly.
+kind: observation
+backing_strength: single-paper
+scope_condition: Five current models (Claude-4.5-Sonnet, GPT-5.2,
+  DeepSeek-V3.2, GLM-4.7, Qwen3-Coder-480B) on 200 PRs across 10 languages,
+  with review comments annotated by the context scope needed to find them;
+  agent implemented as Claude Code.
+technique: ""
+proposed_technique: Annotate each review defect by the context scope it needs
+technique_summary: Label every ground-truth review comment as diff-, file-, or
+  repository-level so recall can be broken out by how much context the defect
+  requires rather than reported as one number.
+technique_kind: process
+technique_validated_by: Applied in AACR-Bench; recall split by the three
+  context levels separated retrieval methods (monotone decline) from the agent
+  method (increase), a distinction invisible in the aggregate recall figure.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A replication where retrieval-based review recall is flat or rising
+  across diff/file/repo-level defects, or where an agent harness shows the
+  same monotone decline as one-shot retrieval.
+evidence_note: Measured on one benchmark, recall only (precision not
+  computable per context level since the context actually used is
+  unobservable). Agent recall is low everywhere (2.5-16.8%), so its 'inverse
+  trend' is a few points on a small base; four of five models show it, GLM-4.7
+  does not. Confounded by the agent being a single framework on a single
+  harness.
+confidence: low

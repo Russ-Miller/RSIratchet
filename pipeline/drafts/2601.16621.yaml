@@ -1,0 +1,48 @@
+arxiv_id: "2601.16621"
+title: How Does Personalized Memory Shape LLM Behavior? Benchmarking Rational
+  Preference Utilization in Personalized Assistants
+url: https://doi.org/10.48550/arxiv.2601.16621
+drafted_at: 2026-11-18
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: long-term-memory
+statement: "When a stored user preference is retrieved into context but is
+  irrelevant to the current query, current LLM assistants rarely suppress it:
+  on a benchmark of underspecified everyday queries paired with preferences
+  labeled Ignore/Support/Dominate, models identify the Ignore cases only 6-38%
+  of the time against 86% for human annotators, and the stronger models are
+  not better at ignoring."
+kind: observation
+backing_strength: single-paper
+scope_condition: Short, underspecified user queries with explicitly written
+  preference memories supplied in context; discriminative
+  intent-classification setting; Qwen2.5-7B, DeepSeek-V3, GPT-4.1, GPT-5;
+  models were explicitly prompted to judge applicability.
+technique: ""
+proposed_technique: Rank candidate intents by how well the query would have been phrased
+technique_summary: Instead of concatenating retrieved preferences, generate
+  candidate intents under each memory-use mode, have the model compare the
+  observed query against an idealized query it would expect under each intent,
+  and combine that ranking with an intent prior to decide whether to use the
+  memory.
+technique_kind: prompting
+technique_validated_by: Intent-match macro/micro accuracy and an LLM-judge
+  error-severity score on RPEval versus Vanilla, Reminder, CoT, CoT-SC and
+  Self-Refine baselines (macro 0.240 vs 0.067 best baseline, severity 2.49 vs
+  3.49), plus resolution of ~80% of logged bad cases from a deployed
+  commercial assistant (macro 0.734 vs 0.482).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A replication where frontier models, given the same
+  irrelevant-preference items, correctly withhold the memory at rates near the
+  human 86%, or where larger/stronger models in a family ignore irrelevant
+  preferences more often than smaller ones.
+evidence_note: Measured on a synthetically generated, then human-verified
+  953-item gold set (91.86% initial inter-annotator agreement) across 12 task
+  categories, with a human blind-annotation reference. The 'inverse scaling'
+  part rests on four models of different families, so scale and family are
+  confounded; labels are judgments about preference applicability, which the
+  authors concede is partly subjective.
+confidence: medium

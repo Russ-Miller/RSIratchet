@@ -1,0 +1,43 @@
+arxiv_id: "2601.01271"
+title: "CatchAll: Repository-Aware Exception Handling with Knowledge-Guided LLMs"
+url: https://doi.org/10.48550/arxiv.2601.01271
+drafted_at: 2026-11-15
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: code-generation
+statement: "When LLMs generate exception-handling code for a specific
+  repository, supplying a mined API-to-exception-type mapping matters more
+  than supplying cross-file call traces or abstracted handling patterns:
+  removing the mapping drops execution pass rate far more than removing either
+  of the other two."
+kind: observation
+backing_strength: single-paper
+scope_condition: Java/Android repositories, try-catch synthesis, GPT-4o
+  backbone, benchmark built from 3,200 GitHub Android repos with a
+  100-instance executable subset
+technique: ""
+proposed_technique: Prompt exception handling with mined API-exception mappings
+technique_summary: Augments the generation prompt with an empirically mined
+  API-to-exception mapping, a cross-file call trace around the target code,
+  and a handling pattern abstracted from ~20 retrieved similar try-catch
+  blocks.
+technique_kind: prompting
+technique_validated_by: Compared against six baselines (Direct-Prompting,
+  RepoCoder, ExAssist, Nexgen, Seeker, KPC) on RepoExEval (CodeBLEU 0.31 vs
+  0.27; intent accuracy 60.1% vs 48.0%) and RepoExEval-Exec (Pass@1 29% vs
+  25%), with a one-at-a-time ablation of the three knowledge components.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation on other repositories or backbones in which removing
+  the call-trace or handling-pattern component costs as much or more execution
+  pass rate than removing the API-exception mapping.
+evidence_note: "Measured: ablation on GPT-4o over RepoExEval reports Pass@1
+  falling 29%->9% without the mapping versus 29%->23% (call traces) and
+  29%->21% (patterns). Single backbone, single ablation run, no variance
+  reported; execution evidence rests on only 100 instances from four
+  repositories, and the mapping also feeds retrieval and pattern abstraction
+  so its removal degrades the other components too, which the design does not
+  isolate."
+confidence: low

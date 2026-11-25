@@ -1,0 +1,37 @@
+id: secure-code-generation-natural-language-prompts-c-python-combining-several
+ref: CLM-1247
+capability: multi-model-coordination
+technique: filter-ensemble-code-candidates-static-analyzer-then-cross
+statement: >-
+  For secure code generation from natural-language prompts in C and Python,
+  combining several LLMs with a static analyzer in the loop raises the share
+  of outputs a static analyzer judges secure far more than LLM-only
+  collaboration (cross-verification, majority voting, chain-of-debate) over
+  the same models, because the analyzer supplies a rule-based check for
+  vulnerability classes the models miss even in consensus.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Two NL-prompt benchmarks (112 and 106 samples) over MITRE Top-25 CWEs, C and Python, with CodeQL as both the in-loop filter and the final judge; security measured only as CodeQL-de"
+sources:
+  - source: arxiv-2603-22717
+    stance: supports
+    note: >-
+      Validated by: Secure-code rate under CodeQL on SecLLMEval and
+      SecLLMHolmes: single-model baseline vs ensemble+CodeQL pipelines (up
+      to +47.3% and +19.3%) vs LLM-only collaborative pipelines (+8.9-22.3%
+      on one set, ~0 or negative on the other); the hybrid reached 97.32%
+      and 99.06%.. Measured across ten pipelines and four models on two
+      small curated benchmarks. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-25
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Under an evaluator
+  independent of the in-loop tool (e.g. human audit or a second analyzer),
+  LLM-only collaborative pipelines match or exceed static-analysis-filtered
+  ensembles on secure-code rate.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,47 @@
+arxiv_id: "2602.15384"
+title: World-Model-Augmented Web Agents with Action Correction
+url: https://doi.org/10.48550/arxiv.2602.15384
+drafted_at: 2026-11-21
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: tool-use
+statement: For LLM web agents acting in browser environments (VisualWebArena,
+  Online-Mind2Web) with a frozen VLM backbone, simulating each candidate
+  action's outcome with a world model and regenerating the action when a judge
+  scores every candidate below a confidence threshold raises task success by a
+  small margin over simulate-then-select, and starting from a single proposal
+  plus refinement matches sampling many candidates.
+kind: observation
+backing_strength: single-paper
+scope_condition: Tuning-free prompted agents, Qwen3-VL-Plus and GLM-4.5v/4.6v
+  backbones, world-model simulation horizon of 1, success rates all below 40%;
+  gains are 1.8 and 1.3 absolute points on the two full benchmarks.
+technique: ""
+proposed_technique: Regenerate the action when simulated outcomes all score low
+technique_summary: Before executing, a world model predicts each candidate
+  action's next observation, a judge scores it and returns a rationale, and
+  low-scoring candidates plus their rationales are fed back to the action
+  model to propose a revised set, looping until a candidate clears a threshold
+  or an iteration cap.
+technique_kind: process
+technique_validated_by: "Task success rate against reimplemented ReAct and
+  WebDreamer baselines on the same backbone: 24.5 vs 22.7 on VisualWebArena
+  (233 human-verified tasks) and 16.0 vs 14.7 on Online-Mind2Web; on the
+  56-task Classifieds subset, adding refinement alone moved 32.1 to 33.9 and
+  adding collaborative generation reached 35.7; the single-proposal variant
+  also scored 35.7."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched-compute comparison in which simulate-then-select with the
+  same total number of sampled candidates and judge calls equals or beats the
+  refinement loop, or the gain disappearing on a larger task set or under
+  repeated runs.
+evidence_note: "Measured, but thinly: full-benchmark gains are 1.8 and 1.3
+  points with no variance reported and no matched-compute baseline, so the
+  extra model calls in the refinement loop are not controlled for. The
+  ablation and the single-proposal result come from one 56-task subset where a
+  single task is 1.8 points, which is the entire reported effect size.
+  Cross-backbone replication on two further subsets points the same way."
+confidence: low

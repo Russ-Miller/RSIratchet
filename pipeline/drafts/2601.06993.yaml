@@ -1,0 +1,48 @@
+arxiv_id: "2601.06993"
+title: Can Textual Reasoning Improve the Performance of MLLMs on Fine-grained
+  Visual Classification?
+url: https://doi.org/10.48550/arxiv.2601.06993
+drafted_at: 2026-11-16
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: cutting-to-the-chase
+statement: On fine-grained visual classification (aircraft, flowers, cars,
+  pets) with 2B-8B open multimodal models, accuracy falls monotonically as the
+  model's textual reasoning gets longer, under zero-shot CoT prompting,
+  supervised fine-tuning on high-quality GPT-4o-written chains, and RL
+  fine-tuning with an explicit length reward.
+kind: observation
+backing_strength: single-paper
+scope_condition: Fine-grained subordinate-category image classification posed
+  as open-ended QA, few-shot (4-shot) training, open-source 2B-8B MLLMs; not
+  tested on math, coding, or coarse recognition.
+technique: ""
+proposed_technique: Reward short reasoning and normalize each reward separately
+technique_summary: In GRPO fine-tuning, add a binary reward for keeping the
+  reasoning trace within a short character range alongside semantic accuracy
+  rewards, and group-normalize each reward signal independently before summing
+  into the advantage instead of normalizing the summed scalar.
+technique_kind: training
+technique_validated_by: Accuracy on four FGVC benchmarks against Visual-RFT
+  (LoRA and full FT), No-Thinking-RFT, SFT with and without CoT, and
+  Finedefics-8B; reported average 86.5 vs 82.9 for Visual-RFT LoRA, with
+  separate ablations isolating the per-reward normalization (+0.4 to +2.1
+  points) and each ensemble reward component.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On the same FGVC datasets and models, showing accuracy flat or
+  rising as the enforced reasoning-length band is widened from [0,20] to
+  [60,80] characters, or SFT on high-quality CoT beating answer-only SFT at
+  matched data.
+evidence_note: "Measured, not argued: zero-shot comparison of answer-only vs
+  CoT prompts across five open models and four datasets (average drop ~3-6
+  points); RFT runs showing completion length collapsing below the zero-shot
+  level; a sweep that forces reasoning into bands from [0,20] to [60,80]
+  characters with accuracy declining across all four datasets; and an SFT
+  comparison where answer-only beats GPT-4o-generated CoT. Single paper, one
+  base model (Qwen2-VL-2B) for all training experiments, 4-shot data only, and
+  the length-accuracy relation is shown through an imposed reward rather than
+  a controlled manipulation of reasoning content at fixed length."
+confidence: medium
