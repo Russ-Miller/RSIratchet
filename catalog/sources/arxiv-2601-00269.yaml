@@ -1,0 +1,67 @@
+id: arxiv-2601-00269
+ref: SRC-1051
+kind: paper
+title: "FaithSCAN: Model-Driven Single-Pass Hallucination Detection for
+  Faithful Visual Question Answering"
+authors:
+  - Chaodong Tong
+  - Qi Zhang
+  - Chen Li
+  - Lei Jiang
+  - Yanbing Liu
+year: 2026
+date: 2026-01-01
+arxiv_id: "2601.00269"
+url: https://arxiv.org/abs/2601.00269
+tags:
+  - ingested
+summary: "Faithfulness hallucinations in VQA occur when vision-language models
+  produce fluent yet visually ungrounded answers, severely undermining their
+  reliability in safety-critical applications. Existing detection methods
+  mainly fall into two categories: external verification approaches relying on
+  auxiliary models or knowledge bases, and uncertainty-driven approaches using
+  repeated sampling or uncertainty estimates. The former suffer from high
+  computational overhead and are limited by external resource quality, while
+  the latter capture only limited facets of model uncertainty and fail to
+  sufficientl"
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, high): The paper proposes a
+  lightweight detector using internal VLM signals that outperforms existing
+  hallucination detection methods, improving the ability to catch ungrounded
+  answers. No claim has been drafted from it yet."
+ingested_at: 2026-11-26
+brief: >-
+  Hallucinated answers in visual question answering can be flagged from
+  internal states collected in a single forward pass, without repeated
+  sampling or an external verifier at inference time. FaithSCAN trains a small
+  classifier on 3 internal signal types: token-level log-likelihood and
+  entropy, intermediate visual patch embeddings, and cross-modal aligned
+  representations, fused by branch-wise encoding and attention.
+
+
+  The setup covers 3 backbones (IB-T5-XL, LLaVA-8B, Qwen3-VL-8B) and 4
+  datasets (HalLoc-VQA, POPE, HaloQuest, VQA v2), with 2,000 training and
+  1,000 evaluation instances sampled per split and averaged over 3 seeds.
+  Labels come from a Visual-NLI judge (Qwen2.5-VL-32B-Instruct, T = 0.1)
+  rather than humans.
+
+
+  In-distribution AUROC reaches up to 8% above baselines, e.g. 0.754 vs 0.675
+  for P(True) on HalLoc-VQA with IB-T5-XL, and inference latency is
+  0.605–1.191 s per 100 samples versus 78.613–367.522 s for SelfCheckGPT.
+  Label quality was checked on 100 samples per dataset: agreement 0.950–0.990,
+  Cohen's Kappa up to 0.947.
+
+
+  Ablations isolate signal sources: token-level uncertainty carries most of
+  the discrimination, visual patch features help mainly on POPE's object
+  hallucinations, and intermediate decoder layers beat earliest and deepest.
+
+
+  Generalization is the weak point. Cross-dataset transfer often falls below
+  0.5 AUROC (HalLoc-VQA to HaloQuest: 0.393 on LLaVA-8B), and detectors are
+  trained per backbone. Treat this as a cheap in-domain filter, not a portable
+  one.
+brief_generated_at: 2026-11-26
+brief_model: claude-opus-5
+brief_source: full-text

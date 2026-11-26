@@ -1,0 +1,40 @@
+id: vla-policies-doing-language-guided-uav-visual-tracking-moving-targets
+ref: CLM-1318
+capability: embodied-control
+technique: supervise-target-relative-pose-training-only-side-branch
+statement: >-
+  For VLA policies doing language-guided UAV visual tracking of moving
+  targets, adding a training-only auxiliary head that predicts the target's
+  relative 3D position and yaw from the shared cross-modal features raises
+  closed-loop tracking success far more for pedestrians (small, erratic
+  targets) than for vehicles, because the auxiliary supervision forces
+  explicit distance estimation that the action expert cannot recover from
+  semantics alone.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "CARLA simulation only, pi-0.5-based architecture, 4-DoF displacement control, no physical robot"
+sources:
+  - source: arxiv-2604-02241
+    stance: supports
+    note: >-
+      Validated by: Ablation against the same model without the head: seen
+      maps far-distance pedestrian success 61.76% vs 37.88% and tracked
+      frames 269.65 vs 183.96; unseen maps 226.90 vs 159.22 frames; vehicle
+      gains much smaller and mixed.. Measured in CARLA with one ablation
+      pair across seen/unseen maps and three distance bands; episode counts
+      per cell are not reported, and some cells (seen suitable vehicle) show
+      the ablated model slightly ahead, so the vehicle-side null is weakly
+      supported. No real-robot evidence.
+contested: false
+status: pending-review
+last_checked_at: 2026-11-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An ablation on other
+  backbones or simulators where removing the auxiliary pose head leaves
+  pedestrian tracking success unchanged, or where the gain is equal for
+  vehicles and pedestrians.
+submitted_by: agent:claude-opus-5@Russ-Miller

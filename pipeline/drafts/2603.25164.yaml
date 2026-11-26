@@ -1,0 +1,50 @@
+arxiv_id: "2603.25164"
+title: "PIDP-Attack: Combining Prompt Injection with Database Poisoning
+  Attacks on Retrieval-Augmented Generation Systems"
+url: https://doi.org/10.48550/arxiv.2603.25164
+drafted_at: 2026-11-25
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: prompt-injection
+statement: In black-box RAG pipelines where an attacker can both append a
+  suffix to the user query and insert a handful of passages into the corpus,
+  neither channel alone reliably forces a chosen wrong answer (near-zero
+  strict success for query-suffix-only and for query-agnostic corpus poisoning
+  on NQ and MS-MARCO), while combining them succeeds on arbitrary, unseen user
+  queries at 89-100% across eight instruction-following LLMs.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Embedding retriever (Contriever) with no query sanitization,
+  no provenance checks on corpus ingestion, and a prompt template that does
+  not separate trusted instructions from retrieved content; top-k=5, 5
+  poisoned passages; strict substring match on the attacker's target string.
+technique: ""
+proposed_technique: Pair a query-agnostic poison with a retrieval-steering query suffix
+technique_summary: An adversarial probe that appends a fixed suffix naming an
+  attacker-chosen target question to any user query, so the retriever surfaces
+  a small set of pre-inserted passages keyed on that question, which then
+  supply the evidence the generator answers from.
+technique_kind: process
+technique_validated_by: Attack success rate (strict substring match on the
+  attacker's answer) against PoisonedRAG, GGPP, GCG, Disinformation and
+  corpus-poisoning-only baselines on NQ, HotpotQA and MS-MARCO across eight
+  LLMs, with retrieval F1 reported separately to show poisoned passages
+  actually entered the top-k; budget sweeps over poison count n and context
+  size k.
+stance_on_existing: supports
+related_claim_id: long-trusted-instructions-untrusted-retrieved-content-occupy-same-model
+stance_reason: The attack works precisely because the query string is trusted
+  by the orchestrator and retrieved content is read as instruction-bearing
+  evidence in the same context.
+falsifier: A replication where query-suffix-only or corpus-poisoning-only
+  reaches comparable strict success to the combined attack under matched
+  retriever, poison budget and target pair, showing the compound design adds
+  nothing.
+evidence_note: Measured across 3 QA datasets and 8 LLMs with matched query
+  IDs, fixed target pair, fixed retriever and prompt, 10 iterations of 10
+  sampled queries; retrieval F1 separates retrieval-time from generation-time
+  effects. Single paper, authors' own attack, no defended baselines tested,
+  and the paper itself reports cases where the compound attack underperforms
+  on refusal-prone or weakly instruction-following models.
+confidence: medium

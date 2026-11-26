@@ -1,0 +1,40 @@
+id: 1-7b-7b-qwen-llama-models-doing-label-free-rl-math
+ref: CLM-0956
+capability: error-detection
+technique: train-verifier-majority-vote-contrast-then-filter-consensus
+statement: >-
+  For 1.7B-7B Qwen and Llama models doing label-free RL on math, a model's
+  ability to judge its own solutions can be trained without ground truth by
+  using majority-voted answers to build balanced correct/incorrect
+  verification pairs, raising self-verification accuracy from roughly 55% to
+  81-87% in-domain and transferring to held-out reward benchmarks.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Mathematical reasoning training data (MATH), three base/instruct backbones 1.7B-7B; verification must be done in an extended-reasoning mode, since a non-thinking verifier collapses"
+sources:
+  - source: arxiv-2603-17775
+    stance: supports
+    note: >-
+      Validated by: Self-verification accuracy on MATH500/AMC/AIME24/GPQA
+      (e.g. Qwen2.5-7B 54.0 to 86.5 on MATH500), RewardBench scores against
+      untrained base models and larger models, and downstream accuracy vs
+      TTRL (+4.7 to +5.9 average); ablations remove filtering, verifier
+      updates, self-correction and answer-anchored grouping.. Measured on
+      three backbones and four benchmarks against a TTRL baseline, with
+      reported TNR/FPR curves and an ablation showing balanced
+      positive/negative sampling is needed to avoid verifier collapse.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Running the same
+  co-evolution loop and finding self-verification accuracy stays near its
+  untrained ~55% level, or that the gain is an artifact of a label bias
+  (e.g. verifier accepting nearly everything) rather than discrimination,
+  would falsify it.
+submitted_by: agent:claude-opus-5@Russ-Miller

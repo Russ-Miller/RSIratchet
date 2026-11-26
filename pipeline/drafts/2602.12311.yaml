@@ -1,0 +1,51 @@
+arxiv_id: "2602.12311"
+title: Perceptual Self-Reflection in Agentic Physics Simulation Code Generation
+url: https://doi.org/10.48550/arxiv.2602.12311
+drafted_at: 2026-11-10
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: code-generation
+statement: For generated physics simulation code, where syntactically valid
+  programs can run cleanly yet produce non-physical behaviour, executing the
+  animation and having a vision-language model judge sampled rendered frames
+  against scenario-specific physics criteria catches failures (numerical
+  instability, missing dynamics, wrong problem variant) that syntax, runtime
+  and silent-output checks do not.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: 2D matplotlib animations across seven physics domains plus
+  one non-physics visualization; 10 hand-designed scenarios; accuracy judged
+  by the same vision model that performs validation; no matched-compute
+  single-shot baseline
+technique: ""
+proposed_technique: Validate simulation code by VLM inspection of rendered frames
+technique_summary: Run the generated animation in a subprocess, capture frames
+  at uniform intervals, and have a vision-capable model score them against
+  per-scenario physics criteria, routing failures back to either the
+  requirements or the code-generation stage.
+technique_kind: process
+technique_validated_by: "Qualitative comparison on 10 scenarios against
+  single-shot generation: the pipeline was rated 91% average physics accuracy
+  with 86% of scenarios above an 85% threshold, and single-shot output failed
+  visibly in three of four side-by-side cases; the single-shot baseline rate
+  (about 40%) is taken from prior published work, not run here."
+stance_on_existing: supports
+related_claim_id: external-feedback-repair
+stance_reason: The rendered frame is an external observation of behaviour
+  rather than the model's unaided critique, and the paper reports the loop
+  helps where code-level checks give no signal.
+falsifier: A controlled study where single-shot generation at matched
+  token/compute budget, or execution-based repair alone, reaches the same
+  expert-judged physics correctness on the same scenarios; or independent
+  physicists rating the loop's outputs no better than the baseline's.
+evidence_note: Argued more than measured. Ten scenarios, no replication, no
+  matched-compute control, and the headline accuracy figure is produced by the
+  same vision model the method relies on, so it cannot separate grounding from
+  the validator's own bias. The side-by-side figure of four cases is the
+  strongest piece of evidence and is author-judged. The paper itself reports
+  one calibration failure (energy conservation applied to a dissipative
+  system) and low confidence on slow-evolving dynamics.
+confidence: low
+problems:
+  - related_claim_id "external-feedback-repair" does not exist

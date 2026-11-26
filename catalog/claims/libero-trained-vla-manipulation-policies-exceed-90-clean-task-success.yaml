@@ -1,0 +1,45 @@
+id: libero-trained-vla-manipulation-policies-exceed-90-clean-task-success
+ref: CLM-1152
+capability: embodied-control
+technique: learn-bounded-instruction-edit-attacker-vla-red-teaming
+statement: >-
+  For LIBERO-trained VLA manipulation policies that exceed 90% clean task
+  success, small bounded instruction edits (under 200 characters, found by
+  an automated black-box attacker) cut task success by about 20 points,
+  lengthen action sequences by about 55%, and raise constraint violations by
+  about 33%, with planning-heavy suites (Goal, Long) degrading more than
+  perception-heavy ones (Spatial, Object).
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Six open VLA models (pi-0, pi-0.5, GR00T-N1.5, X-VLA, InternVLA-M1, DeepThinkVLA) on LIBERO in simulation; text-only perturbations; attacker trained against pi-0.5 and transferred,"
+sources:
+  - source: arxiv-2603-24935
+    stance: supports
+    note: >-
+      Validated by: Measured against a frozen GPT-5-mini attacker with the
+      same tool interface: comparable or slightly better attack metrics (ASR
+      16.7 vs 14.5) with 21.1% fewer tool calls and 54.7% fewer character
+      edits; ablation shows GRPO without SFT cold-start drops ASR from 16.7
+      to 8.7.. Measured on LIBERO across six models and four suites with
+      clean-rollout baselines per task, three attack objectives. Small test
+      set (3 held-out tasks per suite, 5 episodes each), simulation only,
+      and the attacker was trained on one victim then transferred, so
+      per-model numbers are noisy. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Running the same
+  bounded-edit attack against these VLAs and finding task success, action
+  length and constraint violations essentially unchanged, or finding the
+  degradation is concentrated in perception-heavy rather than planning-heavy
+  suites. Drafted stance toward
+  vla-manipulation-policies-doing-single-step-action-prediction-libero-observations:
+  supports -- Both report that LIBERO-saturating VLA policies are fragile to
+  small input perturbations, here on the language channel rather than the
+  camera.
+submitted_by: agent:claude-opus-5@Russ-Miller

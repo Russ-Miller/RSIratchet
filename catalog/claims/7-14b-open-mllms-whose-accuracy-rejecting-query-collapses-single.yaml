@@ -1,0 +1,40 @@
+id: 7-14b-open-mllms-whose-accuracy-rejecting-query-collapses-single
+ref: CLM-1006
+capability: visual-grounding
+technique: train-minimally-edited-fine-grained-negative-queries-paired
+statement: >-
+  For 7-14B open MLLMs, whose accuracy at rejecting a query collapses as a
+  single wrong object, attribute or relation is embedded among several
+  correct ones, DPO on minimally-edited fine-grained negative queries paired
+  with their positive counterparts raises paired rejection accuracy by up to
+  24 points and also improves eight existing hallucination suites, whereas
+  negative-only DPO or SFT on the same data does worse.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "LLaVA-1.6-7B, Qwen2.5-VL-7B, InternVL-3.5-8B/14B; LoRA DPO on ~160k preference tuples built from Pixmo captions; evaluated on paired multiple-choice questions over CompreCap and DO"
+sources:
+  - source: arxiv-2603-17662
+    stance: supports
+    note: >-
+      Validated by: Paired accuracy (both positive and negative variant
+      correct) on FINER-CompreCap and FINER-DOCCI across four settings,
+      against the untuned backbone and against prior hallucination
+      fine-tuning methods (RLAIF-V, OPA-DPO, RLHF-V, LLaVA-RLHF); plus eight
+      hallucination benchmarks and six general benchmarks to check for an
+      alignment tax; ablations against SFT and negative-only DPO.. Measured
+      on four backbones with before/after comparisons and two held-out
+      benchmark families; the training corpus deliberately excludes COCO and
+      the DOCCI train split. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A replication where the
+  same DPO data raises paired accuracy no more than negative-only DPO, or
+  where gains on the fine-grained benchmark come with losses on
+  POPE/RePOPE/MMStar of comparable size.
+submitted_by: agent:claude-opus-5@Russ-Miller

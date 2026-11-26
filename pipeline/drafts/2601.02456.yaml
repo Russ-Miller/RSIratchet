@@ -1,0 +1,47 @@
+arxiv_id: "2601.02456"
+title: "InternVLA-A1: Unifying Understanding, Generation and Action for
+  Robotic Manipulation"
+url: https://doi.org/10.48550/arxiv.2601.02456
+drafted_at: 2026-11-15
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: For 2-3B vision-language-action manipulation policies, adding an
+  expert that predicts compressed future visual latents and conditions the
+  action expert on them raises real-robot success most where the scene moves
+  during execution (conveyor sorting, picking in-motion objects) and least on
+  static tabletop tasks.
+kind: observation
+backing_strength: single-paper
+scope_condition: 2B-3B MoT VLA built on InternVL3/Qwen3-VL, pre-trained on
+  692M frames of mixed sim, real-robot and egocentric human video; 12
+  real-world bimanual tasks plus RoboTwin 2.0.
+technique: ""
+proposed_technique: Predict compressed future visual latents in a parallel
+  expert feeding the action head
+technique_summary: A third transformer expert encodes current and past
+  multi-view frames with a VAE tokenizer, compresses them to 16 tokens per
+  view, decodes the future frame latents in a single non-autoregressive pass,
+  and passes those latents as conditioning to the flow-matching action expert.
+technique_kind: architecture
+technique_validated_by: "Ablation removing the generation expert from
+  InternVLA-A1 (3B) with everything else held fixed: average success over 12
+  real-world tasks fell from 77.0% to 57.6%, with the full model better on 11
+  of 12 tasks and the largest drops on the two dynamic tasks; against
+  baselines, +4.4% over pi-0.5 on static tasks and +26.7% on dynamic ones, 30
+  rollouts per task."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation on comparable-scale VLA policies where removing the
+  future-latent generation expert costs as much or more on static tabletop
+  tasks as on dynamic ones, or where the gain on dynamic tasks disappears once
+  pre-training data and parameter count are matched.
+evidence_note: Measured on one model family at two scales, 30 rollouts per
+  task, with an explicit generation-expert ablation and comparisons to pi-0,
+  pi-0.5 and GR00T N1.5. Only two dynamic task families, so the
+  dynamic-vs-static contrast rests on few tasks. The ablation isolates the
+  generation expert but not the separate contributions of the VAE tokenizer,
+  token compression or parallel decoding; no seed variance reported.
+confidence: medium

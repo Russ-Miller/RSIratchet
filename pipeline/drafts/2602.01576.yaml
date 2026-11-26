@@ -1,0 +1,50 @@
+arxiv_id: "2602.01576"
+title: Generative Visual Code Mobile World Models
+url: https://doi.org/10.48550/arxiv.2602.01576
+drafted_at: 2026-11-19
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: state-tracking
+statement: For mobile GUI world modeling, having a VLM predict the next screen
+  as executable web code that is then rendered yields higher
+  action-conditioned next-state correctness than text-image-to-image
+  generation models, because pixel generators exploit the high frame-to-frame
+  redundancy of GUIs by near-copying the current screen rather than applying
+  the transition.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Mobile GUI screens with coordinate-space actions, evaluated
+  on six benchmarks (four in-distribution from
+  AitW/GUIOdyssey/AndroidControl/AMEX, two held-out); 8B and 32B Qwen3-VL
+  fine-tuned on ~240K synthesized code-target transitions.
+technique: ""
+proposed_technique: Predict the next GUI state as renderable web code
+technique_summary: Fine-tune a VLM to emit a reasoning trace plus executable
+  web code for the next screen given the current screenshot and a coordinate
+  action, then render that code to pixels instead of generating pixels
+  directly.
+technique_kind: training
+technique_validated_by: VLM-as-judge Instruction Accuracy averaged over three
+  judge models, plus DINO embedding similarity, against 8 frontier open-weight
+  image-gen and VLM baselines; 79.6% vs 67.4% for the best baseline (106B) and
+  25.8% for the best image-gen model, with a 100-sample human ranking study
+  (Spearman 0.806 with the automatic metric) and a downstream policy test
+  where the world model lifted M3A step accuracy.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An image-generation world model that scores comparably on
+  action-conditioned correctness (not just similarity) on these transitions,
+  or a showing that code-based prediction loses to pixel generation once
+  screens are photo-realistic or layouts fall outside web-code expressible
+  structure.
+evidence_note: "Measured on 6 benchmarks of 500 instances each. The
+  identity-mapping mechanism is supported by a correlation analysis (Emu3.5
+  rho=0.92 between input-output similarity and output-target similarity,
+  gWorld ~0.4), not just the headline accuracy. Confound: gWorld was
+  fine-tuned on in-domain data while baselines are zero-shot, so the
+  comparison does not isolate representation choice from training; the
+  ablation against a naive code-target generator and the photo-realism split
+  partially address scope but not this."
+confidence: medium

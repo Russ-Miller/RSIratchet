@@ -1,0 +1,45 @@
+arxiv_id: "2603.05689"
+title: "SecureRAG-RTL: A Retrieval-Augmented, Multi-Agent, Zero-Shot
+  LLM-Driven Framework for Hardware Vulnerability Detection"
+url: https://doi.org/10.48550/arxiv.2603.05689
+drafted_at: 2026-11-23
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: domain-knowledge
+statement: For detecting security weaknesses in RTL/HDL designs, general and
+  code-specialized LLMs fail mostly because hardware-security knowledge is
+  missing rather than because reasoning is missing, so retrieving CWE entries
+  matched to an LLM-written summary and parser-extracted hardware signature of
+  the design raises detection accuracy across model sizes, with the largest
+  relative gain for sub-4B models.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: 14 annotated Verilog designs derived from Hack@DAC'21 with
+  injected flaws; 18 models from 1.5B to frontier; retrieval metadata
+  generated once by a frontier model
+technique: ""
+proposed_technique: Retrieve CWE entries matched to an RTL summary and signature
+technique_summary: Builds a CWE knowledge base with LLM-generated summaries,
+  keywords and vulnerable/secure snippet pairs, then retrieves the top-k
+  entries by cosine similarity to a weighted mix of an LLM summary and
+  parser-extracted hardware keywords from the design, and hands them to a
+  detection agent.
+technique_kind: retrieval
+technique_validated_by: "Detection accuracy on 14 vulnerabilities before vs
+  after: small models 14.29% to 40.48%, medium 29.76% to 52.38%, frontier
+  50.00% to 90.48%; ROUGE-L of extracted vulnerable snippets also rose."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Supplying the same retrieved CWE context gives no accuracy gain
+  over prompt-only detection on a held-out HDL vulnerability set, or an
+  equivalent gain is obtained from generic security prompting without any CWE
+  retrieval.
+evidence_note: Measured on only 14 designs, partly synthetically injected,
+  with binary detection as the metric; the retrieval metadata and the RTL
+  summaries depend on a frontier model, so the small-model gain is not purely
+  self-contained. No baseline where irrelevant CWEs are retrieved, so
+  relevance of retrieval is not isolated from the effect of any added security
+  context.
+confidence: low

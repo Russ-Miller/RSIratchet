@@ -1,0 +1,43 @@
+arxiv_id: "2601.18939"
+title: "A Few Bad Neurons: Isolating and Surgically Correcting Sycophancy"
+url: https://doi.org/10.48550/arxiv.2601.18939
+drafted_at: 2026-11-17
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: sycophancy
+statement: In Gemma-2-2B/9B, fine-tuning only the ~3% of MLP neurons selected
+  by a linear probe over concatenated sparse-autoencoder features (gradients
+  masked elsewhere) lowers sycophantic-response preference on multiple-choice
+  sycophancy benchmarks as much as or more than synthetic-data fine-tuning or
+  attention-head pinpoint tuning, using far less training data.
+kind: observation
+backing_strength: single-paper
+scope_condition: Two Gemma-2 sizes with matching pretrained SAEs; single-turn
+  sycophancy prompts; benchmarks are Syco-Bench, Open-Ended-Sycophancy,
+  NLP/POLI/PHIL; no general-capability retention measured.
+technique: ""
+proposed_technique: Fine-tune only probe-selected sycophancy neurons
+technique_summary: Train a linear probe on concatenated SAE features to score
+  MLP neurons for sycophancy, decode the top ~3% back into the MLP basis, and
+  update only those rows/columns via gradient masking during supervised
+  fine-tuning.
+technique_kind: training
+technique_validated_by: Sycophancy scores on Syco-Bench subtests,
+  Open-Ended-Sycophancy, and NLP/POLI/PHIL preference rates, against the
+  untrained model, synthetic-data intervention, supervised pinpoint tuning,
+  and a residual-probe ablation.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On the same models and benchmarks, neuron-masked fine-tuning scores
+  no better than full-model or synthetic-data fine-tuning at matched data, or
+  randomly chosen 3% neuron masks give the same reduction, showing the probe
+  selection does no work.
+evidence_note: "Measured on two Gemma-2 models against three baselines plus a
+  residual-probe ablation. Results are mixed rather than uniform: the
+  residual-probe ablation beats the SAE version on 9B and loses on 2B, and
+  some Syco-Bench subtests (Pickside, Delusion) do not improve. No random-mask
+  control and no general-capability benchmark, so the attribution to the
+  selected neurons and the claim of preserved capability are not isolated."
+confidence: low

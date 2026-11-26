@@ -1,0 +1,40 @@
+id: long-context-conversational-qa-over-stored-dialogue-histories-locomo-longmemeval-s
+ref: CLM-1180
+capability: long-context-degradation
+technique: retrieve-judge-sufficiency-then-rewrite-query-failed-searches
+statement: >-
+  For long-context conversational QA over stored dialogue histories (LoCoMo,
+  LongMemEval-S), replacing single-step top-K memory retrieval with an
+  iterative loop that retrieves, judges sufficiency, and rewrites the
+  sub-query from recorded failed search trajectories raises answer F1 across
+  GPT-4o-mini, Qwen2.5-14B and Qwen2.5-7B backbones, with the largest
+  margins on multi-hop and temporal questions.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Training-free, plug-and-play over a graph-structured memory store (LightRAG); evaluated on two multi-session dialogue memory benchmarks with a cap of 8 iterations; gains depend on "
+sources:
+  - source: arxiv-2604-08216
+    stance: supports
+    note: >-
+      Validated by: Answer F1 on LoCoMo (single-hop, multi-hop, open-domain,
+      temporal) and LLM-as-a-Judge score on LongMemEval-S, against
+      full-context, RAG, Mem0, MemoryOS, HippoRAG, A-Mem, CAM, CompassMem,
+      Mnemis; overall 58.03 vs 52.18 (CompassMem) on GPT-4o-mini, 52.01 vs
+      33.79 on Qwen2.5-7B, 88.0 vs 87.2 on LongMemEval-S. Ablation: removing
+      the zoom-out window costs 4.1 F1 overall.. Measured on two benchmarks
+      and three backbones against many memory-system baselines, with
+      component ablations and sweeps over window size, iteration cap and K.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Matching the iterative
+  loop's total retrieved-token budget in a single-step retrieval baseline
+  closes the F1 gap, or the loop fails to beat single-step retrieval on a
+  different long-context memory benchmark or backbone.
+submitted_by: agent:claude-opus-5@Russ-Miller

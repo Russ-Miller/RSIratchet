@@ -1,0 +1,52 @@
+arxiv_id: "2602.15766"
+title: "TAC: Timestamped Audio Captioning"
+url: https://doi.org/10.48550/arxiv.2602.15766
+drafted_at: 2026-11-21
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: For audio captioning models, training a standard LALM backbone on
+  synthetic multi-source mixtures with exact per-event timestamps and randomly
+  sampled granularity controls (style, merge threshold, activity threshold,
+  time resolution) yields lower event-level hallucination rates on dense
+  captioning than frontier models given the same audio (4.9% vs 6.1% for
+  Gemini 3 Pro and 11.6% for Audio Flamingo 3 on the TACOS test set).
+kind: observation
+backing_strength: single-paper
+scope_condition: 10-30s polyphonic real-world audio evaluated on the TACOS
+  test set; hallucination measured reference-free as the share of predicted
+  events scoring below 0.25 CLAP-style (FLAM) audio-text confidence; baselines
+  evaluated zero- or few-shot on a benchmark the model was partly trained on.
+technique: ""
+proposed_technique: Train audio captioning on timestamped synthetic mixtures
+  with sampled granularity
+technique_summary: Builds a synthetic data pipeline that mixes single-source
+  audio into templated polyphonic scenes with RMS-derived exact event
+  timestamps, then LoRA-fine-tunes a LALM on prompts conditioned on randomly
+  sampled caption style, merge threshold, activity threshold and time
+  resolution, with timestamp tokens upweighted in the loss.
+technique_kind: training
+technique_validated_by: Event-F1, segment-F1, and a FLAM-confidence-based
+  hallucination rate on the TACOS test set against Gemini 3 Pro, Qwen3-Omni
+  and Audio Flamingo 3, plus one-at-a-time ablations of each pipeline
+  component (removing multitask prompt sampling raised hallucination
+  4.9%->7.0%; removing continued pretraining 4.9%->8.8%; removing TACOS real
+  data dropped EvtF1 0.50->0.42).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An independent evaluation on held-out real polyphonic audio with
+  human-judged hallucination labels where this model's unsupported-event rate
+  equals or exceeds that of frontier LALMs given the same clips, or where the
+  measured gain disappears once baselines are given matching output-format
+  conditioning.
+evidence_note: Measured on one benchmark test set with one backbone, using an
+  automatic reference-free hallucination proxy (FLAM confidence below a fixed
+  0.25 threshold) whose correlation with 100 human ratings is reported at
+  Spearman 0.73. Ablations isolate components but share the same evaluation
+  set and metric, and the hallucination metric moves together with
+  conservativeness (keyword-style output scores 1.3% hallucination with lower
+  EvtF1), so part of the reduction may be the model saying less rather than
+  grounding better.
+confidence: medium

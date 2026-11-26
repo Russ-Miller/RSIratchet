@@ -1,0 +1,45 @@
+arxiv_id: "2603.03823"
+title: "SWE-CI: Evaluating Agent Capabilities in Maintaining Codebases via
+  Continuous Integration"
+url: https://doi.org/10.48550/arxiv.2603.03823
+drafted_at: 2026-11-23
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: software-architecture
+statement: "When agents evolve a real repository over many CI iterations,
+  their accepted patches beat human reference commits on surface style
+  conventions while losing on structural maintainability: across 20 models, 15
+  of 20 outscored human oracle code on Pylint but all 20 scored lower on
+  maintainability index, with consistently fewer changed lines."
+kind: observation
+backing_strength: single-paper
+scope_condition: 100 Python repository tasks (avg 233 days, 71 commits between
+  base and oracle), measured only on successfully solved problems, static
+  metrics Pylint and MI
+technique: ""
+proposed_technique: Score agents by functional correctness on future commits
+technique_summary: Evaluate maintainability by having a dual
+  architect-programmer agent loop iteratively evolve a base commit toward a
+  later commit, and aggregate per-iteration normalized test-pass change with
+  weights that favor later iterations.
+technique_kind: process
+technique_validated_by: Applied to 20 models from 8 providers on 100 tasks;
+  reported EvoScore rankings shift as the future-weighting parameter changes,
+  plus zero-regression rate (most models under 0.25, two Claude Opus above
+  0.5). No comparison against an independent human maintainability judgement.
+stance_on_existing: supports
+related_claim_id: auditing-ai-generated-code-static-smell-detection-code-structure-architecture
+stance_reason: Both find that model-written code passing functional tests is
+  structurally worse than human code, with formatting cleanliness not tracking
+  maintainability.
+falsifier: A replication on comparable multi-commit evolution tasks where
+  model patches match or exceed human reference commits on maintainability
+  index, or where the Pylint/MI divergence disappears once patch size is
+  controlled.
+evidence_note: Measured on 100 curated tasks from 68 repositories, 20 models,
+  >10B tokens; static metrics only, compared against the repository's own
+  later commits. Does not isolate whether lower MI is caused by shorter
+  patches or by design choices, and only successfully solved problems are
+  included, which selects on success.
+confidence: medium

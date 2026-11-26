@@ -1,0 +1,49 @@
+arxiv_id: "2603.21574"
+title: Adaptive Robust Estimator for Multi-Agent Reinforcement Learning
+url: https://doi.org/10.48550/arxiv.2603.21574
+drafted_at: 2026-11-24
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: When training 1.5B-8B instruct LLMs with GRPO-style multi-agent RL
+  on math reasoning under noisy, heavy-tailed reward signals, replacing the
+  batch-mean used to center advantages with a robust location estimator
+  (adaptive-loss block estimates aggregated by median) raises in- and
+  out-of-distribution accuracy over the same pipeline with standard batch-mean
+  normalization.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Group-relative policy optimization where advantages are
+  normalized by batch statistics, and rewards come from verifiers or reward
+  models whose score distribution has outliers; demonstrated with injected
+  Cauchy reward noise on MATH-trained Qwen2.5 1.5B/7B and Llama3.1 8B, plus
+  one aerial VLN task with a 2B VLM.
+technique: ""
+proposed_technique: Center RL advantages with a robust estimator, not the batch mean
+technique_summary: Partitions a batch of returns into blocks, fits a location
+  estimate per block by minimizing an adaptive robust loss, takes the median
+  of those block estimates, and uses it in place of the batch mean when
+  normalizing advantages.
+technique_kind: training
+technique_validated_by: Accuracy on MATH500 (in-distribution) and AMC23,
+  Gaokao2023en, MinervaMath, AIME24/25 against a matched GRPO baseline under
+  injected Cauchy reward noise, plus degradation curves under group-level and
+  within-group reward contamination; separately, training reward curves and
+  NE/SR/OSR/SPL on aerial VLN against a FlightGPT GRPO baseline.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Under matched data, backbone and hyperparameters, robust-centered
+  advantage normalization fails to beat batch-mean GRPO on contaminated-reward
+  reasoning benchmarks, or the gain disappears once reward noise is removed,
+  showing the benefit was not about outlier robustness.
+evidence_note: Measured on three backbones across six math benchmarks with a
+  GRPO baseline matched on the collaboration protocol; gains are mostly 1-3
+  points with a few larger jumps (AMC23 22.5 to 32.5), several cells tied or
+  unchanged, and small benchmarks (AIME24/25, 30-40 items) move by single-item
+  steps. No seeds or variance reported, so small differences are not separable
+  from noise. Design confounds the ARE contribution with DACR in the main
+  table; the VLN experiment isolates ARE alone but is a single run on one
+  small model.
+confidence: low

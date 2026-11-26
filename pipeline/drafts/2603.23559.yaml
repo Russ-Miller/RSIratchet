@@ -1,0 +1,46 @@
+arxiv_id: "2603.23559"
+title: "CAPTCHA Solving for Native GUI Agents: Automated Reasoning-Action Data
+  Generation and Self-Corrective Training"
+url: https://doi.org/10.48550/arxiv.2603.23559
+drafted_at: 2026-11-24
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: self-repair
+statement: For an 8B vision-language GUI agent fine-tuned to solve interactive
+  CAPTCHAs, adding ~10k retrospective self-correction trajectories — built by
+  having an expert model analyze the student's own failed attempts and write a
+  corrective reasoning-action trace — raises solve rate over training on
+  expert success traces alone, without lengthening successful interactions.
+kind: observation
+backing_strength: single-paper
+scope_condition: One backbone (Qwen3-VL-8B-Thinking), seven procedurally
+  generated CAPTCHA types, held-out synthetic test set of 1,000 instances;
+  correction traces are expert-written with ground-truth access, not
+  model-generated unaided.
+technique: ""
+proposed_technique: Build correction data from the student's own failed trajectories
+technique_summary: Record the student model's failed interaction traces, hand
+  them with the ground truth to an expert model that writes a retrospective
+  diagnosis and corrected reasoning-action sequence, and fine-tune on those
+  traces alongside expert success traces.
+technique_kind: training
+technique_validated_by: "Same base model and same expert-solution data with
+  and without ~10k correction traces: overall solve rate 62.90% vs 71.90% on
+  1,000 held-out dynamic CAPTCHA instances, gains on all seven types (Slider
+  +21.9pp, Text +16.8pp), average successful steps 1.60 vs 1.54."
+stance_on_existing: supports
+related_claim_id: 3b-7b-vision-language-gui-agents-making-each-step-predict-expected
+stance_reason: Both find that supervising GUI agents on synthesized or
+  recorded failure trajectories improves recovery and raises task success over
+  agents trained only on successful behaviour.
+falsifier: Training the same model on an equal volume of additional expert
+  success traces instead of correction traces yields the same or better solve
+  rate, showing the gain came from data volume rather than failure-derived
+  supervision.
+evidence_note: Measured, single-paper ablation on one 8B backbone and one
+  synthetic CAPTCHA benchmark; the two arms differ only in the correction
+  traces but the correction arm has ~10k more training samples, so data volume
+  is not controlled. No test of whether the gain transfers to the real-world
+  CAPTCHA set or to other backbones.
+confidence: medium

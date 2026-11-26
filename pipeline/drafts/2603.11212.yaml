@@ -1,0 +1,48 @@
+arxiv_id: "2603.11212"
+title: "Security-by-Design for LLM-Based Code Generation: Leveraging Internal
+  Representations for Concept-Driven Steering Mechanisms"
+url: https://doi.org/10.48550/arxiv.2603.11212
+drafted_at: 2026-11-23
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: secure-coding
+statement: In 7-16B open models, a single difference-in-means 'secure code'
+  direction extracted from ~50 contrastive secure/insecure snippet pairs and
+  added to the residual stream at the mid layer where it most flips
+  contrastive answers (around layer 13-15 of 32) raises security metrics on
+  CodeGuard+ for every model tested, but it trades functional correctness in
+  code-specialized models (CodeLlama, StarCoder) while raising both security
+  and pass@1 in general-purpose models (Llama3, Mistral, Deepseek).
+kind: observation
+backing_strength: single-paper
+scope_condition: 6 models of 7-16B; concept vector extracted from Python
+  CyberNative pairs and applied unchanged to other languages; CodeGuard+ (91
+  prompts, 34 CWEs) and CWEval; steering weight alpha=1, no hyperparameter
+  search; security judged by CodeQL+Sonar static analysis
+technique: ""
+proposed_technique: Steer the residual stream along a secure-code concept vector
+technique_summary: Extract a difference-in-means vector between activations on
+  secure and insecure code completions, find the layer where adding it most
+  changes the model's secure/insecure choice, and add it to that layer's
+  residual stream at every forward pass during generation.
+technique_kind: decoding
+technique_validated_by: pass@1, secure@1pass, secure-pass@1 and SVEN security
+  rate on CodeGuard+ and CWEval, averaged over 10 runs, against unsteered
+  baselines and against SafeCoder fine-tuning, constrained decoding and
+  secure-prefix prompting; negative steering used as a direction check.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Applying the extracted vector at the selected layer leaves security
+  metrics unchanged or lowers them on a held-out secure-coding benchmark, or
+  the measured security gain disappears once output informativeness
+  (comment-only or empty completions) is controlled for.
+evidence_note: Measured on 6 models across two benchmarks with 10 runs and
+  confidence intervals. Separability of secure/insecure activations shown by
+  PCA projection at layer 15. Gains are modest (a few points) and the paper's
+  own comparison shows SCS-Code alone scoring below constrained decoding on
+  secure-pass@1 for two models, with only the hybrid beating it. No
+  hyperparameter search, and the concept-vector quality and alpha sensitivity
+  are only partly explored in appendices.
+confidence: medium

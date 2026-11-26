@@ -1,0 +1,46 @@
+id: 7b-open-generator-context-grounded-qa-llama-2-7b-squad-v2-small
+ref: CLM-1036
+capability: hallucination
+technique: distill-external-grounding-checks-into-hidden-state-probe
+statement: >-
+  For a 7B open generator on context-grounded QA (LLaMA-2-7B on SQuAD v2), a
+  small probe trained on the generator's per-layer hidden states with weak
+  offline labels (substring match, embedding similarity, LLM judge)
+  separates grounded from hallucinated answers on a held-out split far
+  better than output-level similarity scores computed at inference (test AUC
+  ~0.86 vs ~0.41-0.42), and probes that attend across layers and token
+  positions beat pooled-MLP probes.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "One generator (LLaMA-2-7B), one dataset (SQuAD v2), greedy decoding, responses truncated to 96 tokens; labels are weak (no human annotation), and no transfer across models or domai"
+sources:
+  - source: arxiv-2604-06277
+    stance: supports
+    note: >-
+      Validated by: 5-fold CV plus a separate 5,000-row held-out test set:
+      best probe AUC 0.8577, F1 0.6644, ECE 0.1025, against output-level
+      cosine/token-F1 similarity baselines at AUC 0.41-0.42; probe latency
+      0.15-6.7 ms against ~4.33 s generation.. Measured on one generator and
+      one dataset, 15,000 samples total with a 5,000-row held-out test
+      split. The similarity baselines score below chance (AUC ~0.41), which
+      is suspicious and suggests they are mis-oriented or ill-suited rather
+      than a fair comparator, so the size of the margin is not trustworthy.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A probe trained this way
+  scores no better than output-level similarity or token-probability
+  baselines on a held-out split, or its advantage disappears once the
+  similarity baselines are given the same gold answers the probe's labels
+  were derived from. Drafted stance toward
+  2m-parameter-classifier-head-reads-hidden-states-already-computed-during:
+  supports -- Both find that a small classifier reading the generator's own
+  hidden states detects response-level hallucination without external
+  verification at inference.
+submitted_by: agent:claude-opus-5@Russ-Miller

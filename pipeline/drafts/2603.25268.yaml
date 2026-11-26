@@ -1,0 +1,52 @@
+arxiv_id: "2603.25268"
+title: "CRAFT: Grounded Multi-Agent Coordination Under Partial Information"
+url: https://doi.org/10.48550/arxiv.2603.25268
+drafted_at: 2026-11-25
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: "In grounded multi-agent construction under partial information,
+  where three LLM 'Director' agents with complementary private 2D views
+  instruct a fixed Builder, judged individual communication quality does not
+  predict joint task success: frontier models score higher on
+  spatial-grounding and mind-modeling judges yet reach lower final task
+  progress than several 7B-72B open-weight models, because better use of a
+  private view produces correction-heavy instructions that drive
+  over-removal."
+kind: observation
+backing_strength: single-paper
+scope_condition: 15 Director models (8 open-weight 7B-72B, 7 frontier) paired
+  with a fixed GPT-4o-mini Builder that selects among oracle-verified legal
+  moves; 20 target structures, 20 turns, 3 runs; LLM (GPT-4o-mini) graders, no
+  human evaluation.
+technique: ""
+proposed_technique: Score collective pragmatic sufficiency, not per-agent message quality
+technique_summary: Alongside per-agent judges for private spatial reasoning
+  and public message calibration, add a judge that asks whether the agents'
+  combined turn output was sufficient for a rational executor to identify at
+  least one verified forward-progress action.
+technique_kind: process
+technique_validated_by: "Per-turn grader scores split by whether the Builder
+  followed the oracle move: spatial-grounding and mind-modeling scores were
+  near-identical across both conditions while pragmatic-sufficiency scores
+  dropped sharply when the oracle move was not taken."
+stance_on_existing: supports
+related_claim_id: across-41-models-seven-multi-agent-benchmarks-gains-single-agent-capability
+stance_reason: Both find that individual-agent competence gains do not carry
+  over into coordination ability, here with the stronger result that the two
+  can move in opposite directions.
+falsifier: Run the same benchmark with a larger model set and find that judged
+  spatial-grounding or mind-modeling scores correlate positively with final
+  task progress, or that frontier Directors beat open-weight ones on
+  completion percentage.
+evidence_note: "Measured: 15 models x 20 structures x 20 turns x 3 runs.
+  Frontier mean progress 0.387 vs open-weight 0.525 while scoring higher on SG
+  (0.829 vs 0.658) and MM (0.642 vs 0.502). Mediation analysis attributes the
+  inversion to remove gap (R^2 0.609 alone; unique-perspective partial
+  correlation non-significant after control). Judges are a single LLM,
+  unvalidated against humans; Builder is fixed and oracle-assisted, so the
+  result isolates Director communication but not end-to-end coordination.
+  Frontier group is internally split (Gemini-3-Flash is best overall), so the
+  group-level inversion rests on a few weak frontier entries."
+confidence: medium

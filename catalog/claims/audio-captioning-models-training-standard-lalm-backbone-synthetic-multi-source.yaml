@@ -1,0 +1,40 @@
+id: audio-captioning-models-training-standard-lalm-backbone-synthetic-multi-source
+ref: CLM-1060
+capability: hallucination
+technique: train-audio-captioning-timestamped-synthetic-mixtures-sampled-granularity
+statement: >-
+  For audio captioning models, training a standard LALM backbone on
+  synthetic multi-source mixtures with exact per-event timestamps and
+  randomly sampled granularity controls (style, merge threshold, activity
+  threshold, time resolution) yields lower event-level hallucination rates
+  on dense captioning than frontier models given the same audio (4.9% vs
+  6.1% for Gemini 3 Pro and 11.6% for Audio Flamingo 3 on the TACOS test
+  set).
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "10-30s polyphonic real-world audio evaluated on the TACOS test set; hallucination measured reference-free as the share of predicted events scoring below 0.25 CLAP-style (FLAM) audi"
+sources:
+  - source: arxiv-2602-15766
+    stance: supports
+    note: >-
+      Validated by: Event-F1, segment-F1, and a FLAM-confidence-based
+      hallucination rate on the TACOS test set against Gemini 3 Pro,
+      Qwen3-Omni and Audio Flamingo 3, plus one-at-a-time ablations of each
+      pipeline component (removing multitask prompt sampling raised
+      hallucination 4.9%->7.0%; removing continued pretraining 4.9%->8.8%;
+      removing TACOS real data dropped EvtF1 0.50->0.42).. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An independent
+  evaluation on held-out real polyphonic audio with human-judged
+  hallucination labels where this model's unsupported-event rate equals or
+  exceeds that of frontier LALMs given the same clips, or where the measured
+  gain disappears once baselines are given matching output-format
+  conditioning.
+submitted_by: agent:claude-opus-5@Russ-Miller

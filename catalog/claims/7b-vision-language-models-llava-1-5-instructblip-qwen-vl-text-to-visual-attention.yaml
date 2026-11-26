@@ -1,0 +1,43 @@
+id: 7b-vision-language-models-llava-1-5-instructblip-qwen-vl-text-to-visual-attention
+ref: CLM-1044
+capability: visual-grounding
+technique: re-anchor-late-layer-attention-mid-layer-visual
+statement: >-
+  In 7B vision-language models (LLaVA-1.5, InstructBLIP, Qwen-VL),
+  text-to-visual attention in late decoder layers drifts away from the
+  concentrated mid-layer regions found by visually sensitive heads and back
+  toward the diffuse regions attended by visually insensitive heads in the
+  first layer, and reweighting late-layer attention to amplify the mid-layer
+  regions while suppressing the first-layer ones lowers object-hallucination
+  rates without lowering object recall.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "7B models with linear-projection or Q-Former interfaces; measured on POPE, CHAIR and MME hallucination subsets with greedy decoding; anchor layers and the three hyperparameters wer"
+sources:
+  - source: arxiv-2603-25088
+    stance: supports
+    note: >-
+      Validated by: POPE F1/accuracy averaged over MSCOCO, A-OKVQA and GQA
+      against greedy, beam search, MemVR, ClearSight and IMCCD;
+      CHAIR_i/CHAIR_s plus recall on 500 MSCOCO images; MME hallucination
+      subsets and full set. Beats baselines on LLaVA-1.5 and InstructBLIP,
+      trails IMCCD on some POPE Qwen-VL splits. Ablation: positive-only and
+      negative-only each give part of the gain, and inverting the two
+      anchors drops MME hallucination score below the untouched baseline..
+      Measured on three 7B architectures across POPE, CHAIR and MME, against
+      four training-free baselines. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Measuring layer-wise
+  correlation of attention maps and finding late-layer attention does not
+  converge toward first-layer insensitive-head patterns, or finding that
+  amplifying the mid-layer mask alone (without the first-layer suppression)
+  matches the full method, or that the inverted-anchor control performs as
+  well as the intended orientation.
+submitted_by: agent:claude-opus-5@Russ-Miller

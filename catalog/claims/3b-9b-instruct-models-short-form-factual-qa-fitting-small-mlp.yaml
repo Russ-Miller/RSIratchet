@@ -1,0 +1,41 @@
+id: 3b-9b-instruct-models-short-form-factual-qa-fitting-small-mlp
+ref: CLM-0986
+capability: abstention-and-self-knowledge
+technique: calibrate-raw-uncertainty-scores-against-correctness-labels
+statement: >-
+  For 3B-9B instruct models on short-form factual QA, fitting a small MLP
+  that maps a single raw uncertainty score (entropy, perplexity, P(True),
+  semantic entropy and similar) to a correctness probability using labelled
+  score-correctness pairs sharply lowers expected calibration error but
+  rarely improves ranking of correct over incorrect answers, because
+  post-hoc mapping of one scalar cannot add correctness information the
+  score does not carry.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Short-form factual/multiple-choice QA (TriviaQA, SciQ, PopQA, GSM8K, CSQA, MedMCQA) with 3B-9B instruct models; in-domain supervision works best, transfer across datasets weakens; "
+sources:
+  - source: arxiv-2604-00445
+    stance: supports
+    note: >-
+      Validated by: ECE and AUC on 10 uncertainty metrics x 5 models x 3 QA
+      datasets against the uncalibrated scores and against CUE; ECE dropped
+      by roughly 10-70 points in most cells while AUC changes were often
+      near zero; few-shot (8-128 labels) and label-corrupted variants
+      retained ECE gains but lost AUC.. Measured across 5 models, 3 main QA
+      datasets and 10 uncertainty metrics, plus 3 specialised datasets; ECE
+      gains large and consistent, AUC gains sporadic (sometimes negative).
+      Bound is also argued formally via a mutual-information bound on AUC.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A post-hoc mapping of a
+  single scalar uncertainty score that consistently raises AUC by a large
+  margin across models and datasets, or a setting where this calibration
+  fails to reduce ECE on short-form factual QA.
+submitted_by: agent:claude-opus-5@Russ-Miller

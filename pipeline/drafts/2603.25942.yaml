@@ -1,0 +1,46 @@
+arxiv_id: "2603.25942"
+title: Reinforcing Structured Chain-of-Thought for Video Understanding
+url: https://doi.org/10.48550/arxiv.2603.25942
+drafted_at: 2026-11-25
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: video-temporal-reasoning
+statement: For video MLLMs trained single-stage with GRPO on a
+  Summarize→Think→Answer structured CoT, anchoring the summary-consistency
+  signal to the model's own correct rollouts beats anchoring it to
+  ground-truth action-order summaries at 7B (+11.9 vs +6.2 accuracy points),
+  while at 3B the ordering reverses (+2.4 vs +3.0).
+kind: observation
+backing_strength: single-paper
+scope_condition: Qwen2.5-VL backbones at 3B and 7B, 16-frame input, measured
+  on the authors' own EventFlowQA temporal-ordering QA set; only two model
+  sizes and one dataset.
+technique: ""
+proposed_technique: Anchor group summary consistency on self-generated correct rollouts
+technique_summary: In GRPO, force the model to emit an ordered event summary
+  before reasoning, down-weight summary tokens that diverge from the
+  token-wise center of the group's correct rollouts, and scale an
+  entropy-based diversity bonus on the thinking tokens by (1 - group
+  accuracy).
+technique_kind: training
+technique_validated_by: Ablations on EventFlowQA (42.37 base → 56.10 full
+  self-supervised variant; dynamic diversity beats static 52.22 vs 49.13 and
+  56.10 vs 55.78) plus seven public VideoQA benchmarks where the RL-only model
+  matches or exceeds SFT+RL pipelines on most metrics; no matched-compute
+  control for the extra structure.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Running the same GT-anchored and self-anchored consistency
+  objectives across several backbones and video QA sets and finding GT
+  supervision equal or better at 7B, or self-supervision better at 3B, would
+  break the scale-dependent ordering.
+evidence_note: Measured, single paper, one backbone family, two sizes, one
+  in-house dataset for the supervision comparison. Benchmark table uses a
+  different training set and does not separate the GT/self comparison. No
+  seeds or variance reported, and gains on public benchmarks are small
+  (0.3-4.2 points) relative to typical run-to-run spread.
+confidence: low
+problems:
+  - "figures not in the source: 6.2"

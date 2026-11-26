@@ -1,0 +1,54 @@
+arxiv_id: "2603.25088"
+title: Visual Attention Drifts,but Anchors Hold:Mitigating Hallucination in
+  Multimodal Large Language Models via Cross-Layer Visual Anchors
+url: https://doi.org/10.48550/arxiv.2603.25088
+drafted_at: 2026-11-25
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: In 7B vision-language models (LLaVA-1.5, InstructBLIP, Qwen-VL),
+  text-to-visual attention in late decoder layers drifts away from the
+  concentrated mid-layer regions found by visually sensitive heads and back
+  toward the diffuse regions attended by visually insensitive heads in the
+  first layer, and reweighting late-layer attention to amplify the mid-layer
+  regions while suppressing the first-layer ones lowers object-hallucination
+  rates without lowering object recall.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: 7B models with linear-projection or Q-Former interfaces;
+  measured on POPE, CHAIR and MME hallucination subsets with greedy decoding;
+  anchor layers and the three hyperparameters were tuned on an MSCOCO
+  validation set.
+technique: ""
+proposed_technique: Re-anchor late-layer attention to mid-layer visual anchors
+technique_summary: At inference, identify visually sensitive and insensitive
+  attention heads by their mean attention mass on image tokens, extract a
+  positive saliency mask from mid-layer sensitive heads and a negative mask
+  from first-layer insensitive heads, and multiplicatively amplify or suppress
+  late-layer text-to-image attention on those masks before renormalizing.
+technique_kind: decoding
+technique_validated_by: "POPE F1/accuracy averaged over MSCOCO, A-OKVQA and
+  GQA against greedy, beam search, MemVR, ClearSight and IMCCD;
+  CHAIR_i/CHAIR_s plus recall on 500 MSCOCO images; MME hallucination subsets
+  and full set. Beats baselines on LLaVA-1.5 and InstructBLIP, trails IMCCD on
+  some POPE Qwen-VL splits. Ablation: positive-only and negative-only each
+  give part of the gain, and inverting the two anchors drops MME hallucination
+  score below the untouched baseline."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Measuring layer-wise correlation of attention maps and finding
+  late-layer attention does not converge toward first-layer insensitive-head
+  patterns, or finding that amplifying the mid-layer mask alone (without the
+  first-layer suppression) matches the full method, or that the
+  inverted-anchor control performs as well as the intended orientation.
+evidence_note: Measured on three 7B architectures across POPE, CHAIR and MME,
+  against four training-free baselines. The mechanistic claim rests on
+  attention entropy and Pearson-correlation curves averaged over 100 MSCOCO
+  images in one model (LLaVA-1.5-7B), so the drift evidence is thinner than
+  the benchmark evidence. The inverted-anchor ablation is a useful directional
+  control. Hallucination gains here come with higher recall, which addresses
+  the usual coverage confound, but gains on Qwen-VL POPE are below the IMCCD
+  baseline.
+confidence: medium

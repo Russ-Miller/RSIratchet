@@ -1,0 +1,47 @@
+arxiv_id: "2603.26349"
+title: Generative Score Inference for Multimodal Data
+url: https://doi.org/10.48550/arxiv.2603.26349
+drafted_at: 2026-11-25
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: For response-level hallucination detection on LLM QA with verified
+  reference answers available offline, fitting a conditional diffusion model
+  to the distribution of question-conditioned semantic dissimilarity scores
+  and testing whether a dissimilarity threshold falls outside the resulting
+  prediction set detects hallucinations at higher power, at matched Type I
+  error, than Semantic Entropy over sampled answers or an XGBoost alignment
+  classifier.
+kind: observation
+backing_strength: single-paper
+scope_condition: Requires an offline calibration set of questions with
+  human-verified reference answers; tested on 1,473 WikiQA pairs with
+  LLaMA-3.1-8B-Instruct, split 1040/140/293, with dissimilarity defined as 1
+  minus cosine similarity of OpenAI text embeddings and threshold c=0.7.
+technique: ""
+proposed_technique: Fit a conditional score distribution, then test the threshold
+technique_summary: Train a conditional diffusion model on calibration-set
+  dissimilarity scores to approximate the score distribution given the input,
+  draw synthetic samples to form a prediction set, and flag a hallucination
+  when the acceptability threshold falls outside it.
+technique_kind: process
+technique_validated_by: Power at matched Type I error on 293 held-out WikiQA
+  test instances, compared against Semantic Entropy (10 sampled answers,
+  logistic calibration) and Conformal Alignment (XGBoost); also FDR and power
+  on MS-COCO caption selection against Conformal Alignment.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On a comparable reference-answer QA setup, the diffusion-based
+  prediction-set detector matches or trails Semantic Entropy and an XGBoost
+  alignment classifier in power at the same Type I error, or its advantage
+  disappears once the calibration set is drawn from a different question
+  distribution than the test set.
+evidence_note: Measured on one corpus (WikiQA), one generator model, one
+  embedding-based score and one threshold, with a single reported
+  power-vs-alpha curve; no confidence intervals or repeated splits reported,
+  and the reference-answer requirement means it does not apply to
+  reference-free deployment. A second task (MS-COCO caption selection)
+  supports the framework but against only one baseline.
+confidence: low

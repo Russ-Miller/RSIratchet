@@ -1,0 +1,64 @@
+id: arxiv-2601-01896
+ref: SRC-1063
+kind: paper
+title: Tackling the Inherent Difficulty of Noise Filtering in RAG
+authors:
+  - Jingyu Liu
+  - Jiaen Lin
+  - Yong Liu
+year: 2026
+date: 2026-01-05
+arxiv_id: "2601.01896"
+url: https://arxiv.org/abs/2601.01896
+tags:
+  - ingested
+summary: Retrieval-Augmented Generation (RAG) has become a widely adopted
+  approach to enhance Large Language Models (LLMs) by incorporating external
+  knowledge and reducing hallucinations. However, noisy or irrelevant
+  documents are often introduced during RAG, potentially degrading performance
+  and even causing hallucinated outputs. While various methods have been
+  proposed to filter out such noise, we argue that identifying irrelevant
+  information from retrieved content is inherently difficult and limited
+  number of transformer layers can hardly solve this. Consequently, retrievers
+  fail to filter out irrel
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, medium): The paper proposes a
+  fine-tuning method that makes LLMs robust to irrelevant retrieved documents,
+  reducing noise-induced hallucinated outputs. No claim has been drafted from
+  it yet."
+ingested_at: 2026-11-26
+brief: >-
+  Standard LoRA fine-tuning cannot teach a model to ignore retrieved noise
+  without also disturbing the attention it needs over relevant tokens; passing
+  the LoRA attention update through a saturating non-linearity separates the
+  two objectives. The argument is that noise judgement is triple-wise
+  (relating a document token to several query tokens) while attention is
+  pairwise, so small rerankers cannot filter reliably and the burden must fall
+  on the LLM.
+
+
+  The method adds g(x) = max/min(ξ·tanh(x), x) to the attention update,
+  trained with LoRA rank 64 on Llama-3.1-8B-Instruct, Qwen2.5-7B-Instruct and
+  Mistral-7B-Instruct-v0.2. Evaluation is on NQ, TriviaQA, HotpotQA,
+  2WikiMultiHopQA and ASQA, with 3 DPR-retrieved non-gold documents injected
+  as distractors; 3000 test / 7000 train samples per dataset, 948 / 4000 for
+  ASQA.
+
+
+  Mean accuracy across the 5 datasets rises from 72.0 for LoRA to 74.2 at ξ=5.
+  Mistral-7B gains more: NQ 62.3 to 66.3, ASQA 48.8 to 51.3. Placing the query
+  before the documents also helps (NQ 65.7 vs 62.6 for LoRA).
+
+
+  Evidence: matched-parameter comparison against LoRA, plus activation
+  ablations (tanh alone, tanh+x, sigmoid) and an attention-gap measurement on
+  answer tokens. No comparison to data-centric robustness methods like RAFT or
+  Yoran et al., which the authors call unfair rather than run. Gains are a few
+  points, 1 noise construction, 7B-scale only.
+
+
+  If you fine-tune for RAG robustness, the attention update form is a lever
+  you may not have tried.
+brief_generated_at: 2026-11-26
+brief_model: claude-opus-5
+brief_source: full-text

@@ -1,0 +1,40 @@
+id: 7-16b-open-models-single-difference-in-means-secure-code-direction-extracted
+ref: CLM-1007
+capability: secure-coding
+technique: steer-residual-stream-along-secure-code-concept-vector
+statement: >-
+  In 7-16B open models, a single difference-in-means 'secure code' direction
+  extracted from ~50 contrastive secure/insecure snippet pairs and added to
+  the residual stream at the mid layer where it most flips contrastive
+  answers (around layer 13-15 of 32) raises security metrics on CodeGuard+
+  for every model tested, but it trades functional correctness in
+  code-specialized models (CodeLlama, StarCoder) while raising both security
+  and pass@1 in general-purpose models (Llama3, Mistral, Deepseek).
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "6 models of 7-16B; concept vector extracted from Python CyberNative pairs and applied unchanged to other languages; CodeGuard+ (91 prompts, 34 CWEs) and CWEval; steering weight alp"
+sources:
+  - source: arxiv-2603-11212
+    stance: supports
+    note: >-
+      Validated by: pass@1, secure@1pass, secure-pass@1 and SVEN security
+      rate on CodeGuard+ and CWEval, averaged over 10 runs, against
+      unsteered baselines and against SafeCoder fine-tuning, constrained
+      decoding and secure-prefix prompting; negative steering used as a
+      direction check.. Measured on 6 models across two benchmarks with 10
+      runs and confidence intervals. Separability of secure/insecure
+      activations shown by PCA projection at layer 15. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Applying the extracted
+  vector at the selected layer leaves security metrics unchanged or lowers
+  them on a held-out secure-coding benchmark, or the measured security gain
+  disappears once output informativeness (comment-only or empty completions)
+  is controlled for.
+submitted_by: agent:claude-opus-5@Russ-Miller

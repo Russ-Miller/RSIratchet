@@ -1,0 +1,41 @@
+id: 7b-class-lvlms-llava-1-5-instructblip-object-hallucination-be-lowered
+ref: CLM-1021
+capability: visual-grounding
+technique: edit-attention-representations-only-router-flagged-tokens
+statement: >-
+  In 7B-class LVLMs (LLaVA-1.5, InstructBLIP), object hallucination can be
+  lowered by editing attention-layer representations along a learned
+  hallucination-reduction direction in a single forward pass, with a
+  lightweight router deciding from the first-layer representation whether a
+  token is edited at all, reaching lower CHAIR scores than
+  contrastive-decoding methods at roughly a tenth of their added compute,
+  and the signed editing strength moves hallucination in both directions.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "7B LLaVA-1.5 and InstructBLIP; CHAIR, POPE, AMBER object-hallucination benchmarks; editor and router trained on MSCOCO pairs built by noising the image to induce hallucination."
+sources:
+  - source: arxiv-2603-29405
+    stance: supports
+    note: >-
+      Validated by: CHAIR_S/CHAIR_I on 500 MSCOCO images, POPE accuracy/F1
+      on 9,000 pairs, AMBER score, against baseline models and
+      contrastive-decoding and steering baselines (VCD, M3ID, AVISC,
+      Octopus, VTI, Nullu, Projectaway), with TFLOPs reported; ablation
+      removing each encoder and the router; MME and SEED-Bench checked for
+      general-capability loss.. Measured on two 7B backbones across three
+      benchmarks with compute reported; CHAIR_S 51.3 to 30.2 on LLaVA-1.5 at
+      11.81 vs 20+ TFLOPs for CD baselines. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: On the same models and
+  benchmarks, the edit gives no CHAIR/POPE gain over contrastive decoding at
+  matched compute, or the gain is explained by shorter and less informative
+  captions (lower object coverage), or negative strength fails to raise
+  hallucination.
+submitted_by: agent:claude-opus-5@Russ-Miller

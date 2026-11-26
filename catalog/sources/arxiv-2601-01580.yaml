@@ -1,0 +1,66 @@
+id: arxiv-2601-01580
+ref: SRC-1061
+kind: paper
+title: "The Two-Stage Decision-Sampling Hypothesis: Understanding the
+  Emergence of Self-Reflection in RL-Trained LLMs"
+authors:
+  - Zibo Zhao
+  - Yuanting Zha
+  - Haipeng Zhang
+  - Xingcheng Xu
+year: 2026
+date: 2026-01-04
+arxiv_id: "2601.01580"
+url: https://arxiv.org/abs/2601.01580
+tags:
+  - ingested
+summary: Self-reflection capabilities emerge in Large Language Models after RL
+  post-training, with multi-turn RL achieving substantial gains over SFT
+  counterparts. Yet the mechanism of how a unified optimization objective
+  gives rise to functionally distinct capabilities of generating solutions and
+  evaluating when to revise them remains opaque. To address this question, we
+  introduce the Gradient Attribution Property to characterize how reward
+  gradients distribute across policy components, formalized through the
+  Two-Stage Decision-Sampling (DS) Hypothesis, which decomposes the policy
+  into sampling ($π_{s
+notes: "Filed as a source on self-repair from the classifier's judgement that
+  the paper is about it (measures, medium): The paper offers a theoretical and
+  empirical characterization of why self-reflection emerges under RL versus
+  SFT, attributing gains to the decision/verification component, rather than
+  proposing a new fix or reporting a regression. No claim has been drafted
+  from it yet."
+ingested_at: 2026-11-26
+brief: >-
+  RL's advantage over SFT on out-of-distribution reasoning comes from learning
+  when to reject an answer, not from generating better answers. The paper
+  splits a single policy analytically into a sampling policy (generate a
+  candidate solution) and a decision policy (stop or resample), and argues
+  token-level KL penalties scale with sequence length for sampling actions but
+  stay O(1) for decision actions, so SFT-like objectives constrain sampling
+  while leaving the decision function untrained.
+
+
+  The empirical test is multi-digit multiplication with Qwen2.5-7B-Instruct,
+  trained on 4x5 and 5x4 and evaluated on 3x3 through 3x9, all
+  out-of-distribution, n = 100 per cell. Decision actions are detected by
+  lexical revision markers.
+
+
+  Base and SFT without reflection collapse past 3x4. SFT with reflection holds
+  to 3x5 but drops to 49.0 on 3x6 and 0.0 on 3x9; RL holds 90.0 on 3x6 and
+  34.0 on 3x9. Calibrating 3 parameters, RL keeps p(resample | wrong) at
+  40-60% far OOD while SFT's collapses toward zero, with p(stop | correct)
+  near ceiling in both.
+
+
+  Evidence is a theorem plus 1 model family, 1 task type, and a 3-parameter
+  behavioural fit, not an intervention that toggles gradient attribution.
+  Supporting results on p(F->T) flatness at 3-5% and 8-80% SFT OOD degradation
+  are cited from others. Clipping, trust regions, and non-binary rewards are
+  excluded by assumption.
+
+
+  Use it if you are deciding whether to spend on reflection-rich SFT data.
+brief_generated_at: 2026-11-26
+brief_model: claude-opus-5
+brief_source: full-text
