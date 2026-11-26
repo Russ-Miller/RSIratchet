@@ -1,0 +1,50 @@
+arxiv_id: "2601.21464"
+title: "Conversation for Non-verifiable Learning: Self-Evolving LLMs through
+  Meta-Evaluation"
+url: https://doi.org/10.48550/arxiv.2601.21464
+drafted_at: 2026-11-19
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: critique
+statement: For 3B-8B open instruct models trained by multi-agent self-play
+  without ground-truth labels, rewarding a critique by whether the critiqued
+  agent's peer-ranked score rises after revision trains judging ability as
+  well as generation, raising both task accuracy over majority-vote
+  self-rewarding baselines and standalone pairwise-judge accuracy on an
+  external reward benchmark.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Four same-policy agents with distinct personas, four-round
+  propose/critique/revise/rank protocol, Bradley-Terry aggregation of pairwise
+  rankings, 3B-8B Qwen3 and Llama backbones; peer consensus is the only
+  supervision.
+technique: ""
+proposed_technique: Reward a critique by the improvement it causes in peers
+technique_summary: In multi-agent self-play, score each agent's critique by
+  the increase in the critiqued peer's Bradley-Terry peer-ranking score after
+  revision, and use that diagnostic reward (alongside solution-quality and
+  majority-alignment rewards, with initial-ranking tokens masked) as the RL
+  training signal.
+technique_kind: training
+technique_validated_by: Pass@1 on six verifiable reasoning benchmarks across
+  four backbones against self-rewarding majority-vote baselines (Qwen3-8B
+  DeepMath 87.1 vs 78.8, AIME24 76.5 vs 69.8), three non-verifiable benchmarks
+  (+2.7-8.3 pp over SRT-M), ablation zeroing the diagnostic weight (DeepMath
+  Pass@1 87.1 to 83.5, Rank-rho 0.78 to 0.55), and RewardBench-2 judge
+  accuracy 52.3 to 58.6.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An independent run where zeroing the diagnostic reward term while
+  holding the conversation protocol, solution-quality and consensus rewards
+  fixed leaves task accuracy and external judge accuracy unchanged, or where
+  the gain over majority-vote self-rewarding disappears at matched compute.
+evidence_note: Measured on four open backbones, six verifiable and three
+  non-verifiable benchmarks, three runs each, against inference-only and two
+  self-rewarding training baselines; the component ablation isolates the
+  diagnostic reward, and RewardBench-2 is an external judging test the
+  training never saw. Single paper, authors' own implementation; no
+  matched-compute control reported and the 'closely matches ground-truth RL'
+  claim rests on a figure rather than a table.
+confidence: medium

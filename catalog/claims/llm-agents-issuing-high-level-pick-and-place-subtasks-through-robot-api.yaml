@@ -1,0 +1,37 @@
+id: llm-agents-issuing-high-level-pick-and-place-subtasks-through-robot-api
+ref: CLM-1156
+capability: embodied-control
+technique: pick-code-as-policy-or-tool-as-policy
+statement: >-
+  For LLM agents issuing high-level pick-and-place subtasks through a robot
+  API, small open models (7-8B) reach far higher task success when the
+  executor emits a whole Python program per subtask than when it issues
+  nested tool calls one at a time, while large closed models mostly gain
+  from tool calling, so the right executor interface depends on model scale.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "56 linguistically varied multi-object pick-and-place instructions across three simulated environments; success judged by majority vote of three LLM judges against ground-truth acti"
+sources:
+  - source: arxiv-2601-19510
+    stance: supports
+    note: >-
+      Validated by: Average success rate and latency over 56 instructions
+      for ten models in both modes: Claude-4.1-Opus 93.5% (TaP) vs 92.6%
+      (CaP); Falcon-H1-7B 84.3% (CaP) vs 14.8% (TaP); Llama-3.1-8B 68.5% vs
+      3.7%; Granite-3.3-8B and Mistral-7B 0% under TaP. No ablation
+      separating planner prompt from executor mode.. Measured on 56
+      instructions x 10 models x 2 modes, single run, temperature not
+      reported for the evaluated models. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A 7-8B open model that
+  matches or exceeds its own code-generation success rate under step-by-step
+  tool calling on the same instruction set, or a large model whose
+  tool-calling success collapses relative to code generation.
+submitted_by: agent:claude-opus-5@Russ-Miller

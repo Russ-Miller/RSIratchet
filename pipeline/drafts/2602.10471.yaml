@@ -1,0 +1,46 @@
+arxiv_id: "2602.10471"
+title: "TestExplora: Benchmarking LLMs for Proactive Bug Discovery via
+  Repository-Level Test Generation"
+url: https://doi.org/10.48550/arxiv.2602.10471
+drafted_at: 2026-11-11
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: code-generation
+statement: On repository-level proactive bug discovery, where a model must
+  write tests that fail on the buggy commit and pass after the fix using only
+  documentation-derived intent, current models are weak (best 16.06%
+  Fail-to-Pass) and letting an agent explore the repository with file-viewing
+  tools beats pasting the entry function's full dependency context into the
+  prompt (GPT-5-mini 12.79% plain white-box vs 17.27% with SWEAgent, 29.7% at
+  pass@5).
+kind: observation
+backing_strength: single-paper
+scope_condition: 2,389 test-generation tasks from 482 Python GitHub repos with
+  >1,000 stars, documentation synthesized by DocAgent, no issue reports or
+  defect signals shown; six to nine models evaluated, agents tested only with
+  GPT-5-mini and o4-mini.
+technique: ""
+proposed_technique: Give the test generator repo exploration instead of pasted dependencies
+technique_summary: Replace a fixed white-box prompt containing the entry
+  function plus its dependencies with an agent loop that browses the
+  repository itself before writing tests that must fail pre-fix and pass
+  post-fix.
+technique_kind: tooling
+technique_validated_by: "Fail-to-Pass rate on TestExplora-Lite (330 PRs)
+  against the same backbone given all dependencies in context: GPT-5-mini
+  12.79 -> 17.27 (SWEAgent) and 14.55 (TraeAgent); o4-mini 5.92 -> 9.42 and
+  12.16; head-pass rate also rose, with pass@5 reaching 29.7."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched-budget comparison where supplying full dependency context
+  equals or beats agentic exploration on Fail-to-Pass for the same backbones,
+  or a model reaching high F2P on documentation-only proactive test generation
+  without exploration.
+evidence_note: Measured on a new benchmark the authors built; agent-vs-plain
+  comparison covers only two backbones and does not control token budget or
+  number of model calls, so part of the agent gain may be extra compute rather
+  than exploration. The 16.06% ceiling is Claude-Sonnet-4.5 plain white-box on
+  the Lite subset.
+confidence: medium

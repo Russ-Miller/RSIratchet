@@ -1,0 +1,46 @@
+arxiv_id: "2602.08440"
+title: "SteerVLA: Steering Vision-Language-Action Models in Long-Tail Driving
+  Scenarios"
+url: https://doi.org/10.48550/arxiv.2602.08440
+drafted_at: 2026-11-20
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: For VLA driving policies in closed-loop simulation, splitting the
+  policy into a VLM that emits a reasoning trace plus a fine-grained
+  meta-action and a separate action model conditioned only on that meta-action
+  raises driving score over a single end-to-end VLA, with the larger margin on
+  rare long-tail scenarios (construction zones, accidents, blocked
+  intersections) than on routine driving.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: CARLA Bench2Drive closed-loop, single front camera,
+  InternVL2-1B backbones for both levels, trained on SimLingo trajectories
+  relabelled by an automatic VLM pipeline; open-loop NuScenes only comparable
+  to existing methods.
+technique: ""
+proposed_technique: Steer a driving VLA with fine-grained meta-actions from a VLM
+technique_summary: A fine-tuned VLM reads camera, ego-state history and
+  routing command, emits a reasoning trace and a motion-detailed meta-action
+  (intensity and direction, not just 'turn left'), and the low-level action
+  policy is conditioned on the meta-action alone; the meta-action labels are
+  generated automatically by prompting a VLM over trajectory projections.
+technique_kind: architecture
+technique_validated_by: "Closed-loop CARLA driving score on Bench2Drive: 90.71
+  vs 85.94 for SimLingo (+4.77), +8.04 on an 11-scenario long-tail subset;
+  ablation separates the hierarchy (85.94 to 88.81) from the refined
+  meta-action and reasoning labels (88.81 to 90.71)."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched-compute single-policy VLA trained on the same refined
+  meta-action labels equals or beats the hierarchical version, or the
+  long-tail margin disappears when the two are compared at equal inference
+  budget or on a different simulator.
+evidence_note: Measured closed-loop in one simulator against four VLA
+  baselines, with a two-step ablation separating architecture from label
+  quality. Confounded by inference latency (2.51 s per step, unoptimized) and
+  by the hierarchy doubling model calls; no matched-compute baseline.
+  Real-world evidence is open-loop only and reported as merely comparable.
+confidence: medium

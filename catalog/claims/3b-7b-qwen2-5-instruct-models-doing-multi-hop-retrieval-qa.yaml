@@ -1,0 +1,40 @@
+id: 3b-7b-qwen2-5-instruct-models-doing-multi-hop-retrieval-qa
+ref: CLM-0978
+capability: planning
+technique: reward-plan-supervise-execution
+statement: >-
+  For 3B-7B Qwen2.5 instruct models doing multi-hop retrieval QA, splitting
+  training so the decomposition planner is optimized by RL against a
+  plan-level reward (bipartite-matched F1 against gold sub-questions) while
+  the sub-task executor is trained by SFT on filtered multi-turn retrieval
+  traces raises exact match over agentic-RAG baselines, and neither half
+  alone gives the gain — an untrained planner can lower accuracy at 3B.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "English Wikipedia-style multi-hop QA (HotpotQA, 2Wiki, MuSiQue, Bamboogle), Qwen2.5-3B/7B-Instruct, shared retrieval environment; not tested on open-web tool use or other model fam"
+sources:
+  - source: arxiv-2603-13853
+    stance: supports
+    note: >-
+      Validated by: Exact match on four multi-hop QA benchmarks against
+      non-retrieval, standard RAG, iterative RAG and six agentic-RAG
+      baselines; average EM 0.376 (7B) and 0.335 (3B), about +9% and +13%
+      relative over the strongest baseline, plus a component ablation
+      toggling planning, planning-RL and execution-SFT at both scales..
+      Measured: EM on four benchmarks, two model sizes, with a six-row
+      component ablation (7B average 27.55 to 37.64; 3B 13.42 to 33.45;
+      planning alone drops 3B from 13.42 to 12.63). [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: End-to-end RL on the
+  same backbone, retrieval environment and training data matching or
+  exceeding the split planner-RL / executor-SFT setup's EM, or an ablation
+  showing the plan-level set-matching reward is no better than the
+  final-answer reward for the planner.
+submitted_by: agent:claude-opus-5@Russ-Miller

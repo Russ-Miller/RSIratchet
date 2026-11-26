@@ -1,0 +1,45 @@
+arxiv_id: "2602.17680"
+title: "BioBridge: Bridging Proteins and Language for Enhanced Biological
+  Reasoning with LLMs"
+url: https://doi.org/10.48550/arxiv.2602.17680
+drafted_at: 2026-11-19
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: domain-knowledge
+statement: "For a 7B general instruct LLM adapted to protein understanding,
+  most of the protein-task competence comes from the frozen protein encoder
+  plus cross-modal projector rather than from biomedical continual
+  pre-training: removing the encoder/projector and feeding raw amino-acid
+  sequences as text costs far more accuracy (e.g. metal-ion binding 0.76 to
+  0.33) than removing the domain pre-training stage (0.76 to 0.66)."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Qwen2.5-7B-Instruct base, ESM2 encoder with a Q-Former
+  projector, evaluated on three PFMBench tasks (binary localization, metal-ion
+  binding, material production); no downstream task data in training.
+technique: ""
+proposed_technique: Pipe a frozen protein encoder through a Q-Former into a domain-pretrained LLM
+technique_summary: Continually pre-trains a general LLM on biomedical corpora
+  mixed with math/code/science replay data, then contrastively aligns frozen
+  ESM2 protein embeddings into the LLM's token space via a Q-Former projector
+  and fine-tunes end to end on protein-description pairs.
+technique_kind: training
+technique_validated_by: Accuracy/F1/Spearman on 16 PFMBench protein tasks
+  against nine specialist PLMs and the untouched Qwen base, plus
+  MMLU/RACE/AGIEval/OpenBookQA for retained general ability, plus two
+  ablations removing pre-training or the encoder+projector.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Feeding raw amino-acid sequences as plain text to the same
+  biomedically continual-pre-trained LLM matches the encoder+projector
+  pipeline on these tasks, or the pre-training ablation costs more than the
+  encoder ablation.
+evidence_note: Measured, but on only three of the sixteen tasks, one backbone,
+  single run, no seeds or confidence intervals; the two ablations are not
+  fully crossed (no variant with encoder but no SFT, no variant isolating the
+  Q-Former from the encoder), so the attribution is coarse. General-benchmark
+  retention is reported but BioBridge still scores below the base Qwen on MMLU
+  (63.3 vs 70.4) and AGIEval.
+confidence: low

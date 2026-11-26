@@ -1,0 +1,45 @@
+arxiv_id: "2603.15643"
+title: "GSI Agent: Domain Knowledge Enhancement for Large Language Models in
+  Green Stormwater Infrastructure"
+url: https://doi.org/10.48550/arxiv.2603.15643
+drafted_at: 2026-11-22
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: domain-knowledge
+statement: For a 2B instruction-tuned multimodal model adapted to a
+  municipal-document domain (green stormwater infrastructure), combining LoRA
+  supervised fine-tuning on document-derived instruction pairs with retrieval
+  over the same source manuals scores higher on domain QA than either
+  component alone, while general-benchmark scores stay flat.
+kind: observation
+backing_strength: single-paper
+scope_condition: One 2B base model (Qwen3-VL-2B-Instruct), one domain, ~11k
+  self-generated instruction examples drawn from the same municipal PDFs that
+  form the retrieval corpus; general retention checked on a 5k-sample general
+  benchmark.
+technique: ""
+proposed_technique: Combine domain SFT with retrieval over the same source manuals
+technique_summary: LoRA fine-tune a general model on instruction pairs
+  auto-extracted from domain PDFs, and at inference retrieve top-k passages
+  from a vector index over those same PDFs before generating.
+technique_kind: training
+technique_validated_by: "G-Eval on the domain set: RAG alone 0.51, fine-tuning
+  alone 0.63, both 0.72; BLEU-4 on the domain set 0.090 (base) to 0.307,
+  Sentence-BERT 0.544 to 0.742, with the general set at 0.304 vs 0.305 BLEU-4.
+  No human-expert numbers reported despite the metric being defined."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On a held-out domain evaluation whose references were not written
+  by the same generation prompt as the SFT targets, the SFT+RAG system scores
+  no better than RAG alone, or the measured gain disappears once
+  reference-style alignment is controlled for.
+evidence_note: Measured on one model, one domain, one dataset the authors
+  built themselves. The SFT targets and the evaluation references come from
+  the same auto-generation pipeline over the same PDFs, so the large BLEU-4
+  and ROUGE jumps partly reflect learned output style rather than acquired
+  knowledge; the ablation on G-Eval is the more informative number. No
+  baseline for the general-retention claim other than the base model, no
+  confidence intervals, no error analysis.
+confidence: low

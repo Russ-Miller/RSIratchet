@@ -1,0 +1,40 @@
+id: open-weight-3b-70b-models-verifying-declarative-claims-without-retrieval-scoring
+ref: CLM-1222
+capability: fact-verification
+technique: rank-pro-con-arguments-pairwise-tournament-then-calibrate
+statement: >-
+  For open-weight 3B-70B models verifying declarative claims without
+  retrieval, scoring generated supporting and attacking arguments by
+  pairwise tournament adjudicated by a separate stronger judge and
+  calibrating the scores with a Bradley-Terry fit beats scoring each
+  argument's strength in isolation, but does not beat chain-of-thought
+  prompting on the largest model, where CoT remains more accurate.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Binary claim verification on MedQA-derived claims, StrategyQA and TruthfulQA, no external evidence retrieval, trees of depth and breadth at most 2, Llama 3.3 70B as judge."
+sources:
+  - source: arxiv-2601-05455
+    stance: supports
+    note: >-
+      Validated by: Accuracy on three 500-item balanced claim sets against
+      Direct prompting, CoT, and ArgLLM (the same tree without pairwise
+      comparison or calibration), across five open models and two judge
+      configurations; blending BT with intrinsic strength reported ~3%
+      relative gain over BT alone.. Measured on three datasets x five models
+      x several configurations, with ArgLLM as a clean ablation (lambda=0).
+      Gains are mostly a few accuracy points and are not uniform: CoT wins
+      on Llama 3.3 70B on StrategyQA and TruthfulQA, and self-judging
+      collapses the advantage. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Running the same
+  pipeline with the calibration step removed (lambda=0) and finding equal or
+  higher accuracy, or finding CoT beats the tournament method on small
+  models too.
+submitted_by: agent:claude-opus-5@Russ-Miller

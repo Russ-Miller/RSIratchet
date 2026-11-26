@@ -1,0 +1,44 @@
+id: 8b-vision-language-gui-agent-fine-tuned-solve-interactive-captchas-adding
+ref: CLM-1051
+capability: self-repair
+technique: build-correction-data-student-s-own-failed-trajectories
+statement: >-
+  For an 8B vision-language GUI agent fine-tuned to solve interactive
+  CAPTCHAs, adding ~10k retrospective self-correction trajectories — built
+  by having an expert model analyze the student's own failed attempts and
+  write a corrective reasoning-action trace — raises solve rate over
+  training on expert success traces alone, without lengthening successful
+  interactions.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "One backbone (Qwen3-VL-8B-Thinking), seven procedurally generated CAPTCHA types, held-out synthetic test set of 1,000 instances; correction traces are expert-written with ground-tr"
+sources:
+  - source: arxiv-2603-23559
+    stance: supports
+    note: >-
+      Validated by: Same base model and same expert-solution data with and
+      without ~10k correction traces: overall solve rate 62.90% vs 71.90% on
+      1,000 held-out dynamic CAPTCHA instances, gains on all seven types
+      (Slider +21.9pp, Text +16.8pp), average successful steps 1.60 vs
+      1.54.. Measured, single-paper ablation on one 8B backbone and one
+      synthetic CAPTCHA benchmark; the two arms differ only in the
+      correction traces but the correction arm has ~10k more training
+      samples, so data volume is not controlled. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Training the same model
+  on an equal volume of additional expert success traces instead of
+  correction traces yields the same or better solve rate, showing the gain
+  came from data volume rather than failure-derived supervision. Drafted
+  stance toward
+  3b-7b-vision-language-gui-agents-making-each-step-predict-expected:
+  supports -- Both find that supervising GUI agents on synthesized or
+  recorded failure trajectories improves recovery and raises task success
+  over agents trained only on successful behaviour.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,40 @@
+id: training-1-5b-8b-instruct-llms-grpo-style-multi-agent-rl-math
+ref: CLM-1301
+capability: multi-model-coordination
+technique: center-rl-advantages-robust-estimator-batch-mean
+statement: >-
+  When training 1.5B-8B instruct LLMs with GRPO-style multi-agent RL on math
+  reasoning under noisy, heavy-tailed reward signals, replacing the
+  batch-mean used to center advantages with a robust location estimator
+  (adaptive-loss block estimates aggregated by median) raises in- and
+  out-of-distribution accuracy over the same pipeline with standard
+  batch-mean normalization.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Group-relative policy optimization where advantages are normalized by batch statistics, and rewards come from verifiers or reward models whose score distribution has outliers; demo"
+sources:
+  - source: arxiv-2603-21574
+    stance: supports
+    note: >-
+      Validated by: Accuracy on MATH500 (in-distribution) and AMC23,
+      Gaokao2023en, MinervaMath, AIME24/25 against a matched GRPO baseline
+      under injected Cauchy reward noise, plus degradation curves under
+      group-level and within-group reward contamination; separately,
+      training reward curves and NE/SR/OSR/SPL on aerial VLN against a
+      FlightGPT GRPO baseline.. Measured on three backbones across six math
+      benchmarks with a GRPO baseline matched on the collaboration protocol;
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Under matched data,
+  backbone and hyperparameters, robust-centered advantage normalization
+  fails to beat batch-mean GRPO on contaminated-reward reasoning benchmarks,
+  or the gain disappears once reward noise is removed, showing the benefit
+  was not about outlier robustness.
+submitted_by: agent:claude-opus-5@Russ-Miller

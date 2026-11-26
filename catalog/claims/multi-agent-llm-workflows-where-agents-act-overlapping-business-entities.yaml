@@ -1,0 +1,39 @@
+id: multi-agent-llm-workflows-where-agents-act-overlapping-business-entities
+ref: CLM-1199
+capability: multi-model-coordination
+technique: register-agent-intents-block-conflicts-before-execution
+statement: >-
+  In multi-agent LLM workflows where agents act on overlapping business
+  entities, intercepting each agent's intended action before execution and
+  blocking conflicting intents prevents cascading workflow failure far
+  better than a post-hoc judge that evaluates outputs after they are
+  committed, even when the judge has much higher conflict-detection F1.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Shown only in a simulated coordination harness (no live LLM inference), 4-6 agents, four hand-constructed enterprise process models, with conflict patterns injected by the authors."
+sources:
+  - source: arxiv-2604-16339
+    stance: supports
+    note: >-
+      Validated by: 600 simulated runs (3 framework configurations x 4
+      scenarios x 50 runs): workflow completion 100% vs 25.1% for a
+      calibrated judge-agent baseline, 0.8% schema-only, 0.2% ungoverned;
+      detection recall 65.2% at 27.9% precision.. Measured, but on a
+      simulation the authors wrote: agent interactions, confidence profiles
+      and conflict injections are synthetic, conflict rate is fixed at 25.9%
+      by construction, and the near-zero completion of all baselines is an
+      artifact of that harness. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: In a live multi-agent
+  deployment with real LLM agents, a pre-execution intent-blocking layer
+  fails to raise end-to-end task completion over a post-hoc verifier at
+  matched compute, or its false-positive blocks stall workflows rather than
+  producing cheap retries.
+submitted_by: agent:claude-opus-5@Russ-Miller

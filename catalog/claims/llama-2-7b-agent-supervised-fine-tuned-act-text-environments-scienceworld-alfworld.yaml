@@ -1,0 +1,41 @@
+id: llama-2-7b-agent-supervised-fine-tuned-act-text-environments-scienceworld-alfworld
+ref: CLM-1153
+capability: tool-use
+technique: label-step-rewards-conformally-then-probe-activations
+statement: >-
+  For a Llama-2-7B agent supervised fine-tuned to act in text environments
+  (ScienceWorld, AlfWorld), whether a given step is on a successful path is
+  linearly decodable from the residual-stream activation at that step across
+  early, middle and late layers, and the probe's quality tracks how dense
+  the environment's reward signal is: near-ceiling accuracy and F1 in
+  ScienceWorld, which gives sub-goal rewards, versus 60-95% accuracy in
+  AlfWorld, which gives only a terminal reward.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "One 7B model fine-tuned on each environment's expert ReAct trajectories; step labels derived from Monte-Carlo-estimated step rewards and conformally thresholded at 10% error; small"
+sources:
+  - source: arxiv-2604-19775
+    stance: supports
+    note: >-
+      Validated by: Probe accuracy and F1 per layer and timestep on held-out
+      in-distribution and out-of-distribution task sets in both
+      environments; no baseline detector compared, and the steering
+      follow-up (RepE direction added once at timestep 3) gave only +1.1%
+      task accuracy against 2.8-6.8% for Best-of-N, RFT and DPO.. Measured,
+      but on one 7B model and small evaluation cells (several AlfWorld cells
+      appear to be ~20 items, so single-item changes move accuracy 5
+      points). [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Linear probes on step-level
+  activations fail to separate success from failure above chance on a
+  held-out set, or separate equally well in sparse- and dense-reward
+  environments, when step labels come from an independent ground-truth
+  source rather than the same reward estimator.
+submitted_by: agent:claude-opus-5@Russ-Miller

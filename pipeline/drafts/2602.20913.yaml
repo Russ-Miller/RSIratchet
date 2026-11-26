@@ -1,0 +1,48 @@
+arxiv_id: "2602.20913"
+title: "LongVideo-R1: Smart Navigation for Low-cost Long Video Understanding"
+url: https://doi.org/10.48550/arxiv.2602.20913
+drafted_at: 2026-11-21
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: video-temporal-reasoning
+statement: For an 8B reasoning agent that navigates a hierarchical tree of
+  video clips by calling captioning and QA tools, adding an F1-style reward on
+  the time intervals it visits during RL raises accuracy most on
+  key-information-retrieval and temporal-grounding questions in hour-scale
+  video, while the whole approach loses its edge on benchmarks dominated by
+  short clips or whole-video gist questions, where uniform frame sampling is
+  competitive.
+kind: observation
+backing_strength: single-paper
+scope_condition: Qwen3-8B reasoning model with Qwen2.5-VL captioning/QA tools,
+  3-level uniform clip tree with ~16s leaves, SFT on 33K GPT-5 trajectories
+  then GRPO; evaluated on LVBench, MLVU, Video-MME-long.
+technique: ""
+proposed_technique: Reward the time intervals the agent chooses to visit
+technique_summary: During RL, score the agent's video-tree navigation with an
+  F1 over the overlap between the clips it requested and the annotated
+  evidence intervals, plus a repeat-visit penalty, alongside the answer
+  reward.
+technique_kind: training
+technique_validated_by: "Ablation against the SFT checkpoint and against RL
+  without the location reward: LVBench overall 41.6 (SFT) / 45.8 (RL, no
+  location reward) / 50.0 (full), with KIR 48.5/49.1/56.4 and TG
+  50.9/53.2/56.4; average 10.5 tool rounds versus Ego-R1's ~86 caption
+  segments at comparable Video-MME accuracy."
+stance_on_existing: supports
+related_claim_id: long-video-qa-under-fixed-frame-budget-frozen-7b-multimodal
+stance_reason: Both find that coarse-to-fine search over a hierarchical
+  temporal tree beats uniform or independent frame scoring, with the advantage
+  concentrated in the longest videos.
+falsifier: Removing the interval-overlap reward term while keeping the answer
+  reward leaves key-information-retrieval and temporal-grounding accuracy
+  unchanged, or the navigation agent matches uniform sampling on short-clip
+  and gist-question benchmarks.
+evidence_note: Measured on three long-video QA benchmarks with reward and
+  SFT-size ablations on LVBench. The accuracy-efficiency comparison is against
+  reported numbers for other agent systems rather than a matched-compute
+  rerun, and the tool-call budget and tool model size are varied separately,
+  so efficiency claims are estimated rather than isolated. Single paper, one
+  backbone.
+confidence: medium

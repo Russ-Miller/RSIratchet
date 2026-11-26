@@ -1,0 +1,47 @@
+arxiv_id: "2601.02737"
+title: "Unveiling and Bridging the Functional Perception Gap in MLLMs: Atomic
+  Visual Alignment and Hierarchical Evaluation via PET-Bench"
+url: https://doi.org/10.48550/arxiv.2601.02737
+drafted_at: 2026-11-14
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: For multimodal LLMs reading pure SUV-normalized PET slices, a
+  clinical six-step chain-of-thought prompt does not reliably improve
+  diagnosis on frozen models (changes ranged from -4.0 to +9.8 points across
+  ten models, several negative) while an LLM evaluator rates the rationales
+  highly plausible (0.85-0.99), and CoT only becomes a consistent gain after
+  the model is fine-tuned on lower-level PET perception tasks (tracer,
+  quality, organ, abnormality), which lifts diagnosis by up to about 15.9
+  points.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Pure PET (no CT overlay) multiple-choice diagnosis; 19 models
+  evaluated zero-shot, 10 with CoT, 4 small open models fine-tuned;
+  atomic-task training excludes the diagnosis patients.
+technique: ""
+proposed_technique: Train atomic perception before diagnostic reasoning
+technique_summary: LoRA fine-tune the model only on low-level perceptual tasks
+  in the domain (tracer identification, image quality, organ recognition,
+  abnormality detection), withholding diagnosis cases, then enable
+  chain-of-thought at inference.
+technique_kind: training
+technique_validated_by: "Level-5 diagnosis accuracy on patients never seen in
+  the atomic-task training split, against the same frozen backbone with and
+  without CoT: gains of +1.3 to +8.3 points without CoT and +7.6 to +15.9 with
+  CoT across MedGemma-4B, InternVL3-8B, Qwen2.5-VL-7B and Lingshu-7B."
+stance_on_existing: supports
+related_claim_id: adversarially-edited-image-tasks-chain-of-thought-prompting-moves-multimodal-models
+stance_reason: Both find chain-of-thought lowers accuracy on perception-heavy
+  multimodal items where the visual evidence is not well encoded.
+falsifier: On a held-out functional-imaging test set, frozen models given the
+  same CoT prompt improve diagnostic accuracy consistently, or
+  atomic-perception fine-tuning gives no larger CoT gain than an equal-token
+  fine-tune on diagnosis-style data.
+evidence_note: Measured on a new 9,732-study, 52,308-QA PET benchmark across 8
+  centers and 4 tracers; CoT comparison covers 10 models, AVA only 4 small
+  open models with no matched-compute control fine-tune, so the 'atomic tasks
+  specifically' part is argued more than isolated. Plausibility scored by an
+  LLM evaluator blind to labels.
+confidence: medium

@@ -1,0 +1,39 @@
+id: multimodal-program-repair-visually-grounded-code-generation-converting-bug-screenshot
+ref: CLM-1215
+capability: debugging
+technique: convert-bug-screenshots-into-scene-graph-before-repair
+statement: >-
+  For multimodal program repair and visually-grounded code generation,
+  converting a bug screenshot or control-flow diagram into a serialized
+  scene graph of elements and their hierarchical relations helps the
+  downstream coding model more than passing the raw image or a
+  natural-language caption of it, with the gain largest where the visual
+  artifact encodes program logic rather than decoration.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Shown for HTML/webpage renderings and control-flow graphs with an 8B VLM fine-tuned on 177k artifact-to-graph pairs; other artifact types (sequence, architecture diagrams) untested"
+sources:
+  - source: arxiv-2602-06090
+    stance: supports
+    note: >-
+      Validated by: Pass@1 ablation: on MMCode, image-plus-caption 16.33% vs
+      scene-graph 38.02%; CodeVision 89.02% vs 95.73%. On SWE-Bench M (517
+      instances) the full system resolved 186 (35.98%), tied with GUIRepair
+      under the same GPT-o3 coder; OmniGIRL visual subset 4/19 vs 0/19, n
+      too small for a firm read. Scene-graph fidelity measured separately by
+      Mermaid rendering accuracy (94.29%) and SSIM (0.7892) vs the 8B base
+      (81.14%, 0.6868).. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An ablation under a
+  fixed coding model where feeding the raw image or an LLM-written caption
+  matches or beats the structured scene graph on visually-grounded code
+  generation, or where the graph's advantage disappears once caption
+  length/detail is matched.
+submitted_by: agent:claude-opus-5@Russ-Miller

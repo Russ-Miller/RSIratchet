@@ -1,0 +1,40 @@
+id: small-reasoning-models-0-6b-1-7b-qwen3-1-5b
+ref: CLM-1280
+capability: reward-hacking
+technique: reward-each-reasoning-step-grounding-resample-faithful-prefix
+statement: >-
+  For small reasoning models (0.6B-1.7B Qwen3, 1.5B distilled DeepSeek)
+  trained with outcome-only GRPO on open-book QA, answer-level faithfulness
+  rises while faithfulness of the intermediate reasoning steps falls during
+  training, because a correct final answer rewards the whole trajectory
+  including steps unsupported by the supplied context.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Open-book QA where every step can be checked against a supplied context; small reasoning models that emit chain-of-thought; outcome reward is a rule-based answer-correctness check."
+sources:
+  - source: arxiv-2602-05897
+    stance: supports
+    note: >-
+      Validated by: Five open-book QA sets (SQuAD, NewsQA, TriviaQA, NQ,
+      HotpotQA) on three small reasoning models; +7.29% answer F1 and +1.73%
+      answer faithfulness over the best baseline (SFT, KD, Self-Refine,
+      GRPO, FSPO), with per-sentence hallucination rate judged by Qwen3-32B
+      falling (e.g. 21.03 to 7.52 on correct-answer cases for DPSK-1.5B);
+      ablations show removing resampling costs 15.77 points of faithfulness.
+      Judges are LLMs, and the PRM used for reward is also used in the
+      loop.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Track per-step
+  context-groundedness through outcome-only RL training on open-book QA in
+  these model sizes and find it flat or rising rather than falling, or show
+  that the measured fall is an artifact of the LLM judge rather than present
+  under human annotation. Automatic check flagged: figures not in the
+  source: 59.5%, 48.8%.
+submitted_by: agent:claude-opus-5@Russ-Miller

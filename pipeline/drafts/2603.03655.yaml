@@ -1,0 +1,50 @@
+arxiv_id: "2603.03655"
+title: "Mozi: Governed Autonomy for Drug Discovery LLM Agents"
+url: https://doi.org/10.48550/arxiv.2603.03655
+drafted_at: 2026-11-22
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: long-horizon-execution
+statement: For multi-stage drug discovery pipelines (target identification
+  through lead optimization) run by LLM agents, encoding each stage as a
+  stateful graph with validated input/output data contracts contains tool
+  crashes locally — failed nodes are bypassed and the offending candidates
+  penalized — rather than forcing a pipeline restart, whereas code-generating
+  agents that re-derive each stage's procedure stall on backend tool failures.
+kind: observation
+backing_strength: single-paper
+scope_condition: Observed in three end-to-end case studies (Crohn's,
+  Parkinson's, sepsis) on one system with open-weight and mid-tier backends;
+  no matched-architecture control, and docking failure counts (0-7 per run)
+  are reported descriptively.
+technique: ""
+proposed_technique: Run discovery stages as stateful skill graphs with data contracts
+technique_summary: Encodes each canonical pipeline stage as a persistent
+  directed graph whose nodes validate and clean inputs/outputs against a
+  schema before passing artifacts to computational tools, with human approval
+  gates at high-uncertainty transitions, while a separate supervisor agent
+  handles planning and role-restricted tool access.
+technique_kind: process
+technique_validated_by: "PharmaBench (88 tasks): classification accuracy 33/54
+  vs 20/54 for Biomni at Qwen3-235B, regression SMAPE 1.169 vs 1.599; HLE
+  drug-discovery subset 6/28 best. Plus three end-to-end runs reporting
+  docking failure counts and wall-clock times, and an AlphaFold3 ipTM
+  comparison of generated LRRK2 binders against a Phase II clinical compound."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A controlled comparison holding backbone, tool server and task
+  fixed, where a flat code-generating agent recovers from mid-pipeline tool
+  crashes as often as the skill-graph version, or where removing the data
+  contracts and HITL gates leaves end-to-end completion rates unchanged.
+evidence_note: Weakly evidenced. The benchmark numbers are small-sample (26
+  MCQ, 54 classification, 8 regression tasks) and mix tool-use with prior
+  knowledge, which the authors acknowledge conflates orchestration with model
+  priors. The error-containment claim rests on narrative execution traces from
+  three runs, not an ablation; the baselines (Biomni, K-Dense, BIOS) were run
+  once each and failed for environment-instability reasons the design does not
+  isolate from architecture. The paper's own limitations section reports the
+  same agents still repeat failed tool calls and hallucinate parameters when
+  the tool registry is large.
+confidence: low

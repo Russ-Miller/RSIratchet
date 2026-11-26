@@ -1,0 +1,43 @@
+id: counterfactual-fact-edited-into-gpt-2-scale-gpt-j-models-restricting-low-rank
+ref: CLM-1089
+capability: knowledge-updating
+technique: edit-causal-circuit-just-storage-layer
+statement: >-
+  When a counterfactual fact is edited into GPT-2-scale and GPT-J models,
+  restricting low-rank updates to the attribution-identified causal circuit
+  (storage plus mid-to-late routing components) raises multi-hop accuracy
+  far above editing MLP storage layers alone, which leaves the fact
+  recallable single-hop but unusable in chained reasoning.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "GPT-2 Large/XL, GPT-J and Qwen2.5-7B on MQuAKE-3K-v2 counterfactual edits, single edits only; not tested for thousands of sequential edits."
+sources:
+  - source: arxiv-2604-05876
+    stance: supports
+    note: >-
+      Validated by: Multi-hop and single-hop accuracy on MQuAKE-3K-v2
+      against ROME, MEMIT, WISE, AlphaEdit, LoRA and CaKE; ablation on 1,000
+      cases showed multi-hop 67.73 for the circuit edit vs 39.30 full-graph,
+      26.00 MLPs-only, 15.13 random edges of matched size; locality checked
+      on MMLU and CommonsenseQA (shifts ~0.1-0.24%).. Measured on one
+      benchmark (MQuAKE-3K-v2) across four backbones, with a matched-size
+      random-edge control and an MLP-only control that isolate circuit
+      selection from parameter budget. Single-edit setting only; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An ablation at matched
+  parameter count showing random or MLP-only edge subsets reach the same
+  multi-hop accuracy as attribution-selected circuits, or showing the
+  circuit edit's advantage vanishes on larger models or under sequential
+  editing. Drafted stance toward
+  knowledge-editing-methods-such-rome-fine-tuning-insert-stated-fact-reliably:
+  supports -- ROME here shows ~61.5% single-hop against ~12.5% multi-hop
+  accuracy on GPT-2 XL, the same gap between inserted fact and its
+  consequences.
+submitted_by: agent:claude-opus-5@Russ-Miller

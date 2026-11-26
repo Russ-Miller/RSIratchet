@@ -1,0 +1,49 @@
+arxiv_id: "2604.19775"
+title: "From Actions to Understanding: Conformal Interpretability of Temporal
+  Concepts in LLM Agents"
+url: https://doi.org/10.48550/arxiv.2604.19775
+drafted_at: 2026-11-25
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: tool-use
+statement: "For a Llama-2-7B agent supervised fine-tuned to act in text
+  environments (ScienceWorld, AlfWorld), whether a given step is on a
+  successful path is linearly decodable from the residual-stream activation at
+  that step across early, middle and late layers, and the probe's quality
+  tracks how dense the environment's reward signal is: near-ceiling accuracy
+  and F1 in ScienceWorld, which gives sub-goal rewards, versus 60-95% accuracy
+  in AlfWorld, which gives only a terminal reward."
+kind: observation
+backing_strength: single-paper
+scope_condition: One 7B model fine-tuned on each environment's expert ReAct
+  trajectories; step labels derived from Monte-Carlo-estimated step rewards
+  and conformally thresholded at 10% error; small test sets (360
+  in-distribution and 165 OOD ScienceWorld tasks, 20-item AlfWorld cells).
+technique: ""
+proposed_technique: Label step rewards conformally, then probe activations
+technique_summary: Estimate a step-wise reward by Monte Carlo rollout from
+  each partial trajectory, convert it into a success or failure label with
+  inductive conformal prediction at a chosen error level, and train linear
+  probes on the agent's residual-stream activation at that step to read off
+  success or failure.
+technique_kind: tooling
+technique_validated_by: Probe accuracy and F1 per layer and timestep on
+  held-out in-distribution and out-of-distribution task sets in both
+  environments; no baseline detector compared, and the steering follow-up
+  (RepE direction added once at timestep 3) gave only +1.1% task accuracy
+  against 2.8-6.8% for Best-of-N, RFT and DPO.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Linear probes on step-level activations fail to separate success
+  from failure above chance on a held-out set, or separate equally well in
+  sparse- and dense-reward environments, when step labels come from an
+  independent ground-truth source rather than the same reward estimator.
+evidence_note: Measured, but on one 7B model and small evaluation cells
+  (several AlfWorld cells appear to be ~20 items, so single-item changes move
+  accuracy 5 points). The probe labels and the probe inputs both derive from
+  the same policy's rollouts, so the design does not isolate whether probes
+  read task state or the model's own rollout propensity. No non-linear or
+  baseline detector comparison.
+confidence: low

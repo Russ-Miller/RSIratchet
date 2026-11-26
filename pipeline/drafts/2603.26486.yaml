@@ -1,0 +1,45 @@
+arxiv_id: "2603.26486"
+title: "ClipTTT: CLIP-Guided Test-Time Training Helps LVLMs See Better"
+url: https://doi.org/10.48550/arxiv.2603.26486
+drafted_at: 2026-11-25
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: In 1B-13B open vision-language models captioning corrupted images,
+  selecting a pseudo-label by sentence-averaged CLIP image-text similarity
+  among sampled candidates and then LoRA-adapting the language model on that
+  single test sample lowers object-hallucination rates more than the
+  CLIP-based candidate selection alone, and adapting the vision encoder
+  instead of the LLM is worse.
+kind: observation
+backing_strength: single-paper
+scope_condition: Captioning under 15 synthetic ImageNet-C corruptions at high
+  severity; gains are large on LLaVA-1.5-7B and small (sub-point) on several
+  other backbones such as TinyLLaVA-1.1B, InstructBLIP-7B and InternVL2-2B.
+technique: ""
+proposed_technique: Adapt the LLM at test time on a CLIP-picked caption
+technique_summary: For each test image, sample several captions from an EMA
+  teacher, pick the one with the highest sentence-averaged CLIP score as a
+  pseudo-label, and take LoRA gradient steps on the student LLM, keeping the
+  checkpoint with the best CLIP score.
+technique_kind: training
+technique_validated_by: CHAIR_S/CHAIR_I averaged over 15 corruptions on
+  LLaVA-1.5-7B (47.9/13.7 vs 55.6/15.4 greedy and 52.8/15.3 for the best
+  training-free baseline VAP), plus NoCaps near- and out-of-domain splits and
+  a GPT-4o accuracy/detailedness judgement on clean images; ablations isolate
+  selection-only (55.2 CHAIR_S) from full adaptation (45.6).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Applying the same per-sample LoRA adaptation to CLIP-selected
+  pseudo-labels fails to beat CLIP-only candidate selection on CHAIR under
+  corruption, or the gain disappears once caption length/coverage is held
+  fixed (i.e. hallucination falls only because the adapted model says less).
+evidence_note: Measured on CHAIR over COCO with 15 corruptions at severity 5,
+  one backbone for the main tables plus six others for a one-line
+  generalization check; baselines include four training-free mitigations and
+  two denoisers. The design does not control for output informativeness
+  (object coverage/length), which prior work shows can drive CHAIR reductions,
+  and the cross-architecture gains are small enough to be within noise.
+confidence: medium

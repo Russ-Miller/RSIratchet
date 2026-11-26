@@ -1,0 +1,44 @@
+arxiv_id: "2603.22717"
+title: Does Teaming-Up LLMs Improve Secure Code Generation? A Comprehensive
+  Evaluation with Multi-LLMSecCodeEval
+url: https://doi.org/10.48550/arxiv.2603.22717
+drafted_at: 2026-11-25
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: For secure code generation from natural-language prompts in C and
+  Python, combining several LLMs with a static analyzer in the loop raises the
+  share of outputs a static analyzer judges secure far more than LLM-only
+  collaboration (cross-verification, majority voting, chain-of-debate) over
+  the same models, because the analyzer supplies a rule-based check for
+  vulnerability classes the models miss even in consensus.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Two NL-prompt benchmarks (112 and 106 samples) over MITRE
+  Top-25 CWEs, C and Python, with CodeQL as both the in-loop filter and the
+  final judge; security measured only as CodeQL-detectable vulnerabilities, so
+  the evaluator and the in-loop tool are the same system.
+technique: ""
+proposed_technique: Filter ensemble code candidates with a static analyzer, then cross-verify
+technique_summary: Several LLMs generate candidate code in parallel, a static
+  analyzer (CodeQL) selects or flags candidates, and flagged ones are patched
+  via cross-model explanation-guided verification before re-analysis.
+technique_kind: process
+technique_validated_by: "Secure-code rate under CodeQL on SecLLMEval and
+  SecLLMHolmes: single-model baseline vs ensemble+CodeQL pipelines (up to
+  +47.3% and +19.3%) vs LLM-only collaborative pipelines (+8.9-22.3% on one
+  set, ~0 or negative on the other); the hybrid reached 97.32% and 99.06%."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Under an evaluator independent of the in-loop tool (e.g. human
+  audit or a second analyzer), LLM-only collaborative pipelines match or
+  exceed static-analysis-filtered ensembles on secure-code rate.
+evidence_note: "Measured across ten pipelines and four models on two small
+  curated benchmarks. The design does not isolate the gain from circularity:
+  CodeQL is used both to filter candidates during generation and to score the
+  final result, so the ensemble+SAT pipelines are optimized against the metric
+  while the LLM-only ones are not. A tool-swap ablation (Bandit) showed the
+  metric is highly tool-dependent."
+confidence: low

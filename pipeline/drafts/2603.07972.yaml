@@ -1,0 +1,47 @@
+arxiv_id: "2603.07972"
+title: "Adaptive Collaboration with Humans: Metacognitive Policy Optimization
+  for Multi-Agent LLMs with Continual Learning"
+url: https://doi.org/10.48550/arxiv.2603.07972
+drafted_at: 2026-11-22
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: "In multi-agent LLM systems that learn when to defer to a stronger
+  external expert (here a proxy model), most of the measured gain comes from
+  fine-tuning on the deferred expert demonstrations rather than from better
+  deferral decisions: adding GRPO-only deferral optimization moves accuracy
+  little, while the added supervised outer loop raises accuracy and the
+  updated backbone carries the gain into unrelated single-agent and debate
+  pipelines that never defer at inference."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: 8B-class open backbones (LLaMA3-8B, Qwen2.5-3B/7B) on math,
+  code and MMLU benchmarks, with a stronger LLM standing in for the human
+  expert
+technique: ""
+proposed_technique: Defer to an expert, then train on the deferrals
+technique_summary: Agents pick among endorse-a-peer, generate-new, or
+  defer-to-expert under a cost-aware GRPO reward, and every deferral event's
+  expert answer is also used as a supervised fine-tuning sample for the
+  backbone.
+technique_kind: training
+technique_validated_by: Accuracy on GSM8K/AMC/AIME/HumanEval/MMLU against
+  single-agent prompting and multi-agent baselines (debate, DyLAN, GPTSwarm,
+  AgentPrune, AFlow) on four backbones; staged ablation separating init
+  policy, GRPO-only and full dual loop; and a transfer test swapping the
+  DLPO-trained backbone into unchanged baseline pipelines.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A replication where the GRPO-only deferral policy captures most of
+  the gain, or where swapping the deferral-trained backbone into a
+  non-deferring pipeline leaves its accuracy unchanged.
+evidence_note: "Measured, single paper. Ablation: init policy
+  88.15/33.33/68.30 to GRPO 88.38/32.50/70.47 to full dual loop
+  89.86/35.83/73.62 on GSM8K/AMC/MMLU; transfer raises Vanilla 72.76 to 82.11
+  and DyLAN 82.03 to 88.32. The 'human expert' is GPT-4o-mini, so the outer
+  loop is distillation from a stronger model, and the ablation does not
+  isolate deferral-selected demonstrations from an equal volume of random
+  expert demonstrations."
+confidence: medium

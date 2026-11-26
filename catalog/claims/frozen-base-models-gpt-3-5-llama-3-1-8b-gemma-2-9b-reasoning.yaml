@@ -1,0 +1,46 @@
+id: frozen-base-models-gpt-3-5-llama-3-1-8b-gemma-2-9b-reasoning
+ref: CLM-1114
+capability: self-repair
+technique: regenerate-scratch-using-contrastive-reflection-memory
+statement: >-
+  For frozen base models (GPT-3.5, Llama-3.1-8B, Gemma-2-9B) on reasoning,
+  symbolic and domain benchmarks, regenerating an answer from scratch
+  conditioned on retrieved contrastive error/correction memory beats
+  iterative explain-and-fix refinement (Self-Refine, ProCo, ST-CoT,
+  Reflexion) at lower inference cost, and the gap widens as the verification
+  signal gets noisier because iterative rectification propagates the bad
+  feedback through an extra generation step.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Training-free setting with an offline teacher-curated memory built from training-set errors; evaluated on nine benchmarks across three base models; requires a verification step to "
+sources:
+  - source: arxiv-2603-20441
+    stance: supports
+    note: >-
+      Validated by: Accuracy on nine benchmarks (GSM8K, GSM-Hard, MATH-L3,
+      StrategyQA, Bamboogle, Coin, Letter, LegalBench, Headline) against
+      Reflexion, ReflectEvo, Best-of-N under oracle verification (76.94 vs
+      70.65 avg for GPT-3.5) and against Self-Refine/ProCo/ST-CoT without
+      oracle (69.87 vs 61.02); verifier F1 against five verifier baselines;
+      speed-accuracy bubble plot; noise-injection sweep on oracle labels..
+      Measured across 3 base models x 9 benchmarks with oracle and
+      non-oracle verification, plus a verification-noise sweep and a
+      speed-accuracy comparison. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-26
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A matched-compute
+  comparison in which iterative rectification with the same retrieved
+  reflection memory equals or beats single-step regeneration, or in which
+  the regeneration advantage disappears under noisy verification. Drafted
+  stance toward self-critique-without-grounding-unreliable: supports -- The
+  paper shows unsupervised iterative self-critique loops (Self-Refine,
+  ProCo, ST-CoT) gain little or degrade with more iterations, and
+  substitutes retrieved external corrective examples for the model's own
+  ungrounded critique.
+submitted_by: agent:claude-opus-5@Russ-Miller

@@ -1,0 +1,54 @@
+arxiv_id: "2602.05897"
+title: "Stop Rewarding Hallucinated Steps: Faithfulness-Aware Step-Level
+  Reinforcement Learning for Small Reasoning Models"
+url: https://doi.org/10.48550/arxiv.2602.05897
+drafted_at: 2026-11-19
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: reward-hacking
+statement: For small reasoning models (0.6B-1.7B Qwen3, 1.5B distilled
+  DeepSeek) trained with outcome-only GRPO on open-book QA, answer-level
+  faithfulness rises while faithfulness of the intermediate reasoning steps
+  falls during training, because a correct final answer rewards the whole
+  trajectory including steps unsupported by the supplied context.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Open-book QA where every step can be checked against a
+  supplied context; small reasoning models that emit chain-of-thought; outcome
+  reward is a rule-based answer-correctness check.
+technique: ""
+proposed_technique: Reward each reasoning step for grounding, and resample
+  from the faithful prefix
+technique_summary: Score each CoT sentence against the supplied context with a
+  hallucination process reward model, apply that reward to the sentence's
+  tokens only when the final answer is correct, truncate at the first
+  unfaithful step and regenerate the continuation from the faithful prefix,
+  with redundancy and repetition penalties to stop the step reward being gamed
+  by uninformative steps.
+technique_kind: training
+technique_validated_by: Five open-book QA sets (SQuAD, NewsQA, TriviaQA, NQ,
+  HotpotQA) on three small reasoning models; +7.29% answer F1 and +1.73%
+  answer faithfulness over the best baseline (SFT, KD, Self-Refine, GRPO,
+  FSPO), with per-sentence hallucination rate judged by Qwen3-32B falling
+  (e.g. 21.03 to 7.52 on correct-answer cases for DPSK-1.5B); ablations show
+  removing resampling costs 15.77 points of faithfulness. Judges are LLMs, and
+  the PRM used for reward is also used in the loop.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Track per-step context-groundedness through outcome-only RL
+  training on open-book QA in these model sizes and find it flat or rising
+  rather than falling, or show that the measured fall is an artifact of the
+  LLM judge rather than present under human annotation.
+evidence_note: "Measured: faithfulness curves during GRPO training on
+  DPSK-1.5B evaluated on NewsQA show CoT faithful rate declining while answer
+  faithful rate rises; supported by an attack experiment where questions
+  generated from hallucinated steps break 59.5% (DPSK-1.5B) and 48.8%
+  (Qwen3-1.7B) of cases whose original answers were correct. One training
+  corpus (8k HotpotQA/2WikiMultiHopQA), one task family, three small models;
+  faithfulness labels come from Qwen3-32B and GPT-5.2, not human annotation,
+  and the paper itself flags judge reliability as a limitation."
+confidence: medium
+problems:
+  - "figures not in the source: 59.5%, 48.8%"

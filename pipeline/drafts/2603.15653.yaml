@@ -1,0 +1,48 @@
+arxiv_id: "2603.15653"
+title: "Recursive Language Models Meet Uncertainty: The Surprising
+  Effectiveness of Self-Reflective Program Search for Long Context"
+url: https://doi.org/10.48550/arxiv.2603.15653
+drafted_at: 2026-11-23
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: long-context-degradation
+statement: "For long-context tasks handled by programmatic context-interaction
+  agents (context externalized as a REPL variable), sampling several candidate
+  interaction programs and selecting among them by the model's own uncertainty
+  signals beats a single recursive self-query trajectory, and recursion itself
+  contributes little: on contexts shorter than the model's native window
+  recursive RLM often scores below the base model while the selection-based
+  variant without any sub-calls gains consistently."
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Tested with GPT-5 and Qwen3-Coder-480B on BrowseComp+, OOLONG
+  and LongBench-v2, contexts from 1K to 4M tokens, K=8 sampled programs, equal
+  wall-clock budget; which backbone benefits from recursion varies (helps
+  Qwen, hurts GPT-5).
+technique: ""
+proposed_technique: Sample several context-interaction programs, pick by
+  self-reflected uncertainty
+technique_summary: Draws K candidate programs that query a long context held
+  as an external variable, keeps those agreeing with the plurality answer, and
+  selects the one with the best combination of verbalized per-step confidence
+  and short reasoning trace.
+technique_kind: process
+technique_validated_by: Accuracy against RLM, CodeAct+BM25, summary agent and
+  base model on three long-context benchmarks under a matched 600s-per-step
+  time budget; up to 22 points over RLM (BrowseComp+ 37.1 to 59.7 on Qwen);
+  ablations show the combined signal beats each single signal.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A replication where recursive sub-calls, holding the number of
+  sampled trajectories equal, account for most of the gain over the base
+  model, or where uncertainty-ranked selection among K programs does no better
+  than random selection among them.
+evidence_note: Measured on three benchmarks plus extended context-length
+  sweeps, two backbones, with ablations isolating each uncertainty signal.
+  Compute is not matched per-answer (K=8 samples vs one trajectory), only
+  wall-clock via parallelism, so part of the gain is extra sampling; the paper
+  does not report a majority-vote-only baseline at K=8 separately from the
+  signal ablation.
+confidence: medium

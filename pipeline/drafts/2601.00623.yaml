@@ -1,0 +1,48 @@
+arxiv_id: "2601.00623"
+title: "DA-DPO: Cost-efficient Difficulty-aware Preference Optimization for
+  Reducing MLLM Hallucinations"
+url: https://doi.org/10.48550/arxiv.2601.00623
+drafted_at: 2026-11-15
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: For 7-13B LLaVA-family models aligned with multimodal DPO, scaling
+  each preference pair's beta by a training-free difficulty score (the
+  normalized gap between chosen and rejected responses under a frozen CLIP and
+  a frozen MLLM) lowers object-hallucination rates and recovers
+  general-benchmark ability that vanilla DPO gives up, and soft down-weighting
+  beats hard filtering of the same easy pairs.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: LLaVA-v1.5 7B/13B and LLaVA-OneVision 7B trained on BPO,
+  VLFeedback and LLaVA-RLHF preference sets; difficulty estimated by CLIP
+  ViT-L/14 and LLaVA-v1.5-7B log-likelihood gaps
+technique: ""
+proposed_technique: Scale DPO beta per pair by estimated pair difficulty
+technique_summary: Estimate each preference pair's difficulty from the
+  normalized chosen-minus-rejected score gap under a frozen contrastive VLM
+  and a frozen generative MLLM, fuse the two by their
+  preference-classification accuracy, and use the result as a per-sample beta
+  so easy pairs are optimized less aggressively.
+technique_kind: training
+technique_validated_by: "Against vanilla DPO on four hallucination benchmarks
+  (AMBER, Object HalBench, MMHal, POPE) and four general benchmarks
+  (LLaVA-Bench, GQA, SeedBench, MME): e.g. LLaVA-v1.5-7B AMBER generative
+  HalRate 35.7 to 28.0, LLaVA-Bench 70.5 to 75.4, SeedBench 57.8 to 64.8; also
+  against removing 10/25/50% of easy samples, which fluctuated and
+  underperformed on most metrics."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Matched-compute runs on the same backbones and datasets where
+  per-pair beta reweighting by these VLM score gaps gives no hallucination or
+  general-benchmark advantage over vanilla DPO, or where hard filtering of
+  easy pairs matches or beats it.
+evidence_note: Measured on three backbones and three preference datasets, with
+  an ablation separating CLIP-only, MLLM-only and fused scores and a
+  filtering-ratio baseline. Gains are a few points and not uniform (e.g. MME
+  perception falls under both DPO and DA-DPO relative to the base model), and
+  all difficulty estimates come from the same model families being trained, so
+  the estimator and the policy are not independent.
+confidence: medium

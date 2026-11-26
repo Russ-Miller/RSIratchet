@@ -1,0 +1,46 @@
+arxiv_id: "2601.03780"
+title: Assessing and Improving the Representativeness of Code Generation
+  Benchmarks Using Knowledge Units (KUs) of Programming Languages -- An
+  Empirical Study
+url: https://doi.org/10.48550/arxiv.2601.03780
+drafted_at: 2026-11-17
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: evaluation-validity
+statement: "Code-generation benchmarks like HumanEval and MBPP exercise only a
+  skewed subset of a language's concepts, so measured pass rates overstate
+  real-world coding ability: rebalancing the task mix toward the concept
+  distribution found in real projects drops model scores substantially."
+kind: observation
+backing_strength: single-paper
+scope_condition: Python, HumanEval and MBPP, 30 curated real-world Python
+  projects, 20 LLM-elicited 'knowledge units', seven evaluated models,
+  synthesized augmentation tasks generated and validated by an LLM pipeline
+technique: ""
+proposed_technique: Rebalance a benchmark's language-concept distribution with synthesized tasks
+technique_summary: Detect which programming-language concepts each benchmark
+  task exercises, compare against the distribution in real projects, and
+  prompt an LLM with real source code to synthesize tasks (description,
+  solution, tests) for the missing or underrepresented concepts.
+technique_kind: process
+technique_validated_by: Jensen-Shannon distance between benchmark and
+  real-project concept distributions fell from 0.335 to 0.118 (HumanEval) and
+  0.319 to 0.122 (MBPP) after adding 440 synthesized tasks; seven LLMs then
+  dropped 12.54-44.82% on pass@1/3/5, reported as statistically significant
+  with large effect size.
+stance_on_existing: supports
+related_claim_id: static-code-benchmarks-saturate-need-continuous-refresh
+stance_reason: Both find that fixed classic code benchmarks give an inflated
+  read on current coding ability and need refreshing.
+falsifier: Adding tasks matched to real-world concept frequencies leaves model
+  pass rates essentially unchanged, or the measured drop is explained by the
+  synthesized tasks being lower-quality or mis-tested rather than by the
+  concepts they exercise.
+evidence_note: Measured on two benchmarks and 30 projects; concept detection
+  is itself an LLM with 93% claimed accuracy against author-labelled ground
+  truth, and the 440 augmentation tasks are LLM-generated, so the performance
+  drop could partly reflect task-quality or test-correctness differences
+  rather than concept difficulty alone. No human-written control set of the
+  same concepts.
+confidence: medium

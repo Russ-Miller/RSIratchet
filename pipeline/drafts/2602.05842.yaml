@@ -1,0 +1,50 @@
+arxiv_id: "2602.05842"
+title: Reinforcement World Model Learning for LLM-based Agents
+url: https://doi.org/10.48550/arxiv.2602.05842
+drafted_at: 2026-11-20
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: state-tracking
+statement: For 7-8B open instruct models acting in long-horizon text
+  environments (ALFWorld, tau2-Bench), mid-training the policy itself with RL
+  on a semantic next-state-prediction reward beats supervised next-state token
+  prediction on the same transition data, which collapses because it rewards
+  exact wording rather than semantic equivalence.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Text-state agent environments; self-collected rollouts
+  converted to (history, action, next-state) triplets; requires a base model
+  with enough reasoning/agentic ability — a weaker Qwen2.5-7B transferred the
+  learned world knowledge poorly on the harder benchmark.
+technique: ""
+proposed_technique: Reward semantic match to the observed next state, not its tokens
+technique_summary: Train the agent policy with GRPO to predict the next
+  environment state, rewarding it when an off-the-shelf embedding model places
+  the predicted state within a cosine-distance threshold of the realized
+  state, after subsampling transitions a small SFT model already predicts
+  easily.
+technique_kind: training
+technique_validated_by: Task success on ALFWorld and tau2-Bench against the
+  base model, world-model SFT on identical data, task-success-reward RL, and
+  expert-data baselines (IWM, SR, imitation learning), 3 runs each; reported
+  +19.6 and +6.9 points over base, and +6.9/+5.7 over direct policy RL when
+  stacked before it; ablations swap the embedding reward for LLM-as-a-judge
+  (real-valued and binarized), drop subsampling, and add a format-only-reward
+  control.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Under matched compute and data, supervised next-state token
+  prediction matching or exceeding embedding-reward RL on downstream task
+  success, or the embedding reward giving no gain over a format-only reward
+  control.
+evidence_note: Measured on two benchmarks with one base model each (Qwen2.5-7B
+  on ALFWorld, Qwen3-8B on tau2-Bench), 3 runs, with a format-only-reward
+  control isolating the prediction objective from mere environment exposure.
+  Compute is not matched between RL and SFT arms. WM SFT's collapse on
+  ALFWorld (2.8 avg, below the untrained 13.0) is confounded with that model's
+  43.2% invalid-action rollout data; the authors' scripted-rollout rerun
+  addresses the subsampling ablation but not the SFT-vs-RL comparison
+  directly.
+confidence: medium

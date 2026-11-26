@@ -1,0 +1,41 @@
+arxiv_id: "2602.16671"
+title: "SPARC: Scenario Planning and Reasoning for Automated C Unit Test Generation"
+url: https://doi.org/10.48550/arxiv.2602.16671
+drafted_at: 2026-11-10
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: code-generation
+statement: For C unit test generation, enumerating statement-level
+  control-flow paths and issuing one LLM call per path, with helpers
+  constrained to a retrieved and explicitly declared operation map, yields
+  higher line and branch coverage and mutation score than prompting the same
+  model once with the source file and an instruction to cover all paths.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: 59 algorithmic and real-world C projects with I/O and
+  mocking-dependent functions removed; DeepSeek V3.2 backbone; coverage
+  measured with gcov, mutation with Mull.
+technique: ""
+proposed_technique: Generate one test per enumerated control-flow path
+technique_summary: Builds a statement-level CFG per function, enumerates
+  execution paths, synthesizes a separate test per path with helper calls
+  restricted to a retrieved/declared operation map, then compiles, runs and
+  repairs each test before merging.
+technique_kind: process
+technique_validated_by: Line coverage 89.36% vs 58.00%, branch 81.85% vs
+  55.84%, mutation 58.25% vs 37.47% against vanilla single-prompt generation
+  on 59 subjects; compared also to KLEE, which it matched or exceeded on
+  complex subjects.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched-compute comparison in which single-prompt generation
+  sampled as many times as there are paths, or CFG path information supplied
+  in one prompt, reaches the same coverage and mutation score.
+evidence_note: Measured on 59 C subjects against vanilla prompting and KLEE,
+  plus a 10-participant blind A/B readability study and a three-model
+  portability check. The design does not isolate per-path decomposition from
+  the operation map or the repair loop, and the baseline uses one call versus
+  hundreds, so compute is not matched.
+confidence: medium
