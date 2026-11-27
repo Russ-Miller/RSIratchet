@@ -1,0 +1,42 @@
+arxiv_id: "2604.06393"
+title: "ART: Attention Replacement Technique to Improve Factuality in LLMs"
+url: https://arxiv.org/abs/2604.06393
+drafted_at: 2026-11-26
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: In 7B-32B open instruct LLMs, replacing the most uniform-looking
+  attention heads in the first two decoder layers with a local-attention
+  pattern at inference raises accuracy on truthfulness and logical-reasoning
+  multiple-choice benchmarks by roughly 1-3 points, with smaller or negative
+  effects on math and on larger (14B-32B) models.
+kind: observation
+backing_strength: single-paper
+scope_condition: Zero-shot CoT, first two layers only, k set to 10% of heads;
+  gains measured as benchmark accuracy (TruthfulQA, LogiQA, CommonsenseQA,
+  OpenBookQA, GSM8K), not as a direct hallucination rate.
+technique: ""
+proposed_technique: Replace uniform shallow-layer attention heads with local ones
+technique_summary: At inference, rank each shallow layer's attention heads by
+  how closely they match a uniform distribution and overwrite the top 10% most
+  uniform heads' attention maps with the most local head's map (or the mean of
+  the most local ones).
+technique_kind: decoding
+technique_validated_by: Accuracy vs vanilla greedy decoding on five benchmarks
+  across seven open models; ablations on k, replacement direction (replacing
+  local with uniform collapses accuracy), and scattered-source replacement;
+  compared against ITI, ACT, DoLa and beam search.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Applying the same head-replacement rule to other open instruct
+  models yields no accuracy gain over vanilla decoding, or gains disappear
+  once a direct hallucination-rate metric (rather than multiple-choice
+  accuracy) is used.
+evidence_note: Measured on seven open models over five benchmarks, vanilla
+  decoding baseline. Average gains are small (0.3-1.2 points) and several
+  individual cells are negative; no confidence intervals or seed variation
+  reported, and no direct measurement of unsupported generation despite the
+  hallucination framing.
+confidence: low

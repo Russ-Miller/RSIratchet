@@ -1,0 +1,44 @@
+arxiv_id: "2604.02093"
+title: "GroundVTS: Visual Token Sampling in Multimodal Large Language Models
+  for Video Temporal Grounding"
+url: https://doi.org/10.48550/arxiv.2604.02093
+drafted_at: 2026-11-26
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: video-temporal-reasoning
+statement: For 7-8B video LLMs on temporal grounding, selecting which visual
+  tokens reach the LLM by token-level similarity to the query beats
+  frame-level selection at a matched token budget, and both beat uniform or
+  random sampling, provided the selected tokens keep their original positional
+  encodings.
+kind: observation
+backing_strength: single-paper
+scope_condition: Qwen2.5VL-7B and InternVL3.5-8B trained in three stages (VTS
+  warm-up, joint LoRA, grounding fine-tune); moment retrieval and highlight
+  detection on Charades-STA, ActivityNet-Captions, QVHighlights; sampling
+  ratio 0.5 at 2 FPS.
+technique: ""
+proposed_technique: Sample visual tokens by query relevance, not frames
+technique_summary: Inserts a module after the visual projector that scores
+  every visual token against the pooled query embedding and keeps a
+  differentiable top-K subset, reusing the dense-sampling positional encodings
+  for the survivors.
+technique_kind: architecture
+technique_validated_by: "Matched-budget ablation (FPS 2.0, rho 0.5) against
+  frame-level pooling, uniform and random sampling: Charades-STA mIoU 50.1 vs
+  41.6 frame-level, 29.3 uniform, 35.7 random; ActivityNet mIoU 36.0 vs
+  30.7/23.4/27.7. Removing positional encodings collapses mIoU to 9.5."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched-token-budget comparison on the same benchmarks where
+  frame-level query-guided selection equals or beats token-level selection, or
+  where token-level selection fails to beat uniform sampling.
+evidence_note: Measured on three standard VTG benchmarks with two backbones
+  and a matched-budget ablation table. Gains over the fine-tuned base differ
+  sharply by backbone (+18.4 mIoU on Qwen, +2.2 on InternVL for Charades-STA),
+  so the size of the effect is backbone-dependent. The ablation isolates
+  sampling granularity but the three-stage training is shared and not
+  separately matched across all arms (the random variant skips a stage).
+confidence: medium

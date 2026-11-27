@@ -1,0 +1,42 @@
+id: un-finetuned-8b-model-s-reflection-step-forced-into-fixed
+ref: CLM-1324
+capability: self-repair
+technique: force-reflection-into-typed-error-schema-constrained-decoding
+statement: >-
+  When an un-finetuned 8B model's reflection step is forced into a fixed
+  error-taxonomy schema by grammar-constrained decoding, self-correction
+  gets worse rather than better on multi-hop QA: the model attributes almost
+  all failures to formatting and repeats the same formatting patch until it
+  runs out of trials.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen3-8B acting as actor, evaluator and reflector on 100 filtered HotpotQA distractor samples, Outlines-based FSM decoding over a 5-class error taxonomy, max 5 trials, exact-match-"
+sources:
+  - source: arxiv-2604-06066
+    stance: supports
+    note: >-
+      Validated by: Compared against free-text Reflexion on the same 100
+      samples: accuracy fell from 50% to 38% (McNemar p about 0.059), 23
+      correct cases flipped to wrong versus 11 the other way, 96 of 100
+      first-round diagnoses were FORMATTING_MISMATCH, 58 samples repeated
+      the same formatting error across all trials, and failing cases burned
+      more thinking tokens (4,005 vs 2,850 average).. Measured but small and
+      single-model: 100 samples split into two pools, one 8B model in all
+      three roles, temperature 0.1, exact-match-brittle grading. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-27
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A replication where the
+  same constrained-decoding reflection raises self-correction accuracy over
+  free-text reflection on a comparable small open model, or where diagnoses
+  spread across the taxonomy instead of collapsing onto the formatting
+  category. Drafted stance toward
+  self-critique-without-grounding-unreliable: supports -- Adding structural
+  scaffolding without an external grounded critic did not rescue intrinsic
+  self-correction and made it worse.
+submitted_by: agent:claude-opus-5@Russ-Miller

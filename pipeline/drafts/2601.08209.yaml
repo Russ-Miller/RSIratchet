@@ -1,0 +1,48 @@
+arxiv_id: "2601.08209"
+title: "Generation-Augmented Generation: A Plug-and-Play Framework for Private
+  Knowledge Injection in Large Language Models"
+url: https://doi.org/10.48550/arxiv.2601.08209
+drafted_at: 2026-11-17
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: domain-knowledge
+statement: For specialist scientific QA (catalytic materials, immunology
+  adjuvant) with a frozen 8B base model, distilling a fine-tuned 1.7B domain
+  expert's multi-layer hidden states into a handful of projected latent memory
+  slots scores higher than retrieval (RAG, GraphRAG, xRAG), prompt tuning and
+  LoRA SFT, and unlike those tuning baselines it does not lower general-domain
+  exact match.
+kind: observation
+backing_strength: single-paper
+scope_condition: Qwen3-8B base with Qwen3-1.7B experts, two in-house
+  scientific QA benchmarks plus six open-domain QA sets; expert trained on the
+  same domain corpus the test questions come from.
+technique: ""
+proposed_technique: Inject expert hidden states as latent memory slots, not text
+technique_summary: A small domain-adapted expert generates background for the
+  query; its multi-layer hidden states are compressed into a fixed number of
+  slots, fused per slot across layers, projected through a gated residual into
+  the frozen base model's embedding space, and substituted at reserved anchor
+  token positions.
+technique_kind: architecture
+technique_validated_by: BertScore, StsScore and GPT-4o rubric scores on
+  held-out test sets of two private-domain benchmarks against Base-Model-Only,
+  RAG/GraphRAG/xRAG, Prompt-Tuning, LoRA SFT and BLADE; general-domain EM over
+  six open QA sets; ablations on the three training stages and slot count (4
+  best); efficiency measured as added tokens, TFLOPs and latency per query.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On a held-out domain whose corpus the expert was not trained on, or
+  with questions not drawn from the same QA distribution as the expert's
+  specialization data, latent-slot injection fails to beat a well-tuned RAG
+  baseline; or the general-domain EM gap versus LoRA SFT disappears under
+  matched tuning data.
+evidence_note: Measured on two in-house scientific QA benchmarks sharing
+  supervision sources with the expert training data, so domain-expert
+  specialization and test distribution overlap; general-domain preservation is
+  tested only as closed-book EM. Retrieval baselines omitted from the
+  general-domain column. Single backbone family (Qwen3), no seed variance
+  reported; LLM-judge scores from GPT-4o.
+confidence: low

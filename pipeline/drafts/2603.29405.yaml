@@ -1,0 +1,49 @@
+arxiv_id: "2603.29405"
+title: Hallucination-aware intermediate representation edit in large
+  vision-language models
+url: https://doi.org/10.48550/arxiv.2603.29405
+drafted_at: 2026-11-26
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: In 7B-class LVLMs (LLaVA-1.5, InstructBLIP), object hallucination
+  can be lowered by editing attention-layer representations along a learned
+  hallucination-reduction direction in a single forward pass, with a
+  lightweight router deciding from the first-layer representation whether a
+  token is edited at all, reaching lower CHAIR scores than
+  contrastive-decoding methods at roughly a tenth of their added compute, and
+  the signed editing strength moves hallucination in both directions.
+kind: observation
+backing_strength: single-paper
+scope_condition: 7B LLaVA-1.5 and InstructBLIP; CHAIR, POPE, AMBER
+  object-hallucination benchmarks; editor and router trained on MSCOCO pairs
+  built by noising the image to induce hallucination.
+technique: ""
+proposed_technique: Edit attention representations only at router-flagged tokens
+technique_summary: A contrastively trained autoencoder separates semantic from
+  hallucinatory components of each attention-layer representation and shifts
+  it along a hallucination-reduction direction scaled by a signed strength
+  parameter, while a DPO-trained MLP reading the first-layer representation
+  decides per token whether to apply the edit.
+technique_kind: decoding
+technique_validated_by: CHAIR_S/CHAIR_I on 500 MSCOCO images, POPE accuracy/F1
+  on 9,000 pairs, AMBER score, against baseline models and
+  contrastive-decoding and steering baselines (VCD, M3ID, AVISC, Octopus, VTI,
+  Nullu, Projectaway), with TFLOPs reported; ablation removing each encoder
+  and the router; MME and SEED-Bench checked for general-capability loss.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On the same models and benchmarks, the edit gives no CHAIR/POPE
+  gain over contrastive decoding at matched compute, or the gain is explained
+  by shorter and less informative captions (lower object coverage), or
+  negative strength fails to raise hallucination.
+evidence_note: Measured on two 7B backbones across three benchmarks with
+  compute reported; CHAIR_S 51.3 to 30.2 on LLaVA-1.5 at 11.81 vs 20+ TFLOPs
+  for CD baselines. Coverage is reported on AMBER (49.9 vs 44.5 baseline),
+  partly addressing the say-less confound, but CHAIR runs do not report length
+  controls. Ablation attributes only ~30% compute saving to the router with no
+  accuracy change. Single paper, authors' own implementation of baselines
+  mixed with cited numbers.
+confidence: medium

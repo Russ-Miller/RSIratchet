@@ -1,0 +1,49 @@
+arxiv_id: "2602.12116"
+title: "P-GenRM: Personalized Generative Reward Model with Test-time
+  User-based Scaling"
+url: https://doi.org/10.48550/arxiv.2602.12116
+drafted_at: 2026-11-20
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: critique
+statement: "For a personalized generative reward model (LLaMA-3.1-8B) judging
+  which response a given user prefers, aggregating scores sampled under
+  similar users' inferred preferences substitutes efficiently for more samples
+  of the user's own scoring scheme — 16 own-samples plus 8 similar-user
+  samples beat 32 own-samples on Chatbot Arena-Personalized and
+  PRISM-Personalized — but the substitution is bounded: adding similar-user
+  scores without own-samples, or raising them to 16, scores below the unscaled
+  model."
+kind: observation
+backing_strength: single-paper
+scope_condition: Pairwise personalized preference prediction with 3 historical
+  preference pairs per user; 8B generative reward model trained on the same
+  benchmark distribution; clustering into 50 user prototypes.
+technique: ""
+proposed_technique: Pool scores from the user's own samples and from similar users
+technique_summary: At inference, sample several scoring rubrics for the
+  current user and additionally score the candidates under the inferred
+  preferences of the n nearest users in the same learned prototype cluster,
+  then average all scores.
+technique_kind: decoding
+technique_validated_by: "Accuracy on Chatbot Arena-Personalized and
+  PRISM-Personalized over 5 runs: base 72.68/65.32, Ind-16+Pro-8 75.92/68.06,
+  Ind-32 75.59/67.65, Ind-0+Pro-8 66.90/57.65, Ind-16+Pro-16 72.59/64.61;
+  prototype count swept 0-125 with a peak at 50."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: At matched total samples, adding similar-user scores fails to beat
+  own-sample-only scaling (e.g. Ind-32 matching or exceeding Ind-16+Pro-8)
+  across these benchmarks and backbones, or similar-user scores scale
+  monotonically with n.
+evidence_note: Measured on two personalized preference benchmarks with one 8B
+  backbone, 5 runs, standard errors ~1.6-1.9% on Chatbot Arena where several
+  scaling configurations differ by less than that spread; the ordering of
+  Ind-16+Pro-8 over Ind-32 is within overlapping error bars on Chatbot Arena
+  and clearer on PRISM. The collapse at Ind-0+Pro-8 and Ind-16+Pro-16 is large
+  and outside error. Prototype clustering and the reward model were trained on
+  the same data distribution, so the gain is not isolated from in-distribution
+  fit.
+confidence: low

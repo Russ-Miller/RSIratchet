@@ -1,0 +1,46 @@
+arxiv_id: "2603.28959"
+title: Multi-Agent LLMs for Adaptive Acquisition in Bayesian Optimization
+url: https://arxiv.org/abs/2603.28959
+drafted_at: 2026-11-07
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: In LLM-driven black-box optimization, splitting the loop into a
+  strategy agent that emits interpretable weights over
+  exploration/exploitation criteria and a separate generation agent that
+  produces candidates conditioned on those weights gives more stable search
+  and better final objective values than one prompt doing both, with the gain
+  concentrated in weakly structured landscapes (hyperparameter tuning, robot
+  pushing) and absent on smooth analytical functions where both LLM variants
+  trail EI/UCB.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: One 70B open model (llama-3.3-70b-instruct), 30-query budget,
+  three benchmarks (Rosenbrock, hyperparameter tuning, robot pushing);
+  continuous/low-cost-proxy objectives only.
+technique: ""
+proposed_technique: Split search-policy weighting from candidate generation
+technique_summary: One LLM agent reads the optimization history and outputs
+  normalized weights over exploitation, informativeness, diversity and
+  representativeness, and a second agent generates the next candidate by
+  optimizing the weighted score.
+technique_kind: process
+technique_validated_by: Best-so-far objective curves against a single-agent
+  LLM baseline and against EI and UCB on Rosenbrock, hyperparameter tuning and
+  robot pushing under a fixed 30-evaluation budget, plus paired-metric
+  ablations restricting the strategy agent to one exploration criterion.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Running the two-agent and single-agent variants under matched
+  token/call budgets and seeds shows no reliable difference in best-so-far
+  objective on the weakly structured benchmarks, or the single-agent variant
+  matching it once its prompt is given the same metric definitions.
+evidence_note: Measured on three benchmarks with one model, fixed seeds, 30
+  evaluations each; curves reported without variance bands or token-budget
+  matching, and the two-agent system makes two LLM calls per iteration against
+  the baseline's one, so compute is not controlled. Paired-metric ablations
+  support the mechanism reading (over-diversification on stagnation) but are
+  qualitative.
+confidence: low

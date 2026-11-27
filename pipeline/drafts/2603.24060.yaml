@@ -1,0 +1,54 @@
+arxiv_id: "2603.24060"
+title: "RoboHarness: A Memory-Augmented Policy Harness for
+  Vision-Language-Action Model Robustness via In-Context Adaptation"
+url: https://doi.org/10.48550/arxiv.2603.24060
+drafted_at: 2026-11-24
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: For frozen vision-language-action manipulation policies failing
+  under out-of-distribution perturbations in simulation (novel textures,
+  distractors, noisy instructions, long chains), an inference-time harness
+  that diagnoses each task against retrieved memories of both past successes
+  and past failures and then edits the observation or instruction before
+  rollout raises success far above the unchanged policy, and retrieving
+  failures as well as successes is what makes the diagnosis converge quickly
+  rather than wander.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: LIBERO-PRO and a custom LIBERO variant, three backbones (pi0,
+  pi0.5, SmolVLA), simulation only; memory cold-started on standard LIBERO
+  traces; no real-robot evaluation.
+technique: ""
+proposed_technique: Diagnose VLA failures against a success-and-failure
+  memory, then edit the input
+technique_summary: Wraps a frozen VLA policy with retrieval over a dual bank
+  of past successful and failed executions, a vision-language orchestrator
+  that attributes the likely failure cause, and a chain of tools that repaint,
+  de-clutter, rewrite the instruction, split the horizon, or roll back before
+  the policy acts.
+technique_kind: process
+technique_validated_by: "Success rate against the unmodified frozen policy on
+  25 LIBERO-PRO and LIBERO-RoboHarness tasks, 199 randomized rollouts each:
+  average absolute gain 56.6%, long-horizon chaining +89.1%, LIBERO-PRO Task
+  0.86% to 55.2%. Memory ablation uses average turns-to-success: no memory
+  7.40, success-only 1.47, dual 1.07; a clutter-removal variant scored 19.2%
+  (no RAG), 48.8% (single-stage), 60.1% (dual-stage consolidation)."
+stance_on_existing: supports
+related_claim_id: frozen-vision-language-action-manipulation-policies-most-failures-tasks-need-world
+stance_reason: Independently finds that frozen VLA failures under OOD
+  conditions are largely perceptual and contextual rather than motor, and that
+  an inference-time orchestration wrapper recovers most of the lost success
+  without touching weights.
+falsifier: A matched comparison where the harness's gain is reproduced by
+  input edits chosen without retrieval, or where success-only memory matches
+  dual memory on planning turns and final success rate, would show the
+  contrastive failure memory is not doing the work.
+evidence_note: Measured in simulation only, with the harness's own authors
+  defining one of the two benchmarks. Baselines on LIBERO-PRO are near 0%, so
+  large absolute gains are easy; no comparison against a non-memory
+  orchestrator applying the same tool set across all tasks, and the
+  single-vs-dual memory ablation is reported on one task variant with one
+  backbone.
+confidence: low

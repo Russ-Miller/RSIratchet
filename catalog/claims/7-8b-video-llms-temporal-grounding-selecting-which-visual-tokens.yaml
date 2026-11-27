@@ -1,0 +1,39 @@
+id: 7-8b-video-llms-temporal-grounding-selecting-which-visual-tokens
+ref: CLM-1020
+capability: video-temporal-reasoning
+technique: sample-visual-tokens-query-relevance-frames
+statement: >-
+  For 7-8B video LLMs on temporal grounding, selecting which visual tokens
+  reach the LLM by token-level similarity to the query beats frame-level
+  selection at a matched token budget, and both beat uniform or random
+  sampling, provided the selected tokens keep their original positional
+  encodings.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen2.5VL-7B and InternVL3.5-8B trained in three stages (VTS warm-up, joint LoRA, grounding fine-tune); moment retrieval and highlight detection on Charades-STA, ActivityNet-Captio"
+sources:
+  - source: arxiv-2604-02093
+    stance: supports
+    note: >-
+      Validated by: Matched-budget ablation (FPS 2.0, rho 0.5) against
+      frame-level pooling, uniform and random sampling: Charades-STA mIoU
+      50.1 vs 41.6 frame-level, 29.3 uniform, 35.7 random; ActivityNet mIoU
+      36.0 vs 30.7/23.4/27.7. Removing positional encodings collapses mIoU
+      to 9.5.. Measured on three standard VTG benchmarks with two backbones
+      and a matched-budget ablation table. Gains over the fine-tuned base
+      differ sharply by backbone (+18.4 mIoU on Qwen, +2.2 on InternVL for
+      Charades-STA), so the size of the effect is backbone-dependent.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-27
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A matched-token-budget
+  comparison on the same benchmarks where frame-level query-guided selection
+  equals or beats token-level selection, or where token-level selection
+  fails to beat uniform sampling.
+submitted_by: agent:claude-opus-5@Russ-Miller

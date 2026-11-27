@@ -1,0 +1,46 @@
+arxiv_id: "2601.01580"
+title: "The Two-Stage Decision-Sampling Hypothesis: Understanding the
+  Emergence of Self-Reflection in RL-Trained LLMs"
+url: https://doi.org/10.48550/arxiv.2601.01580
+drafted_at: 2026-11-15
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: self-repair
+statement: When a model trained with RL and a model trained with
+  reflection-rich SFT are compared on out-of-distribution arithmetic, the RL
+  model's advantage comes from its decision policy — the probability of
+  rejecting an incorrect candidate answer stays at 40-60% far out of
+  distribution for RL while collapsing toward zero for SFT — rather than from
+  a higher first-attempt accuracy, which degrades in both.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Qwen2.5-7B-Instruct trained on 4x5/5x4 multiplication and
+  evaluated on 3x3 through 3x9 multiplication; binary correctness reward;
+  decision actions identified by lexical revision markers.
+technique: ""
+proposed_technique: Calibrate separate sampling and decision rates from self-correction traces
+technique_summary: Estimate three parameters from a model's own multi-attempt
+  traces — first-attempt accuracy, probability of stopping when correct, and
+  probability of resampling when wrong — and use them to attribute an accuracy
+  gap to generation versus verification.
+technique_kind: process
+technique_validated_by: The three-parameter model's predicted accuracy matched
+  observed accuracy across seven OOD multiplication sizes for both RL and SFT
+  models (n=100 per cell), and separated the two training regimes on the
+  resample-when-wrong parameter.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Measuring the same decomposition on other RL/SFT model pairs and
+  finding the RL advantage tracks first-attempt accuracy while the
+  reject-when-wrong rate is comparable between the two.
+evidence_note: Measured on one backbone and one task family (multiplication),
+  100 items per cell with confidence intervals; the calibration fits observed
+  accuracy well but decision actions are identified by hand-chosen revision
+  phrases, so the sampling/decision split depends on that lexical proxy. The
+  accompanying theory (length-weighted KL penalty under-constraining the
+  decision component) is argued, not isolated experimentally. Cited external
+  results (flat p(F->T) under SFT, SFT OOD degradation) are consistent but
+  from other papers.
+confidence: low

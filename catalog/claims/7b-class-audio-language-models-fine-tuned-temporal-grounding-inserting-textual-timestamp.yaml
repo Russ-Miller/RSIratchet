@@ -1,0 +1,38 @@
+id: 7b-class-audio-language-models-fine-tuned-temporal-grounding-inserting-textual-timestamp
+ref: CLM-1028
+capability: audio-understanding
+technique: interleave-textual-timestamp-tokens-audio-tokens
+statement: >-
+  For 7B-class audio-language models fine-tuned for temporal grounding,
+  inserting textual timestamp tokens ('timestamp: t seconds') before each
+  corresponding block of audio tokens raises localization mIoU far more than
+  simply lifting the encoder's 30-second window to preserve long-context
+  continuity.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Qwen2-Audio and Audio Flamingo 3 backbones, LoRA fine-tuned on 77.6k temporally-annotated samples; evaluated on text-queried audio grounding benchmarks of 10-60s clips."
+sources:
+  - source: arxiv-2604-13023
+    stance: supports
+    note: >-
+      Validated by: Ablation on four grounding benchmarks (mIoU): for
+      Qwen2-Audio, plain fine-tuning gave 59.2/50.7/23.8/62.5, removing the
+      30s encoder limit added ~9-10 points (68.5/59.7/34.4/63.1), and adding
+      interleaved timestamps added a further 16.9/12.7/15.5/4.7 points
+      (85.4/72.4/49.9/67.8); a similar gain held for Audio Flamingo 3..
+      Measured, single paper, two backbones, four benchmarks, with a staged
+      ablation that separates context-length from timestamp encoding.
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-27
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: An ablation on
+  comparable backbones where adding interleaved timestamp tokens to a
+  long-context fine-tuned model yields no mIoU gain, or less gain than
+  lifting the context limit alone.
+submitted_by: agent:claude-opus-5@Russ-Miller

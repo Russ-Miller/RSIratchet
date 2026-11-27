@@ -1,0 +1,46 @@
+arxiv_id: "2604.03430"
+title: "Scaling Multi-agent Systems: A Smart Middleware for Improving Agent
+  Interactions"
+url: https://doi.org/10.48550/arxiv.2604.03430
+drafted_at: 2026-11-26
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: On multi-hop QA (HotPotQA, MuSiQue) where evidence is deliberately
+  split across four role-specialized agents on one frontier backbone, the
+  multi-agent system scores well below the same model answering alone (80.1 vs
+  92 and 72.7 vs 87.5), and optimizing per-edge prompt-rewriting policies from
+  inter-agent trajectories recovers most of that loss without exceeding the
+  single-model baseline (91.5, 86.1).
+kind: observation
+backing_strength: single-paper
+scope_condition: Four fixed roles (researcher, analyst, critic, synthesizer)
+  on a fixed directed topology, Claude Sonnet 4.6 throughout, 5 training
+  iterations, evidence artificially partitioned so no agent sees the full
+  question context.
+technique: ""
+proposed_technique: Optimize a separate rewriting policy per agent-to-agent edge
+technique_summary: A middleware intercepts every inter-agent message and
+  rewrites it using a per-edge policy that is updated after each episode by
+  assigning natural-language credit to specific communication edges and
+  backpropagating it as textual gradients.
+technique_kind: process
+technique_validated_by: Mean accuracy over 5 training iterations on modified
+  HotPotQA and MuSiQue, against an unmodified multi-agent system and against
+  global (non-edge-assigned) TextGrad optimization; no per-component ablation
+  and no report of variance across runs.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A replication where the same role decomposition with partitioned
+  evidence matches or beats the single-model baseline before any rewriting, or
+  where per-edge credit assignment gives no advantage over global TextGrad
+  optimization at matched compute.
+evidence_note: Measured on two QA datasets with one backbone; the headline
+  '>10% improvement' is relative to a degraded multi-agent baseline the paper
+  itself created by splitting evidence, and the optimized system still lands
+  below the plain single-model score. No confidence intervals, no ablation
+  separating the five claimed CFN functions, and the architectural apparatus
+  described in most of the paper is not what was evaluated.
+confidence: low

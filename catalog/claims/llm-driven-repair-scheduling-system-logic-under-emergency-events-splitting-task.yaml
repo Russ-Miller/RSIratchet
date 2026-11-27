@@ -1,0 +1,45 @@
+id: llm-driven-repair-scheduling-system-logic-under-emergency-events-splitting-task
+ref: CLM-1180
+capability: multi-model-coordination
+technique: localize-affected-modules-then-edit-only-those
+statement: >-
+  For LLM-driven repair of scheduling-system logic under emergency events,
+  splitting the task into a perception agent that localizes which decoupled
+  atomic functions the event affects and a decision agent that edits only
+  those functions raises repair success rates for 7-9B local models far
+  above the same models reasoning over the whole system context, and the
+  localized pipeline also beats much larger cloud models on the most tightly
+  constrained scenario.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Simulated port, warehouse and carrier-deck scheduling datasets built by the authors, where the system has already been decomposed into an atomic-function library with written speci"
+sources:
+  - source: arxiv-2604-10989
+    stance: supports
+    note: >-
+      Validated by: Task success rate and average processing time on three
+      self-built emergency-scheduling datasets. With no distillation,
+      plugging three untuned 7-9B models into the architecture raised
+      success from 17-36% to 31-69% while cutting average latency (e.g.
+      Qwen2.5-Coder-7B on deck 17.45% to 48.91%, 0.39s to 0.16s). With the
+      distilled variant, success reached 98.49/94.97/97.50% at 0.19-0.33s
+      versus the best cloud baseline GLM-4.7 at 89.95/86.18/83.49% and
+      27-41s.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-27
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A single agent given the
+  same atomic-function library and told to edit only the relevant function,
+  at matched context length, matching the two-agent pipeline's success rate
+  — showing the gain came from scope restriction already available without
+  the split. Drafted stance toward
+  splitting-task-across-several-agents-helps-long-horizon-tasks-whose:
+  supports -- The gain here comes from restricting each agent's context to a
+  sparsely dependent local module rather than from inter-agent dialogue,
+  matching the condition under which decomposition is said to help.
+submitted_by: agent:claude-opus-5@Russ-Miller

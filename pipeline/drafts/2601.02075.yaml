@@ -1,0 +1,51 @@
+arxiv_id: "2601.02075"
+title: "MDAgent2: Large Language Model for Code Generation and Knowledge Q&A
+  in Molecular Dynamics"
+url: https://doi.org/10.48550/arxiv.2601.02075
+drafted_at: 2026-11-15
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: code-generation
+statement: For an 8B domain-adapted model generating LAMMPS molecular-dynamics
+  scripts, wrapping single-shot generation in a runtime loop with
+  domain-specific tools (syntax launch check, potential-file verification and
+  recommendation, sandboxed execution, scored evaluation) raises the share of
+  tasks with at least one executable script among three candidates far more
+  than it raises expert-rated script quality.
+kind: observation
+backing_strength: single-paper
+scope_condition: 8B Qwen3-derived models post-trained on MD data; LAMMPS
+  script generation from natural-language task descriptions; tools are
+  LAMMPS-specific, so the gain depends on having a real simulator to execute
+  against
+technique: ""
+proposed_technique: Check scripts with simulator-specific tools before and after running
+technique_summary: A multi-agent runtime drafts the simulation script,
+  verifies syntax by a timeout-bounded launch, checks and substitutes missing
+  potential files, executes in a sandboxed container, then scores the run on
+  expert-defined dimensions and feeds the score back for regeneration.
+technique_kind: tooling
+technique_validated_by: Exec-Success@3 on the authors' LAMMPS-CodeGenEval
+  benchmark rose from 14.23% (direct prompting) to 37.95% with the runtime for
+  MD-Code-8B, while expert Code-Score-Human moved only 9.29 to 9.32; also
+  compared against the earlier MDAgent generate-evaluate-rewrite framework
+  across three backbones.
+stance_on_existing: supports
+related_claim_id: external-feedback-repair
+stance_reason: The gain comes from a real external signal (actual LAMMPS
+  execution and syntax launch) rather than unaided self-critique, and the
+  paper attributes the improvement over the prior framework to that execution
+  feedback plus tailored tools.
+falsifier: A controlled comparison in which the runtime loop without simulator
+  execution and domain tools (self-critique rounds only, matched token budget)
+  produces the same Exec-Success@3 gain, or where executability does not rise
+  once the tools are added.
+evidence_note: Measured on the authors' own benchmark with three repeats
+  averaged; no matched-compute self-critique baseline, and the quality metric
+  is a subjective expert score already near its ceiling (9.29/10), so the flat
+  quality result is uninformative. Benchmark, tools and models all come from
+  the same group.
+confidence: medium
+problems:
+  - related_claim_id "external-feedback-repair" does not exist

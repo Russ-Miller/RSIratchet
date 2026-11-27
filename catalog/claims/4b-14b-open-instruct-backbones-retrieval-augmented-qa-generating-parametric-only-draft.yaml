@@ -1,0 +1,40 @@
+id: 4b-14b-open-instruct-backbones-retrieval-augmented-qa-generating-parametric-only-draft
+ref: CLM-0994
+capability: hallucination
+technique: train-evidence-answer-against-model-s-own-parametric
+statement: >-
+  For 4B-14B open instruct backbones in retrieval-augmented QA, generating a
+  parametric-only draft answer and then training a second copy with DPO that
+  treats that draft as the rejected response and the retrieved documents as
+  the chosen one, before fusing the two at the hidden-state level during
+  decoding, lowers reported hallucination rates and raises entity precision
+  over standard and adaptive RAG pipelines using the same retriever.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Five QA benchmarks (NQ, TruthfulQA, WoW, HotpotQA, ELI5) with Qwen3-8B/14B backbones and BM25/SPLADE/RetroMAE/HyDE retrievers; requires hidden-state access, so it does not apply un"
+sources:
+  - source: arxiv-2604-08046
+    stance: supports
+    note: >-
+      Validated by: Accuracy averaged over five lexical and semantic metrics
+      on five QA datasets, plus a hallucination rate, entity precision and a
+      5-point human structure-coherence score, against Standard RAG,
+      SelfRAG, RQ-RAG, SOLAR, DA-RAG, FLARE, DRAGIN and P-RAG on the same
+      backbone and retriever; ablations remove DPO, length control,
+      relevance control and segment fusion.. Measured on five benchmarks
+      across three backbone configurations, with component ablations and a
+      noise-injection stress test. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-27
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Matching the compute and
+  the evidence-segment conditioning without the contrastive DPO stage
+  reaches the same hallucination rate and entity precision, or the gain
+  disappears when the hallucination rate is measured alongside answer
+  coverage rather than in isolation.
+submitted_by: agent:claude-opus-5@Russ-Miller

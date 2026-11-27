@@ -1,0 +1,43 @@
+id: 7b-open-vision-language-models-llava-1-5-llava-next-qwen2-vl-minigpt-4
+ref: CLM-1045
+capability: visual-grounding
+technique: contrast-peak-against-minimum-visual-attention-layers
+statement: >-
+  In 7B open vision-language models (LLaVA-1.5, LLaVA-NeXT, Qwen2-VL,
+  MiniGPT-4, InstructBLIP), object hallucination can be reduced without an
+  extra forward pass by contrasting the final-layer logits against two
+  layers selected per token by attention mass on visual tokens — adding the
+  logits of the peak-visual-attention layer and subtracting those of a
+  minimum-attention layer below it.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "7B-scale image-text MLLMs; layers chosen per decoding step by visual-attention score, with adjustment restricted to a plausibility-filtered candidate set; reinforcement and suppres"
+sources:
+  - source: arxiv-2604-10071
+    stance: supports
+    note: >-
+      Validated by: POPE accuracy/F1, CHAIR_S/CHAIR_I and MME perception
+      scores on LLaVA-1.5 and LLaVA-NeXT against greedy, beam search, DoLa,
+      VCD, OPERA, SID and EAZY; plus CHAIR/POPE deltas on three other
+      backbones and five general VL benchmarks; ablations remove each anchor
+      separately.. Measured on POPE, CHAIR and MME for two backbones with
+      seven decoding baselines, plus generalization deltas on three more
+      backbones; ablations isolate each anchor. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-27
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Selecting the two anchor
+  layers by attention mass gives no better hallucination reduction than
+  fixed mid/shallow layers or randomly chosen layer pairs at matched
+  strength, or the reported CHAIR gains vanish once object recall/caption
+  length is held constant. Drafted stance toward
+  7b-scale-lvlms-llava-1-5-mplug-owl2-instructblip-attention-modules-push:
+  supports -- Both find that mid-network states carry visually correct
+  signal that late layers override, and that intervening on a selected layer
+  at decoding lowers object hallucination in one forward pass.
+submitted_by: agent:claude-opus-5@Russ-Miller

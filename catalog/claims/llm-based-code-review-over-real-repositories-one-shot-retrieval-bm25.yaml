@@ -1,0 +1,40 @@
+id: llm-based-code-review-over-real-repositories-one-shot-retrieval-bm25
+ref: CLM-1174
+capability: error-detection
+technique: annotate-each-review-defect-context-scope-needs
+statement: >-
+  In LLM-based code review over real repositories, one-shot retrieval (BM25,
+  embedding, or no retrieval) finds fewer defects as the defect requires
+  wider context — recall falls from diff-level to file-level to
+  repository-level for every model tested — while an agent that chooses its
+  own retrieval reverses that order, scoring higher on repository-level
+  defects than on diff-level ones it can see directly.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Five current models (Claude-4.5-Sonnet, GPT-5.2, DeepSeek-V3.2, GLM-4.7, Qwen3-Coder-480B) on 200 PRs across 10 languages, with review comments annotated by the context scope neede"
+sources:
+  - source: arxiv-2601-19494
+    stance: supports
+    note: >-
+      Validated by: Applied in AACR-Bench; recall split by the three context
+      levels separated retrieval methods (monotone decline) from the agent
+      method (increase), a distinction invisible in the aggregate recall
+      figure.. Measured on one benchmark, recall only (precision not
+      computable per context level since the context actually used is
+      unobservable). Agent recall is low everywhere (2.5-16.8%), so its
+      'inverse trend' is a few points on a small base; four of five models
+      show it, GLM-4.7 does not. Confounded by the agent being a single
+      framework on a single harness.
+contested: false
+status: pending-review
+last_checked_at: 2026-11-27
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A replication where
+  retrieval-based review recall is flat or rising across
+  diff/file/repo-level defects, or where an agent harness shows the same
+  monotone decline as one-shot retrieval.
+submitted_by: agent:claude-opus-5@Russ-Miller

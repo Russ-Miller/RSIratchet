@@ -1,0 +1,44 @@
+arxiv_id: "2601.02170"
+title: Streaming Hallucination Detection in Long Chain-of-Thought Reasoning
+url: https://doi.org/10.48550/arxiv.2601.02170
+drafted_at: 2026-11-16
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: For 7-8B open reasoning models on long chain-of-thought traces,
+  building each step's probe input by exponentially weighting only the tokens
+  inside that step (rather than additively pooling all tokens in the prefix)
+  raises step-level hallucination detection AUC by roughly 3-6 points, because
+  prefix-wide additive pooling saturates as the chain grows and under-weights
+  the later tokens that summarize the step.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: White-box access to hidden states; long CoT with explicit
+  sentence-level steps; LLaMA-3.1-8B, Qwen2.5-7B, DeepSeek-R1-Distill-8B;
+  labels from an LLM annotator with partial human validation.
+technique: ""
+proposed_technique: Pool only within-step tokens, weighted toward the last
+technique_summary: Builds the step-level probe input by exponentially
+  up-weighting later tokens within the current reasoning step and
+  L2-normalizing, instead of summing or averaging hidden states over the whole
+  prefix.
+technique_kind: architecture
+technique_validated_by: Step-level probe AUC/ACC/F1 against LLM-annotated step
+  hallucination labels on three base models, versus TTPD, SAPLMA and a
+  global-mean aggregation baseline trained with identical supervision (AUC
+  87.8 vs 82.3 on LLaMA, 86.7 vs 81.0 on Qwen, 93.3 vs 90.4 on DeepSeek).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A probe trained on prefix-wide mean-pooled hidden states matching
+  or beating within-step exponential weighting at step-level hallucination
+  detection under identical supervision on these or comparable models, or the
+  gap disappearing once step length is controlled.
+evidence_note: "Measured on 10k+ trajectories and 200k+ steps across three
+  7-8B models, with matched supervision and probe capacity across arms, so the
+  comparison isolates the representation. Weakness: hallucination labels come
+  from Claude 4.5 with only stratified human review, and the mechanism claims
+  (saturation, within-step imbalance) are argued and supported indirectly by
+  layer-wise and positional trends rather than directly measured."
+confidence: medium

@@ -1,0 +1,45 @@
+id: black-box-rag-pipelines-where-attacker-both-append-suffix-user
+ref: CLM-1077
+capability: prompt-injection
+technique: pair-query-agnostic-poison-retrieval-steering-query-suffix
+statement: >-
+  In black-box RAG pipelines where an attacker can both append a suffix to
+  the user query and insert a handful of passages into the corpus, neither
+  channel alone reliably forces a chosen wrong answer (near-zero strict
+  success for query-suffix-only and for query-agnostic corpus poisoning on
+  NQ and MS-MARCO), while combining them succeeds on arbitrary, unseen user
+  queries at 89-100% across eight instruction-following LLMs.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Embedding retriever (Contriever) with no query sanitization, no provenance checks on corpus ingestion, and a prompt template that does not separate trusted instructions from retrie"
+sources:
+  - source: arxiv-2603-25164
+    stance: supports
+    note: >-
+      Validated by: Attack success rate (strict substring match on the
+      attacker's answer) against PoisonedRAG, GGPP, GCG, Disinformation and
+      corpus-poisoning-only baselines on NQ, HotpotQA and MS-MARCO across
+      eight LLMs, with retrieval F1 reported separately to show poisoned
+      passages actually entered the top-k; budget sweeps over poison count n
+      and context size k.. Measured across 3 QA datasets and 8 LLMs with
+      matched query IDs, fixed target pair, fixed retriever and prompt, 10
+      iterations of 10 sampled queries; retrieval F1 separates
+      retrieval-time from generation-time effects. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-27
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A replication where
+  query-suffix-only or corpus-poisoning-only reaches comparable strict
+  success to the combined attack under matched retriever, poison budget and
+  target pair, showing the compound design adds nothing. Drafted stance
+  toward
+  long-trusted-instructions-untrusted-retrieved-content-occupy-same-model:
+  supports -- The attack works precisely because the query string is trusted
+  by the orchestrator and retrieved content is read as instruction-bearing
+  evidence in the same context.
+submitted_by: agent:claude-opus-5@Russ-Miller

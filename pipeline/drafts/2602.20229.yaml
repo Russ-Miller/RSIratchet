@@ -1,0 +1,50 @@
+arxiv_id: "2602.20229"
+title: "HieraMAS: Optimizing Intra-Node LLM Mixtures and Inter-Node Topology
+  for Multi-Agent Systems"
+url: https://doi.org/10.48550/arxiv.2602.20229
+drafted_at: 2026-11-21
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: In multi-agent LLM pipelines with a fixed role set, selecting one
+  whole communication topology per query from a pool of pre-generated random
+  DAGs with a trained graph classifier gives higher accuracy than averaging
+  outputs over randomly sampled topologies, and filling every role with the
+  single strongest model instead of a learned heterogeneous mixture does not
+  reliably raise accuracy while costing roughly 1.7-3x more.
+kind: observation
+backing_strength: single-paper
+scope_condition: Reasoning, coding and knowledge QA benchmarks (HumanEval++,
+  MATH, MMLU-Redux) with a pool of 8B-80B open and small proprietary models;
+  roles and intra-supernode propose-synthesize structure fixed, not optimized.
+technique: ""
+proposed_technique: Score whole topologies as candidates, not per-edge
+technique_summary: Pre-generate a pool of random DAG communication topologies
+  and train a GCN classifier to pick one per query, instead of learning
+  per-edge inclusion probabilities, while a separate policy picks which LLM
+  fills each proposer and synthesizer slot in each role.
+technique_kind: process
+technique_validated_by: "Ablation on MATH and MMLU-Redux against the same
+  system with the graph classifier removed (three random graphs averaged):
+  -3.45 and -3.36 points accuracy; and against all-nodes-GPT-5-Mini, which
+  gained 1.1 points on MATH at $2.56 vs $1.52 and lost 0.8 points on
+  MMLU-Redux at $3.92 vs $1.29. Main table reports 94.61% average vs 92.78%
+  for full-graph and 92.69% for AFlow."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Under matched model pools and token budgets, a per-edge-optimized
+  topology learner matching or beating candidate-pool graph classification, or
+  assigning the strongest model to every role matching the learned mixture's
+  accuracy at comparable cost.
+evidence_note: Measured on three benchmarks under two backbone settings
+  against ten baselines, with component ablations and dollar-cost reporting.
+  No matched-compute control for the training budget of the two stages, no
+  seeds or variance reported, and the held-out MMLU generalization result is
+  on 5 subjects where the method is not best under one setting. Topology pool,
+  roles and intra-node structure are hand-specified, so the gain is partly
+  from the fixed design.
+confidence: low
+problems:
+  - "figures not in the source: 1.7"

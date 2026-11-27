@@ -1,0 +1,41 @@
+id: self-training-loops-code-generation-4b-7b-instruct-backbones-supervision-self-generated
+ref: CLM-1285
+capability: code-generation
+technique: train-coder-against-own-failure-inducing-test-inputs
+statement: >-
+  In self-training loops for code generation with 4B-7B instruct backbones,
+  supervision from self-generated unit tests that confirm semantic
+  correctness loses discriminative power once the solver is moderately
+  strong, while tests optimized to induce execution-level failures (runtime
+  errors, exceptions, non-termination) keep yielding pass@1 gains of 3-7
+  points over solver-verifier training.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen3-4B-Instruct and Qwen2.5-7B-Instruct trained on CodeContests (~4.5k problems) with ground-truth tests available for scoring; evaluated on CodeContests, MBPP, LiveCodeBench v2."
+sources:
+  - source: arxiv-2605-16299
+    stance: supports
+    note: >-
+      Validated by: pass@1/5/10 and average tokens per solution on
+      CodeContests (in-distribution), MBPP and LiveCodeBench
+      (out-of-distribution), against the instruct backbone, ReasonFlux-Coder
+      and Qwen2.5-Coder baselines; ablations replacing the adversary with
+      random prompt-perturbed tests (-4 pts pass@1), removing KTO (-5 pts),
+      and removing SFT (largest drop).. Measured on two backbones and three
+      benchmarks with pass@k and token counts, plus three ablations. Gains
+      are modest and uneven: the 7B model scores below ReasonFlux on MBPP
+      pass@1. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-27
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A matched-compute run where
+  verifier-style tests (expected outputs computed) continue to produce equal
+  or larger pass@1 gains than failure-inducing tests across the same rounds,
+  or where the ACE gain disappears once the random-test baseline is given
+  equal test counts and equal preference optimization.
+submitted_by: agent:claude-opus-5@Russ-Miller

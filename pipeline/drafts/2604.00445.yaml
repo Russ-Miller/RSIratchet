@@ -1,0 +1,46 @@
+arxiv_id: "2604.00445"
+title: Towards Reliable Truth-Aligned Uncertainty Estimation in Large Language
+  Models
+url: https://doi.org/10.48550/arxiv.2604.00445
+drafted_at: 2026-11-26
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: abstention-and-self-knowledge
+statement: For 3B-9B instruct models on short-form factual QA, fitting a small
+  MLP that maps a single raw uncertainty score (entropy, perplexity, P(True),
+  semantic entropy and similar) to a correctness probability using labelled
+  score-correctness pairs sharply lowers expected calibration error but rarely
+  improves ranking of correct over incorrect answers, because post-hoc mapping
+  of one scalar cannot add correctness information the score does not carry.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Short-form factual/multiple-choice QA (TriviaQA, SciQ, PopQA,
+  GSM8K, CSQA, MedMCQA) with 3B-9B instruct models; in-domain supervision
+  works best, transfer across datasets weakens; untested on open-ended
+  generation.
+technique: ""
+proposed_technique: Calibrate raw uncertainty scores against correctness labels
+technique_summary: Trains a small MLP on (uncertainty score, correctness
+  label) pairs with binary cross-entropy plus an auxiliary pairwise ranking
+  term to map the raw score to a truth-aligned probability of correctness.
+technique_kind: process
+technique_validated_by: ECE and AUC on 10 uncertainty metrics x 5 models x 3
+  QA datasets against the uncalibrated scores and against CUE; ECE dropped by
+  roughly 10-70 points in most cells while AUC changes were often near zero;
+  few-shot (8-128 labels) and label-corrupted variants retained ECE gains but
+  lost AUC.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A post-hoc mapping of a single scalar uncertainty score that
+  consistently raises AUC by a large margin across models and datasets, or a
+  setting where this calibration fails to reduce ECE on short-form factual QA.
+evidence_note: Measured across 5 models, 3 main QA datasets and 10 uncertainty
+  metrics, plus 3 specialised datasets; ECE gains large and consistent, AUC
+  gains sporadic (sometimes negative). Bound is also argued formally via a
+  mutual-information bound on AUC. Design isolates the scalar-only case by
+  excluding extra features; comparison to CUE shows added embedding features
+  recover more AUC. No confidence intervals on most cells; models limited to
+  3-9B.
+confidence: medium

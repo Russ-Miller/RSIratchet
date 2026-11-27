@@ -1,0 +1,65 @@
+id: arxiv-2601-01580
+ref: SRC-1061
+kind: paper
+title: "The Two-Stage Decision-Sampling Hypothesis: Understanding the
+  Emergence of Self-Reflection in RL-Trained LLMs"
+authors:
+  - Zibo Zhao
+  - Yuanting Zha
+  - Haipeng Zhang
+  - Xingcheng Xu
+year: 2026
+date: 2026-01-04
+arxiv_id: "2601.01580"
+url: https://arxiv.org/abs/2601.01580
+tags:
+  - ingested
+summary: Self-reflection capabilities emerge in Large Language Models after RL
+  post-training, with multi-turn RL achieving substantial gains over SFT
+  counterparts. Yet the mechanism of how a unified optimization objective
+  gives rise to functionally distinct capabilities of generating solutions and
+  evaluating when to revise them remains opaque. To address this question, we
+  introduce the Gradient Attribution Property to characterize how reward
+  gradients distribute across policy components, formalized through the
+  Two-Stage Decision-Sampling (DS) Hypothesis, which decomposes the policy
+  into sampling ($π_{s
+notes: "Filed as a source on self-repair from the classifier's judgement that
+  the paper is about it (measures, medium): The paper offers a theoretical and
+  empirical characterization of why self-reflection emerges under RL versus
+  SFT, attributing gains to the decision/verification component, rather than
+  proposing a new fix or reporting a regression. No claim has been drafted
+  from it yet."
+ingested_at: 2026-11-27
+brief: >-
+  RL-trained models generalize better than SFT-trained ones not because they
+  sample better answers, but because they learn when to reject a wrong answer
+  and try again. The paper decomposes a single next-token policy into a
+  sampling policy (generate a candidate) and a decision policy (STOP or
+  RESAMPLE), and argues the token-level KL penalty scales with sequence length
+  for sampling actions but is O(1) for decision actions, so sampling gets
+  heavily regularized while decision-making is left free to move.
+
+
+  The empirical test is multi-digit multiplication with Qwen2.5-7B-Instruct
+  trained on 4x5 and 5x4 products and evaluated out-of-distribution on 3x3
+  through 3x9, n=100 per cell. RL and reflection-SFT are comparable on easy
+  tasks (96-98% on 3x3), but diverge at 3x6 (RL 90% vs SFT 49%) and at 3x9 (RL
+  34% vs SFT 0%). A 3-parameter calibration (p_s, p_d|C, p_d|W) fits observed
+  accuracy: for RL, p_s falls from roughly 80% to below 20% while p_d|W holds
+  at 40-60%; for SFT, p_d|W collapses toward zero.
+
+
+  The decomposition is a fitted behavioral model, not a causal intervention,
+  and decision actions are identified by lexical markers like "Let me
+  recompute". 1 model, 1 task family, no ablation on KL weight or trace
+  length. Supporting evidence is cited from others: p(F to T) flat at 3-5% for
+  SFT regardless of corrective data, SFT degrading OOD by 8-80% while RL
+  improves 3-61%, and DFT lifting AIME24 from 2.48 to 8.56 against SFT's 6.68
+  baseline.
+
+
+  If you are deciding where to spend post-training budget, this says the
+  verification step is what transfers.
+brief_generated_at: 2026-11-27
+brief_model: claude-opus-5
+brief_source: full-text

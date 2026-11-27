@@ -1,0 +1,41 @@
+id: encoder-adaptor-llm-speech-recognition-systems-end-to-end-joint-fine-tuning-lets-llm
+ref: CLM-1110
+capability: hallucination
+technique: freeze-encoder-intermediate-sft-stage-hot-swapping-checkpoints
+statement: >-
+  In encoder-adaptor-LLM speech recognition systems, end-to-end joint
+  fine-tuning lets LLM gradients pull the speech encoder toward
+  linguistically accessible representations at the cost of phonetic ones,
+  and that drift is what produces fabricated transcripts; inserting an
+  intermediate stage in which the encoder is frozen (and periodically
+  swapped for a fresher pretraining checkpoint) while only adaptor and LLM
+  train preserves the acoustic grounding and lowers the hallucination rate.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "LLM-based ASR with a Conformer-style encoder plus a small (2.3B total) LLM decoder, trained in stages on Mandarin, dialect, English and code-switch speech; hallucination defined as"
+sources:
+  - source: arxiv-2604-08003
+    stance: supports
+    note: >-
+      Validated by: Ablating the stage raised hallucination rates (e.g.
+      Mandarin 0.003% to 0.005%, dialect 0.122% to 0.198%, code-switch
+      0.261% to 0.356%) and worsened CER/WER on all four scenario groups;
+      encoder probes showed phonetic accessible information recovering
+      during joint training with the stage and converging lower without it.
+      Single system, no independent replication.. Measured on one 2.3B
+      system across public Mandarin/dialect/English/code-switch benchmarks,
+      with an ablation isolating the stage and a further ablation of the
+      hot-swapping component. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-27
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An LLM-ASR system where
+  removing the encoder-frozen intermediate stage leaves hallucination rates
+  and phonetic-probe scores unchanged, or where hallucination falls while
+  the phonetic-to-semantic drift in encoder representations grows.
+submitted_by: agent:claude-opus-5@Russ-Miller

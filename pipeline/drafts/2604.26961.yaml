@@ -1,0 +1,45 @@
+arxiv_id: "2604.26961"
+title: Static Program Slicing Using Language Models With Dataflow-Aware
+  Pretraining and Constrained Decoding
+url: https://doi.org/10.48550/arxiv.2604.26961
+drafted_at: 2026-11-26
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: When a code task requires the output to be an exact subsequence of
+  the input (static program slicing), masking the decoder's logits to only
+  tokens present in the input removes fabricated identifiers and contributes
+  more than a syntactic-structure filter, because invented tokens are the more
+  frequent failure than mis-ordered valid tokens.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Shown with a 0.7B encoder-decoder code model (CodeT5+) on
+  Java and Python slicing benchmarks where ground truth is produced by static
+  slicers; not tested on tasks whose correct output is not a subsequence of
+  the input.
+technique: ""
+proposed_technique: Mask decoding to input tokens, then reject on AST-similarity drops
+technique_summary: At each decoding step set the logit of any token absent
+  from the input code to minus infinity, and at each completed statement
+  boundary kill the beam path if tree-similarity edit distance to the input
+  AST stops increasing.
+technique_kind: decoding
+technique_validated_by: ExactMatch, Dependence Accuracy, CodeBLEU and TSED on
+  the Java and Python CodeNet-Slice test splits against NS-Slicer, prompted
+  GPT-4o-mini/GPT-5, and SFT-only CodeLlama-7B, Qwen3-8B and CodeT5+; ablation
+  removing each of the four components, in which the lexical constraint and
+  dataflow span corruption drop performance most and the syntactic constraint
+  least.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation on an extractive code task where removing the lexical
+  input-vocabulary mask costs no more than removing the syntactic filter, or
+  where constrained decoding leaves fabricated-identifier rates unchanged.
+evidence_note: Measured on two language subsets of one benchmark with one base
+  model; full-system ExactMatch 92.20 (Java) and 83.15 (Python) vs 87.24/77.24
+  for SFT-only CodeT5+. Component ranking comes from a single ablation figure
+  without reported variance or seeds, and the lexical mask's effect is not
+  separated from the dataflow pretraining it is combined with.
+confidence: medium

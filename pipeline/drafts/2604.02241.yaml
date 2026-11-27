@@ -1,0 +1,41 @@
+arxiv_id: "2604.02241"
+title: "UAV-Track VLA: Embodied Aerial Tracking via Vision-Language-Action Models"
+url: https://doi.org/10.48550/arxiv.2604.02241
+drafted_at: 2026-11-26
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: For VLA policies doing language-guided UAV visual tracking of
+  moving targets, adding a training-only auxiliary head that predicts the
+  target's relative 3D position and yaw from the shared cross-modal features
+  raises closed-loop tracking success far more for pedestrians (small, erratic
+  targets) than for vehicles, because the auxiliary supervision forces
+  explicit distance estimation that the action expert cannot recover from
+  semantics alone.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: CARLA simulation only, pi-0.5-based architecture, 4-DoF
+  displacement control, no physical robot
+technique: ""
+proposed_technique: Supervise target relative pose as a training-only side branch
+technique_summary: Attach a compact transformer head after the LLM that
+  predicts the tracked target's 3D relative position and yaw during training
+  only, so the encoder embeds geometric priors into the features the
+  flow-matching action expert consumes.
+technique_kind: architecture
+technique_validated_by: "Ablation against the same model without the head:
+  seen maps far-distance pedestrian success 61.76% vs 37.88% and tracked
+  frames 269.65 vs 183.96; unseen maps 226.90 vs 159.22 frames; vehicle gains
+  much smaller and mixed."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An ablation on other backbones or simulators where removing the
+  auxiliary pose head leaves pedestrian tracking success unchanged, or where
+  the gain is equal for vehicles and pedestrians.
+evidence_note: Measured in CARLA with one ablation pair across seen/unseen
+  maps and three distance bands; episode counts per cell are not reported, and
+  some cells (seen suitable vehicle) show the ablated model slightly ahead, so
+  the vehicle-side null is weakly supported. No real-robot evidence.
+confidence: low

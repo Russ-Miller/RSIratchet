@@ -1,0 +1,40 @@
+id: 3d-llm-embodied-agents-answering-object-existence-questions-over-structured-3d
+ref: CLM-0991
+capability: hallucination
+technique: contrast-decoding-against-perturbed-3d-scene-graph
+statement: >-
+  For 3D-LLM embodied agents answering object-existence questions over
+  structured 3D scene graphs, contrasting the model's logits against a
+  second pass on a semantically and geometrically perturbed copy of the same
+  scene graph lowers the over-affirmation rate and raises accuracy without
+  retraining, while leaving the model still biased toward 'yes' (yes-rate
+  75-89% against a 50% base rate).
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "3D-LLM/LLaMA-style models fine-tuned on 3D-GRAND, plus Llama-3-8B and Qwen-14B instruct, evaluated on binary existence questions (3D-POPE) and the HEAL distractor-injection subset,"
+sources:
+  - source: arxiv-2604-08645
+    stance: supports
+    note: >-
+      Validated by: 3D-POPE precision/recall/F1/accuracy/yes-rate across
+      Random, Popular and Adversarial splits against 3D-LLM, 3D-VisTA and
+      LEO baselines (Random: accuracy 50.07 to 67.99, yes-rate 99.81 to
+      75.15); HEAL CHAIR object and state hallucination rates with and
+      without the contrast on two instruct models; ablation over 11
+      distortion types showing all beat the baseline F1.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-27
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Applying the same
+  contrastive subtraction with a null or irrelevant second context (e.g. an
+  unrelated scene graph, or the same graph unchanged with a temperature
+  shift) producing equal gains, which would show the effect comes from the
+  logit arithmetic rather than from 3D evidence sensitivity; or showing the
+  accuracy gain disappears once yes-rate is matched to the baseline by
+  thresholding.
+submitted_by: agent:claude-opus-5@Russ-Miller

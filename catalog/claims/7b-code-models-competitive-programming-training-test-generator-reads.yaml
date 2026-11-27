@@ -1,0 +1,40 @@
+id: 7b-code-models-competitive-programming-training-test-generator-reads
+ref: CLM-1033
+capability: self-repair
+technique: let-test-generator-read-candidate-code-then-repair
+statement: >-
+  For 7B code models on competitive programming, training a test generator
+  that reads the current candidate program before writing tests exposes more
+  implementation-specific bugs than a test generator given only the problem
+  description, and feeding those tests to an RL-trained repair role beats
+  generating many fresh candidates and selecting among them at equal
+  inference budget.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "7B-8B open code backbones (Qwen2.5-Coder-7B, Llama-3-8B), Python competitive programming benchmarks, fixed budget of 20 LLM calls per problem, training data with ground-truth refer"
+sources:
+  - source: arxiv-2604-05560
+    stance: supports
+    note: >-
+      Validated by: Pass@1 and average pass ratio on APPS, CodeContests,
+      xCodeEval, LiveCodeBench v6 against CURE and Specine on the same 7B
+      backbone at matched 20-call budget (average Pass@1 34.66% vs 23.13%
+      CURE, 24.34% Specine) plus six ablations; blind-Auditor variant (no
+      candidate code) drops average Pass@1 to 30.04%, Stage-B-only to
+      26.26%.. Measured on four benchmarks with two backbones; ablations
+      isolate candidate-code access (-4.6 avg Pass@1) and the Auditor loop
+      (-8.4). [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-27
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A matched-budget
+  comparison where giving the test generator the candidate code yields no
+  gain in bug-revealing test rate or downstream Pass@1 over a
+  description-only test generator, or where repeated fresh-candidate
+  generation with selection matches the repair loop at equal calls.
+submitted_by: agent:claude-opus-5@Russ-Miller

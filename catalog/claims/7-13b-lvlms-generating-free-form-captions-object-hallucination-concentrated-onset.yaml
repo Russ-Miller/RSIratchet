@@ -1,0 +1,43 @@
+id: 7-13b-lvlms-generating-free-form-captions-object-hallucination-concentrated-onset
+ref: CLM-1005
+capability: visual-grounding
+technique: intervene-semantic-phrase-onsets-using-distilled-self-reward
+statement: >-
+  In 7-13B LVLMs generating free-form captions, object hallucination is
+  concentrated at the onset of each semantic phrase and declines for later
+  tokens within that phrase, so triggering correction only at phase onsets
+  lowers hallucination rates more than contrastive decoding applied
+  uniformly at every step.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Measured on caption generation with LLaVA-1.5-7B/13B, LLaVA-NeXT-7B and InstructBLIP-7B on COCO/AMBER/Object HalBench/MMHal-Bench; phases defined by textual delimiters; interventio"
+sources:
+  - source: arxiv-2604-17982
+    stance: supports
+    note: >-
+      Validated by: CHAIR, Cover, Hal, Cog on AMBER; CHAIR_S/CHAIR_I on
+      Object HalBench; MMHal-Bench overall and Hal; POPE accuracy/F1 —
+      compared against base model and post-hoc baselines (VCD, M3ID, OPERA,
+      AVISC, Octopus, ONLY, EAZY). CHAIR on AMBER for LLaVA-1.5-7B fell 7.8
+      to 3.9; phase-level hallucination accumulation rate 0.07% vs 0.35%
+      base and 0.40% M3ID.. Measured: 500 COCO images for the phase-pattern
+      analysis, then five hallucination benchmarks across four LVLMs against
+      many post-hoc baselines. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-27
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Measuring word-level
+  hallucination rate within phrases on other LVLMs and finding it flat or
+  rising toward phrase end, or an ablation in which applying the same
+  reward-guided correction at uniformly spaced token positions matches
+  onset-targeted correction at equal compute. Drafted stance toward
+  7b-vision-language-models-llava-1-5-7b-qwen-vl-chat-inference-time-hidden-state-steering:
+  supports -- Both find that hallucination intervention applied at every
+  decoding step is worse than gating it on a signal that marks the risky
+  moments.
+submitted_by: agent:claude-opus-5@Russ-Miller

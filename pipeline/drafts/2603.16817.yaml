@@ -1,0 +1,50 @@
+arxiv_id: "2603.16817"
+title: Is Conformal Factuality for RAG-based LLMs Robust? Novel Metrics and
+  Systematic Insights
+url: https://doi.org/10.48550/arxiv.2603.16817
+drafted_at: 2026-11-24
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: abstention-and-self-knowledge
+statement: When conformal factuality filtering is applied to RAG-based LLM
+  outputs by scoring and dropping atomic claims below a calibrated threshold,
+  the coverage guarantee is bought with vacuity at high target factuality
+  levels — an empty output counts as factual under empirical factuality — and
+  the guarantee does not hold under distribution shift between calibration and
+  deployment or when distractors are present.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: RAG pipelines with an oracle retriever supplying sufficient
+  reference text, evaluated on open-ended biography, math and natural question
+  answering with open-source models from 135M to 117B; relies on an LLM judge
+  for claim parsing and factuality labelling.
+technique: conformal-abstention-self-consistency
+proposed_technique: Score conformal filtering on non-vacuous and sufficiency metrics
+technique_summary: Replaces or supplements empirical factuality with non-empty
+  rate, factuality conditional on non-emptiness, and whether the filtered
+  output still contains enough correct information to answer the query
+  (including conditioned on the unfiltered output having been sufficient).
+technique_kind: process
+technique_validated_by: Applied across three benchmarks and several model
+  families to show conformal filtering's reported factuality is inflated by
+  empty outputs; the metrics are measurement instruments, not a repair, and
+  the paper proposes no fix for the robustness failures.
+stance_on_existing: contests
+related_claim_id: abstention-rule-built-self-consistency-where-model-samples-several-answers
+stance_reason: That claim credits conformal thresholding with bounding
+  hallucination rate at a chosen level; this paper finds the bound is met
+  partly by vacuous outputs and breaks under distribution shift and
+  distractors.
+falsifier: Showing that at high target factuality levels conformal-filtered
+  RAG outputs retain sufficient information to answer the query at rates
+  comparable to unfiltered outputs, and that the coverage guarantee holds
+  empirically when calibration and deployment distributions differ or
+  distractors are injected.
+evidence_note: Measured across three datasets (FActScore incl. a rare-entity
+  subset, MATH, Natural Questions) and 13 open-source models with
+  entailment-based and LLM-confidence scorers; the vacuity finding follows
+  from the metric definition plus observed non-empty rates, and the robustness
+  finding from shift/distractor conditions. Source text truncated before the
+  results section, so effect sizes are not available.
+confidence: medium
