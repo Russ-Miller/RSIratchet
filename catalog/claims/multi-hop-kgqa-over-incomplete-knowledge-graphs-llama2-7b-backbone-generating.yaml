@@ -1,0 +1,44 @@
+id: multi-hop-kgqa-over-incomplete-knowledge-graphs-llama2-7b-backbone-generating
+ref: CLM-1218
+capability: multi-step-reasoning
+technique: score-llm-generated-kg-logic-rules-embedding-space
+statement: >-
+  For multi-hop KGQA over incomplete knowledge graphs with a LLaMA2-7B
+  backbone, generating several KG-grounded logic rules per question and
+  scoring candidate answers by fuzzy-logic path probabilities in a ComplEx
+  embedding space rather than traversing the graph raises Hits@1 over
+  traversal and embedding baselines (WebQSP 86.4, CWQ 62.9), and the two
+  added stages do different work: removing rule inference costs precision
+  and F1, while removing the LLM reranker raises recall sharply (WebQSP 76.5
+  to 80.5, CWQ 57.4 to 66.9) and collapses precision (69.2 to 41.5, 52.5 to
+  14.6).
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Two Freebase-based KGQA datasets plus MetaQA, LLaMA2-Chat-7B backbone, baseline numbers taken from the original papers rather than rerun."
+sources:
+  - source: arxiv-2603-13266
+    stance: supports
+    note: >-
+      Validated by: Hits@1 on WebQSP, CWQ and MetaQA 1/2/3-hop against
+      retrieval, embedding and LLM baselines; precision/recall/F1 ablations
+      removing rule inference, removing reranking, and replacing selected
+      rules with random ones.. Measured on three KGQA datasets with a
+      four-way ablation that separates rule inference, reranking and
+      random-rule controls. Baselines are copied from prior papers rather
+      than reproduced, so the headline margins are not harness-matched;
+      MetaQA is near-saturated for several baselines and does not separate
+      methods. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-27
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A controlled rerun where
+  embedding-space rule scoring matches plain graph traversal on the same
+  incomplete KG, or where removing the reranker leaves precision roughly
+  unchanged, would break the claim. Automatic check flagged: figures not in
+  the source: 80.5, 57.4, 41.5, 14.6.
+submitted_by: agent:claude-opus-5@Russ-Miller

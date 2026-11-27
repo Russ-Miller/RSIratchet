@@ -1,0 +1,51 @@
+arxiv_id: "2603.20975"
+title: "DiscoUQ: Structured Disagreement Analysis for Uncertainty
+  Quantification in LLM Agent Ensembles"
+url: https://doi.org/10.48550/arxiv.2603.20975
+drafted_at: 2026-11-24
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: In 5-agent LLM ensembles on closed-form QA (yes/no and
+  multiple-choice), a logistic regression over LLM-extracted
+  disagreement-structure features (evidence overlap, minority argument
+  strength, divergence depth, majority confidence language) separates correct
+  from incorrect consensus answers better and far more calibratedly than
+  vote-margin, vote-entropy or verbalized-confidence baselines, except on
+  benchmarks where base accuracy is already near ceiling.
+kind: observation
+backing_strength: single-paper
+scope_condition: 5 role-specialized agents from one 27B model, four
+  closed-form QA benchmarks, 2,750 questions; requires labelled data to fit
+  the classifier; fails to beat heuristic baselines on a 96%-accuracy
+  benchmark; untested on open-ended generation.
+technique: ""
+proposed_technique: Score ensemble confidence from disagreement structure, not vote margin
+technique_summary: Prompt the same model to rate six properties of the
+  disagreement among agents' reasoning (evidence overlap, minority novelty,
+  minority argument strength, majority hedging, complexity, where reasoning
+  diverges) and feed those plus the vote fraction into a logistic regression
+  that outputs calibrated confidence.
+technique_kind: process
+technique_validated_by: "5-fold cross-validated AUROC and ECE on StrategyQA,
+  MMLU, TruthfulQA, ARC-Challenge against six baselines including an LLM
+  aggregator reading all agent responses: average AUROC 0.802 vs 0.791 best
+  baseline, ECE 0.036 vs 0.098; leave-one-benchmark-out training gave the same
+  average AUROC (0.802)."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An evaluation where the same disagreement-structure features, fit
+  on one benchmark and applied to held-out ensembles, give AUROC and ECE no
+  better than vote fraction alone, or where the gain disappears once the
+  structure-extraction call's extra compute is given to the vote-count
+  baseline.
+evidence_note: "Measured on 2,750 questions across four benchmarks with nine
+  methods and bootstrap significance on three of four benchmarks. Ablation
+  shows structure features add 6.9 AUROC points over vote confidence alone on
+  StrategyQA. Not isolated: only one primary agent model, only closed-form
+  tasks, and the LLM aggregator still wins in the weak-disagreement tier
+  (0.736 vs 0.711) and on ARC-Challenge, so the advantage is in calibration
+  and average discrimination rather than everywhere."
+confidence: low

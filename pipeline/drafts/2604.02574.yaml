@@ -1,0 +1,41 @@
+arxiv_id: "2604.02574"
+title: Understanding the Effects of Safety Unalignment on Large Language Models
+url: https://doi.org/10.48550/arxiv.2604.02574
+drafted_at: 2026-11-26
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: For 4B-14B instruction-tuned and reasoning LLMs, removing safety
+  guardrails by fine-tuning on jailbreak-triggered harmful samples
+  (jailbreak-tuning) sharply raises hallucination on QA and summarization
+  (TruthfulQA +8.9 and TofuEval +41.2 percentage points on average), while
+  removing the same guardrails by orthogonalizing weights against the refusal
+  direction leaves hallucination near baseline (+3.6 and -1.7 points).
+kind: observation
+backing_strength: single-paper
+scope_condition: Six open models (Qwen3-4B, Llama-3.1-8B, Qwen2.5-14B and
+  their reasoning counterparts); TruthfulQA and TofuEval; specific JT recipe
+  (2% malicious samples, Q-LoRA, 5 epochs).
+technique: ""
+proposed_technique: Unalign by weight orthogonalization, not jailbreak-tuning
+technique_summary: Removes refusal behaviour by orthogonalizing each layer's
+  output weights against an estimated refusal direction, with no gradient
+  training, instead of fine-tuning on harmful samples.
+technique_kind: architecture
+technique_validated_by: StrongREJECT refusal rates, AutoDAN-Turbo and
+  CyberSecEval 3 attack success, TruthfulQA/TofuEval hallucination, and seven
+  helpfulness benchmarks, each compared against the aligned base model and the
+  jailbreak-tuned variant.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Running both unalignment methods on comparable models and finding
+  jailbreak-tuning's hallucination increase no larger than weight
+  orthogonalization's on QA and summarization benchmarks.
+evidence_note: Measured on six models across two hallucination benchmarks with
+  per-model baselines; direction is consistent across all six, but one JT
+  hyperparameter recipe and one fine-tuning corpus, so the hallucination rise
+  may be an artifact of fine-tuning on BookCorpus completions rather than of
+  jailbreak content as such. No ablation separating the two.
+confidence: medium

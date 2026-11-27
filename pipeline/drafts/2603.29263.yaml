@@ -1,0 +1,45 @@
+arxiv_id: "2603.29263"
+title: "Audio Hallucination Attacks: Probing the Reliability of Large Audio
+  Language Models"
+url: https://doi.org/10.48550/arxiv.2603.29263
+drafted_at: 2026-11-25
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: In large audio language models, questions that presuppose a sound's
+  presence and ask how/when/why about it (implicit queries) elicit confident
+  hallucinated answers far more often than direct yes/no existence questions
+  about the same absent sound, because the presupposition lets the model skip
+  the grounding check and attend less to audio tokens during generation.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Measured on six open and closed LALMs (Audio Flamingo 3,
+  Qwen2.5/3-Omni, R1-AQA, Gemini 3 Pro, GPT-4 Audio) over 6.5K constructed QA
+  pairs built from AudioCaps, Clotho and MusicCaps clips, with attack success
+  judged by an LLM judge (92.4% human agreement on 200 samples).
+technique: ""
+proposed_technique: Probe audio grounding with presupposing, not yes/no, questions
+technique_summary: Replace explicit 'is X present' probes with questions that
+  presuppose a non-existent sound and ask how/when/why about it, scoring
+  whether the model rejects the false premise.
+technique_kind: prompting
+technique_validated_by: Attack success rate on AHA-Eval rose from explicit to
+  implicit queries for every model tested (e.g. Gemini 3 Pro random sounds
+  10.88% to 59.67%; Audio Flamingo 3 1.90% to 87.05% on text attacks), with
+  mean attention to audio tokens lower under implicit queries in Qwen2.5-Omni.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A model set where presupposing questions about absent sounds
+  produce hallucination rates at or below matched explicit existence
+  questions, or where attention to audio tokens does not fall under the
+  presupposing framing.
+evidence_note: Measured across six models on a purpose-built 6.5K-pair
+  benchmark; the gap is large and consistent in direction across models, sound
+  categories and both text and audio attack surfaces. The attention-drop
+  mechanism is shown only for Qwen2.5-Omni and is correlational, not causally
+  tested. Ground truth rests on LLM-filtered captions, so 'absent' sounds are
+  assumed rather than verified acoustically. No baseline from prior benchmarks
+  on the same clips.
+confidence: medium

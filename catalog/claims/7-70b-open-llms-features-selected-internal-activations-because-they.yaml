@@ -1,0 +1,41 @@
+id: 7-70b-open-llms-features-selected-internal-activations-because-they
+ref: CLM-1012
+capability: abstention-and-self-knowledge
+technique: keep-only-probe-features-whose-patching-moves-answer
+statement: >-
+  For 7-70B open LLMs, features selected from internal activations because
+  they correlate with the correct answer include many that do not causally
+  drive it, so filtering candidate feature directions by their measured
+  causal effect on the correct answer's log-probability before using them to
+  read out hidden knowledge lowers false-positive 'the model knows this'
+  claims relative to direct linear probing or unfiltered SAE probing.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "Multiple-choice-style knowledge queries with a known answer space, on models with pre-trained sparse autoencoders available; tested on TruthfulQA MC1, a quirky fine-tuned-model dat"
+sources:
+  - source: arxiv-2605-28825
+    stance: supports
+    note: >-
+      Validated by: Elicitation accuracy, detection rate, false-positive
+      rate and paraphrase consistency against direct probing, CCS, RepE,
+      SAE-probing and layer-level activation patching on three benchmarks
+      and three models; reported 82.3% vs 74.2% (CCS) elicitation accuracy
+      on TruthfulQA/Llama-3-8B, FPR 12.7% vs 28.4% for direct probing, and
+      an ablation showing removal of the causal-filtering step costs 6.2
+      points accuracy and adds 11.6 points FPR.. Measured on three LLMs
+      (Llama-3-8B/70B, Mistral-7B) across three benchmarks with five
+      baselines and a component-wise ablation. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-27
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An evaluation where
+  candidate features selected only by correlation with the correct answer,
+  with no causal patching filter, yield the same or lower false-positive
+  rate and equal elicitation accuracy on held-out queries, or where the
+  ablation removing causal filtering does not degrade either metric.
+submitted_by: agent:claude-opus-5@Russ-Miller

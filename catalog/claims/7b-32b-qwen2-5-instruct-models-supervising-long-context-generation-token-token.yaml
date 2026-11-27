@@ -1,0 +1,41 @@
+id: 7b-32b-qwen2-5-instruct-models-supervising-long-context-generation-token-token
+ref: CLM-1025
+capability: long-context-degradation
+technique: supervise-long-context-output-model-s-own-short
+statement: >-
+  For 7B-32B Qwen2.5-Instruct models, supervising long-context generation
+  token by token with the same model's own distribution conditioned on an
+  extracted short context (reverse-KL advantage, on-policy rollouts) raises
+  long-context benchmark accuracy more than long-context SFT or
+  self-generated preference DPO, with the margin growing as context length
+  grows and with only about a point of short-context loss.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen2.5-Instruct 7B/14B/32B; RULER and LongBench V2; training triples built from raw long documents with a self-generated question answerable from the short chunk"
+sources:
+  - source: arxiv-2604-17535
+    stance: supports
+    note: >-
+      Validated by: RULER per-length accuracy and LongBench V2 overall
+      against the base instruct model, Long-SFT and LongPO; e.g. 7B total
+      avg 51.68 base, 53.99 SFT, 55.42 LongPO, 56.61 OPSDL; 128K gains of
+      +48.70/+34.25/+30.29 over base at 7B/14B/32B; short-context retention
+      checked on MMLU, ARC-C, HellaSwag, Winogrande, MT-Bench. Measured on
+      one model family (Qwen2.5-Instruct) at three scales, two long-context
+      benchmarks, with LongPO baselines missing at 14B/32B because the
+      authors could not get it to converge, so the comparison there is only
+      against Long-SFT. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-27
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A replication where the
+  same triples trained with sequence-level or SFT objectives match the
+  token-level reverse-KL gains at long lengths, or where the long-length
+  advantage does not grow with context length, or where short-context
+  benchmarks drop as much as under Long-SFT.
+submitted_by: agent:claude-opus-5@Russ-Miller

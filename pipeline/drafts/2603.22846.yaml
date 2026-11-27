@@ -1,0 +1,46 @@
+arxiv_id: "2603.22846"
+title: "CoMaTrack: Competitive Multi-Agent Game-Theoretic Tracking with
+  Vision-Language-Action Models"
+url: https://doi.org/10.48550/arxiv.2603.22846
+drafted_at: 2026-11-25
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: For a 3B vision-language-action embodied visual tracking policy
+  fine-tuned with GRPO after SFT in Habitat, training against a second agent
+  that runs the same policy and competes for the same target yields larger
+  success-rate gains than training against a static obstacle or a randomly
+  moving interferer, which gives little gain or degrades performance.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Simulated indoor language-conditioned tracking (Habitat,
+  HM3D/MP3D scenes), one tracker plus one opponent, both initialized from the
+  same SFT checkpoint, LoRA-only RL fine-tuning for one epoch.
+technique: ""
+proposed_technique: Train the tracker against an adaptive competing opponent
+technique_summary: Run a second agent with the same architecture and SFT
+  initialization but a reward shifted to a closer optimal following distance,
+  so it contests the same target and generates escalating occlusion,
+  path-crossing and blocking during the tracker's RL fine-tuning.
+technique_kind: training
+technique_validated_by: "Ablation on EVT-Bench STT: SFT-only 88.2% SR / 85.4%
+  TR / 3.1% CR, single-agent RL 89.5 / 88.0 / 2.2, multi-agent RL 92.1 / 90.3
+  / 0.9; plus a success-rate-versus-training-episodes curve under three
+  opponent types where static obstacle gives marginal gains and random
+  interference degrades."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Under matched RL compute and episode counts, a random-interference
+  or static-obstacle opponent reaching the same or higher tracking success as
+  a competitive same-policy opponent, or the competitive-opponent advantage
+  disappearing once the opponent's extra environment interaction budget is
+  controlled for.
+evidence_note: Measured on one benchmark suite with one backbone; the
+  three-way opponent comparison is reported as a single curve with no seeds,
+  confidence intervals, or matched-compute control, and the multi-agent arm
+  involves a second acting agent so interaction volume is not held equal.
+  Collision-rate gain (3.1 to 0.9) is the largest single effect and is
+  plausibly specific to having a second robot body in the scene.
+confidence: low

@@ -1,0 +1,48 @@
+arxiv_id: "2603.06604"
+title: "Know When You're Wrong: Aligning Confidence with Correctness for LLM
+  Error Detection"
+url: https://doi.org/10.48550/arxiv.2603.06604
+drafted_at: 2026-11-21
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: abstention-and-self-knowledge
+statement: Because cross-entropy fine-tuning is maximum-likelihood estimation
+  while advantage-weighted RL and preference objectives push probability mass
+  toward high-reward outputs, a short supervised fine-tuning pass on the
+  model's own correct outputs after RL restores confidence calibration without
+  losing task accuracy, whereas further GRPO or DPO on the same data leaves
+  confidence sharpened.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Shown on one 4B instruct model (Qwen3-4B) across seven
+  classification and short-answer generation benchmarks, using normalized
+  answer-token or Yes/No self-evaluation probabilities; requires access to
+  output logprobs.
+technique: ""
+proposed_technique: Post-RL supervised fine-tuning on self-distilled correct outputs
+technique_summary: After RL post-training, run a light SFT pass on the model's
+  own sampled correct reasoning traces to re-impose a maximum-likelihood
+  objective and restore calibrated output probabilities.
+technique_kind: training
+technique_validated_by: On Qwen3-4B over seven tasks, SFT raised mean
+  confidence-correctness AUROC from 0.806 to 0.879 and cut ECE from 0.163 to
+  0.034, while GRPO (AUROC 0.809, ECE 0.135) and DPO (0.785, 0.117) did not;
+  using dataset labels instead of self-distilled ones dropped GSM8K accuracy
+  from 92.5% to 83.1%. No baseline isolating SFT data volume or a
+  non-self-distilled matched control on all tasks.
+stance_on_existing: supports
+related_claim_id: rlhf-tuned-chat-models-raw-conditional-probabilities-consistently-overconfident-confidence
+stance_reason: Both find RLHF-style post-training leaves raw output
+  probabilities overconfident, and this paper attributes it to reward-weighted
+  rather than likelihood-matching objectives.
+falsifier: On other RL-trained models, a matched-compute post-RL SFT pass on
+  self-distilled correct outputs fails to lower ECE relative to the RL
+  checkpoint, or lowers it no more than an equally sized GRPO/DPO
+  continuation.
+evidence_note: Measured on one model family and size (Qwen3-4B) with three
+  training arms on identical data across seven benchmarks; the theory section
+  argues the mechanism but the empirical comparison is a single controlled
+  model, and the apparent ECE differences partly track accuracy differences
+  the authors themselves flag for the RL arm.
+confidence: medium

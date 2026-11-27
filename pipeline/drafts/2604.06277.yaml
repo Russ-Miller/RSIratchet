@@ -1,0 +1,50 @@
+arxiv_id: "2604.06277"
+title: Weakly Supervised Distillation of Hallucination Signals into
+  Transformer Representations
+url: https://doi.org/10.48550/arxiv.2604.06277
+drafted_at: 2026-11-26
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: For a 7B open generator on context-grounded QA (LLaMA-2-7B on SQuAD
+  v2), a small probe trained on the generator's per-layer hidden states with
+  weak offline labels (substring match, embedding similarity, LLM judge)
+  separates grounded from hallucinated answers on a held-out split far better
+  than output-level similarity scores computed at inference (test AUC ~0.86 vs
+  ~0.41-0.42), and probes that attend across layers and token positions beat
+  pooled-MLP probes.
+kind: observation
+backing_strength: single-paper
+scope_condition: One generator (LLaMA-2-7B), one dataset (SQuAD v2), greedy
+  decoding, responses truncated to 96 tokens; labels are weak (no human
+  annotation), and no transfer across models or domains is tested.
+technique: ""
+proposed_technique: Distill external grounding checks into a hidden-state probe
+technique_summary: Label generated answers offline with substring match,
+  embedding similarity and an LLM judge, then train a small classifier on the
+  generator's per-layer hidden states so that at inference only the probe and
+  the activations are needed.
+technique_kind: training
+technique_validated_by: "5-fold CV plus a separate 5,000-row held-out test
+  set: best probe AUC 0.8577, F1 0.6644, ECE 0.1025, against output-level
+  cosine/token-F1 similarity baselines at AUC 0.41-0.42; probe latency
+  0.15-6.7 ms against ~4.33 s generation."
+stance_on_existing: supports
+related_claim_id: 2m-parameter-classifier-head-reads-hidden-states-already-computed-during
+stance_reason: Both find that a small classifier reading the generator's own
+  hidden states detects response-level hallucination without external
+  verification at inference.
+falsifier: A probe trained this way scores no better than output-level
+  similarity or token-probability baselines on a held-out split, or its
+  advantage disappears once the similarity baselines are given the same gold
+  answers the probe's labels were derived from.
+evidence_note: Measured on one generator and one dataset, 15,000 samples total
+  with a 5,000-row held-out test split. The similarity baselines score below
+  chance (AUC ~0.41), which is suspicious and suggests they are mis-oriented
+  or ill-suited rather than a fair comparator, so the size of the margin is
+  not trustworthy. Labels are themselves model-derived, so the probe may
+  partly be learning the judge's decision function rather than hallucination.
+  No comparison to CCS/ITI-style probing baselines, and no cross-model
+  transfer test.
+confidence: low

@@ -1,0 +1,49 @@
+arxiv_id: "2605.20201"
+title: Long-Context Reasoning Through Proxy-Based Chain-of-Thought Tuning
+url: https://doi.org/10.48550/arxiv.2605.20201
+drafted_at: 2026-11-26
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: long-context-degradation
+statement: For 4B open instruct models on long-context QA (128K-token
+  scientific-article and multi-hop Wikipedia inputs), obtaining
+  chain-of-thought traces by RLVR on short proxy contexts that carry the
+  needed evidence, then supervised fine-tuning the RL checkpoint to reproduce
+  those traces conditioned on the full long input, raises full-context
+  accuracy above SFT or RLVR done directly on the full contexts, and shortens
+  the reasoning traces.
+kind: observation
+backing_strength: single-paper
+scope_condition: Two 4B models (Qwen3-4B-Instruct, Gemma3-4B-IT), inputs up to
+  128K tokens, English, tasks where a compact proxy context preserving
+  answerability is available (annotated metadata or gold evidence sentences);
+  automatically retrieved proxies work much worse.
+technique: ""
+proposed_technique: Learn the reasoning on a short proxy context, then
+  re-ground it in the long one
+technique_summary: Collect chain-of-thought traces by
+  RL-with-verifiable-rewards (or teacher sampling) on a short proxy context
+  containing sufficient evidence, then supervised-fine-tune the same model to
+  emit those traces when given the full long input.
+technique_kind: training
+technique_validated_by: Exact match on SciTrek and GPT5-mini-judged accuracy
+  on HotpotQA against zero-shot, SFT on full contexts, RLVR on full contexts,
+  and SFT on teacher traces generated over full contexts; e.g.
+  Qwen3-4B-Instruct SciTrek full-context EM 30.8 zero-shot, 32.9 RLVR-on-full,
+  31.6 SFT-on-teacher-full-traces, 46.5 ProxyCoT-RL, with CoT tokens falling
+  from 1,744 to 617; also out-of-domain transfer to Loong.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched-compute comparison in which RLVR or CoT-SFT directly on
+  full long contexts equals or beats the proxy-then-ground pipeline on
+  full-context accuracy, or in which the gain disappears on models or datasets
+  where proxy and full context accuracy are already close.
+evidence_note: Measured on two 4B models and two datasets, with an ablation
+  showing both stages are needed (Gemma 37.3 SFT-only vs 43.7 both) and
+  proxy-quality and noise-robustness studies. Only 4B models; proxies come
+  from dataset annotations, and the authors' own retrieval-built proxies
+  perform far worse, so the result depends on having good proxies. No
+  matched-compute baseline reported.
+confidence: medium

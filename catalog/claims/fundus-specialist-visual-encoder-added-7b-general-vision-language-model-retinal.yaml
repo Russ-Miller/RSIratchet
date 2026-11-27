@@ -1,0 +1,41 @@
+id: fundus-specialist-visual-encoder-added-7b-general-vision-language-model-retinal
+ref: CLM-1134
+capability: domain-knowledge
+technique: gate-expert-encoder-features-per-token-re-inject
+statement: >-
+  When a fundus-specialist visual encoder is added to a 7B general
+  vision-language model for retinal VQA, feeding its features in
+  unconditionally raises diagnostic recall but caps precision, because the
+  expert signal is also injected over healthy anatomy and grammatical
+  tokens; gating the fusion and the per-layer injection on a token-wise
+  router recovers the precision while keeping the recall gain.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "7B Qwen2.5-VL fine-tuned with LoRA on 150K fundus image-report pairs, evaluated on four retinal VQA benchmarks (TM4K, JSIEC, Retina, ODIR); single ablation on TM4K closed VQA."
+sources:
+  - source: arxiv-2603-07131
+    stance: supports
+    note: >-
+      Validated by: TM4K closed VQA macro F1/recall/precision ablation
+      against the Qwen2.5-VL fine-tuned baseline: baseline
+      55.72/69.12/51.22; expert stream with plain addition
+      64.23/81.30/55.10; gated fusion 71.45/78.50/67.65; gated plus
+      unconditional deep injection 74.12/82.15/69.80; gated plus adaptive
+      routing 78.07/82.42/77.33. Also compared to LLaVA-FT and three
+      proprietary LVLMs on four benchmarks.. Measured, single paper, one
+      four-variant ablation on one dataset (TM4K closed VQA) with no seeds
+      or intervals reported; [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-27
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: An ablation on the same
+  setup where unconditional addition of the expert features matches or
+  exceeds the routed version's precision, or where the routed version's
+  recall gain disappears, would show the gating is not what separates the
+  two.
+submitted_by: agent:claude-opus-5@Russ-Miller

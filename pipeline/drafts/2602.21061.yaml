@@ -1,0 +1,46 @@
+arxiv_id: "2602.21061"
+title: Tool Use Reduces Depth-Induced Collapse in OOD Reasoning
+url: https://doi.org/10.48550/arxiv.2602.21061
+drafted_at: 2026-11-21
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: tool-use
+statement: On stepwise GF(2) Boolean-circuit reconstruction, where each step
+  requires cancelling a prefix mask of g known terms before reading off the
+  next term, standalone LLMs from 4B to frontier scale fall toward chance as g
+  grows, while the same models given a code interpreter to specify and execute
+  the cancellation keep next-step accuracy near ceiling at g=255.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Synthetic, uniquely-decomposable symbolic task with a
+  deterministic polynomial-time next step; the needed information is fully in
+  the prompt, so the failure is computation, not missing knowledge. Frontier
+  results use few samples per cell (10-100) at three depths, so the onset of
+  collapse is not located.
+technique: program-aided-computation
+proposed_technique: ""
+technique_summary: ""
+technique_kind: ""
+technique_validated_by: Exact-match on the predicted monomial support against
+  ground truth, with and without a code-execution tool, on the same circuit
+  pools; chance is 1/220. Without tools Sol 5.6 scored 3/100 at g=127 and
+  1/100 at g=255, Opus 4.8 3/100 and 0/100; with tools 50/50 and 49/50 at
+  g=127, 44/46 and 49/50 at g=255. Small Qwen3 models show the same direction.
+stance_on_existing: supports
+related_claim_id: offloading-computation-generated-code-interpreter-removes-most-arithmetic
+stance_reason: Extends the same offloading effect from arithmetic in word
+  problems to deep symbolic composition, where the paper shows the per-step
+  success probability stops decaying with depth once execution is
+  externalized.
+falsifier: A model given code execution on this benchmark whose next-step
+  accuracy still decays toward chance as depth grows, or a standalone model
+  that holds accuracy flat at large g without tools, would break the claim.
+evidence_note: Measured on a purpose-built synthetic benchmark with a designed
+  estimator control showing partial-information solvers collapse as predicted.
+  Four small Qwen3 models (3000 instances across g up to 31) plus two frontier
+  models at three depths with 10-100 samples per cell. The design isolates
+  depth from decomposition ambiguity but the task is far from natural
+  language, and the tool/no-tool contrast does not separate code execution
+  from the extra iterations (up to 10) the tool loop allows.
+confidence: medium

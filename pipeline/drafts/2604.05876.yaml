@@ -1,0 +1,47 @@
+arxiv_id: "2604.05876"
+title: "Addressing the Reasoning Gap: Mechanistic Circuit-Based Knowledge
+  Editing in Large Language Models"
+url: https://doi.org/10.48550/arxiv.2604.05876
+drafted_at: 2026-11-26
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: knowledge-updating
+statement: When a counterfactual fact is edited into GPT-2-scale and GPT-J
+  models, restricting low-rank updates to the attribution-identified causal
+  circuit (storage plus mid-to-late routing components) raises multi-hop
+  accuracy far above editing MLP storage layers alone, which leaves the fact
+  recallable single-hop but unusable in chained reasoning.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: GPT-2 Large/XL, GPT-J and Qwen2.5-7B on MQuAKE-3K-v2
+  counterfactual edits, single edits only; not tested for thousands of
+  sequential edits.
+technique: ""
+proposed_technique: Edit the causal circuit, not just the storage layer
+technique_summary: Identify the sparse subgraph of edges causally responsible
+  for a multi-hop reasoning instance with integrated-gradient edge
+  attribution, then apply LoRA exclusively to modules inside that circuit
+  while freezing everything else.
+technique_kind: training
+technique_validated_by: Multi-hop and single-hop accuracy on MQuAKE-3K-v2
+  against ROME, MEMIT, WISE, AlphaEdit, LoRA and CaKE; ablation on 1,000 cases
+  showed multi-hop 67.73 for the circuit edit vs 39.30 full-graph, 26.00
+  MLPs-only, 15.13 random edges of matched size; locality checked on MMLU and
+  CommonsenseQA (shifts ~0.1-0.24%).
+stance_on_existing: supports
+related_claim_id: knowledge-editing-methods-such-rome-fine-tuning-insert-stated-fact-reliably
+stance_reason: ROME here shows ~61.5% single-hop against ~12.5% multi-hop
+  accuracy on GPT-2 XL, the same gap between inserted fact and its
+  consequences.
+falsifier: An ablation at matched parameter count showing random or MLP-only
+  edge subsets reach the same multi-hop accuracy as attribution-selected
+  circuits, or showing the circuit edit's advantage vanishes on larger models
+  or under sequential editing.
+evidence_note: Measured on one benchmark (MQuAKE-3K-v2) across four backbones,
+  with a matched-size random-edge control and an MLP-only control that isolate
+  circuit selection from parameter budget. Single-edit setting only; the
+  mid-to-late routing mechanism is supported by attribution heatmaps and
+  head-level indirect-effect ablation but on small models (GPT-2 Large) and
+  100 instances.
+confidence: medium

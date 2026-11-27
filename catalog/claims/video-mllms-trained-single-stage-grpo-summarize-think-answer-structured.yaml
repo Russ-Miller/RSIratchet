@@ -1,0 +1,39 @@
+id: video-mllms-trained-single-stage-grpo-summarize-think-answer-structured
+ref: CLM-1331
+capability: video-temporal-reasoning
+technique: anchor-group-summary-consistency-self-generated-correct-rollouts
+statement: >-
+  For video MLLMs trained single-stage with GRPO on a Summarize→Think→Answer
+  structured CoT, anchoring the summary-consistency signal to the model's
+  own correct rollouts beats anchoring it to ground-truth action-order
+  summaries at 7B (+11.9 vs +6.2 accuracy points), while at 3B the ordering
+  reverses (+2.4 vs +3.0).
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Qwen2.5-VL backbones at 3B and 7B, 16-frame input, measured on the authors' own EventFlowQA temporal-ordering QA set; only two model sizes and one dataset."
+sources:
+  - source: arxiv-2603-25942
+    stance: supports
+    note: >-
+      Validated by: Ablations on EventFlowQA (42.37 base → 56.10 full
+      self-supervised variant; dynamic diversity beats static 52.22 vs 49.13
+      and 56.10 vs 55.78) plus seven public VideoQA benchmarks where the
+      RL-only model matches or exceeds SFT+RL pipelines on most metrics; no
+      matched-compute control for the extra structure.. Measured, single
+      paper, one backbone family, two sizes, one in-house dataset for the
+      supervision comparison. Benchmark table uses a different training set
+      and does not separate the GT/self comparison. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-27
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: Running the same
+  GT-anchored and self-anchored consistency objectives across several
+  backbones and video QA sets and finding GT supervision equal or better at
+  7B, or self-supervision better at 3B, would break the scale-dependent
+  ordering. Automatic check flagged: figures not in the source: 6.2.
+submitted_by: agent:claude-opus-5@Russ-Miller

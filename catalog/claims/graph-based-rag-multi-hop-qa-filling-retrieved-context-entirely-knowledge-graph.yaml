@@ -1,0 +1,39 @@
+id: graph-based-rag-multi-hop-qa-filling-retrieved-context-entirely-knowledge-graph
+ref: CLM-1141
+capability: multi-step-reasoning
+technique: chain-triplets-into-paths-then-localize-passages-triple
+statement: >-
+  In graph-based RAG for multi-hop QA, filling the retrieved context
+  entirely from knowledge-graph reasoning paths is worse than reserving a
+  slot or two for plain dense retrieval: on 2Wiki with a fixed 5-passage
+  context, accuracy rises steeply as path-derived passages go from 0 to 4
+  and then falls back when all 5 come from paths.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Llama-3.3-70B-Instruct backbone with NV-Embed-v2 retriever, 5-passage context, 2WikiMultiHopQA; single ablation table, one dataset"
+sources:
+  - source: arxiv-2602-20926
+    stance: supports
+    note: >-
+      Validated by: Token-level F1 on NQ, PopQA, MuSiQue, 2Wiki, HotpotQA,
+      LV-Eval against HippoRAG2, LinearRAG, HyperGraphRAG, NV-Embed-v2 and
+      BM25/GTR under HippoRAG2's protocol (avg F1 55.3 vs 54.6 for
+      HippoRAG2), plus retrieval latency for 1,000 queries (16.5x-28.8x
+      faster than HippoRAG2); ablations over context quota M, expansion hops
+      N, beam size, and a second backbone.. Measured: one ablation table on
+      2Wiki sweeping M from 0 to 5 with total context fixed at 5, reporting
+      EM, F1 and Recall@5 (61.55 F1 at M=0, 73.90 at M=4, 73.09 at M=5).
+      [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-27
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: On the same setup, a
+  context built entirely from path-localized passages matching or exceeding
+  the mixed 4-of-5 configuration on EM, F1 and Recall@5, or the 0-to-4 gain
+  failing to reproduce on other multi-hop corpora.
+submitted_by: agent:claude-opus-5@Russ-Miller

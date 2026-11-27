@@ -1,0 +1,50 @@
+arxiv_id: "2603.26122"
+title: "SkinGPT-X: A Self-Evolving Collaborative Multi-Agent System for
+  Transparent and Trustworthy Dermatological Diagnosis"
+url: https://doi.org/10.48550/arxiv.2603.26122
+drafted_at: 2026-11-25
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: harness-self-improvement
+statement: In a frozen-weight multi-agent image diagnosis pipeline for
+  dermatology, accumulating confirmed cases and periodically distilling them
+  into per-disease diagnostic guidelines that are retrieved at inference
+  raises accuracy over the identical pipeline without that memory, and the
+  gain is larger in high-cardinality label spaces than in coarse ones.
+kind: observation
+backing_strength: single-paper
+scope_condition: Dermatology image classification with a fine-tuned vision
+  backbone supplying top-5 candidates; measured on Fitzpatrick-17k (~114
+  classes) and a 498-class Dermnet re-split; no held-out-domain test of the
+  memory.
+technique: distilled-experience-memory
+proposed_technique: Distil confirmed cases into per-disease guidelines on a count threshold
+technique_summary: Store each confirmed case as an image embedding plus key
+  findings and diagnosis in a graph database, and when enough new cases of a
+  disease accumulate, have a summarization agent rewrite that disease's
+  diagnostic guideline, retrieving both similar cases and the current
+  guideline at inference.
+technique_kind: retrieval
+technique_validated_by: "Ablation against the same multi-agent pipeline with
+  memory removed: accuracy 68.4->70.7 and weighted F1 68.4->72.5 on
+  Fitzpatrick-17k, and +10.1 accuracy / +11.0 weighted F1 / +10.7 MCC on
+  Dermnet498, all reported p<0.001; plus blinded 5-point ratings by two
+  dermatologists on 600 evolution cases."
+stance_on_existing: supports
+related_claim_id: distilled-experience-memory
+stance_reason: Memory built by distilling accumulated cases into higher-level
+  guidance outperforms the no-memory pipeline, in a new domain (clinical image
+  diagnosis).
+falsifier: An ablation on the same datasets where removing the evolved
+  guidelines and historical-case retrieval leaves accuracy unchanged, or where
+  a matched static knowledge base of equal token volume gives the same gain.
+evidence_note: "Measured: single-arm ablation (with vs without memory) on two
+  datasets, with confidence intervals and t-tests. Does not isolate guideline
+  distillation from similar-case retrieval, nor control for the extra context
+  tokens the memory injects; no comparison against a static retrieval baseline
+  of equal size. Clinical ratings are of the guidelines' plausibility, not of
+  diagnostic gain."
+confidence: low
+problems:
+  - related_claim_id "distilled-experience-memory" does not exist

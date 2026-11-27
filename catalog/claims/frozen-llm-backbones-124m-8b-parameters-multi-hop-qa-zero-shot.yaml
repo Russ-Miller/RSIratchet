@@ -1,0 +1,37 @@
+id: frozen-llm-backbones-124m-8b-parameters-multi-hop-qa-zero-shot
+ref: CLM-1128
+capability: multi-step-reasoning
+technique: gate-latent-memory-slot-updates-gru-style-gate
+statement: >-
+  For frozen LLM backbones from 124M to 8B parameters on multi-hop QA and
+  zero-shot relation extraction, attaching a small trainable latent memory
+  bank (under 3% extra parameters) whose slots are updated through a
+  GRU-style gate raises answer and supporting-fact F1 over the unmodified
+  backbone, with the gain concentrated in supporting-fact identification
+  rather than final-answer exact match at the larger scale.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Reported on HotpotQA distractor setting and ZsRE with GPT-2 (124M) and Llama 3.1-8B; backbone weights frozen, only memory module trained; no comparison against other memory archite"
+sources:
+  - source: arxiv-2602-00015
+    stance: supports
+    note: >-
+      Validated by: HotpotQA EM/F1 (answer, supporting fact, joint) and ZsRE
+      accuracy against the vanilla same-backbone model; GPT-2 answer F1
+      45.52 to 54.08, Llama 3.1-8B supporting-fact F1 76.53 to 83.42, ZsRE
+      score 55.63 to 63.03; plus a slot-count ablation (512/1024/2048)
+      showing saturation at 1024.. Measured, but thinly: two benchmarks, two
+      backbones, one baseline (the untouched vanilla model). [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-27
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A controlled rerun showing
+  the same gains from an ungated memory bank of equal parameter count, or
+  from simply training any adapter of similar size on the same task data,
+  would show the gating mechanism is not what produces the improvement.
+submitted_by: agent:claude-opus-5@Russ-Miller

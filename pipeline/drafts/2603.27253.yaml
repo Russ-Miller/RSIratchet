@@ -1,0 +1,46 @@
+arxiv_id: "2603.27253"
+title: Mitigating Hallucination on Hallucination in RAG via Ensemble Voting
+url: https://doi.org/10.48550/arxiv.2603.27253
+drafted_at: 2026-11-25
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: "For retrieval-augmented QA with a single 8B backbone, replacing
+  multi-round agent debate with parallel majority voting over independently
+  generated queries and over independently generated answers gives roughly
+  equal accuracy at equal agent count, not better: it edges the debate
+  framework on some open-domain sets and falls below it on multi-hop and
+  commonsense sets."
+kind: observation
+backing_strength: single-paper
+scope_condition: Llama-3.1-8B-Instruct, E5-base-v2 retriever over a 2018
+  Wikipedia dump, top-3 passages, 500 sampled examples per dataset, 3 agents
+  per stage; six QA benchmarks.
+technique: ""
+proposed_technique: Vote on queries and on answers instead of debating
+technique_summary: Run N agents in parallel to each write a retrieval query,
+  pool all retrieved passages, then run N agents in parallel to answer from
+  that pooled evidence and take the majority answer, with no inter-agent
+  interaction.
+technique_kind: process
+technique_validated_by: EM/F1 on NQ, TriviaQA, PopQA, 2WikiMultihopQA,
+  HotpotQA and StrategyQA against Naive RAG, IRCoT, Iter-RetGen, FLARE, SuRe,
+  Self-RAG and the debate framework DRAG; voting beats Naive RAG on multi-hop
+  (2Wiki EM 28.60 vs 14.80) but trails DRAG on 2Wiki, HotpotQA and StrategyQA
+  (61.60 vs 69.20 EM), with an N=3/5/7 ablation showing voting accuracy rising
+  with agent count.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched-budget comparison on the same backbone and retriever
+  where debate-based RAG beats parallel voting across most benchmarks, or
+  where voting beats it across most benchmarks rather than splitting.
+evidence_note: Measured on six benchmarks at 500 examples each with one 8B
+  backbone and one retriever. The paper's own table shows voting losing to
+  DRAG on three of six datasets, including a 7.6-point EM gap on StrategyQA,
+  so the 'comparable or surpassing' framing is not supported as a general win.
+  The scaling ablation reports only voting's own numbers across N, with no
+  DRAG column, so the claimed debate degradation at N=7 is asserted rather
+  than shown. No latency measurements are reported, only call counts.
+confidence: low

@@ -1,0 +1,43 @@
+arxiv_id: "2604.25931"
+title: "Anchored Confabulation: Partial Evidence Non-Monotonically Amplifies
+  Confident Hallucination in LLMs"
+url: https://arxiv.org/abs/2604.25931
+drafted_at: 2026-11-26
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: In multi-hop RAG over 3-hop questions, supplying some but not all
+  of the required intermediate facts raises the rate of confidently-wrong
+  answers above supplying none, and only near-complete evidence removes the
+  effect — so partial grounding is worse than no grounding for confident
+  hallucination.
+kind: observation
+backing_strength: single-paper
+scope_condition: Measured on MuSiQue 3-hop (N=160) with Claude Sonnet 4.6 and
+  a lexical confidence extractor; requires both retrieved context and a
+  partial gold anchor (without retrieval context the effect disappears). The
+  peak shifts to k=2 for a weaker model and is absent in Llama-3.1-8B.
+technique: ""
+proposed_technique: Tell the model how many of the needed facts it has
+technique_summary: Prepend a note stating that only k of n required facts were
+  supplied and instruct the model to express genuine uncertainty about the
+  rest.
+technique_kind: prompting
+technique_validated_by: Confident-wrong AUC (PHC) at k=1 fell from 0.656
+  (significant) to 0.538 (not significant) on the same 160 MuSiQue 3-hop
+  queries, but the baseline and the mitigation were run on different models
+  (Claude Sonnet vs GPT-4o), so the comparison is confounded.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Running the same gold-fact injection sweep (k=0,1,2,3) on several
+  model families with a held-fixed oracle label and finding confident-wrong
+  rates fall monotonically with k, with no rise at any intermediate k.
+evidence_note: Single-author preprint. Causal design is sound in principle —
+  gold intermediate facts injected while oracle escalation labels are held
+  fixed — but N=160 on one dataset, the k=0 to k=1 difference is 0.613 to
+  0.656 in an AUC-style metric with no reported interval, confidence is
+  measured by a hedge-phrase/entity-density proxy, and the headline 'law'
+  k*=floor(n/3) is fitted to three hop depths with one untested prediction.
+confidence: low

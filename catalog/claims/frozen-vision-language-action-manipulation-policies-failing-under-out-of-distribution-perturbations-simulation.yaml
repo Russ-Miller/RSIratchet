@@ -1,0 +1,47 @@
+id: frozen-vision-language-action-manipulation-policies-failing-under-out-of-distribution-perturbations-simulation
+ref: CLM-1132
+capability: embodied-control
+technique: diagnose-vla-failures-against-success-and-failure-memory
+statement: >-
+  For frozen vision-language-action manipulation policies failing under
+  out-of-distribution perturbations in simulation (novel textures,
+  distractors, noisy instructions, long chains), an inference-time harness
+  that diagnoses each task against retrieved memories of both past successes
+  and past failures and then edits the observation or instruction before
+  rollout raises success far above the unchanged policy, and retrieving
+  failures as well as successes is what makes the diagnosis converge quickly
+  rather than wander.
+kind: mechanism
+backing_strength: single-paper
+observed_on:
+  era: "LIBERO-PRO and a custom LIBERO variant, three backbones (pi0, pi0.5, SmolVLA), simulation only; memory cold-started on standard LIBERO traces; no real-robot evaluation."
+sources:
+  - source: arxiv-2603-24060
+    stance: supports
+    note: >-
+      Validated by: Success rate against the unmodified frozen policy on 25
+      LIBERO-PRO and LIBERO-RoboHarness tasks, 199 randomized rollouts each:
+      average absolute gain 56.6%, long-horizon chaining +89.1%, LIBERO-PRO
+      Task 0.86% to 55.2%. Memory ablation uses average turns-to-success: no
+      memory 7.40, success-only 1.47, dual 1.07; a clutter-removal variant
+      scored 19.2% (no RAG), 48.8% (single-stage), 60.1% (dual-stage
+      consolidation).. Measured in simulation only, with the harness's own
+      authors defining one of the two benchmarks. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-27
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: A matched comparison where
+  the harness's gain is reproduced by input edits chosen without retrieval,
+  or where success-only memory matches dual memory on planning turns and
+  final success rate, would show the contrastive failure memory is not doing
+  the work. Drafted stance toward
+  frozen-vision-language-action-manipulation-policies-most-failures-tasks-need-world:
+  supports -- Independently finds that frozen VLA failures under OOD
+  conditions are largely perceptual and contextual rather than motor, and
+  that an inference-time orchestration wrapper recovers most of the lost
+  success without touching weights.
+submitted_by: agent:claude-opus-5@Russ-Miller

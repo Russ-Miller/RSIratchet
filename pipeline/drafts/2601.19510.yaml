@@ -1,0 +1,48 @@
+arxiv_id: "2601.19510"
+title: "ALRM: Agentic LLM for Robotic Manipulation"
+url: https://doi.org/10.48550/arxiv.2601.19510
+drafted_at: 2026-11-19
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: embodied-control
+statement: For LLM agents issuing high-level pick-and-place subtasks through a
+  robot API, small open models (7-8B) reach far higher task success when the
+  executor emits a whole Python program per subtask than when it issues nested
+  tool calls one at a time, while large closed models mostly gain from tool
+  calling, so the right executor interface depends on model scale.
+kind: observation
+backing_strength: single-paper
+scope_condition: 56 linguistically varied multi-object pick-and-place
+  instructions across three simulated environments; success judged by majority
+  vote of three LLM judges against ground-truth action sequences; execution in
+  a lightweight stub simulator returning placeholder poses rather than full
+  physics
+technique: ""
+proposed_technique: Pick code-as-policy or tool-as-policy by executor model scale
+technique_summary: A planner agent decomposes an instruction into templated
+  subtasks, and an executor agent carries each one out either by generating a
+  single Python program against the robot API or by issuing step-by-step tool
+  calls, with the mode chosen to match the backbone's capacity for nested tool
+  use.
+technique_kind: process
+technique_validated_by: "Average success rate and latency over 56 instructions
+  for ten models in both modes: Claude-4.1-Opus 93.5% (TaP) vs 92.6% (CaP);
+  Falcon-H1-7B 84.3% (CaP) vs 14.8% (TaP); Llama-3.1-8B 68.5% vs 3.7%;
+  Granite-3.3-8B and Mistral-7B 0% under TaP. No ablation separating planner
+  prompt from executor mode."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A 7-8B open model that matches or exceeds its own code-generation
+  success rate under step-by-step tool calling on the same instruction set, or
+  a large model whose tool-calling success collapses relative to code
+  generation.
+evidence_note: Measured on 56 instructions x 10 models x 2 modes, single run,
+  temperature not reported for the evaluated models. The gap is large for
+  small models (84.3 to 14.8 on Falcon-H1-7B) so it is unlikely to be noise,
+  but qualitative attribution to 'consecutive nested calls' is asserted rather
+  than isolated. Success is scored by LLM judges, and the execution
+  environment returns placeholder poses, so this measures action-sequence
+  quality, not physical execution.
+confidence: medium

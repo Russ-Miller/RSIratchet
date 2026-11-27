@@ -1,0 +1,48 @@
+arxiv_id: "2604.08216"
+title: "MemCoT: Test-Time Scaling through Memory-Driven Chain-of-Thought"
+url: https://doi.org/10.48550/arxiv.2604.08216
+drafted_at: 2026-11-26
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: long-context-degradation
+statement: For long-context conversational QA over stored dialogue histories
+  (LoCoMo, LongMemEval-S), replacing single-step top-K memory retrieval with
+  an iterative loop that retrieves, judges sufficiency, and rewrites the
+  sub-query from recorded failed search trajectories raises answer F1 across
+  GPT-4o-mini, Qwen2.5-14B and Qwen2.5-7B backbones, with the largest margins
+  on multi-hop and temporal questions.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Training-free, plug-and-play over a graph-structured memory
+  store (LightRAG); evaluated on two multi-session dialogue memory benchmarks
+  with a cap of 8 iterations; gains depend on the memory index being built by
+  a strong model.
+technique: ""
+proposed_technique: Retrieve, judge sufficiency, then rewrite the query from failed searches
+technique_summary: "Turns memory retrieval into a loop: fine-grained top-K
+  retrieval plus a neighbouring-chunk window expansion, a judge step that
+  decides whether the accumulated evidence answers the question, and a
+  query-rewriting step that decomposes or prunes the query using a record of
+  past failed searches."
+technique_kind: retrieval
+technique_validated_by: "Answer F1 on LoCoMo (single-hop, multi-hop,
+  open-domain, temporal) and LLM-as-a-Judge score on LongMemEval-S, against
+  full-context, RAG, Mem0, MemoryOS, HippoRAG, A-Mem, CAM, CompassMem, Mnemis;
+  overall 58.03 vs 52.18 (CompassMem) on GPT-4o-mini, 52.01 vs 33.79 on
+  Qwen2.5-7B, 88.0 vs 87.2 on LongMemEval-S. Ablation: removing the zoom-out
+  window costs 4.1 F1 overall."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Matching the iterative loop's total retrieved-token budget in a
+  single-step retrieval baseline closes the F1 gap, or the loop fails to beat
+  single-step retrieval on a different long-context memory benchmark or
+  backbone.
+evidence_note: Measured on two benchmarks and three backbones against many
+  memory-system baselines, with component ablations and sweeps over window
+  size, iteration cap and K. Does not isolate iteration count from total
+  retrieved context volume, and the smaller model's gain is partly attributed
+  to memory built by a stronger model, so backbone-independence is not cleanly
+  established. Benchmarks are class-imbalanced (96 open-domain items).
+confidence: medium

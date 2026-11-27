@@ -1,0 +1,43 @@
+id: paper-to-code-repository-quality-scored-reference-free-prompting-llm-judge-only
+ref: CLM-1241
+capability: evaluation-validity
+technique: give-judge-file-count-directory-tree
+statement: >-
+  When paper-to-code repository quality is scored reference-free by
+  prompting an LLM judge with only the paper and the repository files, the
+  score largely does not measure whether code exists: an empty repository
+  scored 3.89/5 and a configuration-and-documentation-only repository
+  4.67/5, above every model-generated codebase, because the judge infers
+  files that are not there; supplying the file count and a hierarchical
+  directory listing in the judge prompt raises correlation with
+  reference-based scoring from r=0.42 to r=0.86.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Paper2Code benchmark (90 ML papers), o3-mini-high as evaluator, 1-5 scale, reference-free prompting without the gold repository."
+sources:
+  - source: arxiv-2604-17745
+    stance: supports
+    note: >-
+      Validated by: Pearson correlation with reference-based scores rose
+      0.423 to 0.862 (repository-level regression 0.42 to 0.83); correlation
+      with three expert annotators rose 0.50 to 0.72 on 30 ICLR 2024 papers
+      against 0.82 inter-annotator; naive empty and config-only baselines
+      fall from 3.89/4.67 to 1.0/2.68. Ablation attributes gains separately
+      to count, structure, and instruction changes.. Measured on one
+      benchmark with one evaluator model, with degenerate-repository
+      controls (empty, config-only, gold) that isolate the hallucination
+      directly. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-27
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: Running the original
+  reference-free protocol on empty and documentation-only repositories and
+  finding they score at or below model-generated codebases, or finding that
+  adding file count and structure to the prompt does not raise correlation
+  with reference-based or human scores.
+submitted_by: agent:claude-opus-5@Russ-Miller

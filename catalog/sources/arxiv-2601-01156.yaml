@@ -1,0 +1,66 @@
+id: arxiv-2601-01156
+ref: SRC-1057
+kind: paper
+title: "DHI: Leveraging Diverse Hallucination Induction for Enhanced
+  Contrastive Factuality Control in Large Language Models"
+authors:
+  - Jiani Guo
+  - Xiangke Zeng
+  - Jie Wu
+  - Zuchao Li
+year: 2026
+date: 2026-01-03
+arxiv_id: "2601.01156"
+url: https://arxiv.org/abs/2601.01156
+tags:
+  - ingested
+summary: Large language models (LLMs) frequently produce inaccurate or
+  fabricated information, known as "hallucinations," which compromises their
+  reliability. Existing approaches often train an "Evil LLM" to deliberately
+  generate hallucinations on curated datasets, using these induced
+  hallucinations to guide contrastive decoding against a reliable "positive
+  model" for hallucination mitigation. However, this strategy is limited by
+  the narrow diversity of hallucinations induced, as Evil LLMs trained on
+  specific error types tend to reproduce only these particular patterns,
+  thereby restricting their overal
+notes: "Filed as a source on hallucination from the classifier's judgement
+  that the paper is about it (improves, high): The paper proposes a
+  training/decoding framework (DHI) that induces diverse hallucinations for
+  contrastive decoding and reports improved factuality. No claim has been
+  drafted from it yet."
+ingested_at: 2026-11-27
+brief: >-
+  Training a deliberately unreliable "Evil LLM" by penalizing correct tokens,
+  rather than rewarding pre-labeled hallucinated ones, yields a better
+  contrastive signal for factuality. The approach also removes the need for
+  annotated hallucination data.
+
+
+  DHI fine-tunes Llama2-7B-Base with LoRA using a loss that assigns negative
+  weight to the factual-answer token positions, plus a causal attention mask
+  that blocks those positions from influencing later tokens, and an
+  inference-time constraint limiting contrastive subtraction to tokens where
+  the positive model is confident. Training data came from 9,196 filtered
+  HaluEval QA items whose short answers were expanded into full sentences by
+  GPT-4o. Evaluation was on TruthfulQA (817 questions, MC1/MC2/MC3) and
+  FACTSCORE biographies.
+
+
+  Against ICD, the strongest prior contrastive method, DHI gains 1.4 on MC1,
+  2.9 on MC2, 3.7 on MC3, for 53.2 vs 50.5 average. On FACTSCORE it scores
+  68.1 vs ICD's 66.3, with 49.9 facts per response. A 70B-Chat greedy baseline
+  reaches only 42.2.
+
+
+  Ablations remove each of the 3 components; all drop performance, with
+  selective contrast mattering most (53.2 to 51.7). An α sweep shows an
+  inverted U, best at 0.05. Evidence is 1 model family, 1 base model size, 2
+  benchmarks, no independent replication, and no direct measurement that
+  induced hallucinations are in fact more diverse, which is the paper's stated
+  mechanism.
+
+
+  Treat the diversity claim as untested and the gains as modest but ablated.
+brief_generated_at: 2026-11-27
+brief_model: claude-opus-5
+brief_source: full-text

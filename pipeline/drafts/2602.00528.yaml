@@ -1,0 +1,51 @@
+arxiv_id: "2602.00528"
+title: How Far Are LLMs from Professional Poker Players? Revisiting
+  Game-Theoretic Reasoning with Agentic Tool Use
+url: https://doi.org/10.48550/arxiv.2602.00528
+drafted_at: 2026-11-18
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: tool-use
+statement: For two-player imperfect-information poker (Leduc and Limit Texas
+  Hold'em), a 7B model fine-tuned to call a unified external solver API for
+  the equilibrium action and supporting quantities beats the same model
+  fine-tuned by behavior cloning plus regret-based RL on its own policy, and
+  nearly matches the solver itself, while policy-only training improves
+  reasoning style without fixing factual errors about equity and ranges.
+kind: observation
+backing_strength: single-paper
+scope_condition: Two-player poker variants with an available CFR/equity
+  solver; 7B Qwen2.5 backbone; 100 games per opponent against NFSP, DQN, DMC
+  and CFR+/DeepCFR; reasoning scored by an LLM judge.
+technique: ""
+proposed_technique: Call a game solver for the action, explain from its outputs
+technique_summary: Train the model (behavior cloning on tool-augmented traces,
+  then PPO with answer, format and tool-execution rewards) to issue a single
+  query to a unified poker solver API that returns the equilibrium action plus
+  equity and range figures, and to write its explanation from those returned
+  numbers.
+technique_kind: tooling
+technique_validated_by: "Net chip gain over 100 games with alternated
+  positions against four traditional algorithms per environment: ToolPoker
+  +6.8 average in Leduc and +45.0 in Limit Texas Hold'em versus -40.5 and
+  -77.6 for the BC-RIRL policy-only variant, and -3.0 / -5.0 against the CFR+
+  and DeepCFR solvers; LLM-as-judge scores on heuristic reasoning, factual
+  alignment and action-reasoning consistency near the professional reference,
+  with ablations removing BC or RL each losing gameplay or factual alignment."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A policy-only fine-tune (RL or SFT) of a comparable-size model that
+  matches the solver-calling agent's chip gain against CFR+/DeepCFR and its
+  factual-alignment score, or a solver-calling agent that gains no more chips
+  than the same model trained without the tool.
+evidence_note: Measured on two poker environments, 100 games per opponent
+  pairing with fixed seeds and swapped positions, one 7B backbone. Reasoning
+  quality is scored by GPT-4.1-mini as judge on ~20 sampled traces per model
+  with human agreement reported in an appendix, so the reasoning side is
+  weaker evidence than the chip counts. The design does not isolate how much
+  of the gain is the solver's action alone versus the model's integration of
+  it — the solver supplies the equilibrium action directly, so the agent is
+  close to a wrapper on the baseline it is compared to.
+confidence: medium

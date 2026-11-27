@@ -1,0 +1,44 @@
+arxiv_id: "2603.21520"
+title: Generalizable Self-Evolving Memory for Automatic Prompt Optimization
+url: https://doi.org/10.48550/arxiv.2603.21520
+drafted_at: 2026-11-24
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: harness-self-improvement
+statement: For frozen 8B-and-mini-class backbones optimizing their own prompts
+  across a mixed set of tasks, composing each prompt at query time from
+  retrieved past successful-strategy templates plus accumulated failure rules
+  holds up better than searching for one static task-level prompt, whose gains
+  concentrate on some tasks and degrade others once domains are mixed.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Text reasoning tasks (logical, math, knowledge-intensive)
+  with ground-truth answers for self-evaluation; same model used as optimizer
+  and executor; six datasets, two backbones (Qwen3-8B, GPT-4o-mini).
+technique: ""
+proposed_technique: Compose prompts from retrieved strategies plus failure rules
+technique_summary: Distils solved trajectories into indexed reusable strategy
+  templates and failed ones into generalized error rules, then retrieves the
+  top-k similar templates plus all error rules per query to build the prompt,
+  updating the two stores by add/update/delete after each attempt.
+technique_kind: prompting
+technique_validated_by: Accuracy on six tasks against four prompting baselines
+  and five APO baselines (ProTeGi, OPRO, TextGrad, PromptBreeder, SPO); best
+  average on both backbones (70.7 vs 63.6 for TextGrad on GPT-4o-mini) at ~57%
+  lower optimization dollar cost; cross-domain mix (Gaokao MathQA + History)
+  where baselines degrade; ablations on each memory store and on top-k (peak
+  at k=3).
+stance_on_existing: supports
+related_claim_id: distilling-lessons-from-failures-as-well-as-successes-beats-raw-trajectory-memory
+stance_reason: Both memory stores help and the combination beats either, with
+  failure-derived rules contributing roughly as much as success-derived
+  templates.
+falsifier: A matched-cost comparison where a single statically searched
+  prompt, or a memory of success templates alone, equals the dual-memory
+  retrieval on the same mixed-domain task sets.
+evidence_note: Measured on six benchmark subsets with two backbones against
+  nine baselines, plus component and top-k ablations. Single paper, authors'
+  own framework; test sets are sampled subsets, cross-domain evidence is one
+  task pair, and no variance or repeated-run figures are reported.
+confidence: low

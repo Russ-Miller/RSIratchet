@@ -1,0 +1,40 @@
+id: 4b-open-instruct-models-long-context-qa-128k-token-scientific-article-multi-hop
+ref: CLM-0999
+capability: long-context-degradation
+technique: learn-reasoning-short-proxy-context-then-re-ground
+statement: >-
+  For 4B open instruct models on long-context QA (128K-token
+  scientific-article and multi-hop Wikipedia inputs), obtaining
+  chain-of-thought traces by RLVR on short proxy contexts that carry the
+  needed evidence, then supervised fine-tuning the RL checkpoint to
+  reproduce those traces conditioned on the full long input, raises
+  full-context accuracy above SFT or RLVR done directly on the full
+  contexts, and shortens the reasoning traces.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Two 4B models (Qwen3-4B-Instruct, Gemma3-4B-IT), inputs up to 128K tokens, English, tasks where a compact proxy context preserving answerability is available (annotated metadata or"
+sources:
+  - source: arxiv-2605-20201
+    stance: supports
+    note: >-
+      Validated by: Exact match on SciTrek and GPT5-mini-judged accuracy on
+      HotpotQA against zero-shot, SFT on full contexts, RLVR on full
+      contexts, and SFT on teacher traces generated over full contexts; e.g.
+      Qwen3-4B-Instruct SciTrek full-context EM 30.8 zero-shot, 32.9
+      RLVR-on-full, 31.6 SFT-on-teacher-full-traces, 46.5 ProxyCoT-RL, with
+      CoT tokens falling from 1,744 to 617; also out-of-domain transfer to
+      Loong.. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-27
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: medium. Falsifier as drafted: A matched-compute
+  comparison in which RLVR or CoT-SFT directly on full long contexts equals
+  or beats the proxy-then-ground pipeline on full-context accuracy, or in
+  which the gain disappears on models or datasets where proxy and full
+  context accuracy are already close.
+submitted_by: agent:claude-opus-5@Russ-Miller

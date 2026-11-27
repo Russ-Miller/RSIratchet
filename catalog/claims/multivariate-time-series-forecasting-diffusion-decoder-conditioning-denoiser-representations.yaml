@@ -1,0 +1,41 @@
+id: multivariate-time-series-forecasting-diffusion-decoder-conditioning-denoiser-representations
+ref: CLM-1232
+capability: forecasting
+technique: condition-diffusion-forecaster-llm-temporal-memory
+statement: >-
+  For multivariate time series forecasting with a diffusion decoder,
+  conditioning the denoiser on representations from a LoRA-adapted
+  pretrained GPT-2 encoder lowers MSE/MAE more than conditioning on an
+  Autoformer encoder or on retrieved few-shot exemplars, and after
+  pretraining on a source dataset, fine-tuning on 1% of a target dataset
+  reaches nearly the same error as fine-tuning on 100%.
+kind: observation
+backing_strength: single-paper
+observed_on:
+  era: "Seven standard benchmarks (ETT, Weather, ECL, Traffic), input length 96, horizons 96-720; ablation reported on Weather only; few-shot transfer reported only between ETTm1 and ETTm2"
+sources:
+  - source: arxiv-2602-00040
+    stance: supports
+    note: >-
+      Validated by: MSE/MAE against LLM-based (TimeLLM, GPT4TS, CALF),
+      Transformer (PatchTST, iTransformer, Crossformer) and diffusion (TMDM,
+      TimeGrad, TimeDiff) baselines on seven datasets; a four-way Weather
+      ablation swapping the conditioning source (LLM only,
+      Autoformer+diffusion 0.357 MSE, RAG+diffusion 0.531, full 0.248); a
+      GPT-2 layer-depth sweep; and a 1/5/50/100% fine-tuning sweep on two
+      ETT transfer pairs.. Measured, single paper, small scale. Full-data
+      wins are narrow over CALF and iTransformer (e.g. Electricity 0.172 vs
+      0.176) with no seeds or variance reported. [truncated]
+contested: false
+status: pending-review
+last_checked_at: 2026-11-27
+notes: >-
+  Drafted from the paper by a model and filed unreviewed. Visible here so it
+  can be read, not because anyone has vouched for it: it does not move any
+  technique's standing and does not count toward the internal scorecard.
+  Drafted confidence: low. Falsifier as drafted: On the same benchmarks and
+  budget, swapping the GPT-2 encoder for a comparably sized non-pretrained
+  or non-language encoder yields equal or lower error, or the 1%-vs-100%
+  few-shot gap widens to the size seen in baseline forecasters once transfer
+  pairs beyond ETTm1/ETTm2 are tested.
+submitted_by: agent:claude-opus-5@Russ-Miller

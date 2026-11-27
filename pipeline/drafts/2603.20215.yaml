@@ -1,0 +1,42 @@
+arxiv_id: "2603.20215"
+title: Multi-Agent Debate with Memory Masking
+url: https://doi.org/10.48550/arxiv.2603.20215
+drafted_at: 2026-11-22
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: "In multi-agent debate with 3 open-source LLM agents over 2 rounds,
+  filtering the previous round's peer responses before the next round raises
+  accuracy only marginally and which filter works depends on backbone
+  strength: having agents self-judge and discard peer memories helps weaker
+  instruct models, while keeping only the lowest-perplexity response helps
+  stronger math/reasoning models, especially on hard benchmarks."
+kind: observation
+backing_strength: single-paper
+scope_condition: 3 agents, 2 debate rounds, four open 7B-32B models, math
+  (GSM8K, MATH, AIME24/25) and MMLU-Pro; gains are often a point or two and
+  sometimes negative
+technique: ""
+proposed_technique: Mask erroneous peer memories between debate rounds
+technique_summary: Before each debate round after the first, each agent
+  evaluates the previous round's peer responses and zeroes out the ones judged
+  wrong (or keeps only the lowest-perplexity one), so the next round
+  conditions only on retained memories.
+technique_kind: process
+technique_validated_by: Accuracy with standard deviation over five seeds on
+  AIME24/25, MMLU-Pro, MATH, GSM8K against CoT, CoT-SC, plain MAD and Sparse
+  MAD, with token consumption reported relative to MAD.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Running both masking strategies across a wider model set and
+  finding self-evaluation masking beats perplexity masking on strong models,
+  or finding neither beats unmasked MAD once seed variance is accounted for.
+evidence_note: Measured on four models x five benchmarks, five seeds, with
+  reported standard deviations frequently larger than the method's margin over
+  MAD; several cells show MAD-M2 below MAD (e.g. AIME25 3.3 vs 6.7 on
+  Qwen2.5-7B). The capability-dependent ordering is a pattern read across
+  cells, not an isolated contrast. Subjective masking costs 13-41% more
+  tokens; perplexity masking cuts tokens ~30%.
+confidence: low
