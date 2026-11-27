@@ -1,0 +1,49 @@
+arxiv_id: "2604.08046"
+title: Guaranteeing Knowledge Integration with Joint Decoding for
+  Retrieval-Augmented Generation
+url: https://arxiv.org/abs/2604.08046
+drafted_at: 2026-11-27
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: For 4B-14B open instruct backbones in retrieval-augmented QA,
+  generating a parametric-only draft answer and then training a second copy
+  with DPO that treats that draft as the rejected response and the retrieved
+  documents as the chosen one, before fusing the two at the hidden-state level
+  during decoding, lowers reported hallucination rates and raises entity
+  precision over standard and adaptive RAG pipelines using the same retriever.
+kind: observation
+backing_strength: single-paper
+scope_condition: Five QA benchmarks (NQ, TruthfulQA, WoW, HotpotQA, ELI5) with
+  Qwen3-8B/14B backbones and BM25/SPLADE/RetroMAE/HyDE retrievers; requires
+  hidden-state access, so it does not apply unchanged to closed API models.
+technique: ""
+proposed_technique: Train the evidence answer against the model's own parametric draft
+technique_summary: Produce an answer from parametric knowledge alone, use it
+  as the DPO rejected sample against the retrieved documents to train an
+  evidence-only answerer, then steer decoding of the final answer by adding
+  the matched evidence segment's embedding into the hidden state.
+technique_kind: training
+technique_validated_by: Accuracy averaged over five lexical and semantic
+  metrics on five QA datasets, plus a hallucination rate, entity precision and
+  a 5-point human structure-coherence score, against Standard RAG, SelfRAG,
+  RQ-RAG, SOLAR, DA-RAG, FLARE, DRAGIN and P-RAG on the same backbone and
+  retriever; ablations remove DPO, length control, relevance control and
+  segment fusion.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Matching the compute and the evidence-segment conditioning without
+  the contrastive DPO stage reaches the same hallucination rate and entity
+  precision, or the gain disappears when the hallucination rate is measured
+  alongside answer coverage rather than in isolation.
+evidence_note: "Measured on five benchmarks across three backbone
+  configurations, with component ablations and a noise-injection stress test.
+  Design weaknesses: the hallucination and entity-precision metrics are the
+  authors' own and are not shown to be independent of answer length or
+  coverage, structure coherence is partly human-scored on an unreported
+  sample, and the reported ablation ordering (length control the largest
+  single contributor, above DPO) sits oddly with the paper's own framing. No
+  independent replication."
+confidence: low

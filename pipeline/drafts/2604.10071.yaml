@@ -1,0 +1,49 @@
+arxiv_id: "2604.10071"
+title: "Spotlight and Shadow: Attention-Guided Dual-Anchor Introspective
+  Decoding for MLLM Hallucination Mitigation"
+url: https://arxiv.org/abs/2604.10071
+drafted_at: 2026-11-27
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: In 7B open vision-language models (LLaVA-1.5, LLaVA-NeXT, Qwen2-VL,
+  MiniGPT-4, InstructBLIP), object hallucination can be reduced without an
+  extra forward pass by contrasting the final-layer logits against two layers
+  selected per token by attention mass on visual tokens — adding the logits of
+  the peak-visual-attention layer and subtracting those of a minimum-attention
+  layer below it.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: 7B-scale image-text MLLMs; layers chosen per decoding step by
+  visual-attention score, with adjustment restricted to a
+  plausibility-filtered candidate set; reinforcement and suppression weights
+  both have narrow optima (0.8 and 0.2) beyond which accuracy falls.
+technique: ""
+proposed_technique: Contrast peak- against minimum-visual-attention layers
+technique_summary: At each decoding step, pick the layer with highest
+  attention mass on visual tokens as a positive anchor and an earlier
+  low-attention layer as a negative anchor, and add the former's logits while
+  subtracting the latter's from the final-layer distribution within a
+  plausibility-constrained candidate set.
+technique_kind: decoding
+technique_validated_by: POPE accuracy/F1, CHAIR_S/CHAIR_I and MME perception
+  scores on LLaVA-1.5 and LLaVA-NeXT against greedy, beam search, DoLa, VCD,
+  OPERA, SID and EAZY; plus CHAIR/POPE deltas on three other backbones and
+  five general VL benchmarks; ablations remove each anchor separately.
+stance_on_existing: supports
+related_claim_id: 7b-scale-lvlms-llava-1-5-mplug-owl2-instructblip-attention-modules-push
+stance_reason: Both find that mid-network states carry visually correct signal
+  that late layers override, and that intervening on a selected layer at
+  decoding lowers object hallucination in one forward pass.
+falsifier: Selecting the two anchor layers by attention mass gives no better
+  hallucination reduction than fixed mid/shallow layers or randomly chosen
+  layer pairs at matched strength, or the reported CHAIR gains vanish once
+  object recall/caption length is held constant.
+evidence_note: "Measured on POPE, CHAIR and MME for two backbones with seven
+  decoding baselines, plus generalization deltas on three more backbones;
+  ablations isolate each anchor. Not isolated: whether attention-guided
+  dynamic selection beats fixed layer choice (no fixed-layer control
+  reported), and CHAIR drops are not controlled for output length or object
+  coverage, a known confound for this metric family."
+confidence: low

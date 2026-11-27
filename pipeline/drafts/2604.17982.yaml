@@ -1,0 +1,50 @@
+arxiv_id: "2604.17982"
+title: Mitigating Multimodal Hallucination via Phase-wise Self-reward
+url: https://doi.org/10.48550/arxiv.2604.17982
+drafted_at: 2026-11-27
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: In 7-13B LVLMs generating free-form captions, object hallucination
+  is concentrated at the onset of each semantic phrase and declines for later
+  tokens within that phrase, so triggering correction only at phase onsets
+  lowers hallucination rates more than contrastive decoding applied uniformly
+  at every step.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Measured on caption generation with LLaVA-1.5-7B/13B,
+  LLaVA-NeXT-7B and InstructBLIP-7B on COCO/AMBER/Object HalBench/MMHal-Bench;
+  phases defined by textual delimiters; intervention costs roughly 4x
+  inference time at the strongest setting.
+technique: ""
+proposed_technique: Intervene at semantic-phrase onsets using a distilled self-reward model
+technique_summary: Distils the LVLM's own phrase-level self-evaluation
+  confidence into a lightweight CLIP-based reward model that scores each newly
+  started phrase online and, when the score falls below a threshold, searches
+  over alternative initial tokens and contrastive penalty strengths to
+  regenerate that phrase.
+technique_kind: decoding
+technique_validated_by: CHAIR, Cover, Hal, Cog on AMBER; CHAIR_S/CHAIR_I on
+  Object HalBench; MMHal-Bench overall and Hal; POPE accuracy/F1 — compared
+  against base model and post-hoc baselines (VCD, M3ID, OPERA, AVISC, Octopus,
+  ONLY, EAZY). CHAIR on AMBER for LLaVA-1.5-7B fell 7.8 to 3.9; phase-level
+  hallucination accumulation rate 0.07% vs 0.35% base and 0.40% M3ID.
+stance_on_existing: supports
+related_claim_id: 7b-vision-language-models-llava-1-5-7b-qwen-vl-chat-inference-time-hidden-state-steering
+stance_reason: Both find that hallucination intervention applied at every
+  decoding step is worse than gating it on a signal that marks the risky
+  moments.
+falsifier: Measuring word-level hallucination rate within phrases on other
+  LVLMs and finding it flat or rising toward phrase end, or an ablation in
+  which applying the same reward-guided correction at uniformly spaced token
+  positions matches onset-targeted correction at equal compute.
+evidence_note: "Measured: 500 COCO images for the phase-pattern analysis, then
+  five hallucination benchmarks across four LVLMs against many post-hoc
+  baselines. The design does not isolate phase targeting from the rest of PSRD
+  — no ablation holds the reward model and search fixed while moving the
+  trigger points, so the phase-onset claim rests on the correlational pattern
+  plus the accumulation-rate figure. Coverage falls in some settings
+  (LLaVA-NeXT Cover 55.8 to 45.3), so part of the hallucination reduction may
+  be saying less."
+confidence: low

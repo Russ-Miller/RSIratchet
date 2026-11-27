@@ -1,0 +1,51 @@
+arxiv_id: "2604.09749"
+title: "See Fair, Speak Truth: Equitable Attention Improves Grounding and
+  Reduces Hallucination in Vision-Language Alignment"
+url: https://doi.org/10.48550/arxiv.2604.09749
+drafted_at: 2026-11-27
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: visual-grounding
+statement: In 7-13B image and video vision-language models, modulating per-row
+  attention logits at decode time to penalize objects that are large,
+  persistent or already heavily attended while amplifying rare but confidently
+  detected objects lowers object-hallucination rates (CHAIR) and raises POPE
+  recall at the same time, rather than trading grounding for coverage.
+kind: observation
+backing_strength: single-paper
+scope_condition: Training-free inference-time intervention on
+  instruction-tuned image and video MLLMs (LLaVA-1.5, InstructBLIP,
+  Video-LLaVA, Chat-UniVi, VILA, Video-LLaMA2) with an available
+  object-proposal stack supplying size, persistence and confidence; reported
+  to weaken in crowded scenes with many similar-confidence proposals.
+technique: ""
+proposed_technique: Penalize dominant-object attention, boost rare confident objects
+technique_summary: At each decoder layer, scale pre-softmax attention logits
+  per row by a penalty exponential in an object's
+  size/persistence/attention-share dominance score and by a boost proportional
+  to its rarity gated on detection confidence, inside a causal attention mask
+  with a per-row positional decay register.
+technique_kind: decoding
+technique_validated_by: CHAIR_S/CHAIR_I and POPE recall/precision/accuracy
+  against the base model and against RoPE, FixVPE, EDVT, FarSight, ICD, VCD,
+  OPERA; plus MMBench, LLaVA-W, MM-Vet, VizWiz, SQA, MSVD-QA, ActivityNet-QA
+  and five GPT-4o-judged video captioning dimensions. No human evaluation; no
+  reported object-coverage/recall metric on free-form captions beyond POPE and
+  GPT-4o detail scores.
+stance_on_existing: contests
+related_claim_id: training-free-inference-time-hallucination-mitigation-7b-vision-language-models-reported-gains
+stance_reason: This paper reports lower CHAIR together with higher POPE recall
+  and higher GPT-4o detail/context scores, arguing the gain is not bought with
+  reduced informativeness.
+falsifier: Measuring free-form caption object coverage (mentioned ground-truth
+  objects per caption) and output length under DOP-OBC and finding them at or
+  below the base model, so the CHAIR reduction is explained by saying less.
+evidence_note: Measured across six backbones on image and video benchmarks
+  with consistent directional gains, but all numbers come from one group with
+  no variance, seeds, or human judgement; the critical coverage question is
+  addressed only indirectly via POPE recall and a GPT-4o 'detail' score, which
+  is a weak control for the say-less confound. Object-proposal source is
+  described only as 'each model's standard vision stack', so the intervention
+  is not cleanly isolated from external detector quality.
+confidence: low

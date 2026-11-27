@@ -1,0 +1,48 @@
+arxiv_id: "2604.06633"
+title: "Argus: Reorchestrating Static Analysis via a Multi-Agent Ensemble for
+  Full-Chain Security Vulnerability Detection"
+url: https://doi.org/10.48550/arxiv.2604.06633
+drafted_at: 2026-11-27
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: multi-model-coordination
+statement: For LLM-agent static analysis of large Java repositories,
+  retrieving known vulnerability records for the project's third-party
+  dependencies to propose extra sink candidates finds more exploitable data
+  flows than sinks derived from the static analyzer alone, and even incorrect
+  retrieved sinks are useful because backward traversal from them reaches the
+  true sink.
+kind: observation
+backing_strength: single-paper
+scope_condition: Seven open-source Java repositories of 124k-841k LoC;
+  baselines CodeQL and IRIS; vulnerability counts confirmed by manual review,
+  no precision/recall against a labelled ground truth.
+technique: ""
+proposed_technique: Seed sinks from dependency CVE retrieval, then recurse backward
+technique_summary: Parses the project's dependency manifest, retrieves
+  vulnerability records for each dependency from CVE databases and community
+  issues to propose candidate sinks, and when forward taint search from a sink
+  finds nothing, walks upstream call sites and treats those as surrogate sinks
+  for a fresh forward search, with an LLM reviewing each candidate flow.
+technique_kind: retrieval
+technique_validated_by: Counts of detected sinks and manually reviewed
+  vulnerabilities on seven Java repositories versus CodeQL and IRIS, which
+  reported near zero vulnerabilities; an ablation splits vulnerabilities by
+  whether their sink came from the static tool or from the RAG agents.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: On the same repositories with a labelled vulnerability set, the
+  dependency-retrieved sinks yield no more confirmed true vulnerabilities than
+  static-tool sinks, or the backward-recursion step produces flows that manual
+  review rejects at the same rate as forward-only flows.
+evidence_note: "Measured on seven repositories; Argus reports 1-6
+  vulnerabilities each where CodeQL and IRIS report 0-1, at roughly 2-8x the
+  token cost of IRIS. The ablation attributing vulnerabilities to RAG-derived
+  sinks is thin: extra RAG sinks added vulnerabilities in only 2 of 7
+  repositories (PublicCMS 1, DataGear 3). No false-positive rate against
+  ground truth, no precision/recall, and the baselines reporting almost zero
+  everywhere makes the comparison hard to interpret. The backward-recursion
+  claim rests on one narrated case study."
+confidence: low

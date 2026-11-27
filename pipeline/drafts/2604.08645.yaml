@@ -1,0 +1,52 @@
+arxiv_id: "2604.08645"
+title: "3D-VCD: Hallucination Mitigation in 3D-LLM Embodied Agents through
+  Visual Contrastive Decoding"
+url: https://doi.org/10.48550/arxiv.2604.08645
+drafted_at: 2026-11-27
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: For 3D-LLM embodied agents answering object-existence questions
+  over structured 3D scene graphs, contrasting the model's logits against a
+  second pass on a semantically and geometrically perturbed copy of the same
+  scene graph lowers the over-affirmation rate and raises accuracy without
+  retraining, while leaving the model still biased toward 'yes' (yes-rate
+  75-89% against a 50% base rate).
+kind: observation
+backing_strength: single-paper
+scope_condition: 3D-LLM/LLaMA-style models fine-tuned on 3D-GRAND, plus
+  Llama-3-8B and Qwen-14B instruct, evaluated on binary existence questions
+  (3D-POPE) and the HEAL distractor-injection subset, where the scene is given
+  as an object-centric graph of categories, centroids and extents.
+technique: ""
+proposed_technique: Contrast decoding against a perturbed 3D scene graph
+technique_summary: Run the model twice on the same query, once with the true
+  object-centric 3D scene graph and once with a copy whose category labels and
+  object centroids/extents are perturbed, then subtract a scaled share of the
+  perturbed-context logits before sampling.
+technique_kind: decoding
+technique_validated_by: "3D-POPE precision/recall/F1/accuracy/yes-rate across
+  Random, Popular and Adversarial splits against 3D-LLM, 3D-VisTA and LEO
+  baselines (Random: accuracy 50.07 to 67.99, yes-rate 99.81 to 75.15); HEAL
+  CHAIR object and state hallucination rates with and without the contrast on
+  two instruct models; ablation over 11 distortion types showing all beat the
+  baseline F1."
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: Applying the same contrastive subtraction with a null or irrelevant
+  second context (e.g. an unrelated scene graph, or the same graph unchanged
+  with a temperature shift) producing equal gains, which would show the effect
+  comes from the logit arithmetic rather than from 3D evidence sensitivity; or
+  showing the accuracy gain disappears once yes-rate is matched to the
+  baseline by thresholding.
+evidence_note: Measured on two benchmarks with reported metrics, but the
+  comparison baselines are different trained models rather than the same model
+  under matched-strength alternative decoding, so the design does not isolate
+  the contrastive evidence signal from a generic negative-logit penalty that
+  shifts the yes/no threshold. Recall stays above 92% while precision moves
+  only to 52-62% on Popular and Adversarial, so most of the gain is in the
+  Random split. HEAL object-hallucination gains are small (2.58 to 2.39, 4.13
+  to 3.55) and one model's state hallucination went up (9.49 to 12.43).
+confidence: low

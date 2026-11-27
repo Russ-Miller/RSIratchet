@@ -1,0 +1,48 @@
+arxiv_id: "2604.06066"
+title: "From Hallucination to Structure Snowballing: The Alignment Tax of
+  Constrained Decoding in LLM Reflection"
+url: https://doi.org/10.48550/arxiv.2604.06066
+drafted_at: 2026-11-27
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: self-repair
+statement: "When an un-finetuned 8B model's reflection step is forced into a
+  fixed error-taxonomy schema by grammar-constrained decoding, self-correction
+  gets worse rather than better on multi-hop QA: the model attributes almost
+  all failures to formatting and repeats the same formatting patch until it
+  runs out of trials."
+kind: observation
+backing_strength: single-paper
+scope_condition: Qwen3-8B acting as actor, evaluator and reflector on 100
+  filtered HotpotQA distractor samples, Outlines-based FSM decoding over a
+  5-class error taxonomy, max 5 trials, exact-match-style grading; no external
+  critic and no fine-tuning.
+technique: ""
+proposed_technique: Force reflection into a typed error schema by constrained decoding
+technique_summary: Use grammar-constrained decoding to make the reflector emit
+  a JSON object naming one of five error types plus a correction rule, instead
+  of free-text reflection.
+technique_kind: decoding
+technique_validated_by: "Compared against free-text Reflexion on the same 100
+  samples: accuracy fell from 50% to 38% (McNemar p about 0.059), 23 correct
+  cases flipped to wrong versus 11 the other way, 96 of 100 first-round
+  diagnoses were FORMATTING_MISMATCH, 58 samples repeated the same formatting
+  error across all trials, and failing cases burned more thinking tokens
+  (4,005 vs 2,850 average)."
+stance_on_existing: supports
+related_claim_id: self-critique-without-grounding-unreliable
+stance_reason: Adding structural scaffolding without an external grounded
+  critic did not rescue intrinsic self-correction and made it worse.
+falsifier: A replication where the same constrained-decoding reflection raises
+  self-correction accuracy over free-text reflection on a comparable small
+  open model, or where diagnoses spread across the taxonomy instead of
+  collapsing onto the formatting category.
+evidence_note: "Measured but small and single-model: 100 samples split into
+  two pools, one 8B model in all three roles, temperature 0.1,
+  exact-match-brittle grading. The authors note survivor bias — residual
+  first-trial failures on HotpotQA are dominated by string-matching
+  brittleness — so the formatting-category dominance is partly a property of
+  the benchmark, not only of the constraint. No scale sweep; marginal
+  significance."
+confidence: low

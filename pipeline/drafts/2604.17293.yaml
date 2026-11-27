@@ -1,0 +1,48 @@
+arxiv_id: "2604.17293"
+title: "Beyond \"I Don't Know\": Evaluating LLM Self-Awareness in
+  Discriminating Data and Model Uncertainty"
+url: https://doi.org/10.48550/arxiv.2604.17293
+drafted_at: 2026-11-27
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: abstention-and-self-knowledge
+statement: "Across 18 frontier LLMs asked to abstain with an explicit label
+  naming why, recognizing that a question is underspecified is far easier than
+  recognizing that a well-posed question exceeds the model's own capability
+  (e.g. Qwen3-8B 69.8 data-uncertainty F1 vs 4.0 model-uncertainty F1 on
+  knowledge-intensive tasks), and enabling thinking mode often makes the
+  capability-limit side worse (Qwen3-235B on reasoning: 84.8 to 0.0)."
+kind: observation
+backing_strength: single-paper
+scope_condition: 3,500+ questions from GAIA, MuSiQue, SelfAware,
+  OlympiadBench-math, GSM8K-MiP, MATH-MiP; abstention expressed as one of two
+  designated tokens; model uncertainty defined dynamically as failure on an
+  answerable item
+technique: ""
+proposed_technique: Reward honest attribution of uncertainty type in RL
+technique_summary: GRPO training on synthetic math variants (made unsolvably
+  hard, or stripped of a needed condition) with a sparse reward of +1 for a
+  correct answer or correct uncertainty label, 0 for a wrong answer honestly
+  flagged as model-uncertain, and -1 otherwise.
+technique_kind: training
+technique_validated_by: On Qwen3-4B-Instruct-2507 and Qwen3-8B (thinking),
+  raised average uncertainty-attribution F1 (4B reasoning tasks 45.9 to 61.0;
+  8B 33.0 to 63.5) over the backbone and over an answerable-only RL baseline,
+  with answer accuracy unchanged; trained only on math, evaluated across all
+  UA-Bench settings.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A broad evaluation where models' model-uncertainty F1 matches or
+  exceeds their data-uncertainty F1, or where thinking-mode variants
+  consistently improve capability-limit recognition over their non-thinking
+  counterparts.
+evidence_note: Measured on a new benchmark across 18 models with rule-based
+  extraction of the abstention token plus an LLM judge only for answer
+  correctness (100 sampled outputs manually checked, 1 judge mismatch). The
+  model-uncertainty metric is defined relative to each model's own errors, so
+  it conflates attribution failure with how the answerable-error set is
+  constituted; thinking-mode collapse is shown on a few model pairs, not
+  systematically isolated.
+confidence: medium

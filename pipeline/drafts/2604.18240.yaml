@@ -1,0 +1,41 @@
+arxiv_id: "2604.18240"
+title: "AJ-Bench: Benchmarking Agent-as-a-Judge for Environment-Aware Evaluation"
+url: https://doi.org/10.48550/arxiv.2604.18240
+drafted_at: 2026-11-27
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: critique
+statement: When judging agent trajectories in search, database and GUI
+  environments, giving the judge model tool access and a live replayed
+  environment to gather evidence raises F1 agreement with annotated
+  success/failure labels by roughly 13 points over the same model judging from
+  the trajectory text alone, enough that a small model with environment access
+  beats frontier models judging text-only.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: 155 tasks and 516 binary-labelled trajectories across search,
+  filesystem/Postgres, and PowerPoint/Word/Excel GUI tasks; tested on two
+  backbones (gpt-5-mini-low, deepseek-v3.2); absolute F1 still only
+  ~0.72-0.77, so far from saturated.
+technique: let-verifier-execute-code-against-environment
+proposed_technique: ""
+technique_summary: ""
+technique_kind: ""
+technique_validated_by: F1 against human- and script-verified binary
+  trajectory labels, averaged over 3 runs, compared with the same base model
+  judging without tool calls and with 13 text-only frontier/open baselines.
+stance_on_existing: supports
+related_claim_id: verifying-steps-data-analysis-agent-verifier-only-reads-step-text
+stance_reason: Both find that a verifier restricted to reading the trajectory
+  text misses errors that executing against the live environment exposes.
+falsifier: A matched comparison where the same backbone with environment and
+  tool access scores no better than, or worse than, text-only judging on
+  annotated agent trajectories across these domains.
+evidence_note: Measured, two backbones only (budget-limited), against
+  text-only variants of themselves and 13 other models; gains are far larger
+  in GUI (+17 to +31) than in Postgres (+1.8), so the average understates the
+  spread. No control isolating environment replay from extra inference
+  compute, though the reasoning-effort ablation shows more thinking alone does
+  not reproduce the gain.
+confidence: medium

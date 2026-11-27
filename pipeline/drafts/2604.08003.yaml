@@ -1,0 +1,53 @@
+arxiv_id: "2604.08003"
+title: "Rethinking Entropy Allocation in LLM-based ASR: Understanding the
+  Dynamics between Speech Encoders and LLMs"
+url: https://doi.org/10.48550/arxiv.2604.08003
+drafted_at: 2026-11-27
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: hallucination
+statement: In encoder-adaptor-LLM speech recognition systems, end-to-end joint
+  fine-tuning lets LLM gradients pull the speech encoder toward linguistically
+  accessible representations at the cost of phonetic ones, and that drift is
+  what produces fabricated transcripts; inserting an intermediate stage in
+  which the encoder is frozen (and periodically swapped for a fresher
+  pretraining checkpoint) while only adaptor and LLM train preserves the
+  acoustic grounding and lowers the hallucination rate.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: LLM-based ASR with a Conformer-style encoder plus a small
+  (2.3B total) LLM decoder, trained in stages on Mandarin, dialect, English
+  and code-switch speech; hallucination defined as output >50% longer than
+  reference with zero unigram overlap.
+technique: ""
+proposed_technique: Freeze the encoder in an intermediate SFT stage, hot-swapping checkpoints
+technique_summary: Between adaptor alignment and full joint fine-tuning, run
+  an SFT stage with the encoder frozen and the adaptor plus LLM trained,
+  periodically swapping in a newer encoder checkpoint from ongoing pretraining
+  whenever representation similarity (CKA) to the reference drops below a
+  threshold.
+technique_kind: training
+technique_validated_by: Ablating the stage raised hallucination rates (e.g.
+  Mandarin 0.003% to 0.005%, dialect 0.122% to 0.198%, code-switch 0.261% to
+  0.356%) and worsened CER/WER on all four scenario groups; encoder probes
+  showed phonetic accessible information recovering during joint training with
+  the stage and converging lower without it. Single system, no independent
+  replication.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An LLM-ASR system where removing the encoder-frozen intermediate
+  stage leaves hallucination rates and phonetic-probe scores unchanged, or
+  where hallucination falls while the phonetic-to-semantic drift in encoder
+  representations grows.
+evidence_note: Measured on one 2.3B system across public
+  Mandarin/dialect/English/code-switch benchmarks, with an ablation isolating
+  the stage and a further ablation of the hot-swapping component.
+  Hallucination metric is a crude automatic heuristic (length ratio plus zero
+  BLEU-1), so it captures runaway fabrication rather than subtle unsupported
+  content. The encoder-drift diagnosis rests on linear-Gaussian probe proxies
+  the authors themselves call relative rather than exact. Baseline comparison
+  is across vendors with differing data, so the cross-model hallucination
+  ranking is not controlled.
+confidence: low

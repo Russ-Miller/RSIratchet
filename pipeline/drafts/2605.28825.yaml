@@ -1,0 +1,51 @@
+arxiv_id: "2605.28825"
+title: "MechELK: A Mechanistic Interpretability Framework for Eliciting Latent
+  Knowledge in Large Language Models"
+url: https://doi.org/10.48550/arxiv.2605.28825
+drafted_at: 2026-11-27
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: abstention-and-self-knowledge
+statement: For 7-70B open LLMs, features selected from internal activations
+  because they correlate with the correct answer include many that do not
+  causally drive it, so filtering candidate feature directions by their
+  measured causal effect on the correct answer's log-probability before using
+  them to read out hidden knowledge lowers false-positive 'the model knows
+  this' claims relative to direct linear probing or unfiltered SAE probing.
+kind: mechanism
+backing_strength: single-paper
+scope_condition: Multiple-choice-style knowledge queries with a known answer
+  space, on models with pre-trained sparse autoencoders available; tested on
+  TruthfulQA MC1, a quirky fine-tuned-model dataset, and a 400-scenario
+  deceptive-alignment set.
+technique: ""
+proposed_technique: Keep only probe features whose patching moves the answer
+technique_summary: Decompose residual-stream activations with a sparse
+  autoencoder, pick the layer with the largest activation-patching effect,
+  keep only features whose directional patching raises the correct answer's
+  probability above a threshold, then add the weighted combination of those
+  directions at inference to surface the hidden answer.
+technique_kind: decoding
+technique_validated_by: Elicitation accuracy, detection rate, false-positive
+  rate and paraphrase consistency against direct probing, CCS, RepE,
+  SAE-probing and layer-level activation patching on three benchmarks and
+  three models; reported 82.3% vs 74.2% (CCS) elicitation accuracy on
+  TruthfulQA/Llama-3-8B, FPR 12.7% vs 28.4% for direct probing, and an
+  ablation showing removal of the causal-filtering step costs 6.2 points
+  accuracy and adds 11.6 points FPR.
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: An evaluation where candidate features selected only by correlation
+  with the correct answer, with no causal patching filter, yield the same or
+  lower false-positive rate and equal elicitation accuracy on held-out
+  queries, or where the ablation removing causal filtering does not degrade
+  either metric.
+evidence_note: Measured on three LLMs (Llama-3-8B/70B, Mistral-7B) across
+  three benchmarks with five baselines and a component-wise ablation. One
+  paper, no independent replication; the deceptive-alignment benchmark is
+  curated by the authors and its construction is not described in detail, so
+  the largest reported gains (+13.8 over CCS) rest on a self-built test set.
+  All figures are from the paper's own runs.
+confidence: low

@@ -1,0 +1,49 @@
+arxiv_id: "2605.16299"
+title: "ACE: Self-Evolving LLM Coding Framework via Adversarial Unit Test
+  Generation and Preference Optimization"
+url: https://doi.org/10.48550/arxiv.2605.16299
+drafted_at: 2026-11-27
+drafted_from: full-text
+model: claude-opus-5
+status: draft — not filed. Review, edit, then move into catalog/ by hand.
+capability: code-generation
+statement: In self-training loops for code generation with 4B-7B instruct
+  backbones, supervision from self-generated unit tests that confirm semantic
+  correctness loses discriminative power once the solver is moderately strong,
+  while tests optimized to induce execution-level failures (runtime errors,
+  exceptions, non-termination) keep yielding pass@1 gains of 3-7 points over
+  solver-verifier training.
+kind: observation
+backing_strength: single-paper
+scope_condition: Qwen3-4B-Instruct and Qwen2.5-7B-Instruct trained on
+  CodeContests (~4.5k problems) with ground-truth tests available for scoring;
+  evaluated on CodeContests, MBPP, LiveCodeBench v2.
+technique: ""
+proposed_technique: Train the coder against its own failure-inducing test inputs
+technique_summary: One LLM alternates between writing candidate programs and
+  writing unit test inputs designed to crash them, then is fine-tuned on
+  programs that survive and preference-optimized (KTO) toward tests that split
+  passing from failing programs.
+technique_kind: training
+technique_validated_by: pass@1/5/10 and average tokens per solution on
+  CodeContests (in-distribution), MBPP and LiveCodeBench
+  (out-of-distribution), against the instruct backbone, ReasonFlux-Coder and
+  Qwen2.5-Coder baselines; ablations replacing the adversary with random
+  prompt-perturbed tests (-4 pts pass@1), removing KTO (-5 pts), and removing
+  SFT (largest drop).
+stance_on_existing: neither
+related_claim_id: ""
+stance_reason: ""
+falsifier: A matched-compute run where verifier-style tests (expected outputs
+  computed) continue to produce equal or larger pass@1 gains than
+  failure-inducing tests across the same rounds, or where the ACE gain
+  disappears once the random-test baseline is given equal test counts and
+  equal preference optimization.
+evidence_note: "Measured on two backbones and three benchmarks with pass@k and
+  token counts, plus three ablations. Gains are modest and uneven: the 7B
+  model scores below ReasonFlux on MBPP pass@1. Baselines are not re-trained
+  under identical data/compute in all cases, and the saturation mechanism is
+  supported by one accuracy-over-rounds figure rather than a controlled
+  test-discriminativeness measurement. Authors note a reward-hacking risk
+  (defensive try/except masking failures) that is not measured."
+confidence: low
